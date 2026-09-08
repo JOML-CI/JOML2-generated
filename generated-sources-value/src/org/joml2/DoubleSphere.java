@@ -1,0 +1,878 @@
+package org.joml2;
+
+import org.joml2.internal.storeload.*;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.ValueLayout;
+import java.nio.ByteBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+
+/**
+ * Immutable sphere of double-precision {@code double} components, declared as a value record.
+ * <p>
+ * All operations leave the receiver unchanged and return their result as a value. An operation
+ * whose result equals one of its operands may return that operand instead of allocating a new
+ * instance; as a value class, instances have no identity and may be flattened by the JVM.
+ *
+ * @param x the {@code x} component
+ * @param y the {@code y} component
+ * @param z the {@code z} component
+ * @param r the {@code r} component
+ */
+@jdk.internal.vm.annotation.LooselyConsistentValue
+public value record DoubleSphere(double x, double y, double z, double r) {
+
+    /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
+    public static final int SIZE_BYTES = 32;
+
+    /** Canonical constructor. */
+    public DoubleSphere(double x, double y, double z, double r) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.r = r;
+    }
+
+    /**
+     * Create a new instance initialized to all zeros.
+     */
+    public DoubleSphere() {
+        this(0, 0, 0, 0);
+    }
+
+    /** {@return the {@code x} component} */
+    public double x() { return x; }
+    /** {@return the {@code y} component} */
+    public double y() { return y; }
+    /** {@return the {@code z} component} */
+    public double z() { return z; }
+    /** {@return the {@code r} component} */
+    public double r() { return r; }
+
+
+    /**
+     * Create a new sphere from the given values.
+     *
+     * @param v the sphere
+     * @return the resulting sphere
+     */
+    public DoubleSphere set(DoubleSphere v) {
+        return set(v.x(), v.y(), v.z(), v.r());
+    }
+
+
+    /**
+     * Create a new sphere from the given values.
+     *
+     * @param vX the {@code x} component of the sphere {@code (vX, vY, vZ, vR)}
+     * @param vY the {@code y} component of the sphere {@code (vX, vY, vZ, vR)}
+     * @param vZ the {@code z} component of the sphere {@code (vX, vY, vZ, vR)}
+     * @param vR the {@code r} component of the sphere {@code (vX, vY, vZ, vR)}
+     * @return the resulting sphere
+     */
+    public DoubleSphere set(double vX, double vY, double vZ, double vR) {
+        return new DoubleSphere(vX, vY, vZ, vR);
+    }
+
+
+    /**
+     * Set the center of this sphere to {@code c}, returning the result as a value.
+     *
+     * @param c the vector
+     * @return the resulting sphere
+     */
+    public DoubleSphere setCenter(Double3 c) {
+        return setCenter(c.x(), c.y(), c.z());
+    }
+
+
+    /**
+     * Set the center of this sphere to ({@code cX}, {@code cY}, {@code cZ}), returning the result
+     * as a value.
+     *
+     * @param cX the {@code x} component of the vector {@code (cX, cY, cZ)}
+     * @param cY the {@code y} component of the vector {@code (cX, cY, cZ)}
+     * @param cZ the {@code z} component of the vector {@code (cX, cY, cZ)}
+     * @return the resulting sphere
+     */
+    public DoubleSphere setCenter(double cX, double cY, double cZ) {
+        return new DoubleSphere(cX, cY, cZ, this.r);
+    }
+
+
+    /**
+     * Set the radius of this sphere to {@code radius}, returning the result as a value.
+     *
+     * @param radius the radius
+     * @return the resulting sphere
+     */
+    public DoubleSphere setRadius(double radius) {
+        return new DoubleSphere(this.x, this.y, this.z, radius);
+    }
+
+
+    /**
+     * Convert this sphere to {@code float} precision, returning the result as a new instance.
+     * <p>
+     * The conversion may lose precision or range.
+     *
+     * @return a new {@code FloatSphere} holding the result
+     */
+    public FloatSphere toFloat() {
+        return new FloatSphere((float) (this.x), (float) (this.y), (float) (this.z), (float) (this.r));
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private DoubleSphere transform_s91e96b_tail(Double3x4 m, double _t9, double _t10) {
+        double _t11 = Math.abs(Math.fma(m.m21(), m.m22(), Math.fma(m.m01(), m.m02(), m.m11() * m.m12())));
+        return new DoubleSphere(Math.fma(m.m02(), this.z, Math.fma(m.m00(), this.x, Math.fma(m.m01(), this.y, m.m03()))), Math.fma(m.m12(), this.z, Math.fma(m.m10(), this.x, Math.fma(m.m11(), this.y, m.m13()))), Math.fma(m.m22(), this.z, Math.fma(m.m20(), this.x, Math.fma(m.m21(), this.y, m.m23()))), this.r * Math.sqrt(Math.max(Math.max(Math.fma(m.m00(), m.m00(), Math.fma(m.m10(), m.m10(), Math.fma(m.m20(), m.m20(), _t9 + _t10))), Math.fma(m.m01(), m.m01(), Math.fma(m.m11(), m.m11(), Math.fma(m.m21(), m.m21(), _t9 + _t11)))), Math.fma(m.m02(), m.m02(), Math.fma(m.m12(), m.m12(), Math.fma(m.m22(), m.m22(), _t10 + _t11))))));
+    }
+
+
+    /**
+     * Transform this sphere by {@code m}, scaling the radius conservatively by the matrix's maximum
+     * axis scale, returning the result as a value.
+     *
+     * @param m the matrix
+     * @return the resulting sphere
+     */
+    public DoubleSphere transform(Double3x4 m) {
+        double _t9 = Math.abs(Math.fma(m.m20(), m.m21(), Math.fma(m.m00(), m.m01(), m.m10() * m.m11())));
+        double _t10 = Math.abs(Math.fma(m.m20(), m.m22(), Math.fma(m.m00(), m.m02(), m.m10() * m.m12())));
+        return transform_s91e96b_tail(m, _t9, _t10);
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private DoubleSphere transform_sa000ec_tail(Double4x4 m, double _t9, double _t10) {
+        double _t11 = Math.abs(Math.fma(m.m21(), m.m22(), Math.fma(m.m01(), m.m02(), m.m11() * m.m12())));
+        return new DoubleSphere(Math.fma(m.m02(), this.z, Math.fma(m.m00(), this.x, Math.fma(m.m01(), this.y, m.m03()))), Math.fma(m.m12(), this.z, Math.fma(m.m10(), this.x, Math.fma(m.m11(), this.y, m.m13()))), Math.fma(m.m22(), this.z, Math.fma(m.m20(), this.x, Math.fma(m.m21(), this.y, m.m23()))), this.r * Math.sqrt(Math.max(Math.max(Math.fma(m.m00(), m.m00(), Math.fma(m.m10(), m.m10(), Math.fma(m.m20(), m.m20(), _t9 + _t10))), Math.fma(m.m01(), m.m01(), Math.fma(m.m11(), m.m11(), Math.fma(m.m21(), m.m21(), _t9 + _t11)))), Math.fma(m.m02(), m.m02(), Math.fma(m.m12(), m.m12(), Math.fma(m.m22(), m.m22(), _t10 + _t11))))));
+    }
+
+
+    /**
+     * Transform this sphere by {@code m}, scaling the radius conservatively by the matrix's maximum
+     * axis scale, returning the result as a value.
+     * <p>
+     * Only the affine part of {@code m} is used: the last row is assumed to be
+     * {@code (0, 0, 0, 1)}, so any projective component is ignored.
+     *
+     * @param m the matrix
+     * @return the resulting sphere
+     */
+    public DoubleSphere transform(Double4x4 m) {
+        double _t9 = Math.abs(Math.fma(m.m20(), m.m21(), Math.fma(m.m00(), m.m01(), m.m10() * m.m11())));
+        double _t10 = Math.abs(Math.fma(m.m20(), m.m22(), Math.fma(m.m00(), m.m02(), m.m10() * m.m12())));
+        return transform_sa000ec_tail(m, _t9, _t10);
+    }
+
+
+    /**
+     * Translate this sphere by {@code delta}, returning the result as a value.
+     *
+     * @param delta the vector
+     * @return the resulting sphere
+     */
+    public DoubleSphere translate(Double3 delta) {
+        return translate(delta.x(), delta.y(), delta.z());
+    }
+
+
+    /**
+     * Translate this sphere by ({@code deltaX}, {@code deltaY}, {@code deltaZ}), returning the
+     * result as a value.
+     *
+     * @param deltaX the {@code x} component of the vector {@code (deltaX, deltaY, deltaZ)}
+     * @param deltaY the {@code y} component of the vector {@code (deltaX, deltaY, deltaZ)}
+     * @param deltaZ the {@code z} component of the vector {@code (deltaX, deltaY, deltaZ)}
+     * @return the resulting sphere
+     */
+    public DoubleSphere translate(double deltaX, double deltaY, double deltaZ) {
+        return new DoubleSphere(deltaX + this.x, deltaY + this.y, deltaZ + this.z, this.r);
+    }
+
+
+    /**
+     * Get the center of this sphere, returning the result as a value.
+     *
+     * @return the resulting vector
+     */
+    public Double3 getCenter() {
+        return new Double3(this.x, this.y, this.z);
+    }
+
+
+    /**
+     * Determine whether this sphere is valid, i.e. its radius is not negative.
+     *
+     * @return {@code true} if this sphere is valid, i.e. its radius is not negative, {@code false}
+     *        otherwise
+     */
+    public boolean isValid() {
+        return this.r >= 0.0;
+    }
+
+    /**
+     * Determine whether this sphere contains the given point (boundary inclusive). Delegates to the
+     * shared {@code Intersectiond} kernels.
+     *
+     * @param pX the x coordinate of the point
+     * @param pY the y coordinate of the point
+     * @param pZ the z coordinate of the point
+     * @return {@code true} if the given point lies inside or on this sphere, {@code false}
+     *        otherwise
+     */
+    public boolean containsPoint(double pX, double pY, double pZ) {
+        return Intersectiond.testPointSphere(pX, pY, pZ, x(), y(), z(), r() * r());
+    }
+
+    /**
+     * Determine whether this sphere contains the given point (boundary inclusive). Delegates to the
+     * shared {@code Intersectiond} kernels.
+     *
+     * @param p the point
+     * @return {@code true} if the given point lies inside or on this sphere, {@code false}
+     *        otherwise
+     */
+    public boolean containsPoint(Double3 p) {
+        return containsPoint(p.x(), p.y(), p.z());
+    }
+
+    /**
+     * Determine whether this sphere intersects the given sphere. Delegates to the shared
+     * {@code Intersectiond} kernels.
+     *
+     * @param o the other sphere
+     * @return {@code true} if this sphere and the given sphere intersect, {@code false} otherwise
+     */
+    public boolean intersectsSphere(DoubleSphere o) {
+        return Intersectiond.testSphereSphere(x(), y(), z(), r() * r(), o.x(), o.y(), o.z(), o.r() * o.r());
+    }
+
+    /**
+     * Determine whether this sphere intersects the given axis-aligned box. Delegates to the shared
+     * {@code Intersectiond} kernels.
+     *
+     * @param a the axis-aligned box
+     * @return {@code true} if this sphere and the given axis-aligned box intersect, {@code false}
+     *        otherwise
+     */
+    public boolean intersectsAABB(DoubleAABB a) {
+        return Intersectiond.testAabbSphere(a.minX(), a.minY(), a.minZ(), a.maxX(), a.maxY(), a.maxZ(), x(), y(), z(), r() * r());
+    }
+
+    /**
+     * Determine whether this sphere intersects the given plane. Delegates to the shared
+     * {@code Intersectiond} kernels.
+     *
+     * @param plane the plane
+     * @return {@code true} if this sphere and the given plane intersect, {@code false} otherwise
+     */
+    public boolean intersectsPlane(DoublePlane plane) {
+        return Intersectiond.testPlaneSphere(plane.a(), plane.b(), plane.c(), plane.d(), x(), y(), z(), r());
+    }
+
+    /**
+     * Determine whether this sphere intersects the given ray. Delegates to the shared
+     * {@code Intersectiond} kernels.
+     *
+     * @param ray the ray
+     * @return {@code true} if this sphere and the given ray intersect, {@code false} otherwise
+     */
+    public boolean intersectsRay(DoubleRay ray) {
+        return Intersectiond.testRaySphere(ray.oX(), ray.oY(), ray.oZ(), ray.dX(), ray.dY(), ray.dZ(), x(), y(), z(), r() * r());
+    }
+
+    /** {@return a copy with the {@code x} component replaced by {@code v}} */
+    public DoubleSphere withX(double v) {
+        return new DoubleSphere(v, y, z, r);
+    }
+
+    /** {@return a copy with the {@code y} component replaced by {@code v}} */
+    public DoubleSphere withY(double v) {
+        return new DoubleSphere(x, v, z, r);
+    }
+
+    /** {@return a copy with the {@code z} component replaced by {@code v}} */
+    public DoubleSphere withZ(double v) {
+        return new DoubleSphere(x, y, v, r);
+    }
+
+    /** {@return a copy with the {@code r} component replaced by {@code v}} */
+    public DoubleSphere withR(double v) {
+        return new DoubleSphere(x, y, z, v);
+    }
+
+    @Override public String toString() {
+        return "DoubleSphere(" + x() + ", " + y() + ", " + z() + ", " + r() + ")";
+    }
+
+    @Override public boolean equals(@org.jspecify.annotations.Nullable Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof DoubleSphere)) return false;
+        DoubleSphere o = (DoubleSphere) obj;
+        return Double.doubleToLongBits(x) == Double.doubleToLongBits(o.x)
+            && Double.doubleToLongBits(y) == Double.doubleToLongBits(o.y)
+            && Double.doubleToLongBits(z) == Double.doubleToLongBits(o.z)
+            && Double.doubleToLongBits(r) == Double.doubleToLongBits(o.r);
+    }
+
+    @Override public int hashCode() {
+        int h = 1;
+        h = 31 * h + (int)(Double.doubleToLongBits(x) ^ (Double.doubleToLongBits(x) >>> 32));
+        h = 31 * h + (int)(Double.doubleToLongBits(y) ^ (Double.doubleToLongBits(y) >>> 32));
+        h = 31 * h + (int)(Double.doubleToLongBits(z) ^ (Double.doubleToLongBits(z) >>> 32));
+        h = 31 * h + (int)(Double.doubleToLongBits(r) ^ (Double.doubleToLongBits(r) >>> 32));
+        return h;
+    }
+
+    /** {@return whether all components of this value are finite, i.e. neither NaN nor infinite} */
+    public boolean isFinite() {
+        return Double.isFinite(x)
+            && Double.isFinite(y)
+            && Double.isFinite(z)
+            && Double.isFinite(r);
+    }
+
+    /**
+     * Compare this value component-wise against {@code other}, allowing a difference of at
+     * most {@code epsilon} per component.
+     *
+     * @param other the value to compare against
+     * @param epsilon the maximum allowed difference per component
+     * @return {@code true} if all components differ by at most {@code epsilon}, {@code false} otherwise
+     */
+    public boolean equalsEpsilon(DoubleSphere other, double epsilon) {
+        return Math.abs(x - other.x()) <= epsilon
+            && Math.abs(y - other.y()) <= epsilon
+            && Math.abs(z - other.z()) <= epsilon
+            && Math.abs(r - other.r()) <= epsilon;
+    }
+
+    static final DoubleSphereSegOps SEG_OPS =
+            Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE
+                    ? new DoubleSphereSegOpsUnsafe()
+                    : new DoubleSphereSegOpsMS();
+    static final DoubleSphereBbOps BB_OPS =
+            Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE
+                    ? new DoubleSphereBbOpsUnsafe()
+                    : new DoubleSphereBbOpsApi();
+    static final DoubleSphereRawOps RAW_OPS =
+            Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE
+                    ? new DoubleSphereRawOpsUnsafe()
+                    : new DoubleSphereRawOpsApi();
+
+
+    /**
+     * Store the elements into the given array, starting at the given offset.
+     *
+     * @param dest the destination array
+     * @param offset the start offset in the array, in elements
+     * @return dest
+     */
+    public double[] store(double[] dest, int offset) {
+        dest[offset + 0] = this.x;
+        dest[offset + 1] = this.y;
+        dest[offset + 2] = this.z;
+        dest[offset + 3] = this.r;
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given array.
+     *
+     * @param dest the destination array
+     * @return dest
+     */
+    public double[] store(double[] dest) { return store(dest, 0); }
+
+    /**
+     * Load the elements from the given array, starting at the given offset.
+     *
+     * @param src the source array
+     * @param offset the start offset in the array, in elements
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere load(double[] src, int offset) {
+        double _c0 = src[offset + 0];
+        double _c1 = src[offset + 1];
+        double _c2 = src[offset + 2];
+        double _c3 = src[offset + 3];
+        return new DoubleSphere(_c0, _c1, _c2, _c3);
+    }
+
+    /**
+     * Load the elements from the given array.
+     *
+     * @param src the source array
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere load(double[] src) { return load(src, 0); }
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param buf the destination buffer
+     * @return buf
+     */
+    public DoubleBuffer store(DoubleBuffer buf) {
+        return storeAbsolute(buf.position(), buf);
+    }
+
+    /**
+     * Store the elements into the given buffer, starting at the given absolute index (the position
+     * is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param buf the destination buffer
+     * @return buf
+     */
+    public DoubleBuffer storeAbsolute(int index, DoubleBuffer buf) {
+        return BB_OPS.storeAbsolute(this, index, buf);
+    }
+
+    /**
+     * Store the elements into the given buffer, starting at its current position and advancing the
+     * position accordingly.
+     *
+     * @param buf the destination buffer
+     * @return buf
+     */
+    public DoubleBuffer storeRelative(DoubleBuffer buf) {
+        int pos = buf.position();
+        storeAbsolute(pos, buf);
+        buf.position(pos + 4);
+        return buf;
+    }
+
+    /**
+     * Load the elements from the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param buf the source buffer
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere load(DoubleBuffer buf) {
+        return loadAbsolute(buf.position(), buf);
+    }
+
+    /**
+     * Load the elements from the given buffer, starting at the given absolute index (the position
+     * is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param buf the source buffer
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere loadAbsolute(int index, DoubleBuffer buf) {
+        return BB_OPS.loadAbsolute(index, buf);
+    }
+
+    /**
+     * Load the elements from the given buffer, starting at its current position and advancing the
+     * position accordingly.
+     *
+     * @param buf the source buffer
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere loadRelative(DoubleBuffer buf) {
+        int pos = buf.position();
+        DoubleSphere r = loadAbsolute(pos, buf);
+        buf.position(pos + 4);
+        return r;
+    }
+
+    /**
+     * Store the elements into the given byte buffer, starting at its current position (the position
+     * is not modified).
+     *
+     * @param buf the destination byte buffer
+     * @return buf
+     */
+    public ByteBuffer store(ByteBuffer buf) {
+        return storeAbsolute(buf.position(), buf);
+    }
+
+    /**
+     * Store the elements into the given byte buffer, starting at the given absolute index (the
+     * position is not used or modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param buf the destination byte buffer
+     * @return buf
+     */
+    public ByteBuffer storeAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.storeAbsolute(this, index, buf);
+    }
+
+    /**
+     * Store the elements into the given byte buffer, starting at its current position and advancing
+     * the position accordingly.
+     *
+     * @param buf the destination byte buffer
+     * @return buf
+     */
+    public ByteBuffer storeRelative(ByteBuffer buf) {
+        int pos = buf.position();
+        storeAbsolute(pos, buf);
+        buf.position(pos + 32);
+        return buf;
+    }
+
+    /**
+     * Load the elements from the given byte buffer, starting at its current position (the position
+     * is not modified).
+     *
+     * @param buf the source byte buffer
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere load(ByteBuffer buf) {
+        return loadAbsolute(buf.position(), buf);
+    }
+
+    /**
+     * Load the elements from the given byte buffer, starting at the given absolute index (the
+     * position is not used or modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param buf the source byte buffer
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere loadAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.loadAbsolute(index, buf);
+    }
+
+    /**
+     * Load the elements from the given byte buffer, starting at its current position and advancing
+     * the position accordingly.
+     *
+     * @param buf the source byte buffer
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere loadRelative(ByteBuffer buf) {
+        int pos = buf.position();
+        DoubleSphere r = loadAbsolute(pos, buf);
+        buf.position(pos + 32);
+        return r;
+    }
+
+    /**
+     * Store the elements into the given raw memory address. No bounds or liveness checks are
+     * performed.
+     *
+     * @param address the raw memory address
+     * @return this
+     */
+    public DoubleSphere storeUnsafe(long address) {
+        return RAW_OPS.storeUnsafe(this, address);
+    }
+
+    /**
+     * Load the elements from the given raw memory address. No bounds or liveness checks are
+     * performed.
+     *
+     * @param address the raw memory address
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere loadUnsafe(long address) {
+        return RAW_OPS.loadUnsafe(address);
+    }
+
+    /**
+     * Store the elements into the given memory segment.
+     *
+     * @param dest the destination memory segment
+     * @return dest
+     */
+    public MemorySegment store(MemorySegment dest) { return store(0L, dest); }
+
+    /**
+     * Store the elements into the given memory segment, starting at the given offset.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param dest the destination memory segment
+     * @return dest
+     */
+    public MemorySegment store(long offset, MemorySegment dest) {
+        return SEG_OPS.store(this, offset, dest);
+    }
+
+    /**
+     * Load the elements from the given memory segment.
+     *
+     * @param src the source memory segment
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere load(MemorySegment src) { return load(0L, src); }
+
+    /**
+     * Load the elements from the given memory segment, starting at the given offset.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param src the source memory segment
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere load(long offset, MemorySegment src) {
+        return SEG_OPS.load(offset, src);
+    }
+
+
+    /**
+     * Store the elements into the given array, converting each element to {@code float}, starting
+     * at the given offset.
+     *
+     * @param dest the destination array
+     * @param offset the start offset in the array, in elements
+     * @return dest
+     */
+    public float[] store(float[] dest, int offset) {
+        dest[offset + 0] = (float) this.x;
+        dest[offset + 1] = (float) this.y;
+        dest[offset + 2] = (float) this.z;
+        dest[offset + 3] = (float) this.r;
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given array, converting each element to {@code float}.
+     *
+     * @param dest the destination array
+     * @return dest
+     */
+    public float[] store(float[] dest) { return store(dest, 0); }
+
+    /**
+     * Load the elements from the given array, converting each element from {@code float}, starting
+     * at the given offset.
+     *
+     * @param src the source array
+     * @param offset the start offset in the array, in elements
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere load(float[] src, int offset) {
+        double _c0 = src[offset + 0];
+        double _c1 = src[offset + 1];
+        double _c2 = src[offset + 2];
+        double _c3 = src[offset + 3];
+        return new DoubleSphere(_c0, _c1, _c2, _c3);
+    }
+
+    /**
+     * Load the elements from the given array, converting each element from {@code float}.
+     *
+     * @param src the source array
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere load(float[] src) { return load(src, 0); }
+
+    /**
+     * Store the elements into the given buffer, converting each element to {@code float}, starting
+     * at its current position (the position is not modified).
+     *
+     * @param buf the destination buffer
+     * @return buf
+     */
+    public FloatBuffer store(FloatBuffer buf) {
+        return storeAbsolute(buf.position(), buf);
+    }
+
+    /**
+     * Store the elements into the given buffer, converting each element to {@code float}, starting
+     * at the given absolute index (the position is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param buf the destination buffer
+     * @return buf
+     */
+    public FloatBuffer storeAbsolute(int index, FloatBuffer buf) {
+        return BB_OPS.storeAbsolute(this, index, buf);
+    }
+
+    /**
+     * Store the elements into the given buffer, converting each element to {@code float}, starting
+     * at its current position and advancing the position accordingly.
+     *
+     * @param buf the destination buffer
+     * @return buf
+     */
+    public FloatBuffer storeRelative(FloatBuffer buf) {
+        int pos = buf.position();
+        storeAbsolute(pos, buf);
+        buf.position(pos + 4);
+        return buf;
+    }
+
+    /**
+     * Load the elements from the given buffer, converting each element from {@code float}, starting
+     * at its current position (the position is not modified).
+     *
+     * @param buf the source buffer
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere load(FloatBuffer buf) {
+        return loadAbsolute(buf.position(), buf);
+    }
+
+    /**
+     * Load the elements from the given buffer, converting each element from {@code float}, starting
+     * at the given absolute index (the position is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param buf the source buffer
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere loadAbsolute(int index, FloatBuffer buf) {
+        return BB_OPS.loadAbsolute(index, buf);
+    }
+
+    /**
+     * Load the elements from the given buffer, converting each element from {@code float}, starting
+     * at its current position and advancing the position accordingly.
+     *
+     * @param buf the source buffer
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere loadRelative(FloatBuffer buf) {
+        int pos = buf.position();
+        DoubleSphere r = loadAbsolute(pos, buf);
+        buf.position(pos + 4);
+        return r;
+    }
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code float},
+     * starting at its current position (the position is not modified).
+     *
+     * @param buf the destination byte buffer
+     * @return buf
+     */
+    public ByteBuffer storeFloat(ByteBuffer buf) {
+        return storeFloatAbsolute(buf.position(), buf);
+    }
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code float},
+     * starting at the given absolute index (the position is not used or modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param buf the destination byte buffer
+     * @return buf
+     */
+    public ByteBuffer storeFloatAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.storeFloatAbsolute(this, index, buf);
+    }
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code float},
+     * starting at its current position and advancing the position accordingly.
+     *
+     * @param buf the destination byte buffer
+     * @return buf
+     */
+    public ByteBuffer storeFloatRelative(ByteBuffer buf) {
+        int pos = buf.position();
+        storeFloatAbsolute(pos, buf);
+        buf.position(pos + 16);
+        return buf;
+    }
+
+    /**
+     * Load the elements from the given byte buffer, converting each element from {@code float},
+     * starting at its current position (the position is not modified).
+     *
+     * @param buf the source byte buffer
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere loadFloat(ByteBuffer buf) {
+        return loadFloatAbsolute(buf.position(), buf);
+    }
+
+    /**
+     * Load the elements from the given byte buffer, converting each element from {@code float},
+     * starting at the given absolute index (the position is not used or modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param buf the source byte buffer
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere loadFloatAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.loadFloatAbsolute(index, buf);
+    }
+
+    /**
+     * Load the elements from the given byte buffer, converting each element from {@code float},
+     * starting at its current position and advancing the position accordingly.
+     *
+     * @param buf the source byte buffer
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere loadFloatRelative(ByteBuffer buf) {
+        int pos = buf.position();
+        DoubleSphere r = loadFloatAbsolute(pos, buf);
+        buf.position(pos + 16);
+        return r;
+    }
+
+    /**
+     * Store the elements into the given raw memory address, converting each element to
+     * {@code float}. No bounds or liveness checks are performed.
+     *
+     * @param address the raw memory address
+     * @return this
+     */
+    public DoubleSphere storeFloatUnsafe(long address) {
+        return RAW_OPS.storeFloatUnsafe(this, address);
+    }
+
+    /**
+     * Load the elements from the given raw memory address, converting each element from
+     * {@code float}. No bounds or liveness checks are performed.
+     *
+     * @param address the raw memory address
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere loadFloatUnsafe(long address) {
+        return RAW_OPS.loadFloatUnsafe(address);
+    }
+
+    /**
+     * Store the elements into the given memory segment, converting each element to {@code float}.
+     *
+     * @param dest the destination memory segment
+     * @return dest
+     */
+    public MemorySegment storeFloat(MemorySegment dest) { return storeFloat(0L, dest); }
+
+    /**
+     * Store the elements into the given memory segment, converting each element to {@code float},
+     * starting at the given offset.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param dest the destination memory segment
+     * @return dest
+     */
+    public MemorySegment storeFloat(long offset, MemorySegment dest) {
+        return SEG_OPS.storeFloat(this, offset, dest);
+    }
+
+    /**
+     * Load the elements from the given memory segment, converting each element from {@code float}.
+     *
+     * @param src the source memory segment
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere loadFloat(MemorySegment src) { return loadFloat(0L, src); }
+
+    /**
+     * Load the elements from the given memory segment, converting each element from {@code float},
+     * starting at the given offset.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param src the source memory segment
+     * @return a new {@code DoubleSphere} holding the loaded elements
+     */
+    public static DoubleSphere loadFloat(long offset, MemorySegment src) {
+        return SEG_OPS.loadFloat(offset, src);
+    }
+
+}

@@ -1,0 +1,5122 @@
+package org.joml2;
+
+import java.nio.FloatBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.ByteBuffer;
+import java.lang.foreign.MemorySegment;
+
+/**
+ * Read-only view of a 3D vector of single-precision {@code float} components.
+ * <p>
+ * Declares the accessors, queries, store methods and dest-form operations that read but never
+ * mutate the receiver; the mutable counterpart is {@link Float3}. APIs that only read a 3D vector
+ * should accept {@code Float3R}, so callers can pass mutable instances without exposing them to
+ * modification.
+ */
+public interface Float3R {
+    /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
+    public static final int SIZE_BYTES = 12;
+
+    /** {@return a shared all-zero vector} Never mutate it - it is returned as the read-only view for that reason. */
+    public static Float3R ZERO() { return Holder.ZERO; }
+
+
+    /**
+     * Add {@code other} to this vector and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 add(Float3R other, @Mutated Float3 dest);
+
+    /**
+     * Add {@code other} to this vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 add(Float3R other, @Mutated Double3 dest);
+
+    /**
+     * Add ({@code x}, {@code y}, {@code z}) to this vector and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 add(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Add ({@code x}, {@code y}, {@code z}) to this vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 add(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Divide each component of this vector by {@code scalar} and store the result in {@code dest}.
+     *
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 div(float scalar, @Mutated Float3 dest);
+
+    /**
+     * Divide each component of this vector by {@code scalar} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 div(float scalar, @Mutated Double3 dest);
+
+    /**
+     * Divide this vector component-wise by {@code other} and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 div(Float3R other, @Mutated Float3 dest);
+
+    /**
+     * Divide this vector component-wise by {@code other} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 div(Float3R other, @Mutated Double3 dest);
+
+    /**
+     * Divide this vector component-wise by ({@code x}, {@code y}, {@code z}) and store the result
+     * in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 div(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Divide this vector component-wise by ({@code x}, {@code y}, {@code z}) and store the result
+     * in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 div(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Multiply this vector component-wise by {@code b} and add {@code c}, i.e. compute
+     * {@code this * b + c} per component and store the result in {@code dest}.
+     *
+     * @param b the factor to multiply this vector by
+     * @param c the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 fma(float b, Float3R c, @Mutated Float3 dest);
+
+    /**
+     * Multiply this vector component-wise by {@code b} and add {@code c}, i.e. compute
+     * {@code this * b + c} per component and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param b the factor to multiply this vector by
+     * @param c the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 fma(float b, Float3R c, @Mutated Double3 dest);
+
+    /**
+     * Multiply this vector component-wise by {@code b} and add ({@code x}, {@code y}, {@code z}),
+     * i.e. compute {@code this * b + c} per component and store the result in {@code dest}.
+     *
+     * @param b the factor to multiply this vector by
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 fma(float b, float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Multiply this vector component-wise by {@code b} and add ({@code x}, {@code y}, {@code z}),
+     * i.e. compute {@code this * b + c} per component and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param b the factor to multiply this vector by
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 fma(float b, float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Multiply this vector component-wise by {@code b} and add {@code c}, i.e. compute
+     * {@code this * b + c} per component and store the result in {@code dest}.
+     *
+     * @param b the factor to multiply this vector by
+     * @param c the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 fma(Float3R b, Float3R c, @Mutated Float3 dest);
+
+    /**
+     * Multiply this vector component-wise by {@code b} and add {@code c}, i.e. compute
+     * {@code this * b + c} per component and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param b the factor to multiply this vector by
+     * @param c the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 fma(Float3R b, Float3R c, @Mutated Double3 dest);
+
+    /**
+     * Multiply this vector component-wise by ({@code bX}, {@code bY}, {@code bZ}) and add
+     * ({@code cX}, {@code cY}, {@code cZ}), i.e. compute {@code this * b + c} per component and
+     * store the result in {@code dest}.
+     *
+     * @param bX the {@code x} component of the vector {@code (bX, bY, bZ)}
+     * @param bY the {@code y} component of the vector {@code (bX, bY, bZ)}
+     * @param bZ the {@code z} component of the vector {@code (bX, bY, bZ)}
+     * @param cX the {@code x} component of the vector {@code (cX, cY, cZ)}
+     * @param cY the {@code y} component of the vector {@code (cX, cY, cZ)}
+     * @param cZ the {@code z} component of the vector {@code (cX, cY, cZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 fma(float bX, float bY, float bZ, float cX, float cY, float cZ, @Mutated Float3 dest);
+
+    /**
+     * Multiply this vector component-wise by ({@code bX}, {@code bY}, {@code bZ}) and add
+     * ({@code cX}, {@code cY}, {@code cZ}), i.e. compute {@code this * b + c} per component and
+     * store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param bX the {@code x} component of the vector {@code (bX, bY, bZ)}
+     * @param bY the {@code y} component of the vector {@code (bX, bY, bZ)}
+     * @param bZ the {@code z} component of the vector {@code (bX, bY, bZ)}
+     * @param cX the {@code x} component of the vector {@code (cX, cY, cZ)}
+     * @param cY the {@code y} component of the vector {@code (cX, cY, cZ)}
+     * @param cZ the {@code z} component of the vector {@code (cX, cY, cZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 fma(float bX, float bY, float bZ, float cX, float cY, float cZ, @Mutated Double3 dest);
+
+    /**
+     * Multiply each component of this vector by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 mul(float scalar, @Mutated Float3 dest);
+
+    /**
+     * Multiply each component of this vector by {@code scalar} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 mul(float scalar, @Mutated Double3 dest);
+
+    /**
+     * Multiply this vector component-wise by {@code other} and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 mul(Float3R other, @Mutated Float3 dest);
+
+    /**
+     * Multiply this vector component-wise by {@code other} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 mul(Float3R other, @Mutated Double3 dest);
+
+    /**
+     * Multiply this vector component-wise by ({@code x}, {@code y}, {@code z}) and store the result
+     * in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 mul(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Multiply this vector component-wise by ({@code x}, {@code y}, {@code z}) and store the result
+     * in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 mul(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Negate this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 negate(@Mutated Float3 dest);
+
+    /**
+     * Negate this vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 negate(@Mutated Double3 dest);
+
+    /**
+     * Subtract {@code other} from this vector and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 sub(Float3R other, @Mutated Float3 dest);
+
+    /**
+     * Subtract {@code other} from this vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 sub(Float3R other, @Mutated Double3 dest);
+
+    /**
+     * Subtract ({@code x}, {@code y}, {@code z}) from this vector and store the result in
+     * {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 sub(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Subtract ({@code x}, {@code y}, {@code z}) from this vector and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 sub(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Set this vector to {@code s} and store the result in {@code dest}.
+     *
+     * @param s the uniform scale factor
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 set(float s, @Mutated Float3 dest);
+
+    /**
+     * Set this vector to {@code s} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param s the uniform scale factor
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 set(float s, @Mutated Double3 dest);
+
+    /**
+     * Convert this vector to {@code double} precision and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 toDouble(@Mutated Double3 dest);
+
+    /**
+     * Convert this vector to {@code byte} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is converted by a primitive cast, truncating toward zero.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Byte3 toByte(@Mutated Byte3 dest);
+
+    /**
+     * Convert this vector to {@code byte} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param mode the rounding mode to use
+     * @param dest will hold the result
+     * @return dest
+     */
+    Byte3 toByte(RoundingMode mode, @Mutated Byte3 dest);
+
+    /**
+     * Convert this vector to {@code short} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is converted by a primitive cast, truncating toward zero.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Short3 toShort(@Mutated Short3 dest);
+
+    /**
+     * Convert this vector to {@code short} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param mode the rounding mode to use
+     * @param dest will hold the result
+     * @return dest
+     */
+    Short3 toShort(RoundingMode mode, @Mutated Short3 dest);
+
+    /**
+     * Convert this vector to {@code int} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is converted by a primitive cast, truncating toward zero.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Int3 toInt(@Mutated Int3 dest);
+
+    /**
+     * Convert this vector to {@code int} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param mode the rounding mode to use
+     * @param dest will hold the result
+     * @return dest
+     */
+    Int3 toInt(RoundingMode mode, @Mutated Int3 dest);
+
+    /**
+     * Convert this vector to {@code long} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is converted by a primitive cast, truncating toward zero.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Long3 toLong(@Mutated Long3 dest);
+
+    /**
+     * Convert this vector to {@code long} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param mode the rounding mode to use
+     * @param dest will hold the result
+     * @return dest
+     */
+    Long3 toLong(RoundingMode mode, @Mutated Long3 dest);
+
+    /**
+     * Interpolate along the cubic Bézier curve defined by this vector and the given control points
+     * and store the result in {@code dest}.
+     *
+     * @param p1 the first control point
+     * @param p2 the second control point
+     * @param p3 the end point
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 bezier(Float3R p1, Float3R p2, Float3R p3, float t, @Mutated Float3 dest);
+
+    /**
+     * Interpolate along the cubic Bézier curve defined by this vector and the given control points
+     * and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p1 the first control point
+     * @param p2 the second control point
+     * @param p3 the end point
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 bezier(Float3R p1, Float3R p2, Float3R p3, float t, @Mutated Double3 dest);
+
+    /**
+     * Interpolate along the cubic Bézier curve defined by this vector and the given control points
+     * and store the result in {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p3X the {@code x} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 bezier(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float p3X, float p3Y, float p3Z, float t, @Mutated Float3 dest);
+
+    /**
+     * Interpolate along the cubic Bézier curve defined by this vector and the given control points
+     * and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p3X the {@code x} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 bezier(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float p3X, float p3Y, float p3Z, float t, @Mutated Double3 dest);
+
+    /**
+     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
+     * points and store the result in {@code dest}.
+     *
+     * @param p1 the control point
+     * @param p2 the end point
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 bezier2(Float3R p1, Float3R p2, float t, @Mutated Float3 dest);
+
+    /**
+     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
+     * points and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p1 the control point
+     * @param p2 the end point
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 bezier2(Float3R p1, Float3R p2, float t, @Mutated Double3 dest);
+
+    /**
+     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
+     * points and store the result in {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 bezier2(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float t, @Mutated Float3 dest);
+
+    /**
+     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
+     * points and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 bezier2(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float t, @Mutated Double3 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
+     * by this vector and the given control points, at the parameter {@code t} and store the result
+     * in {@code dest}.
+     *
+     * @param p1 the control point
+     * @param p2 the end point
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 bezier2Tangent(Float3R p1, Float3R p2, float t, @Mutated Float3 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
+     * by this vector and the given control points, at the parameter {@code t} and store the result
+     * in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p1 the control point
+     * @param p2 the end point
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 bezier2Tangent(Float3R p1, Float3R p2, float t, @Mutated Double3 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
+     * by this vector and the given control points, at the parameter {@code t} and store the result
+     * in {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 bezier2Tangent(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float t, @Mutated Float3 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
+     * by this vector and the given control points, at the parameter {@code t} and store the result
+     * in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 bezier2Tangent(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float t, @Mutated Double3 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
+     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param p1 the first control point
+     * @param p2 the second control point
+     * @param p3 the end point
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 bezierTangent(Float3R p1, Float3R p2, Float3R p3, float t, @Mutated Float3 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
+     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p1 the first control point
+     * @param p2 the second control point
+     * @param p3 the end point
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 bezierTangent(Float3R p1, Float3R p2, Float3R p3, float t, @Mutated Double3 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
+     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p3X the {@code x} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 bezierTangent(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float p3X, float p3Y, float p3Z, float t, @Mutated Float3 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
+     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p3X the {@code x} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 bezierTangent(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float p3X, float p3Y, float p3Z, float t, @Mutated Double3 dest);
+
+    /**
+     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points
+     * and store the result in {@code dest}.
+     *
+     * @param p1 the start point of the interpolated segment
+     * @param p2 the end point of the interpolated segment
+     * @param p3 the outer control point after the segment
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 catmullRom(Float3R p1, Float3R p2, Float3R p3, float t, @Mutated Float3 dest);
+
+    /**
+     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points
+     * and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p1 the start point of the interpolated segment
+     * @param p2 the end point of the interpolated segment
+     * @param p3 the outer control point after the segment
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 catmullRom(Float3R p1, Float3R p2, Float3R p3, float t, @Mutated Double3 dest);
+
+    /**
+     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points
+     * and store the result in {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p3X the {@code x} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 catmullRom(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float p3X, float p3Y, float p3Z, float t, @Mutated Float3 dest);
+
+    /**
+     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points
+     * and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p3X the {@code x} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 catmullRom(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float p3X, float p3Y, float p3Z, float t, @Mutated Double3 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
+     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param p1 the start point of the interpolated segment
+     * @param p2 the end point of the interpolated segment
+     * @param p3 the outer control point after the segment
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 catmullRomTangent(Float3R p1, Float3R p2, Float3R p3, float t, @Mutated Float3 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
+     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p1 the start point of the interpolated segment
+     * @param p2 the end point of the interpolated segment
+     * @param p3 the outer control point after the segment
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 catmullRomTangent(Float3R p1, Float3R p2, Float3R p3, float t, @Mutated Double3 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
+     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p3X the {@code x} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 catmullRomTangent(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float p3X, float p3Y, float p3Z, float t, @Mutated Float3 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
+     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p3X the {@code x} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 catmullRomTangent(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float p3X, float p3Y, float p3Z, float t, @Mutated Double3 dest);
+
+    /**
+     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation and
+     * store the result in {@code dest}.
+     *
+     * @param t0 the tangent at this vector
+     * @param v1 the endpoint
+     * @param t1 the tangent at the endpoint
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 hermite(Float3R t0, Float3R v1, Float3R t1, float t, @Mutated Float3 dest);
+
+    /**
+     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation and
+     * store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param t0 the tangent at this vector
+     * @param v1 the endpoint
+     * @param t1 the tangent at the endpoint
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 hermite(Float3R t0, Float3R v1, Float3R t1, float t, @Mutated Double3 dest);
+
+    /**
+     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation and
+     * store the result in {@code dest}.
+     *
+     * @param t0X the {@code x} component of the vector {@code (t0X, t0Y, t0Z)}
+     * @param t0Y the {@code y} component of the vector {@code (t0X, t0Y, t0Z)}
+     * @param t0Z the {@code z} component of the vector {@code (t0X, t0Y, t0Z)}
+     * @param v1X the {@code x} component of the vector {@code (v1X, v1Y, v1Z)}
+     * @param v1Y the {@code y} component of the vector {@code (v1X, v1Y, v1Z)}
+     * @param v1Z the {@code z} component of the vector {@code (v1X, v1Y, v1Z)}
+     * @param t1X the {@code x} component of the vector {@code (t1X, t1Y, t1Z)}
+     * @param t1Y the {@code y} component of the vector {@code (t1X, t1Y, t1Z)}
+     * @param t1Z the {@code z} component of the vector {@code (t1X, t1Y, t1Z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 hermite(float t0X, float t0Y, float t0Z, float v1X, float v1Y, float v1Z, float t1X, float t1Y, float t1Z, float t, @Mutated Float3 dest);
+
+    /**
+     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation and
+     * store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param t0X the {@code x} component of the vector {@code (t0X, t0Y, t0Z)}
+     * @param t0Y the {@code y} component of the vector {@code (t0X, t0Y, t0Z)}
+     * @param t0Z the {@code z} component of the vector {@code (t0X, t0Y, t0Z)}
+     * @param v1X the {@code x} component of the vector {@code (v1X, v1Y, v1Z)}
+     * @param v1Y the {@code y} component of the vector {@code (v1X, v1Y, v1Z)}
+     * @param v1Z the {@code z} component of the vector {@code (v1X, v1Y, v1Z)}
+     * @param t1X the {@code x} component of the vector {@code (t1X, t1Y, t1Z)}
+     * @param t1Y the {@code y} component of the vector {@code (t1X, t1Y, t1Z)}
+     * @param t1Z the {@code z} component of the vector {@code (t1X, t1Y, t1Z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 hermite(float t0X, float t0Y, float t0Z, float v1X, float v1Y, float v1Z, float t1X, float t1Y, float t1Z, float t, @Mutated Double3 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
+     * this vector and the given endpoint, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param t0 the tangent at this vector
+     * @param v1 the endpoint
+     * @param t1 the tangent at the endpoint
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 hermiteTangent(Float3R t0, Float3R v1, Float3R t1, float t, @Mutated Float3 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
+     * this vector and the given endpoint, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param t0 the tangent at this vector
+     * @param v1 the endpoint
+     * @param t1 the tangent at the endpoint
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 hermiteTangent(Float3R t0, Float3R v1, Float3R t1, float t, @Mutated Double3 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
+     * this vector and the given endpoint, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param t0X the {@code x} component of the vector {@code (t0X, t0Y, t0Z)}
+     * @param t0Y the {@code y} component of the vector {@code (t0X, t0Y, t0Z)}
+     * @param t0Z the {@code z} component of the vector {@code (t0X, t0Y, t0Z)}
+     * @param v1X the {@code x} component of the vector {@code (v1X, v1Y, v1Z)}
+     * @param v1Y the {@code y} component of the vector {@code (v1X, v1Y, v1Z)}
+     * @param v1Z the {@code z} component of the vector {@code (v1X, v1Y, v1Z)}
+     * @param t1X the {@code x} component of the vector {@code (t1X, t1Y, t1Z)}
+     * @param t1Y the {@code y} component of the vector {@code (t1X, t1Y, t1Z)}
+     * @param t1Z the {@code z} component of the vector {@code (t1X, t1Y, t1Z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 hermiteTangent(float t0X, float t0Y, float t0Z, float v1X, float v1Y, float v1Z, float t1X, float t1Y, float t1Z, float t, @Mutated Float3 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
+     * this vector and the given endpoint, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param t0X the {@code x} component of the vector {@code (t0X, t0Y, t0Z)}
+     * @param t0Y the {@code y} component of the vector {@code (t0X, t0Y, t0Z)}
+     * @param t0Z the {@code z} component of the vector {@code (t0X, t0Y, t0Z)}
+     * @param v1X the {@code x} component of the vector {@code (v1X, v1Y, v1Z)}
+     * @param v1Y the {@code y} component of the vector {@code (v1X, v1Y, v1Z)}
+     * @param v1Z the {@code z} component of the vector {@code (v1X, v1Y, v1Z)}
+     * @param t1X the {@code x} component of the vector {@code (t1X, t1Y, t1Z)}
+     * @param t1Y the {@code y} component of the vector {@code (t1X, t1Y, t1Z)}
+     * @param t1Z the {@code z} component of the vector {@code (t1X, t1Y, t1Z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 hermiteTangent(float t0X, float t0Y, float t0Z, float v1X, float v1Y, float v1Z, float t1X, float t1Y, float t1Z, float t, @Mutated Double3 dest);
+
+    /**
+     * Linearly interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t} and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 lerp(Float3R other, float t, @Mutated Float3 dest);
+
+    /**
+     * Linearly interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other vector
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 lerp(Float3R other, float t, @Mutated Double3 dest);
+
+    /**
+     * Linearly interpolate between this vector and ({@code x}, {@code y}, {@code z}) using the
+     * interpolation factor {@code t} and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 lerp(float x, float y, float z, float t, @Mutated Float3 dest);
+
+    /**
+     * Linearly interpolate between this vector and ({@code x}, {@code y}, {@code z}) using the
+     * interpolation factor {@code t} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 lerp(float x, float y, float z, float t, @Mutated Double3 dest);
+
+    /**
+     * Linearly interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t} and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param t the per-component interpolation factors, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 lerp(Float3R other, Float3R t, @Mutated Float3 dest);
+
+    /**
+     * Linearly interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other vector
+     * @param t the per-component interpolation factors, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 lerp(Float3R other, Float3R t, @Mutated Double3 dest);
+
+    /**
+     * Linearly interpolate between this vector and ({@code otherX}, {@code otherY}, {@code otherZ})
+     * using the interpolation factor ({@code tX}, {@code tY}, {@code tZ}) and store the result in
+     * {@code dest}.
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param otherZ the {@code z} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param tX the {@code x} component of the vector {@code (tX, tY, tZ)}
+     * @param tY the {@code y} component of the vector {@code (tX, tY, tZ)}
+     * @param tZ the {@code z} component of the vector {@code (tX, tY, tZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 lerp(float otherX, float otherY, float otherZ, float tX, float tY, float tZ, @Mutated Float3 dest);
+
+    /**
+     * Linearly interpolate between this vector and ({@code otherX}, {@code otherY}, {@code otherZ})
+     * using the interpolation factor ({@code tX}, {@code tY}, {@code tZ}) and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param otherZ the {@code z} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param tX the {@code x} component of the vector {@code (tX, tY, tZ)}
+     * @param tY the {@code y} component of the vector {@code (tX, tY, tZ)}
+     * @param tZ the {@code z} component of the vector {@code (tX, tY, tZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 lerp(float otherX, float otherY, float otherZ, float tX, float tY, float tZ, @Mutated Double3 dest);
+
+    /**
+     * Compute the absolute value of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 absolute(@Mutated Float3 dest);
+
+    /**
+     * Compute the absolute value of each component of this vector and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 absolute(@Mutated Double3 dest);
+
+    /**
+     * Compute the arc cosine of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 acos(@Mutated Float3 dest);
+
+    /**
+     * Compute the arc cosine of each component of this vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 acos(@Mutated Double3 dest);
+
+    /**
+     * Add {@code b} scaled by {@code scalar} to this vector and store the result in {@code dest}.
+     *
+     * @param b the vector
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 addScaled(Float3R b, float scalar, @Mutated Float3 dest);
+
+    /**
+     * Add {@code b} scaled by {@code scalar} to this vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param b the vector
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 addScaled(Float3R b, float scalar, @Mutated Double3 dest);
+
+    /**
+     * Add ({@code x}, {@code y}, {@code z}) scaled by {@code scalar} to this vector and store the
+     * result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 addScaled(float x, float y, float z, float scalar, @Mutated Float3 dest);
+
+    /**
+     * Add ({@code x}, {@code y}, {@code z}) scaled by {@code scalar} to this vector and store the
+     * result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 addScaled(float x, float y, float z, float scalar, @Mutated Double3 dest);
+
+    /**
+     * Add {@code b} scaled by {@code c} to this vector and store the result in {@code dest}.
+     *
+     * @param b the vector
+     * @param c the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 addScaled(Float3R b, Float3R c, @Mutated Float3 dest);
+
+    /**
+     * Add {@code b} scaled by {@code c} to this vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param b the vector
+     * @param c the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 addScaled(Float3R b, Float3R c, @Mutated Double3 dest);
+
+    /**
+     * Add ({@code bX}, {@code bY}, {@code bZ}) scaled by ({@code cX}, {@code cY}, {@code cZ}) to
+     * this vector and store the result in {@code dest}.
+     *
+     * @param bX the {@code x} component of the vector {@code (bX, bY, bZ)}
+     * @param bY the {@code y} component of the vector {@code (bX, bY, bZ)}
+     * @param bZ the {@code z} component of the vector {@code (bX, bY, bZ)}
+     * @param cX the {@code x} component of the vector {@code (cX, cY, cZ)}
+     * @param cY the {@code y} component of the vector {@code (cX, cY, cZ)}
+     * @param cZ the {@code z} component of the vector {@code (cX, cY, cZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 addScaled(float bX, float bY, float bZ, float cX, float cY, float cZ, @Mutated Float3 dest);
+
+    /**
+     * Add ({@code bX}, {@code bY}, {@code bZ}) scaled by ({@code cX}, {@code cY}, {@code cZ}) to
+     * this vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param bX the {@code x} component of the vector {@code (bX, bY, bZ)}
+     * @param bY the {@code y} component of the vector {@code (bX, bY, bZ)}
+     * @param bZ the {@code z} component of the vector {@code (bX, bY, bZ)}
+     * @param cX the {@code x} component of the vector {@code (cX, cY, cZ)}
+     * @param cY the {@code y} component of the vector {@code (cX, cY, cZ)}
+     * @param cZ the {@code z} component of the vector {@code (cX, cY, cZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 addScaled(float bX, float bY, float bZ, float cX, float cY, float cZ, @Mutated Double3 dest);
+
+    /**
+     * Compute the angle in radians between this vector and {@code other}.
+     *
+     * @param other the other vector
+     * @return the angle in radians between this vector and {@code other}
+     */
+    float angleBetween(Float3R other);
+
+    /**
+     * Compute the angle in radians between this vector and ({@code x}, {@code y}, {@code z}).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @return the angle in radians between this vector and ({@code x}, {@code y}, {@code z})
+     */
+    float angleBetween(float x, float y, float z);
+
+    /**
+     * Compute the arc sine of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 asin(@Mutated Float3 dest);
+
+    /**
+     * Compute the arc sine of each component of this vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 asin(@Mutated Double3 dest);
+
+    /**
+     * Compute the arc tangent of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 atan(@Mutated Float3 dest);
+
+    /**
+     * Compute the arc tangent of each component of this vector and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 atan(@Mutated Double3 dest);
+
+    /**
+     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
+     * {@code dest}.
+     *
+     * @param x the value to take the arc tangent over (the denominator)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 atan2(float x, @Mutated Float3 dest);
+
+    /**
+     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the value to take the arc tangent over (the denominator)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 atan2(float x, @Mutated Double3 dest);
+
+    /**
+     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
+     * {@code dest}.
+     *
+     * @param x the value to take the arc tangent over (the denominator)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 atan2(Float3R x, @Mutated Float3 dest);
+
+    /**
+     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the value to take the arc tangent over (the denominator)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 atan2(Float3R x, @Mutated Double3 dest);
+
+    /**
+     * Compute the component-wise arc tangent of this vector over ({@code x}, {@code y}, {@code z})
+     * and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the value to take the arc tangent over (the denominator)
+     *        {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 atan2(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Compute the component-wise arc tangent of this vector over ({@code x}, {@code y}, {@code z})
+     * and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the value to take the arc tangent over (the denominator)
+     *        {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 atan2(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Compute the cube root of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 cbrt(@Mutated Float3 dest);
+
+    /**
+     * Compute the cube root of each component of this vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 cbrt(@Mutated Double3 dest);
+
+    /**
+     * Compute the ceiling of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 ceil(@Mutated Float3 dest);
+
+    /**
+     * Compute the ceiling of each component of this vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 ceil(@Mutated Double3 dest);
+
+    /**
+     * Clamp each component of this vector between {@code min} and {@code max} and store the result
+     * in {@code dest}.
+     *
+     * @param min the lower bound
+     * @param max the upper bound
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 clamp(float min, float max, @Mutated Float3 dest);
+
+    /**
+     * Clamp each component of this vector between {@code min} and {@code max} and store the result
+     * in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param min the lower bound
+     * @param max the upper bound
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 clamp(float min, float max, @Mutated Double3 dest);
+
+    /**
+     * Clamp each component of this vector between {@code min} and {@code max} and store the result
+     * in {@code dest}.
+     *
+     * @param min the minimum corner
+     * @param max the maximum corner
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 clamp(Float3R min, Float3R max, @Mutated Float3 dest);
+
+    /**
+     * Clamp each component of this vector between {@code min} and {@code max} and store the result
+     * in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param min the minimum corner
+     * @param max the maximum corner
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 clamp(Float3R min, Float3R max, @Mutated Double3 dest);
+
+    /**
+     * Clamp each component of this vector between ({@code minX}, {@code minY}, {@code minZ}) and
+     * ({@code maxX}, {@code maxY}, {@code maxZ}) and store the result in {@code dest}.
+     *
+     * @param minX the {@code x} component of the vector {@code (minX, minY, minZ)}
+     * @param minY the {@code y} component of the vector {@code (minX, minY, minZ)}
+     * @param minZ the {@code z} component of the vector {@code (minX, minY, minZ)}
+     * @param maxX the {@code x} component of the vector {@code (maxX, maxY, maxZ)}
+     * @param maxY the {@code y} component of the vector {@code (maxX, maxY, maxZ)}
+     * @param maxZ the {@code z} component of the vector {@code (maxX, maxY, maxZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 clamp(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, @Mutated Float3 dest);
+
+    /**
+     * Clamp each component of this vector between ({@code minX}, {@code minY}, {@code minZ}) and
+     * ({@code maxX}, {@code maxY}, {@code maxZ}) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param minX the {@code x} component of the vector {@code (minX, minY, minZ)}
+     * @param minY the {@code y} component of the vector {@code (minX, minY, minZ)}
+     * @param minZ the {@code z} component of the vector {@code (minX, minY, minZ)}
+     * @param maxX the {@code x} component of the vector {@code (maxX, maxY, maxZ)}
+     * @param maxY the {@code y} component of the vector {@code (maxX, maxY, maxZ)}
+     * @param maxZ the {@code z} component of the vector {@code (maxX, maxY, maxZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 clamp(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, @Mutated Double3 dest);
+
+    /**
+     * Set this vector to the point closest to it on the line segment between {@code lineStart} and
+     * {@code lineEnd} and store the result in {@code dest}.
+     *
+     * @param lineStart the vector
+     * @param lineEnd the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 closestPointOnLine(Float3R lineStart, Float3R lineEnd, @Mutated Float3 dest);
+
+    /**
+     * Set this vector to the point closest to it on the line segment between {@code lineStart} and
+     * {@code lineEnd} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param lineStart the vector
+     * @param lineEnd the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 closestPointOnLine(Float3R lineStart, Float3R lineEnd, @Mutated Double3 dest);
+
+    /**
+     * Set this vector to the point closest to it on the line segment between ({@code lineStartX},
+     * {@code lineStartY}, {@code lineStartZ}) and ({@code lineEndX}, {@code lineEndY},
+     * {@code lineEndZ}) and store the result in {@code dest}.
+     *
+     * @param lineStartX the {@code x} component of the vector
+     *        {@code (lineStartX, lineStartY, lineStartZ)}
+     * @param lineStartY the {@code y} component of the vector
+     *        {@code (lineStartX, lineStartY, lineStartZ)}
+     * @param lineStartZ the {@code z} component of the vector
+     *        {@code (lineStartX, lineStartY, lineStartZ)}
+     * @param lineEndX the {@code x} component of the vector {@code (lineEndX, lineEndY, lineEndZ)}
+     * @param lineEndY the {@code y} component of the vector {@code (lineEndX, lineEndY, lineEndZ)}
+     * @param lineEndZ the {@code z} component of the vector {@code (lineEndX, lineEndY, lineEndZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 closestPointOnLine(float lineStartX, float lineStartY, float lineStartZ, float lineEndX, float lineEndY, float lineEndZ, @Mutated Float3 dest);
+
+    /**
+     * Set this vector to the point closest to it on the line segment between ({@code lineStartX},
+     * {@code lineStartY}, {@code lineStartZ}) and ({@code lineEndX}, {@code lineEndY},
+     * {@code lineEndZ}) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param lineStartX the {@code x} component of the vector
+     *        {@code (lineStartX, lineStartY, lineStartZ)}
+     * @param lineStartY the {@code y} component of the vector
+     *        {@code (lineStartX, lineStartY, lineStartZ)}
+     * @param lineStartZ the {@code z} component of the vector
+     *        {@code (lineStartX, lineStartY, lineStartZ)}
+     * @param lineEndX the {@code x} component of the vector {@code (lineEndX, lineEndY, lineEndZ)}
+     * @param lineEndY the {@code y} component of the vector {@code (lineEndX, lineEndY, lineEndZ)}
+     * @param lineEndZ the {@code z} component of the vector {@code (lineEndX, lineEndY, lineEndZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 closestPointOnLine(float lineStartX, float lineStartY, float lineStartZ, float lineEndX, float lineEndY, float lineEndZ, @Mutated Double3 dest);
+
+    /**
+     * Compute the sum of all components of this vector.
+     *
+     * @return the sum of all components of this vector
+     */
+    float compAdd();
+
+    /**
+     * Compute the largest component of this vector.
+     *
+     * @return the largest component of this vector
+     */
+    float compMax();
+
+    /**
+     * Compute the smallest component of this vector.
+     *
+     * @return the smallest component of this vector
+     */
+    float compMin();
+
+    /**
+     * Compute the product of all components of this vector.
+     *
+     * @return the product of all components of this vector
+     */
+    float compMul();
+
+    /**
+     * Copy the sign of {@code sign} onto each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param sign the value whose sign is copied
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 copySign(float sign, @Mutated Float3 dest);
+
+    /**
+     * Copy the sign of {@code sign} onto each component of this vector and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param sign the value whose sign is copied
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 copySign(float sign, @Mutated Double3 dest);
+
+    /**
+     * Copy the sign of each component of {@code sign} onto the corresponding component of this
+     * vector and store the result in {@code dest}.
+     *
+     * @param sign the value whose sign is copied
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 copySign(Float3R sign, @Mutated Float3 dest);
+
+    /**
+     * Copy the sign of each component of {@code sign} onto the corresponding component of this
+     * vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param sign the value whose sign is copied
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 copySign(Float3R sign, @Mutated Double3 dest);
+
+    /**
+     * Copy the sign of each component of ({@code x}, {@code y}, {@code z}) onto the corresponding
+     * component of this vector and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 copySign(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Copy the sign of each component of ({@code x}, {@code y}, {@code z}) onto the corresponding
+     * component of this vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 copySign(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Compute the cosine of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 cos(@Mutated Float3 dest);
+
+    /**
+     * Compute the cosine of each component of this vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 cos(@Mutated Double3 dest);
+
+    /**
+     * Compute the hyperbolic cosine of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 cosh(@Mutated Float3 dest);
+
+    /**
+     * Compute the hyperbolic cosine of each component of this vector and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 cosh(@Mutated Double3 dest);
+
+    /**
+     * Compute the cross product of this vector and {@code other} and store the result in
+     * {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 cross(Float3R other, @Mutated Float3 dest);
+
+    /**
+     * Compute the cross product of this vector and {@code other} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 cross(Float3R other, @Mutated Double3 dest);
+
+    /**
+     * Compute the cross product of this vector and ({@code x}, {@code y}, {@code z}) and store the
+     * result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 cross(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Compute the cross product of this vector and ({@code x}, {@code y}, {@code z}) and store the
+     * result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 cross(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Compute the value converted from radians to degrees of each component of this vector and
+     * store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 degrees(@Mutated Float3 dest);
+
+    /**
+     * Compute the value converted from radians to degrees of each component of this vector and
+     * store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 degrees(@Mutated Double3 dest);
+
+    /**
+     * Compute the distance between this vector and {@code other}.
+     *
+     * @param other the other vector
+     * @return the distance between this vector and {@code other}
+     */
+    float distance(Float3R other);
+
+    /**
+     * Compute the distance between this vector and ({@code x}, {@code y}, {@code z}).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @return the distance between this vector and ({@code x}, {@code y}, {@code z})
+     */
+    float distance(float x, float y, float z);
+
+    /**
+     * Compute the squared distance between this vector and {@code other}.
+     *
+     * @param other the other vector
+     * @return the squared distance between this vector and {@code other}
+     */
+    float distanceSquared(Float3R other);
+
+    /**
+     * Compute the squared distance between this vector and ({@code x}, {@code y}, {@code z}).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @return the squared distance between this vector and ({@code x}, {@code y}, {@code z})
+     */
+    float distanceSquared(float x, float y, float z);
+
+    /**
+     * Compute the dot product of this vector and {@code other}.
+     *
+     * @param other the other vector
+     * @return the dot product of this vector and {@code other}
+     */
+    float dot(Float3R other);
+
+    /**
+     * Compute the dot product of this vector and ({@code x}, {@code y}, {@code z}).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @return the dot product of this vector and ({@code x}, {@code y}, {@code z})
+     */
+    float dot(float x, float y, float z);
+
+    /**
+     * Compute the base-e exponential of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 exp(@Mutated Float3 dest);
+
+    /**
+     * Compute the base-e exponential of each component of this vector and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 exp(@Mutated Double3 dest);
+
+    /**
+     * Compute the base-2 exponential of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 exp2(@Mutated Float3 dest);
+
+    /**
+     * Compute the base-2 exponential of each component of this vector and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 exp2(@Mutated Double3 dest);
+
+    /**
+     * Compute the base-e exponential minus one of each component of this vector and store the
+     * result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 expm1(@Mutated Float3 dest);
+
+    /**
+     * Compute the base-e exponential minus one of each component of this vector and store the
+     * result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 expm1(@Mutated Double3 dest);
+
+    /**
+     * Return this vector unchanged when {@code dot(Nref, I)} is negative, and negated otherwise -
+     * orienting it against the incident direction {@code I} as judged by the reference vector
+     * {@code Nref} and store the result in {@code dest}.
+     *
+     * @param I the vector
+     * @param Nref the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 faceforward(Float3R I, Float3R Nref, @Mutated Float3 dest);
+
+    /**
+     * Return this vector unchanged when {@code dot(Nref, I)} is negative, and negated otherwise -
+     * orienting it against the incident direction {@code I} as judged by the reference vector
+     * {@code Nref} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param I the vector
+     * @param Nref the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 faceforward(Float3R I, Float3R Nref, @Mutated Double3 dest);
+
+    /**
+     * Return this vector unchanged when {@code dot((NrefX, NrefY, NrefZ), (IX, IY, IZ))} is
+     * negative, and negated otherwise - orienting it against the incident direction ({@code IX},
+     * {@code IY}, {@code IZ}) as judged by the reference vector ({@code NrefX}, {@code NrefY},
+     * {@code NrefZ}) and store the result in {@code dest}.
+     *
+     * @param IX the {@code x} component of the vector {@code (IX, IY, IZ)}
+     * @param IY the {@code y} component of the vector {@code (IX, IY, IZ)}
+     * @param IZ the {@code z} component of the vector {@code (IX, IY, IZ)}
+     * @param NrefX the {@code x} component of the vector {@code (NrefX, NrefY, NrefZ)}
+     * @param NrefY the {@code y} component of the vector {@code (NrefX, NrefY, NrefZ)}
+     * @param NrefZ the {@code z} component of the vector {@code (NrefX, NrefY, NrefZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 faceforward(float IX, float IY, float IZ, float NrefX, float NrefY, float NrefZ, @Mutated Float3 dest);
+
+    /**
+     * Return this vector unchanged when {@code dot((NrefX, NrefY, NrefZ), (IX, IY, IZ))} is
+     * negative, and negated otherwise - orienting it against the incident direction ({@code IX},
+     * {@code IY}, {@code IZ}) as judged by the reference vector ({@code NrefX}, {@code NrefY},
+     * {@code NrefZ}) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param IX the {@code x} component of the vector {@code (IX, IY, IZ)}
+     * @param IY the {@code y} component of the vector {@code (IX, IY, IZ)}
+     * @param IZ the {@code z} component of the vector {@code (IX, IY, IZ)}
+     * @param NrefX the {@code x} component of the vector {@code (NrefX, NrefY, NrefZ)}
+     * @param NrefY the {@code y} component of the vector {@code (NrefX, NrefY, NrefZ)}
+     * @param NrefZ the {@code z} component of the vector {@code (NrefX, NrefY, NrefZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 faceforward(float IX, float IY, float IZ, float NrefX, float NrefY, float NrefZ, @Mutated Double3 dest);
+
+    /**
+     * Compute the floor of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 floor(@Mutated Float3 dest);
+
+    /**
+     * Compute the floor of each component of this vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 floor(@Mutated Double3 dest);
+
+    /**
+     * Compute the fractional part of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 fract(@Mutated Float3 dest);
+
+    /**
+     * Compute the fractional part of each component of this vector and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 fract(@Mutated Double3 dest);
+
+    /**
+     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
+     * {@code y} and store the result in {@code dest}.
+     *
+     * @param y the other operand
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 hypot(float y, @Mutated Float3 dest);
+
+    /**
+     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
+     * {@code y} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param y the other operand
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 hypot(float y, @Mutated Double3 dest);
+
+    /**
+     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
+     * {@code y} and store the result in {@code dest}.
+     *
+     * @param y the other operand
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 hypot(Float3R y, @Mutated Float3 dest);
+
+    /**
+     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
+     * {@code y} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param y the other operand
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 hypot(Float3R y, @Mutated Double3 dest);
+
+    /**
+     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
+     * ({@code x}, {@code y}, {@code z}) and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the other operand {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 hypot(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
+     * ({@code x}, {@code y}, {@code z}) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the other operand {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 hypot(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Compute the reciprocal {@code 1 / x} of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 inverse(@Mutated Float3 dest);
+
+    /**
+     * Compute the reciprocal {@code 1 / x} of each component of this vector and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 inverse(@Mutated Double3 dest);
+
+    /**
+     * Compute the inverse square root of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 inverseSqrt(@Mutated Float3 dest);
+
+    /**
+     * Compute the inverse square root of each component of this vector and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 inverseSqrt(@Mutated Double3 dest);
+
+    /**
+     * Compute the length of this vector.
+     *
+     * @return the length of this vector
+     */
+    float length();
+
+    /**
+     * Compute the squared length of this vector.
+     *
+     * @return the squared length of this vector
+     */
+    float lengthSquared();
+
+    /**
+     * Compute the natural logarithm of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 log(@Mutated Float3 dest);
+
+    /**
+     * Compute the natural logarithm of each component of this vector and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 log(@Mutated Double3 dest);
+
+    /**
+     * Compute the base-10 logarithm of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 log10(@Mutated Float3 dest);
+
+    /**
+     * Compute the base-10 logarithm of each component of this vector and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 log10(@Mutated Double3 dest);
+
+    /**
+     * Compute the natural logarithm of one plus the value of each component of this vector and
+     * store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 log1p(@Mutated Float3 dest);
+
+    /**
+     * Compute the natural logarithm of one plus the value of each component of this vector and
+     * store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 log1p(@Mutated Double3 dest);
+
+    /**
+     * Compute the base-2 logarithm of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 log2(@Mutated Float3 dest);
+
+    /**
+     * Compute the base-2 logarithm of each component of this vector and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 log2(@Mutated Double3 dest);
+
+    /**
+     * Compute the Manhattan distance between this vector and {@code other}.
+     *
+     * @param other the other vector
+     * @return the Manhattan distance between this vector and {@code other}
+     */
+    float manhattanDistance(Float3R other);
+
+    /**
+     * Compute the Manhattan distance between this vector and ({@code x}, {@code y}, {@code z}).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @return the Manhattan distance between this vector and ({@code x}, {@code y}, {@code z})
+     */
+    float manhattanDistance(float x, float y, float z);
+
+    /**
+     * Compute the Manhattan length (sum of the absolute components) of this vector.
+     *
+     * @return the Manhattan length (sum of the absolute components) of this vector
+     */
+    float manhattanLength();
+
+    /**
+     * Set each component of this vector to the larger of itself and {@code scalar} and store the
+     * result in {@code dest}.
+     *
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 max(float scalar, @Mutated Float3 dest);
+
+    /**
+     * Set each component of this vector to the larger of itself and {@code scalar} and store the
+     * result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 max(float scalar, @Mutated Double3 dest);
+
+    /**
+     * Set each component of this vector to the larger of itself and the corresponding component of
+     * {@code other} and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 max(Float3R other, @Mutated Float3 dest);
+
+    /**
+     * Set each component of this vector to the larger of itself and the corresponding component of
+     * {@code other} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 max(Float3R other, @Mutated Double3 dest);
+
+    /**
+     * Set each component of this vector to the larger of itself and the corresponding component of
+     * ({@code x}, {@code y}, {@code z}) and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 max(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Set each component of this vector to the larger of itself and the corresponding component of
+     * ({@code x}, {@code y}, {@code z}) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 max(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Set each component of this vector to the smaller of itself and {@code scalar} and store the
+     * result in {@code dest}.
+     *
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 min(float scalar, @Mutated Float3 dest);
+
+    /**
+     * Set each component of this vector to the smaller of itself and {@code scalar} and store the
+     * result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 min(float scalar, @Mutated Double3 dest);
+
+    /**
+     * Set each component of this vector to the smaller of itself and the corresponding component of
+     * {@code other} and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 min(Float3R other, @Mutated Float3 dest);
+
+    /**
+     * Set each component of this vector to the smaller of itself and the corresponding component of
+     * {@code other} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 min(Float3R other, @Mutated Double3 dest);
+
+    /**
+     * Set each component of this vector to the smaller of itself and the corresponding component of
+     * ({@code x}, {@code y}, {@code z}) and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 min(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Set each component of this vector to the smaller of itself and the corresponding component of
+     * ({@code x}, {@code y}, {@code z}) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 min(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
+     * this vector divided by {@code y} and store the result in {@code dest}.
+     * <p>
+     * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
+     * dividend.
+     *
+     * @param y the divisor
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 mod(float y, @Mutated Float3 dest);
+
+    /**
+     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
+     * this vector divided by {@code y} and store the result in {@code dest}.
+     * <p>
+     * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
+     * dividend.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param y the divisor
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 mod(float y, @Mutated Double3 dest);
+
+    /**
+     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
+     * this vector divided by {@code y} and store the result in {@code dest}.
+     * <p>
+     * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
+     * dividend.
+     *
+     * @param y the divisor
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 mod(Float3R y, @Mutated Float3 dest);
+
+    /**
+     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
+     * this vector divided by {@code y} and store the result in {@code dest}.
+     * <p>
+     * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
+     * dividend.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param y the divisor
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 mod(Float3R y, @Mutated Double3 dest);
+
+    /**
+     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
+     * this vector divided by ({@code x}, {@code y}, {@code z}) and store the result in
+     * {@code dest}.
+     * <p>
+     * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
+     * dividend.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the divisor {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 mod(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
+     * this vector divided by ({@code x}, {@code y}, {@code z}) and store the result in
+     * {@code dest}.
+     * <p>
+     * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
+     * dividend.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the divisor {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 mod(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Compute the next representable value toward negative infinity of each component of this
+     * vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 nextDown(@Mutated Float3 dest);
+
+    /**
+     * Compute the next representable value toward negative infinity of each component of this
+     * vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 nextDown(@Mutated Double3 dest);
+
+    /**
+     * Compute the next representable value toward positive infinity of each component of this
+     * vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 nextUp(@Mutated Float3 dest);
+
+    /**
+     * Compute the next representable value toward positive infinity of each component of this
+     * vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 nextUp(@Mutated Double3 dest);
+
+    /**
+     * Normalize this vector to unit length (the zero vector yields the zero vector). <p> The
+     * squared length is formed at the component precision, so components whose squares overflow or
+     * underflow that precision are out of domain: the result is the zero vector rather than a unit
+     * vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
+     * {@code float} and 1.3e154 for {@code double}) and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 normalize(@Mutated Float3 dest);
+
+    /**
+     * Normalize this vector to unit length (the zero vector yields the zero vector). <p> The
+     * squared length is formed at the component precision, so components whose squares overflow or
+     * underflow that precision are out of domain: the result is the zero vector rather than a unit
+     * vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
+     * {@code float} and 1.3e154 for {@code double}) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 normalize(@Mutated Double3 dest);
+
+    /**
+     * Normalize this vector and multiply the result by {@code length}, i.e. rescale it to that
+     * length (the zero vector yields the zero vector) and store the result in {@code dest}.
+     *
+     * @param length the length to rescale to
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 normalizeMul(float length, @Mutated Float3 dest);
+
+    /**
+     * Normalize this vector and multiply the result by {@code length}, i.e. rescale it to that
+     * length (the zero vector yields the zero vector) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param length the length to rescale to
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 normalizeMul(float length, @Mutated Double3 dest);
+
+    /**
+     * Compute the signed angle in radians between this vector and {@code other}, positive when the
+     * rotation from this vector to {@code other} is counter-clockwise as seen from the direction of
+     * the given normal.
+     *
+     * @param other the other vector
+     * @param normal the reference axis that defines the sign of the angle
+     * @return the signed angle in radians between this vector and {@code other}, positive when the
+     *        rotation from this vector to {@code other} is counter-clockwise as seen from the
+     *        direction of the given normal
+     */
+    float orientedAngle(Float3R other, Float3R normal);
+
+    /**
+     * Compute the signed angle in radians between this vector and ({@code otherX}, {@code otherY},
+     * {@code otherZ}), positive when the rotation from this vector to ({@code otherX},
+     * {@code otherY}, {@code otherZ}) is counter-clockwise as seen from the direction of the given
+     * normal.
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param otherZ the {@code z} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param normalX the {@code x} component of the vector {@code (normalX, normalY, normalZ)}
+     * @param normalY the {@code y} component of the vector {@code (normalX, normalY, normalZ)}
+     * @param normalZ the {@code z} component of the vector {@code (normalX, normalY, normalZ)}
+     * @return the signed angle in radians between this vector and ({@code otherX}, {@code otherY},
+     *        {@code otherZ}), positive when the rotation from this vector to ({@code otherX},
+     *        {@code otherY}, {@code otherZ}) is counter-clockwise as seen from the direction of the
+     *        given normal
+     */
+    float orientedAngle(float otherX, float otherY, float otherZ, float normalX, float normalY, float normalZ);
+
+    /**
+     * Compute the outer product of this vector and {@code row} and store the result in
+     * {@code dest}.
+     *
+     * @param row the row vector (right operand)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3x3 outerProduct(Float3R row, @Mutated Float3x3 dest);
+
+    /**
+     * Compute the outer product of this vector and {@code row} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param row the row vector (right operand)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3x3 outerProduct(Float3R row, @Mutated Double3x3 dest);
+
+    /**
+     * Compute the outer product of this vector and ({@code x}, {@code y}, {@code z}) and store the
+     * result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3x3 outerProduct(float x, float y, float z, @Mutated Float3x3 dest);
+
+    /**
+     * Compute the outer product of this vector and ({@code x}, {@code y}, {@code z}) and store the
+     * result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3x3 outerProduct(float x, float y, float z, @Mutated Double3x3 dest);
+
+    /**
+     * Set this vector to one of its perpendicular vectors and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 perpendicular(@Mutated Float3 dest);
+
+    /**
+     * Set this vector to one of its perpendicular vectors and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 perpendicular(@Mutated Double3 dest);
+
+    /**
+     * Raise each component of this vector to the power of {@code exponent} and store the result in
+     * {@code dest}.
+     *
+     * @param exponent the exponent
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 pow(float exponent, @Mutated Float3 dest);
+
+    /**
+     * Raise each component of this vector to the power of {@code exponent} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param exponent the exponent
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 pow(float exponent, @Mutated Double3 dest);
+
+    /**
+     * Raise each component of this vector to the power of {@code exponent} and store the result in
+     * {@code dest}.
+     *
+     * @param exponent the exponent
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 pow(Float3R exponent, @Mutated Float3 dest);
+
+    /**
+     * Raise each component of this vector to the power of {@code exponent} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param exponent the exponent
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 pow(Float3R exponent, @Mutated Double3 dest);
+
+    /**
+     * Raise each component of this vector to the power of ({@code x}, {@code y}, {@code z}) and
+     * store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 pow(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Raise each component of this vector to the power of ({@code x}, {@code y}, {@code z}) and
+     * store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 pow(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Project this vector onto {@code onto} and store the result in {@code dest}.
+     *
+     * @param onto the vector to project onto
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 project(Float3R onto, @Mutated Float3 dest);
+
+    /**
+     * Project this vector onto {@code onto} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param onto the vector to project onto
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 project(Float3R onto, @Mutated Double3 dest);
+
+    /**
+     * Project this vector onto ({@code x}, {@code y}, {@code z}) and store the result in
+     * {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 project(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Project this vector onto ({@code x}, {@code y}, {@code z}) and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 project(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Project this vector onto the plane with the given normal and store the result in
+     * {@code dest}.
+     *
+     * @param normal the normal (must be a unit vector)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 projectOnPlane(Float3R normal, @Mutated Float3 dest);
+
+    /**
+     * Project this vector onto the plane with the given normal and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param normal the normal (must be a unit vector)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 projectOnPlane(Float3R normal, @Mutated Double3 dest);
+
+    /**
+     * Project this vector onto the plane with the given normal and store the result in
+     * {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param y the {@code y} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 projectOnPlane(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Project this vector onto the plane with the given normal and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param y the {@code y} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 projectOnPlane(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Compute the value converted from degrees to radians of each component of this vector and
+     * store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 radians(@Mutated Float3 dest);
+
+    /**
+     * Compute the value converted from degrees to radians of each component of this vector and
+     * store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 radians(@Mutated Double3 dest);
+
+    /**
+     * Reflect this vector about the given normal and store the result in {@code dest}.
+     *
+     * @param normal the normal (must be a unit vector)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 reflect(Float3R normal, @Mutated Float3 dest);
+
+    /**
+     * Reflect this vector about the given normal and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param normal the normal (must be a unit vector)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 reflect(Float3R normal, @Mutated Double3 dest);
+
+    /**
+     * Reflect this vector about the given normal and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param y the {@code y} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 reflect(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Reflect this vector about the given normal and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param y the {@code y} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 reflect(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Refract this vector (which must have unit length) through the surface with the given normal,
+     * using the given ratio of indices of refraction (the zero vector is returned on total internal
+     * reflection), and store the result in {@code dest}.
+     *
+     * @param normal the normal (must be a unit vector)
+     * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
+     *        destination medium's
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 refract(Float3R normal, float eta, @Mutated Float3 dest);
+
+    /**
+     * Refract this vector (which must have unit length) through the surface with the given normal,
+     * using the given ratio of indices of refraction (the zero vector is returned on total internal
+     * reflection), and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param normal the normal (must be a unit vector)
+     * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
+     *        destination medium's
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 refract(Float3R normal, float eta, @Mutated Double3 dest);
+
+    /**
+     * Refract this vector (which must have unit length) through the surface with the given normal,
+     * using the given ratio of indices of refraction (the zero vector is returned on total internal
+     * reflection), and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param y the {@code y} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
+     *        destination medium's
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 refract(float x, float y, float z, float eta, @Mutated Float3 dest);
+
+    /**
+     * Refract this vector (which must have unit length) through the surface with the given normal,
+     * using the given ratio of indices of refraction (the zero vector is returned on total internal
+     * reflection), and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param y the {@code y} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
+     *        destination medium's
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 refract(float x, float y, float z, float eta, @Mutated Double3 dest);
+
+    /**
+     * Compute the rounded value of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 round(@Mutated Float3 dest);
+
+    /**
+     * Compute the rounded value of each component of this vector and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 round(@Mutated Double3 dest);
+
+    /**
+     * Compute the sign of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 sign(@Mutated Float3 dest);
+
+    /**
+     * Compute the sign of each component of this vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 sign(@Mutated Double3 dest);
+
+    /**
+     * Compute the sine of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 sin(@Mutated Float3 dest);
+
+    /**
+     * Compute the sine of each component of this vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 sin(@Mutated Double3 dest);
+
+    /**
+     * Compute the hyperbolic sine of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 sinh(@Mutated Float3 dest);
+
+    /**
+     * Compute the hyperbolic sine of each component of this vector and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 sinh(@Mutated Double3 dest);
+
+    /**
+     * Compute the smooth Hermite step of each component of this vector as it ramps between the
+     * lower edge {@code edge0} and the upper edge {@code edge1}, yielding 0 at or below the lower
+     * edge and 1 at or above the upper edge and store the result in {@code dest}.
+     *
+     * @param edge0 the lower edge
+     * @param edge1 the upper edge
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 smoothstep(float edge0, float edge1, @Mutated Float3 dest);
+
+    /**
+     * Compute the smooth Hermite step of each component of this vector as it ramps between the
+     * lower edge {@code edge0} and the upper edge {@code edge1}, yielding 0 at or below the lower
+     * edge and 1 at or above the upper edge and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param edge0 the lower edge
+     * @param edge1 the upper edge
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 smoothstep(float edge0, float edge1, @Mutated Double3 dest);
+
+    /**
+     * Compute the smooth Hermite step of each component of this vector as it ramps between the
+     * lower edge {@code edge0} and the upper edge {@code edge1}, yielding 0 at or below the lower
+     * edge and 1 at or above the upper edge and store the result in {@code dest}.
+     *
+     * @param edge0 the lower edge
+     * @param edge1 the upper edge
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 smoothstep(Float3R edge0, Float3R edge1, @Mutated Float3 dest);
+
+    /**
+     * Compute the smooth Hermite step of each component of this vector as it ramps between the
+     * lower edge {@code edge0} and the upper edge {@code edge1}, yielding 0 at or below the lower
+     * edge and 1 at or above the upper edge and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param edge0 the lower edge
+     * @param edge1 the upper edge
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 smoothstep(Float3R edge0, Float3R edge1, @Mutated Double3 dest);
+
+    /**
+     * Compute the smooth Hermite step of each component of this vector as it ramps between the
+     * lower edge ({@code edge0X}, {@code edge0Y}, {@code edge0Z}) and the upper edge
+     * ({@code edge1X}, {@code edge1Y}, {@code edge1Z}), yielding 0 at or below the lower edge and 1
+     * at or above the upper edge and store the result in {@code dest}.
+     *
+     * @param edge0X the {@code x} component of the vector {@code (edge0X, edge0Y, edge0Z)}
+     * @param edge0Y the {@code y} component of the vector {@code (edge0X, edge0Y, edge0Z)}
+     * @param edge0Z the {@code z} component of the vector {@code (edge0X, edge0Y, edge0Z)}
+     * @param edge1X the {@code x} component of the vector {@code (edge1X, edge1Y, edge1Z)}
+     * @param edge1Y the {@code y} component of the vector {@code (edge1X, edge1Y, edge1Z)}
+     * @param edge1Z the {@code z} component of the vector {@code (edge1X, edge1Y, edge1Z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 smoothstep(float edge0X, float edge0Y, float edge0Z, float edge1X, float edge1Y, float edge1Z, @Mutated Float3 dest);
+
+    /**
+     * Compute the smooth Hermite step of each component of this vector as it ramps between the
+     * lower edge ({@code edge0X}, {@code edge0Y}, {@code edge0Z}) and the upper edge
+     * ({@code edge1X}, {@code edge1Y}, {@code edge1Z}), yielding 0 at or below the lower edge and 1
+     * at or above the upper edge and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param edge0X the {@code x} component of the vector {@code (edge0X, edge0Y, edge0Z)}
+     * @param edge0Y the {@code y} component of the vector {@code (edge0X, edge0Y, edge0Z)}
+     * @param edge0Z the {@code z} component of the vector {@code (edge0X, edge0Y, edge0Z)}
+     * @param edge1X the {@code x} component of the vector {@code (edge1X, edge1Y, edge1Z)}
+     * @param edge1Y the {@code y} component of the vector {@code (edge1X, edge1Y, edge1Z)}
+     * @param edge1Z the {@code z} component of the vector {@code (edge1X, edge1Y, edge1Z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 smoothstep(float edge0X, float edge0Y, float edge0Z, float edge1X, float edge1Y, float edge1Z, @Mutated Double3 dest);
+
+    /**
+     * Compute the square root of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 sqrt(@Mutated Float3 dest);
+
+    /**
+     * Compute the square root of each component of this vector and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 sqrt(@Mutated Double3 dest);
+
+    /**
+     * Set each component of this vector to {@code 0} when it is smaller than {@code edge}, and to
+     * {@code 1} otherwise and store the result in {@code dest}.
+     *
+     * @param edge the edge to compare each component against
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 step(float edge, @Mutated Float3 dest);
+
+    /**
+     * Set each component of this vector to {@code 0} when it is smaller than {@code edge}, and to
+     * {@code 1} otherwise and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param edge the edge to compare each component against
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 step(float edge, @Mutated Double3 dest);
+
+    /**
+     * Set each component of this vector to {@code 0} when it is smaller than the corresponding
+     * component of the given edge, and to {@code 1} otherwise and store the result in {@code dest}.
+     *
+     * @param edge the edge to compare each component against
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 step(Float3R edge, @Mutated Float3 dest);
+
+    /**
+     * Set each component of this vector to {@code 0} when it is smaller than the corresponding
+     * component of the given edge, and to {@code 1} otherwise and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param edge the edge to compare each component against
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 step(Float3R edge, @Mutated Double3 dest);
+
+    /**
+     * Set each component of this vector to {@code 0} when it is smaller than the corresponding
+     * component of the given edge, and to {@code 1} otherwise and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 step(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Set each component of this vector to {@code 0} when it is smaller than the corresponding
+     * component of the given edge, and to {@code 1} otherwise and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 step(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Compute the tangent of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 tan(@Mutated Float3 dest);
+
+    /**
+     * Compute the tangent of each component of this vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 tan(@Mutated Double3 dest);
+
+    /**
+     * Compute the hyperbolic tangent of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 tanh(@Mutated Float3 dest);
+
+    /**
+     * Compute the hyperbolic tangent of each component of this vector and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 tanh(@Mutated Double3 dest);
+
+    /**
+     * Compute the normal of the triangle spanned by this vector and the two given points and store
+     * the result in {@code dest}.
+     *
+     * @param p1 the vector
+     * @param p2 the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 triangleNormal(Float3R p1, Float3R p2, @Mutated Float3 dest);
+
+    /**
+     * Compute the normal of the triangle spanned by this vector and the two given points and store
+     * the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p1 the vector
+     * @param p2 the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 triangleNormal(Float3R p1, Float3R p2, @Mutated Double3 dest);
+
+    /**
+     * Compute the normal of the triangle spanned by this vector and the two given points and store
+     * the result in {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 triangleNormal(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, @Mutated Float3 dest);
+
+    /**
+     * Compute the normal of the triangle spanned by this vector and the two given points and store
+     * the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 triangleNormal(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, @Mutated Double3 dest);
+
+    /**
+     * Compute the truncated value of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 trunc(@Mutated Float3 dest);
+
+    /**
+     * Compute the truncated value of each component of this vector and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 trunc(@Mutated Double3 dest);
+
+    /**
+     * Compute the unit in the last place (ulp) of each component of this vector and store the
+     * result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 ulp(@Mutated Float3 dest);
+
+    /**
+     * Compute the unit in the last place (ulp) of each component of this vector and store the
+     * result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 ulp(@Mutated Double3 dest);
+
+    /**
+     * Copy the {@code x}, {@code y} and {@code z} components of this vector into a 4D vector with
+     * {@code w = 0} and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xyz0(@Mutated Float4 dest);
+
+    /**
+     * Copy the {@code x}, {@code y} and {@code z} components of this vector into a 4D vector with
+     * {@code w = 0} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xyz0(@Mutated Double4 dest);
+
+    /**
+     * Copy the {@code x}, {@code y} and {@code z} components of this vector into a 4D vector with
+     * {@code w = 1} and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xyz1(@Mutated Float4 dest);
+
+    /**
+     * Copy the {@code x}, {@code y} and {@code z} components of this vector into a 4D vector with
+     * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xyz1(@Mutated Double4 dest);
+
+    /**
+     * Pre-multiply {@code mat} onto this vector and store the result in {@code dest}.
+     *
+     * @param mat the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 preMul(Float3x3R mat, @Mutated Float3 dest);
+
+    /**
+     * Pre-multiply {@code mat} onto this vector and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param mat the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 preMul(Float3x3R mat, @Mutated Double3 dest);
+
+    /**
+     * Pre-multiply {@code mat} onto this vector, treated as a direction with implicit {@code w = 0}
+     * - i.e. compute {@code (mat * (this, 0)).xyz}, applying only rotation and scale and ignoring
+     * translation and store the result in {@code dest}.
+     *
+     * @param mat the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 preMulDirection(Float3x4R mat, @Mutated Float3 dest);
+
+    /**
+     * Pre-multiply {@code mat} onto this vector, treated as a direction with implicit {@code w = 0}
+     * - i.e. compute {@code (mat * (this, 0)).xyz}, applying only rotation and scale and ignoring
+     * translation and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param mat the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 preMulDirection(Float3x4R mat, @Mutated Double3 dest);
+
+    /**
+     * Pre-multiply {@code mat} onto this vector, treated as a direction with implicit {@code w = 0}
+     * - i.e. compute {@code (mat * (this, 0)).xyz}, applying only rotation and scale and ignoring
+     * translation and store the result in {@code dest}.
+     *
+     * @param mat the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 preMulDirection(Float4x4R mat, @Mutated Float3 dest);
+
+    /**
+     * Pre-multiply {@code mat} onto this vector, treated as a direction with implicit {@code w = 0}
+     * - i.e. compute {@code (mat * (this, 0)).xyz}, applying only rotation and scale and ignoring
+     * translation and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param mat the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 preMulDirection(Float4x4R mat, @Mutated Double3 dest);
+
+    /**
+     * Pre-multiply {@code mat} onto this vector, treated as a position with implicit {@code w = 1}
+     * - i.e. compute {@code (mat * (this, 1)).xyz}, applying the full affine transform including
+     * translation and store the result in {@code dest}.
+     *
+     * @param mat the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 preMulPosition(Float3x4R mat, @Mutated Float3 dest);
+
+    /**
+     * Pre-multiply {@code mat} onto this vector, treated as a position with implicit {@code w = 1}
+     * - i.e. compute {@code (mat * (this, 1)).xyz}, applying the full affine transform including
+     * translation and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param mat the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 preMulPosition(Float3x4R mat, @Mutated Double3 dest);
+
+    /**
+     * Pre-multiply {@code mat} onto this vector, treated as a position with implicit {@code w = 1}
+     * - i.e. compute {@code (mat * (this, 1)).xyz}, applying the full affine transform including
+     * translation and store the result in {@code dest}.
+     *
+     * @param mat the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 preMulPosition(Float4x4R mat, @Mutated Float3 dest);
+
+    /**
+     * Pre-multiply {@code mat} onto this vector, treated as a position with implicit {@code w = 1}
+     * - i.e. compute {@code (mat * (this, 1)).xyz}, applying the full affine transform including
+     * translation and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param mat the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 preMulPosition(Float4x4R mat, @Mutated Double3 dest);
+
+    /**
+     * Pre-multiply {@code mat} onto this vector, treated as a position with implicit {@code w = 1},
+     * then perform a perspective divide - i.e. compute {@code r = mat * (this, 1)} and return
+     * {@code r.xyz / r.w} and store the result in {@code dest}.
+     *
+     * @param mat the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 preMulProject(Float4x4R mat, @Mutated Float3 dest);
+
+    /**
+     * Pre-multiply {@code mat} onto this vector, treated as a position with implicit {@code w = 1},
+     * then perform a perspective divide - i.e. compute {@code r = mat * (this, 1)} and return
+     * {@code r.xyz / r.w} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param mat the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 preMulProject(Float4x4R mat, @Mutated Double3 dest);
+
+    /**
+     * Rotate this vector by the quaternion {@code quat}, i.e. compute {@code q * this * q^-1} and
+     * store the result in {@code dest}.
+     *
+     * @param quat the quaternion (must be a unit quaternion)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 rotate(FloatQuatR quat, @Mutated Float3 dest);
+
+    /**
+     * Rotate this vector by the quaternion {@code quat}, i.e. compute {@code q * this * q^-1} and
+     * store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param quat the quaternion (must be a unit quaternion)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotate(FloatQuatR quat, @Mutated Double3 dest);
+
+    /**
+     * Rotate this vector by the quaternion ({@code x}, {@code y}, {@code z}, {@code w}), i.e.
+     * compute {@code q * this * q^-1} and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param y the {@code y} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param z the {@code z} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 rotate(float x, float y, float z, float w, @Mutated Float3 dest);
+
+    /**
+     * Rotate this vector by the quaternion ({@code x}, {@code y}, {@code z}, {@code w}), i.e.
+     * compute {@code q * this * q^-1} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param y the {@code y} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param z the {@code z} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotate(float x, float y, float z, float w, @Mutated Double3 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the axis {@code axis} and store the result
+     * in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param axis the rotation axis (must be a unit vector)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 rotateAxis(float angle, Float3R axis, @Mutated Float3 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the axis {@code axis} and store the result
+     * in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angle the angle in radians
+     * @param axis the rotation axis (must be a unit vector)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotateAxis(float angle, Float3R axis, @Mutated Double3 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the axis ({@code x}, {@code y}, {@code z})
+     * and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param x the {@code x} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param y the {@code y} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 rotateAxis(float angle, float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the axis ({@code x}, {@code y}, {@code z})
+     * and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angle the angle in radians
+     * @param x the {@code x} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param y the {@code y} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotateAxis(float angle, float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Rotate this vector by the inverse of the given rotation and store the result in {@code dest}.
+     *
+     * @param quat the quaternion (must be a unit quaternion)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 rotateInverse(FloatQuatR quat, @Mutated Float3 dest);
+
+    /**
+     * Rotate this vector by the inverse of the given rotation and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param quat the quaternion (must be a unit quaternion)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotateInverse(FloatQuatR quat, @Mutated Double3 dest);
+
+    /**
+     * Rotate this vector by the inverse of the given rotation and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param y the {@code y} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param z the {@code z} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 rotateInverse(float x, float y, float z, float w, @Mutated Float3 dest);
+
+    /**
+     * Rotate this vector by the inverse of the given rotation and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param y the {@code y} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param z the {@code z} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotateInverse(float x, float y, float z, float w, @Mutated Double3 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the X axis and store the result in
+     * {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 rotateX(float angle, @Mutated Float3 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the X axis and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotateX(float angle, @Mutated Double3 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Y axis and store the result in
+     * {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 rotateY(float angle, @Mutated Float3 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Y axis and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotateY(float angle, @Mutated Double3 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Z axis and store the result in
+     * {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 rotateZ(float angle, @Mutated Float3 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Z axis and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotateZ(float angle, @Mutated Double3 dest);
+    /** {@return the value of the {@code x} component} */
+    float x();
+    /** {@return the value of the {@code y} component} */
+    float y();
+    /** {@return the value of the {@code z} component} */
+    float z();
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float2 xx(@Mutated Float2 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float2 xy(@Mutated Float2 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float2 xz(@Mutated Float2 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float2 yx(@Mutated Float2 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float2 yy(@Mutated Float2 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float2 yz(@Mutated Float2 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float2 zx(@Mutated Float2 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float2 zy(@Mutated Float2 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float2 zz(@Mutated Float2 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 xxx(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 xxy(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 xxz(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 xyx(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 xyy(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 xyz(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 xzx(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 xzy(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 xzz(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 yxx(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 yxy(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 yxz(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 yyx(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 yyy(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 yyz(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 yzx(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 yzy(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 yzz(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 zxx(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 zxy(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 zxz(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 zyx(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 zyy(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 zyz(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 zzx(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 zzy(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 zzz(@Mutated Float3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xxxx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xxxy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xxxz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xxyx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xxyy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xxyz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xxzx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xxzy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xxzz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xyxx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xyxy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xyxz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xyyx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xyyy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xyyz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xyzx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xyzy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xyzz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xzxx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xzxy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xzxz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xzyx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xzyy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xzyz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xzzx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xzzy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 xzzz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yxxx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yxxy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yxxz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yxyx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yxyy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yxyz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yxzx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yxzy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yxzz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yyxx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yyxy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yyxz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yyyx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yyyy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yyyz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yyzx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yyzy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yyzz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yzxx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yzxy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yzxz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yzyx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yzyy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yzyz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yzzx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yzzy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 yzzz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zxxx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zxxy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zxxz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zxyx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zxyy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zxyz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zxzx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zxzy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zxzz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zyxx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zyxy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zyxz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zyyx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zyyy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zyyz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zyzx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zyzy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zyzz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zzxx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zzxy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zzxz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zzyx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zzyy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zzyz(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zzzx(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zzzy(@Mutated Float4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 zzzz(@Mutated Float4 dest);
+
+    /**
+     * Store the elements into the given array.
+     *
+     * @param dest the destination array
+     * @return dest
+     */
+    default float[] store(@Mutated float[] dest) { return store(dest, 0); }
+
+    /**
+     * Store the elements into the given array, starting at the given offset.
+     *
+     * @param dest the destination array
+     * @param offset the start offset in the array, in elements
+     * @return dest
+     */
+    float[] store(@Mutated float[] dest, int offset);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default FloatBuffer store(@Mutated FloatBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default FloatBuffer storeAbsolute(@Mutated FloatBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at the given absolute index (the position
+     * is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param dest the destination buffer
+     * @return dest
+     */
+    FloatBuffer storeAbsolute(int index, @Mutated FloatBuffer dest);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position and advancing the
+     * position accordingly.
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default FloatBuffer storeRelative(@Mutated FloatBuffer dest) {
+        int pos = dest.position();
+        storeAbsolute(pos, dest);
+        dest.position(pos + 3);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given byte buffer, starting at its current position (the position
+     * is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer store(@Mutated ByteBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, starting at its current position (the position
+     * is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeAbsolute(@Mutated ByteBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, starting at the given absolute index (the
+     * position is not used or modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    ByteBuffer storeAbsolute(int index, @Mutated ByteBuffer dest);
+
+    /**
+     * Store the elements into the given byte buffer, starting at its current position and advancing
+     * the position accordingly.
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeRelative(@Mutated ByteBuffer dest) {
+        int pos = dest.position();
+        storeAbsolute(pos, dest);
+        dest.position(pos + 12);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given memory segment.
+     *
+     * @param dest the destination memory segment
+     * @return dest
+     */
+    default MemorySegment store(@Mutated MemorySegment dest) { return store(0L, dest); }
+
+    /**
+     * Store the elements into the given memory segment, starting at the given offset.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param dest the destination memory segment
+     * @return dest
+     */
+    MemorySegment store(long offset, @Mutated MemorySegment dest);
+
+    /**
+     * Store the elements into the given raw memory address. No bounds or liveness checks are
+     * performed.
+     *
+     * @param address the raw memory address
+     * @return this
+     */
+    Float3 storeUnsafe(long address);
+
+    /**
+     * Store the elements into the given array.
+     *
+     * @param dest the destination array
+     * @return dest
+     */
+    default double[] store(@Mutated double[] dest) { return store(dest, 0); }
+
+    /**
+     * Store the elements into the given array, starting at the given offset.
+     *
+     * @param dest the destination array
+     * @param offset the start offset in the array, in elements
+     * @return dest
+     */
+    double[] store(@Mutated double[] dest, int offset);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default DoubleBuffer store(@Mutated DoubleBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default DoubleBuffer storeAbsolute(@Mutated DoubleBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at the given absolute index (the position
+     * is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param dest the destination buffer
+     * @return dest
+     */
+    DoubleBuffer storeAbsolute(int index, @Mutated DoubleBuffer dest);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position and advancing the
+     * position accordingly.
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default DoubleBuffer storeRelative(@Mutated DoubleBuffer dest) {
+        int pos = dest.position();
+        storeAbsolute(pos, dest);
+        dest.position(pos + 3);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code double},
+     * starting at its current position (the position is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeDouble(@Mutated ByteBuffer dest) { return storeDoubleAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code double},
+     * starting at its current position (the position is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeDoubleAbsolute(@Mutated ByteBuffer dest) { return storeDoubleAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code double},
+     * starting at the given absolute index (the position is not used or modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    ByteBuffer storeDoubleAbsolute(int index, @Mutated ByteBuffer dest);
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code double},
+     * starting at its current position and advancing the position accordingly.
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeDoubleRelative(@Mutated ByteBuffer dest) {
+        int pos = dest.position();
+        storeDoubleAbsolute(pos, dest);
+        dest.position(pos + 24);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given memory segment, converting each element to {@code double}.
+     *
+     * @param dest the destination memory segment
+     * @return dest
+     */
+    default MemorySegment storeDouble(@Mutated MemorySegment dest) { return storeDouble(0L, dest); }
+
+    /**
+     * Store the elements into the given memory segment, converting each element to {@code double},
+     * starting at the given offset.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param dest the destination memory segment
+     * @return dest
+     */
+    MemorySegment storeDouble(long offset, @Mutated MemorySegment dest);
+
+    /**
+     * Store the elements into the given raw memory address, converting each element to
+     * {@code double}. No bounds or liveness checks are performed.
+     *
+     * @param address the raw memory address
+     * @return this
+     */
+    Float3 storeDoubleUnsafe(long address);
+
+    /** {@return whether all components of this vector are finite, i.e. neither NaN nor infinite} */
+    boolean isFinite();
+
+    /**
+     * Compare this vector component-wise against {@code other}, allowing a difference
+     * of at most {@code epsilon} per component.
+     *
+     * @param other the vector to compare against
+     * @param epsilon the maximum allowed difference per component
+     * @return {@code true} if all components differ by at most {@code epsilon}, {@code false} otherwise
+     */
+    boolean equalsEpsilon(Float3R other, float epsilon);
+
+    /** Backs {@code ZERO()}: defers the shared instance's
+     *  allocation to first use, avoiding a class-initialization cycle with the
+     *  implementation class. Not part of the public API. */
+    final class Holder {
+        private Holder() {}
+        static final Float3R ZERO = Joml.float3(0, 0, 0);
+    }
+}

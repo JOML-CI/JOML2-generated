@@ -1,0 +1,79 @@
+package org.joml2.internal.storeload;
+
+import org.joml2.*;
+import org.joml2.Math;
+
+public final class Float2x3RawOpsApi implements Float2x3RawOps {
+    public Float2x3 storeCMUnsafe(Float2x3 self, long address) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 loadCMUnsafe(long address) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 storeCMDoubleUnsafe(Float2x3 self, long address) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 loadCMDoubleUnsafe(long address) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 storeRMUnsafe(Float2x3 self, long address) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 loadRMUnsafe(long address) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 storeRMDoubleUnsafe(Float2x3 self, long address) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 loadRMDoubleUnsafe(long address) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 storeCMUnsafe(Float2x3 self, long address, int stride) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 loadCMUnsafe(long address, int stride) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 storeCMDoubleUnsafe(Float2x3 self, long address, int stride) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 loadCMDoubleUnsafe(long address, int stride) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 storeRMUnsafe(Float2x3 self, long address, int stride) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 loadRMUnsafe(long address, int stride) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 storeRMDoubleUnsafe(Float2x3 self, long address, int stride) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 loadRMDoubleUnsafe(long address, int stride) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 storeCM3x3Unsafe(Float2x3 self, long address) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 storeCM3x3DoubleUnsafe(Float2x3 self, long address) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 storeRM3x3Unsafe(Float2x3 self, long address) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 storeRM3x3DoubleUnsafe(Float2x3 self, long address) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 storeCM4x4Unsafe(Float2x3 self, long address) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 storeCM4x4DoubleUnsafe(Float2x3 self, long address) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 storeRM4x4Unsafe(Float2x3 self, long address) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+    public Float2x3 storeRM4x4DoubleUnsafe(Float2x3 self, long address) {
+        throw new UnsupportedOperationException("raw-address store/load requires storeLoadBackend=UNSAFE");
+    }
+}

@@ -1,0 +1,825 @@
+package org.joml2;
+
+import java.nio.FloatBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.ByteBuffer;
+
+/**
+ * Read-only view of an axis-aligned bounding box of single-precision {@code float} components.
+ * <p>
+ * Declares the accessors, queries, store methods and dest-form operations that read but never
+ * mutate the receiver; the mutable counterpart is {@link FloatAABB}. APIs that only read an
+ * axis-aligned bounding box should accept {@code FloatAABBR}, so callers can pass mutable instances
+ * without exposing them to modification.
+ */
+public interface FloatAABBR {
+    /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
+    public static final int SIZE_BYTES = 24;
+
+    /** {@return a shared all-zero axis-aligned bounding box} Never mutate it - it is returned as the read-only view for that reason. */
+    public static FloatAABBR ZERO() { return Holder.ZERO; }
+
+
+    /**
+     * Set the maximum corner of this axis-aligned bounding box to {@code max} and store the result
+     * in {@code dest}.
+     *
+     * @param max the maximum corner
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatAABB setMax(Float3R max, @Mutated FloatAABB dest);
+
+    /**
+     * Set the maximum corner of this axis-aligned bounding box to {@code max} and store the result
+     * in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param max the maximum corner
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleAABB setMax(Float3R max, @Mutated DoubleAABB dest);
+
+    /**
+     * Set the maximum corner of this axis-aligned bounding box to ({@code x}, {@code y}, {@code z})
+     * and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatAABB setMax(float x, float y, float z, @Mutated FloatAABB dest);
+
+    /**
+     * Set the maximum corner of this axis-aligned bounding box to ({@code x}, {@code y}, {@code z})
+     * and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleAABB setMax(float x, float y, float z, @Mutated DoubleAABB dest);
+
+    /**
+     * Set the minimum corner of this axis-aligned bounding box to {@code min} and store the result
+     * in {@code dest}.
+     *
+     * @param min the minimum corner
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatAABB setMin(Float3R min, @Mutated FloatAABB dest);
+
+    /**
+     * Set the minimum corner of this axis-aligned bounding box to {@code min} and store the result
+     * in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param min the minimum corner
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleAABB setMin(Float3R min, @Mutated DoubleAABB dest);
+
+    /**
+     * Set the minimum corner of this axis-aligned bounding box to ({@code x}, {@code y}, {@code z})
+     * and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatAABB setMin(float x, float y, float z, @Mutated FloatAABB dest);
+
+    /**
+     * Set the minimum corner of this axis-aligned bounding box to ({@code x}, {@code y}, {@code z})
+     * and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleAABB setMin(float x, float y, float z, @Mutated DoubleAABB dest);
+
+    /**
+     * Convert this axis-aligned bounding box to {@code double} precision and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleAABB toDouble(@Mutated DoubleAABB dest);
+
+    /**
+     * Swap the minimum and maximum bounds of this axis-aligned bounding box where necessary so the
+     * bounds are valid and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatAABB correctBounds(@Mutated FloatAABB dest);
+
+    /**
+     * Swap the minimum and maximum bounds of this axis-aligned bounding box where necessary so the
+     * bounds are valid and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleAABB correctBounds(@Mutated DoubleAABB dest);
+
+    /**
+     * Transform this axis-aligned bounding box by {@code m} and set it to the axis-aligned box
+     * enclosing the transformed box and store the result in {@code dest}.
+     *
+     * @param m the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatAABB transform(Float3x4R m, @Mutated FloatAABB dest);
+
+    /**
+     * Transform this axis-aligned bounding box by {@code m} and set it to the axis-aligned box
+     * enclosing the transformed box and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param m the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleAABB transform(Float3x4R m, @Mutated DoubleAABB dest);
+
+    /**
+     * Transform this axis-aligned bounding box by {@code m} and set it to the axis-aligned box
+     * enclosing the transformed box and store the result in {@code dest}.
+     * <p>
+     * Only the affine part of {@code m} is used: the last row is assumed to be
+     * {@code (0, 0, 0, 1)}, so any projective component is ignored.
+     *
+     * @param m the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatAABB transform(Float4x4R m, @Mutated FloatAABB dest);
+
+    /**
+     * Transform this axis-aligned bounding box by {@code m} and set it to the axis-aligned box
+     * enclosing the transformed box and store the result in {@code dest}.
+     * <p>
+     * Only the affine part of {@code m} is used: the last row is assumed to be
+     * {@code (0, 0, 0, 1)}, so any projective component is ignored.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param m the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleAABB transform(Float4x4R m, @Mutated DoubleAABB dest);
+
+    /**
+     * Translate this axis-aligned bounding box by {@code delta} and store the result in
+     * {@code dest}.
+     *
+     * @param delta the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatAABB translate(Float3R delta, @Mutated FloatAABB dest);
+
+    /**
+     * Translate this axis-aligned bounding box by {@code delta} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param delta the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleAABB translate(Float3R delta, @Mutated DoubleAABB dest);
+
+    /**
+     * Translate this axis-aligned bounding box by ({@code x}, {@code y}, {@code z}) and store the
+     * result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatAABB translate(float x, float y, float z, @Mutated FloatAABB dest);
+
+    /**
+     * Translate this axis-aligned bounding box by ({@code x}, {@code y}, {@code z}) and store the
+     * result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleAABB translate(float x, float y, float z, @Mutated DoubleAABB dest);
+
+    /**
+     * Set this axis-aligned bounding box to the union of itself and {@code other} and store the
+     * result in {@code dest}.
+     *
+     * @param other the other axis-aligned bounding box
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatAABB union(FloatAABBR other, @Mutated FloatAABB dest);
+
+    /**
+     * Set this axis-aligned bounding box to the union of itself and {@code other} and store the
+     * result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other axis-aligned bounding box
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleAABB union(FloatAABBR other, @Mutated DoubleAABB dest);
+
+    /**
+     * Set this axis-aligned bounding box to the union of itself and ({@code minX}, {@code minY},
+     * {@code minZ}, {@code maxX}, {@code maxY}, {@code maxZ}) and store the result in {@code dest}.
+     *
+     * @param minX the {@code minX} component of the axis-aligned bounding box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minY the {@code minY} component of the axis-aligned bounding box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minZ the {@code minZ} component of the axis-aligned bounding box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxX the {@code maxX} component of the axis-aligned bounding box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxY the {@code maxY} component of the axis-aligned bounding box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxZ the {@code maxZ} component of the axis-aligned bounding box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatAABB union(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, @Mutated FloatAABB dest);
+
+    /**
+     * Set this axis-aligned bounding box to the union of itself and ({@code minX}, {@code minY},
+     * {@code minZ}, {@code maxX}, {@code maxY}, {@code maxZ}) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param minX the {@code minX} component of the axis-aligned bounding box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minY the {@code minY} component of the axis-aligned bounding box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minZ the {@code minZ} component of the axis-aligned bounding box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxX the {@code maxX} component of the axis-aligned bounding box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxY the {@code maxY} component of the axis-aligned bounding box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxZ the {@code maxZ} component of the axis-aligned bounding box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleAABB union(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, @Mutated DoubleAABB dest);
+
+    /**
+     * Grow this axis-aligned bounding box to include the point {@code p} and store the result in
+     * {@code dest}.
+     *
+     * @param p the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatAABB union(Float3R p, @Mutated FloatAABB dest);
+
+    /**
+     * Grow this axis-aligned bounding box to include the point {@code p} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleAABB union(Float3R p, @Mutated DoubleAABB dest);
+
+    /**
+     * Grow this axis-aligned bounding box to include the point ({@code x}, {@code y}, {@code z})
+     * and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatAABB union(float x, float y, float z, @Mutated FloatAABB dest);
+
+    /**
+     * Grow this axis-aligned bounding box to include the point ({@code x}, {@code y}, {@code z})
+     * and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleAABB union(float x, float y, float z, @Mutated DoubleAABB dest);
+
+    /**
+     * Get the center of this axis-aligned bounding box and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 getCenter(@Mutated Float3 dest);
+
+    /**
+     * Get the center of this axis-aligned bounding box and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 getCenter(@Mutated Double3 dest);
+
+    /**
+     * Get the maximum corner of this axis-aligned bounding box and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 getMax(@Mutated Float3 dest);
+
+    /**
+     * Get the maximum corner of this axis-aligned bounding box and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 getMax(@Mutated Double3 dest);
+
+    /**
+     * Get the minimum corner of this axis-aligned bounding box and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 getMin(@Mutated Float3 dest);
+
+    /**
+     * Get the minimum corner of this axis-aligned bounding box and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 getMin(@Mutated Double3 dest);
+
+    /**
+     * Get the size, i.e. the maximum minus the minimum corner per axis of this axis-aligned
+     * bounding box and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 getSize(@Mutated Float3 dest);
+
+    /**
+     * Get the size, i.e. the maximum minus the minimum corner per axis of this axis-aligned
+     * bounding box and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 getSize(@Mutated Double3 dest);
+
+    /**
+     * Determine whether this axis-aligned bounding box is valid, i.e. no minimum bound exceeds its
+     * maximum.
+     *
+     * @return {@code true} if this axis-aligned bounding box is valid, i.e. no minimum bound
+     *        exceeds its maximum, {@code false} otherwise
+     */
+    boolean isValid();
+    /** {@return the value of the {@code minX} component} */
+    float minX();
+    /** {@return the value of the {@code minY} component} */
+    float minY();
+    /** {@return the value of the {@code minZ} component} */
+    float minZ();
+    /** {@return the value of the {@code maxX} component} */
+    float maxX();
+    /** {@return the value of the {@code maxY} component} */
+    float maxY();
+    /** {@return the value of the {@code maxZ} component} */
+    float maxZ();
+
+    /**
+     * Store the elements into the given array.
+     *
+     * @param dest the destination array
+     * @return dest
+     */
+    default float[] store(@Mutated float[] dest) { return store(dest, 0); }
+
+    /**
+     * Store the elements into the given array, starting at the given offset.
+     *
+     * @param dest the destination array
+     * @param offset the start offset in the array, in elements
+     * @return dest
+     */
+    float[] store(@Mutated float[] dest, int offset);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default FloatBuffer store(@Mutated FloatBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default FloatBuffer storeAbsolute(@Mutated FloatBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at the given absolute index (the position
+     * is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param dest the destination buffer
+     * @return dest
+     */
+    FloatBuffer storeAbsolute(int index, @Mutated FloatBuffer dest);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position and advancing the
+     * position accordingly.
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default FloatBuffer storeRelative(@Mutated FloatBuffer dest) {
+        int pos = dest.position();
+        storeAbsolute(pos, dest);
+        dest.position(pos + 6);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given byte buffer, starting at its current position (the position
+     * is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer store(@Mutated ByteBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, starting at its current position (the position
+     * is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeAbsolute(@Mutated ByteBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, starting at the given absolute index (the
+     * position is not used or modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    ByteBuffer storeAbsolute(int index, @Mutated ByteBuffer dest);
+
+    /**
+     * Store the elements into the given byte buffer, starting at its current position and advancing
+     * the position accordingly.
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeRelative(@Mutated ByteBuffer dest) {
+        int pos = dest.position();
+        storeAbsolute(pos, dest);
+        dest.position(pos + 24);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given raw memory address. No bounds or liveness checks are
+     * performed.
+     *
+     * @param address the raw memory address
+     * @return this
+     */
+    FloatAABB storeUnsafe(long address);
+
+    /**
+     * Store the elements into the given array.
+     *
+     * @param dest the destination array
+     * @return dest
+     */
+    default double[] store(@Mutated double[] dest) { return store(dest, 0); }
+
+    /**
+     * Store the elements into the given array, starting at the given offset.
+     *
+     * @param dest the destination array
+     * @param offset the start offset in the array, in elements
+     * @return dest
+     */
+    double[] store(@Mutated double[] dest, int offset);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default DoubleBuffer store(@Mutated DoubleBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default DoubleBuffer storeAbsolute(@Mutated DoubleBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at the given absolute index (the position
+     * is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param dest the destination buffer
+     * @return dest
+     */
+    DoubleBuffer storeAbsolute(int index, @Mutated DoubleBuffer dest);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position and advancing the
+     * position accordingly.
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default DoubleBuffer storeRelative(@Mutated DoubleBuffer dest) {
+        int pos = dest.position();
+        storeAbsolute(pos, dest);
+        dest.position(pos + 6);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code double},
+     * starting at its current position (the position is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeDouble(@Mutated ByteBuffer dest) { return storeDoubleAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code double},
+     * starting at its current position (the position is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeDoubleAbsolute(@Mutated ByteBuffer dest) { return storeDoubleAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code double},
+     * starting at the given absolute index (the position is not used or modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    ByteBuffer storeDoubleAbsolute(int index, @Mutated ByteBuffer dest);
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code double},
+     * starting at its current position and advancing the position accordingly.
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeDoubleRelative(@Mutated ByteBuffer dest) {
+        int pos = dest.position();
+        storeDoubleAbsolute(pos, dest);
+        dest.position(pos + 48);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given raw memory address, converting each element to
+     * {@code double}. No bounds or liveness checks are performed.
+     *
+     * @param address the raw memory address
+     * @return this
+     */
+    FloatAABB storeDoubleUnsafe(long address);
+
+    /** {@return whether all components of this axis-aligned bounding box are finite, i.e. neither NaN nor infinite} */
+    boolean isFinite();
+
+    /**
+     * Compare this axis-aligned bounding box component-wise against {@code other}, allowing a difference
+     * of at most {@code epsilon} per component.
+     *
+     * @param other the axis-aligned bounding box to compare against
+     * @param epsilon the maximum allowed difference per component
+     * @return {@code true} if all components differ by at most {@code epsilon}, {@code false} otherwise
+     */
+    boolean equalsEpsilon(FloatAABBR other, float epsilon);
+
+    /**
+     * Determine whether this axis-aligned bounding box contains the given point (boundary
+     * inclusive). Delegates to the shared {@code Intersectionf} kernels.
+     *
+     * @param x the x coordinate of the point
+     * @param y the y coordinate of the point
+     * @param z the z coordinate of the point
+     * @return {@code true} if the given point lies inside or on this axis-aligned bounding box,
+     *        {@code false} otherwise
+     */
+    boolean containsPoint(float x, float y, float z);
+
+    /**
+     * Determine whether this axis-aligned bounding box contains the given point (boundary
+     * inclusive). Delegates to the shared {@code Intersectionf} kernels.
+     *
+     * @param p the point
+     * @return {@code true} if the given point lies inside or on this axis-aligned bounding box,
+     *        {@code false} otherwise
+     */
+    boolean containsPoint(Float3R p);
+
+    /**
+     * Determine whether this axis-aligned bounding box contains the given axis-aligned box
+     * (boundary inclusive). Delegates to the shared {@code Intersectionf} kernels.
+     *
+     * @param o the axis-aligned box to test for containment
+     * @return {@code true} if the given box lies entirely inside this axis-aligned bounding box,
+     *        boundary included, {@code false} otherwise
+     */
+    boolean containsAABB(FloatAABBR o);
+
+    /**
+     * Determine whether this axis-aligned bounding box intersects the given axis-aligned box.
+     * Delegates to the shared {@code Intersectionf} kernels.
+     *
+     * @param o the other axis-aligned box
+     * @return {@code true} if this axis-aligned bounding box and the given axis-aligned box
+     *        intersect, {@code false} otherwise
+     */
+    boolean intersectsAABB(FloatAABBR o);
+
+    /**
+     * Determine whether this axis-aligned bounding box intersects the given axis-aligned box swept
+     * by the given velocity. Delegates to the shared {@code Intersectionf} kernels.
+     *
+     * @param other the axis-aligned box that moves
+     * @param vX the x component of the velocity
+     * @param vY the y component of the velocity
+     * @param vZ the z component of the velocity
+     * @return {@code true} if the moving box meets this axis-aligned bounding box at any point of
+     *        the step, {@code false} otherwise
+     */
+    boolean intersectsSweptAABB(FloatAABBR other, float vX, float vY, float vZ);
+
+    /**
+     * Determine whether this axis-aligned bounding box intersects the given axis-aligned box swept
+     * by the given velocity. Delegates to the shared {@code Intersectionf} kernels.
+     *
+     * @param other the axis-aligned box that moves
+     * @param velocity the velocity the given box moves by over one step
+     * @return {@code true} if the moving box meets this axis-aligned bounding box at any point of
+     *        the step, {@code false} otherwise
+     */
+    boolean intersectsSweptAABB(FloatAABBR other, Float3R velocity);
+
+    /**
+     * Determine whether this axis-aligned bounding box intersects the given sphere. Delegates to
+     * the shared {@code Intersectionf} kernels.
+     *
+     * @param sph the sphere
+     * @return {@code true} if this axis-aligned bounding box and the given sphere intersect,
+     *        {@code false} otherwise
+     */
+    boolean intersectsSphere(FloatSphereR sph);
+
+    /**
+     * Determine whether this axis-aligned bounding box intersects the given plane. Delegates to the
+     * shared {@code Intersectionf} kernels.
+     *
+     * @param plane the plane
+     * @return {@code true} if this axis-aligned bounding box and the given plane intersect,
+     *        {@code false} otherwise
+     */
+    boolean intersectsPlane(FloatPlaneR plane);
+
+    /**
+     * Determine whether this axis-aligned bounding box intersects the given ray. Delegates to the
+     * shared {@code Intersectionf} kernels.
+     *
+     * @param r the ray
+     * @return {@code true} if this axis-aligned bounding box and the given ray intersect,
+     *        {@code false} otherwise
+     */
+    boolean intersectsRay(FloatRayR r);
+
+    /**
+     * Determine whether this axis-aligned bounding box intersects the given ray and, if so, the
+     * values of <i>t</i> in the ray equation <i>p(t) = origin + t * dir</i> at the near and far
+     * points of intersection. Delegates to the shared {@code Intersectionf} kernels.
+     *
+     * @param r the ray
+     * @param dest will hold the values of <i>t</i> in the ray equation <i>p(t) = origin + t *
+     *        dir</i> at the near and far points of intersection
+     * @return {@code true} if the ray intersects this axis-aligned bounding box, {@code false}
+     *        otherwise
+     */
+    boolean intersectRay(FloatRayR r, @Mutated Float2 dest);
+
+    /** Backs {@code ZERO()}: defers the shared instance's
+     *  allocation to first use, avoiding a class-initialization cycle with the
+     *  implementation class. Not part of the public API. */
+    final class Holder {
+        private Holder() {}
+        static final FloatAABBR ZERO = Joml.floatAABB(0, 0, 0, 0, 0, 0);
+    }
+}

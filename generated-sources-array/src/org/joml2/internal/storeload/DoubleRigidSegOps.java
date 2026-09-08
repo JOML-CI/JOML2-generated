@@ -1,0 +1,13 @@
+package org.joml2.internal.storeload;
+
+import org.joml2.*;
+import org.joml2.Math;
+import org.joml2.internal.types.*;
+import java.lang.foreign.MemorySegment;
+
+public interface DoubleRigidSegOps {
+    MemorySegment store(DoubleRigidImpl self, long offset, MemorySegment dest);
+    DoubleRigid load(DoubleRigidImpl self, long offset, MemorySegment src);
+    MemorySegment storeFloat(DoubleRigidImpl self, long offset, MemorySegment dest);
+    DoubleRigid loadFloat(DoubleRigidImpl self, long offset, MemorySegment src);
+}

@@ -1,0 +1,494 @@
+package org.joml2.internal.types;
+
+import org.joml2.*;
+import org.joml2.Math;
+import org.joml2.internal.storeload.*;
+import java.nio.ByteBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+
+/**
+ * Generated implementation of {@link DoubleTriangle} backed by a {@code double[]} array.
+ * <p>
+ * Not part of the public API - obtain instances through the {@link Joml} factory methods.
+ */
+public final class DoubleTriangleImpl implements DoubleTriangle {
+
+    public double[] data;
+    static final DoubleTriangleBbOps BB_OPS =
+            Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE
+                    ? new DoubleTriangleBbOpsUnsafe()
+                    : new DoubleTriangleBbOpsApi();
+    static final DoubleTriangleRawOps RAW_OPS =
+            Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE
+                    ? new DoubleTriangleRawOpsUnsafe()
+                    : new DoubleTriangleRawOpsApi();
+
+    public DoubleTriangleImpl() {
+        data = new double[9];
+    }
+
+
+    /**
+     * Set this triangle to the given values.
+     *
+     * @param v the triangle
+     * @return this
+     */
+    public @Mutated DoubleTriangle set(DoubleTriangleR v) {
+        return set(v.v0X(), v.v0Y(), v.v0Z(), v.v1X(), v.v1Y(), v.v1Z(), v.v2X(), v.v2Y(), v.v2Z());
+    }
+
+
+    /**
+     * Set this triangle to the given values.
+     *
+     * @param vV0X the {@code v0X} component of the triangle
+     *        {@code (vV0X, vV0Y, vV0Z, vV1X, vV1Y, vV1Z, vV2X, vV2Y, vV2Z)}
+     * @param vV0Y the {@code v0Y} component of the triangle
+     *        {@code (vV0X, vV0Y, vV0Z, vV1X, vV1Y, vV1Z, vV2X, vV2Y, vV2Z)}
+     * @param vV0Z the {@code v0Z} component of the triangle
+     *        {@code (vV0X, vV0Y, vV0Z, vV1X, vV1Y, vV1Z, vV2X, vV2Y, vV2Z)}
+     * @param vV1X the {@code v1X} component of the triangle
+     *        {@code (vV0X, vV0Y, vV0Z, vV1X, vV1Y, vV1Z, vV2X, vV2Y, vV2Z)}
+     * @param vV1Y the {@code v1Y} component of the triangle
+     *        {@code (vV0X, vV0Y, vV0Z, vV1X, vV1Y, vV1Z, vV2X, vV2Y, vV2Z)}
+     * @param vV1Z the {@code v1Z} component of the triangle
+     *        {@code (vV0X, vV0Y, vV0Z, vV1X, vV1Y, vV1Z, vV2X, vV2Y, vV2Z)}
+     * @param vV2X the {@code v2X} component of the triangle
+     *        {@code (vV0X, vV0Y, vV0Z, vV1X, vV1Y, vV1Z, vV2X, vV2Y, vV2Z)}
+     * @param vV2Y the {@code v2Y} component of the triangle
+     *        {@code (vV0X, vV0Y, vV0Z, vV1X, vV1Y, vV1Z, vV2X, vV2Y, vV2Z)}
+     * @param vV2Z the {@code v2Z} component of the triangle
+     *        {@code (vV0X, vV0Y, vV0Z, vV1X, vV1Y, vV1Z, vV2X, vV2Y, vV2Z)}
+     * @return this
+     */
+    @Mutated public DoubleTriangle set(double vV0X, double vV0Y, double vV0Z, double vV1X, double vV1Y, double vV1Z, double vV2X, double vV2Y, double vV2Z) {
+        double[] dd = this.data;
+        dd[0] = vV0X;
+        dd[1] = vV0Y;
+        dd[2] = vV0Z;
+        dd[3] = vV1X;
+        dd[4] = vV1Y;
+        dd[5] = vV1Z;
+        dd[6] = vV2X;
+        dd[7] = vV2Y;
+        dd[8] = vV2Z;
+        return this;
+    }
+
+
+    /**
+     * Convert this triangle to {@code float} precision and store the result in {@code dest}.
+     * <p>
+     * The conversion may lose precision or range.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public FloatTriangle toFloat(@Mutated FloatTriangle dest) {
+        double[] sd = this.data;
+        float[] dd = ((FloatTriangleImpl) dest).data;
+        dd[0] = (float) (sd[0]);
+        dd[1] = (float) (sd[1]);
+        dd[2] = (float) (sd[2]);
+        dd[3] = (float) (sd[3]);
+        dd[4] = (float) (sd[4]);
+        dd[5] = (float) (sd[5]);
+        dd[6] = (float) (sd[6]);
+        dd[7] = (float) (sd[7]);
+        dd[8] = (float) (sd[8]);
+        return dest;
+    }
+
+
+    /**
+     * Transform this triangle by {@code m} and store the result in {@code dest}.
+     *
+     * @param m the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleTriangle transform(Double3x4R m, @Mutated DoubleTriangle dest) {
+        double[] sd = this.data;
+        double[] mData = ((Double3x4Impl) m).data;
+        double[] dd = ((DoubleTriangleImpl) dest).data;
+        double _buf0 = Math.fma(mData[2], sd[2], Math.fma(mData[0], sd[0], Math.fma(mData[1], sd[1], mData[3])));
+        double _buf1 = Math.fma(mData[6], sd[2], Math.fma(mData[4], sd[0], Math.fma(mData[5], sd[1], mData[7])));
+        dd[2] = Math.fma(mData[10], sd[2], Math.fma(mData[8], sd[0], Math.fma(mData[9], sd[1], mData[11])));
+        double _buf2 = Math.fma(mData[2], sd[5], Math.fma(mData[0], sd[3], Math.fma(mData[1], sd[4], mData[3])));
+        double _buf3 = Math.fma(mData[6], sd[5], Math.fma(mData[4], sd[3], Math.fma(mData[5], sd[4], mData[7])));
+        dd[5] = Math.fma(mData[10], sd[5], Math.fma(mData[8], sd[3], Math.fma(mData[9], sd[4], mData[11])));
+        double _buf4 = Math.fma(mData[2], sd[8], Math.fma(mData[0], sd[6], Math.fma(mData[1], sd[7], mData[3])));
+        double _buf5 = Math.fma(mData[6], sd[8], Math.fma(mData[4], sd[6], Math.fma(mData[5], sd[7], mData[7])));
+        dd[8] = Math.fma(mData[10], sd[8], Math.fma(mData[8], sd[6], Math.fma(mData[9], sd[7], mData[11])));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[3] = _buf2;
+        dd[4] = _buf3;
+        dd[6] = _buf4;
+        dd[7] = _buf5;
+        return dest;
+    }
+
+
+    /**
+     * Transform this triangle by {@code m} and store the result in {@code dest}.
+     * <p>
+     * Only the affine part of {@code m} is used: the last row is assumed to be
+     * {@code (0, 0, 0, 1)}, so any projective component is ignored.
+     *
+     * @param m the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleTriangle transform(Double4x4R m, @Mutated DoubleTriangle dest) {
+        double[] sd = this.data;
+        double[] mData = ((Double4x4Impl) m).data;
+        double[] dd = ((DoubleTriangleImpl) dest).data;
+        double _buf0 = Math.fma(mData[8], sd[2], Math.fma(mData[0], sd[0], Math.fma(mData[4], sd[1], mData[12])));
+        double _buf1 = Math.fma(mData[9], sd[2], Math.fma(mData[1], sd[0], Math.fma(mData[5], sd[1], mData[13])));
+        dd[2] = Math.fma(mData[10], sd[2], Math.fma(mData[2], sd[0], Math.fma(mData[6], sd[1], mData[14])));
+        double _buf2 = Math.fma(mData[8], sd[5], Math.fma(mData[0], sd[3], Math.fma(mData[4], sd[4], mData[12])));
+        double _buf3 = Math.fma(mData[9], sd[5], Math.fma(mData[1], sd[3], Math.fma(mData[5], sd[4], mData[13])));
+        dd[5] = Math.fma(mData[10], sd[5], Math.fma(mData[2], sd[3], Math.fma(mData[6], sd[4], mData[14])));
+        double _buf4 = Math.fma(mData[8], sd[8], Math.fma(mData[0], sd[6], Math.fma(mData[4], sd[7], mData[12])));
+        double _buf5 = Math.fma(mData[9], sd[8], Math.fma(mData[1], sd[6], Math.fma(mData[5], sd[7], mData[13])));
+        dd[8] = Math.fma(mData[10], sd[8], Math.fma(mData[2], sd[6], Math.fma(mData[6], sd[7], mData[14])));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[3] = _buf2;
+        dd[4] = _buf3;
+        dd[6] = _buf4;
+        dd[7] = _buf5;
+        return dest;
+    }
+
+
+    /**
+     * Compute the area of this triangle.
+     *
+     * @return the area of this triangle
+     */
+    public double area() {
+        double[] sd = this.data;
+        double _t0 = sd[3] - sd[0];
+        double _t1 = sd[7] - sd[1];
+        double _t2 = sd[4] - sd[1];
+        double _t3 = sd[6] - sd[0];
+        double _t4 = sd[8] - sd[2];
+        double _t5 = sd[5] - sd[2];
+        double _t12 = Math.fma(_t0, _t1, -(_t2 * _t3));
+        double _t13 = Math.fma(_t2, _t4, -(_t5 * _t1));
+        double _t14 = Math.fma(_t5, _t3, -(_t0 * _t4));
+        return 0.5 * Math.sqrt(Math.fma(_t12, _t12, Math.fma(_t13, _t13, _t14 * _t14)));
+    }
+
+
+    /**
+     * Compute the barycentric coordinates of the given point with respect to this triangle and
+     * store the result in {@code dest}.
+     * <p>
+     * The three components weight the triangle's first, second and third vertex respectively and
+     * sum to 1. A point that is not coplanar with the triangle yields the coordinates of its
+     * orthogonal projection onto the triangle's plane.
+     *
+     * @param p the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 barycentric(Double3R p, @Mutated Double3 dest) {
+        return barycentric(p.x(), p.y(), p.z(), dest);
+    }
+
+
+    /**
+     * Compute the barycentric coordinates of the given point with respect to this triangle and
+     * store the result in {@code dest}.
+     * <p>
+     * The three components weight the triangle's first, second and third vertex respectively and
+     * sum to 1. A point that is not coplanar with the triangle yields the coordinates of its
+     * orthogonal projection onto the triangle's plane.
+     *
+     * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the vector {@code (pX, pY, pZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 barycentric(double pX, double pY, double pZ, @Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        double _t0 = pZ - sd[2];
+        double _t1 = sd[5] - sd[2];
+        double _t2 = pX - sd[0];
+        double _t3 = sd[3] - sd[0];
+        double _t4 = pY - sd[1];
+        double _t5 = sd[4] - sd[1];
+        double _t6 = sd[8] - sd[2];
+        double _t7 = sd[6] - sd[0];
+        double _t8 = sd[7] - sd[1];
+        double _t19 = Math.fma(_t0, _t1, Math.fma(_t2, _t3, _t4 * _t5));
+        double _t20 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
+        double _t21 = Math.fma(_t0, _t6, Math.fma(_t2, _t7, _t4 * _t8));
+        double _t22 = Math.fma(_t1, _t6, Math.fma(_t3, _t7, _t5 * _t8));
+        double _t23 = Math.fma(_t1, _t1, Math.fma(_t3, _t3, _t5 * _t5));
+        double _t31 = Math.fma(_t23, _t20, -(_t22 * _t22));
+        double _t31_inv = 1.0 / _t31;
+        double _t33 = Math.fma(_t19, _t20, -(_t21 * _t22)) * _t31_inv;
+        double _t34 = Math.fma(_t21, _t23, -(_t19 * _t22)) * _t31_inv;
+        dd[0] = 1.0 - _t33 - _t34;
+        dd[1] = _t33;
+        dd[2] = _t34;
+        return dest;
+    }
+
+
+    /**
+     * Get the centroid (the average of the vertices) of this triangle and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 getCentroid(@Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        dd[0] = 0.3333333333333333 * (sd[6] + (sd[0] + sd[3]));
+        dd[1] = 0.3333333333333333 * (sd[7] + (sd[1] + sd[4]));
+        dd[2] = 0.3333333333333333 * (sd[8] + (sd[2] + sd[5]));
+        return dest;
+    }
+
+
+    /**
+     * Get the normal of this triangle, i.e. the cross product {@code (v1 - v0) x (v2 - v0)} (not
+     * unit length: its length is twice the triangle's area) and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 getNormal(@Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        double _t0 = sd[4] - sd[1];
+        double _t1 = sd[8] - sd[2];
+        double _t2 = sd[5] - sd[2];
+        double _t3 = sd[7] - sd[1];
+        double _t4 = sd[6] - sd[0];
+        double _t5 = sd[3] - sd[0];
+        dd[0] = Math.fma(_t0, _t1, -(_t2 * _t3));
+        dd[1] = Math.fma(_t2, _t4, -(_t5 * _t1));
+        dd[2] = Math.fma(_t5, _t3, -(_t0 * _t4));
+        return dest;
+    }
+
+
+    /**
+     * Get the first vertex of this triangle and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 getV0(@Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        dd[0] = sd[0];
+        dd[1] = sd[1];
+        dd[2] = sd[2];
+        return dest;
+    }
+
+
+    /**
+     * Get the second vertex of this triangle and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 getV1(@Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        dd[0] = sd[3];
+        dd[1] = sd[4];
+        dd[2] = sd[5];
+        return dest;
+    }
+
+
+    /**
+     * Get the third vertex of this triangle and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 getV2(@Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        dd[0] = sd[6];
+        dd[1] = sd[7];
+        dd[2] = sd[8];
+        return dest;
+    }
+
+    public double v0X() { return data[0]; }
+    public double v0Y() { return data[1]; }
+    public double v0Z() { return data[2]; }
+    public double v1X() { return data[3]; }
+    public double v1Y() { return data[4]; }
+    public double v1Z() { return data[5]; }
+    public double v2X() { return data[6]; }
+    public double v2Y() { return data[7]; }
+    public double v2Z() { return data[8]; }
+
+    @Override public String toString() {
+        return "DoubleTriangle(" + v0X() + ", " + v0Y() + ", " + v0Z() + ", " + v1X() + ", " + v1Y() + ", " + v1Z() + ", " + v2X() + ", " + v2Y() + ", " + v2Z() + ")";
+    }
+
+    @Override public boolean equals(@org.jspecify.annotations.Nullable Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof DoubleTriangleImpl)) return false;
+        DoubleTriangleImpl o = (DoubleTriangleImpl) obj;
+        return java.util.Arrays.equals(data, o.data);
+    }
+
+    @Override public int hashCode() {
+        return java.util.Arrays.hashCode(data);
+    }
+
+    @Override public boolean isFinite() {
+        return Double.isFinite(data[0])
+            && Double.isFinite(data[1])
+            && Double.isFinite(data[2])
+            && Double.isFinite(data[3])
+            && Double.isFinite(data[4])
+            && Double.isFinite(data[5])
+            && Double.isFinite(data[6])
+            && Double.isFinite(data[7])
+            && Double.isFinite(data[8]);
+    }
+
+    @Override public boolean equalsEpsilon(DoubleTriangleR other, double epsilon) {
+        return Math.abs(data[0] - other.v0X()) <= epsilon
+            && Math.abs(data[1] - other.v0Y()) <= epsilon
+            && Math.abs(data[2] - other.v0Z()) <= epsilon
+            && Math.abs(data[3] - other.v1X()) <= epsilon
+            && Math.abs(data[4] - other.v1Y()) <= epsilon
+            && Math.abs(data[5] - other.v1Z()) <= epsilon
+            && Math.abs(data[6] - other.v2X()) <= epsilon
+            && Math.abs(data[7] - other.v2Y()) <= epsilon
+            && Math.abs(data[8] - other.v2Z()) <= epsilon;
+    }
+
+    public boolean containsPoint(double pX, double pY, double pZ) {
+        return Intersectiond.testPointInTriangle(pX, pY, pZ, v0X(), v0Y(), v0Z(), v1X(), v1Y(), v1Z(), v2X(), v2Y(), v2Z());
+    }
+
+    public boolean containsPoint(Double3R p) {
+        return containsPoint(p.x(), p.y(), p.z());
+    }
+
+    public boolean intersectsRay(DoubleRayR ray, double epsilon) {
+        return Intersectiond.testRayTriangle(ray.oX(), ray.oY(), ray.oZ(), ray.dX(), ray.dY(), ray.dZ(), v0X(), v0Y(), v0Z(), v1X(), v1Y(), v1Z(), v2X(), v2Y(), v2Z(), epsilon);
+    }
+
+    public boolean intersectsRayFront(DoubleRayR ray, double epsilon) {
+        return Intersectiond.testRayTriangleFront(ray.oX(), ray.oY(), ray.oZ(), ray.dX(), ray.dY(), ray.dZ(), v0X(), v0Y(), v0Z(), v1X(), v1Y(), v1Z(), v2X(), v2Y(), v2Z(), epsilon);
+    }
+
+    public Double3 closestPointToPoint(double pX, double pY, double pZ, @Mutated Double3 dest) {
+        Intersectiond.findClosestPointOnTriangle(v0X(), v0Y(), v0Z(), v1X(), v1Y(), v1Z(), v2X(), v2Y(), v2Z(), pX, pY, pZ, dest);
+        return dest;
+    }
+
+    public Double3 closestPointToPoint(Double3R p, @Mutated Double3 dest) {
+        return closestPointToPoint(p.x(), p.y(), p.z(), dest);
+    }
+
+    public double[] store(@Mutated double[] dest, int offset) {
+        dest[offset + 0] = this.data[0];
+        dest[offset + 1] = this.data[1];
+        dest[offset + 2] = this.data[2];
+        dest[offset + 3] = this.data[3];
+        dest[offset + 4] = this.data[4];
+        dest[offset + 5] = this.data[5];
+        dest[offset + 6] = this.data[6];
+        dest[offset + 7] = this.data[7];
+        dest[offset + 8] = this.data[8];
+        return dest;
+    }
+    public @Mutated DoubleTriangle load(double[] src, int offset) {
+        this.data[0] = src[offset + 0];
+        this.data[1] = src[offset + 1];
+        this.data[2] = src[offset + 2];
+        this.data[3] = src[offset + 3];
+        this.data[4] = src[offset + 4];
+        this.data[5] = src[offset + 5];
+        this.data[6] = src[offset + 6];
+        this.data[7] = src[offset + 7];
+        this.data[8] = src[offset + 8];
+        return this;
+    }
+    public DoubleBuffer storeAbsolute(int index, @Mutated DoubleBuffer buf) {
+        return BB_OPS.storeAbsolute(this, index, buf);
+    }
+    @Mutated public DoubleTriangle loadAbsolute(int index, DoubleBuffer buf) {
+        return BB_OPS.loadAbsolute(this, index, buf);
+    }
+    public ByteBuffer storeAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.storeAbsolute(this, index, buf);
+    }
+    public DoubleTriangle loadAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.loadAbsolute(this, index, buf);
+    }
+    public DoubleTriangle storeUnsafe(long address) {
+        return RAW_OPS.storeUnsafe(this, address);
+    }
+    @Mutated public DoubleTriangle loadUnsafe(long address) {
+        return RAW_OPS.loadUnsafe(this, address);
+    }
+
+    public float[] store(@Mutated float[] dest, int offset) {
+        dest[offset + 0] = (float) this.data[0];
+        dest[offset + 1] = (float) this.data[1];
+        dest[offset + 2] = (float) this.data[2];
+        dest[offset + 3] = (float) this.data[3];
+        dest[offset + 4] = (float) this.data[4];
+        dest[offset + 5] = (float) this.data[5];
+        dest[offset + 6] = (float) this.data[6];
+        dest[offset + 7] = (float) this.data[7];
+        dest[offset + 8] = (float) this.data[8];
+        return dest;
+    }
+    public @Mutated DoubleTriangle load(float[] src, int offset) {
+        this.data[0] = src[offset + 0];
+        this.data[1] = src[offset + 1];
+        this.data[2] = src[offset + 2];
+        this.data[3] = src[offset + 3];
+        this.data[4] = src[offset + 4];
+        this.data[5] = src[offset + 5];
+        this.data[6] = src[offset + 6];
+        this.data[7] = src[offset + 7];
+        this.data[8] = src[offset + 8];
+        return this;
+    }
+    public FloatBuffer storeAbsolute(int index, @Mutated FloatBuffer buf) {
+        return BB_OPS.storeAbsolute(this, index, buf);
+    }
+    @Mutated public DoubleTriangle loadAbsolute(int index, FloatBuffer buf) {
+        return BB_OPS.loadAbsolute(this, index, buf);
+    }
+    public ByteBuffer storeFloatAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.storeFloatAbsolute(this, index, buf);
+    }
+    public DoubleTriangle loadFloatAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.loadFloatAbsolute(this, index, buf);
+    }
+    public DoubleTriangle storeFloatUnsafe(long address) {
+        return RAW_OPS.storeFloatUnsafe(this, address);
+    }
+    @Mutated public DoubleTriangle loadFloatUnsafe(long address) {
+        return RAW_OPS.loadFloatUnsafe(this, address);
+    }
+
+}

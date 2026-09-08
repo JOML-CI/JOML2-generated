@@ -1,0 +1,16052 @@
+package org.joml2.internal.types;
+
+import org.joml2.*;
+import org.joml2.Math;
+import org.joml2.internal.storeload.*;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.ValueLayout;
+import java.nio.ByteBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+
+/**
+ * Generated implementation of {@link Double3x3} backed by individual scalar fields.
+ * <p>
+ * Not part of the public API - obtain instances through the {@link Joml} factory methods.
+ */
+public class Double3x3Impl implements Double3x3 {
+
+    public double m00;
+    public double m10;
+    public double m20;
+    public double m01;
+    public double m11;
+    public double m21;
+    public double m02;
+    public double m12;
+    public double m22;
+    public int properties;
+    static final Double3x3SegOps SEG_OPS =
+            Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE
+                    ? new Double3x3SegOpsUnsafe()
+                    : new Double3x3SegOpsMS();
+    static final Double3x3BbOps BB_OPS =
+            Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE
+                    ? new Double3x3BbOpsUnsafe()
+                    : new Double3x3BbOpsApi();
+    static final Double3x3RawOps RAW_OPS =
+            Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE
+                    ? new Double3x3RawOpsUnsafe()
+                    : new Double3x3RawOpsApi();
+
+    public Double3x3Impl() {
+        m00 = 1;
+        m11 = 1;
+        m22 = 1;
+        properties = Joml.BIT_IDENTITY;
+    }
+
+    /**
+     * Numerically determine the structural properties of this matrix (identity, translation,
+     * affinity) and return them as property bits. This is a pure query.
+     *
+     * @return the determined property bits
+     */
+    public int determineProperties() {
+        if (this.m20 != 0 || this.m21 != 0 || this.m22 != 1) return 0;
+        if (this.m00 != 1 || this.m01 != 0 || this.m10 != 0 || this.m11 != 1) return 1;
+        if (this.m02 != 0 || this.m12 != 0) return 7;
+        return 15;
+    }
+
+    /** {@return whether this matrix is known to be the identity} O(1) read of the cached property bits; conservative. */
+    @Override public boolean isIdentity() { return (this.properties & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY; }
+    /** {@return whether this matrix is known to be a pure translation} O(1) read of the cached property bits; conservative. */
+    @Override public boolean isTranslation() { return (this.properties & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION; }
+    /** {@return whether this matrix is known to be orthogonal} O(1) read of the cached property bits; conservative. */
+    @Override public boolean isOrthogonal() { return (this.properties & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL; }
+    /** {@return whether this matrix is known to be affine} O(1) read of the cached property bits; conservative. */
+    @Override public boolean isAffine() { return (this.properties & Joml.BIT_AFFINE) == Joml.BIT_AFFINE; }
+
+
+    /**
+     * Private body of {@code getColumn}, specialized by runtime matrix properties; reached only
+     * through the public {@code getColumn} dispatcher.
+     */
+    private Double3 getColumn_identity(int col, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _idxSw0;
+        double _idxSw1;
+        double _idxSw2;
+        switch (col) {
+            case 0: _idxSw0 = 1.0; _idxSw1 = 0.0; _idxSw2 = 0.0; break;
+            case 1: _idxSw0 = 0.0; _idxSw1 = 1.0; _idxSw2 = 0.0; break;
+            case 2: _idxSw0 = 0.0; _idxSw1 = 0.0; _idxSw2 = 1.0; break;
+            default: throw new IndexOutOfBoundsException("Index out of range: " + col);
+        }
+        d.x = _idxSw0;
+        d.y = _idxSw1;
+        d.z = _idxSw2;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code getColumn}, specialized by runtime matrix properties; reached only
+     * through the public {@code getColumn} dispatcher.
+     */
+    private Double3 getColumn_translation(int col, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _idxSw3;
+        double _idxSw4;
+        double _idxSw5;
+        switch (col) {
+            case 0: _idxSw3 = 1.0; _idxSw4 = 0.0; _idxSw5 = 0.0; break;
+            case 1: _idxSw3 = 0.0; _idxSw4 = 1.0; _idxSw5 = 0.0; break;
+            case 2: _idxSw3 = this.m02; _idxSw4 = this.m12; _idxSw5 = 1.0; break;
+            default: throw new IndexOutOfBoundsException("Index out of range: " + col);
+        }
+        d.x = _idxSw3;
+        d.y = _idxSw4;
+        d.z = _idxSw5;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code getColumn}, specialized by runtime matrix properties; reached only
+     * through the public {@code getColumn} dispatcher.
+     */
+    private Double3 getColumn_general(int col, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _idxSw6;
+        double _idxSw7;
+        double _idxSw8;
+        switch (col) {
+            case 0: _idxSw6 = this.m00; _idxSw7 = this.m10; _idxSw8 = this.m20; break;
+            case 1: _idxSw6 = this.m01; _idxSw7 = this.m11; _idxSw8 = this.m21; break;
+            case 2: _idxSw6 = this.m02; _idxSw7 = this.m12; _idxSw8 = this.m22; break;
+            default: throw new IndexOutOfBoundsException("Index out of range: " + col);
+        }
+        d.x = _idxSw6;
+        d.y = _idxSw7;
+        d.z = _idxSw8;
+        return d;
+    }
+
+
+    /**
+     * Get the column at the given index of this matrix and store the result in {@code dest}.
+     *
+     * @param col the column index
+     * @param dest will hold the result
+     * @return dest
+     * @throws IndexOutOfBoundsException if {@code col} is not in {@code [0, COLUMNS)}
+     */
+    public Double3 getColumn(int col, @Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return getColumn_identity(col, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getColumn_translation(col, dest);
+        return getColumn_general(col, dest);
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesXYZ}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesXYZ} dispatcher.
+     */
+    private Double3 getEulerAnglesXYZ_identity(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        d.x = 0.0;
+        d.y = 0.0;
+        d.z = 0.0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesXYZ}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesXYZ} dispatcher.
+     */
+    private Double3 getEulerAnglesXYZ_translation(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t0 = this.m12 * this.m12;
+        d.x = _t0 + 1.0 < (_t0 + (this.m02 * this.m02 + 1.0)) * 1.0E-15 ? 0.0 : Math.atan2(-this.m12, 1.0);
+        d.y = Math.asin(Math.min(1.0, Math.max(-1.0, this.m02)));
+        d.z = 0.0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesXYZ}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesXYZ} dispatcher.
+     */
+    private Double3 getEulerAnglesXYZ_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t3 = this.m12 * this.m12 + this.m22 * this.m22;
+        double _t5 = (_t3 + this.m02 * this.m02) * 1.0E-15;
+        if (_t3 < _t5) {
+            double _buf0 = Math.atan2(this.m21, this.m11);
+            d.z = 0.0;
+            d.x = _buf0;
+        } else {
+            double _buf0 = Math.atan2(-this.m12, this.m22);
+            d.z = Math.atan2(-this.m01, this.m00);
+            d.x = _buf0;
+        }
+        d.y = Math.asin(Math.min(1.0, Math.max(-1.0, this.m02)));
+        return d;
+    }
+
+
+    /**
+     * Get the Euler angles in radians of this matrix, to be applied about the X, Y and Z axes, in
+     * that order and store the result in {@code dest}.
+     * <p>
+     * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
+     * set of angles is returned.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 getEulerAnglesXYZ(@Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return getEulerAnglesXYZ_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getEulerAnglesXYZ_translation(dest);
+        return getEulerAnglesXYZ_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesXZY}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesXZY} dispatcher.
+     */
+    private Double3 getEulerAnglesXZY_identity(@Mutated Double3 dest) {
+        return getEulerAnglesXYZ_identity(dest);
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesXZY}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesXZY} dispatcher.
+     */
+    private Double3 getEulerAnglesXZY_translation(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        if (1.0 < 1.0E-15) {
+            d.x = Math.atan2(-this.m12, 1.0);
+            d.y = 0.0;
+        } else {
+            d.x = 0.0;
+            d.y = Math.atan2(this.m02, 1.0);
+        }
+        d.z = 0.0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesXZY}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesXZY} dispatcher.
+     */
+    private Double3 getEulerAnglesXZY_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t3 = this.m11 * this.m11 + this.m21 * this.m21;
+        double _t5 = (_t3 + this.m01 * this.m01) * 1.0E-15;
+        if (_t3 < _t5) {
+            double _buf0 = Math.atan2(-this.m12, this.m22);
+            double _buf1 = 0.0;
+            d.x = _buf0;
+            d.y = _buf1;
+        } else {
+            double _buf0 = Math.atan2(this.m21, this.m11);
+            double _buf1 = Math.atan2(this.m02, this.m00);
+            d.x = _buf0;
+            d.y = _buf1;
+        }
+        d.z = Math.asin(Math.min(1.0, Math.max(-1.0, -this.m01)));
+        return d;
+    }
+
+
+    /**
+     * Get the Euler angles in radians of this matrix, to be applied about the X, Z and Y axes, in
+     * that order and store the result in {@code dest}.
+     * <p>
+     * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
+     * set of angles is returned.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 getEulerAnglesXZY(@Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return getEulerAnglesXZY_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getEulerAnglesXZY_translation(dest);
+        return getEulerAnglesXZY_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesYXZ}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesYXZ} dispatcher.
+     */
+    private Double3 getEulerAnglesYXZ_identity(@Mutated Double3 dest) {
+        return getEulerAnglesXYZ_identity(dest);
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesYXZ}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesYXZ} dispatcher.
+     */
+    private Double3 getEulerAnglesYXZ_translation(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t0 = this.m02 * this.m02;
+        d.x = Math.asin(Math.min(1.0, Math.max(-1.0, -this.m12)));
+        d.y = _t0 + 1.0 < (_t0 + (this.m12 * this.m12 + 1.0)) * 1.0E-15 ? 0.0 : Math.atan2(this.m02, 1.0);
+        d.z = 0.0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesYXZ}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesYXZ} dispatcher.
+     */
+    private Double3 getEulerAnglesYXZ_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t3 = this.m02 * this.m02 + this.m22 * this.m22;
+        double _t5 = (_t3 + this.m12 * this.m12) * 1.0E-15;
+        if (_t3 < _t5) {
+            d.y = Math.atan2(-this.m20, this.m00);
+            d.z = 0.0;
+        } else {
+            d.y = Math.atan2(this.m02, this.m22);
+            d.z = Math.atan2(this.m10, this.m11);
+        }
+        d.x = Math.asin(Math.min(1.0, Math.max(-1.0, -this.m12)));
+        return d;
+    }
+
+
+    /**
+     * Get the Euler angles in radians of this matrix, to be applied about the Y, X and Z axes, in
+     * that order and store the result in {@code dest}.
+     * <p>
+     * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
+     * set of angles is returned.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 getEulerAnglesYXZ(@Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return getEulerAnglesYXZ_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getEulerAnglesYXZ_translation(dest);
+        return getEulerAnglesYXZ_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesYZX}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesYZX} dispatcher.
+     */
+    private Double3 getEulerAnglesYZX_identity(@Mutated Double3 dest) {
+        return getEulerAnglesXYZ_identity(dest);
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesYZX}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesYZX} dispatcher.
+     */
+    private Double3 getEulerAnglesYZX_translation(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t1 = this.m12 * this.m12 + 1.0;
+        double _t2 = _t1 * 1.0E-15;
+        if (_t1 < _t2) {
+            d.x = 0.0;
+            d.y = Math.atan2(this.m02, 1.0);
+        } else {
+            d.x = Math.atan2(-this.m12, 1.0);
+            d.y = 0.0;
+        }
+        d.z = 0.0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesYZX}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesYZX} dispatcher.
+     */
+    private Double3 getEulerAnglesYZX_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t3 = this.m11 * this.m11 + this.m12 * this.m12;
+        double _t5 = (_t3 + this.m10 * this.m10) * 1.0E-15;
+        if (_t3 < _t5) {
+            double _buf0 = 0.0;
+            d.y = Math.atan2(this.m02, this.m22);
+            d.x = _buf0;
+        } else {
+            double _buf0 = Math.atan2(-this.m12, this.m11);
+            d.y = Math.atan2(-this.m20, this.m00);
+            d.x = _buf0;
+        }
+        d.z = Math.asin(Math.min(1.0, Math.max(-1.0, this.m10)));
+        return d;
+    }
+
+
+    /**
+     * Get the Euler angles in radians of this matrix, to be applied about the Y, Z and X axes, in
+     * that order and store the result in {@code dest}.
+     * <p>
+     * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
+     * set of angles is returned.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 getEulerAnglesYZX(@Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return getEulerAnglesYZX_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getEulerAnglesYZX_translation(dest);
+        return getEulerAnglesYZX_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesZXY}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesZXY} dispatcher.
+     */
+    private Double3 getEulerAnglesZXY_identity(@Mutated Double3 dest) {
+        return getEulerAnglesXYZ_identity(dest);
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesZXY}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesZXY} dispatcher.
+     */
+    private Double3 getEulerAnglesZXY_orthogonal(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t2 = this.m01 * this.m01 + this.m11 * this.m11;
+        double _buf0 = 0.0;
+        double _buf1 = 0.0;
+        d.z = _t2 < _t2 * 1.0E-15 ? Math.atan2(this.m10, this.m00) : Math.atan2(-this.m01, this.m11);
+        d.x = _buf0;
+        d.y = _buf1;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesZXY}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesZXY} dispatcher.
+     */
+    private Double3 getEulerAnglesZXY_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t3 = this.m01 * this.m01 + this.m11 * this.m11;
+        double _t5 = (_t3 + this.m21 * this.m21) * 1.0E-15;
+        if (_t3 < _t5) {
+            double _buf0 = 0.0;
+            d.z = Math.atan2(this.m10, this.m00);
+            d.y = _buf0;
+        } else {
+            double _buf0 = Math.atan2(-this.m20, this.m22);
+            d.z = Math.atan2(-this.m01, this.m11);
+            d.y = _buf0;
+        }
+        d.x = Math.asin(Math.min(1.0, Math.max(-1.0, this.m21)));
+        return d;
+    }
+
+
+    /**
+     * Get the Euler angles in radians of this matrix, to be applied about the Z, X and Y axes, in
+     * that order and store the result in {@code dest}.
+     * <p>
+     * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
+     * set of angles is returned.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 getEulerAnglesZXY(@Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getEulerAnglesZXY_identity(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return getEulerAnglesZXY_orthogonal(dest);
+        return getEulerAnglesZXY_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesZYX}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesZYX} dispatcher.
+     */
+    private Double3 getEulerAnglesZYX_identity(@Mutated Double3 dest) {
+        return getEulerAnglesXYZ_identity(dest);
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesZYX}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesZYX} dispatcher.
+     */
+    private Double3 getEulerAnglesZYX_orthogonal(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _buf0 = 0.0;
+        double _buf1 = 0.0;
+        d.z = 1.0 < 1.0E-15 ? Math.atan2(-this.m01, this.m11) : Math.atan2(this.m10, this.m00);
+        d.x = _buf0;
+        d.y = _buf1;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesZYX}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesZYX} dispatcher.
+     */
+    private Double3 getEulerAnglesZYX_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t3 = this.m21 * this.m21 + this.m22 * this.m22;
+        double _t5 = (_t3 + this.m20 * this.m20) * 1.0E-15;
+        if (_t3 < _t5) {
+            double _buf0 = 0.0;
+            d.z = Math.atan2(-this.m01, this.m11);
+            d.x = _buf0;
+        } else {
+            double _buf0 = Math.atan2(this.m21, this.m22);
+            d.z = Math.atan2(this.m10, this.m00);
+            d.x = _buf0;
+        }
+        d.y = Math.asin(Math.min(1.0, Math.max(-1.0, -this.m20)));
+        return d;
+    }
+
+
+    /**
+     * Get the Euler angles in radians of this matrix, to be applied about the Z, Y and X axes, in
+     * that order and store the result in {@code dest}.
+     * <p>
+     * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
+     * set of angles is returned.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 getEulerAnglesZYX(@Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getEulerAnglesZYX_identity(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return getEulerAnglesZYX_orthogonal(dest);
+        return getEulerAnglesZYX_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code getNormalizedRotation}, specialized by runtime matrix properties;
+     * reached only through the public {@code getNormalizedRotation} dispatcher.
+     */
+    private DoubleQuat getNormalizedRotation_identity(@Mutated DoubleQuat dest) {
+        DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        d.x = 0.0;
+        d.y = 0.0;
+        d.z = 0.0;
+        d.w = 1.0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code getNormalizedRotation}, specialized by runtime matrix properties;
+     * reached only through the public {@code getNormalizedRotation} dispatcher.
+     */
+    private DoubleQuat getNormalizedRotation_translation(@Mutated DoubleQuat dest) {
+        DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _t3 = this.m02 * this.m02 + (this.m12 * this.m12 + 1.0);
+        double _t4 = (1.0 / Math.sqrt(_t3));
+        double _t7, _t10, _t11;
+        if (_t3 > 0.0) {
+            _t7 = _t4;
+            _t10 = this.m12 * _t4;
+            _t11 = this.m02 * _t4;
+        } else {
+            _t7 = 0.0;
+            _t10 = 0.0;
+            _t11 = 0.0;
+        }
+        double _t8 = Math.max(1.0, _t7);
+        double _t12 = _t7 < 0.0 ? -1.0 : 1.0;
+        double _t13 = 1.0 + _t12;
+        double _t15 = _t13 + _t7;
+        double _t19 = 1.0 + _t15;
+        double _t20 = 1.0 + (_t12 - (1.0 + _t7));
+        double _t21 = 1.0 + (_t7 - _t13);
+        double _t22 = 1.0 + (1.0 - (_t12 + _t7));
+        double _t23 = (1.0 / Math.sqrt(_t19));
+        double _t24 = (1.0 / Math.sqrt(_t21));
+        double _t25 = (1.0 / Math.sqrt(_t20));
+        double _t26 = (1.0 / Math.sqrt(_t22));
+        if (_t15 > 0.0) {
+            d.x = -(0.5 * _t23 * _t10);
+            d.y = 0.5 * _t23 * _t11;
+            d.z = 0.0;
+            d.w = 0.5 * Math.sqrt(_t19);
+        } else {
+            if (_t12 > _t8) {
+                d.x = 0.5 * Math.sqrt(_t20);
+                d.y = 0.0;
+                d.z = 0.5 * _t25 * _t11;
+                d.w = -(0.5 * _t25 * _t10);
+            } else {
+                if (1.0 > _t7) {
+                    d.x = 0.0;
+                    d.y = 0.5 * Math.sqrt(_t22);
+                    d.z = 0.5 * _t26 * _t10;
+                    d.w = 0.5 * _t26 * _t11;
+                } else {
+                    d.x = 0.5 * _t24 * _t11;
+                    d.y = 0.5 * _t24 * _t10;
+                    d.z = 0.5 * Math.sqrt(_t21);
+                    d.w = 0.0;
+                }
+            }
+        }
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code getNormalizedRotation}, specialized by runtime matrix properties;
+     * reached only through the public {@code getNormalizedRotation} dispatcher.
+     */
+    private DoubleQuat getNormalizedRotation_general(@Mutated DoubleQuat dest) {
+        DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _t12 = this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21;
+        double _t13 = this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22;
+        double _t14 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
+        double _t15 = (1.0 / Math.sqrt(_t12));
+        double _t16 = (1.0 / Math.sqrt(_t13));
+        double _t17 = (1.0 / Math.sqrt(_t14));
+        double _t27, _t29, _t33;
+        if (_t12 > 0.0) {
+            _t27 = this.m11 * _t15;
+            _t29 = this.m21 * _t15;
+            _t33 = this.m01 * _t15;
+        } else {
+            _t27 = 0.0;
+            _t29 = 0.0;
+            _t33 = 0.0;
+        }
+        double _t28, _t30, _t32;
+        if (_t13 > 0.0) {
+            _t28 = this.m22 * _t16;
+            _t30 = this.m12 * _t16;
+            _t32 = this.m02 * _t16;
+        } else {
+            _t28 = 0.0;
+            _t30 = 0.0;
+            _t32 = 0.0;
+        }
+        double _t31, _t34, _t35;
+        if (_t14 > 0.0) {
+            _t31 = this.m00 * _t17;
+            _t34 = this.m10 * _t17;
+            _t35 = this.m20 * _t17;
+        } else {
+            _t31 = 0.0;
+            _t34 = 0.0;
+            _t35 = 0.0;
+        }
+        double _t45 = _t29 - _t30;
+        double _t46 = Math.max(_t27, _t28);
+        double _t48 = _t29 + _t30;
+        double _t56 = (_t27 * _t28 - _t29 * _t30) * _t31 + (_t29 * _t32 - _t33 * _t28) * _t34 + (_t33 * _t30 - _t27 * _t32) * _t35;
+        double _t57, _t58, _t59;
+        if (_t56 < 0.0) {
+            _t57 = -_t31;
+            _t58 = -_t34;
+            _t59 = -_t35;
+        } else {
+            _t57 = _t31;
+            _t58 = _t34;
+            _t59 = _t35;
+        }
+        double _t60 = _t57 + _t27;
+        double _t61 = _t58 + _t33;
+        double _t63 = _t59 + _t32;
+        double _t64 = _t32 - _t59;
+        double _t65 = _t58 - _t33;
+        double _t66 = _t60 + _t28;
+        double _t70 = 1.0 + _t66;
+        double _t71 = 1.0 + (_t57 - (_t27 + _t28));
+        double _t72 = 1.0 + (_t27 - (_t57 + _t28));
+        double _t73 = 1.0 + (_t28 - _t60);
+        double _t74 = (1.0 / Math.sqrt(_t70));
+        double _t75 = (1.0 / Math.sqrt(_t72));
+        double _t76 = (1.0 / Math.sqrt(_t73));
+        double _t77 = (1.0 / Math.sqrt(_t71));
+        if (_t66 > 0.0) {
+            d.x = 0.5 * _t45 * _t74;
+            d.y = 0.5 * _t64 * _t74;
+            d.z = 0.5 * _t65 * _t74;
+            d.w = 0.5 * Math.sqrt(_t70);
+        } else {
+            if (_t57 > _t46) {
+                d.x = 0.5 * Math.sqrt(_t71);
+                d.y = 0.5 * _t61 * _t77;
+                d.z = 0.5 * _t63 * _t77;
+                d.w = 0.5 * _t45 * _t77;
+            } else {
+                if (_t27 > _t28) {
+                    d.x = 0.5 * _t61 * _t75;
+                    d.y = 0.5 * Math.sqrt(_t72);
+                    d.z = 0.5 * _t48 * _t75;
+                    d.w = 0.5 * _t64 * _t75;
+                } else {
+                    d.x = 0.5 * _t63 * _t76;
+                    d.y = 0.5 * _t48 * _t76;
+                    d.z = 0.5 * Math.sqrt(_t73);
+                    d.w = 0.5 * _t65 * _t76;
+                }
+            }
+        }
+        return d;
+    }
+
+
+    /**
+     * Extract the rotation of this matrix as a unit quaternion, column-normalizing the linear block
+     * first to strip scale (skew is not removed) and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleQuat getNormalizedRotation(@Mutated DoubleQuat dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return getNormalizedRotation_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getNormalizedRotation_translation(dest);
+        return getNormalizedRotation_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code getRow}, specialized by runtime matrix properties; reached only
+     * through the public {@code getRow} dispatcher.
+     */
+    private Double3 getRow_identity(int row, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _idxSw0;
+        double _idxSw1;
+        double _idxSw2;
+        switch (row) {
+            case 0: _idxSw0 = 1.0; _idxSw1 = 0.0; _idxSw2 = 0.0; break;
+            case 1: _idxSw0 = 0.0; _idxSw1 = 1.0; _idxSw2 = 0.0; break;
+            case 2: _idxSw0 = 0.0; _idxSw1 = 0.0; _idxSw2 = 1.0; break;
+            default: throw new IndexOutOfBoundsException("Index out of range: " + row);
+        }
+        d.x = _idxSw0;
+        d.y = _idxSw1;
+        d.z = _idxSw2;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code getRow}, specialized by runtime matrix properties; reached only
+     * through the public {@code getRow} dispatcher.
+     */
+    private Double3 getRow_translation(int row, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _idxSw3;
+        double _idxSw4;
+        double _idxSw5;
+        switch (row) {
+            case 0: _idxSw3 = 1.0; _idxSw4 = 0.0; _idxSw5 = this.m02; break;
+            case 1: _idxSw3 = 0.0; _idxSw4 = 1.0; _idxSw5 = this.m12; break;
+            case 2: _idxSw3 = 0.0; _idxSw4 = 0.0; _idxSw5 = 1.0; break;
+            default: throw new IndexOutOfBoundsException("Index out of range: " + row);
+        }
+        d.x = _idxSw3;
+        d.y = _idxSw4;
+        d.z = _idxSw5;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code getRow}, specialized by runtime matrix properties; reached only
+     * through the public {@code getRow} dispatcher.
+     */
+    private Double3 getRow_general(int row, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _idxSw6;
+        double _idxSw7;
+        double _idxSw8;
+        switch (row) {
+            case 0: _idxSw6 = this.m00; _idxSw7 = this.m01; _idxSw8 = this.m02; break;
+            case 1: _idxSw6 = this.m10; _idxSw7 = this.m11; _idxSw8 = this.m12; break;
+            case 2: _idxSw6 = this.m20; _idxSw7 = this.m21; _idxSw8 = this.m22; break;
+            default: throw new IndexOutOfBoundsException("Index out of range: " + row);
+        }
+        d.x = _idxSw6;
+        d.y = _idxSw7;
+        d.z = _idxSw8;
+        return d;
+    }
+
+
+    /**
+     * Get the row at the given index of this matrix and store the result in {@code dest}.
+     *
+     * @param row the row index
+     * @param dest will hold the result
+     * @return dest
+     * @throws IndexOutOfBoundsException if {@code row} is not in {@code [0, ROWS)}
+     */
+    public Double3 getRow(int row, @Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return getRow_identity(row, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getRow_translation(row, dest);
+        return getRow_general(row, dest);
+    }
+
+
+    /**
+     * Private body of {@code getScale}, specialized by runtime matrix properties; reached only
+     * through the public {@code getScale} dispatcher.
+     */
+    private Double3 getScale_identity(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        d.x = 1.0;
+        d.y = 1.0;
+        d.z = 1.0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code getScale}, specialized by runtime matrix properties; reached only
+     * through the public {@code getScale} dispatcher.
+     */
+    private Double3 getScale_translation(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        d.x = 1.0;
+        d.y = 1.0;
+        d.z = Math.sqrt(this.m02 * this.m02 + (this.m12 * this.m12 + 1.0));
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code getScale}, specialized by runtime matrix properties; reached only
+     * through the public {@code getScale} dispatcher.
+     */
+    private Double3 getScale_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        d.x = Math.sqrt(this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20);
+        d.y = Math.sqrt(this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21);
+        d.z = Math.sqrt(this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22);
+        return d;
+    }
+
+
+    /**
+     * Get the scaling factors of this matrix, as the lengths of its basis columns (always
+     * non-negative; skew is ignored) and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 getScale(@Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return getScale_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getScale_translation(dest);
+        return getScale_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code getTranslation}, specialized by runtime matrix properties; reached
+     * only through the public {@code getTranslation} dispatcher.
+     */
+    private Double2 getTranslation_identity(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = 0.0;
+        d.y = 0.0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code getTranslation}, specialized by runtime matrix properties; reached
+     * only through the public {@code getTranslation} dispatcher.
+     */
+    private Double2 getTranslation_general(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = this.m02;
+        d.y = this.m12;
+        return d;
+    }
+
+
+    /**
+     * Get the translation of this matrix and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 getTranslation(@Mutated Double2 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return getTranslation_identity(dest);
+        return getTranslation_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code getUnnormalizedRotation}, specialized by runtime matrix properties;
+     * reached only through the public {@code getUnnormalizedRotation} dispatcher.
+     */
+    private DoubleQuat getUnnormalizedRotation_identity(@Mutated DoubleQuat dest) {
+        return getNormalizedRotation_identity(dest);
+    }
+
+
+    /**
+     * Private body of {@code getUnnormalizedRotation}, specialized by runtime matrix properties;
+     * reached only through the public {@code getUnnormalizedRotation} dispatcher.
+     */
+    private DoubleQuat getUnnormalizedRotation_translation(@Mutated DoubleQuat dest) {
+        DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        d.x = -(0.25 * this.m12);
+        d.y = 0.25 * this.m02;
+        d.z = 0.0;
+        d.w = 1.0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code getUnnormalizedRotation}, specialized by runtime matrix properties;
+     * reached only through the public {@code getUnnormalizedRotation} dispatcher.
+     */
+    private DoubleQuat getUnnormalizedRotation_orthogonal(@Mutated DoubleQuat dest) {
+        DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _t0 = Math.max(this.m11, 1.0);
+        double _t3 = this.m00 + this.m11;
+        double _t4 = this.m01 + this.m10;
+        double _t5 = this.m10 - this.m01;
+        double _t6 = 1.0 + _t3;
+        double _t10 = 1.0 + _t6;
+        double _t11 = 1.0 + (this.m00 - (1.0 + this.m11));
+        double _t12 = 1.0 + (this.m11 - (1.0 + this.m00));
+        double _t13 = 1.0 + (1.0 - _t3);
+        double _t14 = (1.0 / Math.sqrt(_t10));
+        double _t15 = (1.0 / Math.sqrt(_t12));
+        double _t16 = (1.0 / Math.sqrt(_t13));
+        double _t17 = (1.0 / Math.sqrt(_t11));
+        if (_t6 > 0.0) {
+            double _buf0 = -(0.5 * this.m12 * _t14);
+            d.y = 0.5 * this.m02 * _t14;
+            double _buf1 = 0.5 * _t5 * _t14;
+            d.w = 0.5 * Math.sqrt(_t10);
+            d.x = _buf0;
+            d.z = _buf1;
+        } else {
+            if (this.m00 > _t0) {
+                double _buf0 = 0.5 * Math.sqrt(_t11);
+                d.y = 0.5 * _t4 * _t17;
+                double _buf1 = 0.5 * this.m02 * _t17;
+                d.w = -(0.5 * this.m12 * _t17);
+                d.x = _buf0;
+                d.z = _buf1;
+            } else {
+                if (this.m11 > 1.0) {
+                    double _buf0 = 0.5 * _t4 * _t15;
+                    d.y = 0.5 * Math.sqrt(_t12);
+                    double _buf1 = 0.5 * this.m12 * _t15;
+                    d.w = 0.5 * this.m02 * _t15;
+                    d.x = _buf0;
+                    d.z = _buf1;
+                } else {
+                    double _buf0 = 0.5 * this.m02 * _t16;
+                    d.y = 0.5 * this.m12 * _t16;
+                    double _buf1 = 0.5 * Math.sqrt(_t13);
+                    d.w = 0.5 * _t5 * _t16;
+                    d.x = _buf0;
+                    d.z = _buf1;
+                }
+            }
+        }
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code getUnnormalizedRotation}, specialized by runtime matrix properties;
+     * reached only through the public {@code getUnnormalizedRotation} dispatcher.
+     */
+    private DoubleQuat getUnnormalizedRotation_general(@Mutated DoubleQuat dest) {
+        DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _t0 = this.m00 + this.m11;
+        double _t1 = this.m21 - this.m12;
+        double _t2 = Math.max(this.m11, this.m22);
+        double _t4 = this.m01 + this.m10;
+        double _t6 = this.m02 + this.m20;
+        double _t7 = this.m02 - this.m20;
+        double _t8 = this.m12 + this.m21;
+        double _t9 = this.m10 - this.m01;
+        double _t10 = this.m22 + _t0;
+        double _t14 = 1.0 + _t10;
+        double _t15 = 1.0 + (this.m00 - (this.m11 + this.m22));
+        double _t16 = 1.0 + (this.m11 - (this.m00 + this.m22));
+        double _t17 = 1.0 + (this.m22 - _t0);
+        double _t18 = (1.0 / Math.sqrt(_t14));
+        double _t19 = (1.0 / Math.sqrt(_t16));
+        double _t20 = (1.0 / Math.sqrt(_t17));
+        double _t21 = (1.0 / Math.sqrt(_t15));
+        if (_t10 > 0.0) {
+            double _buf0 = 0.5 * _t1 * _t18;
+            d.y = 0.5 * _t7 * _t18;
+            d.z = 0.5 * _t9 * _t18;
+            d.w = 0.5 * Math.sqrt(_t14);
+            d.x = _buf0;
+        } else {
+            if (this.m00 > _t2) {
+                double _buf0 = 0.5 * Math.sqrt(_t15);
+                d.y = 0.5 * _t4 * _t21;
+                d.z = 0.5 * _t6 * _t21;
+                d.w = 0.5 * _t1 * _t21;
+                d.x = _buf0;
+            } else {
+                if (this.m11 > this.m22) {
+                    double _buf0 = 0.5 * _t4 * _t19;
+                    d.y = 0.5 * Math.sqrt(_t16);
+                    d.z = 0.5 * _t8 * _t19;
+                    d.w = 0.5 * _t7 * _t19;
+                    d.x = _buf0;
+                } else {
+                    double _buf0 = 0.5 * _t6 * _t20;
+                    d.y = 0.5 * _t8 * _t20;
+                    d.z = 0.5 * Math.sqrt(_t17);
+                    d.w = 0.5 * _t9 * _t20;
+                    d.x = _buf0;
+                }
+            }
+        }
+        return d;
+    }
+
+
+    /**
+     * Extract the rotation of this matrix as a quaternion directly from the linear block without
+     * normalizing it, assuming it is already orthonormal and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleQuat getUnnormalizedRotation(@Mutated DoubleQuat dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return getUnnormalizedRotation_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getUnnormalizedRotation_translation(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return getUnnormalizedRotation_orthogonal(dest);
+        return getUnnormalizedRotation_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code cofactor}, specialized by runtime matrix properties; reached only
+     * through the public {@code cofactor} dispatcher.
+     */
+    private Double3x3 cofactor_identity(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_IDENTITY;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code cofactor}, specialized by runtime matrix
+     * properties; reached only through the public {@code cofactor} dispatcher.
+     */
+    private Double3x3 cofactor_identity_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.properties = Joml.BIT_IDENTITY;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code cofactor}, specialized by runtime matrix properties; reached only
+     * through the public {@code cofactor} dispatcher.
+     */
+    private Double3x3 cofactor_translation(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = -this.m02;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = -this.m12;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code cofactor}, specialized by runtime matrix
+     * properties; reached only through the public {@code cofactor} dispatcher.
+     */
+    private Double3x3 cofactor_translation_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m20 = -this.m02;
+        d.m21 = -this.m12;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code cofactor}, specialized by runtime matrix properties; reached only
+     * through the public {@code cofactor} dispatcher.
+     */
+    private Double3x3 cofactor_orthogonal(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m11;
+        double _buf0 = this.m10;
+        d.m20 = -(this.m10 * this.m12) - this.m02 * this.m11;
+        d.m01 = -this.m10;
+        double _buf1 = this.m11;
+        d.m21 = this.m02 * this.m10 - this.m11 * this.m12;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 1.0;
+        d.m10 = _buf0;
+        d.m11 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code cofactor}, specialized by runtime matrix
+     * properties; reached only through the public {@code cofactor} dispatcher.
+     */
+    private Double3x3 cofactor_orthogonal_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m11;
+        double _buf0 = this.m10;
+        d.m20 = -(this.m10 * this.m12) - this.m02 * this.m11;
+        d.m01 = -this.m10;
+        double _buf1 = this.m11;
+        d.m21 = this.m02 * this.m10 - this.m11 * this.m12;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m10 = _buf0;
+        d.m11 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code cofactor}, specialized by runtime matrix properties; reached only
+     * through the public {@code cofactor} dispatcher.
+     */
+    private Double3x3 cofactor_affine(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = this.m11;
+        double _buf1 = -this.m01;
+        d.m20 = this.m01 * this.m12 - this.m02 * this.m11;
+        double _buf2 = -this.m10;
+        double _buf3 = this.m00;
+        d.m21 = this.m02 * this.m10 - this.m00 * this.m12;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = this.m00 * this.m11 - this.m01 * this.m10;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code cofactor}, specialized by runtime matrix properties; reached only
+     * through the public {@code cofactor} dispatcher.
+     */
+    private Double3x3 cofactor_general(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = this.m11 * this.m22 - this.m12 * this.m21;
+        double _buf1 = this.m02 * this.m21 - this.m01 * this.m22;
+        double _buf2 = this.m01 * this.m12 - this.m02 * this.m11;
+        double _buf3 = this.m12 * this.m20 - this.m10 * this.m22;
+        double _buf4 = this.m00 * this.m22 - this.m02 * this.m20;
+        double _buf5 = this.m02 * this.m10 - this.m00 * this.m12;
+        d.m02 = this.m10 * this.m21 - this.m11 * this.m20;
+        d.m12 = this.m01 * this.m20 - this.m00 * this.m21;
+        d.m22 = this.m00 * this.m11 - this.m01 * this.m10;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Compute the cofactor matrix of this matrix and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 cofactor(@Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return cofactor_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return cofactor_translation(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return cofactor_orthogonal(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return cofactor_affine(dest);
+        return cofactor_general(dest);
+    }
+
+
+    /**
+     * Compute the cofactor matrix of this matrix.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 cofactor() {
+        if (Joml.RETURN_NEW) return cofactor(Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return cofactor_identity_self(this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return cofactor_translation_self(this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return cofactor_orthogonal_self(this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return cofactor_affine(this);
+        return cofactor_general(this);
+    }
+
+
+    /**
+     * Compute the determinant of this matrix.
+     *
+     * @return the determinant of this matrix
+     */
+    public double determinant() {
+        return this.m00 * (this.m11 * this.m22 - this.m12 * this.m21) - this.m01 * (this.m10 * this.m22 - this.m12 * this.m20) + this.m02 * (this.m10 * this.m21 - this.m11 * this.m20);
+    }
+
+
+    /**
+     * Compute the Frobenius norm of this matrix.
+     *
+     * @return the Frobenius norm of this matrix
+     */
+    public double frobeniusNorm() {
+        return Math.sqrt(this.m00 * this.m00 + this.m01 * this.m01 + (this.m02 * this.m02 + this.m10 * this.m10) + (this.m11 * this.m11 + this.m12 * this.m12 + (this.m20 * this.m20 + (this.m21 * this.m21 + this.m22 * this.m22))));
+    }
+
+
+    /**
+     * Private body of {@code invert}, specialized by runtime matrix properties; reached only
+     * through the public {@code invert} dispatcher.
+     */
+    private Double3x3 invert_identity(@Mutated Double3x3 dest) {
+        return cofactor_identity(dest);
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code invert}, specialized by runtime matrix properties;
+     * reached only through the public {@code invert} dispatcher.
+     */
+    private Double3x3 invert_identity_self(@Mutated Double3x3 dest) {
+        return cofactor_identity_self(dest);
+    }
+
+
+    /**
+     * Private body of {@code invert}, specialized by runtime matrix properties; reached only
+     * through the public {@code invert} dispatcher.
+     */
+    private Double3x3 invert_translation(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_TRANSLATION;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code invert}, specialized by runtime matrix properties;
+     * reached only through the public {@code invert} dispatcher.
+     */
+    private Double3x3 invert_translation_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.properties = Joml.BIT_TRANSLATION;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invert}, specialized by runtime matrix properties; reached only
+     * through the public {@code invert} dispatcher.
+     */
+    private Double3x3 invert_orthogonal(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m11;
+        double _buf0 = -this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m10;
+        double _buf1 = this.m11;
+        d.m21 = 0.0;
+        double _buf2 = -(this.m10 * this.m12) - this.m02 * this.m11;
+        d.m12 = this.m02 * this.m10 - this.m11 * this.m12;
+        d.m22 = 1.0;
+        d.m10 = _buf0;
+        d.m11 = _buf1;
+        d.m02 = _buf2;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code invert}, specialized by runtime matrix properties;
+     * reached only through the public {@code invert} dispatcher.
+     */
+    private Double3x3 invert_orthogonal_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m11;
+        double _buf0 = -this.m10;
+        d.m01 = this.m10;
+        double _buf1 = this.m11;
+        double _buf2 = -(this.m10 * this.m12) - this.m02 * this.m11;
+        d.m12 = this.m02 * this.m10 - this.m11 * this.m12;
+        d.m10 = _buf0;
+        d.m11 = _buf1;
+        d.m02 = _buf2;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invert}, specialized by runtime matrix properties; reached only
+     * through the public {@code invert} dispatcher.
+     */
+    private Double3x3 invert_affine(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = this.m00 * this.m11 - this.m01 * this.m10;
+        double _t2_inv = 1.0 / _t2;
+        double _buf0 = this.m11 * _t2_inv;
+        double _buf1 = -(this.m10 * _t2_inv);
+        d.m20 = 0.0;
+        double _buf2 = -(this.m01 * _t2_inv);
+        double _buf3 = this.m00 * _t2_inv;
+        d.m21 = 0.0;
+        double _buf4 = (this.m01 * this.m12 - this.m02 * this.m11) * _t2_inv;
+        d.m12 = (this.m02 * this.m10 - this.m00 * this.m12) * _t2_inv;
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.m02 = _buf4;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code invert}, specialized by runtime matrix properties;
+     * reached only through the public {@code invert} dispatcher.
+     */
+    private Double3x3 invert_affine_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = this.m00 * this.m11 - this.m01 * this.m10;
+        double _t2_inv = 1.0 / _t2;
+        double _buf0 = this.m11 * _t2_inv;
+        double _buf1 = -(this.m10 * _t2_inv);
+        double _buf2 = -(this.m01 * _t2_inv);
+        double _buf3 = this.m00 * _t2_inv;
+        double _buf4 = (this.m01 * this.m12 - this.m02 * this.m11) * _t2_inv;
+        d.m12 = (this.m02 * this.m10 - this.m00 * this.m12) * _t2_inv;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.m02 = _buf4;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invert}, specialized by runtime matrix properties; reached only
+     * through the public {@code invert} dispatcher.
+     */
+    private Double3x3 invert_general(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = this.m10 * this.m22;
+        double _t3 = this.m12 * this.m20;
+        double _t6 = this.m11 * this.m22 - this.m12 * this.m21;
+        double _t8 = this.m10 * this.m21 - this.m11 * this.m20;
+        double _t13 = this.m00 * _t6 - this.m01 * (_t2 - _t3) + this.m02 * _t8;
+        double _t13_inv = 1.0 / _t13;
+        double _buf0 = _t6 * _t13_inv;
+        double _buf1 = (_t3 - _t2) * _t13_inv;
+        double _buf2 = _t8 * _t13_inv;
+        double _buf3 = (this.m02 * this.m21 - this.m01 * this.m22) * _t13_inv;
+        double _buf4 = (this.m00 * this.m22 - this.m02 * this.m20) * _t13_inv;
+        d.m21 = (this.m01 * this.m20 - this.m00 * this.m21) * _t13_inv;
+        double _buf5 = (this.m01 * this.m12 - this.m02 * this.m11) * _t13_inv;
+        d.m12 = (this.m02 * this.m10 - this.m00 * this.m12) * _t13_inv;
+        d.m22 = (this.m00 * this.m11 - this.m01 * this.m10) * _t13_inv;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m02 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Invert this matrix and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 invert(@Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return invert_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invert_translation(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return invert_orthogonal(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return invert_affine(dest);
+        return invert_general(dest);
+    }
+
+
+    /**
+     * Invert this matrix.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 invert() {
+        if (Joml.RETURN_NEW) return invert(Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return invert_identity_self(this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invert_translation_self(this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return invert_orthogonal_self(this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return invert_affine_self(this);
+        return invert_general(this);
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Double3x3 invertProduct_general(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t36 = other.m01() * this.m10 + other.m11() * this.m11 + other.m21() * this.m12;
+        double _t37 = other.m02() * this.m20 + other.m12() * this.m21 + other.m22() * this.m22;
+        double _t38 = other.m01() * this.m20 + other.m11() * this.m21 + other.m21() * this.m22;
+        double _t39 = other.m02() * this.m10 + other.m12() * this.m11 + other.m22() * this.m12;
+        double _t40 = other.m00() * this.m00 + other.m10() * this.m01 + other.m20() * this.m02;
+        double _t41 = other.m01() * this.m00 + other.m11() * this.m01 + other.m21() * this.m02;
+        double _t42 = other.m00() * this.m10 + other.m10() * this.m11 + other.m20() * this.m12;
+        double _t43 = other.m00() * this.m20 + other.m10() * this.m21 + other.m20() * this.m22;
+        double _t44 = other.m02() * this.m00 + other.m12() * this.m01 + other.m22() * this.m02;
+        double _t47 = _t42 * _t37;
+        double _t48 = _t43 * _t39;
+        double _t51 = _t36 * _t37 - _t38 * _t39;
+        double _t53 = _t42 * _t38 - _t43 * _t36;
+        double _t58 = _t40 * _t51 - _t41 * (_t47 - _t48) + _t44 * _t53;
+        double _t58_inv = 1.0 / _t58;
+        d.m00 = _t51 * _t58_inv;
+        d.m10 = (_t48 - _t47) * _t58_inv;
+        d.m20 = _t53 * _t58_inv;
+        d.m01 = (_t38 * _t44 - _t41 * _t37) * _t58_inv;
+        d.m11 = (_t40 * _t37 - _t43 * _t44) * _t58_inv;
+        d.m21 = (_t43 * _t41 - _t40 * _t38) * _t58_inv;
+        d.m02 = (_t41 * _t39 - _t36 * _t44) * _t58_inv;
+        d.m12 = (_t42 * _t44 - _t40 * _t39) * _t58_inv;
+        d.m22 = (_t40 * _t36 - _t42 * _t41) * _t58_inv;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Double3x3 invertProduct_identity(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = other.m10() * other.m22();
+        double _t3 = other.m12() * other.m20();
+        double _t6 = other.m11() * other.m22() - other.m12() * other.m21();
+        double _t8 = other.m10() * other.m21() - other.m11() * other.m20();
+        double _t13 = other.m00() * _t6 - other.m01() * (_t2 - _t3) + other.m02() * _t8;
+        double _t13_inv = 1.0 / _t13;
+        double _buf0 = _t6 * _t13_inv;
+        double _buf1 = (_t3 - _t2) * _t13_inv;
+        double _buf2 = _t8 * _t13_inv;
+        double _buf3 = (other.m02() * other.m21() - other.m01() * other.m22()) * _t13_inv;
+        double _buf4 = (other.m00() * other.m22() - other.m02() * other.m20()) * _t13_inv;
+        d.m21 = (other.m01() * other.m20() - other.m00() * other.m21()) * _t13_inv;
+        double _buf5 = (other.m01() * other.m12() - other.m02() * other.m11()) * _t13_inv;
+        d.m12 = (other.m02() * other.m10() - other.m00() * other.m12()) * _t13_inv;
+        d.m22 = (other.m00() * other.m11() - other.m01() * other.m10()) * _t13_inv;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m02 = _buf5;
+        d.properties = ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Double3x3 invertProduct_translation(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t6 = other.m21() * this.m12 + other.m11();
+        double _t7 = other.m22() * this.m12 + other.m12();
+        double _t8 = other.m20() * this.m02 + other.m00();
+        double _t9 = other.m21() * this.m02 + other.m01();
+        double _t10 = other.m20() * this.m12 + other.m10();
+        double _t11 = other.m22() * this.m02 + other.m02();
+        double _t14 = other.m22() * _t10;
+        double _t15 = other.m20() * _t7;
+        double _t18 = other.m22() * _t6 - other.m21() * _t7;
+        double _t20 = other.m21() * _t10 - other.m20() * _t6;
+        double _t25 = _t8 * _t18 - _t9 * (_t14 - _t15) + _t11 * _t20;
+        double _t25_inv = 1.0 / _t25;
+        d.m00 = _t18 * _t25_inv;
+        d.m10 = (_t15 - _t14) * _t25_inv;
+        double _buf0 = _t20 * _t25_inv;
+        d.m01 = (other.m21() * _t11 - other.m22() * _t9) * _t25_inv;
+        d.m11 = (other.m22() * _t8 - other.m20() * _t11) * _t25_inv;
+        d.m21 = (other.m20() * _t9 - other.m21() * _t8) * _t25_inv;
+        d.m02 = (_t9 * _t7 - _t11 * _t6) * _t25_inv;
+        d.m12 = (_t11 * _t10 - _t8 * _t7) * _t25_inv;
+        d.m22 = (_t8 * _t6 - _t9 * _t10) * _t25_inv;
+        d.m20 = _buf0;
+        d.properties = Joml.BIT_TRANSLATION & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Double3x3 invertProduct_orthogonal(Double3x3R other, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t24 = other.m01() * this.m10 + other.m11() * this.m11 + other.m21() * this.m12;
+        double _t25 = other.m02() * this.m10 + other.m12() * this.m11 + other.m22() * this.m12;
+        double _t26 = other.m00() * this.m00 + other.m10() * this.m01 + other.m20() * this.m02;
+        double _t27 = other.m01() * this.m00 + other.m11() * this.m01 + other.m21() * this.m02;
+        double _t28 = other.m00() * this.m10 + other.m10() * this.m11 + other.m20() * this.m12;
+        double _t29 = other.m02() * this.m00 + other.m12() * this.m01 + other.m22() * this.m02;
+        double _t32 = other.m22() * _t28;
+        double _t33 = other.m20() * _t25;
+        double _t36 = other.m22() * _t24 - other.m21() * _t25;
+        double _t38 = other.m21() * _t28 - other.m20() * _t24;
+        double _t43 = _t26 * _t36 - _t27 * (_t32 - _t33) + _t29 * _t38;
+        double _t43_inv = 1.0 / _t43;
+        d.m00 = _t36 * _t43_inv;
+        d.m10 = (_t33 - _t32) * _t43_inv;
+        double _buf0 = _t38 * _t43_inv;
+        d.m01 = (other.m21() * _t29 - other.m22() * _t27) * _t43_inv;
+        d.m11 = (other.m22() * _t26 - other.m20() * _t29) * _t43_inv;
+        d.m21 = (other.m20() * _t27 - other.m21() * _t26) * _t43_inv;
+        d.m02 = (_t27 * _t25 - _t24 * _t29) * _t43_inv;
+        d.m12 = (_t28 * _t29 - _t26 * _t25) * _t43_inv;
+        d.m22 = (_t26 * _t24 - _t28 * _t27) * _t43_inv;
+        d.m20 = _buf0;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Double3x3 invertProduct_identity_identity(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 1.0;
+        d.properties = ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Double3x3 invertProduct_identity_translation(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = -other.m02();
+        d.m12 = -other.m12();
+        d.m22 = 1.0;
+        d.properties = ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Double3x3 invertProduct_identity_affine(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = other.m00() * other.m11() - other.m01() * other.m10();
+        double _t2_inv = 1.0 / _t2;
+        double _buf0 = other.m11() * _t2_inv;
+        double _buf1 = -(other.m10() * _t2_inv);
+        d.m20 = 0.0;
+        double _buf2 = -(other.m01() * _t2_inv);
+        double _buf3 = other.m00() * _t2_inv;
+        d.m21 = 0.0;
+        double _buf4 = (other.m01() * other.m12() - other.m02() * other.m11()) * _t2_inv;
+        d.m12 = (other.m02() * other.m10() - other.m00() * other.m12()) * _t2_inv;
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.m02 = _buf4;
+        d.properties = ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Double3x3 invertProduct_translation_identity(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_TRANSLATION & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Double3x3 invertProduct_translation_translation(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = -(other.m02() + this.m02);
+        d.m12 = -(other.m12() + this.m12);
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_TRANSLATION & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Double3x3 invertProduct_translation_affine(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = other.m12() + this.m12;
+        double _t3 = other.m02() + this.m02;
+        double _t4 = other.m00() * other.m11() - other.m01() * other.m10();
+        double _t4_inv = 1.0 / _t4;
+        double _buf0 = other.m11() * _t4_inv;
+        double _buf1 = -(other.m10() * _t4_inv);
+        d.m20 = 0.0;
+        double _buf2 = -(other.m01() * _t4_inv);
+        double _buf3 = other.m00() * _t4_inv;
+        d.m21 = 0.0;
+        d.m02 = (other.m01() * _t2 - other.m11() * _t3) * _t4_inv;
+        d.m12 = (other.m10() * _t3 - other.m00() * _t2) * _t4_inv;
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = Joml.BIT_TRANSLATION & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Double3x3 invertProduct_orthogonal_identity(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m11;
+        double _buf0 = -this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m10;
+        double _buf1 = this.m11;
+        d.m21 = 0.0;
+        double _buf2 = -(this.m10 * this.m12) - this.m02 * this.m11;
+        d.m12 = this.m02 * this.m10 - this.m11 * this.m12;
+        d.m22 = 1.0;
+        d.m10 = _buf0;
+        d.m11 = _buf1;
+        d.m02 = _buf2;
+        d.properties = Joml.BIT_ORTHOGONAL & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Double3x3 invertProduct_orthogonal_translation(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m11;
+        double _buf0 = -this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m10;
+        double _buf1 = this.m11;
+        d.m21 = 0.0;
+        double _buf2 = -other.m02() - this.m02 * this.m11 - this.m10 * this.m12;
+        d.m12 = this.m02 * this.m10 + (-other.m12() - this.m11 * this.m12);
+        d.m22 = 1.0;
+        d.m10 = _buf0;
+        d.m11 = _buf1;
+        d.m02 = _buf2;
+        d.properties = Joml.BIT_ORTHOGONAL & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Double3x3 invertProduct_orthogonal_affine(Double3x3R other, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t14 = other.m01() * this.m10 + other.m11() * this.m11;
+        double _t15 = other.m00() * this.m00 + other.m10() * this.m01;
+        double _t16 = other.m00() * this.m10 + other.m10() * this.m11;
+        double _t17 = other.m01() * this.m00 + other.m11() * this.m01;
+        double _t18 = other.m02() * this.m10 + (other.m12() * this.m11 + this.m12);
+        double _t19 = other.m02() * this.m00 + (other.m12() * this.m01 + this.m02);
+        double _t22 = _t15 * _t14 - _t16 * _t17;
+        double _t22_inv = 1.0 / _t22;
+        d.m00 = _t14 * _t22_inv;
+        d.m10 = -(_t16 * _t22_inv);
+        d.m20 = 0.0;
+        d.m01 = -(_t17 * _t22_inv);
+        d.m11 = _t15 * _t22_inv;
+        d.m21 = 0.0;
+        d.m02 = (_t18 * _t17 - _t19 * _t14) * _t22_inv;
+        d.m12 = (_t19 * _t16 - _t18 * _t15) * _t22_inv;
+        d.m22 = 1.0;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Double3x3 invertProduct_affine_identity(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = this.m00 * this.m11 - this.m01 * this.m10;
+        double _t2_inv = 1.0 / _t2;
+        double _buf0 = this.m11 * _t2_inv;
+        double _buf1 = -(this.m10 * _t2_inv);
+        d.m20 = 0.0;
+        double _buf2 = -(this.m01 * _t2_inv);
+        double _buf3 = this.m00 * _t2_inv;
+        d.m21 = 0.0;
+        double _buf4 = (this.m01 * this.m12 - this.m02 * this.m11) * _t2_inv;
+        d.m12 = (this.m02 * this.m10 - this.m00 * this.m12) * _t2_inv;
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.m02 = _buf4;
+        d.properties = Joml.BIT_AFFINE & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Double3x3 invertProduct_affine_translation(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t8 = this.m00 * this.m11 - this.m01 * this.m10;
+        double _t8_inv = 1.0 / _t8;
+        double _t9 = other.m02() * this.m10 + (other.m12() * this.m11 + this.m12);
+        double _t10 = other.m02() * this.m00 + (other.m12() * this.m01 + this.m02);
+        double _buf0 = this.m11 * _t8_inv;
+        double _buf1 = -(this.m10 * _t8_inv);
+        d.m20 = 0.0;
+        double _buf2 = -(this.m01 * _t8_inv);
+        double _buf3 = this.m00 * _t8_inv;
+        d.m21 = 0.0;
+        d.m02 = (this.m01 * _t9 - this.m11 * _t10) * _t8_inv;
+        d.m12 = (this.m10 * _t10 - this.m00 * _t9) * _t8_inv;
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = Joml.BIT_AFFINE & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Double3x3 invertProduct_general_identity(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = this.m10 * this.m22;
+        double _t3 = this.m12 * this.m20;
+        double _t6 = this.m11 * this.m22 - this.m12 * this.m21;
+        double _t8 = this.m10 * this.m21 - this.m11 * this.m20;
+        double _t13 = this.m00 * _t6 - this.m01 * (_t2 - _t3) + this.m02 * _t8;
+        double _t13_inv = 1.0 / _t13;
+        double _buf0 = _t6 * _t13_inv;
+        double _buf1 = (_t3 - _t2) * _t13_inv;
+        double _buf2 = _t8 * _t13_inv;
+        double _buf3 = (this.m02 * this.m21 - this.m01 * this.m22) * _t13_inv;
+        double _buf4 = (this.m00 * this.m22 - this.m02 * this.m20) * _t13_inv;
+        d.m21 = (this.m01 * this.m20 - this.m00 * this.m21) * _t13_inv;
+        double _buf5 = (this.m01 * this.m12 - this.m02 * this.m11) * _t13_inv;
+        d.m12 = (this.m02 * this.m10 - this.m00 * this.m12) * _t13_inv;
+        d.m22 = (this.m00 * this.m11 - this.m01 * this.m10) * _t13_inv;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m02 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Double3x3 invertProduct_general_translation(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t11 = this.m10 * this.m21 - this.m11 * this.m20;
+        double _t12 = other.m02() * this.m20 + (other.m12() * this.m21 + this.m22);
+        double _t13 = other.m02() * this.m10 + (other.m12() * this.m11 + this.m12);
+        double _t14 = other.m02() * this.m00 + (other.m12() * this.m01 + this.m02);
+        double _t17 = this.m10 * _t12;
+        double _t18 = this.m20 * _t13;
+        double _t20 = this.m11 * _t12 - this.m21 * _t13;
+        double _t25 = this.m00 * _t20 - this.m01 * (_t17 - _t18) + _t14 * _t11;
+        double _t25_inv = 1.0 / _t25;
+        double _buf0 = _t20 * _t25_inv;
+        double _buf1 = (_t18 - _t17) * _t25_inv;
+        double _buf2 = _t11 * _t25_inv;
+        double _buf3 = (this.m21 * _t14 - this.m01 * _t12) * _t25_inv;
+        double _buf4 = (this.m00 * _t12 - this.m20 * _t14) * _t25_inv;
+        d.m21 = (this.m01 * this.m20 - this.m00 * this.m21) * _t25_inv;
+        d.m02 = (this.m01 * _t13 - this.m11 * _t14) * _t25_inv;
+        d.m12 = (this.m10 * _t14 - this.m00 * _t13) * _t25_inv;
+        d.m22 = (this.m00 * this.m11 - this.m01 * this.m10) * _t25_inv;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invertProduct}, specialized by runtime matrix properties; reached only
+     * through the public {@code invertProduct} dispatcher.
+     */
+    private Double3x3 invertProduct_general_affine(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t21 = other.m01() * this.m10 + other.m11() * this.m11;
+        double _t22 = other.m01() * this.m20 + other.m11() * this.m21;
+        double _t23 = other.m00() * this.m00 + other.m10() * this.m01;
+        double _t24 = other.m01() * this.m00 + other.m11() * this.m01;
+        double _t25 = other.m00() * this.m10 + other.m10() * this.m11;
+        double _t26 = other.m00() * this.m20 + other.m10() * this.m21;
+        double _t27 = other.m02() * this.m20 + (other.m12() * this.m21 + this.m22);
+        double _t28 = other.m02() * this.m10 + (other.m12() * this.m11 + this.m12);
+        double _t29 = other.m02() * this.m00 + (other.m12() * this.m01 + this.m02);
+        double _t34 = _t27 * _t25;
+        double _t35 = _t28 * _t26;
+        double _t36 = _t25 * _t22 - _t26 * _t21;
+        double _t37 = _t27 * _t21 - _t28 * _t22;
+        double _t43 = _t23 * _t37 - _t24 * (_t34 - _t35) + _t29 * _t36;
+        double _t43_inv = 1.0 / _t43;
+        d.m00 = _t37 * _t43_inv;
+        d.m10 = (_t35 - _t34) * _t43_inv;
+        d.m20 = _t36 * _t43_inv;
+        d.m01 = (_t29 * _t22 - _t27 * _t24) * _t43_inv;
+        d.m11 = (_t27 * _t23 - _t29 * _t26) * _t43_inv;
+        d.m21 = (_t26 * _t24 - _t23 * _t22) * _t43_inv;
+        d.m02 = (_t28 * _t24 - _t29 * _t21) * _t43_inv;
+        d.m12 = (_t29 * _t25 - _t28 * _t23) * _t43_inv;
+        d.m22 = (_t23 * _t21 - _t25 * _t24) * _t43_inv;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Compute the inverse of the product of this matrix and {@code other}, i.e.
+     * {@code (this * other)^-1} and store the result in {@code dest}.
+     *
+     * @param other the other matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 invertProduct(Double3x3R other, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        int q = ((Double3x3Impl) other).properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return invertProduct_identity_identity(other, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invertProduct_identity_translation(other, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return invertProduct_identity_affine(other, dest);
+            return invertProduct_identity(other, dest);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return invertProduct_translation_identity(other, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invertProduct_translation_translation(other, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return invertProduct_translation_affine(other, dest);
+            return invertProduct_translation(other, dest);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return invertProduct_orthogonal_identity(other, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invertProduct_orthogonal_translation(other, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return invertProduct_orthogonal_affine(other, dest, Joml.BIT_ORTHOGONAL & q);
+            return invertProduct_orthogonal(other, dest, Joml.BIT_ORTHOGONAL & q);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return invertProduct_affine_identity(other, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invertProduct_affine_translation(other, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return invertProduct_orthogonal_affine(other, dest, Joml.BIT_AFFINE & q);
+            return invertProduct_orthogonal(other, dest, Joml.BIT_AFFINE & q);
+        }
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return invertProduct_general_identity(other, dest);
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invertProduct_general_translation(other, dest);
+        if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return invertProduct_general_affine(other, dest);
+        return invertProduct_general(other, dest);
+    }
+
+
+    /**
+     * Compute the inverse of the product of this matrix and {@code other}, i.e.
+     * {@code (this * other)^-1}.
+     *
+     * @param other the other matrix
+     * @return this
+     */
+    @Mutated public Double3x3 invertProduct(Double3x3R other) {
+        if (Joml.RETURN_NEW) return invertProduct(other, Joml.double3x3());
+        int p = this.properties;
+        int q = ((Double3x3Impl) other).properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return invertProduct_identity_identity(other, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invertProduct_identity_translation(other, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return invertProduct_identity_affine(other, this);
+            return invertProduct_identity(other, this);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return invertProduct_translation_identity(other, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invertProduct_translation_translation(other, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return invertProduct_translation_affine(other, this);
+            return invertProduct_translation(other, this);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return invertProduct_orthogonal_identity(other, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invertProduct_orthogonal_translation(other, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return invertProduct_orthogonal_affine(other, this, Joml.BIT_ORTHOGONAL & q);
+            return invertProduct_orthogonal(other, this, Joml.BIT_ORTHOGONAL & q);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return invertProduct_affine_identity(other, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invertProduct_affine_translation(other, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return invertProduct_orthogonal_affine(other, this, Joml.BIT_AFFINE & q);
+            return invertProduct_orthogonal(other, this, Joml.BIT_AFFINE & q);
+        }
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return invertProduct_general_identity(other, this);
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invertProduct_general_translation(other, this);
+        if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return invertProduct_general_affine(other, this);
+        return invertProduct_general(other, this);
+    }
+
+
+    /**
+     * Compute the inverse of the product of this matrix and ({@code m00}, {@code m01}, {@code m02},
+     * {@code m10}, {@code m11}, {@code m12}, {@code m20}, {@code m21}, {@code m22}) and store the
+     * result in {@code dest}.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m22 the element in row 2, column 2 of the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 invertProduct(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t36 = m01 * this.m10 + m11 * this.m11 + m21 * this.m12;
+        double _t37 = m02 * this.m20 + m12 * this.m21 + m22 * this.m22;
+        double _t38 = m01 * this.m20 + m11 * this.m21 + m21 * this.m22;
+        double _t39 = m02 * this.m10 + m12 * this.m11 + m22 * this.m12;
+        double _t40 = m00 * this.m00 + m10 * this.m01 + m20 * this.m02;
+        double _t41 = m01 * this.m00 + m11 * this.m01 + m21 * this.m02;
+        double _t42 = m00 * this.m10 + m10 * this.m11 + m20 * this.m12;
+        double _t43 = m00 * this.m20 + m10 * this.m21 + m20 * this.m22;
+        double _t44 = m02 * this.m00 + m12 * this.m01 + m22 * this.m02;
+        double _t47 = _t42 * _t37;
+        double _t48 = _t43 * _t39;
+        double _t51 = _t36 * _t37 - _t38 * _t39;
+        double _t53 = _t42 * _t38 - _t43 * _t36;
+        double _t58 = _t40 * _t51 - _t41 * (_t47 - _t48) + _t44 * _t53;
+        double _t58_inv = 1.0 / _t58;
+        d.m00 = _t51 * _t58_inv;
+        d.m10 = (_t48 - _t47) * _t58_inv;
+        d.m20 = _t53 * _t58_inv;
+        d.m01 = (_t38 * _t44 - _t41 * _t37) * _t58_inv;
+        d.m11 = (_t40 * _t37 - _t43 * _t44) * _t58_inv;
+        d.m21 = (_t43 * _t41 - _t40 * _t38) * _t58_inv;
+        d.m02 = (_t41 * _t39 - _t36 * _t44) * _t58_inv;
+        d.m12 = (_t42 * _t44 - _t40 * _t39) * _t58_inv;
+        d.m22 = (_t40 * _t36 - _t42 * _t41) * _t58_inv;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code normal}, specialized by runtime matrix properties; reached only
+     * through the public {@code normal} dispatcher.
+     */
+    private Double3x3 normal_identity(@Mutated Double3x3 dest) {
+        return cofactor_identity(dest);
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code normal}, specialized by runtime matrix properties;
+     * reached only through the public {@code normal} dispatcher.
+     */
+    private Double3x3 normal_identity_self(@Mutated Double3x3 dest) {
+        return cofactor_identity_self(dest);
+    }
+
+
+    /**
+     * Private body of {@code normal}, specialized by runtime matrix properties; reached only
+     * through the public {@code normal} dispatcher.
+     */
+    private Double3x3 normal_translation(@Mutated Double3x3 dest) {
+        return cofactor_translation(dest);
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code normal}, specialized by runtime matrix properties;
+     * reached only through the public {@code normal} dispatcher.
+     */
+    private Double3x3 normal_translation_self(@Mutated Double3x3 dest) {
+        return cofactor_translation_self(dest);
+    }
+
+
+    /**
+     * Private body of {@code normal}, specialized by runtime matrix properties; reached only
+     * through the public {@code normal} dispatcher.
+     */
+    private Double3x3 normal_orthogonal(@Mutated Double3x3 dest) {
+        return cofactor_orthogonal(dest);
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code normal}, specialized by runtime matrix properties;
+     * reached only through the public {@code normal} dispatcher.
+     */
+    private Double3x3 normal_orthogonal_self(@Mutated Double3x3 dest) {
+        return cofactor_orthogonal_self(dest);
+    }
+
+
+    /**
+     * Private body of {@code normal}, specialized by runtime matrix properties; reached only
+     * through the public {@code normal} dispatcher.
+     */
+    private Double3x3 normal_affine(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = this.m00 * this.m11 - this.m01 * this.m10;
+        double _t2_inv = 1.0 / _t2;
+        double _buf0 = this.m11 * _t2_inv;
+        double _buf1 = -(this.m01 * _t2_inv);
+        d.m20 = (this.m01 * this.m12 - this.m02 * this.m11) * _t2_inv;
+        d.m01 = -(this.m10 * _t2_inv);
+        d.m11 = this.m00 * _t2_inv;
+        d.m21 = (this.m02 * this.m10 - this.m00 * this.m12) * _t2_inv;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code normal}, specialized by runtime matrix properties;
+     * reached only through the public {@code normal} dispatcher.
+     */
+    private Double3x3 normal_affine_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = this.m00 * this.m11 - this.m01 * this.m10;
+        double _t2_inv = 1.0 / _t2;
+        double _buf0 = this.m11 * _t2_inv;
+        double _buf1 = -(this.m01 * _t2_inv);
+        d.m20 = (this.m01 * this.m12 - this.m02 * this.m11) * _t2_inv;
+        d.m01 = -(this.m10 * _t2_inv);
+        d.m11 = this.m00 * _t2_inv;
+        d.m21 = (this.m02 * this.m10 - this.m00 * this.m12) * _t2_inv;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code normal}, specialized by runtime matrix properties; reached only
+     * through the public {@code normal} dispatcher.
+     */
+    private Double3x3 normal_general(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = this.m10 * this.m22;
+        double _t3 = this.m12 * this.m20;
+        double _t6 = this.m11 * this.m22 - this.m12 * this.m21;
+        double _t8 = this.m10 * this.m21 - this.m11 * this.m20;
+        double _t13 = this.m00 * _t6 - this.m01 * (_t2 - _t3) + this.m02 * _t8;
+        double _t13_inv = 1.0 / _t13;
+        double _buf0 = _t6 * _t13_inv;
+        double _buf1 = (this.m02 * this.m21 - this.m01 * this.m22) * _t13_inv;
+        double _buf2 = (this.m01 * this.m12 - this.m02 * this.m11) * _t13_inv;
+        double _buf3 = (_t3 - _t2) * _t13_inv;
+        double _buf4 = (this.m00 * this.m22 - this.m02 * this.m20) * _t13_inv;
+        double _buf5 = (this.m02 * this.m10 - this.m00 * this.m12) * _t13_inv;
+        d.m02 = _t8 * _t13_inv;
+        d.m12 = (this.m01 * this.m20 - this.m00 * this.m21) * _t13_inv;
+        d.m22 = (this.m00 * this.m11 - this.m01 * this.m10) * _t13_inv;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Compute the normal matrix of this matrix, i.e. the transpose of its inverse and store the
+     * result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 normal(@Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return normal_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return normal_translation(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return normal_orthogonal(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return normal_affine(dest);
+        return normal_general(dest);
+    }
+
+
+    /**
+     * Compute the normal matrix of this matrix, i.e. the transpose of its inverse.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 normal() {
+        if (Joml.RETURN_NEW) return normal(Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return normal_identity_self(this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return normal_translation_self(this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return normal_orthogonal_self(this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return normal_affine_self(this);
+        return normal_general(this);
+    }
+
+
+    /**
+     * Compute the trace of this matrix.
+     *
+     * @return the trace of this matrix
+     */
+    public double trace() {
+        return this.m22 + (this.m00 + this.m11);
+    }
+
+
+    /**
+     * Private body of {@code transpose}, specialized by runtime matrix properties; reached only
+     * through the public {@code transpose} dispatcher.
+     */
+    private Double3x3 transpose_identity(@Mutated Double3x3 dest) {
+        return cofactor_identity(dest);
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code transpose}, specialized by runtime matrix
+     * properties; reached only through the public {@code transpose} dispatcher.
+     */
+    private Double3x3 transpose_identity_self(@Mutated Double3x3 dest) {
+        return cofactor_identity_self(dest);
+    }
+
+
+    /**
+     * Private body of {@code transpose}, specialized by runtime matrix properties; reached only
+     * through the public {@code transpose} dispatcher.
+     */
+    private Double3x3 transpose_translation(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = this.m02;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = this.m12;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code transpose}, specialized by runtime matrix
+     * properties; reached only through the public {@code transpose} dispatcher.
+     */
+    private Double3x3 transpose_translation_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m20 = this.m02;
+        d.m21 = this.m12;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code transpose}, specialized by runtime matrix properties; reached only
+     * through the public {@code transpose} dispatcher.
+     */
+    private Double3x3 transpose_orthogonal(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        double _buf0 = this.m01;
+        d.m20 = this.m02;
+        d.m01 = this.m10;
+        d.m11 = this.m11;
+        d.m21 = this.m12;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 1.0;
+        d.m10 = _buf0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code transpose}, specialized by runtime matrix
+     * properties; reached only through the public {@code transpose} dispatcher.
+     */
+    private Double3x3 transpose_orthogonal_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        double _buf0 = this.m01;
+        d.m20 = this.m02;
+        d.m01 = this.m10;
+        d.m11 = this.m11;
+        d.m21 = this.m12;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m10 = _buf0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code transpose}, specialized by runtime matrix properties; reached only
+     * through the public {@code transpose} dispatcher.
+     */
+    private Double3x3 transpose_general(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        double _buf0 = this.m01;
+        double _buf1 = this.m02;
+        d.m01 = this.m10;
+        d.m11 = this.m11;
+        double _buf2 = this.m12;
+        d.m02 = this.m20;
+        d.m12 = this.m21;
+        d.m22 = this.m22;
+        d.m10 = _buf0;
+        d.m20 = _buf1;
+        d.m21 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Transpose this matrix and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 transpose(@Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return transpose_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return transpose_translation(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return transpose_orthogonal(dest);
+        return transpose_general(dest);
+    }
+
+
+    /**
+     * Transpose this matrix.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 transpose() {
+        if (Joml.RETURN_NEW) return transpose(Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return transpose_identity_self(this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return transpose_translation_self(this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return transpose_orthogonal_self(this);
+        return transpose_general(this);
+    }
+
+
+    /**
+     * Private body of {@code add}, specialized by runtime matrix properties; reached only through
+     * the public {@code add} dispatcher.
+     */
+    private Double3x3 add_general(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = other.m00() + this.m00;
+        d.m10 = other.m10() + this.m10;
+        d.m20 = other.m20() + this.m20;
+        d.m01 = other.m01() + this.m01;
+        d.m11 = other.m11() + this.m11;
+        d.m21 = other.m21() + this.m21;
+        d.m02 = other.m02() + this.m02;
+        d.m12 = other.m12() + this.m12;
+        d.m22 = other.m22() + this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code add}, specialized by runtime matrix properties; reached only through
+     * the public {@code add} dispatcher.
+     */
+    private Double3x3 add_identity(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0 + other.m00();
+        d.m10 = other.m10();
+        d.m20 = other.m20();
+        d.m01 = other.m01();
+        d.m11 = 1.0 + other.m11();
+        d.m21 = other.m21();
+        d.m02 = other.m02();
+        d.m12 = other.m12();
+        d.m22 = 1.0 + other.m22();
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code add}, specialized by runtime matrix properties; reached only through
+     * the public {@code add} dispatcher.
+     */
+    private Double3x3 add_translation(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0 + other.m00();
+        d.m10 = other.m10();
+        d.m20 = other.m20();
+        d.m01 = other.m01();
+        d.m11 = 1.0 + other.m11();
+        d.m21 = other.m21();
+        d.m02 = other.m02() + this.m02;
+        d.m12 = other.m12() + this.m12;
+        d.m22 = 1.0 + other.m22();
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code add}, specialized by runtime matrix properties; reached only through
+     * the public {@code add} dispatcher.
+     */
+    private Double3x3 add_identity_identity(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 2.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 2.0;
+        d.m21 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 2.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code add}, specialized by runtime matrix properties; reached only through
+     * the public {@code add} dispatcher.
+     */
+    private Double3x3 add_identity_translation(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 2.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 2.0;
+        d.m21 = 0.0;
+        d.m02 = other.m02();
+        d.m12 = other.m12();
+        d.m22 = 2.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code add}, specialized by runtime matrix properties; reached only through
+     * the public {@code add} dispatcher.
+     */
+    private Double3x3 add_identity_affine(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0 + other.m00();
+        d.m10 = other.m10();
+        d.m20 = 0.0;
+        d.m01 = other.m01();
+        d.m11 = 1.0 + other.m11();
+        d.m21 = 0.0;
+        d.m02 = other.m02();
+        d.m12 = other.m12();
+        d.m22 = 2.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code add}, specialized by runtime matrix properties; reached only through
+     * the public {@code add} dispatcher.
+     */
+    private Double3x3 add_translation_identity(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 2.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 2.0;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 2.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code add}, specialized by runtime matrix properties; reached only through
+     * the public {@code add} dispatcher.
+     */
+    private Double3x3 add_translation_translation(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 2.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 2.0;
+        d.m21 = 0.0;
+        d.m02 = other.m02() + this.m02;
+        d.m12 = other.m12() + this.m12;
+        d.m22 = 2.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code add}, specialized by runtime matrix properties; reached only through
+     * the public {@code add} dispatcher.
+     */
+    private Double3x3 add_translation_affine(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0 + other.m00();
+        d.m10 = other.m10();
+        d.m20 = 0.0;
+        d.m01 = other.m01();
+        d.m11 = 1.0 + other.m11();
+        d.m21 = 0.0;
+        d.m02 = other.m02() + this.m02;
+        d.m12 = other.m12() + this.m12;
+        d.m22 = 2.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code add}, specialized by runtime matrix properties; reached only through
+     * the public {@code add} dispatcher.
+     */
+    private Double3x3 add_orthogonal_identity(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0 + this.m00;
+        d.m10 = this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m01;
+        d.m11 = 1.0 + this.m11;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 2.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code add}, specialized by runtime matrix properties; reached only through
+     * the public {@code add} dispatcher.
+     */
+    private Double3x3 add_orthogonal_translation(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0 + this.m00;
+        d.m10 = this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m01;
+        d.m11 = 1.0 + this.m11;
+        d.m21 = 0.0;
+        d.m02 = other.m02() + this.m02;
+        d.m12 = other.m12() + this.m12;
+        d.m22 = 2.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code add}, specialized by runtime matrix properties; reached only through
+     * the public {@code add} dispatcher.
+     */
+    private Double3x3 add_general_identity(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0 + this.m00;
+        d.m10 = this.m10;
+        d.m20 = this.m20;
+        d.m01 = this.m01;
+        d.m11 = 1.0 + this.m11;
+        d.m21 = this.m21;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0 + this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code add}, specialized by runtime matrix properties; reached only through
+     * the public {@code add} dispatcher.
+     */
+    private Double3x3 add_general_translation(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0 + this.m00;
+        d.m10 = this.m10;
+        d.m20 = this.m20;
+        d.m01 = this.m01;
+        d.m11 = 1.0 + this.m11;
+        d.m21 = this.m21;
+        d.m02 = other.m02() + this.m02;
+        d.m12 = other.m12() + this.m12;
+        d.m22 = 1.0 + this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Add {@code other} to this matrix and store the result in {@code dest}.
+     *
+     * @param other the other matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 add(Double3x3R other, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        int q = ((Double3x3Impl) other).properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return add_identity_identity(other, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return add_identity_translation(other, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return add_identity_affine(other, dest);
+            return add_identity(other, dest);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return add_translation_identity(other, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return add_translation_translation(other, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return add_translation_affine(other, dest);
+            return add_translation(other, dest);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return add_orthogonal_identity(other, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return add_orthogonal_translation(other, dest);
+            return add_general(other, dest);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return add_orthogonal_identity(other, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return add_orthogonal_translation(other, dest);
+            return add_general(other, dest);
+        }
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return add_general_identity(other, dest);
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return add_general_translation(other, dest);
+        return add_general(other, dest);
+    }
+
+
+    /**
+     * Add {@code other} to this matrix.
+     *
+     * @param other the other matrix
+     * @return this
+     */
+    @Mutated public Double3x3 add(Double3x3R other) {
+        if (Joml.RETURN_NEW) return add(other, Joml.double3x3());
+        int p = this.properties;
+        int q = ((Double3x3Impl) other).properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return add_identity_identity(other, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return add_identity_translation(other, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return add_identity_affine(other, this);
+            return add_identity(other, this);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return add_translation_identity(other, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return add_translation_translation(other, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return add_translation_affine(other, this);
+            return add_translation(other, this);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return add_orthogonal_identity(other, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return add_orthogonal_translation(other, this);
+            return add_general(other, this);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return add_orthogonal_identity(other, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return add_orthogonal_translation(other, this);
+            return add_general(other, this);
+        }
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return add_general_identity(other, this);
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return add_general_translation(other, this);
+        return add_general(other, this);
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m02}, {@code m10}, {@code m11}, {@code m12},
+     * {@code m20}, {@code m21}, {@code m22}) to this matrix and store the result in {@code dest}.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m22 the element in row 2, column 2 of the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 add(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = m00 + this.m00;
+        d.m10 = m10 + this.m10;
+        d.m20 = m20 + this.m20;
+        d.m01 = m01 + this.m01;
+        d.m11 = m11 + this.m11;
+        d.m21 = m21 + this.m21;
+        d.m02 = m02 + this.m02;
+        d.m12 = m12 + this.m12;
+        d.m22 = m22 + this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code negate}, specialized by runtime matrix properties; reached only
+     * through the public {@code negate} dispatcher.
+     */
+    private Double3x3 negate_identity(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = -1.0;
+        d.m21 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = -1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code negate}, specialized by runtime matrix properties;
+     * reached only through the public {@code negate} dispatcher.
+     */
+    private Double3x3 negate_identity_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -1.0;
+        d.m11 = -1.0;
+        d.m22 = -1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code negate}, specialized by runtime matrix properties; reached only
+     * through the public {@code negate} dispatcher.
+     */
+    private Double3x3 negate_translation(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = -1.0;
+        d.m21 = 0.0;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code negate}, specialized by runtime matrix properties;
+     * reached only through the public {@code negate} dispatcher.
+     */
+    private Double3x3 negate_translation_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -1.0;
+        d.m11 = -1.0;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code negate}, specialized by runtime matrix properties; reached only
+     * through the public {@code negate} dispatcher.
+     */
+    private Double3x3 negate_orthogonal(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = -this.m11;
+        d.m00 = _t0;
+        double _buf0 = -this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m10;
+        d.m11 = _t0;
+        d.m21 = 0.0;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -1.0;
+        d.m10 = _buf0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code negate}, specialized by runtime matrix properties;
+     * reached only through the public {@code negate} dispatcher.
+     */
+    private Double3x3 negate_orthogonal_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = -this.m11;
+        d.m00 = _t0;
+        double _buf0 = -this.m10;
+        d.m01 = this.m10;
+        d.m11 = _t0;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -1.0;
+        d.m10 = _buf0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code negate}, specialized by runtime matrix properties; reached only
+     * through the public {@code negate} dispatcher.
+     */
+    private Double3x3 negate_affine(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -this.m00;
+        d.m10 = -this.m10;
+        d.m20 = 0.0;
+        d.m01 = -this.m01;
+        d.m11 = -this.m11;
+        d.m21 = 0.0;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code negate}, specialized by runtime matrix properties;
+     * reached only through the public {@code negate} dispatcher.
+     */
+    private Double3x3 negate_affine_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -this.m00;
+        d.m10 = -this.m10;
+        d.m01 = -this.m01;
+        d.m11 = -this.m11;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code negate}, specialized by runtime matrix properties; reached only
+     * through the public {@code negate} dispatcher.
+     */
+    private Double3x3 negate_general(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -this.m00;
+        d.m10 = -this.m10;
+        d.m20 = -this.m20;
+        d.m01 = -this.m01;
+        d.m11 = -this.m11;
+        d.m21 = -this.m21;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Negate this matrix and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 negate(@Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return negate_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return negate_translation(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return negate_orthogonal(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return negate_affine(dest);
+        return negate_general(dest);
+    }
+
+
+    /**
+     * Negate this matrix.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 negate() {
+        if (Joml.RETURN_NEW) return negate(Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return negate_identity_self(this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return negate_translation_self(this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return negate_orthogonal_self(this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return negate_affine_self(this);
+        return negate_general(this);
+    }
+
+
+    /**
+     * Private body of {@code sub}, specialized by runtime matrix properties; reached only through
+     * the public {@code sub} dispatcher.
+     */
+    private Double3x3 sub_general(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00 - other.m00();
+        d.m10 = this.m10 - other.m10();
+        d.m20 = this.m20 - other.m20();
+        d.m01 = this.m01 - other.m01();
+        d.m11 = this.m11 - other.m11();
+        d.m21 = this.m21 - other.m21();
+        d.m02 = this.m02 - other.m02();
+        d.m12 = this.m12 - other.m12();
+        d.m22 = this.m22 - other.m22();
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code sub}, specialized by runtime matrix properties; reached only through
+     * the public {@code sub} dispatcher.
+     */
+    private Double3x3 sub_identity(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0 - other.m00();
+        d.m10 = -other.m10();
+        d.m20 = -other.m20();
+        d.m01 = -other.m01();
+        d.m11 = 1.0 - other.m11();
+        d.m21 = -other.m21();
+        d.m02 = -other.m02();
+        d.m12 = -other.m12();
+        d.m22 = 1.0 - other.m22();
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code sub}, specialized by runtime matrix properties; reached only through
+     * the public {@code sub} dispatcher.
+     */
+    private Double3x3 sub_identity_identity(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 0.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 0.0;
+        d.m21 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code sub}, specialized by runtime matrix properties; reached only through
+     * the public {@code sub} dispatcher.
+     */
+    private Double3x3 sub_identity_translation(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 0.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 0.0;
+        d.m21 = 0.0;
+        d.m02 = -other.m02();
+        d.m12 = -other.m12();
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code sub}, specialized by runtime matrix properties; reached only through
+     * the public {@code sub} dispatcher.
+     */
+    private Double3x3 sub_identity_affine(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0 - other.m00();
+        d.m10 = -other.m10();
+        d.m20 = 0.0;
+        d.m01 = -other.m01();
+        d.m11 = 1.0 - other.m11();
+        d.m21 = 0.0;
+        d.m02 = -other.m02();
+        d.m12 = -other.m12();
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code sub}, specialized by runtime matrix properties; reached only through
+     * the public {@code sub} dispatcher.
+     */
+    private Double3x3 sub_translation_identity(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 0.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 0.0;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code sub}, specialized by runtime matrix properties; reached only through
+     * the public {@code sub} dispatcher.
+     */
+    private Double3x3 sub_translation_translation(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 0.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 0.0;
+        d.m21 = 0.0;
+        d.m02 = this.m02 - other.m02();
+        d.m12 = this.m12 - other.m12();
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code sub}, specialized by runtime matrix properties; reached only through
+     * the public {@code sub} dispatcher.
+     */
+    private Double3x3 sub_translation_affine(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0 - other.m00();
+        d.m10 = -other.m10();
+        d.m20 = 0.0;
+        d.m01 = -other.m01();
+        d.m11 = 1.0 - other.m11();
+        d.m21 = 0.0;
+        d.m02 = this.m02 - other.m02();
+        d.m12 = this.m12 - other.m12();
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code sub}, specialized by runtime matrix properties; reached only through
+     * the public {@code sub} dispatcher.
+     */
+    private Double3x3 sub_orthogonal_identity(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00 - 1.0;
+        d.m10 = this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m01;
+        d.m11 = this.m11 - 1.0;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code sub}, specialized by runtime matrix properties; reached only through
+     * the public {@code sub} dispatcher.
+     */
+    private Double3x3 sub_orthogonal_translation(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00 - 1.0;
+        d.m10 = this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m01;
+        d.m11 = this.m11 - 1.0;
+        d.m21 = 0.0;
+        d.m02 = this.m02 - other.m02();
+        d.m12 = this.m12 - other.m12();
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code sub}, specialized by runtime matrix properties; reached only through
+     * the public {@code sub} dispatcher.
+     */
+    private Double3x3 sub_orthogonal_affine(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00 - other.m00();
+        d.m10 = this.m10 - other.m10();
+        d.m20 = 0.0;
+        d.m01 = this.m01 - other.m01();
+        d.m11 = this.m11 - other.m11();
+        d.m21 = 0.0;
+        d.m02 = this.m02 - other.m02();
+        d.m12 = this.m12 - other.m12();
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code sub}, specialized by runtime matrix properties; reached only through
+     * the public {@code sub} dispatcher.
+     */
+    private Double3x3 sub_general_identity(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00 - 1.0;
+        d.m10 = this.m10;
+        d.m20 = this.m20;
+        d.m01 = this.m01;
+        d.m11 = this.m11 - 1.0;
+        d.m21 = this.m21;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = this.m22 - 1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code sub}, specialized by runtime matrix properties; reached only through
+     * the public {@code sub} dispatcher.
+     */
+    private Double3x3 sub_general_translation(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00 - 1.0;
+        d.m10 = this.m10;
+        d.m20 = this.m20;
+        d.m01 = this.m01;
+        d.m11 = this.m11 - 1.0;
+        d.m21 = this.m21;
+        d.m02 = this.m02 - other.m02();
+        d.m12 = this.m12 - other.m12();
+        d.m22 = this.m22 - 1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Subtract {@code other} from this matrix and store the result in {@code dest}.
+     *
+     * @param other the other matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 sub(Double3x3R other, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        int q = ((Double3x3Impl) other).properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return sub_identity_identity(other, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return sub_identity_translation(other, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return sub_identity_affine(other, dest);
+            return sub_identity(other, dest);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return sub_translation_identity(other, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return sub_translation_translation(other, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return sub_translation_affine(other, dest);
+            return sub_general(other, dest);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return sub_orthogonal_identity(other, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return sub_orthogonal_translation(other, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return sub_orthogonal_affine(other, dest);
+            return sub_general(other, dest);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return sub_orthogonal_identity(other, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return sub_orthogonal_translation(other, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return sub_orthogonal_affine(other, dest);
+            return sub_general(other, dest);
+        }
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return sub_general_identity(other, dest);
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return sub_general_translation(other, dest);
+        return sub_general(other, dest);
+    }
+
+
+    /**
+     * Subtract {@code other} from this matrix.
+     *
+     * @param other the other matrix
+     * @return this
+     */
+    @Mutated public Double3x3 sub(Double3x3R other) {
+        if (Joml.RETURN_NEW) return sub(other, Joml.double3x3());
+        int p = this.properties;
+        int q = ((Double3x3Impl) other).properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return sub_identity_identity(other, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return sub_identity_translation(other, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return sub_identity_affine(other, this);
+            return sub_identity(other, this);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return sub_translation_identity(other, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return sub_translation_translation(other, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return sub_translation_affine(other, this);
+            return sub_general(other, this);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return sub_orthogonal_identity(other, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return sub_orthogonal_translation(other, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return sub_orthogonal_affine(other, this);
+            return sub_general(other, this);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return sub_orthogonal_identity(other, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return sub_orthogonal_translation(other, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return sub_orthogonal_affine(other, this);
+            return sub_general(other, this);
+        }
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return sub_general_identity(other, this);
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return sub_general_translation(other, this);
+        return sub_general(other, this);
+    }
+
+
+    /**
+     * Subtract ({@code m00}, {@code m01}, {@code m02}, {@code m10}, {@code m11}, {@code m12},
+     * {@code m20}, {@code m21}, {@code m22}) from this matrix and store the result in {@code dest}.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m22 the element in row 2, column 2 of the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 sub(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00 - m00;
+        d.m10 = this.m10 - m10;
+        d.m20 = this.m20 - m20;
+        d.m01 = this.m01 - m01;
+        d.m11 = this.m11 - m11;
+        d.m21 = this.m21 - m21;
+        d.m02 = this.m02 - m02;
+        d.m12 = this.m12 - m12;
+        d.m22 = this.m22 - m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Set this matrix to the given values.
+     *
+     * @param v the matrix
+     * @return this
+     */
+    @Mutated public Double3x3 set(Double3x3R v) {
+        this.m00 = v.m00();
+        this.m10 = v.m10();
+        this.m20 = v.m20();
+        this.m01 = v.m01();
+        this.m11 = v.m11();
+        this.m21 = v.m21();
+        this.m02 = v.m02();
+        this.m12 = v.m12();
+        this.m22 = v.m22();
+        this.properties = ((Double3x3Impl) v).properties;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to the given values.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m22 the element in row 2, column 2 of the matrix
+     * @return this
+     */
+    @Mutated public Double3x3 set(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22) {
+        this.m00 = m00;
+        this.m10 = m10;
+        this.m20 = m20;
+        this.m01 = m01;
+        this.m11 = m11;
+        this.m21 = m21;
+        this.m02 = m02;
+        this.m12 = m12;
+        this.m22 = m22;
+        this.properties = determineProperties();
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to the given 2x2 matrix, copying the overlapping cells and filling the rest
+     * with identity.
+     *
+     * @param m the matrix
+     * @return this
+     */
+    @Mutated public Double3x3 set(Double2x2R m) {
+        this.m00 = m.m00();
+        this.m10 = m.m10();
+        this.m20 = 0.0;
+        this.m01 = m.m01();
+        this.m11 = m.m11();
+        this.m21 = 0.0;
+        this.m02 = 0.0;
+        this.m12 = 0.0;
+        this.m22 = 1.0;
+        this.properties = determineProperties();
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to the given 2x3 matrix, copying the overlapping cells and filling the rest
+     * with identity.
+     *
+     * @param m the matrix
+     * @return this
+     */
+    @Mutated public Double3x3 set(Double2x3R m) {
+        this.m00 = m.m00();
+        this.m10 = m.m10();
+        this.m20 = 0.0;
+        this.m01 = m.m01();
+        this.m11 = m.m11();
+        this.m21 = 0.0;
+        this.m02 = m.m02();
+        this.m12 = m.m12();
+        this.m22 = 1.0;
+        this.properties = determineProperties();
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to the given 3x4 matrix, copying the overlapping cells and dropping the rest.
+     *
+     * @param m the matrix
+     * @return this
+     */
+    @Mutated public Double3x3 set(Double3x4R m) {
+        this.m00 = m.m00();
+        this.m10 = m.m10();
+        this.m20 = m.m20();
+        this.m01 = m.m01();
+        this.m11 = m.m11();
+        this.m21 = m.m21();
+        this.m02 = m.m02();
+        this.m12 = m.m12();
+        this.m22 = m.m22();
+        this.properties = determineProperties();
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to the given 4x4 matrix, copying the overlapping cells and dropping the rest.
+     *
+     * @param m the matrix
+     * @return this
+     */
+    @Mutated public Double3x3 set(Double4x4R m) {
+        this.m00 = m.m00();
+        this.m10 = m.m10();
+        this.m20 = m.m20();
+        this.m01 = m.m01();
+        this.m11 = m.m11();
+        this.m21 = m.m21();
+        this.m02 = m.m02();
+        this.m12 = m.m12();
+        this.m22 = m.m22();
+        this.properties = determineProperties();
+        return this;
+    }
+
+
+    /**
+     * Set the translation of this matrix, leaving every other element untouched.
+     * <p>
+     * Only the first two elements of the last column are written, so a square matrix keeps the
+     * projective element that sits below them. Unlike {@code translate}, this overwrites the
+     * translation instead of composing a translation onto the existing transformation.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param t the translation offsets
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 withTranslation(Double2R t, @Mutated Double3x3 dest) {
+        return withTranslation(t.x(), t.y(), dest);
+    }
+
+
+    /**
+     * Set the translation of this matrix, leaving every other element untouched.
+     * <p>
+     * Only the first two elements of the last column are written, so a square matrix keeps the
+     * projective element that sits below them. Unlike {@code translate}, this overwrites the
+     * translation instead of composing a translation onto the existing transformation.
+     *
+     * @param t the translation offsets
+     * @return this
+     */
+    public @Mutated Double3x3 withTranslation(Double2R t) {
+        return withTranslation(t.x(), t.y());
+    }
+
+
+    /**
+     * Private body of {@code withTranslation}, specialized by runtime matrix properties; reached
+     * only through the public {@code withTranslation} dispatcher.
+     */
+    private Double3x3 withTranslation_orthogonal_affine(double tX, double tY, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m21 = 0.0;
+        d.m02 = tX;
+        d.m12 = tY;
+        d.m22 = 1.0;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code withTranslation}, specialized by runtime matrix
+     * properties; reached only through the public {@code withTranslation} dispatcher.
+     */
+    private Double3x3 withTranslation_orthogonal_affine_self(double tX, double tY, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m02 = tX;
+        d.m12 = tY;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code withTranslation}, specialized by runtime matrix properties; reached
+     * only through the public {@code withTranslation} dispatcher.
+     */
+    private Double3x3 withTranslation_identity(double tX, double tY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = tX;
+        d.m12 = tY;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_TRANSLATION;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code withTranslation}, specialized by runtime matrix
+     * properties; reached only through the public {@code withTranslation} dispatcher.
+     */
+    private Double3x3 withTranslation_identity_self(double tX, double tY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m02 = tX;
+        d.m12 = tY;
+        d.properties = Joml.BIT_TRANSLATION;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code withTranslation}, specialized by runtime matrix properties; reached
+     * only through the public {@code withTranslation} dispatcher.
+     */
+    private Double3x3 withTranslation_general(double tX, double tY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        d.m20 = this.m20;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m21 = this.m21;
+        d.m02 = tX;
+        d.m12 = tY;
+        d.m22 = this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Set the translation of this matrix, leaving every other element untouched.
+     * <p>
+     * Only the first two elements of the last column are written, so a square matrix keeps the
+     * projective element that sits below them. Unlike {@code translate}, this overwrites the
+     * translation instead of composing a translation onto the existing transformation.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param tX the {@code x} component of the translation offsets {@code (tX, tY)}
+     * @param tY the {@code y} component of the translation offsets {@code (tX, tY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 withTranslation(double tX, double tY, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return withTranslation_identity(tX, tY, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return withTranslation_orthogonal_affine(tX, tY, dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        return withTranslation_general(tX, tY, dest);
+    }
+
+
+    /**
+     * Set the translation of this matrix, leaving every other element untouched.
+     * <p>
+     * Only the first two elements of the last column are written, so a square matrix keeps the
+     * projective element that sits below them. Unlike {@code translate}, this overwrites the
+     * translation instead of composing a translation onto the existing transformation.
+     *
+     * @param tX the {@code x} component of the translation offsets {@code (tX, tY)}
+     * @param tY the {@code y} component of the translation offsets {@code (tX, tY)}
+     * @return this
+     */
+    @Mutated public Double3x3 withTranslation(double tX, double tY) {
+        if (Joml.RETURN_NEW) return withTranslation(tX, tY, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return withTranslation_identity_self(tX, tY, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return withTranslation_orthogonal_affine_self(tX, tY, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        return withTranslation_general(tX, tY, this);
+    }
+
+
+    /**
+     * Convert this matrix to {@code float} precision and store the result in {@code dest}.
+     * <p>
+     * The conversion may lose precision or range.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3x3 toFloat(@Mutated Float3x3 dest) {
+        Float3x3Impl d = (Float3x3Impl) dest;
+        d.m00 = (float) (this.m00);
+        d.m10 = (float) (this.m10);
+        d.m20 = (float) (this.m20);
+        d.m01 = (float) (this.m01);
+        d.m11 = (float) (this.m11);
+        d.m21 = (float) (this.m21);
+        d.m02 = (float) (this.m02);
+        d.m12 = (float) (this.m12);
+        d.m22 = (float) (this.m22);
+        return d;
+    }
+
+
+    /**
+     * Set this matrix to the given rigid transform's rotation block (the translation is dropped).
+     *
+     * @param r the rigid transform (must be a unit vector)
+     * @return this
+     */
+    public @Mutated Double3x3 makeFromRigid(DoubleRigidR r) {
+        return makeFromRigid(r.tX(), r.tY(), r.tZ(), r.rX(), r.rY(), r.rZ(), r.rW());
+    }
+
+
+    /**
+     * Set this matrix to the given rigid transform's rotation block (the translation is dropped).
+     *
+     * @param rTX the {@code tX} component of the rigid transform
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     * @param rTY the {@code tY} component of the rigid transform
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     * @param rTZ the {@code tZ} component of the rigid transform
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     * @param rRX the {@code rX} component of the rigid transform
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     * @param rRY the {@code rY} component of the rigid transform
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     * @param rRZ the {@code rZ} component of the rigid transform
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     * @param rRW the {@code rW} component of the rigid transform
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     * @return this
+     */
+    @Mutated public Double3x3 makeFromRigid(double rTX, double rTY, double rTZ, double rRX, double rRY, double rRZ, double rRW) {
+        double _t0 = rRY * rRY;
+        double _t1 = rRZ * rRZ;
+        double _t2 = rRX * rRY;
+        double _t3 = rRZ * rRW;
+        double _t4 = rRX * rRZ;
+        double _t5 = rRY * rRW;
+        double _t6 = rRX * rRX;
+        double _t7 = rRY * rRZ;
+        double _t8 = rRX * rRW;
+        this.m00 = 1.0 - 2.0 * (_t0 + _t1);
+        this.m10 = 2.0 * (_t2 + _t3);
+        this.m20 = 2.0 * (_t4 - _t5);
+        this.m01 = 2.0 * (_t2 - _t3);
+        this.m11 = 1.0 - 2.0 * (_t6 + _t1);
+        this.m21 = 2.0 * (_t8 + _t7);
+        this.m02 = 2.0 * (_t4 + _t5);
+        this.m12 = 2.0 * (_t7 - _t8);
+        this.m22 = 1.0 - 2.0 * (_t6 + _t0);
+        this.properties = 0;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to the given transform's linear block {@code R * S} (the translation is
+     * dropped).
+     *
+     * @param t the transform
+     * @return this
+     */
+    public @Mutated Double3x3 makeFromTransform(DoubleTransformR t) {
+        return makeFromTransform(t.tX(), t.tY(), t.tZ(), t.rX(), t.rY(), t.rZ(), t.rW(), t.sX(), t.sY(), t.sZ());
+    }
+
+
+    /**
+     * Set this matrix to the given transform's linear block {@code R * S} (the translation is
+     * dropped).
+     *
+     * @param tTX the {@code tX} component of the transform
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     * @param tTY the {@code tY} component of the transform
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     * @param tTZ the {@code tZ} component of the transform
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     * @param tRX the {@code rX} component of the transform
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     * @param tRY the {@code rY} component of the transform
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     * @param tRZ the {@code rZ} component of the transform
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     * @param tRW the {@code rW} component of the transform
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     * @param tSX the {@code sX} component of the transform
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     * @param tSY the {@code sY} component of the transform
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     * @param tSZ the {@code sZ} component of the transform
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     * @return this
+     */
+    @Mutated public Double3x3 makeFromTransform(double tTX, double tTY, double tTZ, double tRX, double tRY, double tRZ, double tRW, double tSX, double tSY, double tSZ) {
+        double _t0 = tRY * tRY;
+        double _t1 = tRZ * tRZ;
+        double _t2 = tRX * tRY;
+        double _t3 = tRZ * tRW;
+        double _t4 = tRX * tRZ;
+        double _t5 = tRY * tRW;
+        double _t6 = tRX * tRX;
+        double _t7 = tRY * tRZ;
+        double _t8 = tRX * tRW;
+        this.m00 = tSX * (1.0 - 2.0 * (_t0 + _t1));
+        this.m10 = tSX * 2.0 * (_t2 + _t3);
+        this.m20 = tSX * 2.0 * (_t4 - _t5);
+        this.m01 = tSY * 2.0 * (_t2 - _t3);
+        this.m11 = tSY * (1.0 - 2.0 * (_t6 + _t1));
+        this.m21 = tSY * 2.0 * (_t8 + _t7);
+        this.m02 = tSZ * 2.0 * (_t4 + _t5);
+        this.m12 = tSZ * 2.0 * (_t7 - _t8);
+        this.m22 = tSZ * (1.0 - 2.0 * (_t6 + _t0));
+        this.properties = 0;
+        return this;
+    }
+
+
+    /**
+     * Private body of {@code to2x2}, specialized by runtime matrix properties; reached only through
+     * the public {@code to2x2} dispatcher.
+     */
+    private Double2x2 to2x2_identity(@Mutated Double2x2 dest) {
+        Double2x2Impl d = (Double2x2Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.properties = Joml.BIT_IDENTITY;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code to2x2}, specialized by runtime matrix properties; reached only through
+     * the public {@code to2x2} dispatcher.
+     */
+    private Double2x2 to2x2_general(@Mutated Double2x2 dest) {
+        Double2x2Impl d = (Double2x2Impl) dest;
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Extract the upper-left 2x2 linear block of this matrix (dropping the translation column and
+     * the last row) and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2x2 to2x2(@Mutated Double2x2 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return to2x2_identity(dest);
+        return to2x2_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code to2x3}, specialized by runtime matrix properties; reached only through
+     * the public {@code to2x3} dispatcher.
+     */
+    private Double2x3 to2x3_orthogonal_general(@Mutated Double2x3 dest, int _props) {
+        Double2x3Impl d = (Double2x3Impl) dest;
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code to2x3}, specialized by runtime matrix properties; reached only through
+     * the public {@code to2x3} dispatcher.
+     */
+    private Double2x3 to2x3_identity(@Mutated Double2x3 dest) {
+        Double2x3Impl d = (Double2x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.properties = Joml.BIT_IDENTITY;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code to2x3}, specialized by runtime matrix properties; reached only through
+     * the public {@code to2x3} dispatcher.
+     */
+    private Double2x3 to2x3_translation(@Mutated Double2x3 dest) {
+        Double2x3Impl d = (Double2x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.properties = Joml.BIT_TRANSLATION;
+        return d;
+    }
+
+
+    /**
+     * Truncate this matrix to a 2x3 matrix, dropping the last row (assumed {@code 0, 0, 1}) and
+     * store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2x3 to2x3(@Mutated Double2x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return to2x3_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return to2x3_translation(dest);
+        return to2x3_orthogonal_general(dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+    }
+
+
+    /**
+     * Private body of {@code to3x4}, specialized by runtime matrix properties; reached only through
+     * the public {@code to3x4} dispatcher.
+     */
+    private Double3x4 to3x4_identity(@Mutated Double3x4 dest) {
+        Double3x4Impl d = (Double3x4Impl) dest;
+        d.m00 = 1.0;
+        d.m01 = 0.0;
+        d.m02 = 0.0;
+        d.m03 = 0.0;
+        d.m10 = 0.0;
+        d.m11 = 1.0;
+        d.m12 = 0.0;
+        d.m13 = 0.0;
+        d.m20 = 0.0;
+        d.m21 = 0.0;
+        d.m22 = 1.0;
+        d.m23 = 0.0;
+        d.properties = Joml.BIT_IDENTITY;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code to3x4}, specialized by runtime matrix properties; reached only through
+     * the public {@code to3x4} dispatcher.
+     */
+    private Double3x4 to3x4_translation(@Mutated Double3x4 dest) {
+        Double3x4Impl d = (Double3x4Impl) dest;
+        d.m00 = 1.0;
+        d.m01 = 0.0;
+        d.m02 = this.m02;
+        d.m03 = 0.0;
+        d.m10 = 0.0;
+        double _buf0 = 1.0;
+        d.m12 = this.m12;
+        d.m13 = 0.0;
+        d.m20 = 0.0;
+        d.m21 = 0.0;
+        d.m22 = 1.0;
+        d.m23 = 0.0;
+        d.m11 = _buf0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code to3x4}, specialized by runtime matrix properties; reached only through
+     * the public {@code to3x4} dispatcher.
+     */
+    private Double3x4 to3x4_orthogonal(@Mutated Double3x4 dest) {
+        Double3x4Impl d = (Double3x4Impl) dest;
+        d.m00 = this.m00;
+        d.m01 = this.m01;
+        d.m02 = this.m02;
+        double _buf0 = 0.0;
+        double _buf1 = this.m10;
+        double _buf2 = this.m11;
+        d.m12 = this.m12;
+        d.m13 = 0.0;
+        d.m20 = 0.0;
+        d.m21 = 0.0;
+        d.m22 = 1.0;
+        d.m23 = 0.0;
+        d.m03 = _buf0;
+        d.m10 = _buf1;
+        d.m11 = _buf2;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code to3x4}, specialized by runtime matrix properties; reached only through
+     * the public {@code to3x4} dispatcher.
+     */
+    private Double3x4 to3x4_general(@Mutated Double3x4 dest) {
+        Double3x4Impl d = (Double3x4Impl) dest;
+        d.m00 = this.m00;
+        d.m01 = this.m01;
+        d.m02 = this.m02;
+        double _buf0 = 0.0;
+        double _buf1 = this.m10;
+        double _buf2 = this.m11;
+        double _buf3 = this.m12;
+        double _buf4 = 0.0;
+        double _buf5 = this.m20;
+        d.m21 = this.m21;
+        d.m22 = this.m22;
+        d.m23 = 0.0;
+        d.m03 = _buf0;
+        d.m10 = _buf1;
+        d.m11 = _buf2;
+        d.m12 = _buf3;
+        d.m13 = _buf4;
+        d.m20 = _buf5;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Extend this matrix to a 3x4 matrix with a zero translation column and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x4 to3x4(@Mutated Double3x4 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return to3x4_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return to3x4_translation(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return to3x4_orthogonal(dest);
+        return to3x4_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code to4x4}, specialized by runtime matrix properties; reached only through
+     * the public {@code to4x4} dispatcher.
+     */
+    private Double4x4 to4x4_identity(@Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m30 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m31 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 1.0;
+        d.m32 = 0.0;
+        d.m03 = 0.0;
+        d.m13 = 0.0;
+        d.m23 = 0.0;
+        d.m33 = 1.0;
+        d.properties = Joml.BIT_IDENTITY;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code to4x4}, specialized by runtime matrix properties; reached only through
+     * the public {@code to4x4} dispatcher.
+     */
+    private Double4x4 to4x4_translation(@Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m30 = 0.0;
+        d.m01 = 0.0;
+        double _buf0 = 1.0;
+        d.m21 = 0.0;
+        d.m31 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.m32 = 0.0;
+        d.m03 = 0.0;
+        d.m13 = 0.0;
+        d.m23 = 0.0;
+        d.m33 = 1.0;
+        d.m11 = _buf0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code to4x4}, specialized by runtime matrix properties; reached only through
+     * the public {@code to4x4} dispatcher.
+     */
+    private Double4x4 to4x4_orthogonal(@Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = this.m00;
+        double _buf0 = this.m10;
+        d.m20 = 0.0;
+        d.m30 = 0.0;
+        d.m01 = this.m01;
+        double _buf1 = this.m11;
+        d.m21 = 0.0;
+        d.m31 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.m32 = 0.0;
+        d.m03 = 0.0;
+        d.m13 = 0.0;
+        d.m23 = 0.0;
+        d.m33 = 1.0;
+        d.m10 = _buf0;
+        d.m11 = _buf1;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code to4x4}, specialized by runtime matrix properties; reached only through
+     * the public {@code to4x4} dispatcher.
+     */
+    private Double4x4 to4x4_general(@Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = this.m00;
+        double _buf0 = this.m10;
+        double _buf1 = this.m20;
+        d.m30 = 0.0;
+        d.m01 = this.m01;
+        double _buf2 = this.m11;
+        d.m21 = this.m21;
+        d.m31 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = this.m22;
+        d.m32 = 0.0;
+        d.m03 = 0.0;
+        d.m13 = 0.0;
+        d.m23 = 0.0;
+        d.m33 = 1.0;
+        d.m10 = _buf0;
+        d.m20 = _buf1;
+        d.m11 = _buf2;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Extend this matrix to a 4x4 matrix, filling the missing cells with identity and store the
+     * result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x4 to4x4(@Mutated Double4x4 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return to4x4_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return to4x4_translation(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return to4x4_orthogonal(dest);
+        return to4x4_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code toDualQuat}, specialized by runtime matrix properties; reached only
+     * through the public {@code toDualQuat} dispatcher.
+     */
+    private DoubleDualQuat toDualQuat_identity(@Mutated DoubleDualQuat dest) {
+        DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
+        d.rX = 0.0;
+        d.rY = 0.0;
+        d.rZ = 0.0;
+        d.rW = 1.0;
+        d.dX = 0.0;
+        d.dY = 0.0;
+        d.dZ = 0.0;
+        d.dW = 0.0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code toDualQuat}, specialized by runtime matrix properties; reached only
+     * through the public {@code toDualQuat} dispatcher.
+     */
+    private DoubleDualQuat toDualQuat_translation(@Mutated DoubleDualQuat dest) {
+        DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
+        d.rX = -(0.25 * this.m12);
+        d.rY = 0.25 * this.m02;
+        d.rZ = 0.0;
+        d.rW = 1.0;
+        d.dX = 0.0;
+        d.dY = 0.0;
+        d.dZ = 0.0;
+        d.dW = 0.0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code toDualQuat}, specialized by runtime matrix properties; reached only
+     * through the public {@code toDualQuat} dispatcher.
+     */
+    private DoubleDualQuat toDualQuat_orthogonal(@Mutated DoubleDualQuat dest) {
+        DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
+        double _t0 = Math.max(this.m11, 1.0);
+        double _t2 = 1.0 - this.m00;
+        double _t4 = this.m01 + this.m10;
+        double _t5 = this.m10 - this.m01;
+        double _t8 = 1.0 + (this.m00 + this.m11);
+        double _t10 = 1.0 + _t8;
+        double _t11 = this.m00 + (1.0 - this.m11 - 1.0);
+        double _t12 = this.m11 + (_t2 - 1.0);
+        double _t13 = 1.0 + (_t2 - this.m11);
+        double _t14 = (1.0 / Math.sqrt(_t10));
+        double _t15 = (1.0 / Math.sqrt(_t12));
+        double _t16 = (1.0 / Math.sqrt(_t13));
+        double _t17 = (1.0 / Math.sqrt(_t11));
+        if (_t8 > 0.0) {
+            double _buf0 = -(0.5 * this.m12 * _t14);
+            d.rY = 0.5 * this.m02 * _t14;
+            double _buf1 = 0.5 * _t5 * _t14;
+            d.rW = 0.5 * Math.sqrt(_t10);
+            d.rX = _buf0;
+            d.rZ = _buf1;
+        } else {
+            if (this.m00 > _t0) {
+                double _buf0 = 0.5 * Math.sqrt(_t11);
+                d.rY = 0.5 * _t4 * _t17;
+                double _buf1 = 0.5 * this.m02 * _t17;
+                d.rW = -(0.5 * this.m12 * _t17);
+                d.rX = _buf0;
+                d.rZ = _buf1;
+            } else {
+                if (this.m11 > 1.0) {
+                    double _buf0 = 0.5 * _t4 * _t15;
+                    d.rY = 0.5 * Math.sqrt(_t12);
+                    double _buf1 = 0.5 * this.m12 * _t15;
+                    d.rW = 0.5 * this.m02 * _t15;
+                    d.rX = _buf0;
+                    d.rZ = _buf1;
+                } else {
+                    double _buf0 = 0.5 * this.m02 * _t16;
+                    d.rY = 0.5 * this.m12 * _t16;
+                    double _buf1 = 0.5 * Math.sqrt(_t13);
+                    d.rW = 0.5 * _t5 * _t16;
+                    d.rX = _buf0;
+                    d.rZ = _buf1;
+                }
+            }
+        }
+        d.dX = 0.0;
+        d.dY = 0.0;
+        d.dZ = 0.0;
+        d.dW = 0.0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code toDualQuat}, specialized by runtime matrix properties; reached only
+     * through the public {@code toDualQuat} dispatcher.
+     */
+    private DoubleDualQuat toDualQuat_general(@Mutated DoubleDualQuat dest) {
+        DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
+        double _t1 = 1.0 - this.m00;
+        double _t3 = this.m21 - this.m12;
+        double _t4 = Math.max(this.m11, this.m22);
+        double _t5 = this.m01 + this.m10;
+        double _t6 = this.m02 + this.m20;
+        double _t7 = this.m02 - this.m20;
+        double _t8 = this.m12 + this.m21;
+        double _t9 = this.m10 - this.m01;
+        double _t13 = this.m22 + (this.m00 + this.m11);
+        double _t14 = 1.0 + _t13;
+        double _t15 = this.m00 + (1.0 - this.m11 - this.m22);
+        double _t16 = this.m11 + (_t1 - this.m22);
+        double _t17 = this.m22 + (_t1 - this.m11);
+        double _t18 = (1.0 / Math.sqrt(_t14));
+        double _t19 = (1.0 / Math.sqrt(_t16));
+        double _t20 = (1.0 / Math.sqrt(_t17));
+        double _t21 = (1.0 / Math.sqrt(_t15));
+        if (_t13 > 0.0) {
+            double _buf0 = 0.5 * _t3 * _t18;
+            d.rY = 0.5 * _t7 * _t18;
+            d.rZ = 0.5 * _t9 * _t18;
+            d.rW = 0.5 * Math.sqrt(_t14);
+            d.rX = _buf0;
+        } else {
+            if (this.m00 > _t4) {
+                double _buf0 = 0.5 * Math.sqrt(_t15);
+                d.rY = 0.5 * _t5 * _t21;
+                d.rZ = 0.5 * _t6 * _t21;
+                d.rW = 0.5 * _t3 * _t21;
+                d.rX = _buf0;
+            } else {
+                if (this.m11 > this.m22) {
+                    double _buf0 = 0.5 * _t5 * _t19;
+                    d.rY = 0.5 * Math.sqrt(_t16);
+                    d.rZ = 0.5 * _t8 * _t19;
+                    d.rW = 0.5 * _t7 * _t19;
+                    d.rX = _buf0;
+                } else {
+                    double _buf0 = 0.5 * _t6 * _t20;
+                    d.rY = 0.5 * _t8 * _t20;
+                    d.rZ = 0.5 * Math.sqrt(_t17);
+                    d.rW = 0.5 * _t9 * _t20;
+                    d.rX = _buf0;
+                }
+            }
+        }
+        d.dX = 0.0;
+        d.dY = 0.0;
+        d.dZ = 0.0;
+        d.dW = 0.0;
+        return d;
+    }
+
+
+    /**
+     * Convert this matrix (assumed orthonormal) to a pure-rotation dual quaternion and store the
+     * result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleDualQuat toDualQuat(@Mutated DoubleDualQuat dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return toDualQuat_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return toDualQuat_translation(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return toDualQuat_orthogonal(dest);
+        return toDualQuat_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code toRigid}, specialized by runtime matrix properties; reached only
+     * through the public {@code toRigid} dispatcher.
+     */
+    private DoubleRigid toRigid_identity(@Mutated DoubleRigid dest) {
+        DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        d.tX = 0.0;
+        d.tY = 0.0;
+        d.tZ = 0.0;
+        d.rX = 0.0;
+        d.rY = 0.0;
+        d.rZ = 0.0;
+        d.rW = 1.0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code toRigid}, specialized by runtime matrix properties; reached only
+     * through the public {@code toRigid} dispatcher.
+     */
+    private DoubleRigid toRigid_translation(@Mutated DoubleRigid dest) {
+        DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        double _t4 = (1.0 / Math.sqrt(this.m02 * this.m02 + (this.m12 * this.m12 + 1.0)));
+        double _t5 = Math.max(1.0, _t4);
+        double _t7 = this.m12 * _t4;
+        double _t8 = this.m02 * _t4;
+        double _t9 = _t4 < 0.0 ? -1.0 : 1.0;
+        double _t10 = 1.0 + _t9;
+        double _t13 = _t10 + _t4;
+        double _t15 = 2.0 - _t9 - _t4;
+        double _t16 = (1.0 / Math.sqrt(_t15));
+        double _t17 = 1.0 + _t13;
+        double _t18 = _t10 - 1.0 - _t4;
+        double _t19 = 1.0 + _t4 - _t9 - 1.0;
+        double _t20 = (1.0 / Math.sqrt(_t17));
+        double _t21 = (1.0 / Math.sqrt(_t19));
+        double _t22 = (1.0 / Math.sqrt(_t18));
+        if (_t13 > 0.0) {
+            d.rX = -(0.5 * _t7 * _t20);
+            d.rY = 0.5 * _t8 * _t20;
+            d.rZ = 0.0;
+            d.rW = 0.5 * Math.sqrt(_t17);
+        } else {
+            if (_t9 > _t5) {
+                d.rX = 0.5 * Math.sqrt(_t18);
+                d.rY = 0.0;
+                d.rZ = 0.5 * _t8 * _t22;
+                d.rW = -(0.5 * _t7 * _t22);
+            } else {
+                if (1.0 > _t4) {
+                    d.rX = 0.0;
+                    d.rY = 0.5 * Math.sqrt(_t15);
+                    d.rZ = 0.5 * _t7 * _t16;
+                    d.rW = 0.5 * _t8 * _t16;
+                } else {
+                    d.rX = 0.5 * _t8 * _t21;
+                    d.rY = 0.5 * _t7 * _t21;
+                    d.rZ = 0.5 * Math.sqrt(_t19);
+                    d.rW = 0.0;
+                }
+            }
+        }
+        d.tX = 0.0;
+        d.tY = 0.0;
+        d.tZ = 0.0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code toRigid}, specialized by runtime matrix properties; reached only
+     * through the public {@code toRigid} dispatcher.
+     */
+    private DoubleRigid toRigid_general(@Mutated DoubleRigid dest) {
+        DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        double _t15 = (1.0 / Math.sqrt(this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21));
+        double _t16 = (1.0 / Math.sqrt(this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22));
+        double _t17 = (1.0 / Math.sqrt(this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20));
+        double _t18 = this.m11 * _t15;
+        double _t19 = this.m22 * _t16;
+        double _t20 = this.m10 * _t17;
+        double _t21 = this.m21 * _t15;
+        double _t22 = this.m20 * _t17;
+        double _t23 = this.m02 * _t16;
+        double _t24 = this.m12 * _t16;
+        double _t25 = this.m00 * _t17;
+        double _t26 = this.m01 * _t15;
+        double _t36 = _t21 - _t24;
+        double _t37 = Math.max(_t18, _t19);
+        double _t38 = _t24 + _t21;
+        double _t46 = (_t20 * _t21 - _t18 * _t22) * _t23 + (_t18 * _t19 - _t24 * _t21) * _t25 - (_t20 * _t19 - _t24 * _t22) * _t26;
+        double _t47, _t48, _t49;
+        if (_t46 < 0.0) {
+            _t47 = -_t25;
+            _t48 = -_t20;
+            _t49 = -_t22;
+        } else {
+            _t47 = _t25;
+            _t48 = _t20;
+            _t49 = _t22;
+        }
+        double _t50 = 1.0 + _t47;
+        double _t51 = 1.0 - _t47;
+        double _t53 = _t26 + _t48;
+        double _t54 = _t23 + _t49;
+        double _t55 = _t23 - _t49;
+        double _t56 = _t48 - _t26;
+        double _t61 = _t18 + (_t19 + _t47);
+        double _t62 = _t18 + (_t19 + _t50);
+        double _t63 = _t50 - _t19 - _t18;
+        double _t64 = _t18 + (_t51 - _t19);
+        double _t65 = _t19 + (_t51 - _t18);
+        double _t66 = (1.0 / Math.sqrt(_t62));
+        double _t67 = (1.0 / Math.sqrt(_t64));
+        double _t68 = (1.0 / Math.sqrt(_t65));
+        double _t69 = (1.0 / Math.sqrt(_t63));
+        if (_t61 > 0.0) {
+            d.rX = 0.5 * _t36 * _t66;
+            d.rY = 0.5 * _t55 * _t66;
+            d.rZ = 0.5 * _t56 * _t66;
+            d.rW = 0.5 * Math.sqrt(_t62);
+        } else {
+            if (_t47 > _t37) {
+                d.rX = 0.5 * Math.sqrt(_t63);
+                d.rY = 0.5 * _t53 * _t69;
+                d.rZ = 0.5 * _t54 * _t69;
+                d.rW = 0.5 * _t36 * _t69;
+            } else {
+                if (_t18 > _t19) {
+                    d.rX = 0.5 * _t53 * _t67;
+                    d.rY = 0.5 * Math.sqrt(_t64);
+                    d.rZ = 0.5 * _t38 * _t67;
+                    d.rW = 0.5 * _t55 * _t67;
+                } else {
+                    d.rX = 0.5 * _t54 * _t68;
+                    d.rY = 0.5 * _t38 * _t68;
+                    d.rZ = 0.5 * Math.sqrt(_t65);
+                    d.rW = 0.5 * _t56 * _t68;
+                }
+            }
+        }
+        d.tX = 0.0;
+        d.tY = 0.0;
+        d.tZ = 0.0;
+        return d;
+    }
+
+
+    /**
+     * Extract this matrix's rotation into a rigid transform with zero translation (any scale or
+     * shear projects onto the nearest rotation) and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleRigid toRigid(@Mutated DoubleRigid dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return toRigid_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return toRigid_translation(dest);
+        return toRigid_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
+     * through the public {@code toTransform} dispatcher.
+     */
+    private DoubleTransform toTransform_identity(@Mutated DoubleTransform dest) {
+        DoubleTransformImpl d = (DoubleTransformImpl) dest;
+        d.tX = 0.0;
+        d.tY = 0.0;
+        d.tZ = 0.0;
+        d.rX = 0.0;
+        d.rY = 0.0;
+        d.rZ = 0.0;
+        d.rW = 1.0;
+        d.sX = 1.0;
+        d.sY = 1.0;
+        d.sZ = 1.0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
+     * through the public {@code toTransform} dispatcher.
+     */
+    private DoubleTransform toTransform_translation(@Mutated DoubleTransform dest) {
+        DoubleTransformImpl d = (DoubleTransformImpl) dest;
+        double _t3 = this.m02 * this.m02 + (this.m12 * this.m12 + 1.0);
+        double _t4 = (1.0 / Math.sqrt(_t3));
+        double _t5 = Math.max(1.0, _t4);
+        double _t7 = this.m12 * _t4;
+        double _t8 = this.m02 * _t4;
+        double _t9 = _t4 < 0.0 ? -1.0 : 1.0;
+        double _t10 = 1.0 + _t9;
+        double _t13 = _t10 + _t4;
+        double _t15 = 2.0 - _t9 - _t4;
+        double _t16 = (1.0 / Math.sqrt(_t15));
+        double _t17 = 1.0 + _t13;
+        double _t18 = _t10 - 1.0 - _t4;
+        double _t19 = 1.0 + _t4 - _t9 - 1.0;
+        double _t20 = (1.0 / Math.sqrt(_t17));
+        double _t21 = (1.0 / Math.sqrt(_t19));
+        double _t22 = (1.0 / Math.sqrt(_t18));
+        if (_t13 > 0.0) {
+            d.rX = -(0.5 * _t7 * _t20);
+            d.rY = 0.5 * _t8 * _t20;
+            d.rZ = 0.0;
+            d.rW = 0.5 * Math.sqrt(_t17);
+        } else {
+            if (_t9 > _t5) {
+                d.rX = 0.5 * Math.sqrt(_t18);
+                d.rY = 0.0;
+                d.rZ = 0.5 * _t8 * _t22;
+                d.rW = -(0.5 * _t7 * _t22);
+            } else {
+                if (1.0 > _t4) {
+                    d.rX = 0.0;
+                    d.rY = 0.5 * Math.sqrt(_t15);
+                    d.rZ = 0.5 * _t7 * _t16;
+                    d.rW = 0.5 * _t8 * _t16;
+                } else {
+                    d.rX = 0.5 * _t8 * _t21;
+                    d.rY = 0.5 * _t7 * _t21;
+                    d.rZ = 0.5 * Math.sqrt(_t19);
+                    d.rW = 0.0;
+                }
+            }
+        }
+        d.tX = 0.0;
+        d.tY = 0.0;
+        d.tZ = 0.0;
+        d.sX = _t9;
+        d.sY = 1.0;
+        d.sZ = Math.sqrt(_t3);
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
+     * through the public {@code toTransform} dispatcher.
+     */
+    private DoubleTransform toTransform_general(@Mutated DoubleTransform dest) {
+        DoubleTransformImpl d = (DoubleTransformImpl) dest;
+        double _t12 = this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21;
+        double _t13 = this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22;
+        double _t14 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
+        double _t15 = (1.0 / Math.sqrt(_t12));
+        double _t16 = (1.0 / Math.sqrt(_t13));
+        double _t17 = (1.0 / Math.sqrt(_t14));
+        double _t18 = Math.sqrt(_t14);
+        double _t19 = this.m11 * _t15;
+        double _t20 = this.m22 * _t16;
+        double _t21 = this.m10 * _t17;
+        double _t22 = this.m21 * _t15;
+        double _t23 = this.m20 * _t17;
+        double _t24 = this.m02 * _t16;
+        double _t25 = this.m12 * _t16;
+        double _t26 = this.m00 * _t17;
+        double _t27 = this.m01 * _t15;
+        double _t37 = _t22 - _t25;
+        double _t38 = Math.max(_t19, _t20);
+        double _t39 = _t25 + _t22;
+        double _t47 = (_t21 * _t22 - _t19 * _t23) * _t24 + (_t19 * _t20 - _t25 * _t22) * _t26 - (_t21 * _t20 - _t25 * _t23) * _t27;
+        double _t48, _t49, _t50;
+        if (_t47 < 0.0) {
+            _t48 = -_t26;
+            _t49 = -_t21;
+            _t50 = -_t23;
+        } else {
+            _t48 = _t26;
+            _t49 = _t21;
+            _t50 = _t23;
+        }
+        double _t51 = 1.0 + _t48;
+        double _t52 = 1.0 - _t48;
+        double _t54 = _t27 + _t49;
+        double _t55 = _t24 + _t50;
+        double _t56 = _t24 - _t50;
+        double _t57 = _t49 - _t27;
+        double _t62 = _t19 + (_t20 + _t48);
+        double _t63 = _t19 + (_t20 + _t51);
+        double _t64 = _t51 - _t20 - _t19;
+        double _t65 = _t19 + (_t52 - _t20);
+        double _t66 = _t20 + (_t52 - _t19);
+        double _t67 = (1.0 / Math.sqrt(_t63));
+        double _t68 = (1.0 / Math.sqrt(_t65));
+        double _t69 = (1.0 / Math.sqrt(_t66));
+        double _t70 = (1.0 / Math.sqrt(_t64));
+        d.tX = 0.0;
+        d.tY = 0.0;
+        d.tZ = 0.0;
+        d.rX = _t62 > 0.0 ? 0.5 * _t37 * _t67 : _t48 > _t38 ? 0.5 * Math.sqrt(_t64) : _t19 > _t20 ? 0.5 * _t54 * _t68 : 0.5 * _t55 * _t69;
+        d.rY = _t62 > 0.0 ? 0.5 * _t56 * _t67 : _t48 > _t38 ? 0.5 * _t54 * _t70 : _t19 > _t20 ? 0.5 * Math.sqrt(_t65) : 0.5 * _t39 * _t69;
+        d.rZ = _t62 > 0.0 ? 0.5 * _t57 * _t67 : _t48 > _t38 ? 0.5 * _t55 * _t70 : _t19 > _t20 ? 0.5 * _t39 * _t68 : 0.5 * Math.sqrt(_t66);
+        d.rW = _t62 > 0.0 ? 0.5 * Math.sqrt(_t63) : _t48 > _t38 ? 0.5 * _t37 * _t70 : _t19 > _t20 ? 0.5 * _t56 * _t68 : 0.5 * _t57 * _t69;
+        d.sX = _t47 < 0.0 ? -_t18 : _t18;
+        d.sY = Math.sqrt(_t12);
+        d.sZ = Math.sqrt(_t13);
+        return d;
+    }
+
+
+    /**
+     * Decompose this matrix's linear {@code R * S} block into a TRS transform with zero translation
+     * (a sheared matrix projects onto the nearest rotation) and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleTransform toTransform(@Mutated DoubleTransform dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return toTransform_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return toTransform_translation(dest);
+        return toTransform_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code decomposeRotation}, specialized by runtime matrix properties; reached
+     * only through the public {@code decomposeRotation} dispatcher.
+     */
+    private DoubleQuat decomposeRotation_identity(@Mutated DoubleQuat dest) {
+        return getNormalizedRotation_identity(dest);
+    }
+
+
+    /**
+     * Private body of {@code decomposeRotation}, specialized by runtime matrix properties; reached
+     * only through the public {@code decomposeRotation} dispatcher.
+     */
+    private DoubleQuat decomposeRotation_general(@Mutated DoubleQuat dest) {
+        DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
+        double _t5 = (1.0 / Math.sqrt(_t4));
+        double _t9, _t10, _t11;
+        if (_t4 > 0.0) {
+            _t9 = this.m00 * _t5;
+            _t10 = this.m10 * _t5;
+            _t11 = this.m20 * _t5;
+        } else {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 0.0;
+        }
+        double _t23 = this.m01 * _t9 + this.m11 * _t10 + this.m21 * _t11;
+        double _t24 = this.m02 * _t9 + this.m12 * _t10 + this.m22 * _t11;
+        double _t28 = _t24 * _t9;
+        double _t29 = _t24 * _t10;
+        double _t30 = _t24 * _t11;
+        double _t31 = this.m01 - _t23 * _t9;
+        double _t32 = this.m11 - _t23 * _t10;
+        double _t33 = this.m21 - _t23 * _t11;
+        double _t41 = _t31 * _t31 + _t32 * _t32 + _t33 * _t33;
+        double _t42 = (1.0 / Math.sqrt(_t41));
+        double _t46, _t47, _t48;
+        if (_t41 > 0.0) {
+            _t46 = _t32 * _t42;
+            _t47 = _t31 * _t42;
+            _t48 = _t33 * _t42;
+        } else {
+            _t46 = 0.0;
+            _t47 = 0.0;
+            _t48 = 0.0;
+        }
+        double _t53 = (this.m02 - _t28) * _t47 + (this.m12 - _t29) * _t46 + (this.m22 - _t30) * _t48;
+        double _t60 = this.m02 - _t53 * _t47 - _t28;
+        double _t61 = this.m12 - _t53 * _t46 - _t29;
+        double _t62 = this.m22 - _t53 * _t48 - _t30;
+        double _t67 = _t60 * _t60 + _t61 * _t61 + _t62 * _t62;
+        double _t68 = (1.0 / Math.sqrt(_t67));
+        double _t72, _t73, _t74;
+        if (_t67 > 0.0) {
+            _t72 = _t62 * _t68;
+            _t73 = _t61 * _t68;
+            _t74 = _t60 * _t68;
+        } else {
+            _t72 = 0.0;
+            _t73 = 0.0;
+            _t74 = 0.0;
+        }
+        double _t81 = _t48 - _t73;
+        double _t82 = Math.max(_t46, _t72);
+        double _t84 = _t48 + _t73;
+        double _t92 = (_t46 * _t72 - _t48 * _t73) * _t9 + (_t48 * _t74 - _t47 * _t72) * _t10 + (_t47 * _t73 - _t46 * _t74) * _t11;
+        double _t93, _t94, _t95;
+        if (_t92 < 0.0) {
+            _t93 = -_t9;
+            _t94 = -_t10;
+            _t95 = -_t11;
+        } else {
+            _t93 = _t9;
+            _t94 = _t10;
+            _t95 = _t11;
+        }
+        double _t96 = _t93 + _t46;
+        double _t97 = _t94 + _t47;
+        double _t98 = _t94 - _t47;
+        double _t100 = _t95 + _t74;
+        double _t101 = _t74 - _t95;
+        double _t102 = _t96 + _t72;
+        double _t106 = 1.0 + _t102;
+        double _t107 = 1.0 + (_t93 - (_t46 + _t72));
+        double _t108 = 1.0 + (_t46 - (_t93 + _t72));
+        double _t109 = 1.0 + (_t72 - _t96);
+        double _t110 = (1.0 / Math.sqrt(_t106));
+        double _t111 = (1.0 / Math.sqrt(_t108));
+        double _t112 = (1.0 / Math.sqrt(_t109));
+        double _t113 = (1.0 / Math.sqrt(_t107));
+        if (_t102 > 0.0) {
+            d.x = 0.5 * _t81 * _t110;
+            d.y = 0.5 * _t101 * _t110;
+            d.z = 0.5 * _t98 * _t110;
+            d.w = 0.5 * Math.sqrt(_t106);
+        } else {
+            if (_t93 > _t82) {
+                d.x = 0.5 * Math.sqrt(_t107);
+                d.y = 0.5 * _t97 * _t113;
+                d.z = 0.5 * _t100 * _t113;
+                d.w = 0.5 * _t81 * _t113;
+            } else {
+                if (_t46 > _t72) {
+                    d.x = 0.5 * _t97 * _t111;
+                    d.y = 0.5 * Math.sqrt(_t108);
+                    d.z = 0.5 * _t84 * _t111;
+                    d.w = 0.5 * _t101 * _t111;
+                } else {
+                    d.x = 0.5 * _t100 * _t112;
+                    d.y = 0.5 * _t84 * _t112;
+                    d.z = 0.5 * Math.sqrt(_t109);
+                    d.w = 0.5 * _t98 * _t112;
+                }
+            }
+        }
+        return d;
+    }
+
+
+    /**
+     * Extract the rotation part of this matrix and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleQuat decomposeRotation(@Mutated DoubleQuat dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return decomposeRotation_identity(dest);
+        return decomposeRotation_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code decomposeScale}, specialized by runtime matrix properties; reached
+     * only through the public {@code decomposeScale} dispatcher.
+     */
+    private Double3 decomposeScale_identity(@Mutated Double3 dest) {
+        return getScale_identity(dest);
+    }
+
+
+    /**
+     * Private body of {@code decomposeScale}, specialized by runtime matrix properties; reached
+     * only through the public {@code decomposeScale} dispatcher.
+     */
+    private Double3 decomposeScale_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
+        double _t5 = (1.0 / Math.sqrt(_t4));
+        double _t6 = Math.sqrt(_t4);
+        double _t10, _t11, _t12;
+        if (_t4 > 0.0) {
+            _t10 = this.m00 * _t5;
+            _t11 = this.m10 * _t5;
+            _t12 = this.m20 * _t5;
+        } else {
+            _t10 = 0.0;
+            _t11 = 0.0;
+            _t12 = 0.0;
+        }
+        double _t21 = this.m01 * _t10 + this.m11 * _t11 + this.m21 * _t12;
+        double _t22 = this.m02 * _t10 + this.m12 * _t11 + this.m22 * _t12;
+        double _t26 = _t22 * _t10;
+        double _t27 = _t22 * _t11;
+        double _t28 = _t22 * _t12;
+        double _t29 = this.m01 - _t21 * _t10;
+        double _t30 = this.m11 - _t21 * _t11;
+        double _t31 = this.m21 - _t21 * _t12;
+        double _t39 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
+        double _t40 = (1.0 / Math.sqrt(_t39));
+        double _t44, _t45, _t46;
+        if (_t39 > 0.0) {
+            _t44 = _t30 * _t40;
+            _t45 = _t29 * _t40;
+            _t46 = _t31 * _t40;
+        } else {
+            _t44 = 0.0;
+            _t45 = 0.0;
+            _t46 = 0.0;
+        }
+        double _t51 = (this.m02 - _t26) * _t45 + (this.m12 - _t27) * _t44 + (this.m22 - _t28) * _t46;
+        double _t58 = this.m02 - _t51 * _t45 - _t26;
+        double _t59 = this.m12 - _t51 * _t44 - _t27;
+        double _t60 = this.m22 - _t51 * _t46 - _t28;
+        double _t65 = _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
+        double _t66 = (1.0 / Math.sqrt(_t65));
+        double _t70, _t71, _t72;
+        if (_t65 > 0.0) {
+            _t70 = _t60 * _t66;
+            _t71 = _t59 * _t66;
+            _t72 = _t58 * _t66;
+        } else {
+            _t70 = 0.0;
+            _t71 = 0.0;
+            _t72 = 0.0;
+        }
+        d.x = (_t44 * _t70 - _t46 * _t71) * _t10 + (_t46 * _t72 - _t45 * _t70) * _t11 + (_t45 * _t71 - _t44 * _t72) * _t12 < 0.0 ? -_t6 : _t6;
+        d.y = Math.sqrt(_t39);
+        d.z = Math.sqrt(_t65);
+        return d;
+    }
+
+
+    /**
+     * Extract the scaling factors of this matrix via Gram-Schmidt orthogonalization (skew-aware;
+     * the x factor carries the sign of a reflection when the determinant is negative) and store the
+     * result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 decomposeScale(@Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return decomposeScale_identity(dest);
+        return decomposeScale_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code decomposeSkew}, specialized by runtime matrix properties; reached only
+     * through the public {@code decomposeSkew} dispatcher.
+     */
+    private Double3 decomposeSkew_identity(@Mutated Double3 dest) {
+        return getEulerAnglesXYZ_identity(dest);
+    }
+
+
+    /**
+     * Private body of {@code decomposeSkew}, specialized by runtime matrix properties; reached only
+     * through the public {@code decomposeSkew} dispatcher.
+     */
+    private Double3 decomposeSkew_translation(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        d.x = this.m12;
+        d.y = this.m02;
+        d.z = 0.0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code decomposeSkew}, specialized by runtime matrix properties; reached only
+     * through the public {@code decomposeSkew} dispatcher.
+     */
+    private Double3 decomposeSkew_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
+        double _t5 = (1.0 / Math.sqrt(_t4));
+        double _t9, _t10, _t11;
+        if (_t4 > 0.0) {
+            _t9 = this.m00 * _t5;
+            _t10 = this.m10 * _t5;
+            _t11 = this.m20 * _t5;
+        } else {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 0.0;
+        }
+        double _t20 = this.m02 * _t9 + this.m12 * _t10 + this.m22 * _t11;
+        double _t21 = this.m01 * _t9 + this.m11 * _t10 + this.m21 * _t11;
+        double _t22 = _t20 * _t9;
+        double _t26 = _t20 * _t10;
+        double _t27 = _t20 * _t11;
+        double _t29 = this.m01 - _t21 * _t9;
+        double _t30 = this.m11 - _t21 * _t10;
+        double _t31 = this.m21 - _t21 * _t11;
+        double _t38 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
+        double _t39 = (1.0 / Math.sqrt(_t38));
+        double _t40 = _t21 * _t39;
+        double _t44, _t45, _t46;
+        if (_t38 > 0.0) {
+            _t44 = _t29 * _t39;
+            _t45 = _t30 * _t39;
+            _t46 = _t31 * _t39;
+        } else {
+            _t44 = 0.0;
+            _t45 = 0.0;
+            _t46 = 0.0;
+        }
+        double _t51 = (this.m02 - _t22) * _t44 + (this.m12 - _t26) * _t45 + (this.m22 - _t27) * _t46;
+        double _t58 = this.m02 - _t51 * _t44 - _t22;
+        double _t59 = this.m12 - _t51 * _t45 - _t26;
+        double _t60 = this.m22 - _t51 * _t46 - _t27;
+        double _t65 = _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
+        double _t66 = (1.0 / Math.sqrt(_t65));
+        double _t67 = _t20 * _t66;
+        double _t71, _t72, _t73;
+        if (_t65 > 0.0) {
+            _t71 = _t60 * _t66;
+            _t72 = _t59 * _t66;
+            _t73 = _t58 * _t66;
+        } else {
+            _t71 = 0.0;
+            _t72 = 0.0;
+            _t73 = 0.0;
+        }
+        double _t87 = (_t45 * _t71 - _t46 * _t72) * _t9 + (_t46 * _t73 - _t44 * _t71) * _t10 + (_t44 * _t72 - _t45 * _t73) * _t11;
+        if (_t87 < 0.0) {
+            d.y = -_t67;
+            d.z = -_t40;
+        } else {
+            d.y = _t67;
+            d.z = _t40;
+        }
+        d.x = _t51 * _t66;
+        return d;
+    }
+
+
+    /**
+     * Extract the shear (skew) factors of this matrix via Gram-Schmidt orthogonalization, as
+     * {@code (skewYZ, skewXZ, skewXY)} (all zero for a shear-free matrix) and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 decomposeSkew(@Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return decomposeSkew_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return decomposeSkew_translation(dest);
+        return decomposeSkew_general(dest);
+    }
+
+
+    /**
+     * Set this matrix to the identity.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 makeIdentity() {
+        this.m00 = 1.0;
+        this.m10 = 0.0;
+        this.m20 = 0.0;
+        this.m01 = 0.0;
+        this.m11 = 1.0;
+        this.m21 = 0.0;
+        this.m02 = 0.0;
+        this.m12 = 0.0;
+        this.m22 = 1.0;
+        this.properties = Joml.BIT_IDENTITY;
+        return this;
+    }
+
+
+    /**
+     * Private body of {@code lerp}, specialized by runtime matrix properties; reached only through
+     * the public {@code lerp} dispatcher.
+     */
+    private Double3x3 lerp_general(Double3x3R other, double t, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = t * (other.m00() - this.m00) + this.m00;
+        d.m10 = t * (other.m10() - this.m10) + this.m10;
+        d.m20 = t * (other.m20() - this.m20) + this.m20;
+        d.m01 = t * (other.m01() - this.m01) + this.m01;
+        d.m11 = t * (other.m11() - this.m11) + this.m11;
+        d.m21 = t * (other.m21() - this.m21) + this.m21;
+        d.m02 = t * (other.m02() - this.m02) + this.m02;
+        d.m12 = t * (other.m12() - this.m12) + this.m12;
+        d.m22 = t * (other.m22() - this.m22) + this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code lerp}, specialized by runtime matrix properties; reached only through
+     * the public {@code lerp} dispatcher.
+     */
+    private Double3x3 lerp_identity(Double3x3R other, double t, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = t * (other.m00() - 1.0) + 1.0;
+        d.m10 = t * other.m10();
+        d.m20 = t * other.m20();
+        d.m01 = t * other.m01();
+        d.m11 = t * (other.m11() - 1.0) + 1.0;
+        d.m21 = t * other.m21();
+        d.m02 = t * other.m02();
+        d.m12 = t * other.m12();
+        d.m22 = t * (other.m22() - 1.0) + 1.0;
+        d.properties = Joml.BIT_AFFINE & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code lerp}, specialized by runtime matrix properties; reached only through
+     * the public {@code lerp} dispatcher.
+     */
+    private Double3x3 lerp_translation(Double3x3R other, double t, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = t * (other.m00() - 1.0) + 1.0;
+        d.m10 = t * other.m10();
+        d.m20 = t * other.m20();
+        d.m01 = t * other.m01();
+        d.m11 = t * (other.m11() - 1.0) + 1.0;
+        d.m21 = t * other.m21();
+        d.m02 = t * (other.m02() - this.m02) + this.m02;
+        d.m12 = t * (other.m12() - this.m12) + this.m12;
+        d.m22 = t * (other.m22() - 1.0) + 1.0;
+        d.properties = Joml.BIT_AFFINE & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code lerp}, specialized by runtime matrix properties; reached only through
+     * the public {@code lerp} dispatcher.
+     */
+    private Double3x3 lerp_orthogonal(Double3x3R other, double t, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = t * (other.m00() - this.m00) + this.m00;
+        d.m10 = t * (other.m10() - this.m10) + this.m10;
+        d.m20 = t * other.m20();
+        d.m01 = t * (other.m01() - this.m01) + this.m01;
+        d.m11 = t * (other.m11() - this.m11) + this.m11;
+        d.m21 = t * other.m21();
+        d.m02 = t * (other.m02() - this.m02) + this.m02;
+        d.m12 = t * (other.m12() - this.m12) + this.m12;
+        d.m22 = t * (other.m22() - 1.0) + 1.0;
+        d.properties = Joml.BIT_AFFINE & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code lerp}, specialized by runtime matrix properties; reached only through
+     * the public {@code lerp} dispatcher.
+     */
+    private Double3x3 lerp_identity_identity(Double3x3R other, double t, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 1.0;
+        d.properties = ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code lerp}, specialized by runtime matrix properties; reached only through
+     * the public {@code lerp} dispatcher.
+     */
+    private Double3x3 lerp_identity_translation(Double3x3R other, double t, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = t * other.m02();
+        d.m12 = t * other.m12();
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_TRANSLATION & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code lerp}, specialized by runtime matrix properties; reached only through
+     * the public {@code lerp} dispatcher.
+     */
+    private Double3x3 lerp_identity_affine(Double3x3R other, double t, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = t * (other.m00() - 1.0) + 1.0;
+        d.m10 = t * other.m10();
+        d.m20 = 0.0;
+        d.m01 = t * other.m01();
+        d.m11 = t * (other.m11() - 1.0) + 1.0;
+        d.m21 = 0.0;
+        d.m02 = t * other.m02();
+        d.m12 = t * other.m12();
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code lerp}, specialized by runtime matrix properties; reached only through
+     * the public {@code lerp} dispatcher.
+     */
+    private Double3x3 lerp_translation_identity(Double3x3R other, double t, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = this.m02 - t * this.m02;
+        d.m12 = this.m12 - t * this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_TRANSLATION & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code lerp}, specialized by runtime matrix properties; reached only through
+     * the public {@code lerp} dispatcher.
+     */
+    private Double3x3 lerp_translation_translation(Double3x3R other, double t, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = t * (other.m02() - this.m02) + this.m02;
+        d.m12 = t * (other.m12() - this.m12) + this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_TRANSLATION & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code lerp}, specialized by runtime matrix properties; reached only through
+     * the public {@code lerp} dispatcher.
+     */
+    private Double3x3 lerp_translation_affine(Double3x3R other, double t, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = t * (other.m00() - 1.0) + 1.0;
+        d.m10 = t * other.m10();
+        d.m20 = 0.0;
+        d.m01 = t * other.m01();
+        d.m11 = t * (other.m11() - 1.0) + 1.0;
+        d.m21 = 0.0;
+        d.m02 = t * (other.m02() - this.m02) + this.m02;
+        d.m12 = t * (other.m12() - this.m12) + this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code lerp}, specialized by runtime matrix properties; reached only through
+     * the public {@code lerp} dispatcher.
+     */
+    private Double3x3 lerp_orthogonal_identity(Double3x3R other, double t, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = t * this.m10;
+        double _t3 = t + this.m11 - t * this.m11;
+        d.m00 = _t3;
+        double _buf0 = this.m10 - _t2;
+        d.m20 = 0.0;
+        d.m01 = _t2 - this.m10;
+        d.m11 = _t3;
+        d.m21 = 0.0;
+        d.m02 = this.m02 - t * this.m02;
+        d.m12 = this.m12 - t * this.m12;
+        d.m22 = 1.0;
+        d.m10 = _buf0;
+        d.properties = Joml.BIT_AFFINE & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code lerp}, specialized by runtime matrix properties; reached only through
+     * the public {@code lerp} dispatcher.
+     */
+    private Double3x3 lerp_orthogonal_translation(Double3x3R other, double t, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = t * (1.0 - this.m00) + this.m00;
+        d.m10 = this.m10 - t * this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m01 - t * this.m01;
+        d.m11 = t * (1.0 - this.m11) + this.m11;
+        d.m21 = 0.0;
+        d.m02 = t * (other.m02() - this.m02) + this.m02;
+        d.m12 = t * (other.m12() - this.m12) + this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code lerp}, specialized by runtime matrix properties; reached only through
+     * the public {@code lerp} dispatcher.
+     */
+    private Double3x3 lerp_affine_identity(Double3x3R other, double t, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = t * (1.0 - this.m00) + this.m00;
+        d.m10 = this.m10 - t * this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m01 - t * this.m01;
+        d.m11 = t * (1.0 - this.m11) + this.m11;
+        d.m21 = 0.0;
+        d.m02 = this.m02 - t * this.m02;
+        d.m12 = this.m12 - t * this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code lerp}, specialized by runtime matrix properties; reached only through
+     * the public {@code lerp} dispatcher.
+     */
+    private Double3x3 lerp_general_identity(Double3x3R other, double t, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = t * (1.0 - this.m00) + this.m00;
+        d.m10 = this.m10 - t * this.m10;
+        d.m20 = this.m20 - t * this.m20;
+        d.m01 = this.m01 - t * this.m01;
+        d.m11 = t * (1.0 - this.m11) + this.m11;
+        d.m21 = this.m21 - t * this.m21;
+        d.m02 = this.m02 - t * this.m02;
+        d.m12 = this.m12 - t * this.m12;
+        d.m22 = t * (1.0 - this.m22) + this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Linearly interpolate between this matrix and {@code other} using the interpolation factor
+     * {@code t} and store the result in {@code dest}.
+     *
+     * @param other the other matrix
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 lerp(Double3x3R other, double t, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        int q = ((Double3x3Impl) other).properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lerp_identity_identity(other, t, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lerp_identity_translation(other, t, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return lerp_identity_affine(other, t, dest);
+            return lerp_identity(other, t, dest);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lerp_translation_identity(other, t, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lerp_translation_translation(other, t, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return lerp_translation_affine(other, t, dest);
+            return lerp_translation(other, t, dest);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lerp_orthogonal_identity(other, t, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lerp_orthogonal_translation(other, t, dest);
+            return lerp_orthogonal(other, t, dest);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lerp_affine_identity(other, t, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lerp_orthogonal_translation(other, t, dest);
+            return lerp_orthogonal(other, t, dest);
+        }
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lerp_general_identity(other, t, dest);
+        return lerp_general(other, t, dest);
+    }
+
+
+    /**
+     * Linearly interpolate between this matrix and {@code other} using the interpolation factor
+     * {@code t}.
+     *
+     * @param other the other matrix
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @return this
+     */
+    @Mutated public Double3x3 lerp(Double3x3R other, double t) {
+        if (Joml.RETURN_NEW) return lerp(other, t, Joml.double3x3());
+        int p = this.properties;
+        int q = ((Double3x3Impl) other).properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lerp_identity_identity(other, t, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lerp_identity_translation(other, t, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return lerp_identity_affine(other, t, this);
+            return lerp_identity(other, t, this);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lerp_translation_identity(other, t, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lerp_translation_translation(other, t, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return lerp_translation_affine(other, t, this);
+            return lerp_translation(other, t, this);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lerp_orthogonal_identity(other, t, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lerp_orthogonal_translation(other, t, this);
+            return lerp_orthogonal(other, t, this);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lerp_affine_identity(other, t, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lerp_orthogonal_translation(other, t, this);
+            return lerp_orthogonal(other, t, this);
+        }
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lerp_general_identity(other, t, this);
+        return lerp_general(other, t, this);
+    }
+
+
+    /**
+     * Linearly interpolate between this matrix and ({@code m00}, {@code m01}, {@code m02},
+     * {@code m10}, {@code m11}, {@code m12}, {@code m20}, {@code m21}, {@code m22}) using the
+     * interpolation factor {@code t} and store the result in {@code dest}.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m22 the element in row 2, column 2 of the matrix
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 lerp(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22, double t, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = t * (m00 - this.m00) + this.m00;
+        d.m10 = t * (m10 - this.m10) + this.m10;
+        d.m20 = t * (m20 - this.m20) + this.m20;
+        d.m01 = t * (m01 - this.m01) + this.m01;
+        d.m11 = t * (m11 - this.m11) + this.m11;
+        d.m21 = t * (m21 - this.m21) + this.m21;
+        d.m02 = t * (m02 - this.m02) + this.m02;
+        d.m12 = t * (m12 - this.m12) + this.m12;
+        d.m22 = t * (m22 - this.m22) + this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_general(Double3x3R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = right.m00() * this.m00 + right.m10() * this.m01 + right.m20() * this.m02;
+        double _buf1 = right.m00() * this.m10 + right.m10() * this.m11 + right.m20() * this.m12;
+        double _buf2 = right.m00() * this.m20 + right.m10() * this.m21 + right.m20() * this.m22;
+        double _buf3 = right.m01() * this.m00 + right.m11() * this.m01 + right.m21() * this.m02;
+        double _buf4 = right.m01() * this.m10 + right.m11() * this.m11 + right.m21() * this.m12;
+        double _buf5 = right.m01() * this.m20 + right.m11() * this.m21 + right.m21() * this.m22;
+        double _buf6 = right.m02() * this.m00 + right.m12() * this.m01 + right.m22() * this.m02;
+        double _buf7 = right.m02() * this.m10 + right.m12() * this.m11 + right.m22() * this.m12;
+        d.m22 = right.m02() * this.m20 + right.m12() * this.m21 + right.m22() * this.m22;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.m02 = _buf6;
+        d.m12 = _buf7;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_translation(Double3x3R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = right.m20() * this.m02 + right.m00();
+        d.m10 = right.m20() * this.m12 + right.m10();
+        d.m20 = right.m20();
+        d.m01 = right.m21() * this.m02 + right.m01();
+        d.m11 = right.m21() * this.m12 + right.m11();
+        d.m21 = right.m21();
+        d.m02 = right.m22() * this.m02 + right.m02();
+        d.m12 = right.m22() * this.m12 + right.m12();
+        d.m22 = right.m22();
+        d.properties = Joml.BIT_TRANSLATION & ((Double3x3Impl) right).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_orthogonal(Double3x3R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = right.m00() * this.m11 - right.m10() * this.m10 + right.m20() * this.m02;
+        double _buf1 = right.m00() * this.m10 + right.m10() * this.m11 + right.m20() * this.m12;
+        d.m20 = right.m20();
+        double _buf2 = right.m01() * this.m11 - right.m11() * this.m10 + right.m21() * this.m02;
+        double _buf3 = right.m01() * this.m10 + right.m11() * this.m11 + right.m21() * this.m12;
+        d.m21 = right.m21();
+        double _buf4 = right.m02() * this.m11 - right.m12() * this.m10 + right.m22() * this.m02;
+        d.m12 = right.m02() * this.m10 + right.m12() * this.m11 + right.m22() * this.m12;
+        d.m22 = right.m22();
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.m02 = _buf4;
+        d.properties = Joml.BIT_ORTHOGONAL & ((Double3x3Impl) right).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_affine(Double3x3R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = right.m00() * this.m00 + right.m10() * this.m01 + right.m20() * this.m02;
+        double _buf1 = right.m00() * this.m10 + right.m10() * this.m11 + right.m20() * this.m12;
+        d.m20 = right.m20();
+        double _buf2 = right.m01() * this.m00 + right.m11() * this.m01 + right.m21() * this.m02;
+        double _buf3 = right.m01() * this.m10 + right.m11() * this.m11 + right.m21() * this.m12;
+        d.m21 = right.m21();
+        double _buf4 = right.m02() * this.m00 + right.m12() * this.m01 + right.m22() * this.m02;
+        d.m12 = right.m02() * this.m10 + right.m12() * this.m11 + right.m22() * this.m12;
+        d.m22 = right.m22();
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.m02 = _buf4;
+        d.properties = Joml.BIT_AFFINE & ((Double3x3Impl) right).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_translation_translation(Double3x3R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = right.m02() + this.m02;
+        d.m12 = right.m12() + this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_TRANSLATION & ((Double3x3Impl) right).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_translation_affine(Double3x3R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = right.m00();
+        d.m10 = right.m10();
+        d.m20 = 0.0;
+        d.m01 = right.m01();
+        d.m11 = right.m11();
+        d.m21 = 0.0;
+        d.m02 = right.m02() + this.m02;
+        d.m12 = right.m12() + this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_TRANSLATION & ((Double3x3Impl) right).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_orthogonal_translation(Double3x3R right, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = this.m00;
+        double _buf1 = this.m10;
+        d.m20 = 0.0;
+        double _buf2 = this.m01;
+        double _buf3 = this.m11;
+        d.m21 = 0.0;
+        double _buf4 = right.m02() * this.m00 + (right.m12() * this.m01 + this.m02);
+        d.m12 = right.m02() * this.m10 + (right.m12() * this.m11 + this.m12);
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.m02 = _buf4;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_orthogonal_affine(Double3x3R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = right.m00() * this.m11 - right.m10() * this.m10;
+        double _buf1 = right.m00() * this.m10 + right.m10() * this.m11;
+        d.m20 = 0.0;
+        double _buf2 = right.m01() * this.m11 - right.m11() * this.m10;
+        double _buf3 = right.m01() * this.m10 + right.m11() * this.m11;
+        d.m21 = 0.0;
+        double _buf4 = right.m02() * this.m11 + this.m02 - right.m12() * this.m10;
+        d.m12 = right.m02() * this.m10 + (right.m12() * this.m11 + this.m12);
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.m02 = _buf4;
+        d.properties = Joml.BIT_ORTHOGONAL & ((Double3x3Impl) right).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_affine_affine(Double3x3R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = right.m00() * this.m00 + right.m10() * this.m01;
+        double _buf1 = right.m00() * this.m10 + right.m10() * this.m11;
+        d.m20 = 0.0;
+        double _buf2 = right.m01() * this.m00 + right.m11() * this.m01;
+        double _buf3 = right.m01() * this.m10 + right.m11() * this.m11;
+        d.m21 = 0.0;
+        double _buf4 = right.m02() * this.m00 + (right.m12() * this.m01 + this.m02);
+        d.m12 = right.m02() * this.m10 + (right.m12() * this.m11 + this.m12);
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.m02 = _buf4;
+        d.properties = Joml.BIT_AFFINE & ((Double3x3Impl) right).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_general_translation(Double3x3R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = this.m00;
+        double _buf1 = this.m10;
+        double _buf2 = this.m20;
+        double _buf3 = this.m01;
+        double _buf4 = this.m11;
+        double _buf5 = this.m21;
+        double _buf6 = right.m02() * this.m00 + (right.m12() * this.m01 + this.m02);
+        double _buf7 = right.m02() * this.m10 + (right.m12() * this.m11 + this.m12);
+        d.m22 = right.m02() * this.m20 + (right.m12() * this.m21 + this.m22);
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.m02 = _buf6;
+        d.m12 = _buf7;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_general_affine(Double3x3R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = right.m00() * this.m00 + right.m10() * this.m01;
+        double _buf1 = right.m00() * this.m10 + right.m10() * this.m11;
+        double _buf2 = right.m00() * this.m20 + right.m10() * this.m21;
+        double _buf3 = right.m01() * this.m00 + right.m11() * this.m01;
+        double _buf4 = right.m01() * this.m10 + right.m11() * this.m11;
+        double _buf5 = right.m01() * this.m20 + right.m11() * this.m21;
+        double _buf6 = right.m02() * this.m00 + (right.m12() * this.m01 + this.m02);
+        double _buf7 = right.m02() * this.m10 + (right.m12() * this.m11 + this.m12);
+        d.m22 = right.m02() * this.m20 + (right.m12() * this.m21 + this.m22);
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.m02 = _buf6;
+        d.m12 = _buf7;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Multiply this matrix by {@code right} and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the operand, then the new matrix will be
+     * {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the transformation of the operand will be applied first.
+     *
+     * @param right the right operand
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 mul(Double3x3R right, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return dest.set(right);
+        int q = ((Double3x3Impl) right).properties;
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return dest.set(this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation_translation(right, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_translation_affine(right, dest);
+            return mul_translation(right, dest);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_orthogonal_translation(right, dest, Joml.BIT_ORTHOGONAL & q);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_orthogonal_affine(right, dest);
+            return mul_orthogonal(right, dest);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_orthogonal_translation(right, dest, Joml.BIT_AFFINE & q);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_affine_affine(right, dest);
+            return mul_affine(right, dest);
+        }
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_general_translation(right, dest);
+        if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_general_affine(right, dest);
+        return mul_general(right, dest);
+    }
+
+
+    /**
+     * Multiply this matrix by {@code right}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the operand, then the new matrix will be
+     * {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the transformation of the operand will be applied first.
+     *
+     * @param right the right operand
+     * @return this
+     */
+    @Mutated public Double3x3 mul(Double3x3R right) {
+        if (Joml.RETURN_NEW) return mul(right, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return this.set(right);
+        int q = ((Double3x3Impl) right).properties;
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return this;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation_translation(right, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_translation_affine(right, this);
+            return mul_translation(right, this);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_orthogonal_translation(right, this, Joml.BIT_ORTHOGONAL & q);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_orthogonal_affine(right, this);
+            return mul_orthogonal(right, this);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_orthogonal_translation(right, this, Joml.BIT_AFFINE & q);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_affine_affine(right, this);
+            return mul_affine(right, this);
+        }
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_general_translation(right, this);
+        if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_general_affine(right, this);
+        return mul_general(right, this);
+    }
+
+
+    /**
+     * Multiply this matrix by ({@code m00}, {@code m01}, {@code m02}, {@code m10}, {@code m11},
+     * {@code m12}, {@code m20}, {@code m21}, {@code m22}) and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the operand, then the new matrix will be
+     * {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the transformation of the operand will be applied first.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m22 the element in row 2, column 2 of the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 mul(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = m00 * this.m00 + m10 * this.m01 + m20 * this.m02;
+        double _buf1 = m00 * this.m10 + m10 * this.m11 + m20 * this.m12;
+        double _buf2 = m00 * this.m20 + m10 * this.m21 + m20 * this.m22;
+        double _buf3 = m01 * this.m00 + m11 * this.m01 + m21 * this.m02;
+        double _buf4 = m01 * this.m10 + m11 * this.m11 + m21 * this.m12;
+        double _buf5 = m01 * this.m20 + m11 * this.m21 + m21 * this.m22;
+        d.m02 = m02 * this.m00 + m12 * this.m01 + m22 * this.m02;
+        d.m12 = m02 * this.m10 + m12 * this.m11 + m22 * this.m12;
+        d.m22 = m02 * this.m20 + m12 * this.m21 + m22 * this.m22;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_identity(Double2x2R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = right.m00();
+        d.m10 = right.m10();
+        d.m20 = 0.0;
+        d.m01 = right.m01();
+        d.m11 = right.m11();
+        d.m21 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 1.0;
+        d.properties = (((Double2x2Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code mul}, specialized by runtime matrix properties;
+     * reached only through the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_identity_self(Double2x2R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = right.m00();
+        d.m10 = right.m10();
+        d.m01 = right.m01();
+        d.m11 = right.m11();
+        d.properties = (((Double2x2Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_translation(Double2x2R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = right.m00();
+        d.m10 = right.m10();
+        d.m20 = 0.0;
+        d.m01 = right.m01();
+        d.m11 = right.m11();
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.properties = (((Double2x2Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_TRANSLATION : Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code mul}, specialized by runtime matrix properties;
+     * reached only through the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_translation_self(Double2x2R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = right.m00();
+        d.m10 = right.m10();
+        d.m01 = right.m01();
+        d.m11 = right.m11();
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.properties = (((Double2x2Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_TRANSLATION : Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_orthogonal(Double2x2R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = right.m00() * this.m11 - right.m10() * this.m10;
+        double _buf0 = right.m00() * this.m10 + right.m10() * this.m11;
+        d.m20 = 0.0;
+        d.m01 = right.m01() * this.m11 - right.m11() * this.m10;
+        d.m11 = right.m01() * this.m10 + right.m11() * this.m11;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.m10 = _buf0;
+        d.properties = (((Double2x2Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_ORTHOGONAL : Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code mul}, specialized by runtime matrix properties;
+     * reached only through the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_orthogonal_self(Double2x2R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = right.m00() * this.m11 - right.m10() * this.m10;
+        double _buf0 = right.m00() * this.m10 + right.m10() * this.m11;
+        d.m01 = right.m01() * this.m11 - right.m11() * this.m10;
+        d.m11 = right.m01() * this.m10 + right.m11() * this.m11;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m10 = _buf0;
+        d.properties = (((Double2x2Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_ORTHOGONAL : Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_affine(Double2x2R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = right.m00() * this.m00 + right.m10() * this.m01;
+        double _buf1 = right.m00() * this.m10 + right.m10() * this.m11;
+        d.m20 = 0.0;
+        d.m01 = right.m01() * this.m00 + right.m11() * this.m01;
+        d.m11 = right.m01() * this.m10 + right.m11() * this.m11;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code mul}, specialized by runtime matrix properties;
+     * reached only through the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_affine_self(Double2x2R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = right.m00() * this.m00 + right.m10() * this.m01;
+        double _buf1 = right.m00() * this.m10 + right.m10() * this.m11;
+        d.m01 = right.m01() * this.m00 + right.m11() * this.m01;
+        d.m11 = right.m01() * this.m10 + right.m11() * this.m11;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_general(Double2x2R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = right.m00() * this.m00 + right.m10() * this.m01;
+        double _buf1 = right.m00() * this.m10 + right.m10() * this.m11;
+        double _buf2 = right.m00() * this.m20 + right.m10() * this.m21;
+        d.m01 = right.m01() * this.m00 + right.m11() * this.m01;
+        d.m11 = right.m01() * this.m10 + right.m11() * this.m11;
+        d.m21 = right.m01() * this.m20 + right.m11() * this.m21;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = this.m22;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Multiply this matrix by {@code right} and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the operand, then the new matrix will be
+     * {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the transformation of the operand will be applied first.
+     * <p>
+     * The operand is identity-extended to this matrix's square size before the multiplication, and
+     * the product is projected back onto this shape.
+     *
+     * @param right the right operand
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 mul(Double2x2R right, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return mul_identity(right, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation(right, dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return mul_orthogonal(right, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_affine(right, dest);
+        return mul_general(right, dest);
+    }
+
+
+    /**
+     * Multiply this matrix by {@code right}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the operand, then the new matrix will be
+     * {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the transformation of the operand will be applied first.
+     * <p>
+     * The operand is identity-extended to this matrix's square size before the multiplication, and
+     * the product is projected back onto this shape.
+     *
+     * @param right the right operand
+     * @return this
+     */
+    @Mutated public Double3x3 mul(Double2x2R right) {
+        if (Joml.RETURN_NEW) return mul(right, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return mul_identity_self(right, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation_self(right, this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return mul_orthogonal_self(right, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_affine_self(right, this);
+        return mul_general(right, this);
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_general(Double2x3R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = right.m00() * this.m00 + right.m10() * this.m01;
+        double _buf1 = right.m00() * this.m10 + right.m10() * this.m11;
+        double _buf2 = right.m00() * this.m20 + right.m10() * this.m21;
+        double _buf3 = right.m01() * this.m00 + right.m11() * this.m01;
+        double _buf4 = right.m01() * this.m10 + right.m11() * this.m11;
+        double _buf5 = right.m01() * this.m20 + right.m11() * this.m21;
+        d.m02 = right.m02() * this.m00 + (right.m12() * this.m01 + this.m02);
+        d.m12 = right.m02() * this.m10 + (right.m12() * this.m11 + this.m12);
+        d.m22 = right.m02() * this.m20 + (right.m12() * this.m21 + this.m22);
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_identity(Double2x3R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = right.m00();
+        d.m10 = right.m10();
+        d.m20 = 0.0;
+        d.m01 = right.m01();
+        d.m11 = right.m11();
+        d.m21 = 0.0;
+        d.m02 = right.m02();
+        d.m12 = right.m12();
+        d.m22 = 1.0;
+        d.properties = ((Double2x3Impl) right).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_translation(Double2x3R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = right.m00();
+        d.m10 = right.m10();
+        d.m20 = 0.0;
+        d.m01 = right.m01();
+        d.m11 = right.m11();
+        d.m21 = 0.0;
+        d.m02 = right.m02() + this.m02;
+        d.m12 = right.m12() + this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_TRANSLATION & ((Double2x3Impl) right).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_orthogonal(Double2x3R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = right.m00() * this.m11 - right.m10() * this.m10;
+        double _buf0 = right.m00() * this.m10 + right.m10() * this.m11;
+        d.m20 = 0.0;
+        d.m01 = right.m01() * this.m11 - right.m11() * this.m10;
+        double _buf1 = right.m01() * this.m10 + right.m11() * this.m11;
+        d.m21 = 0.0;
+        d.m02 = right.m02() * this.m11 + this.m02 - right.m12() * this.m10;
+        d.m12 = right.m02() * this.m10 + (right.m12() * this.m11 + this.m12);
+        d.m22 = 1.0;
+        d.m10 = _buf0;
+        d.m11 = _buf1;
+        d.properties = Joml.BIT_ORTHOGONAL & ((Double2x3Impl) right).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_affine(Double2x3R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = right.m00() * this.m00 + right.m10() * this.m01;
+        double _buf1 = right.m00() * this.m10 + right.m10() * this.m11;
+        d.m20 = 0.0;
+        double _buf2 = right.m01() * this.m00 + right.m11() * this.m01;
+        double _buf3 = right.m01() * this.m10 + right.m11() * this.m11;
+        d.m21 = 0.0;
+        d.m02 = right.m02() * this.m00 + (right.m12() * this.m01 + this.m02);
+        d.m12 = right.m02() * this.m10 + (right.m12() * this.m11 + this.m12);
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = Joml.BIT_AFFINE & ((Double2x3Impl) right).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_identity_translation(Double2x3R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = right.m02();
+        d.m12 = right.m12();
+        d.m22 = 1.0;
+        d.properties = ((Double2x3Impl) right).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_translation_translation(Double2x3R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = right.m02() + this.m02;
+        d.m12 = right.m12() + this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_TRANSLATION & ((Double2x3Impl) right).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_orthogonal_translation(Double2x3R right, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = this.m00;
+        double _buf1 = this.m10;
+        d.m20 = 0.0;
+        double _buf2 = this.m01;
+        double _buf3 = this.m11;
+        d.m21 = 0.0;
+        d.m02 = right.m02() * this.m00 + (right.m12() * this.m01 + this.m02);
+        d.m12 = right.m02() * this.m10 + (right.m12() * this.m11 + this.m12);
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_general_translation(Double2x3R right, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = this.m00;
+        double _buf1 = this.m10;
+        double _buf2 = this.m20;
+        double _buf3 = this.m01;
+        double _buf4 = this.m11;
+        double _buf5 = this.m21;
+        d.m02 = right.m02() * this.m00 + (right.m12() * this.m01 + this.m02);
+        d.m12 = right.m02() * this.m10 + (right.m12() * this.m11 + this.m12);
+        d.m22 = right.m02() * this.m20 + (right.m12() * this.m21 + this.m22);
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Multiply this matrix by {@code right} and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the operand, then the new matrix will be
+     * {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the transformation of the operand will be applied first.
+     * <p>
+     * The operand is identity-extended to this matrix's square size before the multiplication, and
+     * the product is projected back onto this shape.
+     *
+     * @param right the right operand
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 mul(Double2x3R right, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        int q = ((Double2x3Impl) right).properties;
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return dest.set(this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_identity_translation(right, dest);
+            return mul_identity(right, dest);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation_translation(right, dest);
+            return mul_translation(right, dest);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_orthogonal_translation(right, dest, Joml.BIT_ORTHOGONAL & q);
+            return mul_orthogonal(right, dest);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_orthogonal_translation(right, dest, Joml.BIT_AFFINE & q);
+            return mul_affine(right, dest);
+        }
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_general_translation(right, dest);
+        return mul_general(right, dest);
+    }
+
+
+    /**
+     * Multiply this matrix by {@code right}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the operand, then the new matrix will be
+     * {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the transformation of the operand will be applied first.
+     * <p>
+     * The operand is identity-extended to this matrix's square size before the multiplication, and
+     * the product is projected back onto this shape.
+     *
+     * @param right the right operand
+     * @return this
+     */
+    @Mutated public Double3x3 mul(Double2x3R right) {
+        if (Joml.RETURN_NEW) return mul(right, Joml.double3x3());
+        int p = this.properties;
+        int q = ((Double2x3Impl) right).properties;
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return this;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_identity_translation(right, this);
+            return mul_identity(right, this);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation_translation(right, this);
+            return mul_translation(right, this);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_orthogonal_translation(right, this, Joml.BIT_ORTHOGONAL & q);
+            return mul_orthogonal(right, this);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_orthogonal_translation(right, this, Joml.BIT_AFFINE & q);
+            return mul_affine(right, this);
+        }
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_general_translation(right, this);
+        return mul_general(right, this);
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_general(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = other.m00() * this.m00 + other.m01() * this.m10 + other.m02() * this.m20;
+        double _buf1 = other.m10() * this.m00 + other.m11() * this.m10 + other.m12() * this.m20;
+        double _buf2 = other.m20() * this.m00 + other.m21() * this.m10 + other.m22() * this.m20;
+        double _buf3 = other.m00() * this.m01 + other.m01() * this.m11 + other.m02() * this.m21;
+        double _buf4 = other.m10() * this.m01 + other.m11() * this.m11 + other.m12() * this.m21;
+        double _buf5 = other.m20() * this.m01 + other.m21() * this.m11 + other.m22() * this.m21;
+        double _buf6 = other.m00() * this.m02 + other.m01() * this.m12 + other.m02() * this.m22;
+        double _buf7 = other.m10() * this.m02 + other.m11() * this.m12 + other.m12() * this.m22;
+        d.m22 = other.m20() * this.m02 + other.m21() * this.m12 + other.m22() * this.m22;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.m02 = _buf6;
+        d.m12 = _buf7;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_translation(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = other.m00();
+        double _buf1 = other.m10();
+        double _buf2 = other.m20();
+        double _buf3 = other.m01();
+        double _buf4 = other.m11();
+        double _buf5 = other.m21();
+        double _buf6 = other.m00() * this.m02 + (other.m01() * this.m12 + other.m02());
+        double _buf7 = other.m10() * this.m02 + (other.m11() * this.m12 + other.m12());
+        d.m22 = other.m20() * this.m02 + (other.m21() * this.m12 + other.m22());
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.m02 = _buf6;
+        d.m12 = _buf7;
+        d.properties = Joml.BIT_TRANSLATION & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_orthogonal(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = other.m00() * this.m11 + other.m01() * this.m10;
+        double _buf1 = other.m10() * this.m11 + other.m11() * this.m10;
+        double _buf2 = other.m20() * this.m11 + other.m21() * this.m10;
+        double _buf3 = other.m01() * this.m11 - other.m00() * this.m10;
+        double _buf4 = other.m11() * this.m11 - other.m10() * this.m10;
+        double _buf5 = other.m21() * this.m11 - other.m20() * this.m10;
+        double _buf6 = other.m00() * this.m02 + (other.m01() * this.m12 + other.m02());
+        double _buf7 = other.m10() * this.m02 + (other.m11() * this.m12 + other.m12());
+        d.m22 = other.m20() * this.m02 + (other.m21() * this.m12 + other.m22());
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.m02 = _buf6;
+        d.m12 = _buf7;
+        d.properties = Joml.BIT_ORTHOGONAL & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_affine(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = other.m00() * this.m00 + other.m01() * this.m10;
+        double _buf1 = other.m10() * this.m00 + other.m11() * this.m10;
+        double _buf2 = other.m20() * this.m00 + other.m21() * this.m10;
+        double _buf3 = other.m00() * this.m01 + other.m01() * this.m11;
+        double _buf4 = other.m10() * this.m01 + other.m11() * this.m11;
+        double _buf5 = other.m20() * this.m01 + other.m21() * this.m11;
+        double _buf6 = other.m00() * this.m02 + (other.m01() * this.m12 + other.m02());
+        double _buf7 = other.m10() * this.m02 + (other.m11() * this.m12 + other.m12());
+        d.m22 = other.m20() * this.m02 + (other.m21() * this.m12 + other.m22());
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.m02 = _buf6;
+        d.m12 = _buf7;
+        d.properties = Joml.BIT_AFFINE & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_translation_translation(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = other.m02() + this.m02;
+        d.m12 = other.m12() + this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_TRANSLATION & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_translation_affine(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = other.m00();
+        double _buf1 = other.m10();
+        d.m20 = 0.0;
+        double _buf2 = other.m01();
+        double _buf3 = other.m11();
+        d.m21 = 0.0;
+        double _buf4 = other.m00() * this.m02 + (other.m01() * this.m12 + other.m02());
+        d.m12 = other.m10() * this.m02 + (other.m11() * this.m12 + other.m12());
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.m02 = _buf4;
+        d.properties = Joml.BIT_TRANSLATION & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_orthogonal_translation(Double3x3R other, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m21 = 0.0;
+        d.m02 = other.m02() + this.m02;
+        d.m12 = other.m12() + this.m12;
+        d.m22 = 1.0;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_orthogonal_affine(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = other.m00() * this.m11 + other.m01() * this.m10;
+        double _buf1 = other.m10() * this.m11 + other.m11() * this.m10;
+        d.m20 = 0.0;
+        double _buf2 = other.m01() * this.m11 - other.m00() * this.m10;
+        double _buf3 = other.m11() * this.m11 - other.m10() * this.m10;
+        d.m21 = 0.0;
+        double _buf4 = other.m00() * this.m02 + (other.m01() * this.m12 + other.m02());
+        d.m12 = other.m10() * this.m02 + (other.m11() * this.m12 + other.m12());
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.m02 = _buf4;
+        d.properties = Joml.BIT_ORTHOGONAL & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_affine_affine(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = other.m00() * this.m00 + other.m01() * this.m10;
+        double _buf1 = other.m10() * this.m00 + other.m11() * this.m10;
+        d.m20 = 0.0;
+        double _buf2 = other.m00() * this.m01 + other.m01() * this.m11;
+        double _buf3 = other.m10() * this.m01 + other.m11() * this.m11;
+        d.m21 = 0.0;
+        double _buf4 = other.m00() * this.m02 + (other.m01() * this.m12 + other.m02());
+        d.m12 = other.m10() * this.m02 + (other.m11() * this.m12 + other.m12());
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.m02 = _buf4;
+        d.properties = Joml.BIT_AFFINE & ((Double3x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_general_translation(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = other.m02() * this.m20 + this.m00;
+        d.m10 = other.m12() * this.m20 + this.m10;
+        d.m20 = this.m20;
+        d.m01 = other.m02() * this.m21 + this.m01;
+        d.m11 = other.m12() * this.m21 + this.m11;
+        d.m21 = this.m21;
+        d.m02 = other.m02() * this.m22 + this.m02;
+        d.m12 = other.m12() * this.m22 + this.m12;
+        d.m22 = this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_general_affine(Double3x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = other.m00() * this.m00 + other.m01() * this.m10 + other.m02() * this.m20;
+        double _buf1 = other.m10() * this.m00 + other.m11() * this.m10 + other.m12() * this.m20;
+        d.m20 = this.m20;
+        double _buf2 = other.m00() * this.m01 + other.m01() * this.m11 + other.m02() * this.m21;
+        double _buf3 = other.m10() * this.m01 + other.m11() * this.m11 + other.m12() * this.m21;
+        d.m21 = this.m21;
+        double _buf4 = other.m00() * this.m02 + other.m01() * this.m12 + other.m02() * this.m22;
+        d.m12 = other.m10() * this.m02 + other.m11() * this.m12 + other.m12() * this.m22;
+        d.m22 = this.m22;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.m02 = _buf4;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Pre-multiply the transformation {@code other} onto this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code T} the given transformation matrix, then the
+     * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
+     * by using {@code T * M * v}, the given transformation will be applied last.
+     *
+     * @param other the other matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preMul(Double3x3R other, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return dest.set(other);
+        int q = ((Double3x3Impl) other).properties;
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return dest.set(this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_translation_translation(other, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preMul_translation_affine(other, dest);
+            return preMul_translation(other, dest);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_orthogonal_translation(other, dest, Joml.BIT_ORTHOGONAL & q);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preMul_orthogonal_affine(other, dest);
+            return preMul_orthogonal(other, dest);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_orthogonal_translation(other, dest, Joml.BIT_AFFINE & q);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preMul_affine_affine(other, dest);
+            return preMul_affine(other, dest);
+        }
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_general_translation(other, dest);
+        if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preMul_general_affine(other, dest);
+        return preMul_general(other, dest);
+    }
+
+
+    /**
+     * Pre-multiply the transformation {@code other} onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code T} the given transformation matrix, then the
+     * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
+     * by using {@code T * M * v}, the given transformation will be applied last.
+     *
+     * @param other the other matrix
+     * @return this
+     */
+    @Mutated public Double3x3 preMul(Double3x3R other) {
+        if (Joml.RETURN_NEW) return preMul(other, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return this.set(other);
+        int q = ((Double3x3Impl) other).properties;
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return this;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_translation_translation(other, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preMul_translation_affine(other, this);
+            return preMul_translation(other, this);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_orthogonal_translation(other, this, Joml.BIT_ORTHOGONAL & q);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preMul_orthogonal_affine(other, this);
+            return preMul_orthogonal(other, this);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_orthogonal_translation(other, this, Joml.BIT_AFFINE & q);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preMul_affine_affine(other, this);
+            return preMul_affine(other, this);
+        }
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_general_translation(other, this);
+        if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preMul_general_affine(other, this);
+        return preMul_general(other, this);
+    }
+
+
+    /**
+     * Pre-multiply the transformation ({@code m00}, {@code m01}, {@code m02}, {@code m10},
+     * {@code m11}, {@code m12}, {@code m20}, {@code m21}, {@code m22}) onto this matrix and store
+     * the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code T} the given transformation matrix, then the
+     * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
+     * by using {@code T * M * v}, the given transformation will be applied last.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m22 the element in row 2, column 2 of the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preMul(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = m00 * this.m00 + m01 * this.m10 + m02 * this.m20;
+        double _buf1 = m10 * this.m00 + m11 * this.m10 + m12 * this.m20;
+        d.m20 = m20 * this.m00 + m21 * this.m10 + m22 * this.m20;
+        double _buf2 = m00 * this.m01 + m01 * this.m11 + m02 * this.m21;
+        double _buf3 = m10 * this.m01 + m11 * this.m11 + m12 * this.m21;
+        d.m21 = m20 * this.m01 + m21 * this.m11 + m22 * this.m21;
+        double _buf4 = m00 * this.m02 + m01 * this.m12 + m02 * this.m22;
+        double _buf5 = m10 * this.m02 + m11 * this.m12 + m12 * this.m22;
+        d.m22 = m20 * this.m02 + m21 * this.m12 + m22 * this.m22;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.m02 = _buf4;
+        d.m12 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_identity(Double2x2R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = other.m00();
+        d.m10 = other.m10();
+        d.m20 = 0.0;
+        d.m01 = other.m01();
+        d.m11 = other.m11();
+        d.m21 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 1.0;
+        d.properties = (((Double2x2Impl) other).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preMul}, specialized by runtime matrix properties;
+     * reached only through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_identity_self(Double2x2R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = other.m00();
+        d.m10 = other.m10();
+        d.m01 = other.m01();
+        d.m11 = other.m11();
+        d.properties = (((Double2x2Impl) other).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_translation(Double2x2R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = other.m00();
+        d.m10 = other.m10();
+        d.m20 = 0.0;
+        d.m01 = other.m01();
+        d.m11 = other.m11();
+        d.m21 = 0.0;
+        double _buf0 = other.m00() * this.m02 + other.m01() * this.m12;
+        d.m12 = other.m10() * this.m02 + other.m11() * this.m12;
+        d.m22 = 1.0;
+        d.m02 = _buf0;
+        d.properties = (((Double2x2Impl) other).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_TRANSLATION : Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preMul}, specialized by runtime matrix properties;
+     * reached only through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_translation_self(Double2x2R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = other.m00();
+        d.m10 = other.m10();
+        d.m01 = other.m01();
+        d.m11 = other.m11();
+        double _buf0 = other.m00() * this.m02 + other.m01() * this.m12;
+        d.m12 = other.m10() * this.m02 + other.m11() * this.m12;
+        d.m02 = _buf0;
+        d.properties = (((Double2x2Impl) other).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_TRANSLATION : Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_orthogonal(Double2x2R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = other.m00() * this.m11 + other.m01() * this.m10;
+        double _buf0 = other.m10() * this.m11 + other.m11() * this.m10;
+        d.m20 = 0.0;
+        d.m01 = other.m01() * this.m11 - other.m00() * this.m10;
+        d.m11 = other.m11() * this.m11 - other.m10() * this.m10;
+        d.m21 = 0.0;
+        double _buf1 = other.m00() * this.m02 + other.m01() * this.m12;
+        d.m12 = other.m10() * this.m02 + other.m11() * this.m12;
+        d.m22 = 1.0;
+        d.m10 = _buf0;
+        d.m02 = _buf1;
+        d.properties = (((Double2x2Impl) other).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_ORTHOGONAL : Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preMul}, specialized by runtime matrix properties;
+     * reached only through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_orthogonal_self(Double2x2R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = other.m00() * this.m11 + other.m01() * this.m10;
+        double _buf0 = other.m10() * this.m11 + other.m11() * this.m10;
+        d.m01 = other.m01() * this.m11 - other.m00() * this.m10;
+        d.m11 = other.m11() * this.m11 - other.m10() * this.m10;
+        double _buf1 = other.m00() * this.m02 + other.m01() * this.m12;
+        d.m12 = other.m10() * this.m02 + other.m11() * this.m12;
+        d.m10 = _buf0;
+        d.m02 = _buf1;
+        d.properties = (((Double2x2Impl) other).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_ORTHOGONAL : Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_affine(Double2x2R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = other.m00() * this.m00 + other.m01() * this.m10;
+        d.m10 = other.m10() * this.m00 + other.m11() * this.m10;
+        d.m20 = 0.0;
+        double _buf1 = other.m00() * this.m01 + other.m01() * this.m11;
+        d.m11 = other.m10() * this.m01 + other.m11() * this.m11;
+        d.m21 = 0.0;
+        double _buf2 = other.m00() * this.m02 + other.m01() * this.m12;
+        d.m12 = other.m10() * this.m02 + other.m11() * this.m12;
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m01 = _buf1;
+        d.m02 = _buf2;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preMul}, specialized by runtime matrix properties;
+     * reached only through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_affine_self(Double2x2R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = other.m00() * this.m00 + other.m01() * this.m10;
+        d.m10 = other.m10() * this.m00 + other.m11() * this.m10;
+        double _buf1 = other.m00() * this.m01 + other.m01() * this.m11;
+        d.m11 = other.m10() * this.m01 + other.m11() * this.m11;
+        double _buf2 = other.m00() * this.m02 + other.m01() * this.m12;
+        d.m12 = other.m10() * this.m02 + other.m11() * this.m12;
+        d.m00 = _buf0;
+        d.m01 = _buf1;
+        d.m02 = _buf2;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_general(Double2x2R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = other.m00() * this.m00 + other.m01() * this.m10;
+        d.m10 = other.m10() * this.m00 + other.m11() * this.m10;
+        d.m20 = this.m20;
+        double _buf1 = other.m00() * this.m01 + other.m01() * this.m11;
+        d.m11 = other.m10() * this.m01 + other.m11() * this.m11;
+        d.m21 = this.m21;
+        double _buf2 = other.m00() * this.m02 + other.m01() * this.m12;
+        d.m12 = other.m10() * this.m02 + other.m11() * this.m12;
+        d.m22 = this.m22;
+        d.m00 = _buf0;
+        d.m01 = _buf1;
+        d.m02 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Pre-multiply {@code other} onto this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the operand, then the new matrix will be
+     * {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the transformation of the operand will be applied last.
+     * <p>
+     * The operand is identity-extended to this matrix's square size before the multiplication, and
+     * the product is projected back onto this shape.
+     *
+     * @param other the other matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preMul(Double2x2R other, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preMul_identity(other, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_translation(other, dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return preMul_orthogonal(other, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preMul_affine(other, dest);
+        return preMul_general(other, dest);
+    }
+
+
+    /**
+     * Pre-multiply {@code other} onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the operand, then the new matrix will be
+     * {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the transformation of the operand will be applied last.
+     * <p>
+     * The operand is identity-extended to this matrix's square size before the multiplication, and
+     * the product is projected back onto this shape.
+     *
+     * @param other the other matrix
+     * @return this
+     */
+    @Mutated public Double3x3 preMul(Double2x2R other) {
+        if (Joml.RETURN_NEW) return preMul(other, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preMul_identity_self(other, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_translation_self(other, this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return preMul_orthogonal_self(other, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preMul_affine_self(other, this);
+        return preMul_general(other, this);
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_general(Double2x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = other.m00() * this.m00 + other.m01() * this.m10 + other.m02() * this.m20;
+        d.m10 = other.m10() * this.m00 + other.m11() * this.m10 + other.m12() * this.m20;
+        d.m20 = this.m20;
+        double _buf1 = other.m00() * this.m01 + other.m01() * this.m11 + other.m02() * this.m21;
+        d.m11 = other.m10() * this.m01 + other.m11() * this.m11 + other.m12() * this.m21;
+        d.m21 = this.m21;
+        double _buf2 = other.m00() * this.m02 + other.m01() * this.m12 + other.m02() * this.m22;
+        d.m12 = other.m10() * this.m02 + other.m11() * this.m12 + other.m12() * this.m22;
+        d.m22 = this.m22;
+        d.m00 = _buf0;
+        d.m01 = _buf1;
+        d.m02 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_identity(Double2x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = other.m00();
+        d.m10 = other.m10();
+        d.m20 = 0.0;
+        d.m01 = other.m01();
+        d.m11 = other.m11();
+        d.m21 = 0.0;
+        d.m02 = other.m02();
+        d.m12 = other.m12();
+        d.m22 = 1.0;
+        d.properties = ((Double2x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_translation(Double2x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = other.m00();
+        d.m10 = other.m10();
+        d.m20 = 0.0;
+        d.m01 = other.m01();
+        d.m11 = other.m11();
+        d.m21 = 0.0;
+        double _buf0 = other.m00() * this.m02 + (other.m01() * this.m12 + other.m02());
+        d.m12 = other.m10() * this.m02 + (other.m11() * this.m12 + other.m12());
+        d.m22 = 1.0;
+        d.m02 = _buf0;
+        d.properties = Joml.BIT_TRANSLATION & ((Double2x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_orthogonal(Double2x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = other.m00() * this.m11 + other.m01() * this.m10;
+        double _buf0 = other.m10() * this.m11 + other.m11() * this.m10;
+        d.m20 = 0.0;
+        d.m01 = other.m01() * this.m11 - other.m00() * this.m10;
+        d.m11 = other.m11() * this.m11 - other.m10() * this.m10;
+        d.m21 = 0.0;
+        double _buf1 = other.m00() * this.m02 + (other.m01() * this.m12 + other.m02());
+        d.m12 = other.m10() * this.m02 + (other.m11() * this.m12 + other.m12());
+        d.m22 = 1.0;
+        d.m10 = _buf0;
+        d.m02 = _buf1;
+        d.properties = Joml.BIT_ORTHOGONAL & ((Double2x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_affine(Double2x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = other.m00() * this.m00 + other.m01() * this.m10;
+        d.m10 = other.m10() * this.m00 + other.m11() * this.m10;
+        d.m20 = 0.0;
+        double _buf1 = other.m00() * this.m01 + other.m01() * this.m11;
+        d.m11 = other.m10() * this.m01 + other.m11() * this.m11;
+        d.m21 = 0.0;
+        double _buf2 = other.m00() * this.m02 + (other.m01() * this.m12 + other.m02());
+        d.m12 = other.m10() * this.m02 + (other.m11() * this.m12 + other.m12());
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m01 = _buf1;
+        d.m02 = _buf2;
+        d.properties = Joml.BIT_AFFINE & ((Double2x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_identity_translation(Double2x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = other.m02();
+        d.m12 = other.m12();
+        d.m22 = 1.0;
+        d.properties = ((Double2x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_translation_translation(Double2x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = other.m02() + this.m02;
+        d.m12 = other.m12() + this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_TRANSLATION & ((Double2x3Impl) other).properties;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_orthogonal_translation(Double2x3R other, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m21 = 0.0;
+        d.m02 = other.m02() + this.m02;
+        d.m12 = other.m12() + this.m12;
+        d.m22 = 1.0;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
+     * through the public {@code preMul} dispatcher.
+     */
+    private Double3x3 preMul_general_translation(Double2x3R other, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = other.m02() * this.m20 + this.m00;
+        d.m10 = other.m12() * this.m20 + this.m10;
+        d.m20 = this.m20;
+        d.m01 = other.m02() * this.m21 + this.m01;
+        d.m11 = other.m12() * this.m21 + this.m11;
+        d.m21 = this.m21;
+        d.m02 = other.m02() * this.m22 + this.m02;
+        d.m12 = other.m12() * this.m22 + this.m12;
+        d.m22 = this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Pre-multiply {@code other} onto this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the operand, then the new matrix will be
+     * {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the transformation of the operand will be applied last.
+     * <p>
+     * The operand is identity-extended to this matrix's square size before the multiplication, and
+     * the product is projected back onto this shape.
+     *
+     * @param other the other matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preMul(Double2x3R other, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        int q = ((Double2x3Impl) other).properties;
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return dest.set(this);
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_identity_translation(other, dest);
+            return preMul_identity(other, dest);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_translation_translation(other, dest);
+            return preMul_translation(other, dest);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_orthogonal_translation(other, dest, Joml.BIT_ORTHOGONAL & q);
+            return preMul_orthogonal(other, dest);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_orthogonal_translation(other, dest, Joml.BIT_AFFINE & q);
+            return preMul_affine(other, dest);
+        }
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_general_translation(other, dest);
+        return preMul_general(other, dest);
+    }
+
+
+    /**
+     * Pre-multiply {@code other} onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the operand, then the new matrix will be
+     * {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the transformation of the operand will be applied last.
+     * <p>
+     * The operand is identity-extended to this matrix's square size before the multiplication, and
+     * the product is projected back onto this shape.
+     *
+     * @param other the other matrix
+     * @return this
+     */
+    @Mutated public Double3x3 preMul(Double2x3R other) {
+        if (Joml.RETURN_NEW) return preMul(other, Joml.double3x3());
+        int p = this.properties;
+        int q = ((Double2x3Impl) other).properties;
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return this;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_identity_translation(other, this);
+            return preMul_identity(other, this);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_translation_translation(other, this);
+            return preMul_translation(other, this);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_orthogonal_translation(other, this, Joml.BIT_ORTHOGONAL & q);
+            return preMul_orthogonal(other, this);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_orthogonal_translation(other, this, Joml.BIT_AFFINE & q);
+            return preMul_affine(other, this);
+        }
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_general_translation(other, this);
+        return preMul_general(other, this);
+    }
+
+
+    /**
+     * Set this matrix to the outer product of {@code col} and {@code row}.
+     *
+     * @param col the column vector (left operand)
+     * @param row the row vector (right operand)
+     * @return this
+     */
+    public @Mutated Double3x3 makeOuterProduct(Double3R col, Double3R row) {
+        return makeOuterProduct(col.x(), col.y(), col.z(), row.x(), row.y(), row.z());
+    }
+
+
+    /**
+     * Set this matrix to the outer product of ({@code colX}, {@code colY}, {@code colZ}) and
+     * ({@code rowX}, {@code rowY}, {@code rowZ}).
+     *
+     * @param colX the {@code x} component of the vector {@code (colX, colY, colZ)}
+     * @param colY the {@code y} component of the vector {@code (colX, colY, colZ)}
+     * @param colZ the {@code z} component of the vector {@code (colX, colY, colZ)}
+     * @param rowX the {@code x} component of the vector {@code (rowX, rowY, rowZ)}
+     * @param rowY the {@code y} component of the vector {@code (rowX, rowY, rowZ)}
+     * @param rowZ the {@code z} component of the vector {@code (rowX, rowY, rowZ)}
+     * @return this
+     */
+    @Mutated public Double3x3 makeOuterProduct(double colX, double colY, double colZ, double rowX, double rowY, double rowZ) {
+        this.m00 = colX * rowX;
+        this.m10 = colY * rowX;
+        this.m20 = colZ * rowX;
+        this.m01 = colX * rowY;
+        this.m11 = colY * rowY;
+        this.m21 = colZ * rowY;
+        this.m02 = colX * rowZ;
+        this.m12 = colY * rowZ;
+        this.m22 = colZ * rowZ;
+        this.properties = 0;
+        return this;
+    }
+
+
+    /**
+     * Apply a rotation transformation that makes {@code +z} point along {@code dir} to this matrix
+     * and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
+     * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
+     * using {@code M * L * v}, the "look along" will be applied first.
+     *
+     * @param dir the direction
+     * @param up the direction of "up"
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 lookAlong(Double3R dir, Double3R up, @Mutated Double3x3 dest) {
+        return lookAlong(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z(), dest);
+    }
+
+
+    /**
+     * Apply a rotation transformation that makes {@code +z} point along {@code dir} to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
+     * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
+     * using {@code M * L * v}, the "look along" will be applied first.
+     *
+     * @param dir the direction
+     * @param up the direction of "up"
+     * @return this
+     */
+    public @Mutated Double3x3 lookAlong(Double3R dir, Double3R up) {
+        return lookAlong(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Apply a rotation transformation that makes {@code +z} point along ({@code dirX},
+     * {@code dirY}, {@code dirZ}) to this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
+     * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
+     * using {@code M * L * v}, the "look along" will be applied first.
+     *
+     * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param dirZ the {@code z} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
+     * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
+     * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 lookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
+        double _t5 = (1.0 / Math.sqrt(_t4));
+        double _t9, _t10, _t11;
+        if (_t4 > 0.0) {
+            _t9 = dirZ * _t5;
+            _t10 = dirY * _t5;
+            _t11 = dirX * _t5;
+        } else {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 0.0;
+        }
+        double _t18 = upY * _t9 - upZ * _t10;
+        double _t19 = upZ * _t11 - upX * _t9;
+        double _t20 = upX * _t10 - upY * _t11;
+        double _t25 = _t18 * _t18 + _t19 * _t19 + _t20 * _t20;
+        double _t26 = (1.0 / Math.sqrt(_t25));
+        double _t30, _t31, _t32;
+        if (_t25 > 0.0) {
+            _t30 = _t18 * _t26;
+            _t31 = _t19 * _t26;
+            _t32 = _t20 * _t26;
+        } else {
+            _t30 = 0.0;
+            _t31 = 0.0;
+            _t32 = 0.0;
+        }
+        double _t39 = _t10 * _t32 - _t9 * _t31;
+        double _t40 = _t9 * _t30 - _t11 * _t32;
+        double _t41 = _t11 * _t31 - _t10 * _t30;
+        double _buf0 = this.m00 * _t30 + this.m01 * _t31 + this.m02 * _t32;
+        double _buf1 = this.m10 * _t30 + this.m11 * _t31 + this.m12 * _t32;
+        double _buf2 = this.m20 * _t30 + this.m21 * _t31 + this.m22 * _t32;
+        double _buf3 = this.m00 * _t39 + this.m01 * _t40 + this.m02 * _t41;
+        double _buf4 = this.m10 * _t39 + this.m11 * _t40 + this.m12 * _t41;
+        double _buf5 = this.m20 * _t39 + this.m21 * _t40 + this.m22 * _t41;
+        d.m02 = this.m00 * _t11 + this.m01 * _t10 + this.m02 * _t9;
+        d.m12 = this.m10 * _t11 + this.m11 * _t10 + this.m12 * _t9;
+        d.m22 = this.m20 * _t11 + this.m21 * _t10 + this.m22 * _t9;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Set this matrix to the rotation part of the unit dual quaternion {@code dq} (the encoded
+     * translation is dropped).
+     *
+     * @param dq the dual quaternion (must be a unit dual quaternion)
+     * @return this
+     */
+    public @Mutated Double3x3 makeFromDualQuat(DoubleDualQuatR dq) {
+        return makeFromDualQuat(dq.rX(), dq.rY(), dq.rZ(), dq.rW(), dq.dX(), dq.dY(), dq.dZ(), dq.dW());
+    }
+
+
+    /**
+     * Set this matrix to the rotation part of the unit dual quaternion ({@code dqRX}, {@code dqRY},
+     * {@code dqRZ}, {@code dqRW}, {@code dqDX}, {@code dqDY}, {@code dqDZ}, {@code dqDW}) (the
+     * encoded translation is dropped).
+     *
+     * @param dqRX the {@code rX} component of the dual quaternion
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
+     *        have unit length)
+     * @param dqRY the {@code rY} component of the dual quaternion
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
+     *        have unit length)
+     * @param dqRZ the {@code rZ} component of the dual quaternion
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
+     *        have unit length)
+     * @param dqRW the {@code rW} component of the dual quaternion
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
+     *        have unit length)
+     * @param dqDX the {@code dX} component of the dual quaternion
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
+     *        have unit length)
+     * @param dqDY the {@code dY} component of the dual quaternion
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
+     *        have unit length)
+     * @param dqDZ the {@code dZ} component of the dual quaternion
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
+     *        have unit length)
+     * @param dqDW the {@code dW} component of the dual quaternion
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
+     *        have unit length)
+     * @return this
+     */
+    @Mutated public Double3x3 makeFromDualQuat(double dqRX, double dqRY, double dqRZ, double dqRW, double dqDX, double dqDY, double dqDZ, double dqDW) {
+        double _t2 = dqRZ * dqRW;
+        double _t3 = dqRX * dqRY;
+        double _t4 = dqRX * dqRZ;
+        double _t5 = dqRY * dqRW;
+        double _t7 = dqRX * dqRW;
+        double _t8 = dqRY * dqRZ;
+        double _t10 = 2.0 * dqRY * dqRY;
+        double _t11 = 2.0 * dqRX * dqRX;
+        double _t12 = 1.0 - 2.0 * dqRZ * dqRZ;
+        this.m00 = _t12 - _t10;
+        this.m10 = 2.0 * (_t3 + _t2);
+        this.m20 = -2.0 * _t5 + 2.0 * _t4;
+        this.m01 = -2.0 * _t2 + 2.0 * _t3;
+        this.m11 = _t12 - _t11;
+        this.m21 = 2.0 * (_t7 + _t8);
+        this.m02 = 2.0 * (_t4 + _t5);
+        this.m12 = -2.0 * _t7 + 2.0 * _t8;
+        this.m22 = 1.0 - _t10 - _t11;
+        this.properties = 0;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a rotation by {@code angle}.
+     *
+     * @param angle the angle in radians
+     * @return this
+     */
+    @Mutated public Double3x3 makeRotation(double angle) {
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        this.m00 = _t0;
+        this.m10 = _t1;
+        this.m20 = 0.0;
+        this.m01 = -_t1;
+        this.m11 = _t0;
+        this.m21 = 0.0;
+        this.m02 = 0.0;
+        this.m12 = 0.0;
+        this.m22 = 1.0;
+        this.properties = Joml.BIT_ORTHOGONAL;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a rotation of {@code angle} radians about the axis {@code axis}.
+     *
+     * @param angle the angle in radians
+     * @param axis the rotation axis (must be a unit vector)
+     * @return this
+     */
+    public @Mutated Double3x3 makeRotationAxis(double angle, Double3R axis) {
+        return makeRotationAxis(angle, axis.x(), axis.y(), axis.z());
+    }
+
+
+    /**
+     * Set this matrix to a rotation of {@code angle} radians about the axis ({@code axisX},
+     * {@code axisY}, {@code axisZ}).
+     *
+     * @param angle the angle in radians
+     * @param axisX the {@code x} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisY the {@code y} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisZ the {@code z} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @return this
+     */
+    @Mutated public Double3x3 makeRotationAxis(double angle, double axisX, double axisY, double axisZ) {
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _t2 = 1.0 - _t0;
+        double _t4 = axisZ * _t1;
+        double _t5 = axisY * _t1;
+        double _t8 = axisX * _t1;
+        double _t9 = _t2 * axisX * axisY;
+        double _t10 = _t2 * axisX * axisZ;
+        double _t11 = _t2 * axisY * axisZ;
+        this.m00 = _t2 * axisX * axisX + _t0;
+        this.m10 = _t4 + _t9;
+        this.m20 = _t10 - _t5;
+        this.m01 = _t9 - _t4;
+        this.m11 = _t2 * axisY * axisY + _t0;
+        this.m21 = _t8 + _t11;
+        this.m02 = _t5 + _t10;
+        this.m12 = _t11 - _t8;
+        this.m22 = _t2 * axisZ * axisZ + _t0;
+        this.properties = 0;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a rotation that makes {@code +z} point along {@code dir}.
+     *
+     * @param dir the direction
+     * @param up the direction of "up"
+     * @return this
+     */
+    public @Mutated Double3x3 makeRotationLookAlong(Double3R dir, Double3R up) {
+        return makeRotationLookAlong(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Set this matrix to a rotation that makes {@code +z} point along ({@code dirX}, {@code dirY},
+     * {@code dirZ}).
+     *
+     * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param dirZ the {@code z} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
+     * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
+     * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
+     * @return this
+     */
+    @Mutated public Double3x3 makeRotationLookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
+        double _t5 = (1.0 / Math.sqrt(_t4));
+        double _t9, _t10, _t11;
+        if (_t4 > 0.0) {
+            _t9 = dirZ * _t5;
+            _t10 = dirY * _t5;
+            _t11 = dirX * _t5;
+        } else {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 0.0;
+        }
+        double _t18 = upY * _t9 - upZ * _t10;
+        double _t19 = upZ * _t11 - upX * _t9;
+        double _t20 = upX * _t10 - upY * _t11;
+        double _t25 = _t18 * _t18 + _t19 * _t19 + _t20 * _t20;
+        double _t26 = (1.0 / Math.sqrt(_t25));
+        double _t30, _t31, _t32;
+        if (_t25 > 0.0) {
+            _t30 = _t18 * _t26;
+            _t31 = _t20 * _t26;
+            _t32 = _t19 * _t26;
+        } else {
+            _t30 = 0.0;
+            _t31 = 0.0;
+            _t32 = 0.0;
+        }
+        this.m00 = _t30;
+        this.m10 = _t32;
+        this.m20 = _t31;
+        this.m01 = _t10 * _t31 - _t9 * _t32;
+        this.m11 = _t9 * _t30 - _t11 * _t31;
+        this.m21 = _t11 * _t32 - _t10 * _t30;
+        this.m02 = _t11;
+        this.m12 = _t10;
+        this.m22 = _t9;
+        this.properties = 0;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to the rotation represented by the quaternion {@code q}.
+     *
+     * @param q the quaternion (must be a unit quaternion)
+     * @return this
+     */
+    public @Mutated Double3x3 makeRotationQuat(DoubleQuatR q) {
+        return makeRotationQuat(q.x(), q.y(), q.z(), q.w());
+    }
+
+
+    /**
+     * Set this matrix to the rotation represented by the quaternion ({@code qX}, {@code qY},
+     * {@code qZ}, {@code qW}).
+     *
+     * @param qX the {@code x} component of the quaternion {@code (qX, qY, qZ, qW)} (the quaternion
+     *        must have unit length)
+     * @param qY the {@code y} component of the quaternion {@code (qX, qY, qZ, qW)} (the quaternion
+     *        must have unit length)
+     * @param qZ the {@code z} component of the quaternion {@code (qX, qY, qZ, qW)} (the quaternion
+     *        must have unit length)
+     * @param qW the {@code w} component of the quaternion {@code (qX, qY, qZ, qW)} (the quaternion
+     *        must have unit length)
+     * @return this
+     */
+    @Mutated public Double3x3 makeRotationQuat(double qX, double qY, double qZ, double qW) {
+        double _t0 = qY * qY;
+        double _t1 = qZ * qZ;
+        double _t2 = qX * qY;
+        double _t3 = qZ * qW;
+        double _t4 = qX * qZ;
+        double _t5 = qY * qW;
+        double _t6 = qX * qX;
+        double _t7 = qY * qZ;
+        double _t8 = qX * qW;
+        this.m00 = 1.0 - 2.0 * (_t0 + _t1);
+        this.m10 = 2.0 * (_t2 + _t3);
+        this.m20 = 2.0 * (_t4 - _t5);
+        this.m01 = 2.0 * (_t2 - _t3);
+        this.m11 = 1.0 - 2.0 * (_t6 + _t1);
+        this.m21 = 2.0 * (_t8 + _t7);
+        this.m02 = 2.0 * (_t4 + _t5);
+        this.m12 = 2.0 * (_t7 - _t8);
+        this.m22 = 1.0 - 2.0 * (_t6 + _t0);
+        this.properties = 0;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a rotation of {@code angle} radians about the X axis.
+     *
+     * @param angle the angle in radians
+     * @return this
+     */
+    @Mutated public Double3x3 makeRotationX(double angle) {
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        this.m00 = 1.0;
+        this.m10 = 0.0;
+        this.m20 = 0.0;
+        this.m01 = 0.0;
+        this.m11 = _t0;
+        this.m21 = _t1;
+        this.m02 = 0.0;
+        this.m12 = -_t1;
+        this.m22 = _t0;
+        this.properties = 0;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians
+     * about the X, Y and Z axes, in that order.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @return this
+     */
+    @Mutated public Double3x3 makeRotationXYZ(double angleX, double angleY, double angleZ) {
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.sin(angleY);
+        double _t4 = Math.sin(angleX);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t4 * _t3;
+        double _t7 = _t3 * _t5;
+        this.m00 = _t0 * _t1;
+        this.m10 = _t6 * _t1 + _t2 * _t5;
+        this.m20 = _t4 * _t2 - _t7 * _t1;
+        this.m01 = -(_t2 * _t0);
+        this.m11 = _t5 * _t1 - _t6 * _t2;
+        this.m21 = _t7 * _t2 + _t4 * _t1;
+        this.m02 = _t3;
+        this.m12 = -(_t4 * _t0);
+        this.m22 = _t5 * _t0;
+        this.properties = 0;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians
+     * about the X, Z and Y axes, in that order.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @return this
+     */
+    @Mutated public Double3x3 makeRotationXZY(double angleX, double angleY, double angleZ) {
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.sin(angleY);
+        double _t4 = Math.cos(angleX);
+        double _t5 = Math.sin(angleX);
+        double _t6 = _t2 * _t4;
+        double _t7 = _t5 * _t2;
+        this.m00 = _t0 * _t1;
+        this.m10 = _t6 * _t0 + _t5 * _t3;
+        this.m20 = _t7 * _t0 - _t3 * _t4;
+        this.m01 = -_t2;
+        this.m11 = _t4 * _t1;
+        this.m21 = _t5 * _t1;
+        this.m02 = _t3 * _t1;
+        this.m12 = _t6 * _t3 - _t5 * _t0;
+        this.m22 = _t7 * _t3 + _t4 * _t0;
+        this.properties = 0;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a rotation of {@code angle} radians about the Y axis.
+     *
+     * @param angle the angle in radians
+     * @return this
+     */
+    @Mutated public Double3x3 makeRotationY(double angle) {
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        this.m00 = _t0;
+        this.m10 = 0.0;
+        this.m20 = -_t1;
+        this.m01 = 0.0;
+        this.m11 = 1.0;
+        this.m21 = 0.0;
+        this.m02 = _t1;
+        this.m12 = 0.0;
+        this.m22 = _t0;
+        this.properties = 0;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians
+     * about the Y, X and Z axes, in that order.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @return this
+     */
+    @Mutated public Double3x3 makeRotationYXZ(double angleX, double angleY, double angleZ) {
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleY);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.cos(angleY);
+        double _t4 = Math.cos(angleZ);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t0 * _t3;
+        this.m00 = _t6 * _t2 + _t3 * _t4;
+        this.m10 = _t2 * _t5;
+        this.m20 = _t7 * _t2 - _t1 * _t4;
+        this.m01 = _t6 * _t4 - _t2 * _t3;
+        this.m11 = _t5 * _t4;
+        this.m21 = _t7 * _t4 + _t1 * _t2;
+        this.m02 = _t1 * _t5;
+        this.m12 = -_t0;
+        this.m22 = _t5 * _t3;
+        this.properties = 0;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians
+     * about the Y, Z and X axes, in that order.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @return this
+     */
+    @Mutated public Double3x3 makeRotationYZX(double angleX, double angleY, double angleZ) {
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.sin(angleY);
+        double _t4 = Math.sin(angleZ);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t4 * _t0;
+        double _t7 = _t3 * _t4;
+        this.m00 = _t0 * _t1;
+        this.m10 = _t4;
+        this.m20 = -(_t3 * _t1);
+        this.m01 = _t2 * _t3 - _t6 * _t5;
+        this.m11 = _t5 * _t1;
+        this.m21 = _t7 * _t5 + _t2 * _t0;
+        this.m02 = _t6 * _t2 + _t3 * _t5;
+        this.m12 = -(_t2 * _t1);
+        this.m22 = _t5 * _t0 - _t7 * _t2;
+        this.properties = 0;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a rotation of {@code angle} radians about the Z axis.
+     *
+     * @param angle the angle in radians
+     * @return this
+     */
+    @Mutated public Double3x3 makeRotationZ(double angle) {
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        this.m00 = _t0;
+        this.m10 = _t1;
+        this.m20 = 0.0;
+        this.m01 = -_t1;
+        this.m11 = _t0;
+        this.m21 = 0.0;
+        this.m02 = 0.0;
+        this.m12 = 0.0;
+        this.m22 = 1.0;
+        this.properties = Joml.BIT_ORTHOGONAL;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians
+     * about the Z, X and Y axes, in that order.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @return this
+     */
+    @Mutated public Double3x3 makeRotationZXY(double angleX, double angleY, double angleZ) {
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.sin(angleZ);
+        double _t4 = Math.sin(angleY);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t2 * _t3;
+        double _t7 = _t2 * _t1;
+        this.m00 = _t0 * _t1 - _t6 * _t4;
+        this.m10 = _t7 * _t4 + _t3 * _t0;
+        this.m20 = -(_t4 * _t5);
+        this.m01 = -(_t3 * _t5);
+        this.m11 = _t5 * _t1;
+        this.m21 = _t2;
+        this.m02 = _t6 * _t0 + _t4 * _t1;
+        this.m12 = _t4 * _t3 - _t7 * _t0;
+        this.m22 = _t5 * _t0;
+        this.properties = 0;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians
+     * about the Z, Y and X axes, in that order.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @return this
+     */
+    @Mutated public Double3x3 makeRotationZYX(double angleX, double angleY, double angleZ) {
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleY);
+        double _t3 = Math.sin(angleX);
+        double _t4 = Math.sin(angleZ);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t2 * _t1;
+        double _t7 = _t2 * _t4;
+        this.m00 = _t0 * _t1;
+        this.m10 = _t4 * _t0;
+        this.m20 = -_t2;
+        this.m01 = _t6 * _t3 - _t4 * _t5;
+        this.m11 = _t7 * _t3 + _t5 * _t1;
+        this.m21 = _t3 * _t0;
+        this.m02 = _t6 * _t5 + _t3 * _t4;
+        this.m12 = _t7 * _t5 - _t3 * _t1;
+        this.m22 = _t5 * _t0;
+        this.properties = 0;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a scaling transformation that scales by {@code v}.
+     *
+     * @param v the vector
+     * @return this
+     */
+    public @Mutated Double3x3 makeScaling(Double2R v) {
+        return makeScaling(v.x(), v.y());
+    }
+
+
+    /**
+     * Set this matrix to a scaling transformation that scales by ({@code vX}, {@code vY}).
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY)}
+     * @return this
+     */
+    @Mutated public Double3x3 makeScaling(double vX, double vY) {
+        this.m00 = vX;
+        this.m10 = 0.0;
+        this.m20 = 0.0;
+        this.m01 = 0.0;
+        this.m11 = vY;
+        this.m21 = 0.0;
+        this.m02 = 0.0;
+        this.m12 = 0.0;
+        this.m22 = 1.0;
+        this.properties = Joml.BIT_AFFINE;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a scaling transformation that scales by {@code s}.
+     *
+     * @param s the uniform scale factor
+     * @return this
+     */
+    @Mutated public Double3x3 makeScaling(double s) {
+        this.m00 = s;
+        this.m10 = 0.0;
+        this.m20 = 0.0;
+        this.m01 = 0.0;
+        this.m11 = s;
+        this.m21 = 0.0;
+        this.m02 = 0.0;
+        this.m12 = 0.0;
+        this.m22 = 1.0;
+        this.properties = Joml.BIT_AFFINE;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to a translation transformation that translates by {@code v}.
+     *
+     * @param v the translation offsets
+     * @return this
+     */
+    public @Mutated Double3x3 makeTranslation(Double2R v) {
+        return makeTranslation(v.x(), v.y());
+    }
+
+
+    /**
+     * Set this matrix to a translation transformation that translates by ({@code vX}, {@code vY}).
+     *
+     * @param vX the {@code x} component of the translation offsets {@code (vX, vY)}
+     * @param vY the {@code y} component of the translation offsets {@code (vX, vY)}
+     * @return this
+     */
+    @Mutated public Double3x3 makeTranslation(double vX, double vY) {
+        this.m00 = 1.0;
+        this.m10 = 0.0;
+        this.m20 = 0.0;
+        this.m01 = 0.0;
+        this.m11 = 1.0;
+        this.m21 = 0.0;
+        this.m02 = vX;
+        this.m12 = vY;
+        this.m22 = 1.0;
+        this.properties = Joml.BIT_TRANSLATION;
+        return this;
+    }
+
+
+    /**
+     * Set this matrix to the 2D view transformation that maps the rectangle
+     * {@code [left, right] x [bottom, top]} onto {@code [-1, +1] x [-1, +1]}.
+     *
+     * @param left the distance to the left edge of the view rectangle
+     * @param right the distance to the right edge of the view rectangle
+     * @param bottom the distance to the bottom edge of the view rectangle
+     * @param top the distance to the top edge of the view rectangle
+     * @return this
+     */
+    @Mutated public Double3x3 makeView(double left, double right, double bottom, double top) {
+        double _t0 = right - left;
+        double _t0_inv = 1.0 / _t0;
+        double _t1 = top - bottom;
+        double _t1_inv = 1.0 / _t1;
+        this.m00 = 2.0 * _t0_inv;
+        this.m10 = 0.0;
+        this.m20 = 0.0;
+        this.m01 = 0.0;
+        this.m11 = 2.0 * _t1_inv;
+        this.m21 = 0.0;
+        this.m02 = -((left + right) * _t0_inv);
+        this.m12 = -((bottom + top) * _t1_inv);
+        this.m22 = 1.0;
+        this.properties = Joml.BIT_AFFINE;
+        return this;
+    }
+
+
+    /**
+     * Private body of {@code preRotate}, specialized by runtime matrix properties; reached only
+     * through the public {@code preRotate} dispatcher.
+     */
+    private Double3x3 preRotate_orthogonal_affine(double angle, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _buf0 = this.m00 * _t0 - this.m10 * _t1;
+        d.m10 = this.m00 * _t1 + this.m10 * _t0;
+        d.m20 = 0.0;
+        double _buf1 = this.m01 * _t0 - this.m11 * _t1;
+        d.m11 = this.m01 * _t1 + this.m11 * _t0;
+        d.m21 = 0.0;
+        double _buf2 = this.m02 * _t0 - this.m12 * _t1;
+        d.m12 = this.m02 * _t1 + this.m12 * _t0;
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m01 = _buf1;
+        d.m02 = _buf2;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preRotate}, specialized by runtime matrix
+     * properties; reached only through the public {@code preRotate} dispatcher.
+     */
+    private Double3x3 preRotate_orthogonal_affine_self(double angle, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _buf0 = this.m00 * _t0 - this.m10 * _t1;
+        d.m10 = this.m00 * _t1 + this.m10 * _t0;
+        double _buf1 = this.m01 * _t0 - this.m11 * _t1;
+        d.m11 = this.m01 * _t1 + this.m11 * _t0;
+        double _buf2 = this.m02 * _t0 - this.m12 * _t1;
+        d.m12 = this.m02 * _t1 + this.m12 * _t0;
+        d.m00 = _buf0;
+        d.m01 = _buf1;
+        d.m02 = _buf2;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preRotate}, specialized by runtime matrix properties; reached only
+     * through the public {@code preRotate} dispatcher.
+     */
+    private Double3x3 preRotate_identity(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = _t0;
+        d.m10 = _t1;
+        d.m20 = 0.0;
+        d.m01 = -_t1;
+        d.m11 = _t0;
+        d.m21 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preRotate}, specialized by runtime matrix
+     * properties; reached only through the public {@code preRotate} dispatcher.
+     */
+    private Double3x3 preRotate_identity_self(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = _t0;
+        d.m10 = _t1;
+        d.m01 = -_t1;
+        d.m11 = _t0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preRotate}, specialized by runtime matrix properties; reached only
+     * through the public {@code preRotate} dispatcher.
+     */
+    private Double3x3 preRotate_translation(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = _t0;
+        d.m10 = _t1;
+        d.m20 = 0.0;
+        d.m01 = -_t1;
+        d.m11 = _t0;
+        d.m21 = 0.0;
+        double _buf0 = this.m02 * _t0 - this.m12 * _t1;
+        d.m12 = this.m02 * _t1 + this.m12 * _t0;
+        d.m22 = 1.0;
+        d.m02 = _buf0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preRotate}, specialized by runtime matrix
+     * properties; reached only through the public {@code preRotate} dispatcher.
+     */
+    private Double3x3 preRotate_translation_self(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = _t0;
+        d.m10 = _t1;
+        d.m01 = -_t1;
+        d.m11 = _t0;
+        double _buf0 = this.m02 * _t0 - this.m12 * _t1;
+        d.m12 = this.m02 * _t1 + this.m12 * _t0;
+        d.m02 = _buf0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preRotate}, specialized by runtime matrix properties; reached only
+     * through the public {@code preRotate} dispatcher.
+     */
+    private Double3x3 preRotate_general(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _buf0 = this.m00 * _t0 - this.m10 * _t1;
+        d.m10 = this.m00 * _t1 + this.m10 * _t0;
+        d.m20 = this.m20;
+        double _buf1 = this.m01 * _t0 - this.m11 * _t1;
+        d.m11 = this.m01 * _t1 + this.m11 * _t0;
+        d.m21 = this.m21;
+        double _buf2 = this.m02 * _t0 - this.m12 * _t1;
+        d.m12 = this.m02 * _t1 + this.m12 * _t0;
+        d.m22 = this.m22;
+        d.m00 = _buf0;
+        d.m01 = _buf1;
+        d.m02 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Pre-multiply a rotation by {@code angle} onto this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the rotation will be applied last.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preRotate(double angle, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preRotate_identity(angle, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preRotate_translation(angle, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preRotate_orthogonal_affine(angle, dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        return preRotate_general(angle, dest);
+    }
+
+
+    /**
+     * Pre-multiply a rotation by {@code angle} onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the rotation will be applied last.
+     *
+     * @param angle the angle in radians
+     * @return this
+     */
+    @Mutated public Double3x3 preRotate(double angle) {
+        if (Joml.RETURN_NEW) return preRotate(angle, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preRotate_identity_self(angle, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preRotate_translation_self(angle, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preRotate_orthogonal_affine_self(angle, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        return preRotate_general(angle, this);
+    }
+
+
+    /**
+     * Pre-multiply the rotation {@code angle} about the pivot point {@code pivot} onto this matrix
+     * and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the rotation will be applied last.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preRotateAround(double angle, Double2R pivot, @Mutated Double3x3 dest) {
+        return preRotateAround(angle, pivot.x(), pivot.y(), dest);
+    }
+
+
+    /**
+     * Pre-multiply the rotation {@code angle} about the pivot point {@code pivot} onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the rotation will be applied last.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @return this
+     */
+    public @Mutated Double3x3 preRotateAround(double angle, Double2R pivot) {
+        return preRotateAround(angle, pivot.x(), pivot.y());
+    }
+
+
+    /**
+     * Private body of {@code preRotateAround}, specialized by runtime matrix properties; reached
+     * only through the public {@code preRotateAround} dispatcher.
+     */
+    private Double3x3 preRotateAround_orthogonal_affine(double angle, double pivotX, double pivotY, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _buf0 = this.m00 * _t0 - this.m10 * _t1;
+        d.m10 = this.m00 * _t1 + this.m10 * _t0;
+        d.m20 = 0.0;
+        double _buf1 = this.m01 * _t0 - this.m11 * _t1;
+        d.m11 = this.m01 * _t1 + this.m11 * _t0;
+        d.m21 = 0.0;
+        double _buf2 = pivotY * _t1 + (this.m02 * _t0 + (pivotX - this.m12 * _t1) - pivotX * _t0);
+        d.m12 = this.m02 * _t1 + (this.m12 * _t0 + pivotY) - pivotY * _t0 - pivotX * _t1;
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m01 = _buf1;
+        d.m02 = _buf2;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preRotateAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code preRotateAround} dispatcher.
+     */
+    private Double3x3 preRotateAround_orthogonal_affine_self(double angle, double pivotX, double pivotY, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _buf0 = this.m00 * _t0 - this.m10 * _t1;
+        d.m10 = this.m00 * _t1 + this.m10 * _t0;
+        double _buf1 = this.m01 * _t0 - this.m11 * _t1;
+        d.m11 = this.m01 * _t1 + this.m11 * _t0;
+        double _buf2 = pivotY * _t1 + (this.m02 * _t0 + (pivotX - this.m12 * _t1) - pivotX * _t0);
+        d.m12 = this.m02 * _t1 + (this.m12 * _t0 + pivotY) - pivotY * _t0 - pivotX * _t1;
+        d.m00 = _buf0;
+        d.m01 = _buf1;
+        d.m02 = _buf2;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preRotateAround}, specialized by runtime matrix properties; reached
+     * only through the public {@code preRotateAround} dispatcher.
+     */
+    private Double3x3 preRotateAround_identity(double angle, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = _t0;
+        d.m10 = _t1;
+        d.m20 = 0.0;
+        d.m01 = -_t1;
+        d.m11 = _t0;
+        d.m21 = 0.0;
+        d.m02 = pivotY * _t1 + (pivotX - pivotX * _t0);
+        d.m12 = pivotY - pivotY * _t0 - pivotX * _t1;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preRotateAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code preRotateAround} dispatcher.
+     */
+    private Double3x3 preRotateAround_identity_self(double angle, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = _t0;
+        d.m10 = _t1;
+        d.m01 = -_t1;
+        d.m11 = _t0;
+        d.m02 = pivotY * _t1 + (pivotX - pivotX * _t0);
+        d.m12 = pivotY - pivotY * _t0 - pivotX * _t1;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preRotateAround}, specialized by runtime matrix properties; reached
+     * only through the public {@code preRotateAround} dispatcher.
+     */
+    private Double3x3 preRotateAround_translation(double angle, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = _t0;
+        d.m10 = _t1;
+        d.m20 = 0.0;
+        d.m01 = -_t1;
+        d.m11 = _t0;
+        d.m21 = 0.0;
+        double _buf0 = pivotY * _t1 + (this.m02 * _t0 + (pivotX - this.m12 * _t1) - pivotX * _t0);
+        d.m12 = this.m02 * _t1 + (this.m12 * _t0 + pivotY) - pivotY * _t0 - pivotX * _t1;
+        d.m22 = 1.0;
+        d.m02 = _buf0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preRotateAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code preRotateAround} dispatcher.
+     */
+    private Double3x3 preRotateAround_translation_self(double angle, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = _t0;
+        d.m10 = _t1;
+        d.m01 = -_t1;
+        d.m11 = _t0;
+        double _buf0 = pivotY * _t1 + (this.m02 * _t0 + (pivotX - this.m12 * _t1) - pivotX * _t0);
+        d.m12 = this.m02 * _t1 + (this.m12 * _t0 + pivotY) - pivotY * _t0 - pivotX * _t1;
+        d.m02 = _buf0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preRotateAround}, specialized by runtime matrix properties; reached
+     * only through the public {@code preRotateAround} dispatcher.
+     */
+    private Double3x3 preRotateAround_general(double angle, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _t8 = pivotY * _t1 + (pivotX - pivotX * _t0);
+        double _t9 = pivotY - pivotY * _t0 - pivotX * _t1;
+        double _buf0 = this.m00 * _t0 - this.m10 * _t1 + this.m20 * _t8;
+        d.m10 = this.m00 * _t1 + this.m10 * _t0 + this.m20 * _t9;
+        d.m20 = this.m20;
+        double _buf1 = this.m01 * _t0 - this.m11 * _t1 + this.m21 * _t8;
+        d.m11 = this.m01 * _t1 + this.m11 * _t0 + this.m21 * _t9;
+        d.m21 = this.m21;
+        double _buf2 = this.m02 * _t0 - this.m12 * _t1 + this.m22 * _t8;
+        d.m12 = this.m02 * _t1 + this.m12 * _t0 + this.m22 * _t9;
+        d.m22 = this.m22;
+        d.m00 = _buf0;
+        d.m01 = _buf1;
+        d.m02 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Pre-multiply the rotation {@code angle} about the pivot point ({@code pivotX},
+     * {@code pivotY}) onto this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the rotation will be applied last.
+     *
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preRotateAround(double angle, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preRotateAround_identity(angle, pivotX, pivotY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preRotateAround_translation(angle, pivotX, pivotY, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preRotateAround_orthogonal_affine(angle, pivotX, pivotY, dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        return preRotateAround_general(angle, pivotX, pivotY, dest);
+    }
+
+
+    /**
+     * Pre-multiply the rotation {@code angle} about the pivot point ({@code pivotX},
+     * {@code pivotY}) onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the rotation will be applied last.
+     *
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
+     * @return this
+     */
+    @Mutated public Double3x3 preRotateAround(double angle, double pivotX, double pivotY) {
+        if (Joml.RETURN_NEW) return preRotateAround(angle, pivotX, pivotY, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preRotateAround_identity_self(angle, pivotX, pivotY, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preRotateAround_translation_self(angle, pivotX, pivotY, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preRotateAround_orthogonal_affine_self(angle, pivotX, pivotY, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        return preRotateAround_general(angle, pivotX, pivotY, this);
+    }
+
+
+    /**
+     * Pre-multiply a rotation of {@code angle} radians about the axis {@code axis} onto this matrix
+     * and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the rotation will be applied last.
+     *
+     * @param angle the angle in radians
+     * @param axis the rotation axis (must be a unit vector)
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preRotateAxis(double angle, Double3R axis, @Mutated Double3x3 dest) {
+        return preRotateAxis(angle, axis.x(), axis.y(), axis.z(), dest);
+    }
+
+
+    /**
+     * Pre-multiply a rotation of {@code angle} radians about the axis {@code axis} onto this
+     * matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the rotation will be applied last.
+     *
+     * @param angle the angle in radians
+     * @param axis the rotation axis (must be a unit vector)
+     * @return this
+     */
+    public @Mutated Double3x3 preRotateAxis(double angle, Double3R axis) {
+        return preRotateAxis(angle, axis.x(), axis.y(), axis.z());
+    }
+
+
+    /**
+     * Private body of {@code preRotateAxis}, specialized by runtime matrix properties; reached only
+     * through the public {@code preRotateAxis} dispatcher.
+     */
+    private Double3x3 preRotateAxis_identity(double angle, double axisX, double axisY, double axisZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _t2 = 1.0 - _t0;
+        double _t4 = axisZ * _t1;
+        double _t5 = axisY * _t1;
+        double _t8 = axisX * _t1;
+        double _t9 = _t2 * axisX * axisY;
+        double _t10 = _t2 * axisX * axisZ;
+        double _t11 = _t2 * axisY * axisZ;
+        d.m00 = _t2 * axisX * axisX + _t0;
+        d.m10 = _t4 + _t9;
+        d.m20 = _t10 - _t5;
+        d.m01 = _t9 - _t4;
+        d.m11 = _t2 * axisY * axisY + _t0;
+        d.m21 = _t8 + _t11;
+        d.m02 = _t5 + _t10;
+        d.m12 = _t11 - _t8;
+        d.m22 = _t2 * axisZ * axisZ + _t0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preRotateAxis}, specialized by runtime matrix properties; reached only
+     * through the public {@code preRotateAxis} dispatcher.
+     */
+    private Double3x3 preRotateAxis_translation(double angle, double axisX, double axisY, double axisZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _t2 = 1.0 - _t0;
+        double _t5 = axisZ * _t1;
+        double _t6 = axisY * _t1;
+        double _t10 = axisX * _t1;
+        double _t12 = _t2 * axisX * axisY;
+        double _t13 = _t2 * axisX * axisZ;
+        double _t15 = _t2 * axisY * axisZ;
+        double _t16 = _t2 * axisX * axisX + _t0;
+        double _t17 = _t2 * axisY * axisY + _t0;
+        double _t18 = _t12 - _t5;
+        double _t19 = _t5 + _t12;
+        double _t20 = _t13 - _t6;
+        double _t21 = _t10 + _t15;
+        d.m00 = _t16;
+        d.m10 = _t19;
+        d.m20 = _t20;
+        d.m01 = _t18;
+        d.m11 = _t17;
+        d.m21 = _t21;
+        double _buf0 = _t6 + _t13 + (this.m02 * _t16 + this.m12 * _t18);
+        double _buf1 = this.m02 * _t19 + this.m12 * _t17 + (_t15 - _t10);
+        d.m22 = this.m02 * _t20 + (this.m12 * _t21 + (_t2 * axisZ * axisZ + _t0));
+        d.m02 = _buf0;
+        d.m12 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preRotateAxis}, specialized by runtime matrix properties; reached only
+     * through the public {@code preRotateAxis} dispatcher.
+     */
+    private Double3x3 preRotateAxis_orthogonal(double angle, double axisX, double axisY, double axisZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _t2 = 1.0 - _t0;
+        double _t5 = axisZ * _t1;
+        double _t6 = axisY * _t1;
+        double _t10 = axisX * _t1;
+        double _t12 = _t2 * axisX * axisY;
+        double _t13 = _t2 * axisX * axisZ;
+        double _t15 = _t2 * axisY * axisZ;
+        double _t16 = _t2 * axisX * axisX + _t0;
+        double _t17 = _t2 * axisY * axisY + _t0;
+        double _t18 = _t12 - _t5;
+        double _t19 = _t5 + _t12;
+        double _t20 = _t13 - _t6;
+        double _t21 = _t10 + _t15;
+        double _buf0 = this.m00 * _t16 + this.m10 * _t18;
+        double _buf1 = this.m00 * _t19 + this.m10 * _t17;
+        d.m20 = this.m00 * _t20 + this.m10 * _t21;
+        double _buf2 = this.m01 * _t16 + this.m11 * _t18;
+        double _buf3 = this.m01 * _t19 + this.m11 * _t17;
+        d.m21 = this.m01 * _t20 + this.m11 * _t21;
+        double _buf4 = _t6 + _t13 + (this.m02 * _t16 + this.m12 * _t18);
+        double _buf5 = this.m02 * _t19 + this.m12 * _t17 + (_t15 - _t10);
+        d.m22 = this.m02 * _t20 + (this.m12 * _t21 + (_t2 * axisZ * axisZ + _t0));
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.m02 = _buf4;
+        d.m12 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preRotateAxis}, specialized by runtime matrix properties; reached only
+     * through the public {@code preRotateAxis} dispatcher.
+     */
+    private Double3x3 preRotateAxis_general(double angle, double axisX, double axisY, double axisZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _t2 = 1.0 - _t0;
+        double _t5 = axisZ * _t1;
+        double _t6 = axisY * _t1;
+        double _t10 = axisX * _t1;
+        double _t13 = _t2 * axisX * axisY;
+        double _t14 = _t2 * axisX * axisZ;
+        double _t16 = _t2 * axisY * axisZ;
+        double _t18 = _t2 * axisX * axisX + _t0;
+        double _t19 = _t2 * axisY * axisY + _t0;
+        double _t20 = _t2 * axisZ * axisZ + _t0;
+        double _t21 = _t13 - _t5;
+        double _t22 = _t6 + _t14;
+        double _t23 = _t5 + _t13;
+        double _t24 = _t16 - _t10;
+        double _t25 = _t14 - _t6;
+        double _t26 = _t10 + _t16;
+        double _buf0 = this.m00 * _t18 + this.m10 * _t21 + this.m20 * _t22;
+        double _buf1 = this.m00 * _t23 + this.m10 * _t19 + this.m20 * _t24;
+        d.m20 = this.m00 * _t25 + this.m10 * _t26 + this.m20 * _t20;
+        double _buf2 = this.m01 * _t18 + this.m11 * _t21 + this.m21 * _t22;
+        double _buf3 = this.m01 * _t23 + this.m11 * _t19 + this.m21 * _t24;
+        d.m21 = this.m01 * _t25 + this.m11 * _t26 + this.m21 * _t20;
+        double _buf4 = this.m02 * _t18 + this.m12 * _t21 + this.m22 * _t22;
+        double _buf5 = this.m02 * _t23 + this.m12 * _t19 + this.m22 * _t24;
+        d.m22 = this.m02 * _t25 + this.m12 * _t26 + this.m22 * _t20;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.m02 = _buf4;
+        d.m12 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Pre-multiply a rotation of {@code angle} radians about the axis ({@code axisX},
+     * {@code axisY}, {@code axisZ}) onto this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the rotation will be applied last.
+     *
+     * @param angle the angle in radians
+     * @param axisX the {@code x} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisY the {@code y} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisZ the {@code z} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preRotateAxis(double angle, double axisX, double axisY, double axisZ, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preRotateAxis_identity(angle, axisX, axisY, axisZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preRotateAxis_translation(angle, axisX, axisY, axisZ, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preRotateAxis_orthogonal(angle, axisX, axisY, axisZ, dest);
+        return preRotateAxis_general(angle, axisX, axisY, axisZ, dest);
+    }
+
+
+    /**
+     * Pre-multiply a rotation of {@code angle} radians about the axis ({@code axisX},
+     * {@code axisY}, {@code axisZ}) onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the rotation will be applied last.
+     *
+     * @param angle the angle in radians
+     * @param axisX the {@code x} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisY the {@code y} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisZ the {@code z} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @return this
+     */
+    @Mutated public Double3x3 preRotateAxis(double angle, double axisX, double axisY, double axisZ) {
+        if (Joml.RETURN_NEW) return preRotateAxis(angle, axisX, axisY, axisZ, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preRotateAxis_identity(angle, axisX, axisY, axisZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preRotateAxis_translation(angle, axisX, axisY, axisZ, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preRotateAxis_orthogonal(angle, axisX, axisY, axisZ, this);
+        return preRotateAxis_general(angle, axisX, axisY, axisZ, this);
+    }
+
+
+    /**
+     * Private body of {@code preRotateX}, specialized by runtime matrix properties; reached only
+     * through the public {@code preRotateX} dispatcher.
+     */
+    private Double3x3 preRotateX_identity(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = _t0;
+        d.m21 = _t1;
+        d.m02 = 0.0;
+        d.m12 = -_t1;
+        d.m22 = _t0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preRotateX}, specialized by runtime matrix
+     * properties; reached only through the public {@code preRotateX} dispatcher.
+     */
+    private Double3x3 preRotateX_identity_self(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m11 = _t0;
+        d.m21 = _t1;
+        d.m12 = -_t1;
+        d.m22 = _t0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preRotateX}, specialized by runtime matrix properties; reached only
+     * through the public {@code preRotateX} dispatcher.
+     */
+    private Double3x3 preRotateX_translation(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = _t0;
+        d.m21 = _t1;
+        d.m02 = this.m02;
+        double _buf0 = this.m12 * _t0 - _t1;
+        d.m22 = this.m12 * _t1 + _t0;
+        d.m12 = _buf0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preRotateX}, specialized by runtime matrix
+     * properties; reached only through the public {@code preRotateX} dispatcher.
+     */
+    private Double3x3 preRotateX_translation_self(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m11 = _t0;
+        d.m21 = _t1;
+        d.m02 = this.m02;
+        double _buf0 = this.m12 * _t0 - _t1;
+        d.m22 = this.m12 * _t1 + _t0;
+        d.m12 = _buf0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preRotateX}, specialized by runtime matrix properties; reached only
+     * through the public {@code preRotateX} dispatcher.
+     */
+    private Double3x3 preRotateX_orthogonal(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = this.m00;
+        double _buf0 = this.m10 * _t0;
+        d.m20 = this.m10 * _t1;
+        d.m01 = this.m01;
+        double _buf1 = this.m11 * _t0;
+        d.m21 = this.m11 * _t1;
+        d.m02 = this.m02;
+        double _buf2 = this.m12 * _t0 - _t1;
+        d.m22 = this.m12 * _t1 + _t0;
+        d.m10 = _buf0;
+        d.m11 = _buf1;
+        d.m12 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preRotateX}, specialized by runtime matrix properties; reached only
+     * through the public {@code preRotateX} dispatcher.
+     */
+    private Double3x3 preRotateX_general(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = this.m00;
+        double _buf0 = this.m10 * _t0 - this.m20 * _t1;
+        d.m20 = this.m10 * _t1 + this.m20 * _t0;
+        d.m01 = this.m01;
+        double _buf1 = this.m11 * _t0 - this.m21 * _t1;
+        d.m21 = this.m11 * _t1 + this.m21 * _t0;
+        d.m02 = this.m02;
+        double _buf2 = this.m12 * _t0 - this.m22 * _t1;
+        d.m22 = this.m12 * _t1 + this.m22 * _t0;
+        d.m10 = _buf0;
+        d.m11 = _buf1;
+        d.m12 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Pre-multiply a rotation of {@code angle} radians about the X axis onto this matrix and store
+     * the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the rotation will be applied last.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preRotateX(double angle, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preRotateX_identity(angle, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preRotateX_translation(angle, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preRotateX_orthogonal(angle, dest);
+        return preRotateX_general(angle, dest);
+    }
+
+
+    /**
+     * Pre-multiply a rotation of {@code angle} radians about the X axis onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the rotation will be applied last.
+     *
+     * @param angle the angle in radians
+     * @return this
+     */
+    @Mutated public Double3x3 preRotateX(double angle) {
+        if (Joml.RETURN_NEW) return preRotateX(angle, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preRotateX_identity_self(angle, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preRotateX_translation_self(angle, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preRotateX_orthogonal(angle, this);
+        return preRotateX_general(angle, this);
+    }
+
+
+    /**
+     * Private body of {@code preRotateY}, specialized by runtime matrix properties; reached only
+     * through the public {@code preRotateY} dispatcher.
+     */
+    private Double3x3 preRotateY_identity(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = _t0;
+        d.m10 = 0.0;
+        d.m20 = -_t1;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = _t1;
+        d.m12 = 0.0;
+        d.m22 = _t0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preRotateY}, specialized by runtime matrix
+     * properties; reached only through the public {@code preRotateY} dispatcher.
+     */
+    private Double3x3 preRotateY_identity_self(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = _t0;
+        d.m20 = -_t1;
+        d.m02 = _t1;
+        d.m22 = _t0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preRotateY}, specialized by runtime matrix properties; reached only
+     * through the public {@code preRotateY} dispatcher.
+     */
+    private Double3x3 preRotateY_translation(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = _t0;
+        d.m10 = 0.0;
+        d.m20 = -_t1;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        double _buf0 = this.m02 * _t0 + _t1;
+        d.m12 = this.m12;
+        d.m22 = _t0 - this.m02 * _t1;
+        d.m02 = _buf0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preRotateY}, specialized by runtime matrix
+     * properties; reached only through the public {@code preRotateY} dispatcher.
+     */
+    private Double3x3 preRotateY_translation_self(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = _t0;
+        d.m20 = -_t1;
+        double _buf0 = this.m02 * _t0 + _t1;
+        d.m12 = this.m12;
+        d.m22 = _t0 - this.m02 * _t1;
+        d.m02 = _buf0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preRotateY}, specialized by runtime matrix properties; reached only
+     * through the public {@code preRotateY} dispatcher.
+     */
+    private Double3x3 preRotateY_orthogonal(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = this.m11 * _t0;
+        double _buf0 = this.m10;
+        d.m20 = -(this.m11 * _t1);
+        d.m01 = -(this.m10 * _t0);
+        d.m11 = this.m11;
+        d.m21 = this.m10 * _t1;
+        double _buf1 = this.m02 * _t0 + _t1;
+        d.m12 = this.m12;
+        d.m22 = _t0 - this.m02 * _t1;
+        d.m10 = _buf0;
+        d.m02 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preRotateY}, specialized by runtime matrix properties; reached only
+     * through the public {@code preRotateY} dispatcher.
+     */
+    private Double3x3 preRotateY_affine(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _buf0 = this.m00 * _t0;
+        d.m10 = this.m10;
+        d.m20 = -(this.m00 * _t1);
+        double _buf1 = this.m01 * _t0;
+        d.m11 = this.m11;
+        d.m21 = -(this.m01 * _t1);
+        double _buf2 = this.m02 * _t0 + _t1;
+        d.m12 = this.m12;
+        d.m22 = _t0 - this.m02 * _t1;
+        d.m00 = _buf0;
+        d.m01 = _buf1;
+        d.m02 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preRotateY}, specialized by runtime matrix properties; reached only
+     * through the public {@code preRotateY} dispatcher.
+     */
+    private Double3x3 preRotateY_general(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _buf0 = this.m00 * _t0 + this.m20 * _t1;
+        d.m10 = this.m10;
+        d.m20 = this.m20 * _t0 - this.m00 * _t1;
+        double _buf1 = this.m01 * _t0 + this.m21 * _t1;
+        d.m11 = this.m11;
+        d.m21 = this.m21 * _t0 - this.m01 * _t1;
+        double _buf2 = this.m02 * _t0 + this.m22 * _t1;
+        d.m12 = this.m12;
+        d.m22 = this.m22 * _t0 - this.m02 * _t1;
+        d.m00 = _buf0;
+        d.m01 = _buf1;
+        d.m02 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Pre-multiply a rotation of {@code angle} radians about the Y axis onto this matrix and store
+     * the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the rotation will be applied last.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preRotateY(double angle, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preRotateY_identity(angle, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preRotateY_translation(angle, dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return preRotateY_orthogonal(angle, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preRotateY_affine(angle, dest);
+        return preRotateY_general(angle, dest);
+    }
+
+
+    /**
+     * Pre-multiply a rotation of {@code angle} radians about the Y axis onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the rotation will be applied last.
+     *
+     * @param angle the angle in radians
+     * @return this
+     */
+    @Mutated public Double3x3 preRotateY(double angle) {
+        if (Joml.RETURN_NEW) return preRotateY(angle, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preRotateY_identity_self(angle, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preRotateY_translation_self(angle, this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return preRotateY_orthogonal(angle, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preRotateY_affine(angle, this);
+        return preRotateY_general(angle, this);
+    }
+
+
+    /**
+     * Pre-multiply a rotation of {@code angle} radians about the Z axis onto this matrix and store
+     * the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the rotation will be applied last.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preRotateZ(double angle, @Mutated Double3x3 dest) {
+        return preRotate(angle, dest);
+    }
+
+
+    /**
+     * Pre-multiply a rotation of {@code angle} radians about the Z axis onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the rotation will be applied last.
+     *
+     * @param angle the angle in radians
+     * @return this
+     */
+    @Mutated public Double3x3 preRotateZ(double angle) {
+        return preRotate(angle);
+    }
+
+
+    /**
+     * Pre-multiply a scaling by {@code v} onto this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code S * M}. So when transforming a vector {@code p} with the new matrix by using
+     * {@code S * M * p}, the scaling will be applied last.
+     *
+     * @param v the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preScale(Double2R v, @Mutated Double3x3 dest) {
+        return preScale(v.x(), v.y(), dest);
+    }
+
+
+    /**
+     * Pre-multiply a scaling by {@code v} onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code S * M}. So when transforming a vector {@code p} with the new matrix by using
+     * {@code S * M * p}, the scaling will be applied last.
+     *
+     * @param v the vector
+     * @return this
+     */
+    public @Mutated Double3x3 preScale(Double2R v) {
+        return preScale(v.x(), v.y());
+    }
+
+
+    /**
+     * Private body of {@code preScale}, specialized by runtime matrix properties; reached only
+     * through the public {@code preScale} dispatcher.
+     */
+    private Double3x3 preScale_identity(double vX, double vY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = vX;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = vY;
+        d.m21 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preScale}, specialized by runtime matrix
+     * properties; reached only through the public {@code preScale} dispatcher.
+     */
+    private Double3x3 preScale_identity_self(double vX, double vY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = vX;
+        d.m11 = vY;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preScale}, specialized by runtime matrix properties; reached only
+     * through the public {@code preScale} dispatcher.
+     */
+    private Double3x3 preScale_translation(double vX, double vY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = vX;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = vY;
+        d.m21 = 0.0;
+        d.m02 = this.m02 * vX;
+        d.m12 = this.m12 * vY;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preScale}, specialized by runtime matrix
+     * properties; reached only through the public {@code preScale} dispatcher.
+     */
+    private Double3x3 preScale_translation_self(double vX, double vY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = vX;
+        d.m11 = vY;
+        d.m02 = this.m02 * vX;
+        d.m12 = this.m12 * vY;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preScale}, specialized by runtime matrix properties; reached only
+     * through the public {@code preScale} dispatcher.
+     */
+    private Double3x3 preScale_orthogonal(double vX, double vY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00 * vX;
+        d.m10 = this.m10 * vY;
+        d.m20 = 0.0;
+        d.m01 = this.m01 * vX;
+        d.m11 = this.m11 * vY;
+        d.m21 = 0.0;
+        d.m02 = this.m02 * vX;
+        d.m12 = this.m12 * vY;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preScale}, specialized by runtime matrix
+     * properties; reached only through the public {@code preScale} dispatcher.
+     */
+    private Double3x3 preScale_orthogonal_self(double vX, double vY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00 * vX;
+        d.m10 = this.m10 * vY;
+        d.m01 = this.m01 * vX;
+        d.m11 = this.m11 * vY;
+        d.m02 = this.m02 * vX;
+        d.m12 = this.m12 * vY;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preScale}, specialized by runtime matrix properties; reached only
+     * through the public {@code preScale} dispatcher.
+     */
+    private Double3x3 preScale_general(double vX, double vY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00 * vX;
+        d.m10 = this.m10 * vY;
+        d.m20 = this.m20;
+        d.m01 = this.m01 * vX;
+        d.m11 = this.m11 * vY;
+        d.m21 = this.m21;
+        d.m02 = this.m02 * vX;
+        d.m12 = this.m12 * vY;
+        d.m22 = this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Pre-multiply a scaling by ({@code vX}, {@code vY}) onto this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code S * M * v}, the scaling will be applied last.
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preScale(double vX, double vY, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preScale_identity(vX, vY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preScale_translation(vX, vY, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preScale_orthogonal(vX, vY, dest);
+        return preScale_general(vX, vY, dest);
+    }
+
+
+    /**
+     * Pre-multiply a scaling by ({@code vX}, {@code vY}) onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code S * M * v}, the scaling will be applied last.
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY)}
+     * @return this
+     */
+    @Mutated public Double3x3 preScale(double vX, double vY) {
+        if (Joml.RETURN_NEW) return preScale(vX, vY, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preScale_identity_self(vX, vY, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preScale_translation_self(vX, vY, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preScale_orthogonal_self(vX, vY, this);
+        return preScale_general(vX, vY, this);
+    }
+
+
+    /**
+     * Private body of {@code preScale}, specialized by runtime matrix properties; reached only
+     * through the public {@code preScale} dispatcher.
+     */
+    private Double3x3 preScale_identity(double s, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = s;
+        d.m21 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preScale}, specialized by runtime matrix
+     * properties; reached only through the public {@code preScale} dispatcher.
+     */
+    private Double3x3 preScale_identity_self(double s, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s;
+        d.m11 = s;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preScale}, specialized by runtime matrix properties; reached only
+     * through the public {@code preScale} dispatcher.
+     */
+    private Double3x3 preScale_translation(double s, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = s;
+        d.m21 = 0.0;
+        d.m02 = s * this.m02;
+        d.m12 = s * this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preScale}, specialized by runtime matrix
+     * properties; reached only through the public {@code preScale} dispatcher.
+     */
+    private Double3x3 preScale_translation_self(double s, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s;
+        d.m11 = s;
+        d.m02 = s * this.m02;
+        d.m12 = s * this.m12;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preScale}, specialized by runtime matrix properties; reached only
+     * through the public {@code preScale} dispatcher.
+     */
+    private Double3x3 preScale_orthogonal(double s, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s * this.m00;
+        d.m10 = s * this.m10;
+        d.m20 = 0.0;
+        d.m01 = s * this.m01;
+        d.m11 = s * this.m11;
+        d.m21 = 0.0;
+        d.m02 = s * this.m02;
+        d.m12 = s * this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preScale}, specialized by runtime matrix
+     * properties; reached only through the public {@code preScale} dispatcher.
+     */
+    private Double3x3 preScale_orthogonal_self(double s, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s * this.m00;
+        d.m10 = s * this.m10;
+        d.m01 = s * this.m01;
+        d.m11 = s * this.m11;
+        d.m02 = s * this.m02;
+        d.m12 = s * this.m12;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preScale}, specialized by runtime matrix properties; reached only
+     * through the public {@code preScale} dispatcher.
+     */
+    private Double3x3 preScale_general(double s, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s * this.m00;
+        d.m10 = s * this.m10;
+        d.m20 = this.m20;
+        d.m01 = s * this.m01;
+        d.m11 = s * this.m11;
+        d.m21 = this.m21;
+        d.m02 = s * this.m02;
+        d.m12 = s * this.m12;
+        d.m22 = this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Pre-multiply a scaling by {@code s} onto this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code S * M * v}, the scaling will be applied last.
+     *
+     * @param s the uniform scale factor
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preScale(double s, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preScale_identity(s, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preScale_translation(s, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preScale_orthogonal(s, dest);
+        return preScale_general(s, dest);
+    }
+
+
+    /**
+     * Pre-multiply a scaling by {@code s} onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code S * M * v}, the scaling will be applied last.
+     *
+     * @param s the uniform scale factor
+     * @return this
+     */
+    @Mutated public Double3x3 preScale(double s) {
+        if (Joml.RETURN_NEW) return preScale(s, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preScale_identity_self(s, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preScale_translation_self(s, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preScale_orthogonal_self(s, this);
+        return preScale_general(s, this);
+    }
+
+
+    /**
+     * Pre-multiply a scaling by {@code s} about the pivot point {@code pivot} onto this matrix and
+     * store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code S * M * v}, the scaling will be applied last.
+     *
+     * @param s the uniform scale factor
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preScaleAround(double s, Double2R pivot, @Mutated Double3x3 dest) {
+        return preScaleAround(s, pivot.x(), pivot.y(), dest);
+    }
+
+
+    /**
+     * Pre-multiply a scaling by {@code s} about the pivot point {@code pivot} onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code S * M * v}, the scaling will be applied last.
+     *
+     * @param s the uniform scale factor
+     * @param pivot the pivot point
+     * @return this
+     */
+    public @Mutated Double3x3 preScaleAround(double s, Double2R pivot) {
+        return preScaleAround(s, pivot.x(), pivot.y());
+    }
+
+
+    /**
+     * Private body of {@code preScaleAround}, specialized by runtime matrix properties; reached
+     * only through the public {@code preScaleAround} dispatcher.
+     */
+    private Double3x3 preScaleAround_identity(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = s;
+        d.m21 = 0.0;
+        d.m02 = pivotX - s * pivotX;
+        d.m12 = pivotY - s * pivotY;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preScaleAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code preScaleAround} dispatcher.
+     */
+    private Double3x3 preScaleAround_identity_self(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s;
+        d.m11 = s;
+        d.m02 = pivotX - s * pivotX;
+        d.m12 = pivotY - s * pivotY;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preScaleAround}, specialized by runtime matrix properties; reached
+     * only through the public {@code preScaleAround} dispatcher.
+     */
+    private Double3x3 preScaleAround_translation(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = s;
+        d.m21 = 0.0;
+        d.m02 = s * this.m02 + pivotX - s * pivotX;
+        d.m12 = s * this.m12 + pivotY - s * pivotY;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preScaleAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code preScaleAround} dispatcher.
+     */
+    private Double3x3 preScaleAround_translation_self(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s;
+        d.m11 = s;
+        d.m02 = s * this.m02 + pivotX - s * pivotX;
+        d.m12 = s * this.m12 + pivotY - s * pivotY;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preScaleAround}, specialized by runtime matrix properties; reached
+     * only through the public {@code preScaleAround} dispatcher.
+     */
+    private Double3x3 preScaleAround_orthogonal(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s * this.m00;
+        d.m10 = s * this.m10;
+        d.m20 = 0.0;
+        d.m01 = s * this.m01;
+        d.m11 = s * this.m11;
+        d.m21 = 0.0;
+        d.m02 = s * this.m02 + pivotX - s * pivotX;
+        d.m12 = s * this.m12 + pivotY - s * pivotY;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preScaleAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code preScaleAround} dispatcher.
+     */
+    private Double3x3 preScaleAround_orthogonal_self(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s * this.m00;
+        d.m10 = s * this.m10;
+        d.m01 = s * this.m01;
+        d.m11 = s * this.m11;
+        d.m02 = s * this.m02 + pivotX - s * pivotX;
+        d.m12 = s * this.m12 + pivotY - s * pivotY;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preScaleAround}, specialized by runtime matrix properties; reached
+     * only through the public {@code preScaleAround} dispatcher.
+     */
+    private Double3x3 preScaleAround_general(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = pivotX - s * pivotX;
+        double _t3 = pivotY - s * pivotY;
+        d.m00 = s * this.m00 + this.m20 * _t2;
+        d.m10 = s * this.m10 + this.m20 * _t3;
+        d.m20 = this.m20;
+        d.m01 = s * this.m01 + this.m21 * _t2;
+        d.m11 = s * this.m11 + this.m21 * _t3;
+        d.m21 = this.m21;
+        d.m02 = s * this.m02 + this.m22 * _t2;
+        d.m12 = s * this.m12 + this.m22 * _t3;
+        d.m22 = this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Pre-multiply a scaling by {@code s} about the pivot point ({@code pivotX}, {@code pivotY})
+     * onto this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code S * M * v}, the scaling will be applied last.
+     *
+     * @param s the uniform scale factor
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preScaleAround(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preScaleAround_identity(s, pivotX, pivotY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preScaleAround_translation(s, pivotX, pivotY, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preScaleAround_orthogonal(s, pivotX, pivotY, dest);
+        return preScaleAround_general(s, pivotX, pivotY, dest);
+    }
+
+
+    /**
+     * Pre-multiply a scaling by {@code s} about the pivot point ({@code pivotX}, {@code pivotY})
+     * onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code S * M * v}, the scaling will be applied last.
+     *
+     * @param s the uniform scale factor
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
+     * @return this
+     */
+    @Mutated public Double3x3 preScaleAround(double s, double pivotX, double pivotY) {
+        if (Joml.RETURN_NEW) return preScaleAround(s, pivotX, pivotY, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preScaleAround_identity_self(s, pivotX, pivotY, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preScaleAround_translation_self(s, pivotX, pivotY, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preScaleAround_orthogonal_self(s, pivotX, pivotY, this);
+        return preScaleAround_general(s, pivotX, pivotY, this);
+    }
+
+
+    /**
+     * Pre-multiply a scaling by {@code s} about the pivot point {@code pivot} onto this matrix and
+     * store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code S * M * v}, the scaling will be applied last.
+     *
+     * @param s the uniform scale factor
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preScaleAround(Double2R s, Double2R pivot, @Mutated Double3x3 dest) {
+        return preScaleAround(s.x(), s.y(), pivot.x(), pivot.y(), dest);
+    }
+
+
+    /**
+     * Pre-multiply a scaling by {@code s} about the pivot point {@code pivot} onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code S * M * v}, the scaling will be applied last.
+     *
+     * @param s the uniform scale factor
+     * @param pivot the pivot point
+     * @return this
+     */
+    public @Mutated Double3x3 preScaleAround(Double2R s, Double2R pivot) {
+        return preScaleAround(s.x(), s.y(), pivot.x(), pivot.y());
+    }
+
+
+    /**
+     * Private body of {@code preScaleAround}, specialized by runtime matrix properties; reached
+     * only through the public {@code preScaleAround} dispatcher.
+     */
+    private Double3x3 preScaleAround_identity(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = sX;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = sY;
+        d.m21 = 0.0;
+        d.m02 = pivotX - pivotX * sX;
+        d.m12 = pivotY - pivotY * sY;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preScaleAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code preScaleAround} dispatcher.
+     */
+    private Double3x3 preScaleAround_identity_self(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = sX;
+        d.m11 = sY;
+        d.m02 = pivotX - pivotX * sX;
+        d.m12 = pivotY - pivotY * sY;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preScaleAround}, specialized by runtime matrix properties; reached
+     * only through the public {@code preScaleAround} dispatcher.
+     */
+    private Double3x3 preScaleAround_translation(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = sX;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = sY;
+        d.m21 = 0.0;
+        d.m02 = sX * this.m02 + pivotX - pivotX * sX;
+        d.m12 = sY * this.m12 + pivotY - pivotY * sY;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preScaleAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code preScaleAround} dispatcher.
+     */
+    private Double3x3 preScaleAround_translation_self(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = sX;
+        d.m11 = sY;
+        d.m02 = sX * this.m02 + pivotX - pivotX * sX;
+        d.m12 = sY * this.m12 + pivotY - pivotY * sY;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preScaleAround}, specialized by runtime matrix properties; reached
+     * only through the public {@code preScaleAround} dispatcher.
+     */
+    private Double3x3 preScaleAround_orthogonal(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = sX * this.m00;
+        d.m10 = sY * this.m10;
+        d.m20 = 0.0;
+        d.m01 = sX * this.m01;
+        d.m11 = sY * this.m11;
+        d.m21 = 0.0;
+        d.m02 = sX * this.m02 + pivotX - pivotX * sX;
+        d.m12 = sY * this.m12 + pivotY - pivotY * sY;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preScaleAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code preScaleAround} dispatcher.
+     */
+    private Double3x3 preScaleAround_orthogonal_self(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = sX * this.m00;
+        d.m10 = sY * this.m10;
+        d.m01 = sX * this.m01;
+        d.m11 = sY * this.m11;
+        d.m02 = sX * this.m02 + pivotX - pivotX * sX;
+        d.m12 = sY * this.m12 + pivotY - pivotY * sY;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preScaleAround}, specialized by runtime matrix properties; reached
+     * only through the public {@code preScaleAround} dispatcher.
+     */
+    private Double3x3 preScaleAround_general(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = pivotX - pivotX * sX;
+        double _t3 = pivotY - pivotY * sY;
+        d.m00 = sX * this.m00 + this.m20 * _t2;
+        d.m10 = sY * this.m10 + this.m20 * _t3;
+        d.m20 = this.m20;
+        d.m01 = sX * this.m01 + this.m21 * _t2;
+        d.m11 = sY * this.m11 + this.m21 * _t3;
+        d.m21 = this.m21;
+        d.m02 = sX * this.m02 + this.m22 * _t2;
+        d.m12 = sY * this.m12 + this.m22 * _t3;
+        d.m22 = this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Pre-multiply a scaling by ({@code sX}, {@code sY}) about the pivot point ({@code pivotX},
+     * {@code pivotY}) onto this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code S * M * v}, the scaling will be applied last.
+     *
+     * @param sX the {@code x} component of the vector {@code (sX, sY)}
+     * @param sY the {@code y} component of the vector {@code (sX, sY)}
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preScaleAround(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preScaleAround_identity(sX, sY, pivotX, pivotY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preScaleAround_translation(sX, sY, pivotX, pivotY, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preScaleAround_orthogonal(sX, sY, pivotX, pivotY, dest);
+        return preScaleAround_general(sX, sY, pivotX, pivotY, dest);
+    }
+
+
+    /**
+     * Pre-multiply a scaling by ({@code sX}, {@code sY}) about the pivot point ({@code pivotX},
+     * {@code pivotY}) onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code S * M * v}, the scaling will be applied last.
+     *
+     * @param sX the {@code x} component of the vector {@code (sX, sY)}
+     * @param sY the {@code y} component of the vector {@code (sX, sY)}
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
+     * @return this
+     */
+    @Mutated public Double3x3 preScaleAround(double sX, double sY, double pivotX, double pivotY) {
+        if (Joml.RETURN_NEW) return preScaleAround(sX, sY, pivotX, pivotY, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preScaleAround_identity_self(sX, sY, pivotX, pivotY, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preScaleAround_translation_self(sX, sY, pivotX, pivotY, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preScaleAround_orthogonal_self(sX, sY, pivotX, pivotY, this);
+        return preScaleAround_general(sX, sY, pivotX, pivotY, this);
+    }
+
+
+    /**
+     * Pre-multiply a translation by {@code v} onto this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code T} the translation matrix, then the new matrix
+     * will be {@code T * M}. So when transforming a vector {@code p} with the new matrix by using
+     * {@code T * M * p}, the translation will be applied last.
+     *
+     * @param v the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preTranslate(Double2R v, @Mutated Double3x3 dest) {
+        return preTranslate(v.x(), v.y(), dest);
+    }
+
+
+    /**
+     * Pre-multiply a translation by {@code v} onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code T} the translation matrix, then the new matrix
+     * will be {@code T * M}. So when transforming a vector {@code p} with the new matrix by using
+     * {@code T * M * p}, the translation will be applied last.
+     *
+     * @param v the vector
+     * @return this
+     */
+    public @Mutated Double3x3 preTranslate(Double2R v) {
+        return preTranslate(v.x(), v.y());
+    }
+
+
+    /**
+     * Private body of {@code preTranslate}, specialized by runtime matrix properties; reached only
+     * through the public {@code preTranslate} dispatcher.
+     */
+    private Double3x3 preTranslate_orthogonal_affine(double vX, double vY, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m21 = 0.0;
+        d.m02 = this.m02 + vX;
+        d.m12 = this.m12 + vY;
+        d.m22 = 1.0;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preTranslate}, specialized by runtime matrix
+     * properties; reached only through the public {@code preTranslate} dispatcher.
+     */
+    private Double3x3 preTranslate_orthogonal_affine_self(double vX, double vY, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m02 = this.m02 + vX;
+        d.m12 = this.m12 + vY;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preTranslate}, specialized by runtime matrix properties; reached only
+     * through the public {@code preTranslate} dispatcher.
+     */
+    private Double3x3 preTranslate_identity(double vX, double vY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = vX;
+        d.m12 = vY;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_TRANSLATION;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preTranslate}, specialized by runtime matrix
+     * properties; reached only through the public {@code preTranslate} dispatcher.
+     */
+    private Double3x3 preTranslate_identity_self(double vX, double vY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m02 = vX;
+        d.m12 = vY;
+        d.properties = Joml.BIT_TRANSLATION;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preTranslate}, specialized by runtime matrix properties; reached only
+     * through the public {@code preTranslate} dispatcher.
+     */
+    private Double3x3 preTranslate_translation(double vX, double vY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = this.m02 + vX;
+        d.m12 = this.m12 + vY;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_TRANSLATION;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code preTranslate}, specialized by runtime matrix
+     * properties; reached only through the public {@code preTranslate} dispatcher.
+     */
+    private Double3x3 preTranslate_translation_self(double vX, double vY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m02 = this.m02 + vX;
+        d.m12 = this.m12 + vY;
+        d.properties = Joml.BIT_TRANSLATION;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code preTranslate}, specialized by runtime matrix properties; reached only
+     * through the public {@code preTranslate} dispatcher.
+     */
+    private Double3x3 preTranslate_general(double vX, double vY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m20 * vX + this.m00;
+        d.m10 = this.m20 * vY + this.m10;
+        d.m20 = this.m20;
+        d.m01 = this.m21 * vX + this.m01;
+        d.m11 = this.m21 * vY + this.m11;
+        d.m21 = this.m21;
+        d.m02 = this.m22 * vX + this.m02;
+        d.m12 = this.m22 * vY + this.m12;
+        d.m22 = this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Pre-multiply a translation by ({@code vX}, {@code vY}) onto this matrix and store the result
+     * in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code T} the translation matrix, then the new matrix
+     * will be {@code T * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code T * M * v}, the translation will be applied last.
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 preTranslate(double vX, double vY, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preTranslate_identity(vX, vY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preTranslate_translation(vX, vY, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preTranslate_orthogonal_affine(vX, vY, dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        return preTranslate_general(vX, vY, dest);
+    }
+
+
+    /**
+     * Pre-multiply a translation by ({@code vX}, {@code vY}) onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code T} the translation matrix, then the new matrix
+     * will be {@code T * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code T * M * v}, the translation will be applied last.
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY)}
+     * @return this
+     */
+    @Mutated public Double3x3 preTranslate(double vX, double vY) {
+        if (Joml.RETURN_NEW) return preTranslate(vX, vY, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preTranslate_identity_self(vX, vY, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preTranslate_translation_self(vX, vY, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return preTranslate_orthogonal_affine_self(vX, vY, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        return preTranslate_general(vX, vY, this);
+    }
+
+
+    /**
+     * Private body of {@code rotate}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotate} dispatcher.
+     */
+    private Double3x3 rotate_orthogonal_affine(double angle, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _buf0 = this.m00 * _t0 + this.m01 * _t1;
+        double _buf1 = this.m10 * _t0 + this.m11 * _t1;
+        d.m20 = 0.0;
+        d.m01 = this.m01 * _t0 - this.m00 * _t1;
+        d.m11 = this.m11 * _t0 - this.m10 * _t1;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotate}, specialized by runtime matrix properties;
+     * reached only through the public {@code rotate} dispatcher.
+     */
+    private Double3x3 rotate_orthogonal_affine_self(double angle, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _buf0 = this.m00 * _t0 + this.m01 * _t1;
+        double _buf1 = this.m10 * _t0 + this.m11 * _t1;
+        d.m01 = this.m01 * _t0 - this.m00 * _t1;
+        d.m11 = this.m11 * _t0 - this.m10 * _t1;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotate}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotate} dispatcher.
+     */
+    private Double3x3 rotate_identity(double angle, @Mutated Double3x3 dest) {
+        return preRotate_identity(angle, dest);
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotate}, specialized by runtime matrix properties;
+     * reached only through the public {@code rotate} dispatcher.
+     */
+    private Double3x3 rotate_identity_self(double angle, @Mutated Double3x3 dest) {
+        return preRotate_identity_self(angle, dest);
+    }
+
+
+    /**
+     * Private body of {@code rotate}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotate} dispatcher.
+     */
+    private Double3x3 rotate_translation(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = _t0;
+        d.m10 = _t1;
+        d.m20 = 0.0;
+        d.m01 = -_t1;
+        d.m11 = _t0;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotate}, specialized by runtime matrix properties;
+     * reached only through the public {@code rotate} dispatcher.
+     */
+    private Double3x3 rotate_translation_self(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = _t0;
+        d.m10 = _t1;
+        d.m01 = -_t1;
+        d.m11 = _t0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotate}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotate} dispatcher.
+     */
+    private Double3x3 rotate_general(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _buf0 = this.m00 * _t0 + this.m01 * _t1;
+        double _buf1 = this.m10 * _t0 + this.m11 * _t1;
+        double _buf2 = this.m20 * _t0 + this.m21 * _t1;
+        d.m01 = this.m01 * _t0 - this.m00 * _t1;
+        d.m11 = this.m11 * _t0 - this.m10 * _t1;
+        d.m21 = this.m21 * _t0 - this.m20 * _t1;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = this.m22;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation by {@code angle} to this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotate(double angle, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotate_identity(angle, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotate_translation(angle, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotate_orthogonal_affine(angle, dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        return rotate_general(angle, dest);
+    }
+
+
+    /**
+     * Apply a rotation by {@code angle} to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @return this
+     */
+    @Mutated public Double3x3 rotate(double angle) {
+        if (Joml.RETURN_NEW) return rotate(angle, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotate_identity_self(angle, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotate_translation_self(angle, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotate_orthogonal_affine_self(angle, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        return rotate_general(angle, this);
+    }
+
+
+    /**
+     * Apply the rotation {@code angle} about the pivot point {@code pivot} to this matrix and store
+     * the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateAround(double angle, Double2R pivot, @Mutated Double3x3 dest) {
+        return rotateAround(angle, pivot.x(), pivot.y(), dest);
+    }
+
+
+    /**
+     * Apply the rotation {@code angle} about the pivot point {@code pivot} to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @return this
+     */
+    public @Mutated Double3x3 rotateAround(double angle, Double2R pivot) {
+        return rotateAround(angle, pivot.x(), pivot.y());
+    }
+
+
+    /**
+     * Private body of {@code rotateAround}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateAround} dispatcher.
+     */
+    private Double3x3 rotateAround_orthogonal_affine(double angle, double pivotX, double pivotY, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _t8 = pivotY * _t1 + (pivotX - pivotX * _t0);
+        double _t9 = pivotY - pivotY * _t0 - pivotX * _t1;
+        double _buf0 = this.m00 * _t0 + this.m01 * _t1;
+        double _buf1 = this.m10 * _t0 + this.m11 * _t1;
+        d.m20 = 0.0;
+        double _buf2 = this.m01 * _t0 - this.m00 * _t1;
+        double _buf3 = this.m11 * _t0 - this.m10 * _t1;
+        d.m21 = 0.0;
+        d.m02 = this.m00 * _t8 + (this.m01 * _t9 + this.m02);
+        d.m12 = this.m10 * _t8 + (this.m11 * _t9 + this.m12);
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateAround} dispatcher.
+     */
+    private Double3x3 rotateAround_orthogonal_affine_self(double angle, double pivotX, double pivotY, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _t8 = pivotY * _t1 + (pivotX - pivotX * _t0);
+        double _t9 = pivotY - pivotY * _t0 - pivotX * _t1;
+        double _buf0 = this.m00 * _t0 + this.m01 * _t1;
+        double _buf1 = this.m10 * _t0 + this.m11 * _t1;
+        double _buf2 = this.m01 * _t0 - this.m00 * _t1;
+        double _buf3 = this.m11 * _t0 - this.m10 * _t1;
+        d.m02 = this.m00 * _t8 + (this.m01 * _t9 + this.m02);
+        d.m12 = this.m10 * _t8 + (this.m11 * _t9 + this.m12);
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateAround}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateAround} dispatcher.
+     */
+    private Double3x3 rotateAround_identity(double angle, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        return preRotateAround_identity(angle, pivotX, pivotY, dest);
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateAround} dispatcher.
+     */
+    private Double3x3 rotateAround_identity_self(double angle, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        return preRotateAround_identity_self(angle, pivotX, pivotY, dest);
+    }
+
+
+    /**
+     * Private body of {@code rotateAround}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateAround} dispatcher.
+     */
+    private Double3x3 rotateAround_translation(double angle, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = _t0;
+        d.m10 = _t1;
+        d.m20 = 0.0;
+        d.m01 = -_t1;
+        d.m11 = _t0;
+        d.m21 = 0.0;
+        d.m02 = pivotY * _t1 + (this.m02 + pivotX - pivotX * _t0);
+        d.m12 = this.m12 + pivotY - pivotY * _t0 - pivotX * _t1;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateAround} dispatcher.
+     */
+    private Double3x3 rotateAround_translation_self(double angle, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = _t0;
+        d.m10 = _t1;
+        d.m01 = -_t1;
+        d.m11 = _t0;
+        d.m02 = pivotY * _t1 + (this.m02 + pivotX - pivotX * _t0);
+        d.m12 = this.m12 + pivotY - pivotY * _t0 - pivotX * _t1;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateAround}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateAround} dispatcher.
+     */
+    private Double3x3 rotateAround_general(double angle, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _t8 = pivotY * _t1 + (pivotX - pivotX * _t0);
+        double _t9 = pivotY - pivotY * _t0 - pivotX * _t1;
+        double _buf0 = this.m00 * _t0 + this.m01 * _t1;
+        double _buf1 = this.m10 * _t0 + this.m11 * _t1;
+        double _buf2 = this.m20 * _t0 + this.m21 * _t1;
+        double _buf3 = this.m01 * _t0 - this.m00 * _t1;
+        double _buf4 = this.m11 * _t0 - this.m10 * _t1;
+        double _buf5 = this.m21 * _t0 - this.m20 * _t1;
+        d.m02 = this.m00 * _t8 + (this.m01 * _t9 + this.m02);
+        d.m12 = this.m10 * _t8 + (this.m11 * _t9 + this.m12);
+        d.m22 = this.m20 * _t8 + (this.m21 * _t9 + this.m22);
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply the rotation {@code angle} about the pivot point ({@code pivotX}, {@code pivotY}) to
+     * this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateAround(double angle, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateAround_identity(angle, pivotX, pivotY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateAround_translation(angle, pivotX, pivotY, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateAround_orthogonal_affine(angle, pivotX, pivotY, dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        return rotateAround_general(angle, pivotX, pivotY, dest);
+    }
+
+
+    /**
+     * Apply the rotation {@code angle} about the pivot point ({@code pivotX}, {@code pivotY}) to
+     * this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
+     * @return this
+     */
+    @Mutated public Double3x3 rotateAround(double angle, double pivotX, double pivotY) {
+        if (Joml.RETURN_NEW) return rotateAround(angle, pivotX, pivotY, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateAround_identity_self(angle, pivotX, pivotY, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateAround_translation_self(angle, pivotX, pivotY, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateAround_orthogonal_affine_self(angle, pivotX, pivotY, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        return rotateAround_general(angle, pivotX, pivotY, this);
+    }
+
+
+    /**
+     * Apply a rotation of {@code angle} radians about the axis {@code axis} to this matrix and
+     * store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @param axis the rotation axis (must be a unit vector)
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateAxis(double angle, Double3R axis, @Mutated Double3x3 dest) {
+        return rotateAxis(angle, axis.x(), axis.y(), axis.z(), dest);
+    }
+
+
+    /**
+     * Apply a rotation of {@code angle} radians about the axis {@code axis} to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @param axis the rotation axis (must be a unit vector)
+     * @return this
+     */
+    public @Mutated Double3x3 rotateAxis(double angle, Double3R axis) {
+        return rotateAxis(angle, axis.x(), axis.y(), axis.z());
+    }
+
+
+    /**
+     * Private body of {@code rotateAxis}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateAxis} dispatcher.
+     */
+    private Double3x3 rotateAxis_identity(double angle, double axisX, double axisY, double axisZ, @Mutated Double3x3 dest) {
+        return preRotateAxis_identity(angle, axisX, axisY, axisZ, dest);
+    }
+
+
+    /**
+     * Private body of {@code rotateAxis}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateAxis} dispatcher.
+     */
+    private Double3x3 rotateAxis_translation(double angle, double axisX, double axisY, double axisZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _t2 = 1.0 - _t0;
+        double _t4 = axisY * _t1;
+        double _t6 = axisZ * _t1;
+        double _t7 = axisX * _t1;
+        double _t10 = _t2 * axisX * axisZ;
+        double _t11 = _t2 * axisX * axisY;
+        double _t12 = _t2 * axisY * axisZ;
+        double _t14 = _t2 * axisZ * axisZ + _t0;
+        double _t15 = _t10 - _t4;
+        double _t16 = _t7 + _t12;
+        d.m00 = _t2 * axisX * axisX + (this.m02 * _t15 + _t0);
+        d.m10 = _t6 + _t11 + this.m12 * _t15;
+        d.m20 = _t15;
+        d.m01 = _t11 - _t6 + this.m02 * _t16;
+        d.m11 = _t2 * axisY * axisY + (this.m12 * _t16 + _t0);
+        d.m21 = _t16;
+        d.m02 = _t4 + _t10 + this.m02 * _t14;
+        d.m12 = _t12 - _t7 + this.m12 * _t14;
+        d.m22 = _t14;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateAxis}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateAxis} dispatcher.
+     */
+    private Double3x3 rotateAxis_orthogonal(double angle, double axisX, double axisY, double axisZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _t2 = 1.0 - _t0;
+        double _t4 = axisZ * _t1;
+        double _t7 = axisY * _t1;
+        double _t9 = axisX * _t1;
+        double _t13 = _t2 * axisX * axisY;
+        double _t14 = _t2 * axisX * axisZ;
+        double _t16 = _t2 * axisY * axisZ;
+        double _t18 = _t2 * axisX * axisX + _t0;
+        double _t19 = _t2 * axisY * axisY + _t0;
+        double _t20 = _t2 * axisZ * axisZ + _t0;
+        double _t21 = _t4 + _t13;
+        double _t22 = _t14 - _t7;
+        double _t23 = _t13 - _t4;
+        double _t24 = _t9 + _t16;
+        double _t25 = _t7 + _t14;
+        double _t26 = _t16 - _t9;
+        double _buf0 = this.m00 * _t18 + this.m01 * _t21 + this.m02 * _t22;
+        double _buf1 = this.m10 * _t18 + this.m11 * _t21 + this.m12 * _t22;
+        d.m20 = _t22;
+        double _buf2 = this.m00 * _t23 + this.m01 * _t19 + this.m02 * _t24;
+        double _buf3 = this.m10 * _t23 + this.m11 * _t19 + this.m12 * _t24;
+        d.m21 = _t24;
+        d.m02 = this.m00 * _t25 + this.m01 * _t26 + this.m02 * _t20;
+        d.m12 = this.m10 * _t25 + this.m11 * _t26 + this.m12 * _t20;
+        d.m22 = _t20;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateAxis}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateAxis} dispatcher.
+     */
+    private Double3x3 rotateAxis_general(double angle, double axisX, double axisY, double axisZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _t2 = 1.0 - _t0;
+        double _t4 = axisZ * _t1;
+        double _t7 = axisY * _t1;
+        double _t9 = axisX * _t1;
+        double _t13 = _t2 * axisX * axisY;
+        double _t14 = _t2 * axisX * axisZ;
+        double _t16 = _t2 * axisY * axisZ;
+        double _t18 = _t2 * axisX * axisX + _t0;
+        double _t19 = _t2 * axisY * axisY + _t0;
+        double _t20 = _t2 * axisZ * axisZ + _t0;
+        double _t21 = _t4 + _t13;
+        double _t22 = _t14 - _t7;
+        double _t23 = _t13 - _t4;
+        double _t24 = _t9 + _t16;
+        double _t25 = _t7 + _t14;
+        double _t26 = _t16 - _t9;
+        double _buf0 = this.m00 * _t18 + this.m01 * _t21 + this.m02 * _t22;
+        double _buf1 = this.m10 * _t18 + this.m11 * _t21 + this.m12 * _t22;
+        double _buf2 = this.m20 * _t18 + this.m21 * _t21 + this.m22 * _t22;
+        double _buf3 = this.m00 * _t23 + this.m01 * _t19 + this.m02 * _t24;
+        double _buf4 = this.m10 * _t23 + this.m11 * _t19 + this.m12 * _t24;
+        double _buf5 = this.m20 * _t23 + this.m21 * _t19 + this.m22 * _t24;
+        d.m02 = this.m00 * _t25 + this.m01 * _t26 + this.m02 * _t20;
+        d.m12 = this.m10 * _t25 + this.m11 * _t26 + this.m12 * _t20;
+        d.m22 = this.m20 * _t25 + this.m21 * _t26 + this.m22 * _t20;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation of {@code angle} radians about the axis ({@code axisX}, {@code axisY},
+     * {@code axisZ}) to this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @param axisX the {@code x} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisY the {@code y} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisZ the {@code z} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateAxis(double angle, double axisX, double axisY, double axisZ, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateAxis_identity(angle, axisX, axisY, axisZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateAxis_translation(angle, axisX, axisY, axisZ, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateAxis_orthogonal(angle, axisX, axisY, axisZ, dest);
+        return rotateAxis_general(angle, axisX, axisY, axisZ, dest);
+    }
+
+
+    /**
+     * Apply a rotation of {@code angle} radians about the axis ({@code axisX}, {@code axisY},
+     * {@code axisZ}) to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @param axisX the {@code x} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisY the {@code y} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisZ the {@code z} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @return this
+     */
+    @Mutated public Double3x3 rotateAxis(double angle, double axisX, double axisY, double axisZ) {
+        if (Joml.RETURN_NEW) return rotateAxis(angle, axisX, axisY, axisZ, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateAxis_identity(angle, axisX, axisY, axisZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateAxis_translation(angle, axisX, axisY, axisZ, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateAxis_orthogonal(angle, axisX, axisY, axisZ, this);
+        return rotateAxis_general(angle, axisX, axisY, axisZ, this);
+    }
+
+
+    /**
+     * Private body of {@code rotateX}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX} dispatcher.
+     */
+    private Double3x3 rotateX_identity(double angle, @Mutated Double3x3 dest) {
+        return preRotateX_identity(angle, dest);
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateX}, specialized by runtime matrix properties;
+     * reached only through the public {@code rotateX} dispatcher.
+     */
+    private Double3x3 rotateX_identity_self(double angle, @Mutated Double3x3 dest) {
+        return preRotateX_identity_self(angle, dest);
+    }
+
+
+    /**
+     * Private body of {@code rotateX}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX} dispatcher.
+     */
+    private Double3x3 rotateX_translation(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cos(angle);
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = this.m02 * _t0;
+        d.m11 = this.m12 * _t0 + _t1;
+        d.m21 = _t0;
+        d.m02 = this.m02 * _t1;
+        d.m12 = this.m12 * _t1 - _t0;
+        d.m22 = _t1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateX}, specialized by runtime matrix properties;
+     * reached only through the public {@code rotateX} dispatcher.
+     */
+    private Double3x3 rotateX_translation_self(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cos(angle);
+        d.m01 = this.m02 * _t0;
+        d.m11 = this.m12 * _t0 + _t1;
+        d.m21 = _t0;
+        d.m02 = this.m02 * _t1;
+        d.m12 = this.m12 * _t1 - _t0;
+        d.m22 = _t1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateX}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX} dispatcher.
+     */
+    private Double3x3 rotateX_orthogonal(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cos(angle);
+        d.m00 = this.m11;
+        double _buf0 = this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m02 * _t0 - this.m10 * _t1;
+        double _buf1 = this.m11 * _t1 + this.m12 * _t0;
+        d.m21 = _t0;
+        d.m02 = this.m02 * _t1 + this.m10 * _t0;
+        d.m12 = this.m12 * _t1 - this.m11 * _t0;
+        d.m22 = _t1;
+        d.m10 = _buf0;
+        d.m11 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateX}, specialized by runtime matrix properties;
+     * reached only through the public {@code rotateX} dispatcher.
+     */
+    private Double3x3 rotateX_orthogonal_self(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cos(angle);
+        d.m00 = this.m11;
+        double _buf0 = this.m10;
+        d.m01 = this.m02 * _t0 - this.m10 * _t1;
+        double _buf1 = this.m11 * _t1 + this.m12 * _t0;
+        d.m21 = _t0;
+        d.m02 = this.m02 * _t1 + this.m10 * _t0;
+        d.m12 = this.m12 * _t1 - this.m11 * _t0;
+        d.m22 = _t1;
+        d.m10 = _buf0;
+        d.m11 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateX}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX} dispatcher.
+     */
+    private Double3x3 rotateX_affine(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        d.m20 = 0.0;
+        double _buf0 = this.m01 * _t0 + this.m02 * _t1;
+        double _buf1 = this.m11 * _t0 + this.m12 * _t1;
+        d.m21 = _t1;
+        d.m02 = this.m02 * _t0 - this.m01 * _t1;
+        d.m12 = this.m12 * _t0 - this.m11 * _t1;
+        d.m22 = _t0;
+        d.m01 = _buf0;
+        d.m11 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateX}, specialized by runtime matrix properties;
+     * reached only through the public {@code rotateX} dispatcher.
+     */
+    private Double3x3 rotateX_affine_self(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        double _buf0 = this.m01 * _t0 + this.m02 * _t1;
+        double _buf1 = this.m11 * _t0 + this.m12 * _t1;
+        d.m21 = _t1;
+        d.m02 = this.m02 * _t0 - this.m01 * _t1;
+        d.m12 = this.m12 * _t0 - this.m11 * _t1;
+        d.m22 = _t0;
+        d.m01 = _buf0;
+        d.m11 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateX}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX} dispatcher.
+     */
+    private Double3x3 rotateX_general(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        d.m20 = this.m20;
+        double _buf0 = this.m01 * _t0 + this.m02 * _t1;
+        double _buf1 = this.m11 * _t0 + this.m12 * _t1;
+        double _buf2 = this.m21 * _t0 + this.m22 * _t1;
+        d.m02 = this.m02 * _t0 - this.m01 * _t1;
+        d.m12 = this.m12 * _t0 - this.m11 * _t1;
+        d.m22 = this.m22 * _t0 - this.m21 * _t1;
+        d.m01 = _buf0;
+        d.m11 = _buf1;
+        d.m21 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation of {@code angle} radians about the X axis to this matrix and store the
+     * result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateX(double angle, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateX_identity(angle, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateX_translation(angle, dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return rotateX_orthogonal(angle, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateX_affine(angle, dest);
+        return rotateX_general(angle, dest);
+    }
+
+
+    /**
+     * Apply a rotation of {@code angle} radians about the X axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @return this
+     */
+    @Mutated public Double3x3 rotateX(double angle) {
+        if (Joml.RETURN_NEW) return rotateX(angle, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateX_identity_self(angle, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateX_translation_self(angle, this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return rotateX_orthogonal_self(angle, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateX_affine_self(angle, this);
+        return rotateX_general(angle, this);
+    }
+
+
+    /**
+     * Private body of {@code rotateX180}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX180} dispatcher.
+     */
+    private Double3x3 rotateX180_identity(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = -1.0;
+        d.m21 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = -1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateX180}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateX180} dispatcher.
+     */
+    private Double3x3 rotateX180_identity_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m11 = -1.0;
+        d.m22 = -1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateX180}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX180} dispatcher.
+     */
+    private Double3x3 rotateX180_translation(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = -1.0;
+        d.m21 = 0.0;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateX180}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateX180} dispatcher.
+     */
+    private Double3x3 rotateX180_translation_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m11 = -1.0;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateX180}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX180} dispatcher.
+     */
+    private Double3x3 rotateX180_orthogonal(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m11;
+        double _buf0 = this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m10;
+        d.m11 = -this.m11;
+        d.m21 = 0.0;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -1.0;
+        d.m10 = _buf0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateX180}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateX180} dispatcher.
+     */
+    private Double3x3 rotateX180_orthogonal_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m11;
+        double _buf0 = this.m10;
+        d.m01 = this.m10;
+        d.m11 = -this.m11;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -1.0;
+        d.m10 = _buf0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateX180}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX180} dispatcher.
+     */
+    private Double3x3 rotateX180_affine(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        d.m20 = 0.0;
+        d.m01 = -this.m01;
+        d.m11 = -this.m11;
+        d.m21 = 0.0;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateX180}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateX180} dispatcher.
+     */
+    private Double3x3 rotateX180_affine_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        d.m01 = -this.m01;
+        d.m11 = -this.m11;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateX180}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX180} dispatcher.
+     */
+    private Double3x3 rotateX180_general(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        d.m20 = this.m20;
+        d.m01 = -this.m01;
+        d.m11 = -this.m11;
+        d.m21 = -this.m21;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation of 180 degrees about the X axis to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateX180(@Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateX180_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateX180_translation(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return rotateX180_orthogonal(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateX180_affine(dest);
+        return rotateX180_general(dest);
+    }
+
+
+    /**
+     * Apply a rotation of 180 degrees about the X axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 rotateX180() {
+        if (Joml.RETURN_NEW) return rotateX180(Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateX180_identity_self(this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateX180_translation_self(this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return rotateX180_orthogonal_self(this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateX180_affine_self(this);
+        return rotateX180_general(this);
+    }
+
+
+    /**
+     * Private body of {@code rotateX270}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX270} dispatcher.
+     */
+    private Double3x3 rotateX270_identity(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 0.0;
+        d.m21 = -1.0;
+        d.m02 = 0.0;
+        d.m12 = 1.0;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateX270}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateX270} dispatcher.
+     */
+    private Double3x3 rotateX270_identity_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m11 = 0.0;
+        d.m21 = -1.0;
+        d.m12 = 1.0;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateX270}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX270} dispatcher.
+     */
+    private Double3x3 rotateX270_translation(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = -this.m02;
+        d.m11 = -this.m12;
+        d.m21 = -1.0;
+        d.m02 = 0.0;
+        d.m12 = 1.0;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateX270}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateX270} dispatcher.
+     */
+    private Double3x3 rotateX270_translation_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m01 = -this.m02;
+        d.m11 = -this.m12;
+        d.m21 = -1.0;
+        d.m02 = 0.0;
+        d.m12 = 1.0;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateX270}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX270} dispatcher.
+     */
+    private Double3x3 rotateX270_orthogonal(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        d.m20 = 0.0;
+        double _buf0 = -this.m02;
+        double _buf1 = -this.m12;
+        d.m21 = -1.0;
+        d.m02 = this.m01;
+        d.m12 = this.m11;
+        d.m22 = 0.0;
+        d.m01 = _buf0;
+        d.m11 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateX270}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateX270} dispatcher.
+     */
+    private Double3x3 rotateX270_orthogonal_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        double _buf0 = -this.m02;
+        double _buf1 = -this.m12;
+        d.m21 = -1.0;
+        d.m02 = this.m01;
+        d.m12 = this.m11;
+        d.m22 = 0.0;
+        d.m01 = _buf0;
+        d.m11 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateX270}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX270} dispatcher.
+     */
+    private Double3x3 rotateX270_general(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        d.m20 = this.m20;
+        double _buf0 = -this.m02;
+        double _buf1 = -this.m12;
+        double _buf2 = -this.m22;
+        d.m02 = this.m01;
+        d.m12 = this.m11;
+        d.m22 = this.m21;
+        d.m01 = _buf0;
+        d.m11 = _buf1;
+        d.m21 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation of 270 degrees about the X axis to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateX270(@Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateX270_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateX270_translation(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateX270_orthogonal(dest);
+        return rotateX270_general(dest);
+    }
+
+
+    /**
+     * Apply a rotation of 270 degrees about the X axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 rotateX270() {
+        if (Joml.RETURN_NEW) return rotateX270(Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateX270_identity_self(this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateX270_translation_self(this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateX270_orthogonal_self(this);
+        return rotateX270_general(this);
+    }
+
+
+    /**
+     * Private body of {@code rotateX90}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX90} dispatcher.
+     */
+    private Double3x3 rotateX90_identity(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 0.0;
+        d.m21 = 1.0;
+        d.m02 = 0.0;
+        d.m12 = -1.0;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateX90}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateX90} dispatcher.
+     */
+    private Double3x3 rotateX90_identity_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m11 = 0.0;
+        d.m21 = 1.0;
+        d.m12 = -1.0;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateX90}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX90} dispatcher.
+     */
+    private Double3x3 rotateX90_translation(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = this.m02;
+        d.m11 = this.m12;
+        d.m21 = 1.0;
+        d.m02 = 0.0;
+        d.m12 = -1.0;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateX90}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateX90} dispatcher.
+     */
+    private Double3x3 rotateX90_translation_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m01 = this.m02;
+        d.m11 = this.m12;
+        d.m21 = 1.0;
+        d.m02 = 0.0;
+        d.m12 = -1.0;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateX90}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX90} dispatcher.
+     */
+    private Double3x3 rotateX90_orthogonal(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m11;
+        double _buf0 = this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m02;
+        double _buf1 = this.m12;
+        d.m21 = 1.0;
+        d.m02 = this.m10;
+        d.m12 = -this.m11;
+        d.m22 = 0.0;
+        d.m10 = _buf0;
+        d.m11 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateX90}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateX90} dispatcher.
+     */
+    private Double3x3 rotateX90_orthogonal_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m11;
+        double _buf0 = this.m10;
+        d.m01 = this.m02;
+        double _buf1 = this.m12;
+        d.m21 = 1.0;
+        d.m02 = this.m10;
+        d.m12 = -this.m11;
+        d.m22 = 0.0;
+        d.m10 = _buf0;
+        d.m11 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateX90}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX90} dispatcher.
+     */
+    private Double3x3 rotateX90_affine(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        d.m20 = 0.0;
+        double _buf0 = this.m02;
+        double _buf1 = this.m12;
+        d.m21 = 1.0;
+        d.m02 = -this.m01;
+        d.m12 = -this.m11;
+        d.m22 = 0.0;
+        d.m01 = _buf0;
+        d.m11 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateX90}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateX90} dispatcher.
+     */
+    private Double3x3 rotateX90_affine_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        double _buf0 = this.m02;
+        double _buf1 = this.m12;
+        d.m21 = 1.0;
+        d.m02 = -this.m01;
+        d.m12 = -this.m11;
+        d.m22 = 0.0;
+        d.m01 = _buf0;
+        d.m11 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateX90}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateX90} dispatcher.
+     */
+    private Double3x3 rotateX90_general(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00;
+        d.m10 = this.m10;
+        d.m20 = this.m20;
+        double _buf0 = this.m02;
+        double _buf1 = this.m12;
+        double _buf2 = this.m22;
+        d.m02 = -this.m01;
+        d.m12 = -this.m11;
+        d.m22 = -this.m21;
+        d.m01 = _buf0;
+        d.m11 = _buf1;
+        d.m21 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation of 90 degrees about the X axis to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateX90(@Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateX90_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateX90_translation(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return rotateX90_orthogonal(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateX90_affine(dest);
+        return rotateX90_general(dest);
+    }
+
+
+    /**
+     * Apply a rotation of 90 degrees about the X axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 rotateX90() {
+        if (Joml.RETURN_NEW) return rotateX90(Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateX90_identity_self(this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateX90_translation_self(this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return rotateX90_orthogonal_self(this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateX90_affine_self(this);
+        return rotateX90_general(this);
+    }
+
+
+    /**
+     * Private body of {@code rotateXYZ}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateXYZ} dispatcher.
+     */
+    private Double3x3 rotateXYZ_identity(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.sin(angleY);
+        double _t4 = Math.sin(angleX);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t4 * _t3;
+        double _t7 = _t3 * _t5;
+        d.m00 = _t0 * _t1;
+        d.m10 = _t6 * _t1 + _t2 * _t5;
+        d.m20 = _t4 * _t2 - _t7 * _t1;
+        d.m01 = -(_t2 * _t0);
+        d.m11 = _t5 * _t1 - _t6 * _t2;
+        d.m21 = _t7 * _t2 + _t4 * _t1;
+        d.m02 = _t3;
+        d.m12 = -(_t4 * _t0);
+        d.m22 = _t5 * _t0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateXYZ}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateXYZ} dispatcher.
+     */
+    private Double3x3 rotateXYZ_translation(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleY);
+        double _t3 = Math.cos(angleX);
+        double _t4 = Math.cos(angleZ);
+        double _t5 = Math.cos(angleY);
+        double _t7 = _t2 * _t3;
+        double _t9 = _t3 * _t5;
+        double _t10 = _t0 * _t2;
+        double _t13 = _t0 * _t1 - _t7 * _t4;
+        double _t14 = _t7 * _t1 + _t0 * _t4;
+        d.m00 = this.m02 * _t13 + _t5 * _t4;
+        d.m10 = _t10 * _t4 + _t1 * _t3 + this.m12 * _t13;
+        d.m20 = _t13;
+        d.m01 = this.m02 * _t14 - _t1 * _t5;
+        d.m11 = _t3 * _t4 - _t10 * _t1 + this.m12 * _t14;
+        d.m21 = _t14;
+        d.m02 = this.m02 * _t9 + _t2;
+        d.m12 = this.m12 * _t9 - _t0 * _t5;
+        d.m22 = _t9;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateXYZ}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateXYZ} dispatcher.
+     */
+    private Double3x3 rotateXYZ_orthogonal(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.sin(angleY);
+        double _t4 = Math.sin(angleZ);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t2 * _t3;
+        double _t10 = _t3 * _t5;
+        double _t12 = _t4 * _t0;
+        double _t14 = _t2 * _t0;
+        double _t15 = _t5 * _t0;
+        double _t20 = _t7 * _t1 + _t4 * _t5;
+        double _t21 = _t2 * _t4 - _t10 * _t1;
+        double _t22 = _t5 * _t1 - _t7 * _t4;
+        double _t23 = _t10 * _t4 + _t2 * _t1;
+        double _buf0 = this.m00 * _t6 + this.m01 * _t20 + this.m02 * _t21;
+        double _buf1 = this.m10 * _t6 + this.m11 * _t20 + this.m12 * _t21;
+        d.m20 = _t21;
+        double _buf2 = this.m01 * _t22 - this.m00 * _t12 + this.m02 * _t23;
+        double _buf3 = this.m11 * _t22 - this.m10 * _t12 + this.m12 * _t23;
+        d.m21 = _t23;
+        d.m02 = this.m00 * _t3 - this.m01 * _t14 + this.m02 * _t15;
+        d.m12 = this.m10 * _t3 - this.m11 * _t14 + this.m12 * _t15;
+        d.m22 = _t15;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateXYZ}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateXYZ} dispatcher.
+     */
+    private Double3x3 rotateXYZ_general(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.sin(angleY);
+        double _t4 = Math.sin(angleZ);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t2 * _t3;
+        double _t10 = _t3 * _t5;
+        double _t12 = _t4 * _t0;
+        double _t14 = _t2 * _t0;
+        double _t15 = _t5 * _t0;
+        double _t20 = _t7 * _t1 + _t4 * _t5;
+        double _t21 = _t2 * _t4 - _t10 * _t1;
+        double _t22 = _t5 * _t1 - _t7 * _t4;
+        double _t23 = _t10 * _t4 + _t2 * _t1;
+        double _buf0 = this.m00 * _t6 + this.m01 * _t20 + this.m02 * _t21;
+        double _buf1 = this.m10 * _t6 + this.m11 * _t20 + this.m12 * _t21;
+        double _buf2 = this.m20 * _t6 + this.m21 * _t20 + this.m22 * _t21;
+        double _buf3 = this.m01 * _t22 - this.m00 * _t12 + this.m02 * _t23;
+        double _buf4 = this.m11 * _t22 - this.m10 * _t12 + this.m12 * _t23;
+        double _buf5 = this.m21 * _t22 - this.m20 * _t12 + this.m22 * _t23;
+        d.m02 = this.m00 * _t3 - this.m01 * _t14 + this.m02 * _t15;
+        d.m12 = this.m10 * _t3 - this.m11 * _t14 + this.m12 * _t15;
+        d.m22 = this.m20 * _t3 - this.m21 * _t14 + this.m22 * _t15;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
+     * and Z axes, in that order, to this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateXYZ(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXYZ_identity(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXYZ_translation(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateXYZ_orthogonal(angleX, angleY, angleZ, dest);
+        return rotateXYZ_general(angleX, angleY, angleZ, dest);
+    }
+
+
+    /**
+     * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
+     * and Z axes, in that order, to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @return this
+     */
+    @Mutated public Double3x3 rotateXYZ(double angleX, double angleY, double angleZ) {
+        if (Joml.RETURN_NEW) return rotateXYZ(angleX, angleY, angleZ, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXYZ_identity(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXYZ_translation(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateXYZ_orthogonal(angleX, angleY, angleZ, this);
+        return rotateXYZ_general(angleX, angleY, angleZ, this);
+    }
+
+
+    /**
+     * Private body of {@code rotateXZY}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateXZY} dispatcher.
+     */
+    private Double3x3 rotateXZY_identity(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.sin(angleY);
+        double _t4 = Math.cos(angleX);
+        double _t5 = Math.sin(angleX);
+        double _t6 = _t2 * _t4;
+        double _t7 = _t5 * _t2;
+        d.m00 = _t0 * _t1;
+        d.m10 = _t6 * _t0 + _t5 * _t3;
+        d.m20 = _t7 * _t0 - _t3 * _t4;
+        d.m01 = -_t2;
+        d.m11 = _t4 * _t1;
+        d.m21 = _t5 * _t1;
+        d.m02 = _t3 * _t1;
+        d.m12 = _t6 * _t3 - _t5 * _t0;
+        d.m22 = _t7 * _t3 + _t4 * _t0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateXZY}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateXZY} dispatcher.
+     */
+    private Double3x3 rotateXZY_translation(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.cos(angleY);
+        double _t3 = Math.sin(angleY);
+        double _t4 = Math.cos(angleX);
+        double _t5 = Math.cos(angleZ);
+        double _t6 = _t0 * _t1;
+        double _t8 = _t0 * _t5;
+        double _t10 = _t1 * _t4;
+        double _t13 = _t6 * _t2 - _t3 * _t4;
+        double _t14 = _t6 * _t3 + _t4 * _t2;
+        d.m00 = this.m02 * _t13 + _t2 * _t5;
+        d.m10 = _t10 * _t2 + _t0 * _t3 + this.m12 * _t13;
+        d.m20 = _t13;
+        d.m01 = this.m02 * _t8 - _t1;
+        d.m11 = this.m12 * _t8 + _t4 * _t5;
+        d.m21 = _t8;
+        d.m02 = this.m02 * _t14 + _t3 * _t5;
+        d.m12 = _t10 * _t3 - _t0 * _t2 + this.m12 * _t14;
+        d.m22 = _t14;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateXZY}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateXZY} dispatcher.
+     */
+    private Double3x3 rotateXZY_orthogonal(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.cos(angleX);
+        double _t4 = Math.sin(angleX);
+        double _t5 = Math.sin(angleY);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t2 * _t3;
+        double _t9 = _t4 * _t2;
+        double _t11 = _t3 * _t1;
+        double _t12 = _t4 * _t1;
+        double _t13 = _t5 * _t1;
+        double _t20 = _t7 * _t0 + _t4 * _t5;
+        double _t21 = _t9 * _t0 - _t5 * _t3;
+        double _t22 = _t7 * _t5 - _t4 * _t0;
+        double _t23 = _t9 * _t5 + _t3 * _t0;
+        double _buf0 = this.m00 * _t6 + this.m01 * _t20 + this.m02 * _t21;
+        double _buf1 = this.m10 * _t6 + this.m11 * _t20 + this.m12 * _t21;
+        d.m20 = _t21;
+        double _buf2 = this.m01 * _t11 - this.m00 * _t2 + this.m02 * _t12;
+        double _buf3 = this.m11 * _t11 - this.m10 * _t2 + this.m12 * _t12;
+        d.m21 = _t12;
+        d.m02 = this.m00 * _t13 + this.m01 * _t22 + this.m02 * _t23;
+        d.m12 = this.m10 * _t13 + this.m11 * _t22 + this.m12 * _t23;
+        d.m22 = _t23;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateXZY}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateXZY} dispatcher.
+     */
+    private Double3x3 rotateXZY_general(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.cos(angleX);
+        double _t4 = Math.sin(angleX);
+        double _t5 = Math.sin(angleY);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t2 * _t3;
+        double _t9 = _t4 * _t2;
+        double _t11 = _t3 * _t1;
+        double _t12 = _t4 * _t1;
+        double _t13 = _t5 * _t1;
+        double _t20 = _t7 * _t0 + _t4 * _t5;
+        double _t21 = _t9 * _t0 - _t5 * _t3;
+        double _t22 = _t7 * _t5 - _t4 * _t0;
+        double _t23 = _t9 * _t5 + _t3 * _t0;
+        double _buf0 = this.m00 * _t6 + this.m01 * _t20 + this.m02 * _t21;
+        double _buf1 = this.m10 * _t6 + this.m11 * _t20 + this.m12 * _t21;
+        double _buf2 = this.m20 * _t6 + this.m21 * _t20 + this.m22 * _t21;
+        double _buf3 = this.m01 * _t11 - this.m00 * _t2 + this.m02 * _t12;
+        double _buf4 = this.m11 * _t11 - this.m10 * _t2 + this.m12 * _t12;
+        double _buf5 = this.m21 * _t11 - this.m20 * _t2 + this.m22 * _t12;
+        d.m02 = this.m00 * _t13 + this.m01 * _t22 + this.m02 * _t23;
+        d.m12 = this.m10 * _t13 + this.m11 * _t22 + this.m12 * _t23;
+        d.m22 = this.m20 * _t13 + this.m21 * _t22 + this.m22 * _t23;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
+     * and Y axes, in that order, to this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateXZY(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXZY_identity(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXZY_translation(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateXZY_orthogonal(angleX, angleY, angleZ, dest);
+        return rotateXZY_general(angleX, angleY, angleZ, dest);
+    }
+
+
+    /**
+     * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
+     * and Y axes, in that order, to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @return this
+     */
+    @Mutated public Double3x3 rotateXZY(double angleX, double angleY, double angleZ) {
+        if (Joml.RETURN_NEW) return rotateXZY(angleX, angleY, angleZ, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateXZY_identity(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateXZY_translation(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateXZY_orthogonal(angleX, angleY, angleZ, this);
+        return rotateXZY_general(angleX, angleY, angleZ, this);
+    }
+
+
+    /**
+     * Apply a rotation of -180 degrees about the X axis to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateXn180(@Mutated Double3x3 dest) {
+        return rotateX180(dest);
+    }
+
+
+    /**
+     * Apply a rotation of -180 degrees about the X axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 rotateXn180() {
+        return rotateX180();
+    }
+
+
+    /**
+     * Apply a rotation of -270 degrees about the X axis to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateXn270(@Mutated Double3x3 dest) {
+        return rotateX90(dest);
+    }
+
+
+    /**
+     * Apply a rotation of -270 degrees about the X axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 rotateXn270() {
+        return rotateX90();
+    }
+
+
+    /**
+     * Apply a rotation of -90 degrees about the X axis to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateXn90(@Mutated Double3x3 dest) {
+        return rotateX270(dest);
+    }
+
+
+    /**
+     * Apply a rotation of -90 degrees about the X axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 rotateXn90() {
+        return rotateX270();
+    }
+
+
+    /**
+     * Private body of {@code rotateY}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateY} dispatcher.
+     */
+    private Double3x3 rotateY_identity(double angle, @Mutated Double3x3 dest) {
+        return preRotateY_identity(angle, dest);
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateY}, specialized by runtime matrix properties;
+     * reached only through the public {@code rotateY} dispatcher.
+     */
+    private Double3x3 rotateY_identity_self(double angle, @Mutated Double3x3 dest) {
+        return preRotateY_identity_self(angle, dest);
+    }
+
+
+    /**
+     * Private body of {@code rotateY}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateY} dispatcher.
+     */
+    private Double3x3 rotateY_translation(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = _t0 - this.m02 * _t1;
+        d.m10 = -(this.m12 * _t1);
+        d.m20 = -_t1;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = this.m02 * _t0 + _t1;
+        d.m12 = this.m12 * _t0;
+        d.m22 = _t0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateY}, specialized by runtime matrix properties;
+     * reached only through the public {@code rotateY} dispatcher.
+     */
+    private Double3x3 rotateY_translation_self(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        d.m00 = _t0 - this.m02 * _t1;
+        d.m10 = -(this.m12 * _t1);
+        d.m20 = -_t1;
+        d.m02 = this.m02 * _t0 + _t1;
+        d.m12 = this.m12 * _t0;
+        d.m22 = _t0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateY}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateY} dispatcher.
+     */
+    private Double3x3 rotateY_orthogonal(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _buf0 = this.m00 * _t0 - this.m02 * _t1;
+        double _buf1 = this.m10 * _t0 - this.m12 * _t1;
+        d.m20 = -_t1;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m21 = 0.0;
+        d.m02 = this.m00 * _t1 + this.m02 * _t0;
+        d.m12 = this.m10 * _t1 + this.m12 * _t0;
+        d.m22 = _t0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateY}, specialized by runtime matrix properties;
+     * reached only through the public {@code rotateY} dispatcher.
+     */
+    private Double3x3 rotateY_orthogonal_self(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _buf0 = this.m00 * _t0 - this.m02 * _t1;
+        double _buf1 = this.m10 * _t0 - this.m12 * _t1;
+        d.m20 = -_t1;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m02 = this.m00 * _t1 + this.m02 * _t0;
+        d.m12 = this.m10 * _t1 + this.m12 * _t0;
+        d.m22 = _t0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateY}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateY} dispatcher.
+     */
+    private Double3x3 rotateY_general(double angle, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _buf0 = this.m00 * _t0 - this.m02 * _t1;
+        double _buf1 = this.m10 * _t0 - this.m12 * _t1;
+        double _buf2 = this.m20 * _t0 - this.m22 * _t1;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m21 = this.m21;
+        d.m02 = this.m00 * _t1 + this.m02 * _t0;
+        d.m12 = this.m10 * _t1 + this.m12 * _t0;
+        d.m22 = this.m20 * _t1 + this.m22 * _t0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation of {@code angle} radians about the Y axis to this matrix and store the
+     * result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateY(double angle, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateY_identity(angle, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateY_translation(angle, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateY_orthogonal(angle, dest);
+        return rotateY_general(angle, dest);
+    }
+
+
+    /**
+     * Apply a rotation of {@code angle} radians about the Y axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @return this
+     */
+    @Mutated public Double3x3 rotateY(double angle) {
+        if (Joml.RETURN_NEW) return rotateY(angle, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateY_identity_self(angle, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateY_translation_self(angle, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateY_orthogonal_self(angle, this);
+        return rotateY_general(angle, this);
+    }
+
+
+    /**
+     * Private body of {@code rotateY180}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateY180} dispatcher.
+     */
+    private Double3x3 rotateY180_identity(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = -1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateY180}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateY180} dispatcher.
+     */
+    private Double3x3 rotateY180_identity_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -1.0;
+        d.m22 = -1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateY180}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateY180} dispatcher.
+     */
+    private Double3x3 rotateY180_translation(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateY180}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateY180} dispatcher.
+     */
+    private Double3x3 rotateY180_translation_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -1.0;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateY180}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateY180} dispatcher.
+     */
+    private Double3x3 rotateY180_orthogonal(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -this.m00;
+        d.m10 = -this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m21 = 0.0;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateY180}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateY180} dispatcher.
+     */
+    private Double3x3 rotateY180_orthogonal_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -this.m00;
+        d.m10 = -this.m10;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -1.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateY180}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateY180} dispatcher.
+     */
+    private Double3x3 rotateY180_general(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -this.m00;
+        d.m10 = -this.m10;
+        d.m20 = -this.m20;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m21 = this.m21;
+        d.m02 = -this.m02;
+        d.m12 = -this.m12;
+        d.m22 = -this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation of 180 degrees about the Y axis to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateY180(@Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateY180_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateY180_translation(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateY180_orthogonal(dest);
+        return rotateY180_general(dest);
+    }
+
+
+    /**
+     * Apply a rotation of 180 degrees about the Y axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 rotateY180() {
+        if (Joml.RETURN_NEW) return rotateY180(Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateY180_identity_self(this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateY180_translation_self(this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateY180_orthogonal_self(this);
+        return rotateY180_general(this);
+    }
+
+
+    /**
+     * Private body of {@code rotateY270}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateY270} dispatcher.
+     */
+    private Double3x3 rotateY270_identity(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 0.0;
+        d.m10 = 0.0;
+        d.m20 = 1.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = -1.0;
+        d.m12 = 0.0;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateY270}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateY270} dispatcher.
+     */
+    private Double3x3 rotateY270_identity_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 0.0;
+        d.m20 = 1.0;
+        d.m02 = -1.0;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateY270}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateY270} dispatcher.
+     */
+    private Double3x3 rotateY270_translation(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m02;
+        d.m10 = this.m12;
+        d.m20 = 1.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = -1.0;
+        d.m12 = 0.0;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateY270}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateY270} dispatcher.
+     */
+    private Double3x3 rotateY270_translation_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m02;
+        d.m10 = this.m12;
+        d.m20 = 1.0;
+        d.m02 = -1.0;
+        d.m12 = 0.0;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateY270}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateY270} dispatcher.
+     */
+    private Double3x3 rotateY270_orthogonal(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = this.m02;
+        double _buf1 = this.m12;
+        d.m20 = 1.0;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m21 = 0.0;
+        d.m02 = -this.m00;
+        d.m12 = -this.m10;
+        d.m22 = 0.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateY270}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateY270} dispatcher.
+     */
+    private Double3x3 rotateY270_orthogonal_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = this.m02;
+        double _buf1 = this.m12;
+        d.m20 = 1.0;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m02 = -this.m00;
+        d.m12 = -this.m10;
+        d.m22 = 0.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateY270}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateY270} dispatcher.
+     */
+    private Double3x3 rotateY270_general(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = this.m02;
+        double _buf1 = this.m12;
+        double _buf2 = this.m22;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m21 = this.m21;
+        d.m02 = -this.m00;
+        d.m12 = -this.m10;
+        d.m22 = -this.m20;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation of 270 degrees about the Y axis to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateY270(@Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateY270_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateY270_translation(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateY270_orthogonal(dest);
+        return rotateY270_general(dest);
+    }
+
+
+    /**
+     * Apply a rotation of 270 degrees about the Y axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 rotateY270() {
+        if (Joml.RETURN_NEW) return rotateY270(Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateY270_identity_self(this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateY270_translation_self(this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateY270_orthogonal_self(this);
+        return rotateY270_general(this);
+    }
+
+
+    /**
+     * Private body of {@code rotateY90}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateY90} dispatcher.
+     */
+    private Double3x3 rotateY90_identity(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 0.0;
+        d.m10 = 0.0;
+        d.m20 = -1.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = 1.0;
+        d.m12 = 0.0;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateY90}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateY90} dispatcher.
+     */
+    private Double3x3 rotateY90_identity_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 0.0;
+        d.m20 = -1.0;
+        d.m02 = 1.0;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateY90}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateY90} dispatcher.
+     */
+    private Double3x3 rotateY90_translation(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -this.m02;
+        d.m10 = -this.m12;
+        d.m20 = -1.0;
+        d.m01 = 0.0;
+        d.m11 = 1.0;
+        d.m21 = 0.0;
+        d.m02 = 1.0;
+        d.m12 = 0.0;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateY90}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateY90} dispatcher.
+     */
+    private Double3x3 rotateY90_translation_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -this.m02;
+        d.m10 = -this.m12;
+        d.m20 = -1.0;
+        d.m02 = 1.0;
+        d.m12 = 0.0;
+        d.m22 = 0.0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateY90}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateY90} dispatcher.
+     */
+    private Double3x3 rotateY90_orthogonal(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = -this.m02;
+        double _buf1 = -this.m12;
+        d.m20 = -1.0;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m21 = 0.0;
+        d.m02 = this.m00;
+        d.m12 = this.m10;
+        d.m22 = 0.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateY90}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateY90} dispatcher.
+     */
+    private Double3x3 rotateY90_orthogonal_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = -this.m02;
+        double _buf1 = -this.m12;
+        d.m20 = -1.0;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m02 = this.m00;
+        d.m12 = this.m10;
+        d.m22 = 0.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateY90}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateY90} dispatcher.
+     */
+    private Double3x3 rotateY90_general(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = -this.m02;
+        double _buf1 = -this.m12;
+        double _buf2 = -this.m22;
+        d.m01 = this.m01;
+        d.m11 = this.m11;
+        d.m21 = this.m21;
+        d.m02 = this.m00;
+        d.m12 = this.m10;
+        d.m22 = this.m20;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation of 90 degrees about the Y axis to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateY90(@Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateY90_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateY90_translation(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateY90_orthogonal(dest);
+        return rotateY90_general(dest);
+    }
+
+
+    /**
+     * Apply a rotation of 90 degrees about the Y axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 rotateY90() {
+        if (Joml.RETURN_NEW) return rotateY90(Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateY90_identity_self(this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateY90_translation_self(this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateY90_orthogonal_self(this);
+        return rotateY90_general(this);
+    }
+
+
+    /**
+     * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateYXZ} dispatcher.
+     */
+    private Double3x3 rotateYXZ_identity(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleY);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.cos(angleY);
+        double _t4 = Math.cos(angleZ);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t0 * _t3;
+        d.m00 = _t6 * _t2 + _t3 * _t4;
+        d.m10 = _t2 * _t5;
+        d.m20 = _t7 * _t2 - _t1 * _t4;
+        d.m01 = _t6 * _t4 - _t2 * _t3;
+        d.m11 = _t5 * _t4;
+        d.m21 = _t7 * _t4 + _t1 * _t2;
+        d.m02 = _t1 * _t5;
+        d.m12 = -_t0;
+        d.m22 = _t5 * _t3;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateYXZ} dispatcher.
+     */
+    private Double3x3 rotateYXZ_translation(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleY);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.cos(angleY);
+        double _t4 = Math.cos(angleZ);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t0 * _t3;
+        double _t10 = _t5 * _t3;
+        double _t13 = _t7 * _t2 - _t1 * _t4;
+        double _t14 = _t7 * _t4 + _t1 * _t2;
+        d.m00 = _t6 * _t2 + _t3 * _t4 + this.m02 * _t13;
+        d.m10 = this.m12 * _t13 + _t2 * _t5;
+        d.m20 = _t13;
+        d.m01 = _t6 * _t4 - _t2 * _t3 + this.m02 * _t14;
+        d.m11 = this.m12 * _t14 + _t5 * _t4;
+        d.m21 = _t14;
+        d.m02 = this.m02 * _t10 + _t1 * _t5;
+        d.m12 = this.m12 * _t10 - _t0;
+        d.m22 = _t10;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateYXZ} dispatcher.
+     */
+    private Double3x3 rotateYXZ_orthogonal(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleY);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.cos(angleY);
+        double _t4 = Math.cos(angleZ);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t0 * _t1;
+        double _t8 = _t2 * _t5;
+        double _t9 = _t0 * _t3;
+        double _t12 = _t5 * _t4;
+        double _t14 = _t1 * _t5;
+        double _t15 = _t5 * _t3;
+        double _t20 = _t6 * _t2 + _t3 * _t4;
+        double _t21 = _t9 * _t2 - _t1 * _t4;
+        double _t22 = _t6 * _t4 - _t2 * _t3;
+        double _t23 = _t9 * _t4 + _t1 * _t2;
+        double _buf0 = this.m00 * _t20 + this.m01 * _t8 + this.m02 * _t21;
+        double _buf1 = this.m10 * _t20 + this.m11 * _t8 + this.m12 * _t21;
+        d.m20 = _t21;
+        double _buf2 = this.m00 * _t22 + this.m01 * _t12 + this.m02 * _t23;
+        double _buf3 = this.m10 * _t22 + this.m11 * _t12 + this.m12 * _t23;
+        d.m21 = _t23;
+        d.m02 = this.m00 * _t14 - this.m01 * _t0 + this.m02 * _t15;
+        d.m12 = this.m10 * _t14 - this.m11 * _t0 + this.m12 * _t15;
+        d.m22 = _t15;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateYXZ}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateYXZ} dispatcher.
+     */
+    private Double3x3 rotateYXZ_general(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleY);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.cos(angleY);
+        double _t4 = Math.cos(angleZ);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t0 * _t1;
+        double _t8 = _t2 * _t5;
+        double _t9 = _t0 * _t3;
+        double _t12 = _t5 * _t4;
+        double _t14 = _t1 * _t5;
+        double _t15 = _t5 * _t3;
+        double _t20 = _t6 * _t2 + _t3 * _t4;
+        double _t21 = _t9 * _t2 - _t1 * _t4;
+        double _t22 = _t6 * _t4 - _t2 * _t3;
+        double _t23 = _t9 * _t4 + _t1 * _t2;
+        double _buf0 = this.m00 * _t20 + this.m01 * _t8 + this.m02 * _t21;
+        double _buf1 = this.m10 * _t20 + this.m11 * _t8 + this.m12 * _t21;
+        double _buf2 = this.m20 * _t20 + this.m21 * _t8 + this.m22 * _t21;
+        double _buf3 = this.m00 * _t22 + this.m01 * _t12 + this.m02 * _t23;
+        double _buf4 = this.m10 * _t22 + this.m11 * _t12 + this.m12 * _t23;
+        double _buf5 = this.m20 * _t22 + this.m21 * _t12 + this.m22 * _t23;
+        d.m02 = this.m00 * _t14 - this.m01 * _t0 + this.m02 * _t15;
+        d.m12 = this.m10 * _t14 - this.m11 * _t0 + this.m12 * _t15;
+        d.m22 = this.m20 * _t14 - this.m21 * _t0 + this.m22 * _t15;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
+     * and Z axes, in that order, to this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateYXZ(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYXZ_identity(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYXZ_translation(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateYXZ_orthogonal(angleX, angleY, angleZ, dest);
+        return rotateYXZ_general(angleX, angleY, angleZ, dest);
+    }
+
+
+    /**
+     * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
+     * and Z axes, in that order, to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @return this
+     */
+    @Mutated public Double3x3 rotateYXZ(double angleX, double angleY, double angleZ) {
+        if (Joml.RETURN_NEW) return rotateYXZ(angleX, angleY, angleZ, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYXZ_identity(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYXZ_translation(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateYXZ_orthogonal(angleX, angleY, angleZ, this);
+        return rotateYXZ_general(angleX, angleY, angleZ, this);
+    }
+
+
+    /**
+     * Private body of {@code rotateYZX}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateYZX} dispatcher.
+     */
+    private Double3x3 rotateYZX_identity(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.sin(angleY);
+        double _t4 = Math.sin(angleZ);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t4 * _t0;
+        double _t7 = _t3 * _t4;
+        d.m00 = _t0 * _t1;
+        d.m10 = _t4;
+        d.m20 = -(_t3 * _t1);
+        d.m01 = _t2 * _t3 - _t6 * _t5;
+        d.m11 = _t5 * _t1;
+        d.m21 = _t7 * _t5 + _t2 * _t0;
+        d.m02 = _t6 * _t2 + _t3 * _t5;
+        d.m12 = -(_t2 * _t1);
+        d.m22 = _t5 * _t0 - _t7 * _t2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateYZX}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateYZX} dispatcher.
+     */
+    private Double3x3 rotateYZX_translation(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleY);
+        double _t3 = Math.sin(angleX);
+        double _t4 = Math.sin(angleZ);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t2 * _t1;
+        double _t7 = _t4 * _t0;
+        double _t8 = _t2 * _t4;
+        double _t13 = _t8 * _t5 + _t3 * _t0;
+        double _t14 = _t5 * _t0 - _t8 * _t3;
+        d.m00 = _t0 * _t1 - this.m02 * _t6;
+        d.m10 = _t4 - this.m12 * _t6;
+        d.m20 = -_t6;
+        d.m01 = _t3 * _t2 - _t7 * _t5 + this.m02 * _t13;
+        d.m11 = this.m12 * _t13 + _t5 * _t1;
+        d.m21 = _t13;
+        d.m02 = _t7 * _t3 + _t2 * _t5 + this.m02 * _t14;
+        d.m12 = this.m12 * _t14 - _t3 * _t1;
+        d.m22 = _t14;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateYZX}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateYZX} dispatcher.
+     */
+    private Double3x3 rotateYZX_orthogonal(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.sin(angleY);
+        double _t4 = Math.sin(angleX);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t3 * _t1;
+        double _t9 = _t2 * _t0;
+        double _t10 = _t5 * _t1;
+        double _t11 = _t3 * _t2;
+        double _t14 = _t4 * _t1;
+        double _t20 = _t4 * _t3 - _t9 * _t5;
+        double _t21 = _t11 * _t5 + _t4 * _t0;
+        double _t22 = _t9 * _t4 + _t3 * _t5;
+        double _t23 = _t5 * _t0 - _t11 * _t4;
+        double _buf0 = this.m00 * _t6 + this.m01 * _t2 - this.m02 * _t7;
+        double _buf1 = this.m10 * _t6 + this.m11 * _t2 - this.m12 * _t7;
+        d.m20 = -_t7;
+        double _buf2 = this.m00 * _t20 + this.m01 * _t10 + this.m02 * _t21;
+        double _buf3 = this.m10 * _t20 + this.m11 * _t10 + this.m12 * _t21;
+        d.m21 = _t21;
+        d.m02 = this.m00 * _t22 - this.m01 * _t14 + this.m02 * _t23;
+        d.m12 = this.m10 * _t22 - this.m11 * _t14 + this.m12 * _t23;
+        d.m22 = _t23;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateYZX}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateYZX} dispatcher.
+     */
+    private Double3x3 rotateYZX_general(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.sin(angleY);
+        double _t4 = Math.sin(angleX);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t3 * _t1;
+        double _t9 = _t2 * _t0;
+        double _t10 = _t5 * _t1;
+        double _t11 = _t3 * _t2;
+        double _t14 = _t4 * _t1;
+        double _t20 = _t4 * _t3 - _t9 * _t5;
+        double _t21 = _t11 * _t5 + _t4 * _t0;
+        double _t22 = _t9 * _t4 + _t3 * _t5;
+        double _t23 = _t5 * _t0 - _t11 * _t4;
+        double _buf0 = this.m00 * _t6 + this.m01 * _t2 - this.m02 * _t7;
+        double _buf1 = this.m10 * _t6 + this.m11 * _t2 - this.m12 * _t7;
+        double _buf2 = this.m20 * _t6 + this.m21 * _t2 - this.m22 * _t7;
+        double _buf3 = this.m00 * _t20 + this.m01 * _t10 + this.m02 * _t21;
+        double _buf4 = this.m10 * _t20 + this.m11 * _t10 + this.m12 * _t21;
+        double _buf5 = this.m20 * _t20 + this.m21 * _t10 + this.m22 * _t21;
+        d.m02 = this.m00 * _t22 - this.m01 * _t14 + this.m02 * _t23;
+        d.m12 = this.m10 * _t22 - this.m11 * _t14 + this.m12 * _t23;
+        d.m22 = this.m20 * _t22 - this.m21 * _t14 + this.m22 * _t23;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
+     * and X axes, in that order, to this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateYZX(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYZX_identity(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYZX_translation(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateYZX_orthogonal(angleX, angleY, angleZ, dest);
+        return rotateYZX_general(angleX, angleY, angleZ, dest);
+    }
+
+
+    /**
+     * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
+     * and X axes, in that order, to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @return this
+     */
+    @Mutated public Double3x3 rotateYZX(double angleX, double angleY, double angleZ) {
+        if (Joml.RETURN_NEW) return rotateYZX(angleX, angleY, angleZ, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateYZX_identity(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateYZX_translation(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateYZX_orthogonal(angleX, angleY, angleZ, this);
+        return rotateYZX_general(angleX, angleY, angleZ, this);
+    }
+
+
+    /**
+     * Apply a rotation of -180 degrees about the Y axis to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateYn180(@Mutated Double3x3 dest) {
+        return rotateY180(dest);
+    }
+
+
+    /**
+     * Apply a rotation of -180 degrees about the Y axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 rotateYn180() {
+        return rotateY180();
+    }
+
+
+    /**
+     * Apply a rotation of -270 degrees about the Y axis to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateYn270(@Mutated Double3x3 dest) {
+        return rotateY90(dest);
+    }
+
+
+    /**
+     * Apply a rotation of -270 degrees about the Y axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 rotateYn270() {
+        return rotateY90();
+    }
+
+
+    /**
+     * Apply a rotation of -90 degrees about the Y axis to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateYn90(@Mutated Double3x3 dest) {
+        return rotateY270(dest);
+    }
+
+
+    /**
+     * Apply a rotation of -90 degrees about the Y axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 rotateYn90() {
+        return rotateY270();
+    }
+
+
+    /**
+     * Apply a rotation of {@code angle} radians about the Z axis to this matrix and store the
+     * result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateZ(double angle, @Mutated Double3x3 dest) {
+        return rotate(angle, dest);
+    }
+
+
+    /**
+     * Apply a rotation of {@code angle} radians about the Z axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @return this
+     */
+    @Mutated public Double3x3 rotateZ(double angle) {
+        return rotate(angle);
+    }
+
+
+    /**
+     * Private body of {@code rotateZ180}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZ180} dispatcher.
+     */
+    private Double3x3 rotateZ180_identity(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = -1.0;
+        d.m21 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateZ180}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateZ180} dispatcher.
+     */
+    private Double3x3 rotateZ180_identity_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -1.0;
+        d.m11 = -1.0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateZ180}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZ180} dispatcher.
+     */
+    private Double3x3 rotateZ180_translation(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -1.0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = -1.0;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateZ180}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateZ180} dispatcher.
+     */
+    private Double3x3 rotateZ180_translation_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -1.0;
+        d.m11 = -1.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateZ180}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZ180} dispatcher.
+     */
+    private Double3x3 rotateZ180_orthogonal(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = -this.m11;
+        d.m00 = _t0;
+        double _buf0 = -this.m10;
+        d.m20 = 0.0;
+        d.m01 = this.m10;
+        d.m11 = _t0;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.m10 = _buf0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateZ180}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateZ180} dispatcher.
+     */
+    private Double3x3 rotateZ180_orthogonal_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = -this.m11;
+        d.m00 = _t0;
+        double _buf0 = -this.m10;
+        d.m01 = this.m10;
+        d.m11 = _t0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m10 = _buf0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateZ180}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZ180} dispatcher.
+     */
+    private Double3x3 rotateZ180_affine(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -this.m00;
+        d.m10 = -this.m10;
+        d.m20 = 0.0;
+        d.m01 = -this.m01;
+        d.m11 = -this.m11;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateZ180}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateZ180} dispatcher.
+     */
+    private Double3x3 rotateZ180_affine_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -this.m00;
+        d.m10 = -this.m10;
+        d.m01 = -this.m01;
+        d.m11 = -this.m11;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateZ180}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZ180} dispatcher.
+     */
+    private Double3x3 rotateZ180_general(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = -this.m00;
+        d.m10 = -this.m10;
+        d.m20 = -this.m20;
+        d.m01 = -this.m01;
+        d.m11 = -this.m11;
+        d.m21 = -this.m21;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation of 180 degrees about the Z axis to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateZ180(@Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZ180_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZ180_translation(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return rotateZ180_orthogonal(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZ180_affine(dest);
+        return rotateZ180_general(dest);
+    }
+
+
+    /**
+     * Apply a rotation of 180 degrees about the Z axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 rotateZ180() {
+        if (Joml.RETURN_NEW) return rotateZ180(Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZ180_identity_self(this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZ180_translation_self(this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return rotateZ180_orthogonal_self(this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZ180_affine_self(this);
+        return rotateZ180_general(this);
+    }
+
+
+    /**
+     * Private body of {@code rotateZ270}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZ270} dispatcher.
+     */
+    private Double3x3 rotateZ270_identity(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 0.0;
+        d.m10 = -1.0;
+        d.m20 = 0.0;
+        d.m01 = 1.0;
+        d.m11 = 0.0;
+        d.m21 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateZ270}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateZ270} dispatcher.
+     */
+    private Double3x3 rotateZ270_identity_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 0.0;
+        d.m10 = -1.0;
+        d.m01 = 1.0;
+        d.m11 = 0.0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateZ270}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZ270} dispatcher.
+     */
+    private Double3x3 rotateZ270_translation(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 0.0;
+        d.m10 = -1.0;
+        d.m20 = 0.0;
+        d.m01 = 1.0;
+        d.m11 = 0.0;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateZ270}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateZ270} dispatcher.
+     */
+    private Double3x3 rotateZ270_translation_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 0.0;
+        d.m10 = -1.0;
+        d.m01 = 1.0;
+        d.m11 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateZ270}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZ270} dispatcher.
+     */
+    private Double3x3 rotateZ270_orthogonal(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m10;
+        double _buf0 = -this.m11;
+        d.m20 = 0.0;
+        d.m01 = this.m11;
+        d.m11 = this.m10;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.m10 = _buf0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateZ270}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateZ270} dispatcher.
+     */
+    private Double3x3 rotateZ270_orthogonal_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m10;
+        double _buf0 = -this.m11;
+        d.m01 = this.m11;
+        d.m11 = this.m10;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m10 = _buf0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateZ270}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZ270} dispatcher.
+     */
+    private Double3x3 rotateZ270_affine(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = -this.m01;
+        double _buf1 = -this.m11;
+        d.m20 = 0.0;
+        d.m01 = this.m00;
+        d.m11 = this.m10;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateZ270}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateZ270} dispatcher.
+     */
+    private Double3x3 rotateZ270_affine_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = -this.m01;
+        double _buf1 = -this.m11;
+        d.m01 = this.m00;
+        d.m11 = this.m10;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateZ270}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZ270} dispatcher.
+     */
+    private Double3x3 rotateZ270_general(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = -this.m01;
+        double _buf1 = -this.m11;
+        double _buf2 = -this.m21;
+        d.m01 = this.m00;
+        d.m11 = this.m10;
+        d.m21 = this.m20;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = this.m22;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation of 270 degrees about the Z axis to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateZ270(@Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZ270_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZ270_translation(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return rotateZ270_orthogonal(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZ270_affine(dest);
+        return rotateZ270_general(dest);
+    }
+
+
+    /**
+     * Apply a rotation of 270 degrees about the Z axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 rotateZ270() {
+        if (Joml.RETURN_NEW) return rotateZ270(Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZ270_identity_self(this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZ270_translation_self(this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return rotateZ270_orthogonal_self(this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZ270_affine_self(this);
+        return rotateZ270_general(this);
+    }
+
+
+    /**
+     * Private body of {@code rotateZ90}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZ90} dispatcher.
+     */
+    private Double3x3 rotateZ90_orthogonal_affine(@Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = this.m01;
+        double _buf1 = this.m11;
+        d.m20 = 0.0;
+        d.m01 = -this.m00;
+        d.m11 = -this.m10;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateZ90}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateZ90} dispatcher.
+     */
+    private Double3x3 rotateZ90_orthogonal_affine_self(@Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = this.m01;
+        double _buf1 = this.m11;
+        d.m01 = -this.m00;
+        d.m11 = -this.m10;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateZ90}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZ90} dispatcher.
+     */
+    private Double3x3 rotateZ90_identity(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 0.0;
+        d.m10 = 1.0;
+        d.m20 = 0.0;
+        d.m01 = -1.0;
+        d.m11 = 0.0;
+        d.m21 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateZ90}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateZ90} dispatcher.
+     */
+    private Double3x3 rotateZ90_identity_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 0.0;
+        d.m10 = 1.0;
+        d.m01 = -1.0;
+        d.m11 = 0.0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateZ90}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZ90} dispatcher.
+     */
+    private Double3x3 rotateZ90_translation(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 0.0;
+        d.m10 = 1.0;
+        d.m20 = 0.0;
+        d.m01 = -1.0;
+        d.m11 = 0.0;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code rotateZ90}, specialized by runtime matrix
+     * properties; reached only through the public {@code rotateZ90} dispatcher.
+     */
+    private Double3x3 rotateZ90_translation_self(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = 0.0;
+        d.m10 = 1.0;
+        d.m01 = -1.0;
+        d.m11 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateZ90}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZ90} dispatcher.
+     */
+    private Double3x3 rotateZ90_general(@Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = this.m01;
+        double _buf1 = this.m11;
+        double _buf2 = this.m21;
+        d.m01 = -this.m00;
+        d.m11 = -this.m10;
+        d.m21 = -this.m20;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = this.m22;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation of 90 degrees about the Z axis to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateZ90(@Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZ90_identity(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZ90_translation(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZ90_orthogonal_affine(dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        return rotateZ90_general(dest);
+    }
+
+
+    /**
+     * Apply a rotation of 90 degrees about the Z axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 rotateZ90() {
+        if (Joml.RETURN_NEW) return rotateZ90(Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZ90_identity_self(this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZ90_translation_self(this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZ90_orthogonal_affine_self(this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        return rotateZ90_general(this);
+    }
+
+
+    /**
+     * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZXY} dispatcher.
+     */
+    private Double3x3 rotateZXY_identity(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.sin(angleZ);
+        double _t4 = Math.sin(angleY);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t2 * _t3;
+        double _t7 = _t2 * _t1;
+        d.m00 = _t0 * _t1 - _t6 * _t4;
+        d.m10 = _t7 * _t4 + _t3 * _t0;
+        d.m20 = -(_t4 * _t5);
+        d.m01 = -(_t3 * _t5);
+        d.m11 = _t5 * _t1;
+        d.m21 = _t2;
+        d.m02 = _t6 * _t0 + _t4 * _t1;
+        d.m12 = _t4 * _t3 - _t7 * _t0;
+        d.m22 = _t5 * _t0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZXY} dispatcher.
+     */
+    private Double3x3 rotateZXY_translation(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.sin(angleZ);
+        double _t4 = Math.sin(angleY);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t2 * _t3;
+        double _t7 = _t4 * _t5;
+        double _t8 = _t5 * _t0;
+        double _t9 = _t2 * _t1;
+        d.m00 = _t0 * _t1 - _t6 * _t4 - this.m02 * _t7;
+        d.m10 = _t9 * _t4 + _t3 * _t0 - this.m12 * _t7;
+        d.m20 = -_t7;
+        d.m01 = this.m02 * _t2 - _t3 * _t5;
+        d.m11 = this.m12 * _t2 + _t5 * _t1;
+        d.m21 = _t2;
+        d.m02 = _t6 * _t0 + _t4 * _t1 + this.m02 * _t8;
+        d.m12 = _t4 * _t3 - _t9 * _t0 + this.m12 * _t8;
+        d.m22 = _t8;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZXY} dispatcher.
+     */
+    private Double3x3 rotateZXY_orthogonal(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.sin(angleZ);
+        double _t4 = Math.sin(angleY);
+        double _t5 = Math.cos(angleX);
+        double _t7 = _t2 * _t3;
+        double _t8 = _t2 * _t1;
+        double _t10 = _t4 * _t5;
+        double _t11 = _t5 * _t1;
+        double _t12 = _t3 * _t5;
+        double _t15 = _t5 * _t0;
+        double _t20 = _t0 * _t1 - _t7 * _t4;
+        double _t21 = _t8 * _t4 + _t3 * _t0;
+        double _t22 = _t7 * _t0 + _t4 * _t1;
+        double _t23 = _t4 * _t3 - _t8 * _t0;
+        double _buf0 = this.m00 * _t20 + this.m01 * _t21 - this.m02 * _t10;
+        double _buf1 = this.m10 * _t20 + this.m11 * _t21 - this.m12 * _t10;
+        d.m20 = -_t10;
+        double _buf2 = this.m01 * _t11 - this.m00 * _t12 + this.m02 * _t2;
+        double _buf3 = this.m11 * _t11 - this.m10 * _t12 + this.m12 * _t2;
+        d.m21 = _t2;
+        d.m02 = this.m00 * _t22 + this.m01 * _t23 + this.m02 * _t15;
+        d.m12 = this.m10 * _t22 + this.m11 * _t23 + this.m12 * _t15;
+        d.m22 = _t15;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateZXY}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZXY} dispatcher.
+     */
+    private Double3x3 rotateZXY_general(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.sin(angleZ);
+        double _t4 = Math.sin(angleY);
+        double _t5 = Math.cos(angleX);
+        double _t7 = _t2 * _t3;
+        double _t8 = _t2 * _t1;
+        double _t10 = _t4 * _t5;
+        double _t11 = _t5 * _t1;
+        double _t12 = _t3 * _t5;
+        double _t15 = _t5 * _t0;
+        double _t20 = _t0 * _t1 - _t7 * _t4;
+        double _t21 = _t8 * _t4 + _t3 * _t0;
+        double _t22 = _t7 * _t0 + _t4 * _t1;
+        double _t23 = _t4 * _t3 - _t8 * _t0;
+        double _buf0 = this.m00 * _t20 + this.m01 * _t21 - this.m02 * _t10;
+        double _buf1 = this.m10 * _t20 + this.m11 * _t21 - this.m12 * _t10;
+        double _buf2 = this.m20 * _t20 + this.m21 * _t21 - this.m22 * _t10;
+        double _buf3 = this.m01 * _t11 - this.m00 * _t12 + this.m02 * _t2;
+        double _buf4 = this.m11 * _t11 - this.m10 * _t12 + this.m12 * _t2;
+        double _buf5 = this.m21 * _t11 - this.m20 * _t12 + this.m22 * _t2;
+        d.m02 = this.m00 * _t22 + this.m01 * _t23 + this.m02 * _t15;
+        d.m12 = this.m10 * _t22 + this.m11 * _t23 + this.m12 * _t15;
+        d.m22 = this.m20 * _t22 + this.m21 * _t23 + this.m22 * _t15;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
+     * and Y axes, in that order, to this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateZXY(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZXY_identity(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZXY_translation(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZXY_orthogonal(angleX, angleY, angleZ, dest);
+        return rotateZXY_general(angleX, angleY, angleZ, dest);
+    }
+
+
+    /**
+     * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
+     * and Y axes, in that order, to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @return this
+     */
+    @Mutated public Double3x3 rotateZXY(double angleX, double angleY, double angleZ) {
+        if (Joml.RETURN_NEW) return rotateZXY(angleX, angleY, angleZ, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZXY_identity(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZXY_translation(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZXY_orthogonal(angleX, angleY, angleZ, this);
+        return rotateZXY_general(angleX, angleY, angleZ, this);
+    }
+
+
+    /**
+     * Private body of {@code rotateZYX}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZYX} dispatcher.
+     */
+    private Double3x3 rotateZYX_identity(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleY);
+        double _t3 = Math.sin(angleX);
+        double _t4 = Math.sin(angleZ);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t2 * _t1;
+        double _t7 = _t2 * _t4;
+        d.m00 = _t0 * _t1;
+        d.m10 = _t4 * _t0;
+        d.m20 = -_t2;
+        d.m01 = _t6 * _t3 - _t4 * _t5;
+        d.m11 = _t7 * _t3 + _t5 * _t1;
+        d.m21 = _t3 * _t0;
+        d.m02 = _t6 * _t5 + _t3 * _t4;
+        d.m12 = _t7 * _t5 - _t3 * _t1;
+        d.m22 = _t5 * _t0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateZYX}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZYX} dispatcher.
+     */
+    private Double3x3 rotateZYX_translation(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleY);
+        double _t3 = Math.sin(angleX);
+        double _t4 = Math.sin(angleZ);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t2 * _t1;
+        double _t7 = _t3 * _t0;
+        double _t8 = _t5 * _t0;
+        double _t9 = _t2 * _t4;
+        d.m00 = _t0 * _t1 - this.m02 * _t2;
+        d.m10 = _t4 * _t0 - this.m12 * _t2;
+        d.m20 = -_t2;
+        d.m01 = _t6 * _t3 - _t4 * _t5 + this.m02 * _t7;
+        d.m11 = _t9 * _t3 + _t5 * _t1 + this.m12 * _t7;
+        d.m21 = _t7;
+        d.m02 = _t6 * _t5 + _t3 * _t4 + this.m02 * _t8;
+        d.m12 = _t9 * _t5 - _t3 * _t1 + this.m12 * _t8;
+        d.m22 = _t8;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateZYX}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZYX} dispatcher.
+     */
+    private Double3x3 rotateZYX_orthogonal(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.sin(angleY);
+        double _t4 = Math.sin(angleX);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t2 * _t0;
+        double _t8 = _t3 * _t1;
+        double _t10 = _t3 * _t2;
+        double _t12 = _t4 * _t0;
+        double _t15 = _t5 * _t0;
+        double _t20 = _t8 * _t4 - _t2 * _t5;
+        double _t21 = _t10 * _t4 + _t5 * _t1;
+        double _t22 = _t8 * _t5 + _t4 * _t2;
+        double _t23 = _t10 * _t5 - _t4 * _t1;
+        double _buf0 = this.m00 * _t6 + this.m01 * _t7 - this.m02 * _t3;
+        double _buf1 = this.m10 * _t6 + this.m11 * _t7 - this.m12 * _t3;
+        d.m20 = -_t3;
+        double _buf2 = this.m00 * _t20 + this.m01 * _t21 + this.m02 * _t12;
+        double _buf3 = this.m10 * _t20 + this.m11 * _t21 + this.m12 * _t12;
+        d.m21 = _t12;
+        d.m02 = this.m00 * _t22 + this.m01 * _t23 + this.m02 * _t15;
+        d.m12 = this.m10 * _t22 + this.m11 * _t23 + this.m12 * _t15;
+        d.m22 = _t15;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code rotateZYX}, specialized by runtime matrix properties; reached only
+     * through the public {@code rotateZYX} dispatcher.
+     */
+    private Double3x3 rotateZYX_general(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.sin(angleY);
+        double _t4 = Math.sin(angleX);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t2 * _t0;
+        double _t8 = _t3 * _t1;
+        double _t10 = _t3 * _t2;
+        double _t12 = _t4 * _t0;
+        double _t15 = _t5 * _t0;
+        double _t20 = _t8 * _t4 - _t2 * _t5;
+        double _t21 = _t10 * _t4 + _t5 * _t1;
+        double _t22 = _t8 * _t5 + _t4 * _t2;
+        double _t23 = _t10 * _t5 - _t4 * _t1;
+        double _buf0 = this.m00 * _t6 + this.m01 * _t7 - this.m02 * _t3;
+        double _buf1 = this.m10 * _t6 + this.m11 * _t7 - this.m12 * _t3;
+        double _buf2 = this.m20 * _t6 + this.m21 * _t7 - this.m22 * _t3;
+        double _buf3 = this.m00 * _t20 + this.m01 * _t21 + this.m02 * _t12;
+        double _buf4 = this.m10 * _t20 + this.m11 * _t21 + this.m12 * _t12;
+        double _buf5 = this.m20 * _t20 + this.m21 * _t21 + this.m22 * _t12;
+        d.m02 = this.m00 * _t22 + this.m01 * _t23 + this.m02 * _t15;
+        d.m12 = this.m10 * _t22 + this.m11 * _t23 + this.m12 * _t15;
+        d.m22 = this.m20 * _t22 + this.m21 * _t23 + this.m22 * _t15;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
+     * and X axes, in that order, to this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateZYX(double angleX, double angleY, double angleZ, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZYX_identity(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZYX_translation(angleX, angleY, angleZ, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZYX_orthogonal(angleX, angleY, angleZ, dest);
+        return rotateZYX_general(angleX, angleY, angleZ, dest);
+    }
+
+
+    /**
+     * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
+     * and X axes, in that order, to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @return this
+     */
+    @Mutated public Double3x3 rotateZYX(double angleX, double angleY, double angleZ) {
+        if (Joml.RETURN_NEW) return rotateZYX(angleX, angleY, angleZ, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return rotateZYX_identity(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return rotateZYX_translation(angleX, angleY, angleZ, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return rotateZYX_orthogonal(angleX, angleY, angleZ, this);
+        return rotateZYX_general(angleX, angleY, angleZ, this);
+    }
+
+
+    /**
+     * Apply a rotation of -180 degrees about the Z axis to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateZn180(@Mutated Double3x3 dest) {
+        return rotateZ180(dest);
+    }
+
+
+    /**
+     * Apply a rotation of -180 degrees about the Z axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 rotateZn180() {
+        return rotateZ180();
+    }
+
+
+    /**
+     * Apply a rotation of -270 degrees about the Z axis to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateZn270(@Mutated Double3x3 dest) {
+        return rotateZ90(dest);
+    }
+
+
+    /**
+     * Apply a rotation of -270 degrees about the Z axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 rotateZn270() {
+        return rotateZ90();
+    }
+
+
+    /**
+     * Apply a rotation of -90 degrees about the Z axis to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 rotateZn90(@Mutated Double3x3 dest) {
+        return rotateZ270(dest);
+    }
+
+
+    /**
+     * Apply a rotation of -90 degrees about the Z axis to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @return this
+     */
+    @Mutated public Double3x3 rotateZn90() {
+        return rotateZ270();
+    }
+
+
+    /**
+     * Apply a scaling by {@code v} to this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code M * S}. So when transforming a vector {@code p} with the new matrix by using
+     * {@code M * S * p}, the scaling will be applied first.
+     *
+     * @param v the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 scale(Double2R v, @Mutated Double3x3 dest) {
+        return scale(v.x(), v.y(), dest);
+    }
+
+
+    /**
+     * Apply a scaling by {@code v} to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code M * S}. So when transforming a vector {@code p} with the new matrix by using
+     * {@code M * S * p}, the scaling will be applied first.
+     *
+     * @param v the vector
+     * @return this
+     */
+    public @Mutated Double3x3 scale(Double2R v) {
+        return scale(v.x(), v.y());
+    }
+
+
+    /**
+     * Private body of {@code scale}, specialized by runtime matrix properties; reached only through
+     * the public {@code scale} dispatcher.
+     */
+    private Double3x3 scale_identity(double vX, double vY, @Mutated Double3x3 dest) {
+        return preScale_identity(vX, vY, dest);
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code scale}, specialized by runtime matrix properties;
+     * reached only through the public {@code scale} dispatcher.
+     */
+    private Double3x3 scale_identity_self(double vX, double vY, @Mutated Double3x3 dest) {
+        return preScale_identity_self(vX, vY, dest);
+    }
+
+
+    /**
+     * Private body of {@code scale}, specialized by runtime matrix properties; reached only through
+     * the public {@code scale} dispatcher.
+     */
+    private Double3x3 scale_translation(double vX, double vY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = vX;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = vY;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code scale}, specialized by runtime matrix properties;
+     * reached only through the public {@code scale} dispatcher.
+     */
+    private Double3x3 scale_translation_self(double vX, double vY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = vX;
+        d.m11 = vY;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code scale}, specialized by runtime matrix properties; reached only through
+     * the public {@code scale} dispatcher.
+     */
+    private Double3x3 scale_orthogonal(double vX, double vY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00 * vX;
+        d.m10 = this.m10 * vX;
+        d.m20 = 0.0;
+        d.m01 = this.m01 * vY;
+        d.m11 = this.m11 * vY;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code scale}, specialized by runtime matrix properties;
+     * reached only through the public {@code scale} dispatcher.
+     */
+    private Double3x3 scale_orthogonal_self(double vX, double vY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00 * vX;
+        d.m10 = this.m10 * vX;
+        d.m01 = this.m01 * vY;
+        d.m11 = this.m11 * vY;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code scale}, specialized by runtime matrix properties; reached only through
+     * the public {@code scale} dispatcher.
+     */
+    private Double3x3 scale_general(double vX, double vY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = this.m00 * vX;
+        d.m10 = this.m10 * vX;
+        d.m20 = this.m20 * vX;
+        d.m01 = this.m01 * vY;
+        d.m11 = this.m11 * vY;
+        d.m21 = this.m21 * vY;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a scaling by ({@code vX}, {@code vY}) to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * S * v}, the scaling will be applied first.
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 scale(double vX, double vY, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return scale_identity(vX, vY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return scale_translation(vX, vY, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return scale_orthogonal(vX, vY, dest);
+        return scale_general(vX, vY, dest);
+    }
+
+
+    /**
+     * Apply a scaling by ({@code vX}, {@code vY}) to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * S * v}, the scaling will be applied first.
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY)}
+     * @return this
+     */
+    @Mutated public Double3x3 scale(double vX, double vY) {
+        if (Joml.RETURN_NEW) return scale(vX, vY, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return scale_identity_self(vX, vY, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return scale_translation_self(vX, vY, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return scale_orthogonal_self(vX, vY, this);
+        return scale_general(vX, vY, this);
+    }
+
+
+    /**
+     * Private body of {@code scale}, specialized by runtime matrix properties; reached only through
+     * the public {@code scale} dispatcher.
+     */
+    private Double3x3 scale_identity(double s, @Mutated Double3x3 dest) {
+        return preScale_identity(s, dest);
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code scale}, specialized by runtime matrix properties;
+     * reached only through the public {@code scale} dispatcher.
+     */
+    private Double3x3 scale_identity_self(double s, @Mutated Double3x3 dest) {
+        return preScale_identity_self(s, dest);
+    }
+
+
+    /**
+     * Private body of {@code scale}, specialized by runtime matrix properties; reached only through
+     * the public {@code scale} dispatcher.
+     */
+    private Double3x3 scale_translation(double s, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = s;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code scale}, specialized by runtime matrix properties;
+     * reached only through the public {@code scale} dispatcher.
+     */
+    private Double3x3 scale_translation_self(double s, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s;
+        d.m11 = s;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code scale}, specialized by runtime matrix properties; reached only through
+     * the public {@code scale} dispatcher.
+     */
+    private Double3x3 scale_orthogonal(double s, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s * this.m00;
+        d.m10 = s * this.m10;
+        d.m20 = 0.0;
+        d.m01 = s * this.m01;
+        d.m11 = s * this.m11;
+        d.m21 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code scale}, specialized by runtime matrix properties;
+     * reached only through the public {@code scale} dispatcher.
+     */
+    private Double3x3 scale_orthogonal_self(double s, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s * this.m00;
+        d.m10 = s * this.m10;
+        d.m01 = s * this.m01;
+        d.m11 = s * this.m11;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code scale}, specialized by runtime matrix properties; reached only through
+     * the public {@code scale} dispatcher.
+     */
+    private Double3x3 scale_general(double s, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s * this.m00;
+        d.m10 = s * this.m10;
+        d.m20 = s * this.m20;
+        d.m01 = s * this.m01;
+        d.m11 = s * this.m11;
+        d.m21 = s * this.m21;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = this.m22;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a scaling by {@code s} to this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * S * v}, the scaling will be applied first.
+     *
+     * @param s the uniform scale factor
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 scale(double s, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return scale_identity(s, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return scale_translation(s, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return scale_orthogonal(s, dest);
+        return scale_general(s, dest);
+    }
+
+
+    /**
+     * Apply a scaling by {@code s} to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * S * v}, the scaling will be applied first.
+     *
+     * @param s the uniform scale factor
+     * @return this
+     */
+    @Mutated public Double3x3 scale(double s) {
+        if (Joml.RETURN_NEW) return scale(s, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return scale_identity_self(s, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return scale_translation_self(s, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return scale_orthogonal_self(s, this);
+        return scale_general(s, this);
+    }
+
+
+    /**
+     * Apply a scaling by {@code s} about the pivot point {@code pivot} to this matrix and store the
+     * result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * S * v}, the scaling will be applied first.
+     *
+     * @param s the uniform scale factor
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 scaleAround(double s, Double2R pivot, @Mutated Double3x3 dest) {
+        return scaleAround(s, pivot.x(), pivot.y(), dest);
+    }
+
+
+    /**
+     * Apply a scaling by {@code s} about the pivot point {@code pivot} to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * S * v}, the scaling will be applied first.
+     *
+     * @param s the uniform scale factor
+     * @param pivot the pivot point
+     * @return this
+     */
+    public @Mutated Double3x3 scaleAround(double s, Double2R pivot) {
+        return scaleAround(s, pivot.x(), pivot.y());
+    }
+
+
+    /**
+     * Private body of {@code scaleAround}, specialized by runtime matrix properties; reached only
+     * through the public {@code scaleAround} dispatcher.
+     */
+    private Double3x3 scaleAround_identity(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        return preScaleAround_identity(s, pivotX, pivotY, dest);
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code scaleAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code scaleAround} dispatcher.
+     */
+    private Double3x3 scaleAround_identity_self(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        return preScaleAround_identity_self(s, pivotX, pivotY, dest);
+    }
+
+
+    /**
+     * Private body of {@code scaleAround}, specialized by runtime matrix properties; reached only
+     * through the public {@code scaleAround} dispatcher.
+     */
+    private Double3x3 scaleAround_translation(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = s;
+        d.m21 = 0.0;
+        d.m02 = this.m02 + pivotX - s * pivotX;
+        d.m12 = this.m12 + pivotY - s * pivotY;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code scaleAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code scaleAround} dispatcher.
+     */
+    private Double3x3 scaleAround_translation_self(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = s;
+        d.m11 = s;
+        d.m02 = this.m02 + pivotX - s * pivotX;
+        d.m12 = this.m12 + pivotY - s * pivotY;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code scaleAround}, specialized by runtime matrix properties; reached only
+     * through the public {@code scaleAround} dispatcher.
+     */
+    private Double3x3 scaleAround_orthogonal(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = pivotX - s * pivotX;
+        double _t3 = pivotY - s * pivotY;
+        double _buf0 = s * this.m00;
+        double _buf1 = s * this.m10;
+        d.m20 = 0.0;
+        double _buf2 = s * this.m01;
+        double _buf3 = s * this.m11;
+        d.m21 = 0.0;
+        d.m02 = this.m00 * _t2 + (this.m01 * _t3 + this.m02);
+        d.m12 = this.m10 * _t2 + (this.m11 * _t3 + this.m12);
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code scaleAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code scaleAround} dispatcher.
+     */
+    private Double3x3 scaleAround_orthogonal_self(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = pivotX - s * pivotX;
+        double _t3 = pivotY - s * pivotY;
+        double _buf0 = s * this.m00;
+        double _buf1 = s * this.m10;
+        double _buf2 = s * this.m01;
+        double _buf3 = s * this.m11;
+        d.m02 = this.m00 * _t2 + (this.m01 * _t3 + this.m02);
+        d.m12 = this.m10 * _t2 + (this.m11 * _t3 + this.m12);
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code scaleAround}, specialized by runtime matrix properties; reached only
+     * through the public {@code scaleAround} dispatcher.
+     */
+    private Double3x3 scaleAround_general(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = pivotX - s * pivotX;
+        double _t3 = pivotY - s * pivotY;
+        double _buf0 = s * this.m00;
+        double _buf1 = s * this.m10;
+        double _buf2 = s * this.m20;
+        double _buf3 = s * this.m01;
+        double _buf4 = s * this.m11;
+        double _buf5 = s * this.m21;
+        d.m02 = this.m00 * _t2 + (this.m01 * _t3 + this.m02);
+        d.m12 = this.m10 * _t2 + (this.m11 * _t3 + this.m12);
+        d.m22 = this.m20 * _t2 + (this.m21 * _t3 + this.m22);
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a scaling by {@code s} about the pivot point ({@code pivotX}, {@code pivotY}) to this
+     * matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * S * v}, the scaling will be applied first.
+     *
+     * @param s the uniform scale factor
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 scaleAround(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return scaleAround_identity(s, pivotX, pivotY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return scaleAround_translation(s, pivotX, pivotY, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return scaleAround_orthogonal(s, pivotX, pivotY, dest);
+        return scaleAround_general(s, pivotX, pivotY, dest);
+    }
+
+
+    /**
+     * Apply a scaling by {@code s} about the pivot point ({@code pivotX}, {@code pivotY}) to this
+     * matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * S * v}, the scaling will be applied first.
+     *
+     * @param s the uniform scale factor
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
+     * @return this
+     */
+    @Mutated public Double3x3 scaleAround(double s, double pivotX, double pivotY) {
+        if (Joml.RETURN_NEW) return scaleAround(s, pivotX, pivotY, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return scaleAround_identity_self(s, pivotX, pivotY, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return scaleAround_translation_self(s, pivotX, pivotY, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return scaleAround_orthogonal_self(s, pivotX, pivotY, this);
+        return scaleAround_general(s, pivotX, pivotY, this);
+    }
+
+
+    /**
+     * Apply a scaling by {@code s} about the pivot point {@code pivot} to this matrix and store the
+     * result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * S * v}, the scaling will be applied first.
+     *
+     * @param s the uniform scale factor
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 scaleAround(Double2R s, Double2R pivot, @Mutated Double3x3 dest) {
+        return scaleAround(s.x(), s.y(), pivot.x(), pivot.y(), dest);
+    }
+
+
+    /**
+     * Apply a scaling by {@code s} about the pivot point {@code pivot} to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * S * v}, the scaling will be applied first.
+     *
+     * @param s the uniform scale factor
+     * @param pivot the pivot point
+     * @return this
+     */
+    public @Mutated Double3x3 scaleAround(Double2R s, Double2R pivot) {
+        return scaleAround(s.x(), s.y(), pivot.x(), pivot.y());
+    }
+
+
+    /**
+     * Private body of {@code scaleAround}, specialized by runtime matrix properties; reached only
+     * through the public {@code scaleAround} dispatcher.
+     */
+    private Double3x3 scaleAround_identity(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        return preScaleAround_identity(sX, sY, pivotX, pivotY, dest);
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code scaleAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code scaleAround} dispatcher.
+     */
+    private Double3x3 scaleAround_identity_self(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        return preScaleAround_identity_self(sX, sY, pivotX, pivotY, dest);
+    }
+
+
+    /**
+     * Private body of {@code scaleAround}, specialized by runtime matrix properties; reached only
+     * through the public {@code scaleAround} dispatcher.
+     */
+    private Double3x3 scaleAround_translation(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = sX;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = sY;
+        d.m21 = 0.0;
+        d.m02 = this.m02 + pivotX - pivotX * sX;
+        d.m12 = this.m12 + pivotY - pivotY * sY;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code scaleAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code scaleAround} dispatcher.
+     */
+    private Double3x3 scaleAround_translation_self(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        d.m00 = sX;
+        d.m11 = sY;
+        d.m02 = this.m02 + pivotX - pivotX * sX;
+        d.m12 = this.m12 + pivotY - pivotY * sY;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code scaleAround}, specialized by runtime matrix properties; reached only
+     * through the public {@code scaleAround} dispatcher.
+     */
+    private Double3x3 scaleAround_orthogonal(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = pivotX - pivotX * sX;
+        double _t3 = pivotY - pivotY * sY;
+        double _buf0 = sX * this.m00;
+        double _buf1 = sX * this.m10;
+        d.m20 = 0.0;
+        double _buf2 = sY * this.m01;
+        double _buf3 = sY * this.m11;
+        d.m21 = 0.0;
+        d.m02 = this.m00 * _t2 + (this.m01 * _t3 + this.m02);
+        d.m12 = this.m10 * _t2 + (this.m11 * _t3 + this.m12);
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code scaleAround}, specialized by runtime matrix
+     * properties; reached only through the public {@code scaleAround} dispatcher.
+     */
+    private Double3x3 scaleAround_orthogonal_self(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = pivotX - pivotX * sX;
+        double _t3 = pivotY - pivotY * sY;
+        double _buf0 = sX * this.m00;
+        double _buf1 = sX * this.m10;
+        double _buf2 = sY * this.m01;
+        double _buf3 = sY * this.m11;
+        d.m02 = this.m00 * _t2 + (this.m01 * _t3 + this.m02);
+        d.m12 = this.m10 * _t2 + (this.m11 * _t3 + this.m12);
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code scaleAround}, specialized by runtime matrix properties; reached only
+     * through the public {@code scaleAround} dispatcher.
+     */
+    private Double3x3 scaleAround_general(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t2 = pivotX - pivotX * sX;
+        double _t3 = pivotY - pivotY * sY;
+        double _buf0 = sX * this.m00;
+        double _buf1 = sX * this.m10;
+        double _buf2 = sX * this.m20;
+        double _buf3 = sY * this.m01;
+        double _buf4 = sY * this.m11;
+        double _buf5 = sY * this.m21;
+        d.m02 = this.m00 * _t2 + (this.m01 * _t3 + this.m02);
+        d.m12 = this.m10 * _t2 + (this.m11 * _t3 + this.m12);
+        d.m22 = this.m20 * _t2 + (this.m21 * _t3 + this.m22);
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a scaling by ({@code sX}, {@code sY}) about the pivot point ({@code pivotX},
+     * {@code pivotY}) to this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * S * v}, the scaling will be applied first.
+     *
+     * @param sX the {@code x} component of the vector {@code (sX, sY)}
+     * @param sY the {@code y} component of the vector {@code (sX, sY)}
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 scaleAround(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return scaleAround_identity(sX, sY, pivotX, pivotY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return scaleAround_translation(sX, sY, pivotX, pivotY, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return scaleAround_orthogonal(sX, sY, pivotX, pivotY, dest);
+        return scaleAround_general(sX, sY, pivotX, pivotY, dest);
+    }
+
+
+    /**
+     * Apply a scaling by ({@code sX}, {@code sY}) about the pivot point ({@code pivotX},
+     * {@code pivotY}) to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * S * v}, the scaling will be applied first.
+     *
+     * @param sX the {@code x} component of the vector {@code (sX, sY)}
+     * @param sY the {@code y} component of the vector {@code (sX, sY)}
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
+     * @return this
+     */
+    @Mutated public Double3x3 scaleAround(double sX, double sY, double pivotX, double pivotY) {
+        if (Joml.RETURN_NEW) return scaleAround(sX, sY, pivotX, pivotY, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return scaleAround_identity_self(sX, sY, pivotX, pivotY, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return scaleAround_translation_self(sX, sY, pivotX, pivotY, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return scaleAround_orthogonal_self(sX, sY, pivotX, pivotY, this);
+        return scaleAround_general(sX, sY, pivotX, pivotY, this);
+    }
+
+
+    /**
+     * Apply a translation by {@code v} to this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code T} the translation matrix, then the new matrix
+     * will be {@code M * T}. So when transforming a vector {@code p} with the new matrix by using
+     * {@code M * T * p}, the translation will be applied first.
+     *
+     * @param v the translation offsets
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 translate(Double2R v, @Mutated Double3x3 dest) {
+        return translate(v.x(), v.y(), dest);
+    }
+
+
+    /**
+     * Apply a translation by {@code v} to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code T} the translation matrix, then the new matrix
+     * will be {@code M * T}. So when transforming a vector {@code p} with the new matrix by using
+     * {@code M * T * p}, the translation will be applied first.
+     *
+     * @param v the translation offsets
+     * @return this
+     */
+    public @Mutated Double3x3 translate(Double2R v) {
+        return translate(v.x(), v.y());
+    }
+
+
+    /**
+     * Private body of {@code translate}, specialized by runtime matrix properties; reached only
+     * through the public {@code translate} dispatcher.
+     */
+    private Double3x3 translate_orthogonal_affine(double vX, double vY, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = this.m00;
+        double _buf1 = this.m10;
+        d.m20 = 0.0;
+        double _buf2 = this.m01;
+        double _buf3 = this.m11;
+        d.m21 = 0.0;
+        d.m02 = this.m00 * vX + (this.m01 * vY + this.m02);
+        d.m12 = this.m10 * vX + (this.m11 * vY + this.m12);
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code translate}, specialized by runtime matrix
+     * properties; reached only through the public {@code translate} dispatcher.
+     */
+    private Double3x3 translate_orthogonal_affine_self(double vX, double vY, @Mutated Double3x3 dest, int _props) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = this.m00;
+        double _buf1 = this.m10;
+        double _buf2 = this.m01;
+        double _buf3 = this.m11;
+        d.m02 = this.m00 * vX + (this.m01 * vY + this.m02);
+        d.m12 = this.m10 * vX + (this.m11 * vY + this.m12);
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = _props;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code translate}, specialized by runtime matrix properties; reached only
+     * through the public {@code translate} dispatcher.
+     */
+    private Double3x3 translate_identity(double vX, double vY, @Mutated Double3x3 dest) {
+        return preTranslate_identity(vX, vY, dest);
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code translate}, specialized by runtime matrix
+     * properties; reached only through the public {@code translate} dispatcher.
+     */
+    private Double3x3 translate_identity_self(double vX, double vY, @Mutated Double3x3 dest) {
+        return preTranslate_identity_self(vX, vY, dest);
+    }
+
+
+    /**
+     * Private body of {@code translate}, specialized by runtime matrix properties; reached only
+     * through the public {@code translate} dispatcher.
+     */
+    private Double3x3 translate_translation(double vX, double vY, @Mutated Double3x3 dest) {
+        return preTranslate_translation(vX, vY, dest);
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code translate}, specialized by runtime matrix
+     * properties; reached only through the public {@code translate} dispatcher.
+     */
+    private Double3x3 translate_translation_self(double vX, double vY, @Mutated Double3x3 dest) {
+        return preTranslate_translation_self(vX, vY, dest);
+    }
+
+
+    /**
+     * Private body of {@code translate}, specialized by runtime matrix properties; reached only
+     * through the public {@code translate} dispatcher.
+     */
+    private Double3x3 translate_general(double vX, double vY, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _buf0 = this.m00;
+        double _buf1 = this.m10;
+        double _buf2 = this.m20;
+        double _buf3 = this.m01;
+        double _buf4 = this.m11;
+        double _buf5 = this.m21;
+        d.m02 = this.m00 * vX + (this.m01 * vY + this.m02);
+        d.m12 = this.m10 * vX + (this.m11 * vY + this.m12);
+        d.m22 = this.m20 * vX + (this.m21 * vY + this.m22);
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a translation by ({@code vX}, {@code vY}) to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code T} the translation matrix, then the new matrix
+     * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * T * v}, the translation will be applied first.
+     *
+     * @param vX the {@code x} component of the translation offsets {@code (vX, vY)}
+     * @param vY the {@code y} component of the translation offsets {@code (vX, vY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 translate(double vX, double vY, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return translate_identity(vX, vY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return translate_translation(vX, vY, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return translate_orthogonal_affine(vX, vY, dest, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        return translate_general(vX, vY, dest);
+    }
+
+
+    /**
+     * Apply a translation by ({@code vX}, {@code vY}) to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code T} the translation matrix, then the new matrix
+     * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * T * v}, the translation will be applied first.
+     *
+     * @param vX the {@code x} component of the translation offsets {@code (vX, vY)}
+     * @param vY the {@code y} component of the translation offsets {@code (vX, vY)}
+     * @return this
+     */
+    @Mutated public Double3x3 translate(double vX, double vY) {
+        if (Joml.RETURN_NEW) return translate(vX, vY, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return translate_identity_self(vX, vY, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return translate_translation_self(vX, vY, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return translate_orthogonal_affine_self(vX, vY, this, (p & Joml.UNIQUE_ORTHOGONAL) | Joml.BIT_AFFINE);
+        return translate_general(vX, vY, this);
+    }
+
+
+    /**
+     * Private body of {@code view}, specialized by runtime matrix properties; reached only through
+     * the public {@code view} dispatcher.
+     */
+    private Double3x3 view_identity(double left, double right, double bottom, double top, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = right - left;
+        double _t0_inv = 1.0 / _t0;
+        double _t1 = top - bottom;
+        double _t1_inv = 1.0 / _t1;
+        d.m00 = 2.0 * _t0_inv;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 2.0 * _t1_inv;
+        d.m21 = 0.0;
+        d.m02 = -((left + right) * _t0_inv);
+        d.m12 = -((bottom + top) * _t1_inv);
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code view}, specialized by runtime matrix properties;
+     * reached only through the public {@code view} dispatcher.
+     */
+    private Double3x3 view_identity_self(double left, double right, double bottom, double top, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = right - left;
+        double _t0_inv = 1.0 / _t0;
+        double _t1 = top - bottom;
+        double _t1_inv = 1.0 / _t1;
+        d.m00 = 2.0 * _t0_inv;
+        d.m11 = 2.0 * _t1_inv;
+        d.m02 = -((left + right) * _t0_inv);
+        d.m12 = -((bottom + top) * _t1_inv);
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code view}, specialized by runtime matrix properties; reached only through
+     * the public {@code view} dispatcher.
+     */
+    private Double3x3 view_translation(double left, double right, double bottom, double top, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = right - left;
+        double _t0_inv = 1.0 / _t0;
+        double _t1 = top - bottom;
+        double _t1_inv = 1.0 / _t1;
+        d.m00 = 2.0 * _t0_inv;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = 2.0 * _t1_inv;
+        d.m21 = 0.0;
+        d.m02 = this.m02 - (left + right) * _t0_inv;
+        d.m12 = this.m12 - (bottom + top) * _t1_inv;
+        d.m22 = 1.0;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code view}, specialized by runtime matrix properties;
+     * reached only through the public {@code view} dispatcher.
+     */
+    private Double3x3 view_translation_self(double left, double right, double bottom, double top, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = right - left;
+        double _t0_inv = 1.0 / _t0;
+        double _t1 = top - bottom;
+        double _t1_inv = 1.0 / _t1;
+        d.m00 = 2.0 * _t0_inv;
+        d.m11 = 2.0 * _t1_inv;
+        d.m02 = this.m02 - (left + right) * _t0_inv;
+        d.m12 = this.m12 - (bottom + top) * _t1_inv;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code view}, specialized by runtime matrix properties; reached only through
+     * the public {@code view} dispatcher.
+     */
+    private Double3x3 view_orthogonal(double left, double right, double bottom, double top, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = right - left;
+        double _t0_inv = 1.0 / _t0;
+        double _t1 = top - bottom;
+        double _t1_inv = 1.0 / _t1;
+        double _t2 = left + right;
+        double _t3 = bottom + top;
+        double _buf0 = 2.0 * this.m00 * _t0_inv;
+        double _buf1 = 2.0 * this.m10 * _t0_inv;
+        d.m20 = 0.0;
+        double _buf2 = 2.0 * this.m01 * _t1_inv;
+        double _buf3 = 2.0 * this.m11 * _t1_inv;
+        d.m21 = 0.0;
+        d.m02 = this.m02 - this.m00 * _t2 * _t0_inv - this.m01 * _t3 * _t1_inv;
+        d.m12 = this.m12 - this.m10 * _t2 * _t0_inv - this.m11 * _t3 * _t1_inv;
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code view}, specialized by runtime matrix properties;
+     * reached only through the public {@code view} dispatcher.
+     */
+    private Double3x3 view_orthogonal_self(double left, double right, double bottom, double top, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = right - left;
+        double _t0_inv = 1.0 / _t0;
+        double _t1 = top - bottom;
+        double _t1_inv = 1.0 / _t1;
+        double _t2 = left + right;
+        double _t3 = bottom + top;
+        double _buf0 = 2.0 * this.m00 * _t0_inv;
+        double _buf1 = 2.0 * this.m10 * _t0_inv;
+        double _buf2 = 2.0 * this.m01 * _t1_inv;
+        double _buf3 = 2.0 * this.m11 * _t1_inv;
+        d.m02 = this.m02 - this.m00 * _t2 * _t0_inv - this.m01 * _t3 * _t1_inv;
+        d.m12 = this.m12 - this.m10 * _t2 * _t0_inv - this.m11 * _t3 * _t1_inv;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code view}, specialized by runtime matrix properties; reached only through
+     * the public {@code view} dispatcher.
+     */
+    private Double3x3 view_affine(double left, double right, double bottom, double top, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = right - left;
+        double _t0_inv = 1.0 / _t0;
+        double _t1 = top - bottom;
+        double _t1_inv = 1.0 / _t1;
+        double _t2 = left + right;
+        double _t3 = bottom + top;
+        double _buf0 = 2.0 * this.m00 * _t0_inv;
+        double _buf1 = 2.0 * this.m10 * _t0_inv;
+        d.m20 = 0.0;
+        double _buf2 = 2.0 * this.m01 * _t1_inv;
+        double _buf3 = 2.0 * this.m11 * _t1_inv;
+        d.m21 = 0.0;
+        d.m02 = this.m02 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv);
+        d.m12 = this.m12 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv);
+        d.m22 = 1.0;
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code view}, specialized by runtime matrix properties;
+     * reached only through the public {@code view} dispatcher.
+     */
+    private Double3x3 view_affine_self(double left, double right, double bottom, double top, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = right - left;
+        double _t0_inv = 1.0 / _t0;
+        double _t1 = top - bottom;
+        double _t1_inv = 1.0 / _t1;
+        double _t2 = left + right;
+        double _t3 = bottom + top;
+        double _buf0 = 2.0 * this.m00 * _t0_inv;
+        double _buf1 = 2.0 * this.m10 * _t0_inv;
+        double _buf2 = 2.0 * this.m01 * _t1_inv;
+        double _buf3 = 2.0 * this.m11 * _t1_inv;
+        d.m02 = this.m02 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv);
+        d.m12 = this.m12 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv);
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m01 = _buf2;
+        d.m11 = _buf3;
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code view}, specialized by runtime matrix properties; reached only through
+     * the public {@code view} dispatcher.
+     */
+    private Double3x3 view_general(double left, double right, double bottom, double top, @Mutated Double3x3 dest) {
+        Double3x3Impl d = (Double3x3Impl) dest;
+        double _t0 = right - left;
+        double _t0_inv = 1.0 / _t0;
+        double _t1 = top - bottom;
+        double _t1_inv = 1.0 / _t1;
+        double _t2 = left + right;
+        double _t3 = bottom + top;
+        double _buf0 = 2.0 * this.m00 * _t0_inv;
+        double _buf1 = 2.0 * this.m10 * _t0_inv;
+        double _buf2 = 2.0 * this.m20 * _t0_inv;
+        double _buf3 = 2.0 * this.m01 * _t1_inv;
+        double _buf4 = 2.0 * this.m11 * _t1_inv;
+        double _buf5 = 2.0 * this.m21 * _t1_inv;
+        d.m02 = this.m02 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv);
+        d.m12 = this.m12 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv);
+        d.m22 = this.m22 + (-(this.m20 * _t2 * _t0_inv) - this.m21 * _t3 * _t1_inv);
+        d.m00 = _buf0;
+        d.m10 = _buf1;
+        d.m20 = _buf2;
+        d.m01 = _buf3;
+        d.m11 = _buf4;
+        d.m21 = _buf5;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Apply a 2D view transformation that maps the rectangle {@code [left, right] x [bottom, top]}
+     * onto {@code [-1, +1] x [-1, +1]} to this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code V} the view matrix, then the new matrix will
+     * be {@code M * V}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * V * v}, the view will be applied first.
+     *
+     * @param left the distance to the left edge of the view rectangle
+     * @param right the distance to the right edge of the view rectangle
+     * @param bottom the distance to the bottom edge of the view rectangle
+     * @param top the distance to the top edge of the view rectangle
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 view(double left, double right, double bottom, double top, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return view_identity(left, right, bottom, top, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return view_translation(left, right, bottom, top, dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return view_orthogonal(left, right, bottom, top, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return view_affine(left, right, bottom, top, dest);
+        return view_general(left, right, bottom, top, dest);
+    }
+
+
+    /**
+     * Apply a 2D view transformation that maps the rectangle {@code [left, right] x [bottom, top]}
+     * onto {@code [-1, +1] x [-1, +1]} to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code V} the view matrix, then the new matrix will
+     * be {@code M * V}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * V * v}, the view will be applied first.
+     *
+     * @param left the distance to the left edge of the view rectangle
+     * @param right the distance to the right edge of the view rectangle
+     * @param bottom the distance to the bottom edge of the view rectangle
+     * @param top the distance to the top edge of the view rectangle
+     * @return this
+     */
+    @Mutated public Double3x3 view(double left, double right, double bottom, double top) {
+        if (Joml.RETURN_NEW) return view(left, right, bottom, top, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return view_identity_self(left, right, bottom, top, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return view_translation_self(left, right, bottom, top, this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return view_orthogonal_self(left, right, bottom, top, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return view_affine_self(left, right, bottom, top, this);
+        return view_general(left, right, bottom, top, this);
+    }
+
+
+    /**
+     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     *
+     * @param v the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 mul(Double3R v, @Mutated Double3 dest) {
+        return mul(v.x(), v.y(), v.z(), dest);
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3 mul_identity(double vX, double vY, double vZ, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        d.x = vX;
+        d.y = vY;
+        d.z = vZ;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3 mul_translation(double vX, double vY, double vZ, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        d.x = this.m02 * vZ + vX;
+        d.y = this.m12 * vZ + vY;
+        d.z = vZ;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3 mul_general(double vX, double vY, double vZ, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        d.x = this.m00 * vX + this.m01 * vY + this.m02 * vZ;
+        d.y = this.m10 * vX + this.m11 * vY + this.m12 * vZ;
+        d.z = this.m20 * vX + this.m21 * vY + this.m22 * vZ;
+        return d;
+    }
+
+
+    /**
+     * Multiply this matrix by the given vector and store the result in {@code dest}.
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
+     * @param vZ the {@code z} component of the vector {@code (vX, vY, vZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 mul(double vX, double vY, double vZ, @Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return mul_identity(vX, vY, vZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation(vX, vY, vZ, dest);
+        return mul_general(vX, vY, vZ, dest);
+    }
+
+    public double m00() { return this.m00; }
+    public double m01() { return this.m01; }
+    public double m02() { return this.m02; }
+    public double m10() { return this.m10; }
+    public double m11() { return this.m11; }
+    public double m12() { return this.m12; }
+    public double m20() { return this.m20; }
+    public double m21() { return this.m21; }
+    public double m22() { return this.m22; }
+
+    @Override public String toString() {
+        return "Double3x3(\n    " + m00() + ", " + m01() + ", " + m02() + "\n    " + m10() + ", " + m11() + ", " + m12() + "\n    " + m20() + ", " + m21() + ", " + m22() + "\n)";
+    }
+
+    @Override public boolean equals(@org.jspecify.annotations.Nullable Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Double3x3Impl)) return false;
+        Double3x3Impl o = (Double3x3Impl) obj;
+        return Double.doubleToLongBits(m00) == Double.doubleToLongBits(o.m00)
+            && Double.doubleToLongBits(m01) == Double.doubleToLongBits(o.m01)
+            && Double.doubleToLongBits(m02) == Double.doubleToLongBits(o.m02)
+            && Double.doubleToLongBits(m10) == Double.doubleToLongBits(o.m10)
+            && Double.doubleToLongBits(m11) == Double.doubleToLongBits(o.m11)
+            && Double.doubleToLongBits(m12) == Double.doubleToLongBits(o.m12)
+            && Double.doubleToLongBits(m20) == Double.doubleToLongBits(o.m20)
+            && Double.doubleToLongBits(m21) == Double.doubleToLongBits(o.m21)
+            && Double.doubleToLongBits(m22) == Double.doubleToLongBits(o.m22);
+    }
+
+    @Override public int hashCode() {
+        int h = 1;
+        h = 31 * h + (int)(Double.doubleToLongBits(m00) ^ (Double.doubleToLongBits(m00) >>> 32));
+        h = 31 * h + (int)(Double.doubleToLongBits(m01) ^ (Double.doubleToLongBits(m01) >>> 32));
+        h = 31 * h + (int)(Double.doubleToLongBits(m02) ^ (Double.doubleToLongBits(m02) >>> 32));
+        h = 31 * h + (int)(Double.doubleToLongBits(m10) ^ (Double.doubleToLongBits(m10) >>> 32));
+        h = 31 * h + (int)(Double.doubleToLongBits(m11) ^ (Double.doubleToLongBits(m11) >>> 32));
+        h = 31 * h + (int)(Double.doubleToLongBits(m12) ^ (Double.doubleToLongBits(m12) >>> 32));
+        h = 31 * h + (int)(Double.doubleToLongBits(m20) ^ (Double.doubleToLongBits(m20) >>> 32));
+        h = 31 * h + (int)(Double.doubleToLongBits(m21) ^ (Double.doubleToLongBits(m21) >>> 32));
+        h = 31 * h + (int)(Double.doubleToLongBits(m22) ^ (Double.doubleToLongBits(m22) >>> 32));
+        return h;
+    }
+
+    @Override public boolean isFinite() {
+        return Double.isFinite(m00)
+            && Double.isFinite(m01)
+            && Double.isFinite(m02)
+            && Double.isFinite(m10)
+            && Double.isFinite(m11)
+            && Double.isFinite(m12)
+            && Double.isFinite(m20)
+            && Double.isFinite(m21)
+            && Double.isFinite(m22);
+    }
+
+    @Override public boolean equalsEpsilon(Double3x3R other, double epsilon) {
+        return Math.abs(m00 - other.m00()) <= epsilon
+            && Math.abs(m01 - other.m01()) <= epsilon
+            && Math.abs(m02 - other.m02()) <= epsilon
+            && Math.abs(m10 - other.m10()) <= epsilon
+            && Math.abs(m11 - other.m11()) <= epsilon
+            && Math.abs(m12 - other.m12()) <= epsilon
+            && Math.abs(m20 - other.m20()) <= epsilon
+            && Math.abs(m21 - other.m21()) <= epsilon
+            && Math.abs(m22 - other.m22()) <= epsilon;
+    }
+
+    public double[] storeCM(@Mutated double[] dest, int offset) {
+        dest[offset + 0] = this.m00;
+        dest[offset + 1] = this.m10;
+        dest[offset + 2] = this.m20;
+        dest[offset + 3] = this.m01;
+        dest[offset + 4] = this.m11;
+        dest[offset + 5] = this.m21;
+        dest[offset + 6] = this.m02;
+        dest[offset + 7] = this.m12;
+        dest[offset + 8] = this.m22;
+        return dest;
+    }
+    public @Mutated Double3x3 loadCM(double[] src, int offset) {
+        this.m00 = src[offset + 0];
+        this.m10 = src[offset + 1];
+        this.m20 = src[offset + 2];
+        this.m01 = src[offset + 3];
+        this.m11 = src[offset + 4];
+        this.m21 = src[offset + 5];
+        this.m02 = src[offset + 6];
+        this.m12 = src[offset + 7];
+        this.m22 = src[offset + 8];
+        this.properties = determineProperties();
+        return this;
+    }
+    public DoubleBuffer storeCMAbsolute(int index, @Mutated DoubleBuffer buf) {
+        return BB_OPS.storeCMAbsolute(this, index, buf);
+    }
+    @Mutated public Double3x3 loadCMAbsolute(int index, DoubleBuffer buf) {
+        return BB_OPS.loadCMAbsolute(this, index, buf);
+    }
+    public ByteBuffer storeCMAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.storeCMAbsolute(this, index, buf);
+    }
+    public Double3x3 loadCMAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.loadCMAbsolute(this, index, buf);
+    }
+    public Double3x3 storeCMUnsafe(long address) {
+        return RAW_OPS.storeCMUnsafe(this, address);
+    }
+    @Mutated public Double3x3 loadCMUnsafe(long address) {
+        return RAW_OPS.loadCMUnsafe(this, address);
+    }
+    public MemorySegment storeCM(long offset, MemorySegment dest) {
+        return SEG_OPS.storeCM(this, offset, dest);
+    }
+    public Double3x3 loadCM(long offset, MemorySegment src) {
+        return SEG_OPS.loadCM(this, offset, src);
+    }
+
+    public float[] storeCM(@Mutated float[] dest, int offset) {
+        dest[offset + 0] = (float) this.m00;
+        dest[offset + 1] = (float) this.m10;
+        dest[offset + 2] = (float) this.m20;
+        dest[offset + 3] = (float) this.m01;
+        dest[offset + 4] = (float) this.m11;
+        dest[offset + 5] = (float) this.m21;
+        dest[offset + 6] = (float) this.m02;
+        dest[offset + 7] = (float) this.m12;
+        dest[offset + 8] = (float) this.m22;
+        return dest;
+    }
+    public @Mutated Double3x3 loadCM(float[] src, int offset) {
+        this.m00 = src[offset + 0];
+        this.m10 = src[offset + 1];
+        this.m20 = src[offset + 2];
+        this.m01 = src[offset + 3];
+        this.m11 = src[offset + 4];
+        this.m21 = src[offset + 5];
+        this.m02 = src[offset + 6];
+        this.m12 = src[offset + 7];
+        this.m22 = src[offset + 8];
+        this.properties = determineProperties();
+        return this;
+    }
+    public FloatBuffer storeCMAbsolute(int index, @Mutated FloatBuffer buf) {
+        return BB_OPS.storeCMAbsolute(this, index, buf);
+    }
+    @Mutated public Double3x3 loadCMAbsolute(int index, FloatBuffer buf) {
+        return BB_OPS.loadCMAbsolute(this, index, buf);
+    }
+    public ByteBuffer storeCMFloatAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.storeCMFloatAbsolute(this, index, buf);
+    }
+    public Double3x3 loadCMFloatAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.loadCMFloatAbsolute(this, index, buf);
+    }
+    public Double3x3 storeCMFloatUnsafe(long address) {
+        return RAW_OPS.storeCMFloatUnsafe(this, address);
+    }
+    @Mutated public Double3x3 loadCMFloatUnsafe(long address) {
+        return RAW_OPS.loadCMFloatUnsafe(this, address);
+    }
+    public MemorySegment storeCMFloat(long offset, MemorySegment dest) {
+        return SEG_OPS.storeCMFloat(this, offset, dest);
+    }
+    public Double3x3 loadCMFloat(long offset, MemorySegment src) {
+        return SEG_OPS.loadCMFloat(this, offset, src);
+    }
+
+    public double[] storeRM(@Mutated double[] dest, int offset) {
+        dest[offset + 0] = this.m00;
+        dest[offset + 1] = this.m01;
+        dest[offset + 2] = this.m02;
+        dest[offset + 3] = this.m10;
+        dest[offset + 4] = this.m11;
+        dest[offset + 5] = this.m12;
+        dest[offset + 6] = this.m20;
+        dest[offset + 7] = this.m21;
+        dest[offset + 8] = this.m22;
+        return dest;
+    }
+    public @Mutated Double3x3 loadRM(double[] src, int offset) {
+        this.m00 = src[offset + 0];
+        this.m01 = src[offset + 1];
+        this.m02 = src[offset + 2];
+        this.m10 = src[offset + 3];
+        this.m11 = src[offset + 4];
+        this.m12 = src[offset + 5];
+        this.m20 = src[offset + 6];
+        this.m21 = src[offset + 7];
+        this.m22 = src[offset + 8];
+        this.properties = determineProperties();
+        return this;
+    }
+    public DoubleBuffer storeRMAbsolute(int index, @Mutated DoubleBuffer buf) {
+        return BB_OPS.storeRMAbsolute(this, index, buf);
+    }
+    @Mutated public Double3x3 loadRMAbsolute(int index, DoubleBuffer buf) {
+        return BB_OPS.loadRMAbsolute(this, index, buf);
+    }
+    public ByteBuffer storeRMAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.storeRMAbsolute(this, index, buf);
+    }
+    public Double3x3 loadRMAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.loadRMAbsolute(this, index, buf);
+    }
+    public Double3x3 storeRMUnsafe(long address) {
+        return RAW_OPS.storeRMUnsafe(this, address);
+    }
+    @Mutated public Double3x3 loadRMUnsafe(long address) {
+        return RAW_OPS.loadRMUnsafe(this, address);
+    }
+    public MemorySegment storeRM(long offset, MemorySegment dest) {
+        return SEG_OPS.storeRM(this, offset, dest);
+    }
+    public Double3x3 loadRM(long offset, MemorySegment src) {
+        return SEG_OPS.loadRM(this, offset, src);
+    }
+
+    public float[] storeRM(@Mutated float[] dest, int offset) {
+        dest[offset + 0] = (float) this.m00;
+        dest[offset + 1] = (float) this.m01;
+        dest[offset + 2] = (float) this.m02;
+        dest[offset + 3] = (float) this.m10;
+        dest[offset + 4] = (float) this.m11;
+        dest[offset + 5] = (float) this.m12;
+        dest[offset + 6] = (float) this.m20;
+        dest[offset + 7] = (float) this.m21;
+        dest[offset + 8] = (float) this.m22;
+        return dest;
+    }
+    public @Mutated Double3x3 loadRM(float[] src, int offset) {
+        this.m00 = src[offset + 0];
+        this.m01 = src[offset + 1];
+        this.m02 = src[offset + 2];
+        this.m10 = src[offset + 3];
+        this.m11 = src[offset + 4];
+        this.m12 = src[offset + 5];
+        this.m20 = src[offset + 6];
+        this.m21 = src[offset + 7];
+        this.m22 = src[offset + 8];
+        this.properties = determineProperties();
+        return this;
+    }
+    public FloatBuffer storeRMAbsolute(int index, @Mutated FloatBuffer buf) {
+        return BB_OPS.storeRMAbsolute(this, index, buf);
+    }
+    @Mutated public Double3x3 loadRMAbsolute(int index, FloatBuffer buf) {
+        return BB_OPS.loadRMAbsolute(this, index, buf);
+    }
+    public ByteBuffer storeRMFloatAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.storeRMFloatAbsolute(this, index, buf);
+    }
+    public Double3x3 loadRMFloatAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.loadRMFloatAbsolute(this, index, buf);
+    }
+    public Double3x3 storeRMFloatUnsafe(long address) {
+        return RAW_OPS.storeRMFloatUnsafe(this, address);
+    }
+    @Mutated public Double3x3 loadRMFloatUnsafe(long address) {
+        return RAW_OPS.loadRMFloatUnsafe(this, address);
+    }
+    public MemorySegment storeRMFloat(long offset, MemorySegment dest) {
+        return SEG_OPS.storeRMFloat(this, offset, dest);
+    }
+    public Double3x3 loadRMFloat(long offset, MemorySegment src) {
+        return SEG_OPS.loadRMFloat(this, offset, src);
+    }
+
+    public double[] storeCM(@Mutated double[] dest, int offset, int stride) {
+        int _p1 = offset + stride;
+        int _p2 = _p1 + stride;
+        dest[offset] = this.m00;
+        dest[offset + 1] = this.m10;
+        dest[offset + 2] = this.m20;
+        dest[_p1] = this.m01;
+        dest[_p1 + 1] = this.m11;
+        dest[_p1 + 2] = this.m21;
+        dest[_p2] = this.m02;
+        dest[_p2 + 1] = this.m12;
+        dest[_p2 + 2] = this.m22;
+        return dest;
+    }
+    public @Mutated Double3x3 loadCM(double[] src, int offset, int stride) {
+        int _p1 = offset + stride;
+        int _p2 = _p1 + stride;
+        this.m00 = src[offset];
+        this.m10 = src[offset + 1];
+        this.m20 = src[offset + 2];
+        this.m01 = src[_p1];
+        this.m11 = src[_p1 + 1];
+        this.m21 = src[_p1 + 2];
+        this.m02 = src[_p2];
+        this.m12 = src[_p2 + 1];
+        this.m22 = src[_p2 + 2];
+        this.properties = determineProperties();
+        return this;
+    }
+    public DoubleBuffer storeCMAbsolute(int index, @Mutated DoubleBuffer buf, int stride) {
+        return BB_OPS.storeCMAbsolute(this, index, buf, stride);
+    }
+    @Mutated public Double3x3 loadCMAbsolute(int index, DoubleBuffer buf, int stride) {
+        return BB_OPS.loadCMAbsolute(this, index, buf, stride);
+    }
+    public ByteBuffer storeCMAbsolute(int index, ByteBuffer buf, int stride) {
+        return BB_OPS.storeCMAbsolute(this, index, buf, stride);
+    }
+    public Double3x3 loadCMAbsolute(int index, ByteBuffer buf, int stride) {
+        return BB_OPS.loadCMAbsolute(this, index, buf, stride);
+    }
+    public Double3x3 storeCMUnsafe(long address, int stride) {
+        return RAW_OPS.storeCMUnsafe(this, address, stride);
+    }
+    @Mutated public Double3x3 loadCMUnsafe(long address, int stride) {
+        return RAW_OPS.loadCMUnsafe(this, address, stride);
+    }
+    public MemorySegment storeCM(long offset, MemorySegment dest, int stride) {
+        return SEG_OPS.storeCM(this, offset, dest, stride);
+    }
+    public Double3x3 loadCM(long offset, MemorySegment src, int stride) {
+        return SEG_OPS.loadCM(this, offset, src, stride);
+    }
+
+    public float[] storeCM(@Mutated float[] dest, int offset, int stride) {
+        int _p1 = offset + stride;
+        int _p2 = _p1 + stride;
+        dest[offset] = (float) this.m00;
+        dest[offset + 1] = (float) this.m10;
+        dest[offset + 2] = (float) this.m20;
+        dest[_p1] = (float) this.m01;
+        dest[_p1 + 1] = (float) this.m11;
+        dest[_p1 + 2] = (float) this.m21;
+        dest[_p2] = (float) this.m02;
+        dest[_p2 + 1] = (float) this.m12;
+        dest[_p2 + 2] = (float) this.m22;
+        return dest;
+    }
+    public @Mutated Double3x3 loadCM(float[] src, int offset, int stride) {
+        int _p1 = offset + stride;
+        int _p2 = _p1 + stride;
+        this.m00 = src[offset];
+        this.m10 = src[offset + 1];
+        this.m20 = src[offset + 2];
+        this.m01 = src[_p1];
+        this.m11 = src[_p1 + 1];
+        this.m21 = src[_p1 + 2];
+        this.m02 = src[_p2];
+        this.m12 = src[_p2 + 1];
+        this.m22 = src[_p2 + 2];
+        this.properties = determineProperties();
+        return this;
+    }
+    public FloatBuffer storeCMAbsolute(int index, @Mutated FloatBuffer buf, int stride) {
+        return BB_OPS.storeCMAbsolute(this, index, buf, stride);
+    }
+    @Mutated public Double3x3 loadCMAbsolute(int index, FloatBuffer buf, int stride) {
+        return BB_OPS.loadCMAbsolute(this, index, buf, stride);
+    }
+    public ByteBuffer storeCMFloatAbsolute(int index, ByteBuffer buf, int stride) {
+        return BB_OPS.storeCMFloatAbsolute(this, index, buf, stride);
+    }
+    public Double3x3 loadCMFloatAbsolute(int index, ByteBuffer buf, int stride) {
+        return BB_OPS.loadCMFloatAbsolute(this, index, buf, stride);
+    }
+    public Double3x3 storeCMFloatUnsafe(long address, int stride) {
+        return RAW_OPS.storeCMFloatUnsafe(this, address, stride);
+    }
+    @Mutated public Double3x3 loadCMFloatUnsafe(long address, int stride) {
+        return RAW_OPS.loadCMFloatUnsafe(this, address, stride);
+    }
+    public MemorySegment storeCMFloat(long offset, MemorySegment dest, int stride) {
+        return SEG_OPS.storeCMFloat(this, offset, dest, stride);
+    }
+    public Double3x3 loadCMFloat(long offset, MemorySegment src, int stride) {
+        return SEG_OPS.loadCMFloat(this, offset, src, stride);
+    }
+
+    public double[] storeRM(@Mutated double[] dest, int offset, int stride) {
+        int _p1 = offset + stride;
+        int _p2 = _p1 + stride;
+        dest[offset] = this.m00;
+        dest[offset + 1] = this.m01;
+        dest[offset + 2] = this.m02;
+        dest[_p1] = this.m10;
+        dest[_p1 + 1] = this.m11;
+        dest[_p1 + 2] = this.m12;
+        dest[_p2] = this.m20;
+        dest[_p2 + 1] = this.m21;
+        dest[_p2 + 2] = this.m22;
+        return dest;
+    }
+    public @Mutated Double3x3 loadRM(double[] src, int offset, int stride) {
+        int _p1 = offset + stride;
+        int _p2 = _p1 + stride;
+        this.m00 = src[offset];
+        this.m01 = src[offset + 1];
+        this.m02 = src[offset + 2];
+        this.m10 = src[_p1];
+        this.m11 = src[_p1 + 1];
+        this.m12 = src[_p1 + 2];
+        this.m20 = src[_p2];
+        this.m21 = src[_p2 + 1];
+        this.m22 = src[_p2 + 2];
+        this.properties = determineProperties();
+        return this;
+    }
+    public DoubleBuffer storeRMAbsolute(int index, @Mutated DoubleBuffer buf, int stride) {
+        return BB_OPS.storeRMAbsolute(this, index, buf, stride);
+    }
+    @Mutated public Double3x3 loadRMAbsolute(int index, DoubleBuffer buf, int stride) {
+        return BB_OPS.loadRMAbsolute(this, index, buf, stride);
+    }
+    public ByteBuffer storeRMAbsolute(int index, ByteBuffer buf, int stride) {
+        return BB_OPS.storeRMAbsolute(this, index, buf, stride);
+    }
+    public Double3x3 loadRMAbsolute(int index, ByteBuffer buf, int stride) {
+        return BB_OPS.loadRMAbsolute(this, index, buf, stride);
+    }
+    public Double3x3 storeRMUnsafe(long address, int stride) {
+        return RAW_OPS.storeRMUnsafe(this, address, stride);
+    }
+    @Mutated public Double3x3 loadRMUnsafe(long address, int stride) {
+        return RAW_OPS.loadRMUnsafe(this, address, stride);
+    }
+    public MemorySegment storeRM(long offset, MemorySegment dest, int stride) {
+        return SEG_OPS.storeRM(this, offset, dest, stride);
+    }
+    public Double3x3 loadRM(long offset, MemorySegment src, int stride) {
+        return SEG_OPS.loadRM(this, offset, src, stride);
+    }
+
+    public float[] storeRM(@Mutated float[] dest, int offset, int stride) {
+        int _p1 = offset + stride;
+        int _p2 = _p1 + stride;
+        dest[offset] = (float) this.m00;
+        dest[offset + 1] = (float) this.m01;
+        dest[offset + 2] = (float) this.m02;
+        dest[_p1] = (float) this.m10;
+        dest[_p1 + 1] = (float) this.m11;
+        dest[_p1 + 2] = (float) this.m12;
+        dest[_p2] = (float) this.m20;
+        dest[_p2 + 1] = (float) this.m21;
+        dest[_p2 + 2] = (float) this.m22;
+        return dest;
+    }
+    public @Mutated Double3x3 loadRM(float[] src, int offset, int stride) {
+        int _p1 = offset + stride;
+        int _p2 = _p1 + stride;
+        this.m00 = src[offset];
+        this.m01 = src[offset + 1];
+        this.m02 = src[offset + 2];
+        this.m10 = src[_p1];
+        this.m11 = src[_p1 + 1];
+        this.m12 = src[_p1 + 2];
+        this.m20 = src[_p2];
+        this.m21 = src[_p2 + 1];
+        this.m22 = src[_p2 + 2];
+        this.properties = determineProperties();
+        return this;
+    }
+    public FloatBuffer storeRMAbsolute(int index, @Mutated FloatBuffer buf, int stride) {
+        return BB_OPS.storeRMAbsolute(this, index, buf, stride);
+    }
+    @Mutated public Double3x3 loadRMAbsolute(int index, FloatBuffer buf, int stride) {
+        return BB_OPS.loadRMAbsolute(this, index, buf, stride);
+    }
+    public ByteBuffer storeRMFloatAbsolute(int index, ByteBuffer buf, int stride) {
+        return BB_OPS.storeRMFloatAbsolute(this, index, buf, stride);
+    }
+    public Double3x3 loadRMFloatAbsolute(int index, ByteBuffer buf, int stride) {
+        return BB_OPS.loadRMFloatAbsolute(this, index, buf, stride);
+    }
+    public Double3x3 storeRMFloatUnsafe(long address, int stride) {
+        return RAW_OPS.storeRMFloatUnsafe(this, address, stride);
+    }
+    @Mutated public Double3x3 loadRMFloatUnsafe(long address, int stride) {
+        return RAW_OPS.loadRMFloatUnsafe(this, address, stride);
+    }
+    public MemorySegment storeRMFloat(long offset, MemorySegment dest, int stride) {
+        return SEG_OPS.storeRMFloat(this, offset, dest, stride);
+    }
+    public Double3x3 loadRMFloat(long offset, MemorySegment src, int stride) {
+        return SEG_OPS.loadRMFloat(this, offset, src, stride);
+    }
+
+    public double[] storeCM4x4(@Mutated double[] dest, int offset) {
+        dest[offset + 0] = this.m00;
+        dest[offset + 1] = this.m10;
+        dest[offset + 2] = this.m20;
+        dest[offset + 3] = 0.0;
+        dest[offset + 4] = this.m01;
+        dest[offset + 5] = this.m11;
+        dest[offset + 6] = this.m21;
+        dest[offset + 7] = 0.0;
+        dest[offset + 8] = this.m02;
+        dest[offset + 9] = this.m12;
+        dest[offset + 10] = this.m22;
+        dest[offset + 11] = 0.0;
+        dest[offset + 12] = 0.0;
+        dest[offset + 13] = 0.0;
+        dest[offset + 14] = 0.0;
+        dest[offset + 15] = 1.0;
+        return dest;
+    }
+    public DoubleBuffer storeCM4x4Absolute(int index, @Mutated DoubleBuffer buf) {
+        return BB_OPS.storeCM4x4Absolute(this, index, buf);
+    }
+    public ByteBuffer storeCM4x4Absolute(int index, ByteBuffer buf) {
+        return BB_OPS.storeCM4x4Absolute(this, index, buf);
+    }
+    public Double3x3 storeCM4x4Unsafe(long address) {
+        return RAW_OPS.storeCM4x4Unsafe(this, address);
+    }
+    public MemorySegment storeCM4x4(long offset, MemorySegment dest) {
+        return SEG_OPS.storeCM4x4(this, offset, dest);
+    }
+
+    public float[] storeCM4x4(@Mutated float[] dest, int offset) {
+        dest[offset + 0] = (float) this.m00;
+        dest[offset + 1] = (float) this.m10;
+        dest[offset + 2] = (float) this.m20;
+        dest[offset + 3] = (float) 0.0;
+        dest[offset + 4] = (float) this.m01;
+        dest[offset + 5] = (float) this.m11;
+        dest[offset + 6] = (float) this.m21;
+        dest[offset + 7] = (float) 0.0;
+        dest[offset + 8] = (float) this.m02;
+        dest[offset + 9] = (float) this.m12;
+        dest[offset + 10] = (float) this.m22;
+        dest[offset + 11] = (float) 0.0;
+        dest[offset + 12] = (float) 0.0;
+        dest[offset + 13] = (float) 0.0;
+        dest[offset + 14] = (float) 0.0;
+        dest[offset + 15] = (float) 1.0;
+        return dest;
+    }
+    public FloatBuffer storeCM4x4Absolute(int index, @Mutated FloatBuffer buf) {
+        return BB_OPS.storeCM4x4Absolute(this, index, buf);
+    }
+    public ByteBuffer storeCM4x4FloatAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.storeCM4x4FloatAbsolute(this, index, buf);
+    }
+    public Double3x3 storeCM4x4FloatUnsafe(long address) {
+        return RAW_OPS.storeCM4x4FloatUnsafe(this, address);
+    }
+    public MemorySegment storeCM4x4Float(long offset, MemorySegment dest) {
+        return SEG_OPS.storeCM4x4Float(this, offset, dest);
+    }
+
+    public double[] storeRM4x4(@Mutated double[] dest, int offset) {
+        dest[offset + 0] = this.m00;
+        dest[offset + 1] = this.m01;
+        dest[offset + 2] = this.m02;
+        dest[offset + 3] = 0.0;
+        dest[offset + 4] = this.m10;
+        dest[offset + 5] = this.m11;
+        dest[offset + 6] = this.m12;
+        dest[offset + 7] = 0.0;
+        dest[offset + 8] = this.m20;
+        dest[offset + 9] = this.m21;
+        dest[offset + 10] = this.m22;
+        dest[offset + 11] = 0.0;
+        dest[offset + 12] = 0.0;
+        dest[offset + 13] = 0.0;
+        dest[offset + 14] = 0.0;
+        dest[offset + 15] = 1.0;
+        return dest;
+    }
+    public DoubleBuffer storeRM4x4Absolute(int index, @Mutated DoubleBuffer buf) {
+        return BB_OPS.storeRM4x4Absolute(this, index, buf);
+    }
+    public ByteBuffer storeRM4x4Absolute(int index, ByteBuffer buf) {
+        return BB_OPS.storeRM4x4Absolute(this, index, buf);
+    }
+    public Double3x3 storeRM4x4Unsafe(long address) {
+        return RAW_OPS.storeRM4x4Unsafe(this, address);
+    }
+    public MemorySegment storeRM4x4(long offset, MemorySegment dest) {
+        return SEG_OPS.storeRM4x4(this, offset, dest);
+    }
+
+    public float[] storeRM4x4(@Mutated float[] dest, int offset) {
+        dest[offset + 0] = (float) this.m00;
+        dest[offset + 1] = (float) this.m01;
+        dest[offset + 2] = (float) this.m02;
+        dest[offset + 3] = (float) 0.0;
+        dest[offset + 4] = (float) this.m10;
+        dest[offset + 5] = (float) this.m11;
+        dest[offset + 6] = (float) this.m12;
+        dest[offset + 7] = (float) 0.0;
+        dest[offset + 8] = (float) this.m20;
+        dest[offset + 9] = (float) this.m21;
+        dest[offset + 10] = (float) this.m22;
+        dest[offset + 11] = (float) 0.0;
+        dest[offset + 12] = (float) 0.0;
+        dest[offset + 13] = (float) 0.0;
+        dest[offset + 14] = (float) 0.0;
+        dest[offset + 15] = (float) 1.0;
+        return dest;
+    }
+    public FloatBuffer storeRM4x4Absolute(int index, @Mutated FloatBuffer buf) {
+        return BB_OPS.storeRM4x4Absolute(this, index, buf);
+    }
+    public ByteBuffer storeRM4x4FloatAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.storeRM4x4FloatAbsolute(this, index, buf);
+    }
+    public Double3x3 storeRM4x4FloatUnsafe(long address) {
+        return RAW_OPS.storeRM4x4FloatUnsafe(this, address);
+    }
+    public MemorySegment storeRM4x4Float(long offset, MemorySegment dest) {
+        return SEG_OPS.storeRM4x4Float(this, offset, dest);
+    }
+
+}

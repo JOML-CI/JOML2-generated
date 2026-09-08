@@ -1,0 +1,373 @@
+package org.joml2.internal.types;
+
+import org.joml2.*;
+import org.joml2.Math;
+import org.joml2.internal.storeload.*;
+import java.nio.ByteBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+
+/**
+ * Generated implementation of {@link DoubleRay} backed by a {@code double[]} array.
+ * <p>
+ * Not part of the public API - obtain instances through the {@link Joml} factory methods.
+ */
+public final class DoubleRayImpl implements DoubleRay {
+
+    public double[] data;
+    static final DoubleRayBbOps BB_OPS =
+            Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE
+                    ? new DoubleRayBbOpsUnsafe()
+                    : new DoubleRayBbOpsApi();
+    static final DoubleRayRawOps RAW_OPS =
+            Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE
+                    ? new DoubleRayRawOpsUnsafe()
+                    : new DoubleRayRawOpsApi();
+
+    public DoubleRayImpl() {
+        data = new double[6];
+    }
+
+
+    /**
+     * Set this ray to the given values.
+     *
+     * @param v the ray
+     * @return this
+     */
+    public @Mutated DoubleRay set(DoubleRayR v) {
+        return set(v.oX(), v.oY(), v.oZ(), v.dX(), v.dY(), v.dZ());
+    }
+
+
+    /**
+     * Set this ray to the given values.
+     *
+     * @param vOX the {@code oX} component of the ray {@code (vOX, vOY, vOZ, vDX, vDY, vDZ)}
+     * @param vOY the {@code oY} component of the ray {@code (vOX, vOY, vOZ, vDX, vDY, vDZ)}
+     * @param vOZ the {@code oZ} component of the ray {@code (vOX, vOY, vOZ, vDX, vDY, vDZ)}
+     * @param vDX the {@code dX} component of the ray {@code (vOX, vOY, vOZ, vDX, vDY, vDZ)}
+     * @param vDY the {@code dY} component of the ray {@code (vOX, vOY, vOZ, vDX, vDY, vDZ)}
+     * @param vDZ the {@code dZ} component of the ray {@code (vOX, vOY, vOZ, vDX, vDY, vDZ)}
+     * @return this
+     */
+    @Mutated public DoubleRay set(double vOX, double vOY, double vOZ, double vDX, double vDY, double vDZ) {
+        double[] dd = this.data;
+        dd[0] = vOX;
+        dd[1] = vOY;
+        dd[2] = vOZ;
+        dd[3] = vDX;
+        dd[4] = vDY;
+        dd[5] = vDZ;
+        return this;
+    }
+
+
+    /**
+     * Set the direction of this ray to {@code d} and store the result in {@code dest}.
+     *
+     * @param d the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleRay setDirection(Double3R d, @Mutated DoubleRay dest) {
+        return setDirection(d.x(), d.y(), d.z(), dest);
+    }
+
+
+    /**
+     * Set the direction of this ray to ({@code dX}, {@code dY}, {@code dZ}) and store the result in
+     * {@code dest}.
+     *
+     * @param dX the {@code x} component of the vector {@code (dX, dY, dZ)}
+     * @param dY the {@code y} component of the vector {@code (dX, dY, dZ)}
+     * @param dZ the {@code z} component of the vector {@code (dX, dY, dZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleRay setDirection(double dX, double dY, double dZ, @Mutated DoubleRay dest) {
+        double[] sd = this.data;
+        double[] dd = ((DoubleRayImpl) dest).data;
+        dd[0] = sd[0];
+        dd[1] = sd[1];
+        dd[2] = sd[2];
+        dd[3] = dX;
+        dd[4] = dY;
+        dd[5] = dZ;
+        return dest;
+    }
+
+
+    /**
+     * Set the origin of this ray to {@code o} and store the result in {@code dest}.
+     *
+     * @param o the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleRay setOrigin(Double3R o, @Mutated DoubleRay dest) {
+        return setOrigin(o.x(), o.y(), o.z(), dest);
+    }
+
+
+    /**
+     * Set the origin of this ray to ({@code oX}, {@code oY}, {@code oZ}) and store the result in
+     * {@code dest}.
+     *
+     * @param oX the {@code x} component of the vector {@code (oX, oY, oZ)}
+     * @param oY the {@code y} component of the vector {@code (oX, oY, oZ)}
+     * @param oZ the {@code z} component of the vector {@code (oX, oY, oZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleRay setOrigin(double oX, double oY, double oZ, @Mutated DoubleRay dest) {
+        double[] sd = this.data;
+        double[] dd = ((DoubleRayImpl) dest).data;
+        dd[0] = oX;
+        dd[1] = oY;
+        dd[2] = oZ;
+        dd[3] = sd[3];
+        dd[4] = sd[4];
+        dd[5] = sd[5];
+        return dest;
+    }
+
+
+    /**
+     * Convert this ray to {@code float} precision and store the result in {@code dest}.
+     * <p>
+     * The conversion may lose precision or range.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public FloatRay toFloat(@Mutated FloatRay dest) {
+        double[] sd = this.data;
+        float[] dd = ((FloatRayImpl) dest).data;
+        dd[0] = (float) (sd[0]);
+        dd[1] = (float) (sd[1]);
+        dd[2] = (float) (sd[2]);
+        dd[3] = (float) (sd[3]);
+        dd[4] = (float) (sd[4]);
+        dd[5] = (float) (sd[5]);
+        return dest;
+    }
+
+
+    /**
+     * Transform this ray by {@code m} and store the result in {@code dest}.
+     *
+     * @param m the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleRay transform(Double3x4R m, @Mutated DoubleRay dest) {
+        double[] sd = this.data;
+        double[] mData = ((Double3x4Impl) m).data;
+        double[] dd = ((DoubleRayImpl) dest).data;
+        double _buf0 = Math.fma(mData[2], sd[2], Math.fma(mData[0], sd[0], Math.fma(mData[1], sd[1], mData[3])));
+        double _buf1 = Math.fma(mData[6], sd[2], Math.fma(mData[4], sd[0], Math.fma(mData[5], sd[1], mData[7])));
+        dd[2] = Math.fma(mData[10], sd[2], Math.fma(mData[8], sd[0], Math.fma(mData[9], sd[1], mData[11])));
+        double _buf2 = Math.fma(mData[2], sd[5], Math.fma(mData[0], sd[3], mData[1] * sd[4]));
+        double _buf3 = Math.fma(mData[6], sd[5], Math.fma(mData[4], sd[3], mData[5] * sd[4]));
+        dd[5] = Math.fma(mData[10], sd[5], Math.fma(mData[8], sd[3], mData[9] * sd[4]));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[3] = _buf2;
+        dd[4] = _buf3;
+        return dest;
+    }
+
+
+    /**
+     * Transform this ray by {@code m} and store the result in {@code dest}.
+     * <p>
+     * Only the affine part of {@code m} is used: the last row is assumed to be
+     * {@code (0, 0, 0, 1)}, so any projective component is ignored.
+     *
+     * @param m the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleRay transform(Double4x4R m, @Mutated DoubleRay dest) {
+        double[] sd = this.data;
+        double[] mData = ((Double4x4Impl) m).data;
+        double[] dd = ((DoubleRayImpl) dest).data;
+        double _buf0 = Math.fma(mData[8], sd[2], Math.fma(mData[0], sd[0], Math.fma(mData[4], sd[1], mData[12])));
+        double _buf1 = Math.fma(mData[9], sd[2], Math.fma(mData[1], sd[0], Math.fma(mData[5], sd[1], mData[13])));
+        dd[2] = Math.fma(mData[10], sd[2], Math.fma(mData[2], sd[0], Math.fma(mData[6], sd[1], mData[14])));
+        double _buf2 = Math.fma(mData[8], sd[5], Math.fma(mData[0], sd[3], mData[4] * sd[4]));
+        double _buf3 = Math.fma(mData[9], sd[5], Math.fma(mData[1], sd[3], mData[5] * sd[4]));
+        dd[5] = Math.fma(mData[10], sd[5], Math.fma(mData[2], sd[3], mData[6] * sd[4]));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[3] = _buf2;
+        dd[4] = _buf3;
+        return dest;
+    }
+
+
+    /**
+     * Compute the point on this ray at the parameter value {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param t the distance along the ray, as a multiple of the ray direction
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 at(double t, @Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        dd[0] = Math.fma(t, sd[3], sd[0]);
+        dd[1] = Math.fma(t, sd[4], sd[1]);
+        dd[2] = Math.fma(t, sd[5], sd[2]);
+        return dest;
+    }
+
+
+    /**
+     * Get the direction of this ray and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 getDirection(@Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        dd[0] = sd[3];
+        dd[1] = sd[4];
+        dd[2] = sd[5];
+        return dest;
+    }
+
+
+    /**
+     * Get the origin of this ray and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 getOrigin(@Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        dd[0] = sd[0];
+        dd[1] = sd[1];
+        dd[2] = sd[2];
+        return dest;
+    }
+
+    public double oX() { return data[0]; }
+    public double oY() { return data[1]; }
+    public double oZ() { return data[2]; }
+    public double dX() { return data[3]; }
+    public double dY() { return data[4]; }
+    public double dZ() { return data[5]; }
+
+    @Override public String toString() {
+        return "DoubleRay(" + oX() + ", " + oY() + ", " + oZ() + ", " + dX() + ", " + dY() + ", " + dZ() + ")";
+    }
+
+    @Override public boolean equals(@org.jspecify.annotations.Nullable Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof DoubleRayImpl)) return false;
+        DoubleRayImpl o = (DoubleRayImpl) obj;
+        return java.util.Arrays.equals(data, o.data);
+    }
+
+    @Override public int hashCode() {
+        return java.util.Arrays.hashCode(data);
+    }
+
+    @Override public boolean isFinite() {
+        return Double.isFinite(data[0])
+            && Double.isFinite(data[1])
+            && Double.isFinite(data[2])
+            && Double.isFinite(data[3])
+            && Double.isFinite(data[4])
+            && Double.isFinite(data[5]);
+    }
+
+    @Override public boolean equalsEpsilon(DoubleRayR other, double epsilon) {
+        return Math.abs(data[0] - other.oX()) <= epsilon
+            && Math.abs(data[1] - other.oY()) <= epsilon
+            && Math.abs(data[2] - other.oZ()) <= epsilon
+            && Math.abs(data[3] - other.dX()) <= epsilon
+            && Math.abs(data[4] - other.dY()) <= epsilon
+            && Math.abs(data[5] - other.dZ()) <= epsilon;
+    }
+
+    public double[] store(@Mutated double[] dest, int offset) {
+        dest[offset + 0] = this.data[0];
+        dest[offset + 1] = this.data[1];
+        dest[offset + 2] = this.data[2];
+        dest[offset + 3] = this.data[3];
+        dest[offset + 4] = this.data[4];
+        dest[offset + 5] = this.data[5];
+        return dest;
+    }
+    public @Mutated DoubleRay load(double[] src, int offset) {
+        this.data[0] = src[offset + 0];
+        this.data[1] = src[offset + 1];
+        this.data[2] = src[offset + 2];
+        this.data[3] = src[offset + 3];
+        this.data[4] = src[offset + 4];
+        this.data[5] = src[offset + 5];
+        return this;
+    }
+    public DoubleBuffer storeAbsolute(int index, @Mutated DoubleBuffer buf) {
+        return BB_OPS.storeAbsolute(this, index, buf);
+    }
+    @Mutated public DoubleRay loadAbsolute(int index, DoubleBuffer buf) {
+        return BB_OPS.loadAbsolute(this, index, buf);
+    }
+    public ByteBuffer storeAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.storeAbsolute(this, index, buf);
+    }
+    public DoubleRay loadAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.loadAbsolute(this, index, buf);
+    }
+    public DoubleRay storeUnsafe(long address) {
+        return RAW_OPS.storeUnsafe(this, address);
+    }
+    @Mutated public DoubleRay loadUnsafe(long address) {
+        return RAW_OPS.loadUnsafe(this, address);
+    }
+
+    public float[] store(@Mutated float[] dest, int offset) {
+        dest[offset + 0] = (float) this.data[0];
+        dest[offset + 1] = (float) this.data[1];
+        dest[offset + 2] = (float) this.data[2];
+        dest[offset + 3] = (float) this.data[3];
+        dest[offset + 4] = (float) this.data[4];
+        dest[offset + 5] = (float) this.data[5];
+        return dest;
+    }
+    public @Mutated DoubleRay load(float[] src, int offset) {
+        this.data[0] = src[offset + 0];
+        this.data[1] = src[offset + 1];
+        this.data[2] = src[offset + 2];
+        this.data[3] = src[offset + 3];
+        this.data[4] = src[offset + 4];
+        this.data[5] = src[offset + 5];
+        return this;
+    }
+    public FloatBuffer storeAbsolute(int index, @Mutated FloatBuffer buf) {
+        return BB_OPS.storeAbsolute(this, index, buf);
+    }
+    @Mutated public DoubleRay loadAbsolute(int index, FloatBuffer buf) {
+        return BB_OPS.loadAbsolute(this, index, buf);
+    }
+    public ByteBuffer storeFloatAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.storeFloatAbsolute(this, index, buf);
+    }
+    public DoubleRay loadFloatAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.loadFloatAbsolute(this, index, buf);
+    }
+    public DoubleRay storeFloatUnsafe(long address) {
+        return RAW_OPS.storeFloatUnsafe(this, address);
+    }
+    @Mutated public DoubleRay loadFloatUnsafe(long address) {
+        return RAW_OPS.loadFloatUnsafe(this, address);
+    }
+
+}

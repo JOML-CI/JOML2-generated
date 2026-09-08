@@ -1,0 +1,4744 @@
+package org.joml2;
+
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.ByteBuffer;
+import java.lang.foreign.MemorySegment;
+
+/**
+ * Read-only view of a 4D vector of double-precision {@code double} components.
+ * <p>
+ * Declares the accessors, queries, store methods and dest-form operations that read but never
+ * mutate the receiver; the mutable counterpart is {@link Double4}. APIs that only read a 4D vector
+ * should accept {@code Double4R}, so callers can pass mutable instances without exposing them to
+ * modification.
+ */
+public interface Double4R {
+    /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
+    public static final int SIZE_BYTES = 32;
+
+    /** {@return a shared all-zero vector} Never mutate it - it is returned as the read-only view for that reason. */
+    public static Double4R ZERO() { return Holder.ZERO; }
+
+
+    /**
+     * Add {@code other} to this vector and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 add(Double4R other, @Mutated Double4 dest);
+
+    /**
+     * Add ({@code x}, {@code y}, {@code z}, {@code w}) to this vector and store the result in
+     * {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 add(double x, double y, double z, double w, @Mutated Double4 dest);
+
+    /**
+     * Divide each component of this vector by {@code scalar} and store the result in {@code dest}.
+     *
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 div(double scalar, @Mutated Double4 dest);
+
+    /**
+     * Divide this vector component-wise by {@code other} and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 div(Double4R other, @Mutated Double4 dest);
+
+    /**
+     * Divide this vector component-wise by ({@code x}, {@code y}, {@code z}, {@code w}) and store
+     * the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 div(double x, double y, double z, double w, @Mutated Double4 dest);
+
+    /**
+     * Multiply this vector component-wise by {@code b} and add {@code c}, i.e. compute
+     * {@code this * b + c} per component and store the result in {@code dest}.
+     *
+     * @param b the factor to multiply this vector by
+     * @param c the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 fma(double b, Double4R c, @Mutated Double4 dest);
+
+    /**
+     * Multiply this vector component-wise by {@code b} and add ({@code x}, {@code y}, {@code z},
+     * {@code w}), i.e. compute {@code this * b + c} per component and store the result in
+     * {@code dest}.
+     *
+     * @param b the factor to multiply this vector by
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 fma(double b, double x, double y, double z, double w, @Mutated Double4 dest);
+
+    /**
+     * Multiply this vector component-wise by {@code b} and add {@code c}, i.e. compute
+     * {@code this * b + c} per component and store the result in {@code dest}.
+     *
+     * @param b the factor to multiply this vector by
+     * @param c the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 fma(Double4R b, Double4R c, @Mutated Double4 dest);
+
+    /**
+     * Multiply this vector component-wise by ({@code bX}, {@code bY}, {@code bZ}, {@code bW}) and
+     * add ({@code cX}, {@code cY}, {@code cZ}, {@code cW}), i.e. compute {@code this * b + c} per
+     * component and store the result in {@code dest}.
+     *
+     * @param bX the {@code x} component of the vector {@code (bX, bY, bZ, bW)}
+     * @param bY the {@code y} component of the vector {@code (bX, bY, bZ, bW)}
+     * @param bZ the {@code z} component of the vector {@code (bX, bY, bZ, bW)}
+     * @param bW the {@code w} component of the vector {@code (bX, bY, bZ, bW)}
+     * @param cX the {@code x} component of the vector {@code (cX, cY, cZ, cW)}
+     * @param cY the {@code y} component of the vector {@code (cX, cY, cZ, cW)}
+     * @param cZ the {@code z} component of the vector {@code (cX, cY, cZ, cW)}
+     * @param cW the {@code w} component of the vector {@code (cX, cY, cZ, cW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 fma(double bX, double bY, double bZ, double bW, double cX, double cY, double cZ, double cW, @Mutated Double4 dest);
+
+    /**
+     * Multiply each component of this vector by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 mul(double scalar, @Mutated Double4 dest);
+
+    /**
+     * Multiply this vector component-wise by {@code other} and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 mul(Double4R other, @Mutated Double4 dest);
+
+    /**
+     * Multiply this vector component-wise by ({@code x}, {@code y}, {@code z}, {@code w}) and store
+     * the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 mul(double x, double y, double z, double w, @Mutated Double4 dest);
+
+    /**
+     * Negate this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 negate(@Mutated Double4 dest);
+
+    /**
+     * Subtract {@code other} from this vector and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 sub(Double4R other, @Mutated Double4 dest);
+
+    /**
+     * Subtract ({@code x}, {@code y}, {@code z}, {@code w}) from this vector and store the result
+     * in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 sub(double x, double y, double z, double w, @Mutated Double4 dest);
+
+    /**
+     * Set this vector to {@code s} and store the result in {@code dest}.
+     *
+     * @param s the uniform scale factor
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 set(double s, @Mutated Double4 dest);
+
+    /**
+     * Convert this vector to {@code float} precision and store the result in {@code dest}.
+     * <p>
+     * The conversion may lose precision or range.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 toFloat(@Mutated Float4 dest);
+
+    /**
+     * Convert this vector to {@code byte} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is converted by a primitive cast, truncating toward zero.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Byte4 toByte(@Mutated Byte4 dest);
+
+    /**
+     * Convert this vector to {@code byte} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param mode the rounding mode to use
+     * @param dest will hold the result
+     * @return dest
+     */
+    Byte4 toByte(RoundingMode mode, @Mutated Byte4 dest);
+
+    /**
+     * Convert this vector to {@code short} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is converted by a primitive cast, truncating toward zero.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Short4 toShort(@Mutated Short4 dest);
+
+    /**
+     * Convert this vector to {@code short} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param mode the rounding mode to use
+     * @param dest will hold the result
+     * @return dest
+     */
+    Short4 toShort(RoundingMode mode, @Mutated Short4 dest);
+
+    /**
+     * Convert this vector to {@code int} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is converted by a primitive cast, truncating toward zero.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Int4 toInt(@Mutated Int4 dest);
+
+    /**
+     * Convert this vector to {@code int} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param mode the rounding mode to use
+     * @param dest will hold the result
+     * @return dest
+     */
+    Int4 toInt(RoundingMode mode, @Mutated Int4 dest);
+
+    /**
+     * Convert this vector to {@code long} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is converted by a primitive cast, truncating toward zero.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Long4 toLong(@Mutated Long4 dest);
+
+    /**
+     * Convert this vector to {@code long} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param mode the rounding mode to use
+     * @param dest will hold the result
+     * @return dest
+     */
+    Long4 toLong(RoundingMode mode, @Mutated Long4 dest);
+
+    /**
+     * Interpolate along the cubic Bézier curve defined by this vector and the given control points
+     * and store the result in {@code dest}.
+     *
+     * @param p1 the first control point
+     * @param p2 the second control point
+     * @param p3 the end point
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 bezier(Double4R p1, Double4R p2, Double4R p3, double t, @Mutated Double4 dest);
+
+    /**
+     * Interpolate along the cubic Bézier curve defined by this vector and the given control points
+     * and store the result in {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p1W the {@code w} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p2W the {@code w} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p3X the {@code x} component of the vector {@code (p3X, p3Y, p3Z, p3W)}
+     * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z, p3W)}
+     * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z, p3W)}
+     * @param p3W the {@code w} component of the vector {@code (p3X, p3Y, p3Z, p3W)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 bezier(double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double p3X, double p3Y, double p3Z, double p3W, double t, @Mutated Double4 dest);
+
+    /**
+     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
+     * points and store the result in {@code dest}.
+     *
+     * @param p1 the control point
+     * @param p2 the end point
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 bezier2(Double4R p1, Double4R p2, double t, @Mutated Double4 dest);
+
+    /**
+     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
+     * points and store the result in {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p1W the {@code w} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p2W the {@code w} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 bezier2(double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double t, @Mutated Double4 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
+     * by this vector and the given control points, at the parameter {@code t} and store the result
+     * in {@code dest}.
+     *
+     * @param p1 the control point
+     * @param p2 the end point
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 bezier2Tangent(Double4R p1, Double4R p2, double t, @Mutated Double4 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
+     * by this vector and the given control points, at the parameter {@code t} and store the result
+     * in {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p1W the {@code w} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p2W the {@code w} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 bezier2Tangent(double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double t, @Mutated Double4 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
+     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param p1 the first control point
+     * @param p2 the second control point
+     * @param p3 the end point
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 bezierTangent(Double4R p1, Double4R p2, Double4R p3, double t, @Mutated Double4 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
+     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p1W the {@code w} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p2W the {@code w} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p3X the {@code x} component of the vector {@code (p3X, p3Y, p3Z, p3W)}
+     * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z, p3W)}
+     * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z, p3W)}
+     * @param p3W the {@code w} component of the vector {@code (p3X, p3Y, p3Z, p3W)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 bezierTangent(double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double p3X, double p3Y, double p3Z, double p3W, double t, @Mutated Double4 dest);
+
+    /**
+     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points
+     * and store the result in {@code dest}.
+     *
+     * @param p1 the start point of the interpolated segment
+     * @param p2 the end point of the interpolated segment
+     * @param p3 the outer control point after the segment
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 catmullRom(Double4R p1, Double4R p2, Double4R p3, double t, @Mutated Double4 dest);
+
+    /**
+     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points
+     * and store the result in {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p1W the {@code w} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p2W the {@code w} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p3X the {@code x} component of the vector {@code (p3X, p3Y, p3Z, p3W)}
+     * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z, p3W)}
+     * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z, p3W)}
+     * @param p3W the {@code w} component of the vector {@code (p3X, p3Y, p3Z, p3W)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 catmullRom(double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double p3X, double p3Y, double p3Z, double p3W, double t, @Mutated Double4 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
+     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param p1 the start point of the interpolated segment
+     * @param p2 the end point of the interpolated segment
+     * @param p3 the outer control point after the segment
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 catmullRomTangent(Double4R p1, Double4R p2, Double4R p3, double t, @Mutated Double4 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
+     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p1Z the {@code z} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p1W the {@code w} component of the vector {@code (p1X, p1Y, p1Z, p1W)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p2W the {@code w} component of the vector {@code (p2X, p2Y, p2Z, p2W)}
+     * @param p3X the {@code x} component of the vector {@code (p3X, p3Y, p3Z, p3W)}
+     * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z, p3W)}
+     * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z, p3W)}
+     * @param p3W the {@code w} component of the vector {@code (p3X, p3Y, p3Z, p3W)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 catmullRomTangent(double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double p3X, double p3Y, double p3Z, double p3W, double t, @Mutated Double4 dest);
+
+    /**
+     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation and
+     * store the result in {@code dest}.
+     *
+     * @param t0 the tangent at this vector
+     * @param v1 the endpoint
+     * @param t1 the tangent at the endpoint
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 hermite(Double4R t0, Double4R v1, Double4R t1, double t, @Mutated Double4 dest);
+
+    /**
+     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation and
+     * store the result in {@code dest}.
+     *
+     * @param t0X the {@code x} component of the vector {@code (t0X, t0Y, t0Z, t0W)}
+     * @param t0Y the {@code y} component of the vector {@code (t0X, t0Y, t0Z, t0W)}
+     * @param t0Z the {@code z} component of the vector {@code (t0X, t0Y, t0Z, t0W)}
+     * @param t0W the {@code w} component of the vector {@code (t0X, t0Y, t0Z, t0W)}
+     * @param v1X the {@code x} component of the vector {@code (v1X, v1Y, v1Z, v1W)}
+     * @param v1Y the {@code y} component of the vector {@code (v1X, v1Y, v1Z, v1W)}
+     * @param v1Z the {@code z} component of the vector {@code (v1X, v1Y, v1Z, v1W)}
+     * @param v1W the {@code w} component of the vector {@code (v1X, v1Y, v1Z, v1W)}
+     * @param t1X the {@code x} component of the vector {@code (t1X, t1Y, t1Z, t1W)}
+     * @param t1Y the {@code y} component of the vector {@code (t1X, t1Y, t1Z, t1W)}
+     * @param t1Z the {@code z} component of the vector {@code (t1X, t1Y, t1Z, t1W)}
+     * @param t1W the {@code w} component of the vector {@code (t1X, t1Y, t1Z, t1W)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 hermite(double t0X, double t0Y, double t0Z, double t0W, double v1X, double v1Y, double v1Z, double v1W, double t1X, double t1Y, double t1Z, double t1W, double t, @Mutated Double4 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
+     * this vector and the given endpoint, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param t0 the tangent at this vector
+     * @param v1 the endpoint
+     * @param t1 the tangent at the endpoint
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 hermiteTangent(Double4R t0, Double4R v1, Double4R t1, double t, @Mutated Double4 dest);
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
+     * this vector and the given endpoint, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param t0X the {@code x} component of the vector {@code (t0X, t0Y, t0Z, t0W)}
+     * @param t0Y the {@code y} component of the vector {@code (t0X, t0Y, t0Z, t0W)}
+     * @param t0Z the {@code z} component of the vector {@code (t0X, t0Y, t0Z, t0W)}
+     * @param t0W the {@code w} component of the vector {@code (t0X, t0Y, t0Z, t0W)}
+     * @param v1X the {@code x} component of the vector {@code (v1X, v1Y, v1Z, v1W)}
+     * @param v1Y the {@code y} component of the vector {@code (v1X, v1Y, v1Z, v1W)}
+     * @param v1Z the {@code z} component of the vector {@code (v1X, v1Y, v1Z, v1W)}
+     * @param v1W the {@code w} component of the vector {@code (v1X, v1Y, v1Z, v1W)}
+     * @param t1X the {@code x} component of the vector {@code (t1X, t1Y, t1Z, t1W)}
+     * @param t1Y the {@code y} component of the vector {@code (t1X, t1Y, t1Z, t1W)}
+     * @param t1Z the {@code z} component of the vector {@code (t1X, t1Y, t1Z, t1W)}
+     * @param t1W the {@code w} component of the vector {@code (t1X, t1Y, t1Z, t1W)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 hermiteTangent(double t0X, double t0Y, double t0Z, double t0W, double v1X, double v1Y, double v1Z, double v1W, double t1X, double t1Y, double t1Z, double t1W, double t, @Mutated Double4 dest);
+
+    /**
+     * Linearly interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t} and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 lerp(Double4R other, double t, @Mutated Double4 dest);
+
+    /**
+     * Linearly interpolate between this vector and ({@code x}, {@code y}, {@code z}, {@code w})
+     * using the interpolation factor {@code t} and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 lerp(double x, double y, double z, double w, double t, @Mutated Double4 dest);
+
+    /**
+     * Linearly interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t} and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param t the per-component interpolation factors, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 lerp(Double4R other, Double4R t, @Mutated Double4 dest);
+
+    /**
+     * Linearly interpolate between this vector and ({@code otherX}, {@code otherY}, {@code otherZ},
+     * {@code otherW}) using the interpolation factor ({@code tX}, {@code tY}, {@code tZ},
+     * {@code tW}) and store the result in {@code dest}.
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherZ the {@code z} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherW the {@code w} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param tX the {@code x} component of the vector {@code (tX, tY, tZ, tW)}
+     * @param tY the {@code y} component of the vector {@code (tX, tY, tZ, tW)}
+     * @param tZ the {@code z} component of the vector {@code (tX, tY, tZ, tW)}
+     * @param tW the {@code w} component of the vector {@code (tX, tY, tZ, tW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 lerp(double otherX, double otherY, double otherZ, double otherW, double tX, double tY, double tZ, double tW, @Mutated Double4 dest);
+
+    /**
+     * Compute the absolute value of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 absolute(@Mutated Double4 dest);
+
+    /**
+     * Compute the arc cosine of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 acos(@Mutated Double4 dest);
+
+    /**
+     * Add {@code b} scaled by {@code scalar} to this vector and store the result in {@code dest}.
+     *
+     * @param b the vector
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 addScaled(Double4R b, double scalar, @Mutated Double4 dest);
+
+    /**
+     * Add ({@code x}, {@code y}, {@code z}, {@code w}) scaled by {@code scalar} to this vector and
+     * store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 addScaled(double x, double y, double z, double w, double scalar, @Mutated Double4 dest);
+
+    /**
+     * Add {@code b} scaled by {@code c} to this vector and store the result in {@code dest}.
+     *
+     * @param b the vector
+     * @param c the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 addScaled(Double4R b, Double4R c, @Mutated Double4 dest);
+
+    /**
+     * Add ({@code bX}, {@code bY}, {@code bZ}, {@code bW}) scaled by ({@code cX}, {@code cY},
+     * {@code cZ}, {@code cW}) to this vector and store the result in {@code dest}.
+     *
+     * @param bX the {@code x} component of the vector {@code (bX, bY, bZ, bW)}
+     * @param bY the {@code y} component of the vector {@code (bX, bY, bZ, bW)}
+     * @param bZ the {@code z} component of the vector {@code (bX, bY, bZ, bW)}
+     * @param bW the {@code w} component of the vector {@code (bX, bY, bZ, bW)}
+     * @param cX the {@code x} component of the vector {@code (cX, cY, cZ, cW)}
+     * @param cY the {@code y} component of the vector {@code (cX, cY, cZ, cW)}
+     * @param cZ the {@code z} component of the vector {@code (cX, cY, cZ, cW)}
+     * @param cW the {@code w} component of the vector {@code (cX, cY, cZ, cW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 addScaled(double bX, double bY, double bZ, double bW, double cX, double cY, double cZ, double cW, @Mutated Double4 dest);
+
+    /**
+     * Compute the angle in radians between this vector and {@code other}.
+     *
+     * @param other the other vector
+     * @return the angle in radians between this vector and {@code other}
+     */
+    double angleBetween(Double4R other);
+
+    /**
+     * Compute the angle in radians between this vector and ({@code x}, {@code y}, {@code z},
+     * {@code w}).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @return the angle in radians between this vector and ({@code x}, {@code y}, {@code z},
+     *        {@code w})
+     */
+    double angleBetween(double x, double y, double z, double w);
+
+    /**
+     * Compute the arc sine of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 asin(@Mutated Double4 dest);
+
+    /**
+     * Compute the arc tangent of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 atan(@Mutated Double4 dest);
+
+    /**
+     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
+     * {@code dest}.
+     *
+     * @param x the value to take the arc tangent over (the denominator)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 atan2(double x, @Mutated Double4 dest);
+
+    /**
+     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
+     * {@code dest}.
+     *
+     * @param x the value to take the arc tangent over (the denominator)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 atan2(Double4R x, @Mutated Double4 dest);
+
+    /**
+     * Compute the component-wise arc tangent of this vector over ({@code x}, {@code y}, {@code z},
+     * {@code w}) and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the value to take the arc tangent over (the denominator)
+     *        {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 atan2(double x, double y, double z, double w, @Mutated Double4 dest);
+
+    /**
+     * Compute the cube root of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 cbrt(@Mutated Double4 dest);
+
+    /**
+     * Compute the ceiling of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 ceil(@Mutated Double4 dest);
+
+    /**
+     * Clamp each component of this vector between {@code min} and {@code max} and store the result
+     * in {@code dest}.
+     *
+     * @param min the lower bound
+     * @param max the upper bound
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 clamp(double min, double max, @Mutated Double4 dest);
+
+    /**
+     * Clamp each component of this vector between {@code min} and {@code max} and store the result
+     * in {@code dest}.
+     *
+     * @param min the minimum corner
+     * @param max the maximum corner
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 clamp(Double4R min, Double4R max, @Mutated Double4 dest);
+
+    /**
+     * Clamp each component of this vector between ({@code minX}, {@code minY}, {@code minZ},
+     * {@code minW}) and ({@code maxX}, {@code maxY}, {@code maxZ}, {@code maxW}) and store the
+     * result in {@code dest}.
+     *
+     * @param minX the {@code x} component of the vector {@code (minX, minY, minZ, minW)}
+     * @param minY the {@code y} component of the vector {@code (minX, minY, minZ, minW)}
+     * @param minZ the {@code z} component of the vector {@code (minX, minY, minZ, minW)}
+     * @param minW the {@code w} component of the vector {@code (minX, minY, minZ, minW)}
+     * @param maxX the {@code x} component of the vector {@code (maxX, maxY, maxZ, maxW)}
+     * @param maxY the {@code y} component of the vector {@code (maxX, maxY, maxZ, maxW)}
+     * @param maxZ the {@code z} component of the vector {@code (maxX, maxY, maxZ, maxW)}
+     * @param maxW the {@code w} component of the vector {@code (maxX, maxY, maxZ, maxW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 clamp(double minX, double minY, double minZ, double minW, double maxX, double maxY, double maxZ, double maxW, @Mutated Double4 dest);
+
+    /**
+     * Compute the sum of all components of this vector.
+     *
+     * @return the sum of all components of this vector
+     */
+    double compAdd();
+
+    /**
+     * Compute the largest component of this vector.
+     *
+     * @return the largest component of this vector
+     */
+    double compMax();
+
+    /**
+     * Compute the smallest component of this vector.
+     *
+     * @return the smallest component of this vector
+     */
+    double compMin();
+
+    /**
+     * Compute the product of all components of this vector.
+     *
+     * @return the product of all components of this vector
+     */
+    double compMul();
+
+    /**
+     * Copy the sign of {@code sign} onto each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param sign the value whose sign is copied
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 copySign(double sign, @Mutated Double4 dest);
+
+    /**
+     * Copy the sign of each component of {@code sign} onto the corresponding component of this
+     * vector and store the result in {@code dest}.
+     *
+     * @param sign the value whose sign is copied
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 copySign(Double4R sign, @Mutated Double4 dest);
+
+    /**
+     * Copy the sign of each component of ({@code x}, {@code y}, {@code z}, {@code w}) onto the
+     * corresponding component of this vector and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 copySign(double x, double y, double z, double w, @Mutated Double4 dest);
+
+    /**
+     * Compute the cosine of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 cos(@Mutated Double4 dest);
+
+    /**
+     * Compute the hyperbolic cosine of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 cosh(@Mutated Double4 dest);
+
+    /**
+     * Compute the value converted from radians to degrees of each component of this vector and
+     * store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 degrees(@Mutated Double4 dest);
+
+    /**
+     * Compute the distance between this vector and {@code other}.
+     *
+     * @param other the other vector
+     * @return the distance between this vector and {@code other}
+     */
+    double distance(Double4R other);
+
+    /**
+     * Compute the distance between this vector and ({@code x}, {@code y}, {@code z}, {@code w}).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @return the distance between this vector and ({@code x}, {@code y}, {@code z}, {@code w})
+     */
+    double distance(double x, double y, double z, double w);
+
+    /**
+     * Compute the squared distance between this vector and {@code other}.
+     *
+     * @param other the other vector
+     * @return the squared distance between this vector and {@code other}
+     */
+    double distanceSquared(Double4R other);
+
+    /**
+     * Compute the squared distance between this vector and ({@code x}, {@code y}, {@code z},
+     * {@code w}).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @return the squared distance between this vector and ({@code x}, {@code y}, {@code z},
+     *        {@code w})
+     */
+    double distanceSquared(double x, double y, double z, double w);
+
+    /**
+     * Compute the dot product of this vector and {@code other}.
+     *
+     * @param other the other vector
+     * @return the dot product of this vector and {@code other}
+     */
+    double dot(Double4R other);
+
+    /**
+     * Compute the dot product of this vector and ({@code x}, {@code y}, {@code z}, {@code w}).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @return the dot product of this vector and ({@code x}, {@code y}, {@code z}, {@code w})
+     */
+    double dot(double x, double y, double z, double w);
+
+    /**
+     * Compute the base-e exponential of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 exp(@Mutated Double4 dest);
+
+    /**
+     * Compute the base-2 exponential of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 exp2(@Mutated Double4 dest);
+
+    /**
+     * Compute the base-e exponential minus one of each component of this vector and store the
+     * result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 expm1(@Mutated Double4 dest);
+
+    /**
+     * Return this vector unchanged when {@code dot(Nref, I)} is negative, and negated otherwise -
+     * orienting it against the incident direction {@code I} as judged by the reference vector
+     * {@code Nref} and store the result in {@code dest}.
+     *
+     * @param I the vector
+     * @param Nref the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 faceforward(Double4R I, Double4R Nref, @Mutated Double4 dest);
+
+    /**
+     * Return this vector unchanged when {@code dot((NrefX, NrefY, NrefZ, NrefW), (IX, IY, IZ, IW))}
+     * is negative, and negated otherwise - orienting it against the incident direction ({@code IX},
+     * {@code IY}, {@code IZ}, {@code IW}) as judged by the reference vector ({@code NrefX},
+     * {@code NrefY}, {@code NrefZ}, {@code NrefW}) and store the result in {@code dest}.
+     *
+     * @param IX the {@code x} component of the vector {@code (IX, IY, IZ, IW)}
+     * @param IY the {@code y} component of the vector {@code (IX, IY, IZ, IW)}
+     * @param IZ the {@code z} component of the vector {@code (IX, IY, IZ, IW)}
+     * @param IW the {@code w} component of the vector {@code (IX, IY, IZ, IW)}
+     * @param NrefX the {@code x} component of the vector {@code (NrefX, NrefY, NrefZ, NrefW)}
+     * @param NrefY the {@code y} component of the vector {@code (NrefX, NrefY, NrefZ, NrefW)}
+     * @param NrefZ the {@code z} component of the vector {@code (NrefX, NrefY, NrefZ, NrefW)}
+     * @param NrefW the {@code w} component of the vector {@code (NrefX, NrefY, NrefZ, NrefW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 faceforward(double IX, double IY, double IZ, double IW, double NrefX, double NrefY, double NrefZ, double NrefW, @Mutated Double4 dest);
+
+    /**
+     * Compute the floor of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 floor(@Mutated Double4 dest);
+
+    /**
+     * Compute the fractional part of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 fract(@Mutated Double4 dest);
+
+    /**
+     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
+     * {@code y} and store the result in {@code dest}.
+     *
+     * @param y the other operand
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 hypot(double y, @Mutated Double4 dest);
+
+    /**
+     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
+     * {@code y} and store the result in {@code dest}.
+     *
+     * @param y the other operand
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 hypot(Double4R y, @Mutated Double4 dest);
+
+    /**
+     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
+     * ({@code x}, {@code y}, {@code z}, {@code w}) and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the other operand {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 hypot(double x, double y, double z, double w, @Mutated Double4 dest);
+
+    /**
+     * Compute the reciprocal {@code 1 / x} of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 inverse(@Mutated Double4 dest);
+
+    /**
+     * Compute the inverse square root of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 inverseSqrt(@Mutated Double4 dest);
+
+    /**
+     * Compute the length of this vector.
+     *
+     * @return the length of this vector
+     */
+    double length();
+
+    /**
+     * Compute the squared length of this vector.
+     *
+     * @return the squared length of this vector
+     */
+    double lengthSquared();
+
+    /**
+     * Compute the natural logarithm of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 log(@Mutated Double4 dest);
+
+    /**
+     * Compute the base-10 logarithm of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 log10(@Mutated Double4 dest);
+
+    /**
+     * Compute the natural logarithm of one plus the value of each component of this vector and
+     * store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 log1p(@Mutated Double4 dest);
+
+    /**
+     * Compute the base-2 logarithm of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 log2(@Mutated Double4 dest);
+
+    /**
+     * Compute the Manhattan distance between this vector and {@code other}.
+     *
+     * @param other the other vector
+     * @return the Manhattan distance between this vector and {@code other}
+     */
+    double manhattanDistance(Double4R other);
+
+    /**
+     * Compute the Manhattan distance between this vector and ({@code x}, {@code y}, {@code z},
+     * {@code w}).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @return the Manhattan distance between this vector and ({@code x}, {@code y}, {@code z},
+     *        {@code w})
+     */
+    double manhattanDistance(double x, double y, double z, double w);
+
+    /**
+     * Compute the Manhattan length (sum of the absolute components) of this vector.
+     *
+     * @return the Manhattan length (sum of the absolute components) of this vector
+     */
+    double manhattanLength();
+
+    /**
+     * Set each component of this vector to the larger of itself and {@code scalar} and store the
+     * result in {@code dest}.
+     *
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 max(double scalar, @Mutated Double4 dest);
+
+    /**
+     * Set each component of this vector to the larger of itself and the corresponding component of
+     * {@code other} and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 max(Double4R other, @Mutated Double4 dest);
+
+    /**
+     * Set each component of this vector to the larger of itself and the corresponding component of
+     * ({@code x}, {@code y}, {@code z}, {@code w}) and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 max(double x, double y, double z, double w, @Mutated Double4 dest);
+
+    /**
+     * Set each component of this vector to the smaller of itself and {@code scalar} and store the
+     * result in {@code dest}.
+     *
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 min(double scalar, @Mutated Double4 dest);
+
+    /**
+     * Set each component of this vector to the smaller of itself and the corresponding component of
+     * {@code other} and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 min(Double4R other, @Mutated Double4 dest);
+
+    /**
+     * Set each component of this vector to the smaller of itself and the corresponding component of
+     * ({@code x}, {@code y}, {@code z}, {@code w}) and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 min(double x, double y, double z, double w, @Mutated Double4 dest);
+
+    /**
+     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
+     * this vector divided by {@code y} and store the result in {@code dest}.
+     * <p>
+     * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
+     * dividend.
+     *
+     * @param y the divisor
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 mod(double y, @Mutated Double4 dest);
+
+    /**
+     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
+     * this vector divided by {@code y} and store the result in {@code dest}.
+     * <p>
+     * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
+     * dividend.
+     *
+     * @param y the divisor
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 mod(Double4R y, @Mutated Double4 dest);
+
+    /**
+     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
+     * this vector divided by ({@code x}, {@code y}, {@code z}, {@code w}) and store the result in
+     * {@code dest}.
+     * <p>
+     * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
+     * dividend.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the divisor {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 mod(double x, double y, double z, double w, @Mutated Double4 dest);
+
+    /**
+     * Compute the next representable value toward negative infinity of each component of this
+     * vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 nextDown(@Mutated Double4 dest);
+
+    /**
+     * Compute the next representable value toward positive infinity of each component of this
+     * vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 nextUp(@Mutated Double4 dest);
+
+    /**
+     * Normalize this vector to unit length (the zero vector yields the zero vector). <p> The
+     * squared length is formed at the component precision, so components whose squares overflow or
+     * underflow that precision are out of domain: the result is the zero vector rather than a unit
+     * vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
+     * {@code float} and 1.3e154 for {@code double}) and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 normalize(@Mutated Double4 dest);
+
+    /**
+     * Normalize this vector and multiply the result by {@code length}, i.e. rescale it to that
+     * length (the zero vector yields the zero vector) and store the result in {@code dest}.
+     *
+     * @param length the length to rescale to
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 normalizeMul(double length, @Mutated Double4 dest);
+
+    /**
+     * Compute the outer product of this vector and {@code row} and store the result in
+     * {@code dest}.
+     *
+     * @param row the row vector (right operand)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4x4 outerProduct(Double4R row, @Mutated Double4x4 dest);
+
+    /**
+     * Compute the outer product of this vector and ({@code x}, {@code y}, {@code z}, {@code w}) and
+     * store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4x4 outerProduct(double x, double y, double z, double w, @Mutated Double4x4 dest);
+
+    /**
+     * Raise each component of this vector to the power of {@code exponent} and store the result in
+     * {@code dest}.
+     *
+     * @param exponent the exponent
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 pow(double exponent, @Mutated Double4 dest);
+
+    /**
+     * Raise each component of this vector to the power of {@code exponent} and store the result in
+     * {@code dest}.
+     *
+     * @param exponent the exponent
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 pow(Double4R exponent, @Mutated Double4 dest);
+
+    /**
+     * Raise each component of this vector to the power of ({@code x}, {@code y}, {@code z},
+     * {@code w}) and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 pow(double x, double y, double z, double w, @Mutated Double4 dest);
+
+    /**
+     * Project this vector onto {@code onto} and store the result in {@code dest}.
+     *
+     * @param onto the vector to project onto
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 project(Double4R onto, @Mutated Double4 dest);
+
+    /**
+     * Project this vector onto ({@code x}, {@code y}, {@code z}, {@code w}) and store the result in
+     * {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 project(double x, double y, double z, double w, @Mutated Double4 dest);
+
+    /**
+     * Project this vector onto the plane with the given normal and store the result in
+     * {@code dest}.
+     *
+     * @param normal the normal (must be a unit vector)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 projectOnPlane(Double4R normal, @Mutated Double4 dest);
+
+    /**
+     * Project this vector onto the plane with the given normal and store the result in
+     * {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)} (the vector must have
+     *        unit length)
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)} (the vector must have
+     *        unit length)
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)} (the vector must have
+     *        unit length)
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)} (the vector must have
+     *        unit length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 projectOnPlane(double x, double y, double z, double w, @Mutated Double4 dest);
+
+    /**
+     * Compute the value converted from degrees to radians of each component of this vector and
+     * store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 radians(@Mutated Double4 dest);
+
+    /**
+     * Reflect this vector about the given normal and store the result in {@code dest}.
+     *
+     * @param normal the normal (must be a unit vector)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 reflect(Double4R normal, @Mutated Double4 dest);
+
+    /**
+     * Reflect this vector about the given normal and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)} (the vector must have
+     *        unit length)
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)} (the vector must have
+     *        unit length)
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)} (the vector must have
+     *        unit length)
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)} (the vector must have
+     *        unit length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 reflect(double x, double y, double z, double w, @Mutated Double4 dest);
+
+    /**
+     * Refract this vector (which must have unit length) through the surface with the given normal,
+     * using the given ratio of indices of refraction (the zero vector is returned on total internal
+     * reflection), and store the result in {@code dest}.
+     *
+     * @param normal the normal (must be a unit vector)
+     * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
+     *        destination medium's
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 refract(Double4R normal, double eta, @Mutated Double4 dest);
+
+    /**
+     * Refract this vector (which must have unit length) through the surface with the given normal,
+     * using the given ratio of indices of refraction (the zero vector is returned on total internal
+     * reflection), and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)} (the vector must have
+     *        unit length)
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)} (the vector must have
+     *        unit length)
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)} (the vector must have
+     *        unit length)
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)} (the vector must have
+     *        unit length)
+     * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
+     *        destination medium's
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 refract(double x, double y, double z, double w, double eta, @Mutated Double4 dest);
+
+    /**
+     * Compute the rounded value of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 round(@Mutated Double4 dest);
+
+    /**
+     * Compute the sign of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 sign(@Mutated Double4 dest);
+
+    /**
+     * Compute the sine of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 sin(@Mutated Double4 dest);
+
+    /**
+     * Compute the hyperbolic sine of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 sinh(@Mutated Double4 dest);
+
+    /**
+     * Compute the smooth Hermite step of each component of this vector as it ramps between the
+     * lower edge {@code edge0} and the upper edge {@code edge1}, yielding 0 at or below the lower
+     * edge and 1 at or above the upper edge and store the result in {@code dest}.
+     *
+     * @param edge0 the lower edge
+     * @param edge1 the upper edge
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 smoothstep(double edge0, double edge1, @Mutated Double4 dest);
+
+    /**
+     * Compute the smooth Hermite step of each component of this vector as it ramps between the
+     * lower edge {@code edge0} and the upper edge {@code edge1}, yielding 0 at or below the lower
+     * edge and 1 at or above the upper edge and store the result in {@code dest}.
+     *
+     * @param edge0 the lower edge
+     * @param edge1 the upper edge
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 smoothstep(Double4R edge0, Double4R edge1, @Mutated Double4 dest);
+
+    /**
+     * Compute the smooth Hermite step of each component of this vector as it ramps between the
+     * lower edge ({@code edge0X}, {@code edge0Y}, {@code edge0Z}, {@code edge0W}) and the upper
+     * edge ({@code edge1X}, {@code edge1Y}, {@code edge1Z}, {@code edge1W}), yielding 0 at or below
+     * the lower edge and 1 at or above the upper edge and store the result in {@code dest}.
+     *
+     * @param edge0X the {@code x} component of the vector {@code (edge0X, edge0Y, edge0Z, edge0W)}
+     * @param edge0Y the {@code y} component of the vector {@code (edge0X, edge0Y, edge0Z, edge0W)}
+     * @param edge0Z the {@code z} component of the vector {@code (edge0X, edge0Y, edge0Z, edge0W)}
+     * @param edge0W the {@code w} component of the vector {@code (edge0X, edge0Y, edge0Z, edge0W)}
+     * @param edge1X the {@code x} component of the vector {@code (edge1X, edge1Y, edge1Z, edge1W)}
+     * @param edge1Y the {@code y} component of the vector {@code (edge1X, edge1Y, edge1Z, edge1W)}
+     * @param edge1Z the {@code z} component of the vector {@code (edge1X, edge1Y, edge1Z, edge1W)}
+     * @param edge1W the {@code w} component of the vector {@code (edge1X, edge1Y, edge1Z, edge1W)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 smoothstep(double edge0X, double edge0Y, double edge0Z, double edge0W, double edge1X, double edge1Y, double edge1Z, double edge1W, @Mutated Double4 dest);
+
+    /**
+     * Compute the square root of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 sqrt(@Mutated Double4 dest);
+
+    /**
+     * Set each component of this vector to {@code 0} when it is smaller than {@code edge}, and to
+     * {@code 1} otherwise and store the result in {@code dest}.
+     *
+     * @param edge the edge to compare each component against
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 step(double edge, @Mutated Double4 dest);
+
+    /**
+     * Set each component of this vector to {@code 0} when it is smaller than the corresponding
+     * component of the given edge, and to {@code 1} otherwise and store the result in {@code dest}.
+     *
+     * @param edge the edge to compare each component against
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 step(Double4R edge, @Mutated Double4 dest);
+
+    /**
+     * Set each component of this vector to {@code 0} when it is smaller than the corresponding
+     * component of the given edge, and to {@code 1} otherwise and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 step(double x, double y, double z, double w, @Mutated Double4 dest);
+
+    /**
+     * Compute the tangent of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 tan(@Mutated Double4 dest);
+
+    /**
+     * Compute the hyperbolic tangent of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 tanh(@Mutated Double4 dest);
+
+    /**
+     * Compute the truncated value of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 trunc(@Mutated Double4 dest);
+
+    /**
+     * Compute the unit in the last place (ulp) of each component of this vector and store the
+     * result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 ulp(@Mutated Double4 dest);
+
+    /**
+     * Pre-multiply {@code mat} onto this vector and store the result in {@code dest}.
+     *
+     * @param mat the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 preMul(Double4x4R mat, @Mutated Double4 dest);
+
+    /**
+     * Rotate the {@code (x, y, z)} components of this vector by the quaternion {@code quat}, i.e.
+     * compute {@code q * this.xyz * q^-1}, leaving {@code w} unchanged, and store the result in
+     * {@code dest}.
+     *
+     * @param quat the quaternion (must be a unit quaternion)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 rotate(DoubleQuatR quat, @Mutated Double4 dest);
+
+    /**
+     * Rotate the {@code (x, y, z)} components of this vector by the quaternion ({@code x},
+     * {@code y}, {@code z}, {@code w}), i.e. compute {@code q * this.xyz * q^-1}, leaving {@code w}
+     * unchanged, and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param y the {@code y} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param z the {@code z} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 rotate(double x, double y, double z, double w, @Mutated Double4 dest);
+
+    /**
+     * Rotate the {@code (x, y, z)} components of this vector by {@code angle} radians about the
+     * axis {@code axis}, leaving {@code w} unchanged, and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param axis the rotation axis (must be a unit vector)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 rotateAxis(double angle, Double3R axis, @Mutated Double4 dest);
+
+    /**
+     * Rotate the {@code (x, y, z)} components of this vector by {@code angle} radians about the
+     * axis ({@code x}, {@code y}, {@code z}), leaving {@code w} unchanged, and store the result in
+     * {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param x the {@code x} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param y the {@code y} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 rotateAxis(double angle, double x, double y, double z, @Mutated Double4 dest);
+
+    /**
+     * Rotate the {@code (x, y, z)} components of this vector by the inverse of the given rotation,
+     * leaving {@code w} unchanged, and store the result in {@code dest}.
+     *
+     * @param quat the quaternion (must be a unit quaternion)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 rotateInverse(DoubleQuatR quat, @Mutated Double4 dest);
+
+    /**
+     * Rotate the {@code (x, y, z)} components of this vector by the inverse of the given rotation,
+     * leaving {@code w} unchanged, and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param y the {@code y} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param z the {@code z} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 rotateInverse(double x, double y, double z, double w, @Mutated Double4 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the X axis and store the result in
+     * {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 rotateX(double angle, @Mutated Double4 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Y axis and store the result in
+     * {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 rotateY(double angle, @Mutated Double4 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Z axis and store the result in
+     * {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 rotateZ(double angle, @Mutated Double4 dest);
+    /** {@return the value of the {@code x} component} */
+    double x();
+    /** {@return the value of the {@code y} component} */
+    double y();
+    /** {@return the value of the {@code z} component} */
+    double z();
+    /** {@return the value of the {@code w} component} */
+    double w();
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 xx(@Mutated Double2 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 xy(@Mutated Double2 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 xz(@Mutated Double2 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 xw(@Mutated Double2 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 yx(@Mutated Double2 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 yy(@Mutated Double2 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 yz(@Mutated Double2 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 yw(@Mutated Double2 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 zx(@Mutated Double2 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 zy(@Mutated Double2 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 zz(@Mutated Double2 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 zw(@Mutated Double2 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 wx(@Mutated Double2 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 wy(@Mutated Double2 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 wz(@Mutated Double2 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 ww(@Mutated Double2 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 xxx(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 xxy(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 xxz(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 xxw(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 xyx(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 xyy(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 xyz(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 xyw(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 xzx(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 xzy(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 xzz(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 xzw(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 xwx(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 xwy(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 xwz(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 xww(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 yxx(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 yxy(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 yxz(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 yxw(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 yyx(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 yyy(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 yyz(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 yyw(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 yzx(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 yzy(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 yzz(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 yzw(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 ywx(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 ywy(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 ywz(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 yww(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 zxx(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 zxy(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 zxz(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 zxw(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 zyx(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 zyy(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 zyz(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 zyw(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 zzx(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 zzy(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 zzz(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 zzw(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 zwx(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 zwy(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 zwz(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 zww(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 wxx(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 wxy(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 wxz(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 wxw(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 wyx(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 wyy(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 wyz(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 wyw(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 wzx(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 wzy(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 wzz(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 wzw(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 wwx(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 wwy(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 wwz(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 www(@Mutated Double3 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xxxx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xxxy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xxxz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xxxw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xxyx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xxyy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xxyz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xxyw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xxzx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xxzy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xxzz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xxzw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xxwx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xxwy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xxwz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code x}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xxww(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xyxx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xyxy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xyxz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xyxw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xyyx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xyyy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xyyz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xyyw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xyzx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xyzy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xyzz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xyzw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xywx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xywy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xywz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code y}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xyww(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xzxx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xzxy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xzxz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xzxw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xzyx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xzyy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xzyz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xzyw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xzzx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xzzy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xzzz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xzzw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xzwx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xzwy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xzwz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code z}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xzww(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xwxx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xwxy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xwxz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xwxw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xwyx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xwyy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xwyz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xwyw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xwzx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xwzy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xwzz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xwzw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xwwx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xwwy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xwwz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code x}, {@code w}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 xwww(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yxxx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yxxy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yxxz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yxxw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yxyx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yxyy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yxyz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yxyw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yxzx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yxzy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yxzz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yxzw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yxwx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yxwy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yxwz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code x}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yxww(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yyxx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yyxy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yyxz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yyxw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yyyx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yyyy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yyyz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yyyw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yyzx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yyzy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yyzz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yyzw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yywx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yywy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yywz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code y}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yyww(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yzxx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yzxy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yzxz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yzxw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yzyx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yzyy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yzyz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yzyw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yzzx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yzzy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yzzz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yzzw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yzwx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yzwy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yzwz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code z}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 yzww(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 ywxx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 ywxy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 ywxz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 ywxw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 ywyx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 ywyy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 ywyz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 ywyw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 ywzx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 ywzy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 ywzz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 ywzw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 ywwx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 ywwy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 ywwz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code y}, {@code w}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 ywww(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zxxx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zxxy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zxxz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zxxw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zxyx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zxyy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zxyz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zxyw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zxzx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zxzy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zxzz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zxzw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zxwx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zxwy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zxwz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code x}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zxww(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zyxx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zyxy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zyxz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zyxw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zyyx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zyyy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zyyz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zyyw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zyzx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zyzy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zyzz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zyzw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zywx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zywy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zywz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code y}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zyww(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zzxx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zzxy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zzxz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zzxw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zzyx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zzyy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zzyz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zzyw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zzzx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zzzy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zzzz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zzzw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zzwx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zzwy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zzwz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code z}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zzww(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zwxx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zwxy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zwxz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zwxw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zwyx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zwyy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zwyz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zwyw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zwzx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zwzy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zwzz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zwzw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zwwx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zwwy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zwwz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code z}, {@code w}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 zwww(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wxxx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wxxy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wxxz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wxxw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wxyx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wxyy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wxyz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wxyw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wxzx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wxzy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wxzz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wxzw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wxwx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wxwy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wxwz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code x}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wxww(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wyxx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wyxy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wyxz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wyxw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wyyx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wyyy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wyyz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wyyw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wyzx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wyzy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wyzz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wyzw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wywx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wywy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wywz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code y}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wyww(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wzxx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wzxy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wzxz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wzxw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wzyx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wzyy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wzyz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wzyw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wzzx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wzzy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wzzz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wzzw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wzwx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wzwy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wzwz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code z}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wzww(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code x}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wwxx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code x}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wwxy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code x}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wwxz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code x}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wwxw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code y}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wwyx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code y}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wwyy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code y}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wwyz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code y}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wwyw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code z}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wwzx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code z}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wwzy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code z}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wwzz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code z}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wwzw(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code w}, {@code x}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wwwx(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code w}, {@code y}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wwwy(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code w}, {@code z}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wwwz(@Mutated Double4 dest);
+
+    /**
+     * Swizzle: copy ({@code w}, {@code w}, {@code w}, {@code w}) of this vector into {@code dest}, in that order.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 wwww(@Mutated Double4 dest);
+
+    /**
+     * Store the elements into the given array.
+     *
+     * @param dest the destination array
+     * @return dest
+     */
+    default double[] store(@Mutated double[] dest) { return store(dest, 0); }
+
+    /**
+     * Store the elements into the given array, starting at the given offset.
+     *
+     * @param dest the destination array
+     * @param offset the start offset in the array, in elements
+     * @return dest
+     */
+    double[] store(@Mutated double[] dest, int offset);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default DoubleBuffer store(@Mutated DoubleBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default DoubleBuffer storeAbsolute(@Mutated DoubleBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at the given absolute index (the position
+     * is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param dest the destination buffer
+     * @return dest
+     */
+    DoubleBuffer storeAbsolute(int index, @Mutated DoubleBuffer dest);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position and advancing the
+     * position accordingly.
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default DoubleBuffer storeRelative(@Mutated DoubleBuffer dest) {
+        int pos = dest.position();
+        storeAbsolute(pos, dest);
+        dest.position(pos + 4);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given byte buffer, starting at its current position (the position
+     * is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer store(@Mutated ByteBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, starting at its current position (the position
+     * is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeAbsolute(@Mutated ByteBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, starting at the given absolute index (the
+     * position is not used or modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    ByteBuffer storeAbsolute(int index, @Mutated ByteBuffer dest);
+
+    /**
+     * Store the elements into the given byte buffer, starting at its current position and advancing
+     * the position accordingly.
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeRelative(@Mutated ByteBuffer dest) {
+        int pos = dest.position();
+        storeAbsolute(pos, dest);
+        dest.position(pos + 32);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given memory segment.
+     *
+     * @param dest the destination memory segment
+     * @return dest
+     */
+    default MemorySegment store(@Mutated MemorySegment dest) { return store(0L, dest); }
+
+    /**
+     * Store the elements into the given memory segment, starting at the given offset.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param dest the destination memory segment
+     * @return dest
+     */
+    MemorySegment store(long offset, @Mutated MemorySegment dest);
+
+    /**
+     * Store the elements into the given raw memory address. No bounds or liveness checks are
+     * performed.
+     *
+     * @param address the raw memory address
+     * @return this
+     */
+    Double4 storeUnsafe(long address);
+
+    /**
+     * Store the elements into the given array.
+     *
+     * @param dest the destination array
+     * @return dest
+     */
+    default float[] store(@Mutated float[] dest) { return store(dest, 0); }
+
+    /**
+     * Store the elements into the given array, starting at the given offset.
+     *
+     * @param dest the destination array
+     * @param offset the start offset in the array, in elements
+     * @return dest
+     */
+    float[] store(@Mutated float[] dest, int offset);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default FloatBuffer store(@Mutated FloatBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default FloatBuffer storeAbsolute(@Mutated FloatBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at the given absolute index (the position
+     * is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param dest the destination buffer
+     * @return dest
+     */
+    FloatBuffer storeAbsolute(int index, @Mutated FloatBuffer dest);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position and advancing the
+     * position accordingly.
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default FloatBuffer storeRelative(@Mutated FloatBuffer dest) {
+        int pos = dest.position();
+        storeAbsolute(pos, dest);
+        dest.position(pos + 4);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code float},
+     * starting at its current position (the position is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeFloat(@Mutated ByteBuffer dest) { return storeFloatAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code float},
+     * starting at its current position (the position is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeFloatAbsolute(@Mutated ByteBuffer dest) { return storeFloatAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code float},
+     * starting at the given absolute index (the position is not used or modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    ByteBuffer storeFloatAbsolute(int index, @Mutated ByteBuffer dest);
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code float},
+     * starting at its current position and advancing the position accordingly.
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeFloatRelative(@Mutated ByteBuffer dest) {
+        int pos = dest.position();
+        storeFloatAbsolute(pos, dest);
+        dest.position(pos + 16);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given memory segment, converting each element to {@code float}.
+     *
+     * @param dest the destination memory segment
+     * @return dest
+     */
+    default MemorySegment storeFloat(@Mutated MemorySegment dest) { return storeFloat(0L, dest); }
+
+    /**
+     * Store the elements into the given memory segment, converting each element to {@code float},
+     * starting at the given offset.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param dest the destination memory segment
+     * @return dest
+     */
+    MemorySegment storeFloat(long offset, @Mutated MemorySegment dest);
+
+    /**
+     * Store the elements into the given raw memory address, converting each element to
+     * {@code float}. No bounds or liveness checks are performed.
+     *
+     * @param address the raw memory address
+     * @return this
+     */
+    Double4 storeFloatUnsafe(long address);
+
+    /** {@return whether all components of this vector are finite, i.e. neither NaN nor infinite} */
+    boolean isFinite();
+
+    /**
+     * Compare this vector component-wise against {@code other}, allowing a difference
+     * of at most {@code epsilon} per component.
+     *
+     * @param other the vector to compare against
+     * @param epsilon the maximum allowed difference per component
+     * @return {@code true} if all components differ by at most {@code epsilon}, {@code false} otherwise
+     */
+    boolean equalsEpsilon(Double4R other, double epsilon);
+
+    /** Backs {@code ZERO()}: defers the shared instance's
+     *  allocation to first use, avoiding a class-initialization cycle with the
+     *  implementation class. Not part of the public API. */
+    final class Holder {
+        private Holder() {}
+        static final Double4R ZERO = Joml.double4(0, 0, 0, 0);
+    }
+}

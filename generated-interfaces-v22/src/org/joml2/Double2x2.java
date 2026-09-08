@@ -1,0 +1,1658 @@
+package org.joml2;
+
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.ByteBuffer;
+import java.lang.foreign.MemorySegment;
+
+/**
+ * A 2x2 matrix of double-precision {@code double} components.
+ * <p>
+ * Extends the read-only view {@link Double2x2R} with the mutating surface: in-place self-forms,
+ * setters and load methods. A self-form operation writes its result to {@code this} and returns it
+ * - unless the {@code joml.returnNew} mode is enabled, in which case it leaves {@code this}
+ * unchanged and returns a freshly allocated instance.
+ * <p>
+ * Instances are created through the {@link Joml} factory methods.
+ */
+public interface Double2x2 extends Double2x2R {
+
+    /**
+     * Compute the cofactor matrix of this matrix.
+     *
+     * @return this
+     */
+    @Mutated default Double2x2 cofactor() { return cofactor(Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Invert this matrix.
+     *
+     * @return this
+     */
+    @Mutated default Double2x2 invert() { return invert(Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Compute the inverse of the product of this matrix and {@code other}, i.e.
+     * {@code (this * other)^-1}.
+     *
+     * @param other the other matrix
+     * @return this
+     */
+    @Mutated default Double2x2 invertProduct(Double2x2R other) { return invertProduct(other, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Compute the inverse of the product of this matrix and ({@code m00}, {@code m01}, {@code m10},
+     * {@code m11}).
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @return this
+     */
+    @Mutated default Double2x2 invertProduct(double m00, double m01, double m10, double m11) { return invertProduct(m00, m01, m10, m11, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Compute the normal matrix of this matrix, i.e. the transpose of its inverse.
+     *
+     * @return this
+     */
+    @Mutated default Double2x2 normal() { return normal(Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Transpose this matrix.
+     *
+     * @return this
+     */
+    @Mutated default Double2x2 transpose() { return transpose(Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Add {@code other} to this matrix.
+     *
+     * @param other the other matrix
+     * @return this
+     */
+    @Mutated default Double2x2 add(Double2x2R other) { return add(other, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m10}, {@code m11}) to this matrix.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @return this
+     */
+    @Mutated default Double2x2 add(double m00, double m01, double m10, double m11) { return add(m00, m01, m10, m11, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Negate this matrix.
+     *
+     * @return this
+     */
+    @Mutated default Double2x2 negate() { return negate(Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Subtract {@code other} from this matrix.
+     *
+     * @param other the other matrix
+     * @return this
+     */
+    @Mutated default Double2x2 sub(Double2x2R other) { return sub(other, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Subtract ({@code m00}, {@code m01}, {@code m10}, {@code m11}) from this matrix.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @return this
+     */
+    @Mutated default Double2x2 sub(double m00, double m01, double m10, double m11) { return sub(m00, m01, m10, m11, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Set this matrix to the given values.
+     *
+     * @param v the matrix
+     * @return this
+     */
+    @Mutated Double2x2 set(Double2x2R v);
+
+    /**
+     * Set this matrix to the given values.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @return this
+     */
+    @Mutated Double2x2 set(double m00, double m01, double m10, double m11);
+
+    /**
+     * Set this matrix to the given 2x3 matrix, copying the overlapping cells and dropping the rest.
+     *
+     * @param m the matrix
+     * @return this
+     */
+    @Mutated Double2x2 set(Double2x3R m);
+
+    /**
+     * Set this matrix to the given 3x3 matrix, copying the overlapping cells and dropping the rest.
+     *
+     * @param m the matrix
+     * @return this
+     */
+    @Mutated Double2x2 set(Double3x3R m);
+
+    /**
+     * Convert this matrix to {@code float} precision, returning the result as a new instance.
+     * <p>
+     * The conversion may lose precision or range.
+     *
+     * @return a new {@code Float2x2} holding the result
+     */
+    default Float2x2 toFloat() { return toFloat(Joml.float2x2()); }
+
+    /**
+     * Set this matrix to the identity.
+     *
+     * @return this
+     */
+    @Mutated Double2x2 makeIdentity();
+
+    /**
+     * Linearly interpolate between this matrix and {@code other} using the interpolation factor
+     * {@code t}.
+     *
+     * @param other the other matrix
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @return this
+     */
+    @Mutated default Double2x2 lerp(Double2x2R other, double t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Linearly interpolate between this matrix and ({@code m00}, {@code m01}, {@code m10},
+     * {@code m11}) using the interpolation factor {@code t}.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @return this
+     */
+    @Mutated default Double2x2 lerp(double m00, double m01, double m10, double m11, double t) { return lerp(m00, m01, m10, m11, t, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Multiply this matrix by {@code right}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the operand, then the new matrix will be
+     * {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the transformation of the operand will be applied first.
+     *
+     * @param right the right operand
+     * @return this
+     */
+    @Mutated default Double2x2 mul(Double2x2R right) { return mul(right, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Multiply this matrix by ({@code m00}, {@code m01}, {@code m10}, {@code m11}).
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the operand, then the new matrix will be
+     * {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the transformation of the operand will be applied first.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @return this
+     */
+    @Mutated default Double2x2 mul(double m00, double m01, double m10, double m11) { return mul(m00, m01, m10, m11, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Pre-multiply the transformation {@code other} onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code T} the given transformation matrix, then the
+     * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
+     * by using {@code T * M * v}, the given transformation will be applied last.
+     *
+     * @param other the other matrix
+     * @return this
+     */
+    @Mutated default Double2x2 preMul(Double2x2R other) { return preMul(other, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Pre-multiply the transformation ({@code m00}, {@code m01}, {@code m10}, {@code m11}) onto
+     * this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code T} the given transformation matrix, then the
+     * new matrix will be {@code T * M}. So when transforming a vector {@code v} with the new matrix
+     * by using {@code T * M * v}, the given transformation will be applied last.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @return this
+     */
+    @Mutated default Double2x2 preMul(double m00, double m01, double m10, double m11) { return preMul(m00, m01, m10, m11, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Set this matrix to the outer product of {@code col} and {@code row}.
+     *
+     * @param col the column vector (left operand)
+     * @param row the row vector (right operand)
+     * @return this
+     */
+    @Mutated Double2x2 makeOuterProduct(Double2R col, Double2R row);
+
+    /**
+     * Set this matrix to the outer product of ({@code colX}, {@code colY}) and ({@code rowX},
+     * {@code rowY}).
+     *
+     * @param colX the {@code x} component of the vector {@code (colX, colY)}
+     * @param colY the {@code y} component of the vector {@code (colX, colY)}
+     * @param rowX the {@code x} component of the vector {@code (rowX, rowY)}
+     * @param rowY the {@code y} component of the vector {@code (rowX, rowY)}
+     * @return this
+     */
+    @Mutated Double2x2 makeOuterProduct(double colX, double colY, double rowX, double rowY);
+
+    /**
+     * Set this matrix to a rotation by {@code angle}.
+     *
+     * @param angle the angle in radians
+     * @return this
+     */
+    @Mutated Double2x2 makeRotation(double angle);
+
+    /**
+     * Set this matrix to a scaling transformation that scales by {@code v}.
+     *
+     * @param v the vector
+     * @return this
+     */
+    @Mutated Double2x2 makeScaling(Double2R v);
+
+    /**
+     * Set this matrix to a scaling transformation that scales by ({@code x}, {@code y}).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @return this
+     */
+    @Mutated Double2x2 makeScaling(double x, double y);
+
+    /**
+     * Set this matrix to a scaling transformation that scales by {@code s}.
+     *
+     * @param s the uniform scale factor
+     * @return this
+     */
+    @Mutated Double2x2 makeScaling(double s);
+
+    /**
+     * Pre-multiply a rotation by {@code angle} onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code R * M * v}, the rotation will be applied last.
+     *
+     * @param angle the angle in radians
+     * @return this
+     */
+    @Mutated default Double2x2 preRotate(double angle) { return preRotate(angle, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Pre-multiply a scaling by {@code v} onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code S * M}. So when transforming a vector {@code p} with the new matrix by using
+     * {@code S * M * p}, the scaling will be applied last.
+     *
+     * @param v the vector
+     * @return this
+     */
+    @Mutated default Double2x2 preScale(Double2R v) { return preScale(v, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Pre-multiply a scaling by ({@code x}, {@code y}) onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code S * M * v}, the scaling will be applied last.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @return this
+     */
+    @Mutated default Double2x2 preScale(double x, double y) { return preScale(x, y, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Pre-multiply a scaling by {@code s} onto this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code S * M * v}, the scaling will be applied last.
+     *
+     * @param s the uniform scale factor
+     * @return this
+     */
+    @Mutated default Double2x2 preScale(double s) { return preScale(s, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Apply a rotation by {@code angle} to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
+     * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @return this
+     */
+    @Mutated default Double2x2 rotate(double angle) { return rotate(angle, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Apply a scaling by {@code v} to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code M * S}. So when transforming a vector {@code p} with the new matrix by using
+     * {@code M * S * p}, the scaling will be applied first.
+     *
+     * @param v the vector
+     * @return this
+     */
+    @Mutated default Double2x2 scale(Double2R v) { return scale(v, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Apply a scaling by ({@code x}, {@code y}) to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * S * v}, the scaling will be applied first.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @return this
+     */
+    @Mutated default Double2x2 scale(double x, double y) { return scale(x, y, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Apply a scaling by {@code s} to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
+     * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
+     * {@code M * S * v}, the scaling will be applied first.
+     *
+     * @param s the uniform scale factor
+     * @return this
+     */
+    @Mutated default Double2x2 scale(double s) { return scale(s, Joml.RETURN_NEW ? Joml.double2x2() : this); }
+
+    /**
+     * Load the elements from the given array in column-major order.
+     *
+     * @param src the source array
+     * @return this
+     */
+    @Mutated default Double2x2 loadCM(double[] src) { return loadCM(src, 0); }
+
+    /**
+     * Load the elements from the given array in column-major order, starting at the given offset.
+     *
+     * @param src the source array
+     * @param offset the start offset in the array, in elements
+     * @return this
+     */
+    @Mutated Double2x2 loadCM(double[] src, int offset);
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at its current
+     * position (the position is not modified).
+     *
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadCM(DoubleBuffer src) { return loadCMAbsolute(src.position(), src); }
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at its current
+     * position (the position is not modified).
+     *
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadCMAbsolute(DoubleBuffer src) { return loadCMAbsolute(src.position(), src); }
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at the given absolute
+     * index (the position is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated Double2x2 loadCMAbsolute(int index, DoubleBuffer src);
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at its current
+     * position and advancing the position accordingly.
+     *
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadCMRelative(DoubleBuffer src) {
+        int pos = src.position();
+        loadCMAbsolute(pos, src);
+        src.position(pos + 4);
+        return this;
+    }
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, starting at its current
+     * position (the position is not modified).
+     *
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadCM(ByteBuffer src) { return loadCMAbsolute(src.position(), src); }
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, starting at its current
+     * position (the position is not modified).
+     *
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadCMAbsolute(ByteBuffer src) { return loadCMAbsolute(src.position(), src); }
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, starting at the given
+     * absolute index (the position is not used or modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated Double2x2 loadCMAbsolute(int index, ByteBuffer src);
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, starting at its current
+     * position and advancing the position accordingly.
+     *
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadCMRelative(ByteBuffer src) {
+        int pos = src.position();
+        loadCMAbsolute(pos, src);
+        src.position(pos + 32);
+        return this;
+    }
+
+    /**
+     * Load the elements from the given memory segment in column-major order.
+     *
+     * @param src the source memory segment
+     * @return this
+     */
+    @Mutated default Double2x2 loadCM(MemorySegment src) { return loadCM(0L, src); }
+
+    /**
+     * Load the elements from the given memory segment in column-major order, starting at the given
+     * offset.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param src the source memory segment
+     * @return this
+     */
+    @Mutated Double2x2 loadCM(long offset, MemorySegment src);
+
+    /**
+     * Load the elements from the given raw memory address in column-major order. No bounds or
+     * liveness checks are performed.
+     *
+     * @param address the raw memory address
+     * @return this
+     */
+    @Mutated Double2x2 loadCMUnsafe(long address);
+
+    /**
+     * Load the elements from the given array in column-major order.
+     *
+     * @param src the source array
+     * @return this
+     */
+    @Mutated default Double2x2 loadCM(float[] src) { return loadCM(src, 0); }
+
+    /**
+     * Load the elements from the given array in column-major order, starting at the given offset.
+     *
+     * @param src the source array
+     * @param offset the start offset in the array, in elements
+     * @return this
+     */
+    @Mutated Double2x2 loadCM(float[] src, int offset);
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at its current
+     * position (the position is not modified).
+     *
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadCM(FloatBuffer src) { return loadCMAbsolute(src.position(), src); }
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at its current
+     * position (the position is not modified).
+     *
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadCMAbsolute(FloatBuffer src) { return loadCMAbsolute(src.position(), src); }
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at the given absolute
+     * index (the position is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated Double2x2 loadCMAbsolute(int index, FloatBuffer src);
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at its current
+     * position and advancing the position accordingly.
+     *
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadCMRelative(FloatBuffer src) {
+        int pos = src.position();
+        loadCMAbsolute(pos, src);
+        src.position(pos + 4);
+        return this;
+    }
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, converting each element
+     * from {@code float}, starting at its current position (the position is not modified).
+     *
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadCMFloat(ByteBuffer src) { return loadCMFloatAbsolute(src.position(), src); }
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, converting each element
+     * from {@code float}, starting at its current position (the position is not modified).
+     *
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadCMFloatAbsolute(ByteBuffer src) { return loadCMFloatAbsolute(src.position(), src); }
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, converting each element
+     * from {@code float}, starting at the given absolute index (the position is not used or
+     * modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated Double2x2 loadCMFloatAbsolute(int index, ByteBuffer src);
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, converting each element
+     * from {@code float}, starting at its current position and advancing the position accordingly.
+     *
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadCMFloatRelative(ByteBuffer src) {
+        int pos = src.position();
+        loadCMFloatAbsolute(pos, src);
+        src.position(pos + 16);
+        return this;
+    }
+
+    /**
+     * Load the elements from the given memory segment in column-major order, converting each
+     * element from {@code float}.
+     *
+     * @param src the source memory segment
+     * @return this
+     */
+    @Mutated default Double2x2 loadCMFloat(MemorySegment src) { return loadCMFloat(0L, src); }
+
+    /**
+     * Load the elements from the given memory segment in column-major order, converting each
+     * element from {@code float}, starting at the given offset.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param src the source memory segment
+     * @return this
+     */
+    @Mutated Double2x2 loadCMFloat(long offset, MemorySegment src);
+
+    /**
+     * Load the elements from the given raw memory address in column-major order, converting each
+     * element from {@code float}. No bounds or liveness checks are performed.
+     *
+     * @param address the raw memory address
+     * @return this
+     */
+    @Mutated Double2x2 loadCMFloatUnsafe(long address);
+
+    /**
+     * Load the elements from the given array in row-major order.
+     *
+     * @param src the source array
+     * @return this
+     */
+    @Mutated default Double2x2 loadRM(double[] src) { return loadRM(src, 0); }
+
+    /**
+     * Load the elements from the given array in row-major order, starting at the given offset.
+     *
+     * @param src the source array
+     * @param offset the start offset in the array, in elements
+     * @return this
+     */
+    @Mutated Double2x2 loadRM(double[] src, int offset);
+
+    /**
+     * Load the elements from the given buffer in row-major order, starting at its current position
+     * (the position is not modified).
+     *
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadRM(DoubleBuffer src) { return loadRMAbsolute(src.position(), src); }
+
+    /**
+     * Load the elements from the given buffer in row-major order, starting at its current position
+     * (the position is not modified).
+     *
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadRMAbsolute(DoubleBuffer src) { return loadRMAbsolute(src.position(), src); }
+
+    /**
+     * Load the elements from the given buffer in row-major order, starting at the given absolute
+     * index (the position is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated Double2x2 loadRMAbsolute(int index, DoubleBuffer src);
+
+    /**
+     * Load the elements from the given buffer in row-major order, starting at its current position
+     * and advancing the position accordingly.
+     *
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadRMRelative(DoubleBuffer src) {
+        int pos = src.position();
+        loadRMAbsolute(pos, src);
+        src.position(pos + 4);
+        return this;
+    }
+
+    /**
+     * Load the elements from the given byte buffer in row-major order, starting at its current
+     * position (the position is not modified).
+     *
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadRM(ByteBuffer src) { return loadRMAbsolute(src.position(), src); }
+
+    /**
+     * Load the elements from the given byte buffer in row-major order, starting at its current
+     * position (the position is not modified).
+     *
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadRMAbsolute(ByteBuffer src) { return loadRMAbsolute(src.position(), src); }
+
+    /**
+     * Load the elements from the given byte buffer in row-major order, starting at the given
+     * absolute index (the position is not used or modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated Double2x2 loadRMAbsolute(int index, ByteBuffer src);
+
+    /**
+     * Load the elements from the given byte buffer in row-major order, starting at its current
+     * position and advancing the position accordingly.
+     *
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadRMRelative(ByteBuffer src) {
+        int pos = src.position();
+        loadRMAbsolute(pos, src);
+        src.position(pos + 32);
+        return this;
+    }
+
+    /**
+     * Load the elements from the given memory segment in row-major order.
+     *
+     * @param src the source memory segment
+     * @return this
+     */
+    @Mutated default Double2x2 loadRM(MemorySegment src) { return loadRM(0L, src); }
+
+    /**
+     * Load the elements from the given memory segment in row-major order, starting at the given
+     * offset.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param src the source memory segment
+     * @return this
+     */
+    @Mutated Double2x2 loadRM(long offset, MemorySegment src);
+
+    /**
+     * Load the elements from the given raw memory address in row-major order. No bounds or liveness
+     * checks are performed.
+     *
+     * @param address the raw memory address
+     * @return this
+     */
+    @Mutated Double2x2 loadRMUnsafe(long address);
+
+    /**
+     * Load the elements from the given array in row-major order.
+     *
+     * @param src the source array
+     * @return this
+     */
+    @Mutated default Double2x2 loadRM(float[] src) { return loadRM(src, 0); }
+
+    /**
+     * Load the elements from the given array in row-major order, starting at the given offset.
+     *
+     * @param src the source array
+     * @param offset the start offset in the array, in elements
+     * @return this
+     */
+    @Mutated Double2x2 loadRM(float[] src, int offset);
+
+    /**
+     * Load the elements from the given buffer in row-major order, starting at its current position
+     * (the position is not modified).
+     *
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadRM(FloatBuffer src) { return loadRMAbsolute(src.position(), src); }
+
+    /**
+     * Load the elements from the given buffer in row-major order, starting at its current position
+     * (the position is not modified).
+     *
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadRMAbsolute(FloatBuffer src) { return loadRMAbsolute(src.position(), src); }
+
+    /**
+     * Load the elements from the given buffer in row-major order, starting at the given absolute
+     * index (the position is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated Double2x2 loadRMAbsolute(int index, FloatBuffer src);
+
+    /**
+     * Load the elements from the given buffer in row-major order, starting at its current position
+     * and advancing the position accordingly.
+     *
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadRMRelative(FloatBuffer src) {
+        int pos = src.position();
+        loadRMAbsolute(pos, src);
+        src.position(pos + 4);
+        return this;
+    }
+
+    /**
+     * Load the elements from the given byte buffer in row-major order, converting each element from
+     * {@code float}, starting at its current position (the position is not modified).
+     *
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadRMFloat(ByteBuffer src) { return loadRMFloatAbsolute(src.position(), src); }
+
+    /**
+     * Load the elements from the given byte buffer in row-major order, converting each element from
+     * {@code float}, starting at its current position (the position is not modified).
+     *
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadRMFloatAbsolute(ByteBuffer src) { return loadRMFloatAbsolute(src.position(), src); }
+
+    /**
+     * Load the elements from the given byte buffer in row-major order, converting each element from
+     * {@code float}, starting at the given absolute index (the position is not used or modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated Double2x2 loadRMFloatAbsolute(int index, ByteBuffer src);
+
+    /**
+     * Load the elements from the given byte buffer in row-major order, converting each element from
+     * {@code float}, starting at its current position and advancing the position accordingly.
+     *
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadRMFloatRelative(ByteBuffer src) {
+        int pos = src.position();
+        loadRMFloatAbsolute(pos, src);
+        src.position(pos + 16);
+        return this;
+    }
+
+    /**
+     * Load the elements from the given memory segment in row-major order, converting each element
+     * from {@code float}.
+     *
+     * @param src the source memory segment
+     * @return this
+     */
+    @Mutated default Double2x2 loadRMFloat(MemorySegment src) { return loadRMFloat(0L, src); }
+
+    /**
+     * Load the elements from the given memory segment in row-major order, converting each element
+     * from {@code float}, starting at the given offset.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param src the source memory segment
+     * @return this
+     */
+    @Mutated Double2x2 loadRMFloat(long offset, MemorySegment src);
+
+    /**
+     * Load the elements from the given raw memory address in row-major order, converting each
+     * element from {@code float}. No bounds or liveness checks are performed.
+     *
+     * @param address the raw memory address
+     * @return this
+     */
+    @Mutated Double2x2 loadRMFloatUnsafe(long address);
+
+    /**
+     * Load the elements from the given array in column-major order, starting at the given offset,
+     * with {@code stride} elements between the starts of consecutive columns/rows.
+     *
+     * @param src the source array
+     * @param offset the start offset in the array, in elements
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadCM(double[] src, int offset, int stride);
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at its current
+     * position (the position is not modified), with {@code stride} elements between the starts of
+     * consecutive columns/rows.
+     *
+     * @param src the source buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadCM(DoubleBuffer src, int stride) { return loadCMAbsolute(src.position(), src, stride); }
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at the given absolute
+     * index (the position is not used or modified), with {@code stride} elements between the starts
+     * of consecutive columns/rows.
+     *
+     * @param index the absolute element index in the buffer
+     * @param src the source buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadCMAbsolute(int index, DoubleBuffer src, int stride);
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at its current
+     * position and advancing the position accordingly, with {@code stride} elements between the
+     * starts of consecutive columns/rows.
+     *
+     * @param src the source buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadCMRelative(DoubleBuffer src, int stride) {
+        int pos = src.position();
+        loadCMAbsolute(pos, src, stride);
+        src.position(pos + 2 * stride);
+        return this;
+    }
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, starting at its current
+     * position (the position is not modified), with {@code stride} elements between the starts of
+     * consecutive columns/rows.
+     *
+     * @param src the source byte buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadCM(ByteBuffer src, int stride) { return loadCMAbsolute(src.position(), src, stride); }
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, starting at the given
+     * absolute index (the position is not used or modified), with {@code stride} elements between
+     * the starts of consecutive columns/rows.
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param src the source byte buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadCMAbsolute(int index, ByteBuffer src, int stride);
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, starting at its current
+     * position and advancing the position accordingly, with {@code stride} elements between the
+     * starts of consecutive columns/rows.
+     *
+     * @param src the source byte buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadCMRelative(ByteBuffer src, int stride) {
+        int pos = src.position();
+        loadCMAbsolute(pos, src, stride);
+        src.position(pos + (2 * stride) * 8);
+        return this;
+    }
+
+    /**
+     * Load the elements from the given memory segment in column-major order, with {@code stride}
+     * elements between the starts of consecutive columns/rows.
+     *
+     * @param src the source memory segment
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadCM(MemorySegment src, int stride) { return loadCM(0L, src, stride); }
+
+    /**
+     * Load the elements from the given memory segment in column-major order, starting at the given
+     * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param src the source memory segment
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadCM(long offset, MemorySegment src, int stride);
+
+    /**
+     * Load the elements from the given raw memory address in column-major order, with
+     * {@code stride} elements between the starts of consecutive columns/rows. No bounds or liveness
+     * checks are performed.
+     *
+     * @param address the raw memory address
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadCMUnsafe(long address, int stride);
+
+    /**
+     * Load the elements from the given array in column-major order, starting at the given offset,
+     * with {@code stride} elements between the starts of consecutive columns/rows.
+     *
+     * @param src the source array
+     * @param offset the start offset in the array, in elements
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadCM(float[] src, int offset, int stride);
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at its current
+     * position (the position is not modified), with {@code stride} elements between the starts of
+     * consecutive columns/rows.
+     *
+     * @param src the source buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadCM(FloatBuffer src, int stride) { return loadCMAbsolute(src.position(), src, stride); }
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at the given absolute
+     * index (the position is not used or modified), with {@code stride} elements between the starts
+     * of consecutive columns/rows.
+     *
+     * @param index the absolute element index in the buffer
+     * @param src the source buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadCMAbsolute(int index, FloatBuffer src, int stride);
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at its current
+     * position and advancing the position accordingly, with {@code stride} elements between the
+     * starts of consecutive columns/rows.
+     *
+     * @param src the source buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadCMRelative(FloatBuffer src, int stride) {
+        int pos = src.position();
+        loadCMAbsolute(pos, src, stride);
+        src.position(pos + 2 * stride);
+        return this;
+    }
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, converting each element
+     * from {@code float}, starting at its current position (the position is not modified), with
+     * {@code stride} elements between the starts of consecutive columns/rows.
+     *
+     * @param src the source byte buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadCMFloat(ByteBuffer src, int stride) { return loadCMFloatAbsolute(src.position(), src, stride); }
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, converting each element
+     * from {@code float}, starting at the given absolute index (the position is not used or
+     * modified), with {@code stride} elements between the starts of consecutive columns/rows.
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param src the source byte buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadCMFloatAbsolute(int index, ByteBuffer src, int stride);
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, converting each element
+     * from {@code float}, starting at its current position and advancing the position accordingly,
+     * with {@code stride} elements between the starts of consecutive columns/rows.
+     *
+     * @param src the source byte buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadCMFloatRelative(ByteBuffer src, int stride) {
+        int pos = src.position();
+        loadCMFloatAbsolute(pos, src, stride);
+        src.position(pos + (2 * stride) * 4);
+        return this;
+    }
+
+    /**
+     * Load the elements from the given memory segment in column-major order, converting each
+     * element from {@code float}, with {@code stride} elements between the starts of consecutive
+     * columns/rows.
+     *
+     * @param src the source memory segment
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadCMFloat(MemorySegment src, int stride) { return loadCMFloat(0L, src, stride); }
+
+    /**
+     * Load the elements from the given memory segment in column-major order, converting each
+     * element from {@code float}, starting at the given offset, with {@code stride} elements
+     * between the starts of consecutive columns/rows.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param src the source memory segment
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadCMFloat(long offset, MemorySegment src, int stride);
+
+    /**
+     * Load the elements from the given raw memory address in column-major order, converting each
+     * element from {@code float}, with {@code stride} elements between the starts of consecutive
+     * columns/rows. No bounds or liveness checks are performed.
+     *
+     * @param address the raw memory address
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadCMFloatUnsafe(long address, int stride);
+
+    /**
+     * Load the elements from the given array in row-major order, starting at the given offset, with
+     * {@code stride} elements between the starts of consecutive columns/rows.
+     *
+     * @param src the source array
+     * @param offset the start offset in the array, in elements
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadRM(double[] src, int offset, int stride);
+
+    /**
+     * Load the elements from the given buffer in row-major order, starting at its current position
+     * (the position is not modified), with {@code stride} elements between the starts of
+     * consecutive columns/rows.
+     *
+     * @param src the source buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadRM(DoubleBuffer src, int stride) { return loadRMAbsolute(src.position(), src, stride); }
+
+    /**
+     * Load the elements from the given buffer in row-major order, starting at the given absolute
+     * index (the position is not used or modified), with {@code stride} elements between the starts
+     * of consecutive columns/rows.
+     *
+     * @param index the absolute element index in the buffer
+     * @param src the source buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadRMAbsolute(int index, DoubleBuffer src, int stride);
+
+    /**
+     * Load the elements from the given buffer in row-major order, starting at its current position
+     * and advancing the position accordingly, with {@code stride} elements between the starts of
+     * consecutive columns/rows.
+     *
+     * @param src the source buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadRMRelative(DoubleBuffer src, int stride) {
+        int pos = src.position();
+        loadRMAbsolute(pos, src, stride);
+        src.position(pos + 2 * stride);
+        return this;
+    }
+
+    /**
+     * Load the elements from the given byte buffer in row-major order, starting at its current
+     * position (the position is not modified), with {@code stride} elements between the starts of
+     * consecutive columns/rows.
+     *
+     * @param src the source byte buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadRM(ByteBuffer src, int stride) { return loadRMAbsolute(src.position(), src, stride); }
+
+    /**
+     * Load the elements from the given byte buffer in row-major order, starting at the given
+     * absolute index (the position is not used or modified), with {@code stride} elements between
+     * the starts of consecutive columns/rows.
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param src the source byte buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadRMAbsolute(int index, ByteBuffer src, int stride);
+
+    /**
+     * Load the elements from the given byte buffer in row-major order, starting at its current
+     * position and advancing the position accordingly, with {@code stride} elements between the
+     * starts of consecutive columns/rows.
+     *
+     * @param src the source byte buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadRMRelative(ByteBuffer src, int stride) {
+        int pos = src.position();
+        loadRMAbsolute(pos, src, stride);
+        src.position(pos + (2 * stride) * 8);
+        return this;
+    }
+
+    /**
+     * Load the elements from the given memory segment in row-major order, with {@code stride}
+     * elements between the starts of consecutive columns/rows.
+     *
+     * @param src the source memory segment
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadRM(MemorySegment src, int stride) { return loadRM(0L, src, stride); }
+
+    /**
+     * Load the elements from the given memory segment in row-major order, starting at the given
+     * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param src the source memory segment
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadRM(long offset, MemorySegment src, int stride);
+
+    /**
+     * Load the elements from the given raw memory address in row-major order, with {@code stride}
+     * elements between the starts of consecutive columns/rows. No bounds or liveness checks are
+     * performed.
+     *
+     * @param address the raw memory address
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadRMUnsafe(long address, int stride);
+
+    /**
+     * Load the elements from the given array in row-major order, starting at the given offset, with
+     * {@code stride} elements between the starts of consecutive columns/rows.
+     *
+     * @param src the source array
+     * @param offset the start offset in the array, in elements
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadRM(float[] src, int offset, int stride);
+
+    /**
+     * Load the elements from the given buffer in row-major order, starting at its current position
+     * (the position is not modified), with {@code stride} elements between the starts of
+     * consecutive columns/rows.
+     *
+     * @param src the source buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadRM(FloatBuffer src, int stride) { return loadRMAbsolute(src.position(), src, stride); }
+
+    /**
+     * Load the elements from the given buffer in row-major order, starting at the given absolute
+     * index (the position is not used or modified), with {@code stride} elements between the starts
+     * of consecutive columns/rows.
+     *
+     * @param index the absolute element index in the buffer
+     * @param src the source buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadRMAbsolute(int index, FloatBuffer src, int stride);
+
+    /**
+     * Load the elements from the given buffer in row-major order, starting at its current position
+     * and advancing the position accordingly, with {@code stride} elements between the starts of
+     * consecutive columns/rows.
+     *
+     * @param src the source buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadRMRelative(FloatBuffer src, int stride) {
+        int pos = src.position();
+        loadRMAbsolute(pos, src, stride);
+        src.position(pos + 2 * stride);
+        return this;
+    }
+
+    /**
+     * Load the elements from the given byte buffer in row-major order, converting each element from
+     * {@code float}, starting at its current position (the position is not modified), with
+     * {@code stride} elements between the starts of consecutive columns/rows.
+     *
+     * @param src the source byte buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadRMFloat(ByteBuffer src, int stride) { return loadRMFloatAbsolute(src.position(), src, stride); }
+
+    /**
+     * Load the elements from the given byte buffer in row-major order, converting each element from
+     * {@code float}, starting at the given absolute index (the position is not used or modified),
+     * with {@code stride} elements between the starts of consecutive columns/rows.
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param src the source byte buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadRMFloatAbsolute(int index, ByteBuffer src, int stride);
+
+    /**
+     * Load the elements from the given byte buffer in row-major order, converting each element from
+     * {@code float}, starting at its current position and advancing the position accordingly, with
+     * {@code stride} elements between the starts of consecutive columns/rows.
+     *
+     * @param src the source byte buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadRMFloatRelative(ByteBuffer src, int stride) {
+        int pos = src.position();
+        loadRMFloatAbsolute(pos, src, stride);
+        src.position(pos + (2 * stride) * 4);
+        return this;
+    }
+
+    /**
+     * Load the elements from the given memory segment in row-major order, converting each element
+     * from {@code float}, with {@code stride} elements between the starts of consecutive
+     * columns/rows.
+     *
+     * @param src the source memory segment
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadRMFloat(MemorySegment src, int stride) { return loadRMFloat(0L, src, stride); }
+
+    /**
+     * Load the elements from the given memory segment in row-major order, converting each element
+     * from {@code float}, starting at the given offset, with {@code stride} elements between the
+     * starts of consecutive columns/rows.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param src the source memory segment
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadRMFloat(long offset, MemorySegment src, int stride);
+
+    /**
+     * Load the elements from the given raw memory address in row-major order, converting each
+     * element from {@code float}, with {@code stride} elements between the starts of consecutive
+     * columns/rows. No bounds or liveness checks are performed.
+     *
+     * @param address the raw memory address
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated Double2x2 loadRMFloatUnsafe(long address, int stride);
+
+    /**
+     * Load the elements from the given array in column-major order.
+     *
+     * @param src the source array
+     * @return this
+     */
+    @Mutated default Double2x2 load(double[] src) { return loadCM(src); }
+
+    /**
+     * Load the elements from the given array in column-major order, starting at the given offset.
+     *
+     * @param src the source array
+     * @param offset the start offset in the array, in elements
+     * @return this
+     */
+    @Mutated default Double2x2 load(double[] src, int offset) { return loadCM(src, offset); }
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at its current
+     * position (the position is not modified).
+     *
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated default Double2x2 load(DoubleBuffer src) { return loadCMAbsolute(src); }
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at the given absolute
+     * index (the position is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated default Double2x2 load(int index, DoubleBuffer src) { return loadCMAbsolute(index, src); }
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at its current
+     * position and advancing the position accordingly.
+     *
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadRelative(DoubleBuffer src) { return loadCMRelative(src); }
+
+    /**
+     * Load the elements from the given array in column-major order, converting each element from
+     * {@code float}.
+     *
+     * @param src the source array
+     * @return this
+     */
+    @Mutated default Double2x2 load(float[] src) { return loadCM(src); }
+
+    /**
+     * Load the elements from the given array in column-major order, converting each element from
+     * {@code float}, starting at the given offset.
+     *
+     * @param src the source array
+     * @param offset the start offset in the array, in elements
+     * @return this
+     */
+    @Mutated default Double2x2 load(float[] src, int offset) { return loadCM(src, offset); }
+
+    /**
+     * Load the elements from the given buffer in column-major order, converting each element from
+     * {@code float}, starting at its current position (the position is not modified).
+     *
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated default Double2x2 load(FloatBuffer src) { return loadCMAbsolute(src); }
+
+    /**
+     * Load the elements from the given buffer in column-major order, converting each element from
+     * {@code float}, starting at the given absolute index (the position is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated default Double2x2 load(int index, FloatBuffer src) { return loadCMAbsolute(index, src); }
+
+    /**
+     * Load the elements from the given buffer in column-major order, converting each element from
+     * {@code float}, starting at its current position and advancing the position accordingly.
+     *
+     * @param src the source buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadRelative(FloatBuffer src) { return loadCMRelative(src); }
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, starting at its current
+     * position (the position is not modified).
+     *
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated default Double2x2 load(ByteBuffer src) { return loadCMAbsolute(src); }
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, starting at the given
+     * absolute index (the position is not used or modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated default Double2x2 load(int index, ByteBuffer src) { return loadCMAbsolute(index, src); }
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, starting at its current
+     * position and advancing the position accordingly.
+     *
+     * @param src the source byte buffer
+     * @return this
+     */
+    @Mutated default Double2x2 loadRelative(ByteBuffer src) { return loadCMRelative(src); }
+
+    /**
+     * Load the elements from the given memory segment in column-major order.
+     *
+     * @param src the source memory segment
+     * @return this
+     */
+    @Mutated default Double2x2 load(MemorySegment src) { return loadCM(src); }
+
+    /**
+     * Load the elements from the given memory segment in column-major order, starting at the given
+     * offset.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param src the source memory segment
+     * @return this
+     */
+    @Mutated default Double2x2 load(long offset, MemorySegment src) { return loadCM(offset, src); }
+
+    /**
+     * Load the elements from the given raw memory address in column-major order. No bounds or
+     * liveness checks are performed.
+     *
+     * @param address the raw memory address
+     * @return this
+     */
+    @Mutated default Double2x2 loadUnsafe(long address) { return loadCMUnsafe(address); }
+
+    /**
+     * Load the elements from the given array in column-major order, starting at the given offset,
+     * with {@code stride} elements between the starts of consecutive columns/rows.
+     *
+     * @param src the source array
+     * @param offset the start offset in the array, in elements
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 load(double[] src, int offset, int stride) { return loadCM(src, offset, stride); }
+
+    /**
+     * Load the elements from the given array in column-major order, converting each element from
+     * {@code float}, starting at the given offset, with {@code stride} elements between the starts
+     * of consecutive columns/rows.
+     *
+     * @param src the source array
+     * @param offset the start offset in the array, in elements
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 load(float[] src, int offset, int stride) { return loadCM(src, offset, stride); }
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at the given absolute
+     * index (the position is not used or modified), with {@code stride} elements between the starts
+     * of consecutive columns/rows.
+     *
+     * @param index the absolute element index in the buffer
+     * @param src the source buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 load(int index, DoubleBuffer src, int stride) { return loadCMAbsolute(index, src, stride); }
+
+    /**
+     * Load the elements from the given buffer in column-major order, starting at its current
+     * position and advancing the position accordingly, with {@code stride} elements between the
+     * starts of consecutive columns/rows.
+     *
+     * @param src the source buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadRelative(DoubleBuffer src, int stride) { return loadCMRelative(src, stride); }
+
+    /**
+     * Load the elements from the given buffer in column-major order, converting each element from
+     * {@code float}, starting at the given absolute index (the position is not used or modified),
+     * with {@code stride} elements between the starts of consecutive columns/rows.
+     *
+     * @param index the absolute element index in the buffer
+     * @param src the source buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 load(int index, FloatBuffer src, int stride) { return loadCMAbsolute(index, src, stride); }
+
+    /**
+     * Load the elements from the given buffer in column-major order, converting each element from
+     * {@code float}, starting at its current position and advancing the position accordingly, with
+     * {@code stride} elements between the starts of consecutive columns/rows.
+     *
+     * @param src the source buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadRelative(FloatBuffer src, int stride) { return loadCMRelative(src, stride); }
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, starting at the given
+     * absolute index (the position is not used or modified), with {@code stride} elements between
+     * the starts of consecutive columns/rows.
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param src the source byte buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 load(int index, ByteBuffer src, int stride) { return loadCMAbsolute(index, src, stride); }
+
+    /**
+     * Load the elements from the given byte buffer in column-major order, starting at its current
+     * position and advancing the position accordingly, with {@code stride} elements between the
+     * starts of consecutive columns/rows.
+     *
+     * @param src the source byte buffer
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadRelative(ByteBuffer src, int stride) { return loadCMRelative(src, stride); }
+
+    /**
+     * Load the elements from the given memory segment in column-major order, starting at the given
+     * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param src the source memory segment
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 load(long offset, MemorySegment src, int stride) { return loadCM(offset, src, stride); }
+
+    /**
+     * Load the elements from the given raw memory address in column-major order, with
+     * {@code stride} elements between the starts of consecutive columns/rows. No bounds or liveness
+     * checks are performed.
+     *
+     * @param address the raw memory address
+     * @param stride the number of elements between the starts of consecutive columns/rows
+     * @return this
+     */
+    @Mutated default Double2x2 loadUnsafe(long address, int stride) { return loadCMUnsafe(address, stride); }
+}

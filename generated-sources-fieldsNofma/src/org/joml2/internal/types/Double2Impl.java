@@ -1,0 +1,2881 @@
+package org.joml2.internal.types;
+
+import org.joml2.*;
+import org.joml2.Math;
+import org.joml2.internal.storeload.*;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.ValueLayout;
+import java.nio.ByteBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+
+/**
+ * Generated implementation of {@link Double2} backed by individual scalar fields.
+ * <p>
+ * Not part of the public API - obtain instances through the {@link Joml} factory methods.
+ */
+public final class Double2Impl implements Double2 {
+
+    public double x;
+    public double y;
+    static final Double2SegOps SEG_OPS =
+            Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE
+                    ? new Double2SegOpsUnsafe()
+                    : new Double2SegOpsMS();
+    static final Double2BbOps BB_OPS =
+            Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE
+                    ? new Double2BbOpsUnsafe()
+                    : new Double2BbOpsApi();
+    static final Double2RawOps RAW_OPS =
+            Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE
+                    ? new Double2RawOpsUnsafe()
+                    : new Double2RawOpsApi();
+
+    public Double2Impl() {
+    }
+
+
+    /**
+     * Add {@code other} to this vector and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 add(Double2R other, @Mutated Double2 dest) {
+        return add(other.x(), other.y(), dest);
+    }
+
+
+    /**
+     * Add ({@code otherX}, {@code otherY}) to this vector and store the result in {@code dest}.
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 add(double otherX, double otherY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = otherX + this.x;
+        d.y = otherY + this.y;
+        return d;
+    }
+
+
+    /**
+     * Divide each component of this vector by {@code scalar} and store the result in {@code dest}.
+     *
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 div(double scalar, @Mutated Double2 dest) {
+        return div(scalar, scalar, dest);
+    }
+
+
+    /**
+     * Divide this vector component-wise by {@code other} and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 div(Double2R other, @Mutated Double2 dest) {
+        return div(other.x(), other.y(), dest);
+    }
+
+
+    /**
+     * Divide this vector component-wise by ({@code otherX}, {@code otherY}) and store the result in
+     * {@code dest}.
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 div(double otherX, double otherY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = this.x / otherX;
+        d.y = this.y / otherY;
+        return d;
+    }
+
+
+    /**
+     * Multiply this vector component-wise by {@code b} and add {@code c}, i.e. compute
+     * {@code this * b + c} per component and store the result in {@code dest}.
+     *
+     * @param b the factor to multiply this vector by
+     * @param c the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 fma(double b, Double2R c, @Mutated Double2 dest) {
+        return fma(b, c.x(), c.y(), dest);
+    }
+
+
+    /**
+     * Multiply this vector component-wise by {@code b} and add ({@code cX}, {@code cY}), i.e.
+     * compute {@code this * b + c} per component and store the result in {@code dest}.
+     *
+     * @param b the factor to multiply this vector by
+     * @param cX the {@code x} component of the vector {@code (cX, cY)}
+     * @param cY the {@code y} component of the vector {@code (cX, cY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 fma(double b, double cX, double cY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.fma(this.x, b, cX);
+        d.y = Math.fma(this.y, b, cY);
+        return d;
+    }
+
+
+    /**
+     * Multiply this vector component-wise by {@code b} and add {@code c}, i.e. compute
+     * {@code this * b + c} per component and store the result in {@code dest}.
+     *
+     * @param b the factor to multiply this vector by
+     * @param c the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 fma(Double2R b, Double2R c, @Mutated Double2 dest) {
+        return fma(b.x(), b.y(), c.x(), c.y(), dest);
+    }
+
+
+    /**
+     * Multiply this vector component-wise by ({@code bX}, {@code bY}) and add ({@code cX},
+     * {@code cY}), i.e. compute {@code this * b + c} per component and store the result in
+     * {@code dest}.
+     *
+     * @param bX the {@code x} component of the vector {@code (bX, bY)}
+     * @param bY the {@code y} component of the vector {@code (bX, bY)}
+     * @param cX the {@code x} component of the vector {@code (cX, cY)}
+     * @param cY the {@code y} component of the vector {@code (cX, cY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 fma(double bX, double bY, double cX, double cY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.fma(this.x, bX, cX);
+        d.y = Math.fma(this.y, bY, cY);
+        return d;
+    }
+
+
+    /**
+     * Multiply each component of this vector by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 mul(double scalar, @Mutated Double2 dest) {
+        return mul(scalar, scalar, dest);
+    }
+
+
+    /**
+     * Multiply this vector component-wise by {@code other} and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 mul(Double2R other, @Mutated Double2 dest) {
+        return mul(other.x(), other.y(), dest);
+    }
+
+
+    /**
+     * Multiply this vector component-wise by ({@code otherX}, {@code otherY}) and store the result
+     * in {@code dest}.
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 mul(double otherX, double otherY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = otherX * this.x;
+        d.y = otherY * this.y;
+        return d;
+    }
+
+
+    /**
+     * Negate this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 negate(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = -this.x;
+        d.y = -this.y;
+        return d;
+    }
+
+
+    /**
+     * Subtract {@code other} from this vector and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 sub(Double2R other, @Mutated Double2 dest) {
+        return sub(other.x(), other.y(), dest);
+    }
+
+
+    /**
+     * Subtract ({@code otherX}, {@code otherY}) from this vector and store the result in
+     * {@code dest}.
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 sub(double otherX, double otherY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = this.x - otherX;
+        d.y = this.y - otherY;
+        return d;
+    }
+
+
+    /**
+     * Set this vector to the given values.
+     *
+     * @param v the vector
+     * @return this
+     */
+    public @Mutated Double2 set(Double2R v) {
+        return set(v.x(), v.y());
+    }
+
+
+    /**
+     * Set this vector to the given values.
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY)}
+     * @return this
+     */
+    @Mutated public Double2 set(double vX, double vY) {
+        this.x = vX;
+        this.y = vY;
+        return this;
+    }
+
+
+    /**
+     * Set this vector to {@code s} and store the result in {@code dest}.
+     *
+     * @param s the uniform scale factor
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 set(double s, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = s;
+        d.y = s;
+        return d;
+    }
+
+
+    /**
+     * Convert this vector to {@code float} precision and store the result in {@code dest}.
+     * <p>
+     * The conversion may lose precision or range.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float2 toFloat(@Mutated Float2 dest) {
+        Float2Impl d = (Float2Impl) dest;
+        d.x = (float) (this.x);
+        d.y = (float) (this.y);
+        return d;
+    }
+
+
+    /**
+     * Convert this vector to {@code byte} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is converted by a primitive cast, truncating toward zero.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Byte2 toByte(@Mutated Byte2 dest) {
+        Byte2Impl d = (Byte2Impl) dest;
+        d.x = (byte) (this.x);
+        d.y = (byte) (this.y);
+        return d;
+    }
+
+
+    /**
+     * Convert this vector to {@code byte} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param roundingMode the rounding mode to use
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Byte2 toByte(RoundingMode roundingMode, @Mutated Byte2 dest) {
+        Byte2Impl d = (Byte2Impl) dest;
+        switch (roundingMode) {
+            case TRUNCATE -> { return toByte(dest); }
+            case FLOOR -> {
+                d.x = (byte) Math.floor(this.x);
+                d.y = (byte) Math.floor(this.y);
+            }
+            case CEILING -> {
+                d.x = (byte) Math.ceil(this.x);
+                d.y = (byte) Math.ceil(this.y);
+            }
+            case HALF_TOWARD_POSITIVE_INFINITY -> {
+                d.x = (byte) Math.round(this.x);
+                d.y = (byte) Math.round(this.y);
+            }
+            case HALF_AWAY_FROM_ZERO -> {
+                d.x = (byte) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5));
+                d.y = (byte) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5));
+            }
+            case HALF_EVEN -> {
+                d.x = (byte) Math.rint(this.x);
+                d.y = (byte) Math.rint(this.y);
+            }
+        }
+        return dest;
+    }
+
+
+    /**
+     * Convert this vector to {@code short} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is converted by a primitive cast, truncating toward zero.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Short2 toShort(@Mutated Short2 dest) {
+        Short2Impl d = (Short2Impl) dest;
+        d.x = (short) (this.x);
+        d.y = (short) (this.y);
+        return d;
+    }
+
+
+    /**
+     * Convert this vector to {@code short} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param roundingMode the rounding mode to use
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Short2 toShort(RoundingMode roundingMode, @Mutated Short2 dest) {
+        Short2Impl d = (Short2Impl) dest;
+        switch (roundingMode) {
+            case TRUNCATE -> { return toShort(dest); }
+            case FLOOR -> {
+                d.x = (short) Math.floor(this.x);
+                d.y = (short) Math.floor(this.y);
+            }
+            case CEILING -> {
+                d.x = (short) Math.ceil(this.x);
+                d.y = (short) Math.ceil(this.y);
+            }
+            case HALF_TOWARD_POSITIVE_INFINITY -> {
+                d.x = (short) Math.round(this.x);
+                d.y = (short) Math.round(this.y);
+            }
+            case HALF_AWAY_FROM_ZERO -> {
+                d.x = (short) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5));
+                d.y = (short) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5));
+            }
+            case HALF_EVEN -> {
+                d.x = (short) Math.rint(this.x);
+                d.y = (short) Math.rint(this.y);
+            }
+        }
+        return dest;
+    }
+
+
+    /**
+     * Convert this vector to {@code int} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is converted by a primitive cast, truncating toward zero.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Int2 toInt(@Mutated Int2 dest) {
+        Int2Impl d = (Int2Impl) dest;
+        d.x = (int) (this.x);
+        d.y = (int) (this.y);
+        return d;
+    }
+
+
+    /**
+     * Convert this vector to {@code int} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param roundingMode the rounding mode to use
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Int2 toInt(RoundingMode roundingMode, @Mutated Int2 dest) {
+        Int2Impl d = (Int2Impl) dest;
+        switch (roundingMode) {
+            case TRUNCATE -> { return toInt(dest); }
+            case FLOOR -> {
+                d.x = (int) Math.floor(this.x);
+                d.y = (int) Math.floor(this.y);
+            }
+            case CEILING -> {
+                d.x = (int) Math.ceil(this.x);
+                d.y = (int) Math.ceil(this.y);
+            }
+            case HALF_TOWARD_POSITIVE_INFINITY -> {
+                d.x = (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.x)));
+                d.y = (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.y)));
+            }
+            case HALF_AWAY_FROM_ZERO -> {
+                d.x = (int) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5));
+                d.y = (int) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5));
+            }
+            case HALF_EVEN -> {
+                d.x = (int) Math.rint(this.x);
+                d.y = (int) Math.rint(this.y);
+            }
+        }
+        return dest;
+    }
+
+
+    /**
+     * Convert this vector to {@code long} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is converted by a primitive cast, truncating toward zero.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Long2 toLong(@Mutated Long2 dest) {
+        Long2Impl d = (Long2Impl) dest;
+        d.x = (long) (this.x);
+        d.y = (long) (this.y);
+        return d;
+    }
+
+
+    /**
+     * Convert this vector to {@code long} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param roundingMode the rounding mode to use
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Long2 toLong(RoundingMode roundingMode, @Mutated Long2 dest) {
+        Long2Impl d = (Long2Impl) dest;
+        switch (roundingMode) {
+            case TRUNCATE -> { return toLong(dest); }
+            case FLOOR -> {
+                d.x = (long) Math.floor(this.x);
+                d.y = (long) Math.floor(this.y);
+            }
+            case CEILING -> {
+                d.x = (long) Math.ceil(this.x);
+                d.y = (long) Math.ceil(this.y);
+            }
+            case HALF_TOWARD_POSITIVE_INFINITY -> {
+                d.x = Math.round(this.x);
+                d.y = Math.round(this.y);
+            }
+            case HALF_AWAY_FROM_ZERO -> {
+                d.x = (long) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5));
+                d.y = (long) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5));
+            }
+            case HALF_EVEN -> {
+                d.x = (long) Math.rint(this.x);
+                d.y = (long) Math.rint(this.y);
+            }
+        }
+        return dest;
+    }
+
+
+    /**
+     * Set all components of this vector to zero.
+     *
+     * @return this
+     */
+    @Mutated public Double2 makeZero() {
+        this.x = 0.0;
+        this.y = 0.0;
+        return this;
+    }
+
+
+    /**
+     * Interpolate along the cubic Bézier curve defined by this vector and the given control points
+     * and store the result in {@code dest}.
+     *
+     * @param p1 the first control point
+     * @param p2 the second control point
+     * @param p3 the end point
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 bezier(Double2R p1, Double2R p2, Double2R p3, double t, @Mutated Double2 dest) {
+        return bezier(p1.x(), p1.y(), p2.x(), p2.y(), p3.x(), p3.y(), t, dest);
+    }
+
+
+    /**
+     * Interpolate along the cubic Bézier curve defined by this vector and the given control points
+     * and store the result in {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y)}
+     * @param p3X the {@code x} component of the vector {@code (p3X, p3Y)}
+     * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 bezier(double p1X, double p1Y, double p2X, double p2Y, double p3X, double p3Y, double t, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t0 = 1.0 - t;
+        double _t1 = t * t;
+        double _t2 = t * _t1;
+        double _t3 = _t0 * _t0;
+        double _t6 = 3.0 * _t0 * _t1;
+        double _t7 = 3.0 * t * _t3;
+        double _t8 = _t0 * _t3;
+        d.x = p1X * _t7 + this.x * _t8 + (p2X * _t6 + p3X * _t2);
+        d.y = p1Y * _t7 + this.y * _t8 + (p2Y * _t6 + p3Y * _t2);
+        return d;
+    }
+
+
+    /**
+     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
+     * points and store the result in {@code dest}.
+     *
+     * @param p1 the control point
+     * @param p2 the end point
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 bezier2(Double2R p1, Double2R p2, double t, @Mutated Double2 dest) {
+        return bezier2(p1.x(), p1.y(), p2.x(), p2.y(), t, dest);
+    }
+
+
+    /**
+     * Interpolate along the quadratic Bézier curve defined by this vector and the given control
+     * points and store the result in {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 bezier2(double p1X, double p1Y, double p2X, double p2Y, double t, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t0 = 1.0 - t;
+        double _t1 = t * t;
+        double _t3 = 2.0 * t * _t0;
+        double _t4 = _t0 * _t0;
+        d.x = p1X * _t3 + this.x * _t4 + p2X * _t1;
+        d.y = p1Y * _t3 + this.y * _t4 + p2Y * _t1;
+        return d;
+    }
+
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
+     * by this vector and the given control points, at the parameter {@code t} and store the result
+     * in {@code dest}.
+     *
+     * @param p1 the control point
+     * @param p2 the end point
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 bezier2Tangent(Double2R p1, Double2R p2, double t, @Mutated Double2 dest) {
+        return bezier2Tangent(p1.x(), p1.y(), p2.x(), p2.y(), t, dest);
+    }
+
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the quadratic Bézier curve defined
+     * by this vector and the given control points, at the parameter {@code t} and store the result
+     * in {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 bezier2Tangent(double p1X, double p1Y, double p2X, double p2Y, double t, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t1 = 2.0 * t;
+        double _t2 = 2.0 * (1.0 - t);
+        d.x = (p1X - this.x) * _t2 + (p2X - p1X) * _t1;
+        d.y = (p1Y - this.y) * _t2 + (p2Y - p1Y) * _t1;
+        return d;
+    }
+
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
+     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param p1 the first control point
+     * @param p2 the second control point
+     * @param p3 the end point
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 bezierTangent(Double2R p1, Double2R p2, Double2R p3, double t, @Mutated Double2 dest) {
+        return bezierTangent(p1.x(), p1.y(), p2.x(), p2.y(), p3.x(), p3.y(), t, dest);
+    }
+
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the cubic Bézier curve defined by
+     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y)}
+     * @param p3X the {@code x} component of the vector {@code (p3X, p3Y)}
+     * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 bezierTangent(double p1X, double p1Y, double p2X, double p2Y, double p3X, double p3Y, double t, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t0 = 1.0 - t;
+        double _t3 = 3.0 * t * t;
+        double _t5 = 6.0 * t * _t0;
+        double _t6 = 3.0 * _t0 * _t0;
+        d.x = (p1X - this.x) * _t6 + (p2X - p1X) * _t5 + (p3X - p2X) * _t3;
+        d.y = (p1Y - this.y) * _t6 + (p2Y - p1Y) * _t5 + (p3Y - p2Y) * _t3;
+        return d;
+    }
+
+
+    /**
+     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points
+     * and store the result in {@code dest}.
+     *
+     * @param p1 the start point of the interpolated segment
+     * @param p2 the end point of the interpolated segment
+     * @param p3 the outer control point after the segment
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 catmullRom(Double2R p1, Double2R p2, Double2R p3, double t, @Mutated Double2 dest) {
+        return catmullRom(p1.x(), p1.y(), p2.x(), p2.y(), p3.x(), p3.y(), t, dest);
+    }
+
+
+    /**
+     * Interpolate along the Catmull-Rom spline defined by this vector and the given control points
+     * and store the result in {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y)}
+     * @param p3X the {@code x} component of the vector {@code (p3X, p3Y)}
+     * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 catmullRom(double p1X, double p1Y, double p2X, double p2Y, double p3X, double p3Y, double t, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t0 = t * t;
+        double _t1 = t * _t0;
+        d.x = 0.5 * (2.0 * p1X + t * (p2X - this.x) + ((-5.0 * p1X + (2.0 * this.x + (4.0 * p2X - p3X))) * _t0 + (3.0 * p1X + (p3X - this.x) - 3.0 * p2X) * _t1));
+        d.y = 0.5 * (2.0 * p1Y + t * (p2Y - this.y) + ((-5.0 * p1Y + (2.0 * this.y + (4.0 * p2Y - p3Y))) * _t0 + (3.0 * p1Y + (p3Y - this.y) - 3.0 * p2Y) * _t1));
+        return d;
+    }
+
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
+     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param p1 the start point of the interpolated segment
+     * @param p2 the end point of the interpolated segment
+     * @param p3 the outer control point after the segment
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 catmullRomTangent(Double2R p1, Double2R p2, Double2R p3, double t, @Mutated Double2 dest) {
+        return catmullRomTangent(p1.x(), p1.y(), p2.x(), p2.y(), p3.x(), p3.y(), t, dest);
+    }
+
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the Catmull-Rom spline defined by
+     * this vector and the given control points, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param p1X the {@code x} component of the vector {@code (p1X, p1Y)}
+     * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y)}
+     * @param p2X the {@code x} component of the vector {@code (p2X, p2Y)}
+     * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y)}
+     * @param p3X the {@code x} component of the vector {@code (p3X, p3Y)}
+     * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 catmullRomTangent(double p1X, double p1Y, double p2X, double p2Y, double p3X, double p3Y, double t, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t0 = t * t;
+        d.x = 0.5 * (t * 2.0 * (-5.0 * p1X + (2.0 * this.x + (4.0 * p2X - p3X))) + (3.0 * (3.0 * p1X + (p3X - this.x) - 3.0 * p2X) * _t0 + (p2X - this.x)));
+        d.y = 0.5 * (t * 2.0 * (-5.0 * p1Y + (2.0 * this.y + (4.0 * p2Y - p3Y))) + (3.0 * (3.0 * p1Y + (p3Y - this.y) - 3.0 * p2Y) * _t0 + (p2Y - this.y)));
+        return d;
+    }
+
+
+    /**
+     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation and
+     * store the result in {@code dest}.
+     *
+     * @param t0 the tangent at this vector
+     * @param v1 the endpoint
+     * @param t1 the tangent at the endpoint
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 hermite(Double2R t0, Double2R v1, Double2R t1, double t, @Mutated Double2 dest) {
+        return hermite(t0.x(), t0.y(), v1.x(), v1.y(), t1.x(), t1.y(), t, dest);
+    }
+
+
+    /**
+     * Interpolate between this vector and the given endpoint using cubic Hermite interpolation and
+     * store the result in {@code dest}.
+     *
+     * @param t0X the {@code x} component of the vector {@code (t0X, t0Y)}
+     * @param t0Y the {@code y} component of the vector {@code (t0X, t0Y)}
+     * @param v1X the {@code x} component of the vector {@code (v1X, v1Y)}
+     * @param v1Y the {@code y} component of the vector {@code (v1X, v1Y)}
+     * @param t1X the {@code x} component of the vector {@code (t1X, t1Y)}
+     * @param t1Y the {@code y} component of the vector {@code (t1X, t1Y)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 hermite(double t0X, double t0Y, double v1X, double v1Y, double t1X, double t1Y, double t, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t0 = t * t;
+        double _t3 = 3.0 * _t0;
+        double _t5 = 2.0 * t * _t0;
+        double _t8 = t * (_t0 - t);
+        double _t9 = (t - 2.0) * _t0 + t;
+        double _t10 = _t3 - _t5;
+        double _t11 = _t5 + (1.0 - _t3);
+        d.x = this.x * _t11 + t0X * _t9 + (t1X * _t8 + v1X * _t10);
+        d.y = this.y * _t11 + t0Y * _t9 + (t1Y * _t8 + v1Y * _t10);
+        return d;
+    }
+
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
+     * this vector and the given endpoint, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param t0 the tangent at this vector
+     * @param v1 the endpoint
+     * @param t1 the tangent at the endpoint
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 hermiteTangent(Double2R t0, Double2R v1, Double2R t1, double t, @Mutated Double2 dest) {
+        return hermiteTangent(t0.x(), t0.y(), v1.x(), v1.y(), t1.x(), t1.y(), t, dest);
+    }
+
+
+    /**
+     * Compute the tangent (the unnormalized first derivative) of the cubic Hermite curve between
+     * this vector and the given endpoint, at the parameter {@code t} and store the result in
+     * {@code dest}.
+     *
+     * @param t0X the {@code x} component of the vector {@code (t0X, t0Y)}
+     * @param t0Y the {@code y} component of the vector {@code (t0X, t0Y)}
+     * @param v1X the {@code x} component of the vector {@code (v1X, v1Y)}
+     * @param v1Y the {@code y} component of the vector {@code (v1X, v1Y)}
+     * @param t1X the {@code x} component of the vector {@code (t1X, t1Y)}
+     * @param t1Y the {@code y} component of the vector {@code (t1X, t1Y)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 hermiteTangent(double t0X, double t0Y, double v1X, double v1Y, double t1X, double t1Y, double t, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t0 = t * t;
+        double _t4 = 3.0 * _t0;
+        double _t7 = 6.0 * (_t0 - t);
+        double _t8 = 6.0 * (t - _t0);
+        double _t9 = _t4 - 2.0 * t;
+        double _t10 = _t4 + (1.0 - 4.0 * t);
+        d.x = this.x * _t7 + t0X * _t10 + (t1X * _t9 + v1X * _t8);
+        d.y = this.y * _t7 + t0Y * _t10 + (t1Y * _t9 + v1Y * _t8);
+        return d;
+    }
+
+
+    /**
+     * Linearly interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t} and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 lerp(Double2R other, double t, @Mutated Double2 dest) {
+        return lerp(other.x(), other.y(), t, dest);
+    }
+
+
+    /**
+     * Linearly interpolate between this vector and ({@code otherX}, {@code otherY}) using the
+     * interpolation factor {@code t} and store the result in {@code dest}.
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 lerp(double otherX, double otherY, double t, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = t * (otherX - this.x) + this.x;
+        d.y = t * (otherY - this.y) + this.y;
+        return d;
+    }
+
+
+    /**
+     * Linearly interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t} and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param t the per-component interpolation factors, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 lerp(Double2R other, Double2R t, @Mutated Double2 dest) {
+        return lerp(other.x(), other.y(), t.x(), t.y(), dest);
+    }
+
+
+    /**
+     * Linearly interpolate between this vector and ({@code otherX}, {@code otherY}) using the
+     * interpolation factor ({@code tX}, {@code tY}) and store the result in {@code dest}.
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
+     * @param tX the {@code x} component of the vector {@code (tX, tY)}
+     * @param tY the {@code y} component of the vector {@code (tX, tY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 lerp(double otherX, double otherY, double tX, double tY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = tX * (otherX - this.x) + this.x;
+        d.y = tY * (otherY - this.y) + this.y;
+        return d;
+    }
+
+
+    /**
+     * Compute the absolute value of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 absolute(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.abs(this.x);
+        d.y = Math.abs(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the arc cosine of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 acos(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.acos(this.x);
+        d.y = Math.acos(this.y);
+        return d;
+    }
+
+
+    /**
+     * Add {@code b} scaled by {@code scalar} to this vector and store the result in {@code dest}.
+     *
+     * @param b the vector
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 addScaled(Double2R b, double scalar, @Mutated Double2 dest) {
+        return addScaled(b.x(), b.y(), scalar, dest);
+    }
+
+
+    /**
+     * Add ({@code bX}, {@code bY}) scaled by {@code scalar} to this vector and store the result in
+     * {@code dest}.
+     *
+     * @param bX the {@code x} component of the vector {@code (bX, bY)}
+     * @param bY the {@code y} component of the vector {@code (bX, bY)}
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 addScaled(double bX, double bY, double scalar, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = scalar * bX + this.x;
+        d.y = scalar * bY + this.y;
+        return d;
+    }
+
+
+    /**
+     * Add {@code b} scaled by {@code c} to this vector and store the result in {@code dest}.
+     *
+     * @param b the vector
+     * @param c the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 addScaled(Double2R b, Double2R c, @Mutated Double2 dest) {
+        return addScaled(b.x(), b.y(), c.x(), c.y(), dest);
+    }
+
+
+    /**
+     * Add ({@code bX}, {@code bY}) scaled by ({@code cX}, {@code cY}) to this vector and store the
+     * result in {@code dest}.
+     *
+     * @param bX the {@code x} component of the vector {@code (bX, bY)}
+     * @param bY the {@code y} component of the vector {@code (bX, bY)}
+     * @param cX the {@code x} component of the vector {@code (cX, cY)}
+     * @param cY the {@code y} component of the vector {@code (cX, cY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 addScaled(double bX, double bY, double cX, double cY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = bX * cX + this.x;
+        d.y = bY * cY + this.y;
+        return d;
+    }
+
+
+    /**
+     * Compute the angle in radians between this vector and {@code other}.
+     *
+     * @param other the other vector
+     * @return the angle in radians between this vector and {@code other}
+     */
+    public double angleBetween(Double2R other) {
+        return angleBetween(other.x(), other.y());
+    }
+
+
+    /**
+     * Compute the angle in radians between this vector and ({@code otherX}, {@code otherY}).
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
+     * @return the angle in radians between this vector and ({@code otherX}, {@code otherY})
+     */
+    public double angleBetween(double otherX, double otherY) {
+        return Math.acos(Math.min(1.0, Math.max(-1.0, (otherX * this.x + otherY * this.y) * (1.0 / Math.sqrt(this.x * this.x + this.y * this.y)) * (1.0 / Math.sqrt(otherX * otherX + otherY * otherY)))));
+    }
+
+
+    /**
+     * Compute the arc sine of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 asin(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.asin(this.x);
+        d.y = Math.asin(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the arc tangent of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 atan(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.atan(this.x);
+        d.y = Math.atan(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
+     * {@code dest}.
+     *
+     * @param x the value to take the arc tangent over (the denominator)
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 atan2(double x, @Mutated Double2 dest) {
+        return atan2(x, x, dest);
+    }
+
+
+    /**
+     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
+     * {@code dest}.
+     *
+     * @param x the value to take the arc tangent over (the denominator)
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 atan2(Double2R x, @Mutated Double2 dest) {
+        return atan2(x.x(), x.y(), dest);
+    }
+
+
+    /**
+     * Compute the component-wise arc tangent of this vector over ({@code xX}, {@code xY}) and store
+     * the result in {@code dest}.
+     *
+     * @param xX the {@code x} component of the vector {@code (xX, xY)}
+     * @param xY the {@code y} component of the vector {@code (xX, xY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 atan2(double xX, double xY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.atan2(this.x, xX);
+        d.y = Math.atan2(this.y, xY);
+        return d;
+    }
+
+
+    /**
+     * Compute the cube root of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 cbrt(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.cbrt(this.x);
+        d.y = Math.cbrt(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the ceiling of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 ceil(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.ceil(this.x);
+        d.y = Math.ceil(this.y);
+        return d;
+    }
+
+
+    /**
+     * Clamp each component of this vector between {@code min} and {@code max} and store the result
+     * in {@code dest}.
+     *
+     * @param min the lower bound
+     * @param max the upper bound
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 clamp(double min, double max, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.min(Math.max(this.x, min), max);
+        d.y = Math.min(Math.max(this.y, min), max);
+        return d;
+    }
+
+
+    /**
+     * Clamp each component of this vector between {@code min} and {@code max} and store the result
+     * in {@code dest}.
+     *
+     * @param min the minimum corner
+     * @param max the maximum corner
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 clamp(Double2R min, Double2R max, @Mutated Double2 dest) {
+        return clamp(min.x(), min.y(), max.x(), max.y(), dest);
+    }
+
+
+    /**
+     * Clamp each component of this vector between ({@code minX}, {@code minY}) and ({@code maxX},
+     * {@code maxY}) and store the result in {@code dest}.
+     *
+     * @param minX the {@code x} component of the vector {@code (minX, minY)}
+     * @param minY the {@code y} component of the vector {@code (minX, minY)}
+     * @param maxX the {@code x} component of the vector {@code (maxX, maxY)}
+     * @param maxY the {@code y} component of the vector {@code (maxX, maxY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 clamp(double minX, double minY, double maxX, double maxY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.min(Math.max(this.x, minX), maxX);
+        d.y = Math.min(Math.max(this.y, minY), maxY);
+        return d;
+    }
+
+
+    /**
+     * Compute the sum of all components of this vector.
+     *
+     * @return the sum of all components of this vector
+     */
+    public double compAdd() {
+        return this.x + this.y;
+    }
+
+
+    /**
+     * Compute the largest component of this vector.
+     *
+     * @return the largest component of this vector
+     */
+    public double compMax() {
+        return Math.max(this.x, this.y);
+    }
+
+
+    /**
+     * Compute the smallest component of this vector.
+     *
+     * @return the smallest component of this vector
+     */
+    public double compMin() {
+        return Math.min(this.x, this.y);
+    }
+
+
+    /**
+     * Compute the product of all components of this vector.
+     *
+     * @return the product of all components of this vector
+     */
+    public double compMul() {
+        return this.x * this.y;
+    }
+
+
+    /**
+     * Copy the sign of {@code sign} onto each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param sign the value whose sign is copied
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 copySign(double sign, @Mutated Double2 dest) {
+        return copySign(sign, sign, dest);
+    }
+
+
+    /**
+     * Copy the sign of each component of {@code sign} onto the corresponding component of this
+     * vector and store the result in {@code dest}.
+     *
+     * @param sign the value whose sign is copied
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 copySign(Double2R sign, @Mutated Double2 dest) {
+        return copySign(sign.x(), sign.y(), dest);
+    }
+
+
+    /**
+     * Copy the sign of each component of ({@code signX}, {@code signY}) onto the corresponding
+     * component of this vector and store the result in {@code dest}.
+     *
+     * @param signX the {@code x} component of the vector {@code (signX, signY)}
+     * @param signY the {@code y} component of the vector {@code (signX, signY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 copySign(double signX, double signY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.copySign(this.x, signX);
+        d.y = Math.copySign(this.y, signY);
+        return d;
+    }
+
+
+    /**
+     * Compute the cosine of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 cos(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.cos(this.x);
+        d.y = Math.cos(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the hyperbolic cosine of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 cosh(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.cosh(this.x);
+        d.y = Math.cosh(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the value converted from radians to degrees of each component of this vector and
+     * store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 degrees(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.toDegrees(this.x);
+        d.y = Math.toDegrees(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the distance between this vector and {@code other}.
+     *
+     * @param other the other vector
+     * @return the distance between this vector and {@code other}
+     */
+    public double distance(Double2R other) {
+        return distance(other.x(), other.y());
+    }
+
+
+    /**
+     * Compute the distance between this vector and ({@code otherX}, {@code otherY}).
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
+     * @return the distance between this vector and ({@code otherX}, {@code otherY})
+     */
+    public double distance(double otherX, double otherY) {
+        double _t0 = this.x - otherX;
+        double _t1 = this.y - otherY;
+        return Math.sqrt(_t0 * _t0 + _t1 * _t1);
+    }
+
+
+    /**
+     * Compute the squared distance between this vector and {@code other}.
+     *
+     * @param other the other vector
+     * @return the squared distance between this vector and {@code other}
+     */
+    public double distanceSquared(Double2R other) {
+        return distanceSquared(other.x(), other.y());
+    }
+
+
+    /**
+     * Compute the squared distance between this vector and ({@code otherX}, {@code otherY}).
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
+     * @return the squared distance between this vector and ({@code otherX}, {@code otherY})
+     */
+    public double distanceSquared(double otherX, double otherY) {
+        double _t0 = this.x - otherX;
+        double _t1 = this.y - otherY;
+        return _t0 * _t0 + _t1 * _t1;
+    }
+
+
+    /**
+     * Compute the dot product of this vector and {@code other}.
+     *
+     * @param other the other vector
+     * @return the dot product of this vector and {@code other}
+     */
+    public double dot(Double2R other) {
+        return dot(other.x(), other.y());
+    }
+
+
+    /**
+     * Compute the dot product of this vector and ({@code otherX}, {@code otherY}).
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
+     * @return the dot product of this vector and ({@code otherX}, {@code otherY})
+     */
+    public double dot(double otherX, double otherY) {
+        return otherX * this.x + otherY * this.y;
+    }
+
+
+    /**
+     * Compute the base-e exponential of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 exp(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.exp(this.x);
+        d.y = Math.exp(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the base-2 exponential of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 exp2(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.pow(2.0, this.x);
+        d.y = Math.pow(2.0, this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the base-e exponential minus one of each component of this vector and store the
+     * result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 expm1(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.expm1(this.x);
+        d.y = Math.expm1(this.y);
+        return d;
+    }
+
+
+    /**
+     * Return this vector unchanged when {@code dot(Nref, I)} is negative, and negated otherwise -
+     * orienting it against the incident direction {@code I} as judged by the reference vector
+     * {@code Nref} and store the result in {@code dest}.
+     *
+     * @param I the vector
+     * @param Nref the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 faceforward(Double2R I, Double2R Nref, @Mutated Double2 dest) {
+        return faceforward(I.x(), I.y(), Nref.x(), Nref.y(), dest);
+    }
+
+
+    /**
+     * Return this vector unchanged when {@code dot((NrefX, NrefY), (IX, IY))} is negative, and
+     * negated otherwise - orienting it against the incident direction ({@code IX}, {@code IY}) as
+     * judged by the reference vector ({@code NrefX}, {@code NrefY}) and store the result in
+     * {@code dest}.
+     *
+     * @param IX the {@code x} component of the vector {@code (IX, IY)}
+     * @param IY the {@code y} component of the vector {@code (IX, IY)}
+     * @param NrefX the {@code x} component of the vector {@code (NrefX, NrefY)}
+     * @param NrefY the {@code y} component of the vector {@code (NrefX, NrefY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 faceforward(double IX, double IY, double NrefX, double NrefY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t2 = IX * NrefX + IY * NrefY;
+        if (_t2 < 0.0) {
+            d.x = this.x;
+            d.y = this.y;
+        } else {
+            d.x = -this.x;
+            d.y = -this.y;
+        }
+        return d;
+    }
+
+
+    /**
+     * Compute the floor of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 floor(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.floor(this.x);
+        d.y = Math.floor(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the fractional part of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 fract(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = this.x - Math.floor(this.x);
+        d.y = this.y - Math.floor(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
+     * {@code y} and store the result in {@code dest}.
+     *
+     * @param y the other operand
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 hypot(double y, @Mutated Double2 dest) {
+        return hypot(y, y, dest);
+    }
+
+
+    /**
+     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
+     * {@code y} and store the result in {@code dest}.
+     *
+     * @param y the other operand
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 hypot(Double2R y, @Mutated Double2 dest) {
+        return hypot(y.x(), y.y(), dest);
+    }
+
+
+    /**
+     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
+     * ({@code yX}, {@code yY}) and store the result in {@code dest}.
+     *
+     * @param yX the {@code x} component of the vector {@code (yX, yY)}
+     * @param yY the {@code y} component of the vector {@code (yX, yY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 hypot(double yX, double yY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.hypot(this.x, yX);
+        d.y = Math.hypot(this.y, yY);
+        return d;
+    }
+
+
+    /**
+     * Compute the reciprocal {@code 1 / x} of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 inverse(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = 1.0 / this.x;
+        d.y = 1.0 / this.y;
+        return d;
+    }
+
+
+    /**
+     * Compute the inverse square root of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 inverseSqrt(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = (1.0 / Math.sqrt(this.x));
+        d.y = (1.0 / Math.sqrt(this.y));
+        return d;
+    }
+
+
+    /**
+     * Compute the length of this vector.
+     *
+     * @return the length of this vector
+     */
+    public double length() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    }
+
+
+    /**
+     * Compute the squared length of this vector.
+     *
+     * @return the squared length of this vector
+     */
+    public double lengthSquared() {
+        return this.x * this.x + this.y * this.y;
+    }
+
+
+    /**
+     * Compute the natural logarithm of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 log(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.log(this.x);
+        d.y = Math.log(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the base-10 logarithm of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 log10(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.log10(this.x);
+        d.y = Math.log10(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the natural logarithm of one plus the value of each component of this vector and
+     * store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 log1p(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.log1p(this.x);
+        d.y = Math.log1p(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the base-2 logarithm of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 log2(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t0 = Math.log(2.0);
+        double _t0_inv = 1.0 / _t0;
+        d.x = Math.log(this.x) * _t0_inv;
+        d.y = Math.log(this.y) * _t0_inv;
+        return d;
+    }
+
+
+    /**
+     * Compute the Manhattan distance between this vector and {@code other}.
+     *
+     * @param other the other vector
+     * @return the Manhattan distance between this vector and {@code other}
+     */
+    public double manhattanDistance(Double2R other) {
+        return manhattanDistance(other.x(), other.y());
+    }
+
+
+    /**
+     * Compute the Manhattan distance between this vector and ({@code otherX}, {@code otherY}).
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
+     * @return the Manhattan distance between this vector and ({@code otherX}, {@code otherY})
+     */
+    public double manhattanDistance(double otherX, double otherY) {
+        return Math.abs(this.x - otherX) + Math.abs(this.y - otherY);
+    }
+
+
+    /**
+     * Compute the Manhattan length (sum of the absolute components) of this vector.
+     *
+     * @return the Manhattan length (sum of the absolute components) of this vector
+     */
+    public double manhattanLength() {
+        return Math.abs(this.x) + Math.abs(this.y);
+    }
+
+
+    /**
+     * Set each component of this vector to the larger of itself and {@code scalar} and store the
+     * result in {@code dest}.
+     *
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 max(double scalar, @Mutated Double2 dest) {
+        return max(scalar, scalar, dest);
+    }
+
+
+    /**
+     * Set each component of this vector to the larger of itself and the corresponding component of
+     * {@code other} and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 max(Double2R other, @Mutated Double2 dest) {
+        return max(other.x(), other.y(), dest);
+    }
+
+
+    /**
+     * Set each component of this vector to the larger of itself and the corresponding component of
+     * ({@code otherX}, {@code otherY}) and store the result in {@code dest}.
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 max(double otherX, double otherY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.max(this.x, otherX);
+        d.y = Math.max(this.y, otherY);
+        return d;
+    }
+
+
+    /**
+     * Set each component of this vector to the smaller of itself and {@code scalar} and store the
+     * result in {@code dest}.
+     *
+     * @param scalar the scalar value
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 min(double scalar, @Mutated Double2 dest) {
+        return min(scalar, scalar, dest);
+    }
+
+
+    /**
+     * Set each component of this vector to the smaller of itself and the corresponding component of
+     * {@code other} and store the result in {@code dest}.
+     *
+     * @param other the other vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 min(Double2R other, @Mutated Double2 dest) {
+        return min(other.x(), other.y(), dest);
+    }
+
+
+    /**
+     * Set each component of this vector to the smaller of itself and the corresponding component of
+     * ({@code otherX}, {@code otherY}) and store the result in {@code dest}.
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 min(double otherX, double otherY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.min(this.x, otherX);
+        d.y = Math.min(this.y, otherY);
+        return d;
+    }
+
+
+    /**
+     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
+     * this vector divided by {@code y} and store the result in {@code dest}.
+     * <p>
+     * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
+     * dividend.
+     *
+     * @param y the divisor
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 mod(double y, @Mutated Double2 dest) {
+        return mod(y, y, dest);
+    }
+
+
+    /**
+     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
+     * this vector divided by {@code y} and store the result in {@code dest}.
+     * <p>
+     * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
+     * dividend.
+     *
+     * @param y the divisor
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 mod(Double2R y, @Mutated Double2 dest) {
+        return mod(y.x(), y.y(), dest);
+    }
+
+
+    /**
+     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
+     * this vector divided by ({@code yX}, {@code yY}) and store the result in {@code dest}.
+     * <p>
+     * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
+     * dividend.
+     *
+     * @param yX the {@code x} component of the vector {@code (yX, yY)}
+     * @param yY the {@code y} component of the vector {@code (yX, yY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 mod(double yX, double yY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = this.x - yX * Math.floor(this.x / yX);
+        d.y = this.y - yY * Math.floor(this.y / yY);
+        return d;
+    }
+
+
+    /**
+     * Compute the next representable value toward negative infinity of each component of this
+     * vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 nextDown(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.nextDown(this.x);
+        d.y = Math.nextDown(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the next representable value toward positive infinity of each component of this
+     * vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 nextUp(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.nextUp(this.x);
+        d.y = Math.nextUp(this.y);
+        return d;
+    }
+
+
+    /**
+     * Normalize this vector to unit length (the zero vector yields the zero vector). <p> The
+     * squared length is formed at the component precision, so components whose squares overflow or
+     * underflow that precision are out of domain: the result is the zero vector rather than a unit
+     * vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
+     * {@code float} and 1.3e154 for {@code double}) and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 normalize(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t2 = this.x * this.x + this.y * this.y;
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        if (_t2 > 0.0) {
+            d.x = this.x * _t3;
+            d.y = this.y * _t3;
+        } else {
+            d.x = 0.0;
+            d.y = 0.0;
+        }
+        return d;
+    }
+
+
+    /**
+     * Normalize this vector and multiply the result by {@code length}, i.e. rescale it to that
+     * length (the zero vector yields the zero vector) and store the result in {@code dest}.
+     *
+     * @param length the length to rescale to
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 normalizeMul(double length, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t2 = this.x * this.x + this.y * this.y;
+        double _t4 = length * (1.0 / Math.sqrt(_t2));
+        if (_t2 > 0.0) {
+            d.x = this.x * _t4;
+            d.y = this.y * _t4;
+        } else {
+            d.x = 0.0;
+            d.y = 0.0;
+        }
+        return d;
+    }
+
+
+    /**
+     * Compute the signed angle in radians between this vector and {@code other}.
+     *
+     * @param other the other vector
+     * @return the signed angle in radians between this vector and {@code other}
+     */
+    public double orientedAngle(Double2R other) {
+        return orientedAngle(other.x(), other.y());
+    }
+
+
+    /**
+     * Compute the signed angle in radians between this vector and ({@code otherX}, {@code otherY}).
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
+     * @return the signed angle in radians between this vector and ({@code otherX}, {@code otherY})
+     */
+    public double orientedAngle(double otherX, double otherY) {
+        return Math.atan2(otherY * this.x - otherX * this.y, otherX * this.x + otherY * this.y);
+    }
+
+
+    /**
+     * Compute the outer product of this vector and {@code row} and store the result in
+     * {@code dest}.
+     *
+     * @param row the row vector (right operand)
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2x2 outerProduct(Double2R row, @Mutated Double2x2 dest) {
+        return outerProduct(row.x(), row.y(), dest);
+    }
+
+
+    /**
+     * Compute the outer product of this vector and ({@code rowX}, {@code rowY}) and store the
+     * result in {@code dest}.
+     *
+     * @param rowX the {@code x} component of the vector {@code (rowX, rowY)}
+     * @param rowY the {@code y} component of the vector {@code (rowX, rowY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2x2 outerProduct(double rowX, double rowY, @Mutated Double2x2 dest) {
+        Double2x2Impl d = (Double2x2Impl) dest;
+        double _buf0 = rowX * this.x;
+        d.m10 = rowX * this.y;
+        double _buf1 = rowY * this.x;
+        d.m11 = rowY * this.y;
+        d.m00 = _buf0;
+        d.m01 = _buf1;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Raise each component of this vector to the power of {@code exponent} and store the result in
+     * {@code dest}.
+     *
+     * @param exponent the exponent
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 pow(double exponent, @Mutated Double2 dest) {
+        return pow(exponent, exponent, dest);
+    }
+
+
+    /**
+     * Raise each component of this vector to the power of {@code exponent} and store the result in
+     * {@code dest}.
+     *
+     * @param exponent the exponent
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 pow(Double2R exponent, @Mutated Double2 dest) {
+        return pow(exponent.x(), exponent.y(), dest);
+    }
+
+
+    /**
+     * Raise each component of this vector to the power of ({@code exponentX}, {@code exponentY})
+     * and store the result in {@code dest}.
+     *
+     * @param exponentX the {@code x} component of the vector {@code (exponentX, exponentY)}
+     * @param exponentY the {@code y} component of the vector {@code (exponentX, exponentY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 pow(double exponentX, double exponentY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.pow(this.x, exponentX);
+        d.y = Math.pow(this.y, exponentY);
+        return d;
+    }
+
+
+    /**
+     * Project this vector onto {@code onto} and store the result in {@code dest}.
+     *
+     * @param onto the vector to project onto
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 project(Double2R onto, @Mutated Double2 dest) {
+        return project(onto.x(), onto.y(), dest);
+    }
+
+
+    /**
+     * Project this vector onto ({@code ontoX}, {@code ontoY}) and store the result in {@code dest}.
+     *
+     * @param ontoX the {@code x} component of the vector {@code (ontoX, ontoY)}
+     * @param ontoY the {@code y} component of the vector {@code (ontoX, ontoY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 project(double ontoX, double ontoY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t4 = ontoX * this.x + ontoY * this.y;
+        double _t5 = ontoX * ontoX + ontoY * ontoY;
+        double _t5_inv = 1.0 / _t5;
+        d.x = ontoX * _t4 * _t5_inv;
+        d.y = ontoY * _t4 * _t5_inv;
+        return d;
+    }
+
+
+    /**
+     * Project this vector onto the plane with the given normal and store the result in
+     * {@code dest}.
+     *
+     * @param normal the normal (must be a unit vector)
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 projectOnPlane(Double2R normal, @Mutated Double2 dest) {
+        return projectOnPlane(normal.x(), normal.y(), dest);
+    }
+
+
+    /**
+     * Project this vector onto the plane with the given normal and store the result in
+     * {@code dest}.
+     *
+     * @param normalX the {@code x} component of the vector {@code (normalX, normalY)} (the vector
+     *        must have unit length)
+     * @param normalY the {@code y} component of the vector {@code (normalX, normalY)} (the vector
+     *        must have unit length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 projectOnPlane(double normalX, double normalY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t2 = normalX * this.x + normalY * this.y;
+        d.x = this.x - normalX * _t2;
+        d.y = this.y - normalY * _t2;
+        return d;
+    }
+
+
+    /**
+     * Compute the value converted from degrees to radians of each component of this vector and
+     * store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 radians(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.toRadians(this.x);
+        d.y = Math.toRadians(this.y);
+        return d;
+    }
+
+
+    /**
+     * Reflect this vector about the given normal and store the result in {@code dest}.
+     *
+     * @param normal the normal (must be a unit vector)
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 reflect(Double2R normal, @Mutated Double2 dest) {
+        return reflect(normal.x(), normal.y(), dest);
+    }
+
+
+    /**
+     * Reflect this vector about the given normal and store the result in {@code dest}.
+     *
+     * @param normalX the {@code x} component of the vector {@code (normalX, normalY)} (the vector
+     *        must have unit length)
+     * @param normalY the {@code y} component of the vector {@code (normalX, normalY)} (the vector
+     *        must have unit length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 reflect(double normalX, double normalY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t3 = 2.0 * (normalX * this.x + normalY * this.y);
+        d.x = this.x - normalX * _t3;
+        d.y = this.y - normalY * _t3;
+        return d;
+    }
+
+
+    /**
+     * Refract this vector (which must have unit length) through the surface with the given normal,
+     * using the given ratio of indices of refraction (the zero vector is returned on total internal
+     * reflection), and store the result in {@code dest}.
+     *
+     * @param normal the normal (must be a unit vector)
+     * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
+     *        destination medium's
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 refract(Double2R normal, double eta, @Mutated Double2 dest) {
+        return refract(normal.x(), normal.y(), eta, dest);
+    }
+
+
+    /**
+     * Refract this vector (which must have unit length) through the surface with the given normal,
+     * using the given ratio of indices of refraction (the zero vector is returned on total internal
+     * reflection), and store the result in {@code dest}.
+     *
+     * @param normalX the {@code x} component of the vector {@code (normalX, normalY)} (the vector
+     *        must have unit length)
+     * @param normalY the {@code y} component of the vector {@code (normalX, normalY)} (the vector
+     *        must have unit length)
+     * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
+     *        destination medium's
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 refract(double normalX, double normalY, double eta, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t3 = normalX * this.x + normalY * this.y;
+        double _t8 = 1.0 - (1.0 - _t3 * _t3) * eta * eta;
+        double _t11 = eta * _t3 + Math.sqrt(Math.max(0.0, _t8));
+        if (_t8 >= 0.0) {
+            d.x = eta * this.x - normalX * _t11;
+            d.y = eta * this.y - normalY * _t11;
+        } else {
+            d.x = 0.0;
+            d.y = 0.0;
+        }
+        return d;
+    }
+
+
+    /**
+     * Compute the rounded value of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 round(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.rint(this.x);
+        d.y = Math.rint(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the sign of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 sign(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.signum(this.x);
+        d.y = Math.signum(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the sine of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 sin(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.sin(this.x);
+        d.y = Math.sin(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the hyperbolic sine of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 sinh(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.sinh(this.x);
+        d.y = Math.sinh(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the smooth Hermite step of each component of this vector as it ramps between the
+     * lower edge {@code edge0} and the upper edge {@code edge1}, yielding 0 at or below the lower
+     * edge and 1 at or above the upper edge and store the result in {@code dest}.
+     *
+     * @param edge0 the lower edge
+     * @param edge1 the upper edge
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 smoothstep(double edge0, double edge1, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t0 = edge1 - edge0;
+        double _t0_inv = 1.0 / _t0;
+        double _t7 = Math.max(0.0, Math.min(1.0, (this.x - edge0) * _t0_inv));
+        double _t8 = Math.max(0.0, Math.min(1.0, (this.y - edge0) * _t0_inv));
+        d.x = (3.0 - 2.0 * _t7) * _t7 * _t7;
+        d.y = (3.0 - 2.0 * _t8) * _t8 * _t8;
+        return d;
+    }
+
+
+    /**
+     * Compute the smooth Hermite step of each component of this vector as it ramps between the
+     * lower edge {@code edge0} and the upper edge {@code edge1}, yielding 0 at or below the lower
+     * edge and 1 at or above the upper edge and store the result in {@code dest}.
+     *
+     * @param edge0 the lower edge
+     * @param edge1 the upper edge
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 smoothstep(Double2R edge0, Double2R edge1, @Mutated Double2 dest) {
+        return smoothstep(edge0.x(), edge0.y(), edge1.x(), edge1.y(), dest);
+    }
+
+
+    /**
+     * Compute the smooth Hermite step of each component of this vector as it ramps between the
+     * lower edge ({@code edge0X}, {@code edge0Y}) and the upper edge ({@code edge1X},
+     * {@code edge1Y}), yielding 0 at or below the lower edge and 1 at or above the upper edge and
+     * store the result in {@code dest}.
+     *
+     * @param edge0X the {@code x} component of the vector {@code (edge0X, edge0Y)}
+     * @param edge0Y the {@code y} component of the vector {@code (edge0X, edge0Y)}
+     * @param edge1X the {@code x} component of the vector {@code (edge1X, edge1Y)}
+     * @param edge1Y the {@code y} component of the vector {@code (edge1X, edge1Y)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 smoothstep(double edge0X, double edge0Y, double edge1X, double edge1Y, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t8 = Math.max(0.0, Math.min(1.0, (this.x - edge0X) / (edge1X - edge0X)));
+        double _t9 = Math.max(0.0, Math.min(1.0, (this.y - edge0Y) / (edge1Y - edge0Y)));
+        d.x = (3.0 - 2.0 * _t8) * _t8 * _t8;
+        d.y = (3.0 - 2.0 * _t9) * _t9 * _t9;
+        return d;
+    }
+
+
+    /**
+     * Compute the square root of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 sqrt(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.sqrt(this.x);
+        d.y = Math.sqrt(this.y);
+        return d;
+    }
+
+
+    /**
+     * Set each component of this vector to {@code 0} when it is smaller than {@code edge}, and to
+     * {@code 1} otherwise and store the result in {@code dest}.
+     *
+     * @param edge the edge to compare each component against
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 step(double edge, @Mutated Double2 dest) {
+        return step(edge, edge, dest);
+    }
+
+
+    /**
+     * Set each component of this vector to {@code 0} when it is smaller than the corresponding
+     * component of the given edge, and to {@code 1} otherwise and store the result in {@code dest}.
+     *
+     * @param edge the edge to compare each component against
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 step(Double2R edge, @Mutated Double2 dest) {
+        return step(edge.x(), edge.y(), dest);
+    }
+
+
+    /**
+     * Set each component of this vector to {@code 0} when it is smaller than the corresponding
+     * component of the given edge, and to {@code 1} otherwise and store the result in {@code dest}.
+     *
+     * @param edgeX the {@code x} component of the vector {@code (edgeX, edgeY)}
+     * @param edgeY the {@code y} component of the vector {@code (edgeX, edgeY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 step(double edgeX, double edgeY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = this.x < edgeX ? 0.0 : 1.0;
+        d.y = this.y < edgeY ? 0.0 : 1.0;
+        return d;
+    }
+
+
+    /**
+     * Compute the tangent of each component of this vector and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 tan(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.tan(this.x);
+        d.y = Math.tan(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the hyperbolic tangent of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 tanh(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.tanh(this.x);
+        d.y = Math.tanh(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the truncated value of each component of this vector and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 trunc(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = this.x >= 0.0 ? Math.floor(this.x) : Math.ceil(this.x);
+        d.y = this.y >= 0.0 ? Math.floor(this.y) : Math.ceil(this.y);
+        return d;
+    }
+
+
+    /**
+     * Compute the unit in the last place (ulp) of each component of this vector and store the
+     * result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 ulp(@Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.ulp(this.x);
+        d.y = Math.ulp(this.y);
+        return d;
+    }
+
+
+    /**
+     * Pre-multiply {@code mat} onto this vector and store the result in {@code dest}.
+     *
+     * @param mat the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 preMul(Double2x2R mat, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _buf0 = mat.m00() * this.x + mat.m01() * this.y;
+        d.y = mat.m10() * this.x + mat.m11() * this.y;
+        d.x = _buf0;
+        return d;
+    }
+
+
+    /**
+     * Pre-multiply {@code mat} onto this vector, treated as a direction with implicit {@code w = 0}
+     * - i.e. compute {@code (mat * (this, 0)).xyz}, applying only rotation and scale and ignoring
+     * translation and store the result in {@code dest}.
+     *
+     * @param mat the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 preMulDirection(Double2x3R mat, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _buf0 = mat.m00() * this.x + mat.m01() * this.y;
+        d.y = mat.m10() * this.x + mat.m11() * this.y;
+        d.x = _buf0;
+        return d;
+    }
+
+
+    /**
+     * Pre-multiply {@code mat} onto this vector, treated as a position with implicit {@code w = 1}
+     * - i.e. compute {@code (mat * (this, 1)).xyz}, applying the full affine transform including
+     * translation and store the result in {@code dest}.
+     *
+     * @param mat the matrix
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 preMulPosition(Double2x3R mat, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _buf0 = mat.m00() * this.x + (mat.m01() * this.y + mat.m02());
+        d.y = mat.m10() * this.x + (mat.m11() * this.y + mat.m12());
+        d.x = _buf0;
+        return d;
+    }
+
+
+    /**
+     * Rotate this vector counter-clockwise about the origin by {@code angle} radians and store the
+     * result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 rotate(double angle, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _buf0 = this.x * _t0 - this.y * _t1;
+        d.y = this.x * _t1 + this.y * _t0;
+        d.x = _buf0;
+        return d;
+    }
+
+    public double x() { return this.x; }
+    public double y() { return this.y; }
+
+    public Double2 xx(@Mutated Double2 dest) {
+        double _v0 = this.x;
+        Double2Impl d = (Double2Impl) dest;
+        d.x = _v0;
+        d.y = _v0;
+        return dest;
+    }
+
+    public Double2 xy(@Mutated Double2 dest) {
+        double _v0 = this.x;
+        double _v1 = this.y;
+        Double2Impl d = (Double2Impl) dest;
+        d.x = _v0;
+        d.y = _v1;
+        return dest;
+    }
+
+    public Double2 yx(@Mutated Double2 dest) {
+        double _v0 = this.y;
+        double _v1 = this.x;
+        Double2Impl d = (Double2Impl) dest;
+        d.x = _v0;
+        d.y = _v1;
+        return dest;
+    }
+
+    public Double2 yy(@Mutated Double2 dest) {
+        double _v0 = this.y;
+        Double2Impl d = (Double2Impl) dest;
+        d.x = _v0;
+        d.y = _v0;
+        return dest;
+    }
+
+    public Double3 xxx(@Mutated Double3 dest) {
+        double _v0 = this.x;
+        Double3Impl d = (Double3Impl) dest;
+        d.x = _v0;
+        d.y = _v0;
+        d.z = _v0;
+        return dest;
+    }
+
+    public Double3 xxy(@Mutated Double3 dest) {
+        double _v0 = this.x;
+        double _v1 = this.y;
+        Double3Impl d = (Double3Impl) dest;
+        d.x = _v0;
+        d.y = _v0;
+        d.z = _v1;
+        return dest;
+    }
+
+    public Double3 xyx(@Mutated Double3 dest) {
+        double _v0 = this.x;
+        double _v1 = this.y;
+        Double3Impl d = (Double3Impl) dest;
+        d.x = _v0;
+        d.y = _v1;
+        d.z = _v0;
+        return dest;
+    }
+
+    public Double3 xyy(@Mutated Double3 dest) {
+        double _v0 = this.x;
+        double _v1 = this.y;
+        Double3Impl d = (Double3Impl) dest;
+        d.x = _v0;
+        d.y = _v1;
+        d.z = _v1;
+        return dest;
+    }
+
+    public Double3 yxx(@Mutated Double3 dest) {
+        double _v0 = this.y;
+        double _v1 = this.x;
+        Double3Impl d = (Double3Impl) dest;
+        d.x = _v0;
+        d.y = _v1;
+        d.z = _v1;
+        return dest;
+    }
+
+    public Double3 yxy(@Mutated Double3 dest) {
+        double _v0 = this.y;
+        double _v1 = this.x;
+        Double3Impl d = (Double3Impl) dest;
+        d.x = _v0;
+        d.y = _v1;
+        d.z = _v0;
+        return dest;
+    }
+
+    public Double3 yyx(@Mutated Double3 dest) {
+        double _v0 = this.y;
+        double _v1 = this.x;
+        Double3Impl d = (Double3Impl) dest;
+        d.x = _v0;
+        d.y = _v0;
+        d.z = _v1;
+        return dest;
+    }
+
+    public Double3 yyy(@Mutated Double3 dest) {
+        double _v0 = this.y;
+        Double3Impl d = (Double3Impl) dest;
+        d.x = _v0;
+        d.y = _v0;
+        d.z = _v0;
+        return dest;
+    }
+
+    public Double4 xxxx(@Mutated Double4 dest) {
+        double _v0 = this.x;
+        Double4Impl d = (Double4Impl) dest;
+        d.x = _v0;
+        d.y = _v0;
+        d.z = _v0;
+        d.w = _v0;
+        return dest;
+    }
+
+    public Double4 xxxy(@Mutated Double4 dest) {
+        double _v0 = this.x;
+        double _v1 = this.y;
+        Double4Impl d = (Double4Impl) dest;
+        d.x = _v0;
+        d.y = _v0;
+        d.z = _v0;
+        d.w = _v1;
+        return dest;
+    }
+
+    public Double4 xxyx(@Mutated Double4 dest) {
+        double _v0 = this.x;
+        double _v1 = this.y;
+        Double4Impl d = (Double4Impl) dest;
+        d.x = _v0;
+        d.y = _v0;
+        d.z = _v1;
+        d.w = _v0;
+        return dest;
+    }
+
+    public Double4 xxyy(@Mutated Double4 dest) {
+        double _v0 = this.x;
+        double _v1 = this.y;
+        Double4Impl d = (Double4Impl) dest;
+        d.x = _v0;
+        d.y = _v0;
+        d.z = _v1;
+        d.w = _v1;
+        return dest;
+    }
+
+    public Double4 xyxx(@Mutated Double4 dest) {
+        double _v0 = this.x;
+        double _v1 = this.y;
+        Double4Impl d = (Double4Impl) dest;
+        d.x = _v0;
+        d.y = _v1;
+        d.z = _v0;
+        d.w = _v0;
+        return dest;
+    }
+
+    public Double4 xyxy(@Mutated Double4 dest) {
+        double _v0 = this.x;
+        double _v1 = this.y;
+        Double4Impl d = (Double4Impl) dest;
+        d.x = _v0;
+        d.y = _v1;
+        d.z = _v0;
+        d.w = _v1;
+        return dest;
+    }
+
+    public Double4 xyyx(@Mutated Double4 dest) {
+        double _v0 = this.x;
+        double _v1 = this.y;
+        Double4Impl d = (Double4Impl) dest;
+        d.x = _v0;
+        d.y = _v1;
+        d.z = _v1;
+        d.w = _v0;
+        return dest;
+    }
+
+    public Double4 xyyy(@Mutated Double4 dest) {
+        double _v0 = this.x;
+        double _v1 = this.y;
+        Double4Impl d = (Double4Impl) dest;
+        d.x = _v0;
+        d.y = _v1;
+        d.z = _v1;
+        d.w = _v1;
+        return dest;
+    }
+
+    public Double4 yxxx(@Mutated Double4 dest) {
+        double _v0 = this.y;
+        double _v1 = this.x;
+        Double4Impl d = (Double4Impl) dest;
+        d.x = _v0;
+        d.y = _v1;
+        d.z = _v1;
+        d.w = _v1;
+        return dest;
+    }
+
+    public Double4 yxxy(@Mutated Double4 dest) {
+        double _v0 = this.y;
+        double _v1 = this.x;
+        Double4Impl d = (Double4Impl) dest;
+        d.x = _v0;
+        d.y = _v1;
+        d.z = _v1;
+        d.w = _v0;
+        return dest;
+    }
+
+    public Double4 yxyx(@Mutated Double4 dest) {
+        double _v0 = this.y;
+        double _v1 = this.x;
+        Double4Impl d = (Double4Impl) dest;
+        d.x = _v0;
+        d.y = _v1;
+        d.z = _v0;
+        d.w = _v1;
+        return dest;
+    }
+
+    public Double4 yxyy(@Mutated Double4 dest) {
+        double _v0 = this.y;
+        double _v1 = this.x;
+        Double4Impl d = (Double4Impl) dest;
+        d.x = _v0;
+        d.y = _v1;
+        d.z = _v0;
+        d.w = _v0;
+        return dest;
+    }
+
+    public Double4 yyxx(@Mutated Double4 dest) {
+        double _v0 = this.y;
+        double _v1 = this.x;
+        Double4Impl d = (Double4Impl) dest;
+        d.x = _v0;
+        d.y = _v0;
+        d.z = _v1;
+        d.w = _v1;
+        return dest;
+    }
+
+    public Double4 yyxy(@Mutated Double4 dest) {
+        double _v0 = this.y;
+        double _v1 = this.x;
+        Double4Impl d = (Double4Impl) dest;
+        d.x = _v0;
+        d.y = _v0;
+        d.z = _v1;
+        d.w = _v0;
+        return dest;
+    }
+
+    public Double4 yyyx(@Mutated Double4 dest) {
+        double _v0 = this.y;
+        double _v1 = this.x;
+        Double4Impl d = (Double4Impl) dest;
+        d.x = _v0;
+        d.y = _v0;
+        d.z = _v0;
+        d.w = _v1;
+        return dest;
+    }
+
+    public Double4 yyyy(@Mutated Double4 dest) {
+        double _v0 = this.y;
+        Double4Impl d = (Double4Impl) dest;
+        d.x = _v0;
+        d.y = _v0;
+        d.z = _v0;
+        d.w = _v0;
+        return dest;
+    }
+
+    @Override public String toString() {
+        return "Double2(" + x() + ", " + y() + ")";
+    }
+
+    @Override public boolean equals(@org.jspecify.annotations.Nullable Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Double2Impl)) return false;
+        Double2Impl o = (Double2Impl) obj;
+        return Double.doubleToLongBits(x) == Double.doubleToLongBits(o.x)
+            && Double.doubleToLongBits(y) == Double.doubleToLongBits(o.y);
+    }
+
+    @Override public int hashCode() {
+        int h = 1;
+        h = 31 * h + (int)(Double.doubleToLongBits(x) ^ (Double.doubleToLongBits(x) >>> 32));
+        h = 31 * h + (int)(Double.doubleToLongBits(y) ^ (Double.doubleToLongBits(y) >>> 32));
+        return h;
+    }
+
+    @Override public boolean isFinite() {
+        return Double.isFinite(x)
+            && Double.isFinite(y);
+    }
+
+    @Override public boolean equalsEpsilon(Double2R other, double epsilon) {
+        return Math.abs(x - other.x()) <= epsilon
+            && Math.abs(y - other.y()) <= epsilon;
+    }
+
+    public double[] store(@Mutated double[] dest, int offset) {
+        dest[offset + 0] = this.x;
+        dest[offset + 1] = this.y;
+        return dest;
+    }
+    public @Mutated Double2 load(double[] src, int offset) {
+        this.x = src[offset + 0];
+        this.y = src[offset + 1];
+        return this;
+    }
+    public DoubleBuffer storeAbsolute(int index, @Mutated DoubleBuffer buf) {
+        return BB_OPS.storeAbsolute(this, index, buf);
+    }
+    @Mutated public Double2 loadAbsolute(int index, DoubleBuffer buf) {
+        return BB_OPS.loadAbsolute(this, index, buf);
+    }
+    public ByteBuffer storeAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.storeAbsolute(this, index, buf);
+    }
+    public Double2 loadAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.loadAbsolute(this, index, buf);
+    }
+    public Double2 storeUnsafe(long address) {
+        return RAW_OPS.storeUnsafe(this, address);
+    }
+    @Mutated public Double2 loadUnsafe(long address) {
+        return RAW_OPS.loadUnsafe(this, address);
+    }
+    public MemorySegment store(long offset, MemorySegment dest) {
+        return SEG_OPS.store(this, offset, dest);
+    }
+    public Double2 load(long offset, MemorySegment src) {
+        return SEG_OPS.load(this, offset, src);
+    }
+
+    public float[] store(@Mutated float[] dest, int offset) {
+        dest[offset + 0] = (float) this.x;
+        dest[offset + 1] = (float) this.y;
+        return dest;
+    }
+    public @Mutated Double2 load(float[] src, int offset) {
+        this.x = src[offset + 0];
+        this.y = src[offset + 1];
+        return this;
+    }
+    public FloatBuffer storeAbsolute(int index, @Mutated FloatBuffer buf) {
+        return BB_OPS.storeAbsolute(this, index, buf);
+    }
+    @Mutated public Double2 loadAbsolute(int index, FloatBuffer buf) {
+        return BB_OPS.loadAbsolute(this, index, buf);
+    }
+    public ByteBuffer storeFloatAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.storeFloatAbsolute(this, index, buf);
+    }
+    public Double2 loadFloatAbsolute(int index, ByteBuffer buf) {
+        return BB_OPS.loadFloatAbsolute(this, index, buf);
+    }
+    public Double2 storeFloatUnsafe(long address) {
+        return RAW_OPS.storeFloatUnsafe(this, address);
+    }
+    @Mutated public Double2 loadFloatUnsafe(long address) {
+        return RAW_OPS.loadFloatUnsafe(this, address);
+    }
+    public MemorySegment storeFloat(long offset, MemorySegment dest) {
+        return SEG_OPS.storeFloat(this, offset, dest);
+    }
+    public Double2 loadFloat(long offset, MemorySegment src) {
+        return SEG_OPS.loadFloat(this, offset, src);
+    }
+
+}

@@ -1,0 +1,14 @@
+package org.joml2.internal.storeload;
+
+import org.joml2.*;
+import org.joml2.Math;
+import org.joml2.internal.types.*;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+
+public interface DoublePlaneBbOps {
+    FloatBuffer storeAbsolute(DoublePlaneImpl self, int index, FloatBuffer buf);
+    DoublePlane loadAbsolute(DoublePlaneImpl self, int index, FloatBuffer buf);
+    ByteBuffer storeFloatAbsolute(DoublePlaneImpl self, int index, ByteBuffer buf);
+    DoublePlane loadFloatAbsolute(DoublePlaneImpl self, int index, ByteBuffer buf);
+}

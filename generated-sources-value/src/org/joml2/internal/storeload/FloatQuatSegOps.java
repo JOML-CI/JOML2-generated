@@ -1,0 +1,12 @@
+package org.joml2.internal.storeload;
+
+import org.joml2.*;
+import org.joml2.Math;
+import java.lang.foreign.MemorySegment;
+
+public interface FloatQuatSegOps {
+    MemorySegment store(FloatQuat self, long offset, MemorySegment dest);
+    FloatQuat load(long offset, MemorySegment src);
+    MemorySegment storeDouble(FloatQuat self, long offset, MemorySegment dest);
+    FloatQuat loadDouble(long offset, MemorySegment src);
+}

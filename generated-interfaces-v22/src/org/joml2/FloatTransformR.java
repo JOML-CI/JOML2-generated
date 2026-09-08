@@ -1,0 +1,2339 @@
+package org.joml2;
+
+import java.nio.FloatBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.ByteBuffer;
+import java.lang.foreign.MemorySegment;
+
+/**
+ * Read-only view of a transform of single-precision {@code float} components.
+ * <p>
+ * Declares the accessors, queries, store methods and dest-form operations that read but never
+ * mutate the receiver; the mutable counterpart is {@link FloatTransform}. APIs that only read a
+ * transform should accept {@code FloatTransformR}, so callers can pass mutable instances without
+ * exposing them to modification.
+ */
+public interface FloatTransformR {
+    /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
+    public static final int SIZE_BYTES = 40;
+
+    /** {@return a shared all-zero transform} Never mutate it - it is returned as the read-only view for that reason. */
+    public static FloatTransformR ZERO() { return Holder.ZERO; }
+
+
+    /**
+     * Set the rotation of this transform to {@code r} and store the result in {@code dest}.
+     *
+     * @param r the quaternion
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform setRotation(FloatQuatR r, @Mutated FloatTransform dest);
+
+    /**
+     * Set the rotation of this transform to {@code r} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param r the quaternion
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform setRotation(FloatQuatR r, @Mutated DoubleTransform dest);
+
+    /**
+     * Set the rotation of this transform to ({@code x}, {@code y}, {@code z}, {@code w}) and store
+     * the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
+     * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
+     * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
+     * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform setRotation(float x, float y, float z, float w, @Mutated FloatTransform dest);
+
+    /**
+     * Set the rotation of this transform to ({@code x}, {@code y}, {@code z}, {@code w}) and store
+     * the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
+     * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
+     * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
+     * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform setRotation(float x, float y, float z, float w, @Mutated DoubleTransform dest);
+
+    /**
+     * Set the scale of this transform to {@code s} and store the result in {@code dest}.
+     *
+     * @param s the uniform scale factor
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform setScale(Float3R s, @Mutated FloatTransform dest);
+
+    /**
+     * Set the scale of this transform to {@code s} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param s the uniform scale factor
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform setScale(Float3R s, @Mutated DoubleTransform dest);
+
+    /**
+     * Set the scale of this transform to ({@code x}, {@code y}, {@code z}) and store the result in
+     * {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform setScale(float x, float y, float z, @Mutated FloatTransform dest);
+
+    /**
+     * Set the scale of this transform to ({@code x}, {@code y}, {@code z}) and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform setScale(float x, float y, float z, @Mutated DoubleTransform dest);
+
+    /**
+     * Set the scale of this transform to {@code uniform} and store the result in {@code dest}.
+     *
+     * @param uniform the uniform scale factor
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform setScale(float uniform, @Mutated FloatTransform dest);
+
+    /**
+     * Set the scale of this transform to {@code uniform} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param uniform the uniform scale factor
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform setScale(float uniform, @Mutated DoubleTransform dest);
+
+    /**
+     * Set the translation of this transform to {@code t} and store the result in {@code dest}.
+     *
+     * @param t the translation vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform setTranslation(Float3R t, @Mutated FloatTransform dest);
+
+    /**
+     * Set the translation of this transform to {@code t} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param t the translation vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform setTranslation(Float3R t, @Mutated DoubleTransform dest);
+
+    /**
+     * Set the translation of this transform to ({@code x}, {@code y}, {@code z}) and store the
+     * result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform setTranslation(float x, float y, float z, @Mutated FloatTransform dest);
+
+    /**
+     * Set the translation of this transform to ({@code x}, {@code y}, {@code z}) and store the
+     * result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform setTranslation(float x, float y, float z, @Mutated DoubleTransform dest);
+
+    /**
+     * Convert this transform's rigid motion (rotation and translation) to a unit dual quaternion;
+     * the scale is dropped (dual quaternions cannot represent it) and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatDualQuat toDualQuat(@Mutated FloatDualQuat dest);
+
+    /**
+     * Convert this transform's rigid motion (rotation and translation) to a unit dual quaternion;
+     * the scale is dropped (dual quaternions cannot represent it) and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleDualQuat toDualQuat(@Mutated DoubleDualQuat dest);
+
+    /**
+     * Compute the matrix representation of this transform and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4x4 toMatrix(@Mutated Float4x4 dest);
+
+    /**
+     * Compute the matrix representation of this transform and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4x4 toMatrix(@Mutated Double4x4 dest);
+
+    /**
+     * Compute the 3x3 linear block ({@code R * S}) of this transform (the translation is dropped)
+     * and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3x3 toMatrix3x3(@Mutated Float3x3 dest);
+
+    /**
+     * Compute the 3x3 linear block ({@code R * S}) of this transform (the translation is dropped)
+     * and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3x3 toMatrix3x3(@Mutated Double3x3 dest);
+
+    /**
+     * Compute the 3x4 matrix representation of this transform (the omitted last row is implicitly
+     * {@code 0, 0, 0, 1}) and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3x4 toMatrix3x4(@Mutated Float3x4 dest);
+
+    /**
+     * Compute the 3x4 matrix representation of this transform (the omitted last row is implicitly
+     * {@code 0, 0, 0, 1}) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3x4 toMatrix3x4(@Mutated Double3x4 dest);
+
+    /**
+     * Narrow this transform to a rigid transform (translation and rotation; the scale is dropped)
+     * and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRigid toRigid(@Mutated FloatRigid dest);
+
+    /**
+     * Narrow this transform to a rigid transform (translation and rotation; the scale is dropped)
+     * and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRigid toRigid(@Mutated DoubleRigid dest);
+
+    /**
+     * Convert this transform to {@code double} precision and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform toDouble(@Mutated DoubleTransform dest);
+
+    /**
+     * Interpolate between this transform and {@code other} using the interpolation factor
+     * {@code t}, interpolating translation and scale linearly and the rotation via shortest-arc
+     * slerp and store the result in {@code dest}.
+     *
+     * @param other the other transform
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform lerp(FloatTransformR other, float t, @Mutated FloatTransform dest);
+
+    /**
+     * Interpolate between this transform and {@code other} using the interpolation factor
+     * {@code t}, interpolating translation and scale linearly and the rotation via shortest-arc
+     * slerp and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other transform
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform lerp(FloatTransformR other, float t, @Mutated DoubleTransform dest);
+
+    /**
+     * Interpolate between this transform and ({@code tX}, {@code tY}, {@code tZ}, {@code rX},
+     * {@code rY}, {@code rZ}, {@code rW}, {@code sX}, {@code sY}, {@code sZ}) using the
+     * interpolation factor {@code t}, interpolating translation and scale linearly and the rotation
+     * via shortest-arc slerp and store the result in {@code dest}.
+     *
+     * @param tX the {@code tX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param tY the {@code tY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param tZ the {@code tZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rX the {@code rX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rY the {@code rY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rZ the {@code rZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rW the {@code rW} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sX the {@code sX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sY the {@code sY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sZ the {@code sZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform lerp(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW, float sX, float sY, float sZ, float t, @Mutated FloatTransform dest);
+
+    /**
+     * Interpolate between this transform and ({@code tX}, {@code tY}, {@code tZ}, {@code rX},
+     * {@code rY}, {@code rZ}, {@code rW}, {@code sX}, {@code sY}, {@code sZ}) using the
+     * interpolation factor {@code t}, interpolating translation and scale linearly and the rotation
+     * via shortest-arc slerp and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param tX the {@code tX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param tY the {@code tY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param tZ the {@code tZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rX the {@code rX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rY the {@code rY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rZ the {@code rZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rW the {@code rW} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sX the {@code sX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sY the {@code sY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sZ the {@code sZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform lerp(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW, float sX, float sY, float sZ, float t, @Mutated DoubleTransform dest);
+
+    /**
+     * Multiply this transform by {@code other} and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
+     * be {@code M * R}. So when transforming a vector {@code v} with the new transform by using
+     * {@code M * R * v}, the transformation of the operand will be applied first.
+     *
+     * @param other the other transform
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform mul(FloatTransformR other, @Mutated FloatTransform dest);
+
+    /**
+     * Multiply this transform by {@code other} and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
+     * be {@code M * R}. So when transforming a vector {@code v} with the new transform by using
+     * {@code M * R * v}, the transformation of the operand will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other transform
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform mul(FloatTransformR other, @Mutated DoubleTransform dest);
+
+    /**
+     * Multiply this transform by ({@code tX}, {@code tY}, {@code tZ}, {@code rX}, {@code rY},
+     * {@code rZ}, {@code rW}, {@code sX}, {@code sY}, {@code sZ}) and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
+     * be {@code M * R}. So when transforming a vector {@code v} with the new transform by using
+     * {@code M * R * v}, the transformation of the operand will be applied first.
+     *
+     * @param tX the {@code tX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param tY the {@code tY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param tZ the {@code tZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rX the {@code rX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rY the {@code rY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rZ the {@code rZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rW the {@code rW} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sX the {@code sX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sY the {@code sY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sZ the {@code sZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform mul(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW, float sX, float sY, float sZ, @Mutated FloatTransform dest);
+
+    /**
+     * Multiply this transform by ({@code tX}, {@code tY}, {@code tZ}, {@code rX}, {@code rY},
+     * {@code rZ}, {@code rW}, {@code sX}, {@code sY}, {@code sZ}) and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
+     * be {@code M * R}. So when transforming a vector {@code v} with the new transform by using
+     * {@code M * R * v}, the transformation of the operand will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param tX the {@code tX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param tY the {@code tY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param tZ the {@code tZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rX the {@code rX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rY the {@code rY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rZ the {@code rZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rW the {@code rW} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sX the {@code sX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sY the {@code sY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sZ the {@code sZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform mul(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW, float sX, float sY, float sZ, @Mutated DoubleTransform dest);
+
+    /**
+     * Pre-multiply {@code other} onto this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
+     * be {@code R * M}. So when transforming a vector {@code v} with the new transform by using
+     * {@code R * M * v}, the transformation of the operand will be applied last.
+     *
+     * @param other the other transform
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform preMul(FloatTransformR other, @Mutated FloatTransform dest);
+
+    /**
+     * Pre-multiply {@code other} onto this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
+     * be {@code R * M}. So when transforming a vector {@code v} with the new transform by using
+     * {@code R * M * v}, the transformation of the operand will be applied last.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other transform
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform preMul(FloatTransformR other, @Mutated DoubleTransform dest);
+
+    /**
+     * Pre-multiply ({@code tX}, {@code tY}, {@code tZ}, {@code rX}, {@code rY}, {@code rZ},
+     * {@code rW}, {@code sX}, {@code sY}, {@code sZ}) onto this transform and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
+     * be {@code R * M}. So when transforming a vector {@code v} with the new transform by using
+     * {@code R * M * v}, the transformation of the operand will be applied last.
+     *
+     * @param tX the {@code tX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param tY the {@code tY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param tZ the {@code tZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rX the {@code rX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rY the {@code rY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rZ the {@code rZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rW the {@code rW} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sX the {@code sX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sY the {@code sY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sZ the {@code sZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform preMul(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW, float sX, float sY, float sZ, @Mutated FloatTransform dest);
+
+    /**
+     * Pre-multiply ({@code tX}, {@code tY}, {@code tZ}, {@code rX}, {@code rY}, {@code rZ},
+     * {@code rW}, {@code sX}, {@code sY}, {@code sZ}) onto this transform and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
+     * be {@code R * M}. So when transforming a vector {@code v} with the new transform by using
+     * {@code R * M * v}, the transformation of the operand will be applied last.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param tX the {@code tX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param tY the {@code tY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param tZ the {@code tZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rX the {@code rX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rY the {@code rY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rZ the {@code rZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rW the {@code rW} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sX the {@code sX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sY the {@code sY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sZ the {@code sZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform preMul(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW, float sX, float sY, float sZ, @Mutated DoubleTransform dest);
+
+    /**
+     * Compute the difference between this transform and {@code other}, i.e. the
+     * translation-rotation-scale transformation that, applied after {@code this}, results in
+     * {@code other} and store the result in {@code dest}.
+     *
+     * @param other the other transform
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform difference(FloatTransformR other, @Mutated FloatTransform dest);
+
+    /**
+     * Compute the difference between this transform and {@code other}, i.e. the
+     * translation-rotation-scale transformation that, applied after {@code this}, results in
+     * {@code other} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other transform
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform difference(FloatTransformR other, @Mutated DoubleTransform dest);
+
+    /**
+     * Compute the difference between this transform and ({@code tX}, {@code tY}, {@code tZ},
+     * {@code rX}, {@code rY}, {@code rZ}, {@code rW}, {@code sX}, {@code sY}, {@code sZ}), i.e. the
+     * translation-rotation-scale transformation that, applied after {@code this}, results in
+     * ({@code tX}, {@code tY}, {@code tZ}, {@code rX}, {@code rY}, {@code rZ}, {@code rW},
+     * {@code sX}, {@code sY}, {@code sZ}) and store the result in {@code dest}.
+     *
+     * @param tX the {@code tX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param tY the {@code tY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param tZ the {@code tZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rX the {@code rX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rY the {@code rY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rZ the {@code rZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rW the {@code rW} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sX the {@code sX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sY the {@code sY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sZ the {@code sZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform difference(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW, float sX, float sY, float sZ, @Mutated FloatTransform dest);
+
+    /**
+     * Compute the difference between this transform and ({@code tX}, {@code tY}, {@code tZ},
+     * {@code rX}, {@code rY}, {@code rZ}, {@code rW}, {@code sX}, {@code sY}, {@code sZ}), i.e. the
+     * translation-rotation-scale transformation that, applied after {@code this}, results in
+     * ({@code tX}, {@code tY}, {@code tZ}, {@code rX}, {@code rY}, {@code rZ}, {@code rW},
+     * {@code sX}, {@code sY}, {@code sZ}) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param tX the {@code tX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param tY the {@code tY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param tZ the {@code tZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rX the {@code rX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rY the {@code rY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rZ the {@code rZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param rW the {@code rW} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sX the {@code sX} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sY the {@code sY} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param sZ the {@code sZ} component of the transform
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform difference(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW, float sX, float sY, float sZ, @Mutated DoubleTransform dest);
+
+    /**
+     * Invert this transform (translation-rotation-scale, without shear); a zero scale axis yields
+     * positive infinity in the corresponding inverse scale and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform invert(@Mutated FloatTransform dest);
+
+    /**
+     * Invert this transform (translation-rotation-scale, without shear); a zero scale axis yields
+     * positive infinity in the corresponding inverse scale and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform invert(@Mutated DoubleTransform dest);
+
+    /**
+     * Normalize this transform so that its rotation part has unit length, leaving its translation
+     * and scale unchanged (a zero-length rotation yields the zero quaternion) and store the result
+     * in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform normalize(@Mutated FloatTransform dest);
+
+    /**
+     * Normalize this transform so that its rotation part has unit length, leaving its translation
+     * and scale unchanged (a zero-length rotation yields the zero quaternion) and store the result
+     * in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform normalize(@Mutated DoubleTransform dest);
+
+    /**
+     * Get the Euler angles in radians of this transform, to be applied about the X, Y and Z axes,
+     * in that order and store the result in {@code dest}.
+     * <p>
+     * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
+     * set of angles is returned.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 getEulerAnglesXYZ(@Mutated Float3 dest);
+
+    /**
+     * Get the Euler angles in radians of this transform, to be applied about the X, Y and Z axes,
+     * in that order and store the result in {@code dest}.
+     * <p>
+     * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
+     * set of angles is returned.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 getEulerAnglesXYZ(@Mutated Double3 dest);
+
+    /**
+     * Get the Euler angles in radians of this transform, to be applied about the X, Z and Y axes,
+     * in that order and store the result in {@code dest}.
+     * <p>
+     * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
+     * set of angles is returned.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 getEulerAnglesXZY(@Mutated Float3 dest);
+
+    /**
+     * Get the Euler angles in radians of this transform, to be applied about the X, Z and Y axes,
+     * in that order and store the result in {@code dest}.
+     * <p>
+     * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
+     * set of angles is returned.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 getEulerAnglesXZY(@Mutated Double3 dest);
+
+    /**
+     * Get the Euler angles in radians of this transform, to be applied about the Y, X and Z axes,
+     * in that order and store the result in {@code dest}.
+     * <p>
+     * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
+     * set of angles is returned.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 getEulerAnglesYXZ(@Mutated Float3 dest);
+
+    /**
+     * Get the Euler angles in radians of this transform, to be applied about the Y, X and Z axes,
+     * in that order and store the result in {@code dest}.
+     * <p>
+     * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
+     * set of angles is returned.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 getEulerAnglesYXZ(@Mutated Double3 dest);
+
+    /**
+     * Get the Euler angles in radians of this transform, to be applied about the Y, Z and X axes,
+     * in that order and store the result in {@code dest}.
+     * <p>
+     * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
+     * set of angles is returned.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 getEulerAnglesYZX(@Mutated Float3 dest);
+
+    /**
+     * Get the Euler angles in radians of this transform, to be applied about the Y, Z and X axes,
+     * in that order and store the result in {@code dest}.
+     * <p>
+     * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
+     * set of angles is returned.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 getEulerAnglesYZX(@Mutated Double3 dest);
+
+    /**
+     * Get the Euler angles in radians of this transform, to be applied about the Z, X and Y axes,
+     * in that order and store the result in {@code dest}.
+     * <p>
+     * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
+     * set of angles is returned.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 getEulerAnglesZXY(@Mutated Float3 dest);
+
+    /**
+     * Get the Euler angles in radians of this transform, to be applied about the Z, X and Y axes,
+     * in that order and store the result in {@code dest}.
+     * <p>
+     * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
+     * set of angles is returned.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 getEulerAnglesZXY(@Mutated Double3 dest);
+
+    /**
+     * Get the Euler angles in radians of this transform, to be applied about the Z, Y and X axes,
+     * in that order and store the result in {@code dest}.
+     * <p>
+     * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
+     * set of angles is returned.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 getEulerAnglesZYX(@Mutated Float3 dest);
+
+    /**
+     * Get the Euler angles in radians of this transform, to be applied about the Z, Y and X axes,
+     * in that order and store the result in {@code dest}.
+     * <p>
+     * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
+     * set of angles is returned.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 getEulerAnglesZYX(@Mutated Double3 dest);
+
+    /**
+     * Get the rotation of this transform and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatQuat getRotation(@Mutated FloatQuat dest);
+
+    /**
+     * Get the rotation of this transform and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleQuat getRotation(@Mutated DoubleQuat dest);
+
+    /**
+     * Get the scaling factors of this transform and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 getScale(@Mutated Float3 dest);
+
+    /**
+     * Get the scaling factors of this transform and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 getScale(@Mutated Double3 dest);
+
+    /**
+     * Get the translation of this transform and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 getTranslation(@Mutated Float3 dest);
+
+    /**
+     * Get the translation of this transform and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 getTranslation(@Mutated Double3 dest);
+
+    /**
+     * Apply the rotation represented by the quaternion {@code rotation} to this transform and store
+     * the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param rotation the quaternion (must be a unit quaternion)
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform rotate(FloatQuatR rotation, @Mutated FloatTransform dest);
+
+    /**
+     * Apply the rotation represented by the quaternion {@code rotation} to this transform and store
+     * the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param rotation the quaternion (must be a unit quaternion)
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform rotate(FloatQuatR rotation, @Mutated DoubleTransform dest);
+
+    /**
+     * Apply the rotation represented by the quaternion ({@code x}, {@code y}, {@code z}, {@code w})
+     * to this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param x the {@code x} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param y the {@code y} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param z the {@code z} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform rotate(float x, float y, float z, float w, @Mutated FloatTransform dest);
+
+    /**
+     * Apply the rotation represented by the quaternion ({@code x}, {@code y}, {@code z}, {@code w})
+     * to this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param y the {@code y} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param z the {@code z} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform rotate(float x, float y, float z, float w, @Mutated DoubleTransform dest);
+
+    /**
+     * Apply a rotation of {@code angle} radians about the axis {@code axis} to this transform and
+     * store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @param axis the rotation axis (must be a unit vector)
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform rotateAxis(float angle, Float3R axis, @Mutated FloatTransform dest);
+
+    /**
+     * Apply a rotation of {@code angle} radians about the axis {@code axis} to this transform and
+     * store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angle the angle in radians
+     * @param axis the rotation axis (must be a unit vector)
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform rotateAxis(float angle, Float3R axis, @Mutated DoubleTransform dest);
+
+    /**
+     * Apply a rotation of {@code angle} radians about the axis ({@code x}, {@code y}, {@code z}) to
+     * this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @param x the {@code x} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param y the {@code y} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform rotateAxis(float angle, float x, float y, float z, @Mutated FloatTransform dest);
+
+    /**
+     * Apply a rotation of {@code angle} radians about the axis ({@code x}, {@code y}, {@code z}) to
+     * this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angle the angle in radians
+     * @param x the {@code x} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param y the {@code y} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
+     *        length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform rotateAxis(float angle, float x, float y, float z, @Mutated DoubleTransform dest);
+
+    /**
+     * Apply a rotation of {@code angle} radians about the X axis to this transform and store the
+     * result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform rotateX(float angle, @Mutated FloatTransform dest);
+
+    /**
+     * Apply a rotation of {@code angle} radians about the X axis to this transform and store the
+     * result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform rotateX(float angle, @Mutated DoubleTransform dest);
+
+    /**
+     * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
+     * and Z axes, in that order, to this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform rotateXYZ(float angleX, float angleY, float angleZ, @Mutated FloatTransform dest);
+
+    /**
+     * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
+     * and Z axes, in that order, to this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform rotateXYZ(float angleX, float angleY, float angleZ, @Mutated DoubleTransform dest);
+
+    /**
+     * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
+     * and Y axes, in that order, to this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform rotateXZY(float angleX, float angleY, float angleZ, @Mutated FloatTransform dest);
+
+    /**
+     * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
+     * and Y axes, in that order, to this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform rotateXZY(float angleX, float angleY, float angleZ, @Mutated DoubleTransform dest);
+
+    /**
+     * Apply a rotation of {@code angle} radians about the Y axis to this transform and store the
+     * result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform rotateY(float angle, @Mutated FloatTransform dest);
+
+    /**
+     * Apply a rotation of {@code angle} radians about the Y axis to this transform and store the
+     * result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform rotateY(float angle, @Mutated DoubleTransform dest);
+
+    /**
+     * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
+     * and Z axes, in that order, to this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform rotateYXZ(float angleX, float angleY, float angleZ, @Mutated FloatTransform dest);
+
+    /**
+     * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
+     * and Z axes, in that order, to this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform rotateYXZ(float angleX, float angleY, float angleZ, @Mutated DoubleTransform dest);
+
+    /**
+     * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
+     * and X axes, in that order, to this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform rotateYZX(float angleX, float angleY, float angleZ, @Mutated FloatTransform dest);
+
+    /**
+     * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
+     * and X axes, in that order, to this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform rotateYZX(float angleX, float angleY, float angleZ, @Mutated DoubleTransform dest);
+
+    /**
+     * Apply a rotation of {@code angle} radians about the Z axis to this transform and store the
+     * result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform rotateZ(float angle, @Mutated FloatTransform dest);
+
+    /**
+     * Apply a rotation of {@code angle} radians about the Z axis to this transform and store the
+     * result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angle the angle in radians
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform rotateZ(float angle, @Mutated DoubleTransform dest);
+
+    /**
+     * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
+     * and Y axes, in that order, to this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform rotateZXY(float angleX, float angleY, float angleZ, @Mutated FloatTransform dest);
+
+    /**
+     * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
+     * and Y axes, in that order, to this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform rotateZXY(float angleX, float angleY, float angleZ, @Mutated DoubleTransform dest);
+
+    /**
+     * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
+     * and X axes, in that order, to this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform rotateZYX(float angleX, float angleY, float angleZ, @Mutated FloatTransform dest);
+
+    /**
+     * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
+     * and X axes, in that order, to this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
+     * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angleX the angle in radians to rotate about the X axis
+     * @param angleY the angle in radians to rotate about the Y axis
+     * @param angleZ the angle in radians to rotate about the Z axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform rotateZYX(float angleX, float angleY, float angleZ, @Mutated DoubleTransform dest);
+
+    /**
+     * Apply a scaling by {@code scale} to this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code S} the scaling transform, then the new
+     * transform will be {@code M * S}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * S * v}, the scaling will be applied first.
+     *
+     * @param scale the scale factor
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform scale(Float3R scale, @Mutated FloatTransform dest);
+
+    /**
+     * Apply a scaling by {@code scale} to this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code S} the scaling transform, then the new
+     * transform will be {@code M * S}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * S * v}, the scaling will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param scale the scale factor
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform scale(Float3R scale, @Mutated DoubleTransform dest);
+
+    /**
+     * Apply a scaling by ({@code x}, {@code y}, {@code z}) to this transform and store the result
+     * in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code S} the scaling transform, then the new
+     * transform will be {@code M * S}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * S * v}, the scaling will be applied first.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform scale(float x, float y, float z, @Mutated FloatTransform dest);
+
+    /**
+     * Apply a scaling by ({@code x}, {@code y}, {@code z}) to this transform and store the result
+     * in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code S} the scaling transform, then the new
+     * transform will be {@code M * S}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * S * v}, the scaling will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform scale(float x, float y, float z, @Mutated DoubleTransform dest);
+
+    /**
+     * Apply a scaling by {@code scale} to this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code S} the scaling transform, then the new
+     * transform will be {@code M * S}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * S * v}, the scaling will be applied first.
+     *
+     * @param scale the scale factor
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform scale(float scale, @Mutated FloatTransform dest);
+
+    /**
+     * Apply a scaling by {@code scale} to this transform and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code S} the scaling transform, then the new
+     * transform will be {@code M * S}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * S * v}, the scaling will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param scale the scale factor
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform scale(float scale, @Mutated DoubleTransform dest);
+
+    /**
+     * Apply a translation by {@code translation} to this transform and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code T} the translation transform, then the new
+     * transform will be {@code M * T}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * T * v}, the translation will be applied first.
+     *
+     * @param translation the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform translate(Float3R translation, @Mutated FloatTransform dest);
+
+    /**
+     * Apply a translation by {@code translation} to this transform and store the result in
+     * {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code T} the translation transform, then the new
+     * transform will be {@code M * T}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * T * v}, the translation will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param translation the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform translate(Float3R translation, @Mutated DoubleTransform dest);
+
+    /**
+     * Apply a translation by ({@code x}, {@code y}, {@code z}) to this transform and store the
+     * result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code T} the translation transform, then the new
+     * transform will be {@code M * T}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * T * v}, the translation will be applied first.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatTransform translate(float x, float y, float z, @Mutated FloatTransform dest);
+
+    /**
+     * Apply a translation by ({@code x}, {@code y}, {@code z}) to this transform and store the
+     * result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} transform and {@code T} the translation transform, then the new
+     * transform will be {@code M * T}. So when transforming a vector {@code v} with the new
+     * transform by using {@code M * T * v}, the translation will be applied first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleTransform translate(float x, float y, float z, @Mutated DoubleTransform dest);
+
+    /**
+     * Transform {@code v} by this transform and store the result in {@code dest}.
+     *
+     * @param v the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 transform(Float3R v, @Mutated Float3 dest);
+
+    /**
+     * Transform {@code v} by this transform and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param v the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 transform(Float3R v, @Mutated Double3 dest);
+
+    /**
+     * Transform ({@code x}, {@code y}, {@code z}) by this transform and store the result in
+     * {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 transform(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Transform ({@code x}, {@code y}, {@code z}) by this transform and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 transform(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Transform {@code v} by this transform and store the result back into {@code v}.
+     *
+     * @param v the vector (also receives the result)
+     * @return {@code v}
+     */
+    default Float3 transform(@Mutated Float3 v) { return transform(v, v); }
+
+    /**
+     * Transform the given direction by the rotation part of this transform, ignoring translation
+     * and scale and store the result in {@code dest}.
+     *
+     * @param v the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 transformDirection(Float3R v, @Mutated Float3 dest);
+
+    /**
+     * Transform the given direction by the rotation part of this transform, ignoring translation
+     * and scale and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param v the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 transformDirection(Float3R v, @Mutated Double3 dest);
+
+    /**
+     * Transform the given direction by the rotation part of this transform, ignoring translation
+     * and scale and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 transformDirection(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Transform the given direction by the rotation part of this transform, ignoring translation
+     * and scale and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 transformDirection(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Transform the given direction by the rotation part of this transform, ignoring translation
+     * and scale and store the result back into {@code v}.
+     *
+     * @param v the vector (also receives the result)
+     * @return {@code v}
+     */
+    default Float3 transformDirection(@Mutated Float3 v) { return transformDirection(v, v); }
+
+    /**
+     * Transform the given direction by the inverse of this transform's rotation (world to local),
+     * ignoring translation and scale, without materializing {@code invert()} and store the result
+     * in {@code dest}.
+     *
+     * @param v the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 transformDirectionInverse(Float3R v, @Mutated Float3 dest);
+
+    /**
+     * Transform the given direction by the inverse of this transform's rotation (world to local),
+     * ignoring translation and scale, without materializing {@code invert()} and store the result
+     * in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param v the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 transformDirectionInverse(Float3R v, @Mutated Double3 dest);
+
+    /**
+     * Transform the given direction by the inverse of this transform's rotation (world to local),
+     * ignoring translation and scale, without materializing {@code invert()} and store the result
+     * in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 transformDirectionInverse(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Transform the given direction by the inverse of this transform's rotation (world to local),
+     * ignoring translation and scale, without materializing {@code invert()} and store the result
+     * in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 transformDirectionInverse(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Transform the given direction by the inverse of this transform's rotation (world to local),
+     * ignoring translation and scale, without materializing {@code invert()} and store the result
+     * back into {@code v}.
+     *
+     * @param v the vector (also receives the result)
+     * @return {@code v}
+     */
+    default Float3 transformDirectionInverse(@Mutated Float3 v) { return transformDirectionInverse(v, v); }
+
+    /**
+     * Transform {@code p} by the inverse of this transform and store the result in {@code dest}.
+     *
+     * @param p the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 transformInverse(Float3R p, @Mutated Float3 dest);
+
+    /**
+     * Transform {@code p} by the inverse of this transform and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 transformInverse(Float3R p, @Mutated Double3 dest);
+
+    /**
+     * Transform ({@code x}, {@code y}, {@code z}) by the inverse of this transform and store the
+     * result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 transformInverse(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Transform ({@code x}, {@code y}, {@code z}) by the inverse of this transform and store the
+     * result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 transformInverse(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Transform {@code p} by the inverse of this transform and store the result back into
+     * {@code p}.
+     *
+     * @param p the vector (also receives the result)
+     * @return {@code p}
+     */
+    default Float3 transformInverse(@Mutated Float3 p) { return transformInverse(p, p); }
+
+    /**
+     * Transform the given position by this transform, treating it as a point with an implicit
+     * {@code w = 1} and store the result in {@code dest}.
+     *
+     * @param v the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 transformPosition(Float3R v, @Mutated Float3 dest);
+
+    /**
+     * Transform the given position by this transform, treating it as a point with an implicit
+     * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param v the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 transformPosition(Float3R v, @Mutated Double3 dest);
+
+    /**
+     * Transform the given position by this transform, treating it as a point with an implicit
+     * {@code w = 1} and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 transformPosition(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Transform the given position by this transform, treating it as a point with an implicit
+     * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 transformPosition(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Transform the given position by this transform, treating it as a point with an implicit
+     * {@code w = 1} and store the result back into {@code v}.
+     *
+     * @param v the vector (also receives the result)
+     * @return {@code v}
+     */
+    default Float3 transformPosition(@Mutated Float3 v) { return transformPosition(v, v); }
+
+    /**
+     * Transform the given position by the inverse of this transform (world to local), without
+     * materializing {@code invert()} and store the result in {@code dest}.
+     *
+     * @param p the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 transformPositionInverse(Float3R p, @Mutated Float3 dest);
+
+    /**
+     * Transform the given position by the inverse of this transform (world to local), without
+     * materializing {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 transformPositionInverse(Float3R p, @Mutated Double3 dest);
+
+    /**
+     * Transform the given position by the inverse of this transform (world to local), without
+     * materializing {@code invert()} and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 transformPositionInverse(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Transform the given position by the inverse of this transform (world to local), without
+     * materializing {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 transformPositionInverse(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Transform the given position by the inverse of this transform (world to local), without
+     * materializing {@code invert()} and store the result back into {@code p}.
+     *
+     * @param p the vector (also receives the result)
+     * @return {@code p}
+     */
+    default Float3 transformPositionInverse(@Mutated Float3 p) { return transformPositionInverse(p, p); }
+
+    /**
+     * Transform the given vector by the linear part of this transform, i.e. apply its scale and
+     * rotation but not its translation and store the result in {@code dest}.
+     *
+     * @param v the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 transformVector(Float3R v, @Mutated Float3 dest);
+
+    /**
+     * Transform the given vector by the linear part of this transform, i.e. apply its scale and
+     * rotation but not its translation and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param v the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 transformVector(Float3R v, @Mutated Double3 dest);
+
+    /**
+     * Transform the given vector by the linear part of this transform, i.e. apply its scale and
+     * rotation but not its translation and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 transformVector(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Transform the given vector by the linear part of this transform, i.e. apply its scale and
+     * rotation but not its translation and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 transformVector(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Transform the given vector by the linear part of this transform, i.e. apply its scale and
+     * rotation but not its translation and store the result back into {@code v}.
+     *
+     * @param v the vector (also receives the result)
+     * @return {@code v}
+     */
+    default Float3 transformVector(@Mutated Float3 v) { return transformVector(v, v); }
+
+    /**
+     * Transform the given vector by the inverse of this transform's linear part (world to local),
+     * i.e. undo its rotation and scale but not its translation, without materializing
+     * {@code invert()} and store the result in {@code dest}.
+     *
+     * @param v the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 transformVectorInverse(Float3R v, @Mutated Float3 dest);
+
+    /**
+     * Transform the given vector by the inverse of this transform's linear part (world to local),
+     * i.e. undo its rotation and scale but not its translation, without materializing
+     * {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param v the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 transformVectorInverse(Float3R v, @Mutated Double3 dest);
+
+    /**
+     * Transform the given vector by the inverse of this transform's linear part (world to local),
+     * i.e. undo its rotation and scale but not its translation, without materializing
+     * {@code invert()} and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 transformVectorInverse(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Transform the given vector by the inverse of this transform's linear part (world to local),
+     * i.e. undo its rotation and scale but not its translation, without materializing
+     * {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 transformVectorInverse(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Transform the given vector by the inverse of this transform's linear part (world to local),
+     * i.e. undo its rotation and scale but not its translation, without materializing
+     * {@code invert()} and store the result back into {@code v}.
+     *
+     * @param v the vector (also receives the result)
+     * @return {@code v}
+     */
+    default Float3 transformVectorInverse(@Mutated Float3 v) { return transformVectorInverse(v, v); }
+    /** {@return the value of the {@code tX} component} */
+    float tX();
+    /** {@return the value of the {@code tY} component} */
+    float tY();
+    /** {@return the value of the {@code tZ} component} */
+    float tZ();
+    /** {@return the value of the {@code rX} component} */
+    float rX();
+    /** {@return the value of the {@code rY} component} */
+    float rY();
+    /** {@return the value of the {@code rZ} component} */
+    float rZ();
+    /** {@return the value of the {@code rW} component} */
+    float rW();
+    /** {@return the value of the {@code sX} component} */
+    float sX();
+    /** {@return the value of the {@code sY} component} */
+    float sY();
+    /** {@return the value of the {@code sZ} component} */
+    float sZ();
+
+    /**
+     * Store the elements into the given array.
+     *
+     * @param dest the destination array
+     * @return dest
+     */
+    default float[] store(@Mutated float[] dest) { return store(dest, 0); }
+
+    /**
+     * Store the elements into the given array, starting at the given offset.
+     *
+     * @param dest the destination array
+     * @param offset the start offset in the array, in elements
+     * @return dest
+     */
+    float[] store(@Mutated float[] dest, int offset);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default FloatBuffer store(@Mutated FloatBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default FloatBuffer storeAbsolute(@Mutated FloatBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at the given absolute index (the position
+     * is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param dest the destination buffer
+     * @return dest
+     */
+    FloatBuffer storeAbsolute(int index, @Mutated FloatBuffer dest);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position and advancing the
+     * position accordingly.
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default FloatBuffer storeRelative(@Mutated FloatBuffer dest) {
+        int pos = dest.position();
+        storeAbsolute(pos, dest);
+        dest.position(pos + 10);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given byte buffer, starting at its current position (the position
+     * is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer store(@Mutated ByteBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, starting at its current position (the position
+     * is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeAbsolute(@Mutated ByteBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, starting at the given absolute index (the
+     * position is not used or modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    ByteBuffer storeAbsolute(int index, @Mutated ByteBuffer dest);
+
+    /**
+     * Store the elements into the given byte buffer, starting at its current position and advancing
+     * the position accordingly.
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeRelative(@Mutated ByteBuffer dest) {
+        int pos = dest.position();
+        storeAbsolute(pos, dest);
+        dest.position(pos + 40);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given memory segment.
+     *
+     * @param dest the destination memory segment
+     * @return dest
+     */
+    default MemorySegment store(@Mutated MemorySegment dest) { return store(0L, dest); }
+
+    /**
+     * Store the elements into the given memory segment, starting at the given offset.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param dest the destination memory segment
+     * @return dest
+     */
+    MemorySegment store(long offset, @Mutated MemorySegment dest);
+
+    /**
+     * Store the elements into the given raw memory address. No bounds or liveness checks are
+     * performed.
+     *
+     * @param address the raw memory address
+     * @return this
+     */
+    FloatTransform storeUnsafe(long address);
+
+    /**
+     * Store the elements into the given array.
+     *
+     * @param dest the destination array
+     * @return dest
+     */
+    default double[] store(@Mutated double[] dest) { return store(dest, 0); }
+
+    /**
+     * Store the elements into the given array, starting at the given offset.
+     *
+     * @param dest the destination array
+     * @param offset the start offset in the array, in elements
+     * @return dest
+     */
+    double[] store(@Mutated double[] dest, int offset);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default DoubleBuffer store(@Mutated DoubleBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default DoubleBuffer storeAbsolute(@Mutated DoubleBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at the given absolute index (the position
+     * is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param dest the destination buffer
+     * @return dest
+     */
+    DoubleBuffer storeAbsolute(int index, @Mutated DoubleBuffer dest);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position and advancing the
+     * position accordingly.
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default DoubleBuffer storeRelative(@Mutated DoubleBuffer dest) {
+        int pos = dest.position();
+        storeAbsolute(pos, dest);
+        dest.position(pos + 10);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code double},
+     * starting at its current position (the position is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeDouble(@Mutated ByteBuffer dest) { return storeDoubleAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code double},
+     * starting at its current position (the position is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeDoubleAbsolute(@Mutated ByteBuffer dest) { return storeDoubleAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code double},
+     * starting at the given absolute index (the position is not used or modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    ByteBuffer storeDoubleAbsolute(int index, @Mutated ByteBuffer dest);
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code double},
+     * starting at its current position and advancing the position accordingly.
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeDoubleRelative(@Mutated ByteBuffer dest) {
+        int pos = dest.position();
+        storeDoubleAbsolute(pos, dest);
+        dest.position(pos + 80);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given memory segment, converting each element to {@code double}.
+     *
+     * @param dest the destination memory segment
+     * @return dest
+     */
+    default MemorySegment storeDouble(@Mutated MemorySegment dest) { return storeDouble(0L, dest); }
+
+    /**
+     * Store the elements into the given memory segment, converting each element to {@code double},
+     * starting at the given offset.
+     *
+     * @param offset the start offset into the memory segment, in bytes
+     * @param dest the destination memory segment
+     * @return dest
+     */
+    MemorySegment storeDouble(long offset, @Mutated MemorySegment dest);
+
+    /**
+     * Store the elements into the given raw memory address, converting each element to
+     * {@code double}. No bounds or liveness checks are performed.
+     *
+     * @param address the raw memory address
+     * @return this
+     */
+    FloatTransform storeDoubleUnsafe(long address);
+
+    /** {@return whether all components of this transform are finite, i.e. neither NaN nor infinite} */
+    boolean isFinite();
+
+    /**
+     * Compare this transform component-wise against {@code other}, allowing a difference
+     * of at most {@code epsilon} per component.
+     *
+     * @param other the transform to compare against
+     * @param epsilon the maximum allowed difference per component
+     * @return {@code true} if all components differ by at most {@code epsilon}, {@code false} otherwise
+     */
+    boolean equalsEpsilon(FloatTransformR other, float epsilon);
+
+    /** Backs {@code ZERO()}: defers the shared instance's
+     *  allocation to first use, avoiding a class-initialization cycle with the
+     *  implementation class. Not part of the public API. */
+    final class Holder {
+        private Holder() {}
+        static final FloatTransformR ZERO = Joml.floatTransform(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    }
+}

@@ -1,0 +1,1023 @@
+package org.joml2;
+
+import java.nio.FloatBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.ByteBuffer;
+
+/**
+ * Read-only view of a rectangle of single-precision {@code float} components.
+ * <p>
+ * Declares the accessors, queries, store methods and dest-form operations that read but never
+ * mutate the receiver; the mutable counterpart is {@link FloatRect}. APIs that only read a
+ * rectangle should accept {@code FloatRectR}, so callers can pass mutable instances without
+ * exposing them to modification.
+ */
+public interface FloatRectR {
+    /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
+    public static final int SIZE_BYTES = 16;
+
+    /** {@return a shared all-zero rectangle} Never mutate it - it is returned as the read-only view for that reason. */
+    public static FloatRectR ZERO() { return Holder.ZERO; }
+
+
+    /**
+     * Add {@code other} to this rectangle and store the result in {@code dest}.
+     *
+     * @param other the other rectangle
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect add(FloatRectR other, @Mutated FloatRect dest);
+
+    /**
+     * Add {@code other} to this rectangle and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other rectangle
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect add(FloatRectR other, @Mutated DoubleRect dest);
+
+    /**
+     * Add ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) to this rectangle and store the
+     * result in {@code dest}.
+     *
+     * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect add(float minX, float minY, float maxX, float maxY, @Mutated FloatRect dest);
+
+    /**
+     * Add ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) to this rectangle and store the
+     * result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect add(float minX, float minY, float maxX, float maxY, @Mutated DoubleRect dest);
+
+    /**
+     * Negate this rectangle and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect negate(@Mutated FloatRect dest);
+
+    /**
+     * Negate this rectangle and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect negate(@Mutated DoubleRect dest);
+
+    /**
+     * Subtract {@code other} from this rectangle and store the result in {@code dest}.
+     *
+     * @param other the other rectangle
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect sub(FloatRectR other, @Mutated FloatRect dest);
+
+    /**
+     * Subtract {@code other} from this rectangle and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other rectangle
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect sub(FloatRectR other, @Mutated DoubleRect dest);
+
+    /**
+     * Subtract ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) from this rectangle and
+     * store the result in {@code dest}.
+     *
+     * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect sub(float minX, float minY, float maxX, float maxY, @Mutated FloatRect dest);
+
+    /**
+     * Subtract ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) from this rectangle and
+     * store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect sub(float minX, float minY, float maxX, float maxY, @Mutated DoubleRect dest);
+
+    /**
+     * Set the maximum corner of this rectangle to {@code max} and store the result in {@code dest}.
+     *
+     * @param max the maximum corner
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect setMax(Float2R max, @Mutated FloatRect dest);
+
+    /**
+     * Set the maximum corner of this rectangle to {@code max} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param max the maximum corner
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect setMax(Float2R max, @Mutated DoubleRect dest);
+
+    /**
+     * Set the maximum corner of this rectangle to ({@code x}, {@code y}) and store the result in
+     * {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect setMax(float x, float y, @Mutated FloatRect dest);
+
+    /**
+     * Set the maximum corner of this rectangle to ({@code x}, {@code y}) and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect setMax(float x, float y, @Mutated DoubleRect dest);
+
+    /**
+     * Set the minimum corner of this rectangle to {@code min} and store the result in {@code dest}.
+     *
+     * @param min the minimum corner
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect setMin(Float2R min, @Mutated FloatRect dest);
+
+    /**
+     * Set the minimum corner of this rectangle to {@code min} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param min the minimum corner
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect setMin(Float2R min, @Mutated DoubleRect dest);
+
+    /**
+     * Set the minimum corner of this rectangle to ({@code x}, {@code y}) and store the result in
+     * {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect setMin(float x, float y, @Mutated FloatRect dest);
+
+    /**
+     * Set the minimum corner of this rectangle to ({@code x}, {@code y}) and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect setMin(float x, float y, @Mutated DoubleRect dest);
+
+    /**
+     * Convert this rectangle to {@code double} precision and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect toDouble(@Mutated DoubleRect dest);
+
+    /**
+     * Convert this rectangle to {@code int} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is converted by a primitive cast, truncating toward zero.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    IntRect toInt(@Mutated IntRect dest);
+
+    /**
+     * Convert this rectangle to {@code int} precision and store the result in {@code dest}.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param mode the rounding mode to use
+     * @param dest will hold the result
+     * @return dest
+     */
+    IntRect toInt(RoundingMode mode, @Mutated IntRect dest);
+
+    /**
+     * Linearly interpolate between this rectangle and {@code other} using the interpolation factor
+     * {@code t} and store the result in {@code dest}.
+     *
+     * @param other the other rectangle
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect lerp(FloatRectR other, float t, @Mutated FloatRect dest);
+
+    /**
+     * Linearly interpolate between this rectangle and {@code other} using the interpolation factor
+     * {@code t} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other rectangle
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect lerp(FloatRectR other, float t, @Mutated DoubleRect dest);
+
+    /**
+     * Linearly interpolate between this rectangle and ({@code minX}, {@code minY}, {@code maxX},
+     * {@code maxY}) using the interpolation factor {@code t} and store the result in {@code dest}.
+     *
+     * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect lerp(float minX, float minY, float maxX, float maxY, float t, @Mutated FloatRect dest);
+
+    /**
+     * Linearly interpolate between this rectangle and ({@code minX}, {@code minY}, {@code maxX},
+     * {@code maxY}) using the interpolation factor {@code t} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect lerp(float minX, float minY, float maxX, float maxY, float t, @Mutated DoubleRect dest);
+
+    /**
+     * Swap the minimum and maximum bounds of this rectangle where necessary so the bounds are valid
+     * and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect correctBounds(@Mutated FloatRect dest);
+
+    /**
+     * Swap the minimum and maximum bounds of this rectangle where necessary so the bounds are valid
+     * and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect correctBounds(@Mutated DoubleRect dest);
+
+    /**
+     * Expand this rectangle by {@code margin} in every direction and store the result in
+     * {@code dest}.
+     *
+     * @param margin the amount to expand by in every direction
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect expand(float margin, @Mutated FloatRect dest);
+
+    /**
+     * Expand this rectangle by {@code margin} in every direction and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param margin the amount to expand by in every direction
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect expand(float margin, @Mutated DoubleRect dest);
+
+    /**
+     * Compute the intersection of this rectangle and {@code other} (disjoint inputs yield inverted
+     * bounds - check {@code isValid()}) and store the result in {@code dest}.
+     *
+     * @param other the other rectangle
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect intersect(FloatRectR other, @Mutated FloatRect dest);
+
+    /**
+     * Compute the intersection of this rectangle and {@code other} (disjoint inputs yield inverted
+     * bounds - check {@code isValid()}) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other rectangle
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect intersect(FloatRectR other, @Mutated DoubleRect dest);
+
+    /**
+     * Compute the intersection of this rectangle and ({@code minX}, {@code minY}, {@code maxX},
+     * {@code maxY}) (disjoint inputs yield inverted bounds - check {@code isValid()}) and store the
+     * result in {@code dest}.
+     *
+     * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect intersect(float minX, float minY, float maxX, float maxY, @Mutated FloatRect dest);
+
+    /**
+     * Compute the intersection of this rectangle and ({@code minX}, {@code minY}, {@code maxX},
+     * {@code maxY}) (disjoint inputs yield inverted bounds - check {@code isValid()}) and store the
+     * result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect intersect(float minX, float minY, float maxX, float maxY, @Mutated DoubleRect dest);
+
+    /**
+     * Compute the intersection of this rectangle and {@code other} (disjoint inputs yield inverted
+     * bounds - check {@code isValid()}) and store the result back into {@code other}.
+     *
+     * @param other the other rectangle (also receives the result)
+     * @return {@code other}
+     */
+    default FloatRect intersect(@Mutated FloatRect other) { return intersect(other, other); }
+
+    /**
+     * Scale the bounds of this rectangle about the origin {@code (0, 0)} by the given factors and
+     * store the result in {@code dest}.
+     *
+     * @param sx the scale factor along the x axis
+     * @param sy the scale factor along the y axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect scale(float sx, float sy, @Mutated FloatRect dest);
+
+    /**
+     * Scale the bounds of this rectangle about the origin {@code (0, 0)} by the given factors and
+     * store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param sx the scale factor along the x axis
+     * @param sy the scale factor along the y axis
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect scale(float sx, float sy, @Mutated DoubleRect dest);
+
+    /**
+     * Translate this rectangle by {@code delta} and store the result in {@code dest}.
+     *
+     * @param delta the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect translate(Float2R delta, @Mutated FloatRect dest);
+
+    /**
+     * Translate this rectangle by {@code delta} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param delta the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect translate(Float2R delta, @Mutated DoubleRect dest);
+
+    /**
+     * Translate this rectangle by ({@code x}, {@code y}) and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect translate(float x, float y, @Mutated FloatRect dest);
+
+    /**
+     * Translate this rectangle by ({@code x}, {@code y}) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect translate(float x, float y, @Mutated DoubleRect dest);
+
+    /**
+     * Set this rectangle to the union of itself and {@code other} and store the result in
+     * {@code dest}.
+     *
+     * @param other the other rectangle
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect union(FloatRectR other, @Mutated FloatRect dest);
+
+    /**
+     * Set this rectangle to the union of itself and {@code other} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the other rectangle
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect union(FloatRectR other, @Mutated DoubleRect dest);
+
+    /**
+     * Set this rectangle to the union of itself and ({@code minX}, {@code minY}, {@code maxX},
+     * {@code maxY}) and store the result in {@code dest}.
+     *
+     * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect union(float minX, float minY, float maxX, float maxY, @Mutated FloatRect dest);
+
+    /**
+     * Set this rectangle to the union of itself and ({@code minX}, {@code minY}, {@code maxX},
+     * {@code maxY}) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect union(float minX, float minY, float maxX, float maxY, @Mutated DoubleRect dest);
+
+    /**
+     * Grow this rectangle to include the point {@code p} and store the result in {@code dest}.
+     *
+     * @param p the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect union(Float2R p, @Mutated FloatRect dest);
+
+    /**
+     * Grow this rectangle to include the point {@code p} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p the vector
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect union(Float2R p, @Mutated DoubleRect dest);
+
+    /**
+     * Grow this rectangle to include the point ({@code x}, {@code y}) and store the result in
+     * {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    FloatRect union(float x, float y, @Mutated FloatRect dest);
+
+    /**
+     * Grow this rectangle to include the point ({@code x}, {@code y}) and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleRect union(float x, float y, @Mutated DoubleRect dest);
+
+    /**
+     * Compute the area of this rectangle.
+     *
+     * @return the area of this rectangle
+     */
+    float area();
+
+    /**
+     * Compute the x coordinate of the center of this rectangle.
+     *
+     * @return the x coordinate of the center of this rectangle
+     */
+    float centerX();
+
+    /**
+     * Compute the y coordinate of the center of this rectangle.
+     *
+     * @return the y coordinate of the center of this rectangle
+     */
+    float centerY();
+
+    /**
+     * Determine whether this rectangle contains the given point (boundary inclusive).
+     *
+     * @param p the vector
+     * @return {@code true} if this rectangle contains the given point (boundary inclusive),
+     *        {@code false} otherwise
+     */
+    boolean containsPoint(Float2R p);
+
+    /**
+     * Determine whether this rectangle contains the given point (boundary inclusive).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @return {@code true} if this rectangle contains the given point (boundary inclusive),
+     *        {@code false} otherwise
+     */
+    boolean containsPoint(float x, float y);
+
+    /**
+     * Determine whether this rectangle completely contains {@code o}.
+     *
+     * @param o the rectangle
+     * @return {@code true} if this rectangle completely contains {@code o}, {@code false} otherwise
+     */
+    boolean containsRect(FloatRectR o);
+
+    /**
+     * Determine whether this rectangle completely contains ({@code minX}, {@code minY},
+     * {@code maxX}, {@code maxY}).
+     *
+     * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @return {@code true} if this rectangle completely contains ({@code minX}, {@code minY},
+     *        {@code maxX}, {@code maxY}), {@code false} otherwise
+     */
+    boolean containsRect(float minX, float minY, float maxX, float maxY);
+
+    /**
+     * Get the center of this rectangle and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float2 getCenter(@Mutated Float2 dest);
+
+    /**
+     * Get the center of this rectangle and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 getCenter(@Mutated Double2 dest);
+
+    /**
+     * Get the maximum corner of this rectangle and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float2 getMax(@Mutated Float2 dest);
+
+    /**
+     * Get the maximum corner of this rectangle and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 getMax(@Mutated Double2 dest);
+
+    /**
+     * Get the minimum corner of this rectangle and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float2 getMin(@Mutated Float2 dest);
+
+    /**
+     * Get the minimum corner of this rectangle and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 getMin(@Mutated Double2 dest);
+
+    /**
+     * Get the size, i.e. the maximum minus the minimum corner per axis of this rectangle and store
+     * the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float2 getSize(@Mutated Float2 dest);
+
+    /**
+     * Get the size, i.e. the maximum minus the minimum corner per axis of this rectangle and store
+     * the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 getSize(@Mutated Double2 dest);
+
+    /**
+     * Compute the height of this rectangle.
+     *
+     * @return the height of this rectangle
+     */
+    float height();
+
+    /**
+     * Determine whether this rectangle intersects {@code o}.
+     *
+     * @param o the rectangle
+     * @return {@code true} if this rectangle intersects {@code o}, {@code false} otherwise
+     */
+    boolean intersectsRect(FloatRectR o);
+
+    /**
+     * Determine whether this rectangle intersects ({@code minX}, {@code minY}, {@code maxX},
+     * {@code maxY}).
+     *
+     * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
+     * @return {@code true} if this rectangle intersects ({@code minX}, {@code minY}, {@code maxX},
+     *        {@code maxY}), {@code false} otherwise
+     */
+    boolean intersectsRect(float minX, float minY, float maxX, float maxY);
+
+    /**
+     * Determine whether this rectangle is valid, i.e. no minimum bound exceeds its maximum.
+     *
+     * @return {@code true} if this rectangle is valid, i.e. no minimum bound exceeds its maximum,
+     *        {@code false} otherwise
+     */
+    boolean isValid();
+
+    /**
+     * Compute the width of this rectangle.
+     *
+     * @return the width of this rectangle
+     */
+    float width();
+    /** {@return the value of the {@code minX} component} */
+    float minX();
+    /** {@return the value of the {@code minY} component} */
+    float minY();
+    /** {@return the value of the {@code maxX} component} */
+    float maxX();
+    /** {@return the value of the {@code maxY} component} */
+    float maxY();
+
+    /**
+     * Store the elements into the given array.
+     *
+     * @param dest the destination array
+     * @return dest
+     */
+    default float[] store(@Mutated float[] dest) { return store(dest, 0); }
+
+    /**
+     * Store the elements into the given array, starting at the given offset.
+     *
+     * @param dest the destination array
+     * @param offset the start offset in the array, in elements
+     * @return dest
+     */
+    float[] store(@Mutated float[] dest, int offset);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default FloatBuffer store(@Mutated FloatBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default FloatBuffer storeAbsolute(@Mutated FloatBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at the given absolute index (the position
+     * is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param dest the destination buffer
+     * @return dest
+     */
+    FloatBuffer storeAbsolute(int index, @Mutated FloatBuffer dest);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position and advancing the
+     * position accordingly.
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default FloatBuffer storeRelative(@Mutated FloatBuffer dest) {
+        int pos = dest.position();
+        storeAbsolute(pos, dest);
+        dest.position(pos + 4);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given byte buffer, starting at its current position (the position
+     * is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer store(@Mutated ByteBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, starting at its current position (the position
+     * is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeAbsolute(@Mutated ByteBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, starting at the given absolute index (the
+     * position is not used or modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    ByteBuffer storeAbsolute(int index, @Mutated ByteBuffer dest);
+
+    /**
+     * Store the elements into the given byte buffer, starting at its current position and advancing
+     * the position accordingly.
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeRelative(@Mutated ByteBuffer dest) {
+        int pos = dest.position();
+        storeAbsolute(pos, dest);
+        dest.position(pos + 16);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given raw memory address. No bounds or liveness checks are
+     * performed.
+     *
+     * @param address the raw memory address
+     * @return this
+     */
+    FloatRect storeUnsafe(long address);
+
+    /**
+     * Store the elements into the given array.
+     *
+     * @param dest the destination array
+     * @return dest
+     */
+    default double[] store(@Mutated double[] dest) { return store(dest, 0); }
+
+    /**
+     * Store the elements into the given array, starting at the given offset.
+     *
+     * @param dest the destination array
+     * @param offset the start offset in the array, in elements
+     * @return dest
+     */
+    double[] store(@Mutated double[] dest, int offset);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default DoubleBuffer store(@Mutated DoubleBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at its current position (the position is
+     * not modified).
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default DoubleBuffer storeAbsolute(@Mutated DoubleBuffer dest) { return storeAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given buffer, starting at the given absolute index (the position
+     * is not used or modified).
+     *
+     * @param index the absolute element index in the buffer
+     * @param dest the destination buffer
+     * @return dest
+     */
+    DoubleBuffer storeAbsolute(int index, @Mutated DoubleBuffer dest);
+
+    /**
+     * Store the elements into the given buffer, starting at its current position and advancing the
+     * position accordingly.
+     *
+     * @param dest the destination buffer
+     * @return dest
+     */
+    default DoubleBuffer storeRelative(@Mutated DoubleBuffer dest) {
+        int pos = dest.position();
+        storeAbsolute(pos, dest);
+        dest.position(pos + 4);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code double},
+     * starting at its current position (the position is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeDouble(@Mutated ByteBuffer dest) { return storeDoubleAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code double},
+     * starting at its current position (the position is not modified).
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeDoubleAbsolute(@Mutated ByteBuffer dest) { return storeDoubleAbsolute(dest.position(), dest); }
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code double},
+     * starting at the given absolute index (the position is not used or modified).
+     *
+     * @param index the absolute byte index in the byte buffer
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    ByteBuffer storeDoubleAbsolute(int index, @Mutated ByteBuffer dest);
+
+    /**
+     * Store the elements into the given byte buffer, converting each element to {@code double},
+     * starting at its current position and advancing the position accordingly.
+     *
+     * @param dest the destination byte buffer
+     * @return dest
+     */
+    default ByteBuffer storeDoubleRelative(@Mutated ByteBuffer dest) {
+        int pos = dest.position();
+        storeDoubleAbsolute(pos, dest);
+        dest.position(pos + 32);
+        return dest;
+    }
+
+    /**
+     * Store the elements into the given raw memory address, converting each element to
+     * {@code double}. No bounds or liveness checks are performed.
+     *
+     * @param address the raw memory address
+     * @return this
+     */
+    FloatRect storeDoubleUnsafe(long address);
+
+    /** {@return whether all components of this rectangle are finite, i.e. neither NaN nor infinite} */
+    boolean isFinite();
+
+    /**
+     * Compare this rectangle component-wise against {@code other}, allowing a difference
+     * of at most {@code epsilon} per component.
+     *
+     * @param other the rectangle to compare against
+     * @param epsilon the maximum allowed difference per component
+     * @return {@code true} if all components differ by at most {@code epsilon}, {@code false} otherwise
+     */
+    boolean equalsEpsilon(FloatRectR other, float epsilon);
+
+    /** Backs {@code ZERO()}: defers the shared instance's
+     *  allocation to first use, avoiding a class-initialization cycle with the
+     *  implementation class. Not part of the public API. */
+    final class Holder {
+        private Holder() {}
+        static final FloatRectR ZERO = Joml.floatRect(0, 0, 0, 0);
+    }
+}

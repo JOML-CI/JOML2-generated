@@ -1,0 +1,14 @@
+package org.joml2.internal.storeload;
+
+import org.joml2.*;
+import org.joml2.Math;
+import org.joml2.internal.types.*;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+
+public interface Double4BbOps {
+    FloatBuffer storeAbsolute(Double4Impl self, int index, FloatBuffer buf);
+    Double4 loadAbsolute(Double4Impl self, int index, FloatBuffer buf);
+    ByteBuffer storeFloatAbsolute(Double4Impl self, int index, ByteBuffer buf);
+    Double4 loadFloatAbsolute(Double4Impl self, int index, ByteBuffer buf);
+}
