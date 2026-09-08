@@ -385,6 +385,369 @@ public final class DoubleAABBImpl implements DoubleAABB {
 
 
     /**
+     * Compute the point of this axis-aligned bounding box closest to the given point, i.e. the
+     * point clamped per axis into the box's bounds. For a point inside or on the box, the result is
+     * the point itself.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param p the point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 closestPointToPoint(Double3R p, @Mutated Double3 dest) {
+        return closestPointToPoint(p.x(), p.y(), p.z(), dest);
+    }
+
+
+    /**
+     * Compute the point of this axis-aligned bounding box closest to the given point, i.e. the
+     * point clamped per axis into the box's bounds. For a point inside or on the box, the result is
+     * the point itself.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 closestPointToPoint(double pX, double pY, double pZ, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        d.x = Math.max(this.minX, Math.min(pX, this.maxX));
+        d.y = Math.max(this.minY, Math.min(pY, this.maxY));
+        d.z = Math.max(this.minZ, Math.min(pZ, this.maxZ));
+        return d;
+    }
+
+
+    /**
+     * Compute the squared distance between this axis-aligned bounding box and the given box, i.e.
+     * the squared length of the shortest vector between any two points of the two boxes; zero when
+     * they overlap or touch.
+     *
+     * @param other the other box
+     * @return the squared distance between this axis-aligned bounding box and the given box, i.e.
+     *        the squared length of the shortest vector between any two points of the two boxes;
+     *        zero when they overlap or touch
+     */
+    public double distanceSquaredToAABB(DoubleAABBR other) {
+        return distanceSquaredToAABB(other.minX(), other.minY(), other.minZ(), other.maxX(), other.maxY(), other.maxZ());
+    }
+
+
+    /**
+     * Compute the squared distance between this axis-aligned bounding box and the given box, i.e.
+     * the squared length of the shortest vector between any two points of the two boxes; zero when
+     * they overlap or touch.
+     *
+     * @param minX the {@code minX} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minY the {@code minY} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minZ the {@code minZ} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxX the {@code maxX} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxY the {@code maxY} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxZ the {@code maxZ} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @return the squared distance between this axis-aligned bounding box and the given box, i.e.
+     *        the squared length of the shortest vector between any two points of the two boxes;
+     *        zero when they overlap or touch
+     */
+    public double distanceSquaredToAABB(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+        double _t9 = Math.max(0.0, Math.max(this.minX - maxX, minX - this.maxX));
+        double _t10 = Math.max(0.0, Math.max(this.minY - maxY, minY - this.maxY));
+        double _t11 = Math.max(0.0, Math.max(this.minZ - maxZ, minZ - this.maxZ));
+        return _t9 * _t9 + _t10 * _t10 + _t11 * _t11;
+    }
+
+
+    /**
+     * Compute the squared distance between this axis-aligned bounding box and the given point, i.e.
+     * the squared length of the difference between the point and its per-axis clamp into the box's
+     * bounds; zero for a point inside or on the box.
+     *
+     * @param p the point
+     * @return the squared distance between this axis-aligned bounding box and the given point, i.e.
+     *        the squared length of the difference between the point and its per-axis clamp into the
+     *        box's bounds; zero for a point inside or on the box
+     */
+    public double distanceSquaredToPoint(Double3R p) {
+        return distanceSquaredToPoint(p.x(), p.y(), p.z());
+    }
+
+
+    /**
+     * Compute the squared distance between this axis-aligned bounding box and the given point, i.e.
+     * the squared length of the difference between the point and its per-axis clamp into the box's
+     * bounds; zero for a point inside or on the box.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @return the squared distance between this axis-aligned bounding box and the given point, i.e.
+     *        the squared length of the difference between the point and its per-axis clamp into the
+     *        box's bounds; zero for a point inside or on the box
+     */
+    public double distanceSquaredToPoint(double pX, double pY, double pZ) {
+        double _t6 = pX - Math.max(this.minX, Math.min(pX, this.maxX));
+        double _t7 = pY - Math.max(this.minY, Math.min(pY, this.maxY));
+        double _t8 = pZ - Math.max(this.minZ, Math.min(pZ, this.maxZ));
+        return _t6 * _t6 + _t7 * _t7 + _t8 * _t8;
+    }
+
+
+    /**
+     * Compute the squared distance between this axis-aligned bounding box and the given sphere,
+     * i.e. the square of the distance from the box to the sphere's center minus the radius, clamped
+     * at zero; zero when they overlap or touch.
+     *
+     * @param sphere the sphere
+     * @return the squared distance between this axis-aligned bounding box and the given sphere,
+     *        i.e. the square of the distance from the box to the sphere's center minus the radius,
+     *        clamped at zero; zero when they overlap or touch
+     */
+    public double distanceSquaredToSphere(DoubleSphereR sphere) {
+        return distanceSquaredToSphere(sphere.x(), sphere.y(), sphere.z(), sphere.r());
+    }
+
+
+    /**
+     * Compute the squared distance between this axis-aligned bounding box and the given sphere,
+     * i.e. the square of the distance from the box to the sphere's center minus the radius, clamped
+     * at zero; zero when they overlap or touch.
+     *
+     * @param sphereX the {@code x} component of the sphere
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     * @param sphereY the {@code y} component of the sphere
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     * @param sphereZ the {@code z} component of the sphere
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     * @param sphereR the {@code r} component of the sphere
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     * @return the squared distance between this axis-aligned bounding box and the given sphere,
+     *        i.e. the square of the distance from the box to the sphere's center minus the radius,
+     *        clamped at zero; zero when they overlap or touch
+     */
+    public double distanceSquaredToSphere(double sphereX, double sphereY, double sphereZ, double sphereR) {
+        double _t6 = sphereX - Math.max(this.minX, Math.min(sphereX, this.maxX));
+        double _t7 = sphereY - Math.max(this.minY, Math.min(sphereY, this.maxY));
+        double _t8 = sphereZ - Math.max(this.minZ, Math.min(sphereZ, this.maxZ));
+        double _t16 = Math.max(0.0, Math.sqrt(_t6 * _t6 + _t7 * _t7 + _t8 * _t8) - sphereR);
+        return _t16 * _t16;
+    }
+
+
+    /**
+     * Compute the squared distance between this axis-aligned bounding box and the given sphere,
+     * i.e. the square of the distance from the box to the sphere's center minus the radius, clamped
+     * at zero; zero when they overlap or touch.
+     *
+     * @param center the center point
+     * @param radius the radius
+     * @return the squared distance between this axis-aligned bounding box and the given sphere,
+     *        i.e. the square of the distance from the box to the sphere's center minus the radius,
+     *        clamped at zero; zero when they overlap or touch
+     */
+    public double distanceSquaredToSphere(Double3R center, double radius) {
+        return distanceSquaredToSphere(center.x(), center.y(), center.z(), radius);
+    }
+
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given box, i.e. the
+     * length of the shortest vector between any two points of the two boxes; zero when they overlap
+     * or touch.
+     *
+     * @param other the other box
+     * @return the distance between this axis-aligned bounding box and the given box, i.e. the
+     *        length of the shortest vector between any two points of the two boxes; zero when they
+     *        overlap or touch
+     */
+    public double distanceToAABB(DoubleAABBR other) {
+        return distanceToAABB(other.minX(), other.minY(), other.minZ(), other.maxX(), other.maxY(), other.maxZ());
+    }
+
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given box, i.e. the
+     * length of the shortest vector between any two points of the two boxes; zero when they overlap
+     * or touch.
+     *
+     * @param minX the {@code minX} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minY the {@code minY} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minZ the {@code minZ} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxX the {@code maxX} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxY the {@code maxY} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxZ the {@code maxZ} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @return the distance between this axis-aligned bounding box and the given box, i.e. the
+     *        length of the shortest vector between any two points of the two boxes; zero when they
+     *        overlap or touch
+     */
+    public double distanceToAABB(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+        double _t9 = Math.max(0.0, Math.max(this.minX - maxX, minX - this.maxX));
+        double _t10 = Math.max(0.0, Math.max(this.minY - maxY, minY - this.maxY));
+        double _t11 = Math.max(0.0, Math.max(this.minZ - maxZ, minZ - this.maxZ));
+        return Math.sqrt(_t9 * _t9 + _t10 * _t10 + _t11 * _t11);
+    }
+
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given plane, i.e. the
+     * distance from the box's center to the plane minus the box's extent along the plane normal,
+     * clamped at zero; zero when the plane intersects or touches the box. The plane's normal need
+     * not be of unit length.
+     *
+     * @param plane the plane
+     * @return the distance between this axis-aligned bounding box and the given plane, i.e. the
+     *        distance from the box's center to the plane minus the box's extent along the plane
+     *        normal, clamped at zero; zero when the plane intersects or touches the box. The
+     *        plane's normal need not be of unit length
+     */
+    public double distanceToPlane(DoublePlaneR plane) {
+        return distanceToPlane(plane.a(), plane.b(), plane.c(), plane.d());
+    }
+
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given plane, i.e. the
+     * distance from the box's center to the plane minus the box's extent along the plane normal,
+     * clamped at zero; zero when the plane intersects or touches the box. The plane's normal need
+     * not be of unit length.
+     *
+     * @param planeA the {@code a} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     * @param planeB the {@code b} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     * @param planeC the {@code c} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     * @param planeD the {@code d} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     * @return the distance between this axis-aligned bounding box and the given plane, i.e. the
+     *        distance from the box's center to the plane minus the box's extent along the plane
+     *        normal, clamped at zero; zero when the plane intersects or touches the box. The
+     *        plane's normal need not be of unit length
+     */
+    public double distanceToPlane(double planeA, double planeB, double planeC, double planeD) {
+        return (1.0 / Math.sqrt(planeA * planeA + planeB * planeB + planeC * planeC)) * Math.max(0.0, Math.abs(0.5 * (planeA * (this.minX + this.maxX) + planeB * (this.minY + this.maxY) + planeC * (this.minZ + this.maxZ)) + planeD) - 0.5 * ((this.maxX - this.minX) * Math.abs(planeA) + (this.maxY - this.minY) * Math.abs(planeB) + (this.maxZ - this.minZ) * Math.abs(planeC)));
+    }
+
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given plane, i.e. the
+     * distance from the box's center to the plane minus the box's extent along the plane normal,
+     * clamped at zero; zero when the plane intersects or touches the box. The plane's normal need
+     * not be of unit length.
+     *
+     * @param plane the plane
+     * @return the distance between this axis-aligned bounding box and the given plane, i.e. the
+     *        distance from the box's center to the plane minus the box's extent along the plane
+     *        normal, clamped at zero; zero when the plane intersects or touches the box. The
+     *        plane's normal need not be of unit length
+     */
+    public double distanceToPlane(Double4R plane) {
+        return distanceToPlane(plane.x(), plane.y(), plane.z(), plane.w());
+    }
+
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given point, i.e. the
+     * length of the difference between the point and its per-axis clamp into the box's bounds; zero
+     * for a point inside or on the box.
+     *
+     * @param p the point
+     * @return the distance between this axis-aligned bounding box and the given point, i.e. the
+     *        length of the difference between the point and its per-axis clamp into the box's
+     *        bounds; zero for a point inside or on the box
+     */
+    public double distanceToPoint(Double3R p) {
+        return distanceToPoint(p.x(), p.y(), p.z());
+    }
+
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given point, i.e. the
+     * length of the difference between the point and its per-axis clamp into the box's bounds; zero
+     * for a point inside or on the box.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @return the distance between this axis-aligned bounding box and the given point, i.e. the
+     *        length of the difference between the point and its per-axis clamp into the box's
+     *        bounds; zero for a point inside or on the box
+     */
+    public double distanceToPoint(double pX, double pY, double pZ) {
+        double _t6 = pX - Math.max(this.minX, Math.min(pX, this.maxX));
+        double _t7 = pY - Math.max(this.minY, Math.min(pY, this.maxY));
+        double _t8 = pZ - Math.max(this.minZ, Math.min(pZ, this.maxZ));
+        return Math.sqrt(_t6 * _t6 + _t7 * _t7 + _t8 * _t8);
+    }
+
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given sphere, i.e. the
+     * distance from the box to the sphere's center minus the radius, clamped at zero; zero when
+     * they overlap or touch.
+     *
+     * @param sphere the sphere
+     * @return the distance between this axis-aligned bounding box and the given sphere, i.e. the
+     *        distance from the box to the sphere's center minus the radius, clamped at zero; zero
+     *        when they overlap or touch
+     */
+    public double distanceToSphere(DoubleSphereR sphere) {
+        return distanceToSphere(sphere.x(), sphere.y(), sphere.z(), sphere.r());
+    }
+
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given sphere, i.e. the
+     * distance from the box to the sphere's center minus the radius, clamped at zero; zero when
+     * they overlap or touch.
+     *
+     * @param sphereX the {@code x} component of the sphere
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     * @param sphereY the {@code y} component of the sphere
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     * @param sphereZ the {@code z} component of the sphere
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     * @param sphereR the {@code r} component of the sphere
+     *        {@code (sphereX, sphereY, sphereZ, sphereR)}
+     * @return the distance between this axis-aligned bounding box and the given sphere, i.e. the
+     *        distance from the box to the sphere's center minus the radius, clamped at zero; zero
+     *        when they overlap or touch
+     */
+    public double distanceToSphere(double sphereX, double sphereY, double sphereZ, double sphereR) {
+        double _t6 = sphereX - Math.max(this.minX, Math.min(sphereX, this.maxX));
+        double _t7 = sphereY - Math.max(this.minY, Math.min(sphereY, this.maxY));
+        double _t8 = sphereZ - Math.max(this.minZ, Math.min(sphereZ, this.maxZ));
+        return Math.max(0.0, Math.sqrt(_t6 * _t6 + _t7 * _t7 + _t8 * _t8) - sphereR);
+    }
+
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given sphere, i.e. the
+     * distance from the box to the sphere's center minus the radius, clamped at zero; zero when
+     * they overlap or touch.
+     *
+     * @param center the center point
+     * @param radius the radius
+     * @return the distance between this axis-aligned bounding box and the given sphere, i.e. the
+     *        distance from the box to the sphere's center minus the radius, clamped at zero; zero
+     *        when they overlap or touch
+     */
+    public double distanceToSphere(Double3R center, double radius) {
+        return distanceToSphere(center.x(), center.y(), center.z(), radius);
+    }
+
+
+    /**
      * Get the center of this axis-aligned bounding box and store the result in {@code dest}.
      *
      * @param dest will hold the result

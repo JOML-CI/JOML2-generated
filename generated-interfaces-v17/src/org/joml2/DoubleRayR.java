@@ -104,6 +104,98 @@ public interface DoubleRayR {
     Double3 at(double t, @Mutated Double3 dest);
 
     /**
+     * Compute the point on this ray closest to the given point, i.e. the orthogonal projection of
+     * the point onto the ray's line, or the origin when that projection lies behind the origin. The
+     * direction need not be of unit length but must not be zero.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param p the point
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 closestPointToPoint(Double3R p, @Mutated Double3 dest);
+
+    /**
+     * Compute the point on this ray closest to the given point, i.e. the orthogonal projection of
+     * the point onto the ray's line, or the origin when that projection lies behind the origin. The
+     * direction need not be of unit length but must not be zero.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param x the {@code x} component of the point {@code (x, y, z)}
+     * @param y the {@code y} component of the point {@code (x, y, z)}
+     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 closestPointToPoint(double x, double y, double z, @Mutated Double3 dest);
+
+    /**
+     * Compute the point on this ray closest to the given point, i.e. the orthogonal projection of
+     * the point onto the ray's line, or the origin when that projection lies behind the origin. The
+     * direction need not be of unit length but must not be zero.
+     *
+     * @param p the point (also receives the result)
+     * @return {@code p}
+     */
+    default Double3 closestPointToPoint(@Mutated Double3 p) { return closestPointToPoint(p, p); }
+
+    /**
+     * Compute the squared distance between this ray and the given point, i.e. the squared distance
+     * from the point to the closest point on the ray (the ray starts at its origin and extends only
+     * along its direction). The direction need not be of unit length but must not be zero.
+     *
+     * @param p the point
+     * @return the squared distance between this ray and the given point, i.e. the squared distance
+     *        from the point to the closest point on the ray (the ray starts at its origin and
+     *        extends only along its direction). The direction need not be of unit length but must
+     *        not be zero
+     */
+    double distanceSquaredToPoint(Double3R p);
+
+    /**
+     * Compute the squared distance between this ray and the given point, i.e. the squared distance
+     * from the point to the closest point on the ray (the ray starts at its origin and extends only
+     * along its direction). The direction need not be of unit length but must not be zero.
+     *
+     * @param x the {@code x} component of the point {@code (x, y, z)}
+     * @param y the {@code y} component of the point {@code (x, y, z)}
+     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @return the squared distance between this ray and the given point, i.e. the squared distance
+     *        from the point to the closest point on the ray (the ray starts at its origin and
+     *        extends only along its direction). The direction need not be of unit length but must
+     *        not be zero
+     */
+    double distanceSquaredToPoint(double x, double y, double z);
+
+    /**
+     * Compute the distance between this ray and the given point, i.e. the distance from the point
+     * to the closest point on the ray (the ray starts at its origin and extends only along its
+     * direction). The direction need not be of unit length but must not be zero.
+     *
+     * @param p the point
+     * @return the distance between this ray and the given point, i.e. the distance from the point
+     *        to the closest point on the ray (the ray starts at its origin and extends only along
+     *        its direction). The direction need not be of unit length but must not be zero
+     */
+    double distanceToPoint(Double3R p);
+
+    /**
+     * Compute the distance between this ray and the given point, i.e. the distance from the point
+     * to the closest point on the ray (the ray starts at its origin and extends only along its
+     * direction). The direction need not be of unit length but must not be zero.
+     *
+     * @param x the {@code x} component of the point {@code (x, y, z)}
+     * @param y the {@code y} component of the point {@code (x, y, z)}
+     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @return the distance between this ray and the given point, i.e. the distance from the point
+     *        to the closest point on the ray (the ray starts at its origin and extends only along
+     *        its direction). The direction need not be of unit length but must not be zero
+     */
+    double distanceToPoint(double x, double y, double z);
+
+    /**
      * Get the direction of this ray and store the result in {@code dest}.
      *
      * @param dest will hold the result

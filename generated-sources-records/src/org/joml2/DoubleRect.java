@@ -447,6 +447,37 @@ public record DoubleRect(double minX, double minY, double maxX, double maxY) {
 
 
     /**
+     * Compute the point of this rectangle closest to the given point, i.e. the point clamped per
+     * axis into the rectangle's bounds. For a point inside or on the rectangle, the result is the
+     * point itself.
+     * <p>
+     * The result is returned as a value; {@code this} is not modified.
+     *
+     * @param p the point
+     * @return the resulting vector
+     */
+    public Double2 closestPointToPoint(Double2 p) {
+        return closestPointToPoint(p.x(), p.y());
+    }
+
+
+    /**
+     * Compute the point of this rectangle closest to the given point, i.e. the point clamped per
+     * axis into the rectangle's bounds. For a point inside or on the rectangle, the result is the
+     * point itself.
+     * <p>
+     * The result is returned as a value; {@code this} is not modified.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY)}
+     * @param pY the {@code y} component of the point {@code (pX, pY)}
+     * @return the resulting vector
+     */
+    public Double2 closestPointToPoint(double pX, double pY) {
+        return new Double2(Math.max(this.minX, Math.min(pX, this.maxX)), Math.max(this.minY, Math.min(pY, this.maxY)));
+    }
+
+
+    /**
      * Determine whether this rectangle contains the given point (boundary inclusive).
      *
      * @param p the vector
@@ -501,6 +532,150 @@ public record DoubleRect(double minX, double minY, double maxX, double maxY) {
         if (!(this.maxX >= oMAXX)) return false;
         if (!(this.minY <= oMINY)) return false;
         return this.maxY >= oMAXY;
+    }
+
+
+    /**
+     * Compute the squared distance between this rectangle and the given point, i.e. the squared
+     * length of the difference between the point and its per-axis clamp into the rectangle's
+     * bounds; zero for a point inside or on the rectangle.
+     *
+     * @param p the point
+     * @return the squared distance between this rectangle and the given point, i.e. the squared
+     *        length of the difference between the point and its per-axis clamp into the rectangle's
+     *        bounds; zero for a point inside or on the rectangle
+     */
+    public double distanceSquaredToPoint(Double2 p) {
+        return distanceSquaredToPoint(p.x(), p.y());
+    }
+
+
+    /**
+     * Compute the squared distance between this rectangle and the given point, i.e. the squared
+     * length of the difference between the point and its per-axis clamp into the rectangle's
+     * bounds; zero for a point inside or on the rectangle.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY)}
+     * @param pY the {@code y} component of the point {@code (pX, pY)}
+     * @return the squared distance between this rectangle and the given point, i.e. the squared
+     *        length of the difference between the point and its per-axis clamp into the rectangle's
+     *        bounds; zero for a point inside or on the rectangle
+     */
+    public double distanceSquaredToPoint(double pX, double pY) {
+        double _t4 = pX - Math.max(this.minX, Math.min(pX, this.maxX));
+        double _t5 = pY - Math.max(this.minY, Math.min(pY, this.maxY));
+        return Math.fma(_t4, _t4, _t5 * _t5);
+    }
+
+
+    /**
+     * Compute the squared distance between this rectangle and the given rectangle, i.e. the squared
+     * length of the shortest vector between any two points of the two rectangles; zero when they
+     * overlap or touch.
+     *
+     * @param other the other rectangle
+     * @return the squared distance between this rectangle and the given rectangle, i.e. the squared
+     *        length of the shortest vector between any two points of the two rectangles; zero when
+     *        they overlap or touch
+     */
+    public double distanceSquaredToRect(DoubleRect other) {
+        return distanceSquaredToRect(other.minX(), other.minY(), other.maxX(), other.maxY());
+    }
+
+
+    /**
+     * Compute the squared distance between this rectangle and the given rectangle, i.e. the squared
+     * length of the shortest vector between any two points of the two rectangles; zero when they
+     * overlap or touch.
+     *
+     * @param otherMINX the {@code minX} component of the other rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
+     * @param otherMINY the {@code minY} component of the other rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
+     * @param otherMAXX the {@code maxX} component of the other rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
+     * @param otherMAXY the {@code maxY} component of the other rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
+     * @return the squared distance between this rectangle and the given rectangle, i.e. the squared
+     *        length of the shortest vector between any two points of the two rectangles; zero when
+     *        they overlap or touch
+     */
+    public double distanceSquaredToRect(double otherMINX, double otherMINY, double otherMAXX, double otherMAXY) {
+        double _t6 = Math.max(0.0, Math.max(this.minX - otherMAXX, otherMINX - this.maxX));
+        double _t7 = Math.max(0.0, Math.max(this.minY - otherMAXY, otherMINY - this.maxY));
+        return Math.fma(_t6, _t6, _t7 * _t7);
+    }
+
+
+    /**
+     * Compute the distance between this rectangle and the given point, i.e. the length of the
+     * difference between the point and its per-axis clamp into the rectangle's bounds; zero for a
+     * point inside or on the rectangle.
+     *
+     * @param p the point
+     * @return the distance between this rectangle and the given point, i.e. the length of the
+     *        difference between the point and its per-axis clamp into the rectangle's bounds; zero
+     *        for a point inside or on the rectangle
+     */
+    public double distanceToPoint(Double2 p) {
+        return distanceToPoint(p.x(), p.y());
+    }
+
+
+    /**
+     * Compute the distance between this rectangle and the given point, i.e. the length of the
+     * difference between the point and its per-axis clamp into the rectangle's bounds; zero for a
+     * point inside or on the rectangle.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY)}
+     * @param pY the {@code y} component of the point {@code (pX, pY)}
+     * @return the distance between this rectangle and the given point, i.e. the length of the
+     *        difference between the point and its per-axis clamp into the rectangle's bounds; zero
+     *        for a point inside or on the rectangle
+     */
+    public double distanceToPoint(double pX, double pY) {
+        double _t4 = pX - Math.max(this.minX, Math.min(pX, this.maxX));
+        double _t5 = pY - Math.max(this.minY, Math.min(pY, this.maxY));
+        return Math.sqrt(Math.fma(_t4, _t4, _t5 * _t5));
+    }
+
+
+    /**
+     * Compute the distance between this rectangle and the given rectangle, i.e. the length of the
+     * shortest vector between any two points of the two rectangles; zero when they overlap or
+     * touch.
+     *
+     * @param other the other rectangle
+     * @return the distance between this rectangle and the given rectangle, i.e. the length of the
+     *        shortest vector between any two points of the two rectangles; zero when they overlap
+     *        or touch
+     */
+    public double distanceToRect(DoubleRect other) {
+        return distanceToRect(other.minX(), other.minY(), other.maxX(), other.maxY());
+    }
+
+
+    /**
+     * Compute the distance between this rectangle and the given rectangle, i.e. the length of the
+     * shortest vector between any two points of the two rectangles; zero when they overlap or
+     * touch.
+     *
+     * @param otherMINX the {@code minX} component of the other rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
+     * @param otherMINY the {@code minY} component of the other rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
+     * @param otherMAXX the {@code maxX} component of the other rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
+     * @param otherMAXY the {@code maxY} component of the other rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
+     * @return the distance between this rectangle and the given rectangle, i.e. the length of the
+     *        shortest vector between any two points of the two rectangles; zero when they overlap
+     *        or touch
+     */
+    public double distanceToRect(double otherMINX, double otherMINY, double otherMAXX, double otherMAXY) {
+        double _t6 = Math.max(0.0, Math.max(this.minX - otherMAXX, otherMINX - this.maxX));
+        double _t7 = Math.max(0.0, Math.max(this.minY - otherMAXY, otherMINY - this.maxY));
+        return Math.sqrt(Math.fma(_t6, _t6, _t7 * _t7));
     }
 
 

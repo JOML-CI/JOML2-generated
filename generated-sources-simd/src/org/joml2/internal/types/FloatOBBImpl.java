@@ -892,6 +892,106 @@ public final class FloatOBBImpl implements FloatOBB {
 
 
     /**
+     * Compute the point of this oriented bounding box closest to the given point, i.e. the point
+     * expressed in the box's local frame, clamped per axis to the box's half extents and mapped
+     * back to world space. For a point inside or on the box, the result is the point itself (up to
+     * rounding). Assumes the box's axes are orthonormal.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param p the point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3 closestPointToPoint(Float3R p, @Mutated Float3 dest) {
+        return closestPointToPoint(p.x(), p.y(), p.z(), dest);
+    }
+
+
+    /**
+     * Compute the point of this oriented bounding box closest to the given point, i.e. the point
+     * expressed in the box's local frame, clamped per axis to the box's half extents and mapped
+     * back to world space. For a point inside or on the box, the result is the point itself (up to
+     * rounding). Assumes the box's axes are orthonormal.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p the point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 closestPointToPoint(Float3R p, @Mutated Double3 dest) {
+        return closestPointToPoint(p.x(), p.y(), p.z(), dest);
+    }
+
+
+    /**
+     * Compute the point of this oriented bounding box closest to the given point, i.e. the point
+     * expressed in the box's local frame, clamped per axis to the box's half extents and mapped
+     * back to world space. For a point inside or on the box, the result is the point itself (up to
+     * rounding). Assumes the box's axes are orthonormal.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3 closestPointToPoint(float pX, float pY, float pZ, @Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        float _t3 = pZ - sd[2];
+        float _t4 = pX - sd[0];
+        float _t5 = pY - sd[1];
+        float _t18 = Math.max(-sd[12], Math.min(Math.fma(sd[5], _t3, Math.fma(sd[3], _t4, sd[4] * _t5)), sd[12]));
+        float _t19 = Math.max(-sd[13], Math.min(Math.fma(sd[8], _t3, Math.fma(sd[6], _t4, sd[7] * _t5)), sd[13]));
+        float _t20 = Math.max(-sd[14], Math.min(Math.fma(sd[11], _t3, Math.fma(sd[9], _t4, sd[10] * _t5)), sd[14]));
+        dd[0] = Math.fma(sd[3], _t18, Math.fma(sd[6], _t19, Math.fma(sd[9], _t20, sd[0])));
+        dd[1] = Math.fma(sd[4], _t18, Math.fma(sd[7], _t19, Math.fma(sd[10], _t20, sd[1])));
+        dd[2] = Math.fma(sd[5], _t18, Math.fma(sd[8], _t19, Math.fma(sd[11], _t20, sd[2])));
+        return dest;
+    }
+
+
+    /**
+     * Compute the point of this oriented bounding box closest to the given point, i.e. the point
+     * expressed in the box's local frame, clamped per axis to the box's half extents and mapped
+     * back to world space. For a point inside or on the box, the result is the point itself (up to
+     * rounding). Assumes the box's axes are orthonormal.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 closestPointToPoint(float pX, float pY, float pZ, @Mutated Double3 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        float _t3 = pZ - sd[2];
+        float _t4 = pX - sd[0];
+        float _t5 = pY - sd[1];
+        float _t18 = Math.max(-sd[12], Math.min(Math.fma(sd[5], _t3, Math.fma(sd[3], _t4, sd[4] * _t5)), sd[12]));
+        float _t19 = Math.max(-sd[13], Math.min(Math.fma(sd[8], _t3, Math.fma(sd[6], _t4, sd[7] * _t5)), sd[13]));
+        float _t20 = Math.max(-sd[14], Math.min(Math.fma(sd[11], _t3, Math.fma(sd[9], _t4, sd[10] * _t5)), sd[14]));
+        dd[0] = Math.fma(sd[3], _t18, Math.fma(sd[6], _t19, Math.fma(sd[9], _t20, sd[0])));
+        dd[1] = Math.fma(sd[4], _t18, Math.fma(sd[7], _t19, Math.fma(sd[10], _t20, sd[1])));
+        dd[2] = Math.fma(sd[5], _t18, Math.fma(sd[8], _t19, Math.fma(sd[11], _t20, sd[2])));
+        return dest;
+    }
+
+
+    /**
      * Determine whether this oriented bounding box contains the given point (boundary inclusive).
      *
      * @param p the vector
@@ -920,6 +1020,84 @@ public final class FloatOBBImpl implements FloatOBB {
         if (!(Math.abs(Math.fma(sd[5], _t0, Math.fma(sd[3], _t1, sd[4] * _t2))) <= sd[12])) return false;
         if (!(Math.abs(Math.fma(sd[8], _t0, Math.fma(sd[6], _t1, sd[7] * _t2))) <= sd[13])) return false;
         return Math.abs(Math.fma(sd[11], _t0, Math.fma(sd[9], _t1, sd[10] * _t2))) <= sd[14];
+    }
+
+
+    /**
+     * Compute the squared distance between this oriented bounding box and the given point,
+     * evaluated in the box's local frame; zero for a point inside or on the box. Assumes the box's
+     * axes are orthonormal.
+     *
+     * @param p the point
+     * @return the squared distance between this oriented bounding box and the given point,
+     *        evaluated in the box's local frame; zero for a point inside or on the box. Assumes the
+     *        box's axes are orthonormal
+     */
+    public float distanceSquaredToPoint(Float3R p) {
+        return distanceSquaredToPoint(p.x(), p.y(), p.z());
+    }
+
+
+    /**
+     * Compute the squared distance between this oriented bounding box and the given point,
+     * evaluated in the box's local frame; zero for a point inside or on the box. Assumes the box's
+     * axes are orthonormal.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @return the squared distance between this oriented bounding box and the given point,
+     *        evaluated in the box's local frame; zero for a point inside or on the box. Assumes the
+     *        box's axes are orthonormal
+     */
+    public float distanceSquaredToPoint(float pX, float pY, float pZ) {
+        float[] sd = this.data;
+        float _t0 = pZ - sd[2];
+        float _t1 = pX - sd[0];
+        float _t2 = pY - sd[1];
+        float _t18 = Math.max(0.0f, Math.abs(Math.fma(sd[11], _t0, Math.fma(sd[9], _t1, sd[10] * _t2))) - sd[14]);
+        float _t19 = Math.max(0.0f, Math.abs(Math.fma(sd[5], _t0, Math.fma(sd[3], _t1, sd[4] * _t2))) - sd[12]);
+        float _t20 = Math.max(0.0f, Math.abs(Math.fma(sd[8], _t0, Math.fma(sd[6], _t1, sd[7] * _t2))) - sd[13]);
+        return Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
+    }
+
+
+    /**
+     * Compute the distance between this oriented bounding box and the given point, evaluated in the
+     * box's local frame; zero for a point inside or on the box. Assumes the box's axes are
+     * orthonormal.
+     *
+     * @param p the point
+     * @return the distance between this oriented bounding box and the given point, evaluated in the
+     *        box's local frame; zero for a point inside or on the box. Assumes the box's axes are
+     *        orthonormal
+     */
+    public float distanceToPoint(Float3R p) {
+        return distanceToPoint(p.x(), p.y(), p.z());
+    }
+
+
+    /**
+     * Compute the distance between this oriented bounding box and the given point, evaluated in the
+     * box's local frame; zero for a point inside or on the box. Assumes the box's axes are
+     * orthonormal.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @return the distance between this oriented bounding box and the given point, evaluated in the
+     *        box's local frame; zero for a point inside or on the box. Assumes the box's axes are
+     *        orthonormal
+     */
+    public float distanceToPoint(float pX, float pY, float pZ) {
+        float[] sd = this.data;
+        float _t0 = pZ - sd[2];
+        float _t1 = pX - sd[0];
+        float _t2 = pY - sd[1];
+        float _t18 = Math.max(0.0f, Math.abs(Math.fma(sd[11], _t0, Math.fma(sd[9], _t1, sd[10] * _t2))) - sd[14]);
+        float _t19 = Math.max(0.0f, Math.abs(Math.fma(sd[5], _t0, Math.fma(sd[3], _t1, sd[4] * _t2))) - sd[12]);
+        float _t20 = Math.max(0.0f, Math.abs(Math.fma(sd[8], _t0, Math.fma(sd[6], _t1, sd[7] * _t2))) - sd[13]);
+        return (float) Math.sqrt(Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)));
     }
 
 

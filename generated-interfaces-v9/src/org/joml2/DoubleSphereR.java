@@ -105,6 +105,281 @@ public interface DoubleSphereR {
     DoubleSphere translate(double x, double y, double z, @Mutated DoubleSphere dest);
 
     /**
+     * Compute the point of this sphere closest to the given point. For a point inside or on the
+     * sphere, the result is the point itself; otherwise it is the point on the surface in the
+     * direction from the center toward the given point.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param p the point
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 closestPointToPoint(Double3R p, @Mutated Double3 dest);
+
+    /**
+     * Compute the point of this sphere closest to the given point. For a point inside or on the
+     * sphere, the result is the point itself; otherwise it is the point on the surface in the
+     * direction from the center toward the given point.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param x the {@code x} component of the point {@code (x, y, z)}
+     * @param y the {@code y} component of the point {@code (x, y, z)}
+     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 closestPointToPoint(double x, double y, double z, @Mutated Double3 dest);
+
+    /**
+     * Compute the point of this sphere closest to the given point. For a point inside or on the
+     * sphere, the result is the point itself; otherwise it is the point on the surface in the
+     * direction from the center toward the given point.
+     *
+     * @param p the point (also receives the result)
+     * @return {@code p}
+     */
+    default Double3 closestPointToPoint(@Mutated Double3 p) { return closestPointToPoint(p, p); }
+
+    /**
+     * Compute the squared distance between this sphere and the given axis-aligned box, i.e. the
+     * square of the distance from the box to the center minus the radius, clamped at zero; zero
+     * when they overlap or touch.
+     *
+     * @param aabb the axis-aligned box
+     * @return the squared distance between this sphere and the given axis-aligned box, i.e. the
+     *        square of the distance from the box to the center minus the radius, clamped at zero;
+     *        zero when they overlap or touch
+     */
+    double distanceSquaredToAABB(DoubleAABBR aabb);
+
+    /**
+     * Compute the squared distance between this sphere and the given axis-aligned box, i.e. the
+     * square of the distance from the box to the center minus the radius, clamped at zero; zero
+     * when they overlap or touch.
+     *
+     * @param minX the {@code minX} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minY the {@code minY} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minZ the {@code minZ} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxX the {@code maxX} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxY the {@code maxY} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxZ the {@code maxZ} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @return the squared distance between this sphere and the given axis-aligned box, i.e. the
+     *        square of the distance from the box to the center minus the radius, clamped at zero;
+     *        zero when they overlap or touch
+     */
+    double distanceSquaredToAABB(double minX, double minY, double minZ, double maxX, double maxY, double maxZ);
+
+    /**
+     * Compute the squared distance between this sphere and the given axis-aligned box, i.e. the
+     * square of the distance from the box to the center minus the radius, clamped at zero; zero
+     * when they overlap or touch.
+     *
+     * @param min the minimum corner
+     * @param max the maximum corner
+     * @return the squared distance between this sphere and the given axis-aligned box, i.e. the
+     *        square of the distance from the box to the center minus the radius, clamped at zero;
+     *        zero when they overlap or touch
+     */
+    double distanceSquaredToAABB(Double3R min, Double3R max);
+
+    /**
+     * Compute the squared distance between this sphere and the given point, i.e. the square of the
+     * distance from the point to the center minus the radius, clamped at zero; zero for a point
+     * inside or on the sphere.
+     *
+     * @param p the point
+     * @return the squared distance between this sphere and the given point, i.e. the square of the
+     *        distance from the point to the center minus the radius, clamped at zero; zero for a
+     *        point inside or on the sphere
+     */
+    double distanceSquaredToPoint(Double3R p);
+
+    /**
+     * Compute the squared distance between this sphere and the given point, i.e. the square of the
+     * distance from the point to the center minus the radius, clamped at zero; zero for a point
+     * inside or on the sphere.
+     *
+     * @param x the {@code x} component of the point {@code (x, y, z)}
+     * @param y the {@code y} component of the point {@code (x, y, z)}
+     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @return the squared distance between this sphere and the given point, i.e. the square of the
+     *        distance from the point to the center minus the radius, clamped at zero; zero for a
+     *        point inside or on the sphere
+     */
+    double distanceSquaredToPoint(double x, double y, double z);
+
+    /**
+     * Compute the squared distance between this sphere and the given sphere, i.e. the square of the
+     * distance between the centers minus both radii, clamped at zero; zero when they overlap or
+     * touch.
+     *
+     * @param other the other sphere
+     * @return the squared distance between this sphere and the given sphere, i.e. the square of the
+     *        distance between the centers minus both radii, clamped at zero; zero when they overlap
+     *        or touch
+     */
+    double distanceSquaredToSphere(DoubleSphereR other);
+
+    /**
+     * Compute the squared distance between this sphere and the given sphere, i.e. the square of the
+     * distance between the centers minus both radii, clamped at zero; zero when they overlap or
+     * touch.
+     *
+     * @param x the {@code x} component of the other sphere {@code (x, y, z, r)}
+     * @param y the {@code y} component of the other sphere {@code (x, y, z, r)}
+     * @param z the {@code z} component of the other sphere {@code (x, y, z, r)}
+     * @param r the {@code r} component of the other sphere {@code (x, y, z, r)}
+     * @return the squared distance between this sphere and the given sphere, i.e. the square of the
+     *        distance between the centers minus both radii, clamped at zero; zero when they overlap
+     *        or touch
+     */
+    double distanceSquaredToSphere(double x, double y, double z, double r);
+
+    /**
+     * Compute the distance between this sphere and the given axis-aligned box, i.e. the distance
+     * from the box to the center minus the radius, clamped at zero; zero when they overlap or
+     * touch.
+     *
+     * @param aabb the axis-aligned box
+     * @return the distance between this sphere and the given axis-aligned box, i.e. the distance
+     *        from the box to the center minus the radius, clamped at zero; zero when they overlap
+     *        or touch
+     */
+    double distanceToAABB(DoubleAABBR aabb);
+
+    /**
+     * Compute the distance between this sphere and the given axis-aligned box, i.e. the distance
+     * from the box to the center minus the radius, clamped at zero; zero when they overlap or
+     * touch.
+     *
+     * @param minX the {@code minX} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minY the {@code minY} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minZ the {@code minZ} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxX the {@code maxX} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxY the {@code maxY} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxZ the {@code maxZ} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @return the distance between this sphere and the given axis-aligned box, i.e. the distance
+     *        from the box to the center minus the radius, clamped at zero; zero when they overlap
+     *        or touch
+     */
+    double distanceToAABB(double minX, double minY, double minZ, double maxX, double maxY, double maxZ);
+
+    /**
+     * Compute the distance between this sphere and the given axis-aligned box, i.e. the distance
+     * from the box to the center minus the radius, clamped at zero; zero when they overlap or
+     * touch.
+     *
+     * @param min the minimum corner
+     * @param max the maximum corner
+     * @return the distance between this sphere and the given axis-aligned box, i.e. the distance
+     *        from the box to the center minus the radius, clamped at zero; zero when they overlap
+     *        or touch
+     */
+    double distanceToAABB(Double3R min, Double3R max);
+
+    /**
+     * Compute the distance between this sphere and the given plane, i.e. the distance from the
+     * center to the plane minus the radius, clamped at zero; zero when the plane intersects or
+     * touches the sphere. The plane's normal need not be of unit length.
+     *
+     * @param plane the plane
+     * @return the distance between this sphere and the given plane, i.e. the distance from the
+     *        center to the plane minus the radius, clamped at zero; zero when the plane intersects
+     *        or touches the sphere. The plane's normal need not be of unit length
+     */
+    double distanceToPlane(DoublePlaneR plane);
+
+    /**
+     * Compute the distance between this sphere and the given plane, i.e. the distance from the
+     * center to the plane minus the radius, clamped at zero; zero when the plane intersects or
+     * touches the sphere. The plane's normal need not be of unit length.
+     *
+     * @param a the {@code a} component of the plane {@code (a, b, c, d)}
+     * @param b the {@code b} component of the plane {@code (a, b, c, d)}
+     * @param c the {@code c} component of the plane {@code (a, b, c, d)}
+     * @param d the {@code d} component of the plane {@code (a, b, c, d)}
+     * @return the distance between this sphere and the given plane, i.e. the distance from the
+     *        center to the plane minus the radius, clamped at zero; zero when the plane intersects
+     *        or touches the sphere. The plane's normal need not be of unit length
+     */
+    double distanceToPlane(double a, double b, double c, double d);
+
+    /**
+     * Compute the distance between this sphere and the given plane, i.e. the distance from the
+     * center to the plane minus the radius, clamped at zero; zero when the plane intersects or
+     * touches the sphere. The plane's normal need not be of unit length.
+     *
+     * @param plane the vector
+     * @return the distance between this sphere and the given plane, i.e. the distance from the
+     *        center to the plane minus the radius, clamped at zero; zero when the plane intersects
+     *        or touches the sphere. The plane's normal need not be of unit length
+     */
+    double distanceToPlane(Double4R plane);
+
+    /**
+     * Compute the distance between this sphere and the given point, i.e. the distance from the
+     * point to the center minus the radius, clamped at zero; zero for a point inside or on the
+     * sphere.
+     *
+     * @param p the point
+     * @return the distance between this sphere and the given point, i.e. the distance from the
+     *        point to the center minus the radius, clamped at zero; zero for a point inside or on
+     *        the sphere
+     */
+    double distanceToPoint(Double3R p);
+
+    /**
+     * Compute the distance between this sphere and the given point, i.e. the distance from the
+     * point to the center minus the radius, clamped at zero; zero for a point inside or on the
+     * sphere.
+     *
+     * @param x the {@code x} component of the point {@code (x, y, z)}
+     * @param y the {@code y} component of the point {@code (x, y, z)}
+     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @return the distance between this sphere and the given point, i.e. the distance from the
+     *        point to the center minus the radius, clamped at zero; zero for a point inside or on
+     *        the sphere
+     */
+    double distanceToPoint(double x, double y, double z);
+
+    /**
+     * Compute the distance between this sphere and the given sphere, i.e. the distance between the
+     * centers minus both radii, clamped at zero; zero when they overlap or touch.
+     *
+     * @param other the other sphere
+     * @return the distance between this sphere and the given sphere, i.e. the distance between the
+     *        centers minus both radii, clamped at zero; zero when they overlap or touch
+     */
+    double distanceToSphere(DoubleSphereR other);
+
+    /**
+     * Compute the distance between this sphere and the given sphere, i.e. the distance between the
+     * centers minus both radii, clamped at zero; zero when they overlap or touch.
+     *
+     * @param x the {@code x} component of the other sphere {@code (x, y, z, r)}
+     * @param y the {@code y} component of the other sphere {@code (x, y, z, r)}
+     * @param z the {@code z} component of the other sphere {@code (x, y, z, r)}
+     * @param r the {@code r} component of the other sphere {@code (x, y, z, r)}
+     * @return the distance between this sphere and the given sphere, i.e. the distance between the
+     *        centers minus both radii, clamped at zero; zero when they overlap or touch
+     */
+    double distanceToSphere(double x, double y, double z, double r);
+
+    /**
      * Get the center of this sphere and store the result in {@code dest}.
      *
      * @param dest will hold the result
@@ -119,6 +394,32 @@ public interface DoubleSphereR {
      *        otherwise
      */
     boolean isValid();
+
+    /**
+     * Compute the signed distance between the given point and the surface of this sphere, i.e. the
+     * distance from the point to the center minus the radius: positive outside, zero on the surface
+     * and negative inside.
+     *
+     * @param p the point
+     * @return the signed distance between the given point and the surface of this sphere, i.e. the
+     *        distance from the point to the center minus the radius: positive outside, zero on the
+     *        surface and negative inside
+     */
+    double signedDistanceToPoint(Double3R p);
+
+    /**
+     * Compute the signed distance between the given point and the surface of this sphere, i.e. the
+     * distance from the point to the center minus the radius: positive outside, zero on the surface
+     * and negative inside.
+     *
+     * @param x the {@code x} component of the point {@code (x, y, z)}
+     * @param y the {@code y} component of the point {@code (x, y, z)}
+     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @return the signed distance between the given point and the surface of this sphere, i.e. the
+     *        distance from the point to the center minus the radius: positive outside, zero on the
+     *        surface and negative inside
+     */
+    double signedDistanceToPoint(double x, double y, double z);
     /** {@return the value of the {@code x} component} */
     double x();
     /** {@return the value of the {@code y} component} */

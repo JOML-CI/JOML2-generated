@@ -852,6 +852,126 @@ public final class IntRectImpl implements IntRect {
 
 
     /**
+     * Compute the point of this rectangle closest to the given point, i.e. the point clamped per
+     * axis into the rectangle's bounds. For a point inside or on the rectangle, the result is the
+     * point itself.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param p the point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Int2 closestPointToPoint(Int2R p, @Mutated Int2 dest) {
+        return closestPointToPoint(p.x(), p.y(), dest);
+    }
+
+
+    /**
+     * Compute the point of this rectangle closest to the given point, i.e. the point clamped per
+     * axis into the rectangle's bounds. For a point inside or on the rectangle, the result is the
+     * point itself.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * The computation is performed at {@code int} precision; each result component is widened to
+     * {@code long} only when stored.
+     *
+     * @param p the point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Long2 closestPointToPoint(Int2R p, @Mutated Long2 dest) {
+        return closestPointToPoint(p.x(), p.y(), dest);
+    }
+
+
+    /**
+     * Compute the point of this rectangle closest to the given point, i.e. the point clamped per
+     * axis into the rectangle's bounds. For a point inside or on the rectangle, the result is the
+     * point itself.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * The computation is performed at {@code int} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p the point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 closestPointToPoint(Int2R p, @Mutated Double2 dest) {
+        return closestPointToPoint(p.x(), p.y(), dest);
+    }
+
+
+    /**
+     * Compute the point of this rectangle closest to the given point, i.e. the point clamped per
+     * axis into the rectangle's bounds. For a point inside or on the rectangle, the result is the
+     * point itself.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY)}
+     * @param pY the {@code y} component of the point {@code (pX, pY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Int2 closestPointToPoint(int pX, int pY, @Mutated Int2 dest) {
+        Int2Impl d = (Int2Impl) dest;
+        d.x = Math.max(this.minX, Math.min(pX, this.maxX));
+        d.y = Math.max(this.minY, Math.min(pY, this.maxY));
+        return d;
+    }
+
+
+    /**
+     * Compute the point of this rectangle closest to the given point, i.e. the point clamped per
+     * axis into the rectangle's bounds. For a point inside or on the rectangle, the result is the
+     * point itself.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * The computation is performed at {@code int} precision; each result component is widened to
+     * {@code long} only when stored.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY)}
+     * @param pY the {@code y} component of the point {@code (pX, pY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Long2 closestPointToPoint(int pX, int pY, @Mutated Long2 dest) {
+        Long2Impl d = (Long2Impl) dest;
+        d.x = Math.max(this.minX, Math.min(pX, this.maxX));
+        d.y = Math.max(this.minY, Math.min(pY, this.maxY));
+        return d;
+    }
+
+
+    /**
+     * Compute the point of this rectangle closest to the given point, i.e. the point clamped per
+     * axis into the rectangle's bounds. For a point inside or on the rectangle, the result is the
+     * point itself.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * The computation is performed at {@code int} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY)}
+     * @param pY the {@code y} component of the point {@code (pX, pY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 closestPointToPoint(int pX, int pY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = Math.max(this.minX, Math.min(pX, this.maxX));
+        d.y = Math.max(this.minY, Math.min(pY, this.maxY));
+        return d;
+    }
+
+
+    /**
      * Determine whether this rectangle contains the given point (boundary inclusive).
      *
      * @param p the vector
@@ -906,6 +1026,78 @@ public final class IntRectImpl implements IntRect {
         if (!(this.maxX >= oMAXX)) return false;
         if (!(this.minY <= oMINY)) return false;
         return this.maxY >= oMAXY;
+    }
+
+
+    /**
+     * Compute the squared distance between this rectangle and the given point, i.e. the squared
+     * length of the difference between the point and its per-axis clamp into the rectangle's
+     * bounds; zero for a point inside or on the rectangle.
+     *
+     * @param p the point
+     * @return the squared distance between this rectangle and the given point, i.e. the squared
+     *        length of the difference between the point and its per-axis clamp into the rectangle's
+     *        bounds; zero for a point inside or on the rectangle
+     */
+    public int distanceSquaredToPoint(Int2R p) {
+        return distanceSquaredToPoint(p.x(), p.y());
+    }
+
+
+    /**
+     * Compute the squared distance between this rectangle and the given point, i.e. the squared
+     * length of the difference between the point and its per-axis clamp into the rectangle's
+     * bounds; zero for a point inside or on the rectangle.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY)}
+     * @param pY the {@code y} component of the point {@code (pX, pY)}
+     * @return the squared distance between this rectangle and the given point, i.e. the squared
+     *        length of the difference between the point and its per-axis clamp into the rectangle's
+     *        bounds; zero for a point inside or on the rectangle
+     */
+    public int distanceSquaredToPoint(int pX, int pY) {
+        int _t4 = pX - Math.max(this.minX, Math.min(pX, this.maxX));
+        int _t5 = pY - Math.max(this.minY, Math.min(pY, this.maxY));
+        return _t4 * _t4 + _t5 * _t5;
+    }
+
+
+    /**
+     * Compute the squared distance between this rectangle and the given rectangle, i.e. the squared
+     * length of the shortest vector between any two points of the two rectangles; zero when they
+     * overlap or touch.
+     *
+     * @param other the other rectangle
+     * @return the squared distance between this rectangle and the given rectangle, i.e. the squared
+     *        length of the shortest vector between any two points of the two rectangles; zero when
+     *        they overlap or touch
+     */
+    public int distanceSquaredToRect(IntRectR other) {
+        return distanceSquaredToRect(other.minX(), other.minY(), other.maxX(), other.maxY());
+    }
+
+
+    /**
+     * Compute the squared distance between this rectangle and the given rectangle, i.e. the squared
+     * length of the shortest vector between any two points of the two rectangles; zero when they
+     * overlap or touch.
+     *
+     * @param otherMINX the {@code minX} component of the other rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
+     * @param otherMINY the {@code minY} component of the other rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
+     * @param otherMAXX the {@code maxX} component of the other rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
+     * @param otherMAXY the {@code maxY} component of the other rectangle
+     *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
+     * @return the squared distance between this rectangle and the given rectangle, i.e. the squared
+     *        length of the shortest vector between any two points of the two rectangles; zero when
+     *        they overlap or touch
+     */
+    public int distanceSquaredToRect(int otherMINX, int otherMINY, int otherMAXX, int otherMAXY) {
+        int _t6 = Math.max(0, Math.max(this.minX - otherMAXX, otherMINX - this.maxX));
+        int _t7 = Math.max(0, Math.max(this.minY - otherMAXY, otherMINY - this.maxY));
+        return _t6 * _t6 + _t7 * _t7;
     }
 
 

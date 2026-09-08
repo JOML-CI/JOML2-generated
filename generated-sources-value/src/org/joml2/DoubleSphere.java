@@ -192,6 +192,365 @@ public value record DoubleSphere(double x, double y, double z, double r) {
 
 
     /**
+     * Compute the point of this sphere closest to the given point. For a point inside or on the
+     * sphere, the result is the point itself; otherwise it is the point on the surface in the
+     * direction from the center toward the given point.
+     * <p>
+     * The result is returned as a value; {@code this} is not modified.
+     *
+     * @param p the point
+     * @return the resulting vector
+     */
+    public Double3 closestPointToPoint(Double3 p) {
+        return closestPointToPoint(p.x(), p.y(), p.z());
+    }
+
+
+    /**
+     * Compute the point of this sphere closest to the given point. For a point inside or on the
+     * sphere, the result is the point itself; otherwise it is the point on the surface in the
+     * direction from the center toward the given point.
+     * <p>
+     * The result is returned as a value; {@code this} is not modified.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @return the resulting vector
+     */
+    public Double3 closestPointToPoint(double pX, double pY, double pZ) {
+        double _t0 = pZ - this.z;
+        double _t1 = pX - this.x;
+        double _t2 = pY - this.y;
+        double _t3 = this.r * this.r;
+        double _t6 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        double _t8 = this.r * (1.0 / Math.sqrt(_t6));
+        if (_t6 <= _t3) {
+            return new Double3(pX, pY, pZ);
+        } else {
+            return new Double3(Math.fma(_t1, _t8, this.x), Math.fma(_t2, _t8, this.y), Math.fma(_t0, _t8, this.z));
+        }
+    }
+
+
+    /**
+     * Compute the squared distance between this sphere and the given axis-aligned box, i.e. the
+     * square of the distance from the box to the center minus the radius, clamped at zero; zero
+     * when they overlap or touch.
+     *
+     * @param aabb the axis-aligned box
+     * @return the squared distance between this sphere and the given axis-aligned box, i.e. the
+     *        square of the distance from the box to the center minus the radius, clamped at zero;
+     *        zero when they overlap or touch
+     */
+    public double distanceSquaredToAABB(DoubleAABB aabb) {
+        return distanceSquaredToAABB(aabb.minX(), aabb.minY(), aabb.minZ(), aabb.maxX(), aabb.maxY(), aabb.maxZ());
+    }
+
+
+    /**
+     * Compute the squared distance between this sphere and the given axis-aligned box, i.e. the
+     * square of the distance from the box to the center minus the radius, clamped at zero; zero
+     * when they overlap or touch.
+     *
+     * @param minX the {@code minX} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minY the {@code minY} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minZ the {@code minZ} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxX the {@code maxX} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxY the {@code maxY} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxZ the {@code maxZ} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @return the squared distance between this sphere and the given axis-aligned box, i.e. the
+     *        square of the distance from the box to the center minus the radius, clamped at zero;
+     *        zero when they overlap or touch
+     */
+    public double distanceSquaredToAABB(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+        double _t6 = this.z - Math.max(minZ, Math.min(this.z, maxZ));
+        double _t7 = this.x - Math.max(minX, Math.min(this.x, maxX));
+        double _t8 = this.y - Math.max(minY, Math.min(this.y, maxY));
+        double _t14 = Math.max(0.0, Math.sqrt(Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8))) - this.r);
+        return _t14 * _t14;
+    }
+
+
+    /**
+     * Compute the squared distance between this sphere and the given axis-aligned box, i.e. the
+     * square of the distance from the box to the center minus the radius, clamped at zero; zero
+     * when they overlap or touch.
+     *
+     * @param min the minimum corner
+     * @param max the maximum corner
+     * @return the squared distance between this sphere and the given axis-aligned box, i.e. the
+     *        square of the distance from the box to the center minus the radius, clamped at zero;
+     *        zero when they overlap or touch
+     */
+    public double distanceSquaredToAABB(Double3 min, Double3 max) {
+        return distanceSquaredToAABB(min.x(), min.y(), min.z(), max.x(), max.y(), max.z());
+    }
+
+
+    /**
+     * Compute the squared distance between this sphere and the given point, i.e. the square of the
+     * distance from the point to the center minus the radius, clamped at zero; zero for a point
+     * inside or on the sphere.
+     *
+     * @param p the point
+     * @return the squared distance between this sphere and the given point, i.e. the square of the
+     *        distance from the point to the center minus the radius, clamped at zero; zero for a
+     *        point inside or on the sphere
+     */
+    public double distanceSquaredToPoint(Double3 p) {
+        return distanceSquaredToPoint(p.x(), p.y(), p.z());
+    }
+
+
+    /**
+     * Compute the squared distance between this sphere and the given point, i.e. the square of the
+     * distance from the point to the center minus the radius, clamped at zero; zero for a point
+     * inside or on the sphere.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @return the squared distance between this sphere and the given point, i.e. the square of the
+     *        distance from the point to the center minus the radius, clamped at zero; zero for a
+     *        point inside or on the sphere
+     */
+    public double distanceSquaredToPoint(double pX, double pY, double pZ) {
+        double _t0 = pZ - this.z;
+        double _t1 = pX - this.x;
+        double _t2 = pY - this.y;
+        double _t8 = Math.max(0.0, Math.sqrt(Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2))) - this.r);
+        return _t8 * _t8;
+    }
+
+
+    /**
+     * Compute the squared distance between this sphere and the given sphere, i.e. the square of the
+     * distance between the centers minus both radii, clamped at zero; zero when they overlap or
+     * touch.
+     *
+     * @param other the other sphere
+     * @return the squared distance between this sphere and the given sphere, i.e. the square of the
+     *        distance between the centers minus both radii, clamped at zero; zero when they overlap
+     *        or touch
+     */
+    public double distanceSquaredToSphere(DoubleSphere other) {
+        return distanceSquaredToSphere(other.x(), other.y(), other.z(), other.r());
+    }
+
+
+    /**
+     * Compute the squared distance between this sphere and the given sphere, i.e. the square of the
+     * distance between the centers minus both radii, clamped at zero; zero when they overlap or
+     * touch.
+     *
+     * @param otherX the {@code x} component of the other sphere
+     *        {@code (otherX, otherY, otherZ, otherR)}
+     * @param otherY the {@code y} component of the other sphere
+     *        {@code (otherX, otherY, otherZ, otherR)}
+     * @param otherZ the {@code z} component of the other sphere
+     *        {@code (otherX, otherY, otherZ, otherR)}
+     * @param otherR the {@code r} component of the other sphere
+     *        {@code (otherX, otherY, otherZ, otherR)}
+     * @return the squared distance between this sphere and the given sphere, i.e. the square of the
+     *        distance between the centers minus both radii, clamped at zero; zero when they overlap
+     *        or touch
+     */
+    public double distanceSquaredToSphere(double otherX, double otherY, double otherZ, double otherR) {
+        double _t0 = otherZ - this.z;
+        double _t1 = otherX - this.x;
+        double _t2 = otherY - this.y;
+        double _t9 = Math.max(0.0, Math.sqrt(Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2))) - this.r - otherR);
+        return _t9 * _t9;
+    }
+
+
+    /**
+     * Compute the distance between this sphere and the given axis-aligned box, i.e. the distance
+     * from the box to the center minus the radius, clamped at zero; zero when they overlap or
+     * touch.
+     *
+     * @param aabb the axis-aligned box
+     * @return the distance between this sphere and the given axis-aligned box, i.e. the distance
+     *        from the box to the center minus the radius, clamped at zero; zero when they overlap
+     *        or touch
+     */
+    public double distanceToAABB(DoubleAABB aabb) {
+        return distanceToAABB(aabb.minX(), aabb.minY(), aabb.minZ(), aabb.maxX(), aabb.maxY(), aabb.maxZ());
+    }
+
+
+    /**
+     * Compute the distance between this sphere and the given axis-aligned box, i.e. the distance
+     * from the box to the center minus the radius, clamped at zero; zero when they overlap or
+     * touch.
+     *
+     * @param minX the {@code minX} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minY the {@code minY} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minZ the {@code minZ} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxX the {@code maxX} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxY the {@code maxY} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxZ the {@code maxZ} component of the axis-aligned box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @return the distance between this sphere and the given axis-aligned box, i.e. the distance
+     *        from the box to the center minus the radius, clamped at zero; zero when they overlap
+     *        or touch
+     */
+    public double distanceToAABB(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+        double _t6 = this.z - Math.max(minZ, Math.min(this.z, maxZ));
+        double _t7 = this.x - Math.max(minX, Math.min(this.x, maxX));
+        double _t8 = this.y - Math.max(minY, Math.min(this.y, maxY));
+        return Math.max(0.0, Math.sqrt(Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8))) - this.r);
+    }
+
+
+    /**
+     * Compute the distance between this sphere and the given axis-aligned box, i.e. the distance
+     * from the box to the center minus the radius, clamped at zero; zero when they overlap or
+     * touch.
+     *
+     * @param min the minimum corner
+     * @param max the maximum corner
+     * @return the distance between this sphere and the given axis-aligned box, i.e. the distance
+     *        from the box to the center minus the radius, clamped at zero; zero when they overlap
+     *        or touch
+     */
+    public double distanceToAABB(Double3 min, Double3 max) {
+        return distanceToAABB(min.x(), min.y(), min.z(), max.x(), max.y(), max.z());
+    }
+
+
+    /**
+     * Compute the distance between this sphere and the given plane, i.e. the distance from the
+     * center to the plane minus the radius, clamped at zero; zero when the plane intersects or
+     * touches the sphere. The plane's normal need not be of unit length.
+     *
+     * @param plane the plane
+     * @return the distance between this sphere and the given plane, i.e. the distance from the
+     *        center to the plane minus the radius, clamped at zero; zero when the plane intersects
+     *        or touches the sphere. The plane's normal need not be of unit length
+     */
+    public double distanceToPlane(DoublePlane plane) {
+        return distanceToPlane(plane.a(), plane.b(), plane.c(), plane.d());
+    }
+
+
+    /**
+     * Compute the distance between this sphere and the given plane, i.e. the distance from the
+     * center to the plane minus the radius, clamped at zero; zero when the plane intersects or
+     * touches the sphere. The plane's normal need not be of unit length.
+     *
+     * @param planeA the {@code a} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     * @param planeB the {@code b} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     * @param planeC the {@code c} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     * @param planeD the {@code d} component of the plane {@code (planeA, planeB, planeC, planeD)}
+     * @return the distance between this sphere and the given plane, i.e. the distance from the
+     *        center to the plane minus the radius, clamped at zero; zero when the plane intersects
+     *        or touches the sphere. The plane's normal need not be of unit length
+     */
+    public double distanceToPlane(double planeA, double planeB, double planeC, double planeD) {
+        return Math.max(0.0, Math.fma((1.0 / Math.sqrt(Math.fma(planeC, planeC, Math.fma(planeA, planeA, planeB * planeB)))), Math.abs(Math.fma(planeA, this.x, Math.fma(planeB, this.y, Math.fma(planeC, this.z, planeD)))), -this.r));
+    }
+
+
+    /**
+     * Compute the distance between this sphere and the given plane, i.e. the distance from the
+     * center to the plane minus the radius, clamped at zero; zero when the plane intersects or
+     * touches the sphere. The plane's normal need not be of unit length.
+     *
+     * @param plane the plane
+     * @return the distance between this sphere and the given plane, i.e. the distance from the
+     *        center to the plane minus the radius, clamped at zero; zero when the plane intersects
+     *        or touches the sphere. The plane's normal need not be of unit length
+     */
+    public double distanceToPlane(Double4 plane) {
+        return distanceToPlane(plane.x(), plane.y(), plane.z(), plane.w());
+    }
+
+
+    /**
+     * Compute the distance between this sphere and the given point, i.e. the distance from the
+     * point to the center minus the radius, clamped at zero; zero for a point inside or on the
+     * sphere.
+     *
+     * @param p the point
+     * @return the distance between this sphere and the given point, i.e. the distance from the
+     *        point to the center minus the radius, clamped at zero; zero for a point inside or on
+     *        the sphere
+     */
+    public double distanceToPoint(Double3 p) {
+        return distanceToPoint(p.x(), p.y(), p.z());
+    }
+
+
+    /**
+     * Compute the distance between this sphere and the given point, i.e. the distance from the
+     * point to the center minus the radius, clamped at zero; zero for a point inside or on the
+     * sphere.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @return the distance between this sphere and the given point, i.e. the distance from the
+     *        point to the center minus the radius, clamped at zero; zero for a point inside or on
+     *        the sphere
+     */
+    public double distanceToPoint(double pX, double pY, double pZ) {
+        double _t0 = pZ - this.z;
+        double _t1 = pX - this.x;
+        double _t2 = pY - this.y;
+        return Math.max(0.0, Math.sqrt(Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2))) - this.r);
+    }
+
+
+    /**
+     * Compute the distance between this sphere and the given sphere, i.e. the distance between the
+     * centers minus both radii, clamped at zero; zero when they overlap or touch.
+     *
+     * @param other the other sphere
+     * @return the distance between this sphere and the given sphere, i.e. the distance between the
+     *        centers minus both radii, clamped at zero; zero when they overlap or touch
+     */
+    public double distanceToSphere(DoubleSphere other) {
+        return distanceToSphere(other.x(), other.y(), other.z(), other.r());
+    }
+
+
+    /**
+     * Compute the distance between this sphere and the given sphere, i.e. the distance between the
+     * centers minus both radii, clamped at zero; zero when they overlap or touch.
+     *
+     * @param otherX the {@code x} component of the other sphere
+     *        {@code (otherX, otherY, otherZ, otherR)}
+     * @param otherY the {@code y} component of the other sphere
+     *        {@code (otherX, otherY, otherZ, otherR)}
+     * @param otherZ the {@code z} component of the other sphere
+     *        {@code (otherX, otherY, otherZ, otherR)}
+     * @param otherR the {@code r} component of the other sphere
+     *        {@code (otherX, otherY, otherZ, otherR)}
+     * @return the distance between this sphere and the given sphere, i.e. the distance between the
+     *        centers minus both radii, clamped at zero; zero when they overlap or touch
+     */
+    public double distanceToSphere(double otherX, double otherY, double otherZ, double otherR) {
+        double _t0 = otherZ - this.z;
+        double _t1 = otherX - this.x;
+        double _t2 = otherY - this.y;
+        return Math.max(0.0, Math.sqrt(Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2))) - this.r - otherR);
+    }
+
+
+    /**
      * Get the center of this sphere, returning the result as a value.
      *
      * @return the resulting vector
@@ -209,6 +568,41 @@ public value record DoubleSphere(double x, double y, double z, double r) {
      */
     public boolean isValid() {
         return this.r >= 0.0;
+    }
+
+
+    /**
+     * Compute the signed distance between the given point and the surface of this sphere, i.e. the
+     * distance from the point to the center minus the radius: positive outside, zero on the surface
+     * and negative inside.
+     *
+     * @param p the point
+     * @return the signed distance between the given point and the surface of this sphere, i.e. the
+     *        distance from the point to the center minus the radius: positive outside, zero on the
+     *        surface and negative inside
+     */
+    public double signedDistanceToPoint(Double3 p) {
+        return signedDistanceToPoint(p.x(), p.y(), p.z());
+    }
+
+
+    /**
+     * Compute the signed distance between the given point and the surface of this sphere, i.e. the
+     * distance from the point to the center minus the radius: positive outside, zero on the surface
+     * and negative inside.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @return the signed distance between the given point and the surface of this sphere, i.e. the
+     *        distance from the point to the center minus the radius: positive outside, zero on the
+     *        surface and negative inside
+     */
+    public double signedDistanceToPoint(double pX, double pY, double pZ) {
+        double _t0 = pZ - this.z;
+        double _t1 = pX - this.x;
+        double _t2 = pY - this.y;
+        return Math.sqrt(Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2))) - this.r;
     }
 
     /**

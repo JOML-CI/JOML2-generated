@@ -183,6 +183,291 @@ public interface DoubleAABBR {
     DoubleAABB union(double x, double y, double z, @Mutated DoubleAABB dest);
 
     /**
+     * Compute the point of this axis-aligned bounding box closest to the given point, i.e. the
+     * point clamped per axis into the box's bounds. For a point inside or on the box, the result is
+     * the point itself.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param p the point
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 closestPointToPoint(Double3R p, @Mutated Double3 dest);
+
+    /**
+     * Compute the point of this axis-aligned bounding box closest to the given point, i.e. the
+     * point clamped per axis into the box's bounds. For a point inside or on the box, the result is
+     * the point itself.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param x the {@code x} component of the point {@code (x, y, z)}
+     * @param y the {@code y} component of the point {@code (x, y, z)}
+     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 closestPointToPoint(double x, double y, double z, @Mutated Double3 dest);
+
+    /**
+     * Compute the point of this axis-aligned bounding box closest to the given point, i.e. the
+     * point clamped per axis into the box's bounds. For a point inside or on the box, the result is
+     * the point itself.
+     *
+     * @param p the point (also receives the result)
+     * @return {@code p}
+     */
+    default Double3 closestPointToPoint(@Mutated Double3 p) { return closestPointToPoint(p, p); }
+
+    /**
+     * Compute the squared distance between this axis-aligned bounding box and the given box, i.e.
+     * the squared length of the shortest vector between any two points of the two boxes; zero when
+     * they overlap or touch.
+     *
+     * @param other the other box
+     * @return the squared distance between this axis-aligned bounding box and the given box, i.e.
+     *        the squared length of the shortest vector between any two points of the two boxes;
+     *        zero when they overlap or touch
+     */
+    double distanceSquaredToAABB(DoubleAABBR other);
+
+    /**
+     * Compute the squared distance between this axis-aligned bounding box and the given box, i.e.
+     * the squared length of the shortest vector between any two points of the two boxes; zero when
+     * they overlap or touch.
+     *
+     * @param minX the {@code minX} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minY the {@code minY} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minZ the {@code minZ} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxX the {@code maxX} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxY the {@code maxY} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxZ the {@code maxZ} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @return the squared distance between this axis-aligned bounding box and the given box, i.e.
+     *        the squared length of the shortest vector between any two points of the two boxes;
+     *        zero when they overlap or touch
+     */
+    double distanceSquaredToAABB(double minX, double minY, double minZ, double maxX, double maxY, double maxZ);
+
+    /**
+     * Compute the squared distance between this axis-aligned bounding box and the given point, i.e.
+     * the squared length of the difference between the point and its per-axis clamp into the box's
+     * bounds; zero for a point inside or on the box.
+     *
+     * @param p the point
+     * @return the squared distance between this axis-aligned bounding box and the given point, i.e.
+     *        the squared length of the difference between the point and its per-axis clamp into the
+     *        box's bounds; zero for a point inside or on the box
+     */
+    double distanceSquaredToPoint(Double3R p);
+
+    /**
+     * Compute the squared distance between this axis-aligned bounding box and the given point, i.e.
+     * the squared length of the difference between the point and its per-axis clamp into the box's
+     * bounds; zero for a point inside or on the box.
+     *
+     * @param x the {@code x} component of the point {@code (x, y, z)}
+     * @param y the {@code y} component of the point {@code (x, y, z)}
+     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @return the squared distance between this axis-aligned bounding box and the given point, i.e.
+     *        the squared length of the difference between the point and its per-axis clamp into the
+     *        box's bounds; zero for a point inside or on the box
+     */
+    double distanceSquaredToPoint(double x, double y, double z);
+
+    /**
+     * Compute the squared distance between this axis-aligned bounding box and the given sphere,
+     * i.e. the square of the distance from the box to the sphere's center minus the radius, clamped
+     * at zero; zero when they overlap or touch.
+     *
+     * @param sphere the sphere
+     * @return the squared distance between this axis-aligned bounding box and the given sphere,
+     *        i.e. the square of the distance from the box to the sphere's center minus the radius,
+     *        clamped at zero; zero when they overlap or touch
+     */
+    double distanceSquaredToSphere(DoubleSphereR sphere);
+
+    /**
+     * Compute the squared distance between this axis-aligned bounding box and the given sphere,
+     * i.e. the square of the distance from the box to the sphere's center minus the radius, clamped
+     * at zero; zero when they overlap or touch.
+     *
+     * @param x the {@code x} component of the sphere {@code (x, y, z, r)}
+     * @param y the {@code y} component of the sphere {@code (x, y, z, r)}
+     * @param z the {@code z} component of the sphere {@code (x, y, z, r)}
+     * @param r the {@code r} component of the sphere {@code (x, y, z, r)}
+     * @return the squared distance between this axis-aligned bounding box and the given sphere,
+     *        i.e. the square of the distance from the box to the sphere's center minus the radius,
+     *        clamped at zero; zero when they overlap or touch
+     */
+    double distanceSquaredToSphere(double x, double y, double z, double r);
+
+    /**
+     * Compute the squared distance between this axis-aligned bounding box and the given sphere,
+     * i.e. the square of the distance from the box to the sphere's center minus the radius, clamped
+     * at zero; zero when they overlap or touch.
+     *
+     * @param center the center point
+     * @param radius the radius
+     * @return the squared distance between this axis-aligned bounding box and the given sphere,
+     *        i.e. the square of the distance from the box to the sphere's center minus the radius,
+     *        clamped at zero; zero when they overlap or touch
+     */
+    double distanceSquaredToSphere(Double3R center, double radius);
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given box, i.e. the
+     * length of the shortest vector between any two points of the two boxes; zero when they overlap
+     * or touch.
+     *
+     * @param other the other box
+     * @return the distance between this axis-aligned bounding box and the given box, i.e. the
+     *        length of the shortest vector between any two points of the two boxes; zero when they
+     *        overlap or touch
+     */
+    double distanceToAABB(DoubleAABBR other);
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given box, i.e. the
+     * length of the shortest vector between any two points of the two boxes; zero when they overlap
+     * or touch.
+     *
+     * @param minX the {@code minX} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minY the {@code minY} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param minZ the {@code minZ} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxX the {@code maxX} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxY the {@code maxY} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @param maxZ the {@code maxZ} component of the other box
+     *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
+     * @return the distance between this axis-aligned bounding box and the given box, i.e. the
+     *        length of the shortest vector between any two points of the two boxes; zero when they
+     *        overlap or touch
+     */
+    double distanceToAABB(double minX, double minY, double minZ, double maxX, double maxY, double maxZ);
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given plane, i.e. the
+     * distance from the box's center to the plane minus the box's extent along the plane normal,
+     * clamped at zero; zero when the plane intersects or touches the box. The plane's normal need
+     * not be of unit length.
+     *
+     * @param plane the plane
+     * @return the distance between this axis-aligned bounding box and the given plane, i.e. the
+     *        distance from the box's center to the plane minus the box's extent along the plane
+     *        normal, clamped at zero; zero when the plane intersects or touches the box. The
+     *        plane's normal need not be of unit length
+     */
+    double distanceToPlane(DoublePlaneR plane);
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given plane, i.e. the
+     * distance from the box's center to the plane minus the box's extent along the plane normal,
+     * clamped at zero; zero when the plane intersects or touches the box. The plane's normal need
+     * not be of unit length.
+     *
+     * @param a the {@code a} component of the plane {@code (a, b, c, d)}
+     * @param b the {@code b} component of the plane {@code (a, b, c, d)}
+     * @param c the {@code c} component of the plane {@code (a, b, c, d)}
+     * @param d the {@code d} component of the plane {@code (a, b, c, d)}
+     * @return the distance between this axis-aligned bounding box and the given plane, i.e. the
+     *        distance from the box's center to the plane minus the box's extent along the plane
+     *        normal, clamped at zero; zero when the plane intersects or touches the box. The
+     *        plane's normal need not be of unit length
+     */
+    double distanceToPlane(double a, double b, double c, double d);
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given plane, i.e. the
+     * distance from the box's center to the plane minus the box's extent along the plane normal,
+     * clamped at zero; zero when the plane intersects or touches the box. The plane's normal need
+     * not be of unit length.
+     *
+     * @param plane the vector
+     * @return the distance between this axis-aligned bounding box and the given plane, i.e. the
+     *        distance from the box's center to the plane minus the box's extent along the plane
+     *        normal, clamped at zero; zero when the plane intersects or touches the box. The
+     *        plane's normal need not be of unit length
+     */
+    double distanceToPlane(Double4R plane);
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given point, i.e. the
+     * length of the difference between the point and its per-axis clamp into the box's bounds; zero
+     * for a point inside or on the box.
+     *
+     * @param p the point
+     * @return the distance between this axis-aligned bounding box and the given point, i.e. the
+     *        length of the difference between the point and its per-axis clamp into the box's
+     *        bounds; zero for a point inside or on the box
+     */
+    double distanceToPoint(Double3R p);
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given point, i.e. the
+     * length of the difference between the point and its per-axis clamp into the box's bounds; zero
+     * for a point inside or on the box.
+     *
+     * @param x the {@code x} component of the point {@code (x, y, z)}
+     * @param y the {@code y} component of the point {@code (x, y, z)}
+     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @return the distance between this axis-aligned bounding box and the given point, i.e. the
+     *        length of the difference between the point and its per-axis clamp into the box's
+     *        bounds; zero for a point inside or on the box
+     */
+    double distanceToPoint(double x, double y, double z);
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given sphere, i.e. the
+     * distance from the box to the sphere's center minus the radius, clamped at zero; zero when
+     * they overlap or touch.
+     *
+     * @param sphere the sphere
+     * @return the distance between this axis-aligned bounding box and the given sphere, i.e. the
+     *        distance from the box to the sphere's center minus the radius, clamped at zero; zero
+     *        when they overlap or touch
+     */
+    double distanceToSphere(DoubleSphereR sphere);
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given sphere, i.e. the
+     * distance from the box to the sphere's center minus the radius, clamped at zero; zero when
+     * they overlap or touch.
+     *
+     * @param x the {@code x} component of the sphere {@code (x, y, z, r)}
+     * @param y the {@code y} component of the sphere {@code (x, y, z, r)}
+     * @param z the {@code z} component of the sphere {@code (x, y, z, r)}
+     * @param r the {@code r} component of the sphere {@code (x, y, z, r)}
+     * @return the distance between this axis-aligned bounding box and the given sphere, i.e. the
+     *        distance from the box to the sphere's center minus the radius, clamped at zero; zero
+     *        when they overlap or touch
+     */
+    double distanceToSphere(double x, double y, double z, double r);
+
+    /**
+     * Compute the distance between this axis-aligned bounding box and the given sphere, i.e. the
+     * distance from the box to the sphere's center minus the radius, clamped at zero; zero when
+     * they overlap or touch.
+     *
+     * @param center the center point
+     * @param radius the radius
+     * @return the distance between this axis-aligned bounding box and the given sphere, i.e. the
+     *        distance from the box to the sphere's center minus the radius, clamped at zero; zero
+     *        when they overlap or touch
+     */
+    double distanceToSphere(Double3R center, double radius);
+
+    /**
      * Get the center of this axis-aligned bounding box and store the result in {@code dest}.
      *
      * @param dest will hold the result

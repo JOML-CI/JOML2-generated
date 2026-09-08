@@ -227,6 +227,125 @@ public final class DoubleRayImpl implements DoubleRay {
 
 
     /**
+     * Compute the point on this ray closest to the given point, i.e. the orthogonal projection of
+     * the point onto the ray's line, or the origin when that projection lies behind the origin. The
+     * direction need not be of unit length but must not be zero.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param p the point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 closestPointToPoint(Double3R p, @Mutated Double3 dest) {
+        return closestPointToPoint(p.x(), p.y(), p.z(), dest);
+    }
+
+
+    /**
+     * Compute the point on this ray closest to the given point, i.e. the orthogonal projection of
+     * the point onto the ray's line, or the origin when that projection lies behind the origin. The
+     * direction need not be of unit length but must not be zero.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 closestPointToPoint(double pX, double pY, double pZ, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t14 = Math.max(0.0, (this.dX * (pX - this.oX) + this.dY * (pY - this.oY) + this.dZ * (pZ - this.oZ)) / (this.dX * this.dX + this.dY * this.dY + this.dZ * this.dZ));
+        d.x = this.dX * _t14 + this.oX;
+        d.y = this.dY * _t14 + this.oY;
+        d.z = this.dZ * _t14 + this.oZ;
+        return d;
+    }
+
+
+    /**
+     * Compute the squared distance between this ray and the given point, i.e. the squared distance
+     * from the point to the closest point on the ray (the ray starts at its origin and extends only
+     * along its direction). The direction need not be of unit length but must not be zero.
+     *
+     * @param p the point
+     * @return the squared distance between this ray and the given point, i.e. the squared distance
+     *        from the point to the closest point on the ray (the ray starts at its origin and
+     *        extends only along its direction). The direction need not be of unit length but must
+     *        not be zero
+     */
+    public double distanceSquaredToPoint(Double3R p) {
+        return distanceSquaredToPoint(p.x(), p.y(), p.z());
+    }
+
+
+    /**
+     * Compute the squared distance between this ray and the given point, i.e. the squared distance
+     * from the point to the closest point on the ray (the ray starts at its origin and extends only
+     * along its direction). The direction need not be of unit length but must not be zero.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @return the squared distance between this ray and the given point, i.e. the squared distance
+     *        from the point to the closest point on the ray (the ray starts at its origin and
+     *        extends only along its direction). The direction need not be of unit length but must
+     *        not be zero
+     */
+    public double distanceSquaredToPoint(double pX, double pY, double pZ) {
+        double _t0 = pX - this.oX;
+        double _t1 = pY - this.oY;
+        double _t2 = pZ - this.oZ;
+        double _t14 = Math.max(0.0, (this.dX * _t0 + this.dY * _t1 + this.dZ * _t2) / (this.dX * this.dX + this.dY * this.dY + this.dZ * this.dZ));
+        double _t18 = _t0 - this.dX * _t14;
+        double _t19 = _t1 - this.dY * _t14;
+        double _t20 = _t2 - this.dZ * _t14;
+        return _t18 * _t18 + _t19 * _t19 + _t20 * _t20;
+    }
+
+
+    /**
+     * Compute the distance between this ray and the given point, i.e. the distance from the point
+     * to the closest point on the ray (the ray starts at its origin and extends only along its
+     * direction). The direction need not be of unit length but must not be zero.
+     *
+     * @param p the point
+     * @return the distance between this ray and the given point, i.e. the distance from the point
+     *        to the closest point on the ray (the ray starts at its origin and extends only along
+     *        its direction). The direction need not be of unit length but must not be zero
+     */
+    public double distanceToPoint(Double3R p) {
+        return distanceToPoint(p.x(), p.y(), p.z());
+    }
+
+
+    /**
+     * Compute the distance between this ray and the given point, i.e. the distance from the point
+     * to the closest point on the ray (the ray starts at its origin and extends only along its
+     * direction). The direction need not be of unit length but must not be zero.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @return the distance between this ray and the given point, i.e. the distance from the point
+     *        to the closest point on the ray (the ray starts at its origin and extends only along
+     *        its direction). The direction need not be of unit length but must not be zero
+     */
+    public double distanceToPoint(double pX, double pY, double pZ) {
+        double _t0 = pX - this.oX;
+        double _t1 = pY - this.oY;
+        double _t2 = pZ - this.oZ;
+        double _t14 = Math.max(0.0, (this.dX * _t0 + this.dY * _t1 + this.dZ * _t2) / (this.dX * this.dX + this.dY * this.dY + this.dZ * this.dZ));
+        double _t18 = _t0 - this.dX * _t14;
+        double _t19 = _t1 - this.dY * _t14;
+        double _t20 = _t2 - this.dZ * _t14;
+        return Math.sqrt(_t18 * _t18 + _t19 * _t19 + _t20 * _t20);
+    }
+
+
+    /**
      * Get the direction of this ray and store the result in {@code dest}.
      *
      * @param dest will hold the result

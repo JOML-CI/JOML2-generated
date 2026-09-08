@@ -131,6 +131,35 @@ public final class DoublePlaneImpl implements DoublePlane {
 
 
     /**
+     * Compute the (unsigned) distance between this plane and the given point. The plane's normal
+     * need not be of unit length: the result is divided by that normal's length.
+     *
+     * @param p the point
+     * @return the (unsigned) distance between this plane and the given point. The plane's normal
+     *        need not be of unit length: the result is divided by that normal's length
+     */
+    public double distanceToPoint(Double3R p) {
+        return distanceToPoint(p.x(), p.y(), p.z());
+    }
+
+
+    /**
+     * Compute the (unsigned) distance between this plane and the given point. The plane's normal
+     * need not be of unit length: the result is divided by that normal's length.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @return the (unsigned) distance between this plane and the given point. The plane's normal
+     *        need not be of unit length: the result is divided by that normal's length
+     */
+    public double distanceToPoint(double pX, double pY, double pZ) {
+        double[] sd = this.data;
+        return (1.0 / Math.sqrt(Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])))) * Math.abs(Math.fma(pX, sd[0], Math.fma(pY, sd[1], Math.fma(pZ, sd[2], sd[3]))));
+    }
+
+
+    /**
      * Get the normal of this plane and store the result in {@code dest}.
      *
      * @param dest will hold the result

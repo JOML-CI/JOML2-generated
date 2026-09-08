@@ -315,6 +315,43 @@ public interface DoubleRectR {
     double centerY();
 
     /**
+     * Compute the point of this rectangle closest to the given point, i.e. the point clamped per
+     * axis into the rectangle's bounds. For a point inside or on the rectangle, the result is the
+     * point itself.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param p the point
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 closestPointToPoint(Double2R p, @Mutated Double2 dest);
+
+    /**
+     * Compute the point of this rectangle closest to the given point, i.e. the point clamped per
+     * axis into the rectangle's bounds. For a point inside or on the rectangle, the result is the
+     * point itself.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param x the {@code x} component of the point {@code (x, y)}
+     * @param y the {@code y} component of the point {@code (x, y)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 closestPointToPoint(double x, double y, @Mutated Double2 dest);
+
+    /**
+     * Compute the point of this rectangle closest to the given point, i.e. the point clamped per
+     * axis into the rectangle's bounds. For a point inside or on the rectangle, the result is the
+     * point itself.
+     *
+     * @param p the point (also receives the result)
+     * @return {@code p}
+     */
+    default Double2 closestPointToPoint(@Mutated Double2 p) { return closestPointToPoint(p, p); }
+
+    /**
      * Determine whether this rectangle contains the given point (boundary inclusive).
      *
      * @param p the vector
@@ -353,6 +390,118 @@ public interface DoubleRectR {
      *        {@code maxX}, {@code maxY}), {@code false} otherwise
      */
     boolean containsRect(double minX, double minY, double maxX, double maxY);
+
+    /**
+     * Compute the squared distance between this rectangle and the given point, i.e. the squared
+     * length of the difference between the point and its per-axis clamp into the rectangle's
+     * bounds; zero for a point inside or on the rectangle.
+     *
+     * @param p the point
+     * @return the squared distance between this rectangle and the given point, i.e. the squared
+     *        length of the difference between the point and its per-axis clamp into the rectangle's
+     *        bounds; zero for a point inside or on the rectangle
+     */
+    double distanceSquaredToPoint(Double2R p);
+
+    /**
+     * Compute the squared distance between this rectangle and the given point, i.e. the squared
+     * length of the difference between the point and its per-axis clamp into the rectangle's
+     * bounds; zero for a point inside or on the rectangle.
+     *
+     * @param x the {@code x} component of the point {@code (x, y)}
+     * @param y the {@code y} component of the point {@code (x, y)}
+     * @return the squared distance between this rectangle and the given point, i.e. the squared
+     *        length of the difference between the point and its per-axis clamp into the rectangle's
+     *        bounds; zero for a point inside or on the rectangle
+     */
+    double distanceSquaredToPoint(double x, double y);
+
+    /**
+     * Compute the squared distance between this rectangle and the given rectangle, i.e. the squared
+     * length of the shortest vector between any two points of the two rectangles; zero when they
+     * overlap or touch.
+     *
+     * @param other the other rectangle
+     * @return the squared distance between this rectangle and the given rectangle, i.e. the squared
+     *        length of the shortest vector between any two points of the two rectangles; zero when
+     *        they overlap or touch
+     */
+    double distanceSquaredToRect(DoubleRectR other);
+
+    /**
+     * Compute the squared distance between this rectangle and the given rectangle, i.e. the squared
+     * length of the shortest vector between any two points of the two rectangles; zero when they
+     * overlap or touch.
+     *
+     * @param minX the {@code minX} component of the other rectangle
+     *        {@code (minX, minY, maxX, maxY)}
+     * @param minY the {@code minY} component of the other rectangle
+     *        {@code (minX, minY, maxX, maxY)}
+     * @param maxX the {@code maxX} component of the other rectangle
+     *        {@code (minX, minY, maxX, maxY)}
+     * @param maxY the {@code maxY} component of the other rectangle
+     *        {@code (minX, minY, maxX, maxY)}
+     * @return the squared distance between this rectangle and the given rectangle, i.e. the squared
+     *        length of the shortest vector between any two points of the two rectangles; zero when
+     *        they overlap or touch
+     */
+    double distanceSquaredToRect(double minX, double minY, double maxX, double maxY);
+
+    /**
+     * Compute the distance between this rectangle and the given point, i.e. the length of the
+     * difference between the point and its per-axis clamp into the rectangle's bounds; zero for a
+     * point inside or on the rectangle.
+     *
+     * @param p the point
+     * @return the distance between this rectangle and the given point, i.e. the length of the
+     *        difference between the point and its per-axis clamp into the rectangle's bounds; zero
+     *        for a point inside or on the rectangle
+     */
+    double distanceToPoint(Double2R p);
+
+    /**
+     * Compute the distance between this rectangle and the given point, i.e. the length of the
+     * difference between the point and its per-axis clamp into the rectangle's bounds; zero for a
+     * point inside or on the rectangle.
+     *
+     * @param x the {@code x} component of the point {@code (x, y)}
+     * @param y the {@code y} component of the point {@code (x, y)}
+     * @return the distance between this rectangle and the given point, i.e. the length of the
+     *        difference between the point and its per-axis clamp into the rectangle's bounds; zero
+     *        for a point inside or on the rectangle
+     */
+    double distanceToPoint(double x, double y);
+
+    /**
+     * Compute the distance between this rectangle and the given rectangle, i.e. the length of the
+     * shortest vector between any two points of the two rectangles; zero when they overlap or
+     * touch.
+     *
+     * @param other the other rectangle
+     * @return the distance between this rectangle and the given rectangle, i.e. the length of the
+     *        shortest vector between any two points of the two rectangles; zero when they overlap
+     *        or touch
+     */
+    double distanceToRect(DoubleRectR other);
+
+    /**
+     * Compute the distance between this rectangle and the given rectangle, i.e. the length of the
+     * shortest vector between any two points of the two rectangles; zero when they overlap or
+     * touch.
+     *
+     * @param minX the {@code minX} component of the other rectangle
+     *        {@code (minX, minY, maxX, maxY)}
+     * @param minY the {@code minY} component of the other rectangle
+     *        {@code (minX, minY, maxX, maxY)}
+     * @param maxX the {@code maxX} component of the other rectangle
+     *        {@code (minX, minY, maxX, maxY)}
+     * @param maxY the {@code maxY} component of the other rectangle
+     *        {@code (minX, minY, maxX, maxY)}
+     * @return the distance between this rectangle and the given rectangle, i.e. the length of the
+     *        shortest vector between any two points of the two rectangles; zero when they overlap
+     *        or touch
+     */
+    double distanceToRect(double minX, double minY, double maxX, double maxY);
 
     /**
      * Get the center of this rectangle and store the result in {@code dest}.

@@ -396,6 +396,174 @@ public final class FloatRayImpl implements FloatRay {
 
 
     /**
+     * Compute the point on this ray closest to the given point, i.e. the orthogonal projection of
+     * the point onto the ray's line, or the origin when that projection lies behind the origin. The
+     * direction need not be of unit length but must not be zero.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param p the point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3 closestPointToPoint(Float3R p, @Mutated Float3 dest) {
+        return closestPointToPoint(p.x(), p.y(), p.z(), dest);
+    }
+
+
+    /**
+     * Compute the point on this ray closest to the given point, i.e. the orthogonal projection of
+     * the point onto the ray's line, or the origin when that projection lies behind the origin. The
+     * direction need not be of unit length but must not be zero.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p the point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 closestPointToPoint(Float3R p, @Mutated Double3 dest) {
+        return closestPointToPoint(p.x(), p.y(), p.z(), dest);
+    }
+
+
+    /**
+     * Compute the point on this ray closest to the given point, i.e. the orthogonal projection of
+     * the point onto the ray's line, or the origin when that projection lies behind the origin. The
+     * direction need not be of unit length but must not be zero.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3 closestPointToPoint(float pX, float pY, float pZ, @Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        float _t10 = Math.max(0.0f, Math.fma(sd[5], pZ - sd[2], Math.fma(sd[3], pX - sd[0], sd[4] * (pY - sd[1]))) / Math.fma(sd[5], sd[5], Math.fma(sd[3], sd[3], sd[4] * sd[4])));
+        dd[0] = Math.fma(sd[3], _t10, sd[0]);
+        dd[1] = Math.fma(sd[4], _t10, sd[1]);
+        dd[2] = Math.fma(sd[5], _t10, sd[2]);
+        return dest;
+    }
+
+
+    /**
+     * Compute the point on this ray closest to the given point, i.e. the orthogonal projection of
+     * the point onto the ray's line, or the origin when that projection lies behind the origin. The
+     * direction need not be of unit length but must not be zero.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 closestPointToPoint(float pX, float pY, float pZ, @Mutated Double3 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        float _t10 = Math.max(0.0f, Math.fma(sd[5], pZ - sd[2], Math.fma(sd[3], pX - sd[0], sd[4] * (pY - sd[1]))) / Math.fma(sd[5], sd[5], Math.fma(sd[3], sd[3], sd[4] * sd[4])));
+        dd[0] = Math.fma(sd[3], _t10, sd[0]);
+        dd[1] = Math.fma(sd[4], _t10, sd[1]);
+        dd[2] = Math.fma(sd[5], _t10, sd[2]);
+        return dest;
+    }
+
+
+    /**
+     * Compute the squared distance between this ray and the given point, i.e. the squared distance
+     * from the point to the closest point on the ray (the ray starts at its origin and extends only
+     * along its direction). The direction need not be of unit length but must not be zero.
+     *
+     * @param p the point
+     * @return the squared distance between this ray and the given point, i.e. the squared distance
+     *        from the point to the closest point on the ray (the ray starts at its origin and
+     *        extends only along its direction). The direction need not be of unit length but must
+     *        not be zero
+     */
+    public float distanceSquaredToPoint(Float3R p) {
+        return distanceSquaredToPoint(p.x(), p.y(), p.z());
+    }
+
+
+    /**
+     * Compute the squared distance between this ray and the given point, i.e. the squared distance
+     * from the point to the closest point on the ray (the ray starts at its origin and extends only
+     * along its direction). The direction need not be of unit length but must not be zero.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @return the squared distance between this ray and the given point, i.e. the squared distance
+     *        from the point to the closest point on the ray (the ray starts at its origin and
+     *        extends only along its direction). The direction need not be of unit length but must
+     *        not be zero
+     */
+    public float distanceSquaredToPoint(float pX, float pY, float pZ) {
+        float[] sd = this.data;
+        float _t3 = pZ - sd[2];
+        float _t4 = pX - sd[0];
+        float _t5 = pY - sd[1];
+        float _t13 = Math.max(0.0f, Math.fma(sd[5], _t3, Math.fma(sd[3], _t4, sd[4] * _t5)) / Math.fma(sd[5], sd[5], Math.fma(sd[3], sd[3], sd[4] * sd[4])));
+        float _t14 = Math.fma(-sd[5], _t13, _t3);
+        float _t15 = Math.fma(-sd[3], _t13, _t4);
+        float _t16 = Math.fma(-sd[4], _t13, _t5);
+        return Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16));
+    }
+
+
+    /**
+     * Compute the distance between this ray and the given point, i.e. the distance from the point
+     * to the closest point on the ray (the ray starts at its origin and extends only along its
+     * direction). The direction need not be of unit length but must not be zero.
+     *
+     * @param p the point
+     * @return the distance between this ray and the given point, i.e. the distance from the point
+     *        to the closest point on the ray (the ray starts at its origin and extends only along
+     *        its direction). The direction need not be of unit length but must not be zero
+     */
+    public float distanceToPoint(Float3R p) {
+        return distanceToPoint(p.x(), p.y(), p.z());
+    }
+
+
+    /**
+     * Compute the distance between this ray and the given point, i.e. the distance from the point
+     * to the closest point on the ray (the ray starts at its origin and extends only along its
+     * direction). The direction need not be of unit length but must not be zero.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @return the distance between this ray and the given point, i.e. the distance from the point
+     *        to the closest point on the ray (the ray starts at its origin and extends only along
+     *        its direction). The direction need not be of unit length but must not be zero
+     */
+    public float distanceToPoint(float pX, float pY, float pZ) {
+        float[] sd = this.data;
+        float _t3 = pZ - sd[2];
+        float _t4 = pX - sd[0];
+        float _t5 = pY - sd[1];
+        float _t13 = Math.max(0.0f, Math.fma(sd[5], _t3, Math.fma(sd[3], _t4, sd[4] * _t5)) / Math.fma(sd[5], sd[5], Math.fma(sd[3], sd[3], sd[4] * sd[4])));
+        float _t14 = Math.fma(-sd[5], _t13, _t3);
+        float _t15 = Math.fma(-sd[3], _t13, _t4);
+        float _t16 = Math.fma(-sd[4], _t13, _t5);
+        return (float) Math.sqrt(Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)));
+    }
+
+
+    /**
      * Get the direction of this ray and store the result in {@code dest}.
      *
      * @param dest will hold the result

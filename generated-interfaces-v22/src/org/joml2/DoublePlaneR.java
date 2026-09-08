@@ -62,6 +62,28 @@ public interface DoublePlaneR {
     DoublePlane normalize(@Mutated DoublePlane dest);
 
     /**
+     * Compute the (unsigned) distance between this plane and the given point. The plane's normal
+     * need not be of unit length: the result is divided by that normal's length.
+     *
+     * @param p the point
+     * @return the (unsigned) distance between this plane and the given point. The plane's normal
+     *        need not be of unit length: the result is divided by that normal's length
+     */
+    double distanceToPoint(Double3R p);
+
+    /**
+     * Compute the (unsigned) distance between this plane and the given point. The plane's normal
+     * need not be of unit length: the result is divided by that normal's length.
+     *
+     * @param x the {@code x} component of the point {@code (x, y, z)}
+     * @param y the {@code y} component of the point {@code (x, y, z)}
+     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @return the (unsigned) distance between this plane and the given point. The plane's normal
+     *        need not be of unit length: the result is divided by that normal's length
+     */
+    double distanceToPoint(double x, double y, double z);
+
+    /**
      * Get the normal of this plane and store the result in {@code dest}.
      *
      * @param dest will hold the result

@@ -379,6 +379,83 @@ public interface FloatOBBR {
     DoubleOBB translate(float x, float y, float z, @Mutated DoubleOBB dest);
 
     /**
+     * Compute the point of this oriented bounding box closest to the given point, i.e. the point
+     * expressed in the box's local frame, clamped per axis to the box's half extents and mapped
+     * back to world space. For a point inside or on the box, the result is the point itself (up to
+     * rounding). Assumes the box's axes are orthonormal.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param p the point
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 closestPointToPoint(Float3R p, @Mutated Float3 dest);
+
+    /**
+     * Compute the point of this oriented bounding box closest to the given point, i.e. the point
+     * expressed in the box's local frame, clamped per axis to the box's half extents and mapped
+     * back to world space. For a point inside or on the box, the result is the point itself (up to
+     * rounding). Assumes the box's axes are orthonormal.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param p the point
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 closestPointToPoint(Float3R p, @Mutated Double3 dest);
+
+    /**
+     * Compute the point of this oriented bounding box closest to the given point, i.e. the point
+     * expressed in the box's local frame, clamped per axis to the box's half extents and mapped
+     * back to world space. For a point inside or on the box, the result is the point itself (up to
+     * rounding). Assumes the box's axes are orthonormal.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param x the {@code x} component of the point {@code (x, y, z)}
+     * @param y the {@code y} component of the point {@code (x, y, z)}
+     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float3 closestPointToPoint(float x, float y, float z, @Mutated Float3 dest);
+
+    /**
+     * Compute the point of this oriented bounding box closest to the given point, i.e. the point
+     * expressed in the box's local frame, clamped per axis to the box's half extents and mapped
+     * back to world space. For a point inside or on the box, the result is the point itself (up to
+     * rounding). Assumes the box's axes are orthonormal.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the point {@code (x, y, z)}
+     * @param y the {@code y} component of the point {@code (x, y, z)}
+     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 closestPointToPoint(float x, float y, float z, @Mutated Double3 dest);
+
+    /**
+     * Compute the point of this oriented bounding box closest to the given point, i.e. the point
+     * expressed in the box's local frame, clamped per axis to the box's half extents and mapped
+     * back to world space. For a point inside or on the box, the result is the point itself (up to
+     * rounding). Assumes the box's axes are orthonormal.
+     *
+     * @param p the point (also receives the result)
+     * @return {@code p}
+     */
+    default Float3 closestPointToPoint(@Mutated Float3 p) { return closestPointToPoint(p, p); }
+
+    /**
      * Determine whether this oriented bounding box contains the given point (boundary inclusive).
      *
      * @param p the vector
@@ -397,6 +474,58 @@ public interface FloatOBBR {
      *        inclusive), {@code false} otherwise
      */
     boolean containsPoint(float x, float y, float z);
+
+    /**
+     * Compute the squared distance between this oriented bounding box and the given point,
+     * evaluated in the box's local frame; zero for a point inside or on the box. Assumes the box's
+     * axes are orthonormal.
+     *
+     * @param p the point
+     * @return the squared distance between this oriented bounding box and the given point,
+     *        evaluated in the box's local frame; zero for a point inside or on the box. Assumes the
+     *        box's axes are orthonormal
+     */
+    float distanceSquaredToPoint(Float3R p);
+
+    /**
+     * Compute the squared distance between this oriented bounding box and the given point,
+     * evaluated in the box's local frame; zero for a point inside or on the box. Assumes the box's
+     * axes are orthonormal.
+     *
+     * @param x the {@code x} component of the point {@code (x, y, z)}
+     * @param y the {@code y} component of the point {@code (x, y, z)}
+     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @return the squared distance between this oriented bounding box and the given point,
+     *        evaluated in the box's local frame; zero for a point inside or on the box. Assumes the
+     *        box's axes are orthonormal
+     */
+    float distanceSquaredToPoint(float x, float y, float z);
+
+    /**
+     * Compute the distance between this oriented bounding box and the given point, evaluated in the
+     * box's local frame; zero for a point inside or on the box. Assumes the box's axes are
+     * orthonormal.
+     *
+     * @param p the point
+     * @return the distance between this oriented bounding box and the given point, evaluated in the
+     *        box's local frame; zero for a point inside or on the box. Assumes the box's axes are
+     *        orthonormal
+     */
+    float distanceToPoint(Float3R p);
+
+    /**
+     * Compute the distance between this oriented bounding box and the given point, evaluated in the
+     * box's local frame; zero for a point inside or on the box. Assumes the box's axes are
+     * orthonormal.
+     *
+     * @param x the {@code x} component of the point {@code (x, y, z)}
+     * @param y the {@code y} component of the point {@code (x, y, z)}
+     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @return the distance between this oriented bounding box and the given point, evaluated in the
+     *        box's local frame; zero for a point inside or on the box. Assumes the box's axes are
+     *        orthonormal
+     */
+    float distanceToPoint(float x, float y, float z);
 
     /**
      * Get the local {@code X} axis of this oriented bounding box and store the result in

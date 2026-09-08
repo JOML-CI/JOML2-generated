@@ -188,6 +188,47 @@ public interface DoubleOBBR {
     DoubleOBB translate(double x, double y, double z, @Mutated DoubleOBB dest);
 
     /**
+     * Compute the point of this oriented bounding box closest to the given point, i.e. the point
+     * expressed in the box's local frame, clamped per axis to the box's half extents and mapped
+     * back to world space. For a point inside or on the box, the result is the point itself (up to
+     * rounding). Assumes the box's axes are orthonormal.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param p the point
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 closestPointToPoint(Double3R p, @Mutated Double3 dest);
+
+    /**
+     * Compute the point of this oriented bounding box closest to the given point, i.e. the point
+     * expressed in the box's local frame, clamped per axis to the box's half extents and mapped
+     * back to world space. For a point inside or on the box, the result is the point itself (up to
+     * rounding). Assumes the box's axes are orthonormal.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
+     *
+     * @param x the {@code x} component of the point {@code (x, y, z)}
+     * @param y the {@code y} component of the point {@code (x, y, z)}
+     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 closestPointToPoint(double x, double y, double z, @Mutated Double3 dest);
+
+    /**
+     * Compute the point of this oriented bounding box closest to the given point, i.e. the point
+     * expressed in the box's local frame, clamped per axis to the box's half extents and mapped
+     * back to world space. For a point inside or on the box, the result is the point itself (up to
+     * rounding). Assumes the box's axes are orthonormal.
+     *
+     * @param p the point (also receives the result)
+     * @return {@code p}
+     */
+    default Double3 closestPointToPoint(@Mutated Double3 p) { return closestPointToPoint(p, p); }
+
+    /**
      * Determine whether this oriented bounding box contains the given point (boundary inclusive).
      *
      * @param p the vector
@@ -206,6 +247,58 @@ public interface DoubleOBBR {
      *        inclusive), {@code false} otherwise
      */
     boolean containsPoint(double x, double y, double z);
+
+    /**
+     * Compute the squared distance between this oriented bounding box and the given point,
+     * evaluated in the box's local frame; zero for a point inside or on the box. Assumes the box's
+     * axes are orthonormal.
+     *
+     * @param p the point
+     * @return the squared distance between this oriented bounding box and the given point,
+     *        evaluated in the box's local frame; zero for a point inside or on the box. Assumes the
+     *        box's axes are orthonormal
+     */
+    double distanceSquaredToPoint(Double3R p);
+
+    /**
+     * Compute the squared distance between this oriented bounding box and the given point,
+     * evaluated in the box's local frame; zero for a point inside or on the box. Assumes the box's
+     * axes are orthonormal.
+     *
+     * @param x the {@code x} component of the point {@code (x, y, z)}
+     * @param y the {@code y} component of the point {@code (x, y, z)}
+     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @return the squared distance between this oriented bounding box and the given point,
+     *        evaluated in the box's local frame; zero for a point inside or on the box. Assumes the
+     *        box's axes are orthonormal
+     */
+    double distanceSquaredToPoint(double x, double y, double z);
+
+    /**
+     * Compute the distance between this oriented bounding box and the given point, evaluated in the
+     * box's local frame; zero for a point inside or on the box. Assumes the box's axes are
+     * orthonormal.
+     *
+     * @param p the point
+     * @return the distance between this oriented bounding box and the given point, evaluated in the
+     *        box's local frame; zero for a point inside or on the box. Assumes the box's axes are
+     *        orthonormal
+     */
+    double distanceToPoint(Double3R p);
+
+    /**
+     * Compute the distance between this oriented bounding box and the given point, evaluated in the
+     * box's local frame; zero for a point inside or on the box. Assumes the box's axes are
+     * orthonormal.
+     *
+     * @param x the {@code x} component of the point {@code (x, y, z)}
+     * @param y the {@code y} component of the point {@code (x, y, z)}
+     * @param z the {@code z} component of the point {@code (x, y, z)}
+     * @return the distance between this oriented bounding box and the given point, evaluated in the
+     *        box's local frame; zero for a point inside or on the box. Assumes the box's axes are
+     *        orthonormal
+     */
+    double distanceToPoint(double x, double y, double z);
 
     /**
      * Get the local {@code X} axis of this oriented bounding box and store the result in

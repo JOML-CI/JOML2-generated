@@ -192,6 +192,34 @@ public final class FloatPlaneImpl implements FloatPlane {
 
 
     /**
+     * Compute the (unsigned) distance between this plane and the given point. The plane's normal
+     * need not be of unit length: the result is divided by that normal's length.
+     *
+     * @param p the point
+     * @return the (unsigned) distance between this plane and the given point. The plane's normal
+     *        need not be of unit length: the result is divided by that normal's length
+     */
+    public float distanceToPoint(Float3R p) {
+        return distanceToPoint(p.x(), p.y(), p.z());
+    }
+
+
+    /**
+     * Compute the (unsigned) distance between this plane and the given point. The plane's normal
+     * need not be of unit length: the result is divided by that normal's length.
+     *
+     * @param pX the {@code x} component of the point {@code (pX, pY, pZ)}
+     * @param pY the {@code y} component of the point {@code (pX, pY, pZ)}
+     * @param pZ the {@code z} component of the point {@code (pX, pY, pZ)}
+     * @return the (unsigned) distance between this plane and the given point. The plane's normal
+     *        need not be of unit length: the result is divided by that normal's length
+     */
+    public float distanceToPoint(float pX, float pY, float pZ) {
+        return (1.0f / (float) Math.sqrt(this.a * this.a + this.b * this.b + this.c * this.c)) * Math.abs(pX * this.a + (pY * this.b + (pZ * this.c + this.d)));
+    }
+
+
+    /**
      * Get the normal of this plane and store the result in {@code dest}.
      *
      * @param dest will hold the result
