@@ -70,14 +70,18 @@ public final class Joml {
 
     /** Whether the bundled SIMD (Vector-API) kernels of the {@code *Ops} classes are
      *  active: the {@code jdk.incubator.vector} module is present at runtime and not
-     *  opted out via {@link JomlConfig#setVectorApi} or {@code -Djoml.vectorApi=false}. */
+     *  opted out via {@link JomlConfig#setVectorApi} or {@code -Djoml.vectorApi=false}.
+     *  {@code JomlConfig.setVectorApi(true)} overrides {@code -Djoml.vectorApi=false} (and
+     *  {@code setVectorApi(false)} overrides {@code =true}); an unrecognised property value
+     *  logs one warning and disables. The module probe always wins: nothing can enable SIMD
+     *  when the module is absent. Always {@code false} in variants that ship scalar {@code *Ops}. */
     public static final boolean VECTOR_API = resolveVectorApi();
 
     private static boolean resolveVectorApi() {
         try {
+            // The programmatic override wins over the property in both directions; the module probe always wins.
             Boolean o = JomlConfig.vectorApiOverride;
-            if (o != null && !o) return false;
-            if ("false".equalsIgnoreCase(System.getProperty("joml.vectorApi"))) return false;
+            if (o != null ? !o : !vectorApiProperty()) return false;
             try {
                 return org.joml2.internal.simd.VectorApiProbe.LANES > 0;
             } catch (Throwable t) {
@@ -86,6 +90,19 @@ public final class Joml {
         } finally {
             JomlConfig.jomlInitialized = true;
         }
+    }
+
+    /** {@code -Djoml.vectorApi}: absent, bare (empty) or {@code true} (case-insensitive) enables,
+     *  {@code false} disables; any other value logs one warning on {@code System.err} and disables. */
+    private static boolean vectorApiProperty() {
+        String s = System.getProperty("joml.vectorApi");
+        if (s == null) return true;
+        String v = s.trim();
+        if (v.isEmpty() || v.equalsIgnoreCase("true")) return true;
+        if (v.equalsIgnoreCase("false")) return false;
+        System.err.println("[org.joml2] unrecognised -Djoml.vectorApi=" + s
+            + " (expected true or false); using false");
+        return false;
     }
 
     /** {@return a new {@code Float2}, initialized to all zeros} */

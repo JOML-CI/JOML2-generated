@@ -93,7 +93,10 @@ public final class Joml {
     /** Whether the bundled SIMD (Vector-API) kernels of the {@code *Ops} classes are
      *  active: the {@code jdk.incubator.vector} module is present at runtime and not
      *  opted out via {@link JomlConfig#setVectorApi} or {@code -Djoml.vectorApi=false}.
-     *  Always {@code false} in variants that ship scalar {@code *Ops}. */
+     *  {@code JomlConfig.setVectorApi(true)} overrides {@code -Djoml.vectorApi=false} (and
+     *  {@code setVectorApi(false)} overrides {@code =true}); an unrecognised property value
+     *  logs one warning and disables. The module probe always wins: nothing can enable SIMD
+     *  when the module is absent. Always {@code false} in variants that ship scalar {@code *Ops}. */
     public static final boolean VECTOR_API = false;
 
     /** {@return a new {@code Float2}, initialized to all zeros} */

@@ -14,6 +14,15 @@ import java.nio.DoubleBuffer;
  * whose result equals one of its operands may return that operand instead of allocating a new
  * instance.
  * <p>
+ * Structural property bits: the matrix caches whether it is known to be the identity, a pure
+ * translation, orthogonal (a proper rotation, with any translation) or affine, and the operations
+ * dispatch to cheaper arms on those bits. The {@code make*} factories set the bits from what they
+ * construct and the computing operations derive them from their operands' bits; the element
+ * constructors and the {@code load*} factories recompute them with {@code determineProperties()},
+ * which compares elements exactly against {@code 0} and {@code 1} and infers identity, translation
+ * and affine only. A rotation loaded from a buffer or set from scalars is therefore merely affine -
+ * never orthogonal - until it is rebuilt through a {@code make*} factory.
+ * <p>
  * {@code equals} compares the components element-wise and bitwise, as by
  * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
  * NaN; the cached structural property bits are ignored, so two matrix objects holding the same
@@ -54,7 +63,13 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
     /** The identity matrix. */
     public static final Float3x4 IDENTITY = new Float3x4();
 
-    /** Canonical constructor. */
+    /**
+     * Canonical constructor, taking the cached property bits as given.
+     * <p>
+     * The bits are trusted as-is and never validated: wrong bits produce wrong results from every
+     * dispatched operation. Prefer the {@code make*} factories, or the element constructor, which
+     * computes the bits itself.
+     */
     public Float3x4(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, int properties) {
         this.m00 = m00;
         this.m01 = m01;
@@ -88,7 +103,14 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
         this(c0.x(), c1.x(), c2.x(), c3.x(), c0.y(), c1.y(), c2.y(), c3.y(), c0.z(), c1.z(), c2.z(), c3.z());
     }
 
-    /** Create a matrix from the given column vectors and precomputed property bits (no recomputation). */
+    /**
+     * Create a matrix from the given column vectors and precomputed property bits (no
+     * recomputation).
+     * <p>
+     * The bits are trusted as-is and never validated: wrong bits produce wrong results from every
+     * dispatched operation. Prefer the {@code make*} factories, or the element constructor, which
+     * computes the bits itself.
+     */
     public Float3x4(Float3 c0, Float3 c1, Float3 c2, Float3 c3, int properties) {
         this(c0.x(), c1.x(), c2.x(), c3.x(), c0.y(), c1.y(), c2.y(), c3.y(), c0.z(), c1.z(), c2.z(), c3.z(), properties);
     }
@@ -138,7 +160,20 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
 
     /**
      * Numerically determine the structural properties of this matrix (identity, translation,
-     * affinity) and return them as property bits. This is a pure query.
+     * affinity) and return them as property bits.
+     * <p>
+     * The comparison is exact: an element counts as {@code 0} or {@code 1} only when it is exactly
+     * that value (as by {@code ==}), with no tolerance. A {@code double} element {@code 1 + 1e-8}
+     * is therefore not an identity element, while the {@code float} literal {@code 1 + 1e-8f}
+     * already rounds to {@code 1.0f} and is.
+     * <p>
+     * Only identity, translation and affine are inferred (the identity and a pure translation carry
+     * the orthogonal bit they imply); a general rotation block is never recognised as orthogonal. A
+     * rotation loaded from a buffer or set from scalars therefore takes the affine dispatch arms
+     * until it is rebuilt through a {@code make*} factory, which sets the bits from what it
+     * constructs.
+     * <p>
+     * This is a pure query: it does not update this matrix's cached property bits.
      *
      * @return the determined property bits
      */
@@ -2082,6 +2117,12 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
     /**
      * Compute the inverse of the product of this matrix and {@code other}, i.e.
      * {@code (this * other)^-1}, returning the result as a value.
+     * <p>
+     * The product is formed first and inverted afterwards, so the result is the inverse of the
+     * rounded product: its accuracy is bounded by the condition number of {@code this * other}, not
+     * by the condition numbers of the two factors. For an ill-conditioned product (a near-singular
+     * factor, or factors of very different scale) invert both factors separately and multiply the
+     * inverses in reverse order instead.
      *
      * @param other the other matrix
      * @return the resulting matrix
@@ -2117,6 +2158,12 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
      * Compute the inverse of the product of this matrix and ({@code m00}, {@code m01}, {@code m02},
      * {@code m03}, {@code m10}, {@code m11}, {@code m12}, {@code m13}, {@code m20}, {@code m21},
      * {@code m22}, {@code m23}), returning the result as a value.
+     * <p>
+     * The product is formed first and inverted afterwards, so the result is the inverse of the
+     * rounded product: its accuracy is bounded by the condition number of the product, not by the
+     * condition numbers of the two factors. For an ill-conditioned product (a near-singular factor,
+     * or factors of very different scale) invert both factors separately and multiply the inverses
+     * in reverse order instead.
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix
@@ -12908,7 +12955,14 @@ public record Float3x4(float m00, float m01, float m02, float m03, float m10, fl
         return new Float3x4(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, v);
     }
 
-    /** {@return a copy with the cached property bits replaced by {@code properties}} */
+    /**
+     * {@return a copy with the cached property bits replaced by {@code properties}}
+     * <p>
+     * The bits are trusted as-is and never validated: wrong bits produce wrong results from every
+     * dispatched operation. Prefer the {@code make*} factories, or the element constructor, which
+     * computes the bits itself. {@code withProperties(determineProperties())} recomputes them from
+     * the elements.
+     */
     public Float3x4 withProperties(int properties) {
         return new Float3x4(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, properties);
     }

@@ -15,6 +15,16 @@ import java.lang.foreign.MemorySegment;
  * <p>
  * Instances are created through the {@link Joml} factory methods.
  * <p>
+ * Structural property bits: the matrix caches whether it is known to be the identity, a pure
+ * translation, orthogonal (a proper rotation, with any translation) or affine, and the operations
+ * dispatch to cheaper arms on those bits. The {@code make*} factories set the bits from what they
+ * construct and the computing operations derive them from their operands' bits; the element-wise
+ * {@code set} methods and the {@code load*} methods recompute them with
+ * {@code determineProperties()}, which compares elements exactly against {@code 0} and {@code 1}
+ * and infers identity, translation and affine only. A rotation loaded from a buffer or set from
+ * scalars is therefore merely affine - never orthogonal - until it is rebuilt through a
+ * {@code make*} factory.
+ * <p>
  * {@code equals} compares the components element-wise and bitwise, as by
  * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
  * NaN; the cached structural property bits are ignored, so two matrix objects holding the same
@@ -46,6 +56,12 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Compute the inverse of the product of this matrix and {@code other}, i.e.
      * {@code (this * other)^-1}.
+     * <p>
+     * The product is formed first and inverted afterwards, so the result is the inverse of the
+     * rounded product: its accuracy is bounded by the condition number of {@code this * other}, not
+     * by the condition numbers of the two factors. For an ill-conditioned product (a near-singular
+     * factor, or factors of very different scale) invert both factors separately and multiply the
+     * inverses in reverse order instead.
      *
      * @param other the other matrix
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -56,6 +72,12 @@ public interface Double4x4 extends Double4x4R {
      * Compute the inverse of the product of this matrix and ({@code m00}, {@code m01}, {@code m02},
      * {@code m03}, {@code m10}, {@code m11}, {@code m12}, {@code m13}, {@code m20}, {@code m21},
      * {@code m22}, {@code m23}, {@code m30}, {@code m31}, {@code m32}, {@code m33}).
+     * <p>
+     * The product is formed first and inverted afterwards, so the result is the inverse of the
+     * rounded product: its accuracy is bounded by the condition number of the product, not by the
+     * condition numbers of the two factors. For an ill-conditioned product (a near-singular factor,
+     * or factors of very different scale) invert both factors separately and multiply the inverses
+     * in reverse order instead.
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix

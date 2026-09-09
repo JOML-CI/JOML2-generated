@@ -824,85 +824,87 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      */
     public DoubleDualQuat sclerp(double otherRX, double otherRY, double otherRZ, double otherRW, double otherDX, double otherDY, double otherDZ, double otherDW, double t, @Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
-        double _t7 = otherRX * this.rX + otherRY * this.rY + (otherRZ * this.rZ + otherRW * this.rW) < 0.0 ? -1.0 : 1.0;
-        double _t8 = otherRZ * _t7;
-        double _t9 = otherRY * _t7;
-        double _t10 = otherRW * _t7;
-        double _t11 = otherRX * _t7;
-        double _t12 = otherDX * _t7;
-        double _t13 = otherDW * _t7;
-        double _t14 = otherDY * _t7;
-        double _t15 = otherDZ * _t7;
-        double _t46 = this.dW * _t11;
-        double _t47 = this.dX * _t10;
-        double _t54 = this.dW * _t8;
-        double _t55 = this.dX * _t9;
-        double _t62 = this.dY * _t10;
-        double _t63 = this.dZ * _t11;
-        double _t79 = this.dZ * _t9 - this.dY * _t8;
-        double _t83 = this.dY * _t11 - this.dZ * _t10;
-        double _t86 = this.dX * _t8 + this.dW * _t9;
-        double _t91 = this.rZ * _t9 - this.rY * _t8 + (this.rW * _t11 - this.rX * _t10);
-        double _t92 = this.rY * _t11 - this.rZ * _t10 + (this.rW * _t8 - this.rX * _t9);
-        double _t93 = this.rX * _t11 + this.rW * _t10 + this.rY * _t9 + this.rZ * _t8;
-        double _t96 = this.rZ * _t14 - this.rY * _t15 + (this.rW * _t12 - this.rX * _t13);
-        double _t98 = this.rY * _t12 - this.rZ * _t13 + (this.rW * _t15 - this.rX * _t14);
-        double _t100 = this.rX * _t8 + this.rW * _t9 + (-(this.rY * _t10) - this.rZ * _t11);
-        double _t101 = this.rX * _t15 + this.rW * _t14 + (-(this.rY * _t13) - this.rZ * _t12);
-        double _t105 = this.rX * _t12 + this.rW * _t13 + (this.rY * _t14 + this.rZ * _t15) + (this.dX * _t11 + this.dW * _t10 + (this.dY * _t9 + this.dZ * _t8));
-        double _t110 = t * (_t96 + (_t79 + (_t46 - _t47)));
-        double _t111 = t * (_t98 + (_t83 + (_t54 - _t55)));
-        double _t115 = t * (_t101 + (_t86 + (-_t62 - _t63)));
-        double _t121 = _t100 * _t100 + _t91 * _t91 + _t92 * _t92;
-        double _t123 = (1.0 / Math.sqrt(_t121));
-        double _t125 = _t91 * _t123;
-        double _t126 = _t92 * _t123;
-        double _t127 = _t100 * _t123;
-        double _t128 = t * Math.atan2(Math.sqrt(_t121), _t93);
-        double _t129 = Math.cos(_t128);
-        double _t130 = Math.sin(_t128);
-        double _t131 = _t105 * _t123;
-        double _t132 = t * _t131;
-        double _t133 = _t93 * _t131;
-        double _t134, _t155, _t156, _t157, _t161;
-        if (_t121 < 1.0e-12f) {
-            _t134 = 1.0;
-            _t155 = 0.0;
-            _t156 = 0.0;
-            _t157 = 0.0;
-            _t161 = t * _t105;
+        double _t8 = otherRX * this.rX + otherRY * this.rY + (otherRZ * this.rZ + otherRW * this.rW) < 0.0 ? -1.0 : 1.0;
+        double _t9 = otherRX * _t8;
+        double _t10 = otherRW * _t8;
+        double _t11 = otherRY * _t8;
+        double _t12 = otherRZ * _t8;
+        double _t13 = otherDX * _t8;
+        double _t14 = otherDW * _t8;
+        double _t15 = otherDY * _t8;
+        double _t16 = otherDZ * _t8;
+        double _t92 = this.rX * _t9 + this.rW * _t10 + this.rY * _t11 + this.rZ * _t12;
+        double _t93 = this.rZ * _t11 - this.rY * _t12 + (this.rW * _t9 - this.rX * _t10);
+        double _t94 = this.rY * _t9 - this.rZ * _t10 + (this.rW * _t12 - this.rX * _t11);
+        double _t101 = this.rX * _t12 + this.rW * _t11 + (-(this.rY * _t10) - this.rZ * _t9);
+        double _t108 = this.rX * _t13 + this.rW * _t14 + (this.rY * _t15 + this.rZ * _t16) + (this.dX * _t9 + this.dW * _t10 + (this.dY * _t11 + this.dZ * _t12));
+        double _t109 = this.rZ * _t15 - this.rY * _t16 + (this.rW * _t13 - this.rX * _t14) + (this.dZ * _t11 - this.dY * _t12 + (this.dW * _t9 - this.dX * _t10));
+        double _t110 = this.rY * _t13 - this.rZ * _t14 + (this.rW * _t16 - this.rX * _t15) + (this.dY * _t9 - this.dZ * _t10 + (this.dW * _t12 - this.dX * _t11));
+        double _t114 = this.rX * _t16 + this.rW * _t15 + (-(this.rY * _t14) - this.rZ * _t13) + (this.dX * _t12 + this.dW * _t11 + (-(this.dY * _t10) - this.dZ * _t9));
+        double _t116, _t117, _t118, _t119, _t123, _t124, _t125, _t129;
+        if (_t92 < 0.0) {
+            _t116 = -_t93;
+            _t117 = -_t94;
+            _t118 = -_t92;
+            _t119 = -_t101;
+            _t123 = -_t108;
+            _t124 = -_t109;
+            _t125 = -_t110;
+            _t129 = -_t114;
         } else {
-            _t134 = _t129;
-            _t155 = _t125 * _t130;
-            _t156 = _t126 * _t130;
-            _t157 = _t127 * _t130;
-            _t161 = _t132 * _t130;
+            _t116 = _t93;
+            _t117 = _t94;
+            _t118 = _t92;
+            _t119 = _t101;
+            _t123 = _t108;
+            _t124 = _t109;
+            _t125 = _t110;
+            _t129 = _t114;
         }
-        double _t139 = _t132 * _t129;
-        double _t171, _t172, _t173;
-        if (_t121 < 1.0e-12f) {
-            if (_t93 < 0.0) {
-                _t171 = -_t110;
-                _t172 = -_t111;
-                _t173 = -_t115;
-            } else {
-                _t171 = _t110;
-                _t172 = _t111;
-                _t173 = _t115;
-            }
+        double _t135 = _t119 * _t119 + _t116 * _t116 + _t117 * _t117;
+        double _t137 = (1.0 / Math.sqrt(_t135));
+        double _t139 = _t137 * _t116;
+        double _t140 = _t137 * _t117;
+        double _t141 = t * Math.atan2(Math.sqrt(_t135), _t118);
+        double _t142 = _t137 * _t119;
+        double _t143 = Math.cos(_t141);
+        double _t144 = Math.sin(_t141);
+        double _t145 = _t137 * _t123;
+        double _t146 = t * _t145;
+        double _t147 = _t145 * _t118;
+        double _t148, _t160, _t161, _t162, _t166;
+        if (_t135 < 1.0E-28) {
+            _t148 = 1.0;
+            _t160 = t * _t116;
+            _t161 = t * _t117;
+            _t162 = t * _t119;
+            _t166 = t * t * _t123;
         } else {
-            _t171 = (_t96 + (_t79 + (_t46 + (_t133 * _t125 - _t47)))) * _t123 * _t130 - _t125 * _t139;
-            _t172 = (_t98 + (_t83 + (_t54 + (_t133 * _t126 - _t55)))) * _t123 * _t130 - _t126 * _t139;
-            _t173 = (_t101 + (_t86 + (_t133 * _t127 - _t63 - _t62))) * _t123 * _t130 - _t127 * _t139;
+            _t148 = _t143;
+            _t160 = _t139 * _t144;
+            _t161 = _t140 * _t144;
+            _t162 = _t142 * _t144;
+            _t166 = _t146 * _t144;
         }
-        double _buf0 = this.rX * _t134 + this.rW * _t155 + (this.rY * _t156 - this.rZ * _t157);
-        double _buf1 = this.rY * _t134 + this.rZ * _t155 + (this.rW * _t157 - this.rX * _t156);
-        double _buf2 = this.rX * _t157 + this.rW * _t156 + (this.rZ * _t134 - this.rY * _t155);
-        double _buf3 = this.rW * _t134 - this.rX * _t155 - this.rY * _t157 - this.rZ * _t156;
-        double _buf4 = this.rX * _t161 + this.rW * _t171 + (this.rY * _t172 - this.rZ * _t173) + (this.dX * _t134 + this.dW * _t155 + (this.dY * _t156 - this.dZ * _t157));
-        double _buf5 = this.rY * _t161 + this.rZ * _t171 + (this.rW * _t173 - this.rX * _t172) + (this.dY * _t134 + this.dZ * _t155 + (this.dW * _t157 - this.dX * _t156));
-        double _buf6 = this.rX * _t173 + this.rW * _t172 + (this.rZ * _t161 - this.rY * _t171) + (this.dX * _t157 + this.dW * _t156 + (this.dZ * _t134 - this.dY * _t155));
-        d.dW = this.rW * _t161 - this.rX * _t171 + (-(this.rY * _t173) - this.rZ * _t172) + (this.dW * _t134 - this.dX * _t155 + (-(this.dY * _t157) - this.dZ * _t156));
+        double _t153 = _t146 * _t143;
+        double _t176, _t177, _t178;
+        if (_t135 < 1.0E-28) {
+            _t176 = t * _t124;
+            _t177 = t * _t125;
+            _t178 = t * _t129;
+        } else {
+            _t176 = (_t147 * _t139 + _t124) * _t137 * _t144 - _t153 * _t139;
+            _t177 = (_t147 * _t140 + _t125) * _t137 * _t144 - _t153 * _t140;
+            _t178 = (_t147 * _t142 + _t129) * _t137 * _t144 - _t153 * _t142;
+        }
+        double _buf0 = this.rX * _t148 + this.rW * _t160 + (this.rY * _t161 - this.rZ * _t162);
+        double _buf1 = this.rY * _t148 + this.rZ * _t160 + (this.rW * _t162 - this.rX * _t161);
+        double _buf2 = this.rX * _t162 + this.rW * _t161 + (this.rZ * _t148 - this.rY * _t160);
+        double _buf3 = this.rW * _t148 - this.rX * _t160 - this.rY * _t162 - this.rZ * _t161;
+        double _buf4 = this.rX * _t166 + this.rW * _t176 + (this.rY * _t177 - this.rZ * _t178) + (this.dX * _t148 + this.dW * _t160 + (this.dY * _t161 - this.dZ * _t162));
+        double _buf5 = this.rY * _t166 + this.rZ * _t176 + (this.rW * _t178 - this.rX * _t177) + (this.dY * _t148 + this.dZ * _t160 + (this.dW * _t162 - this.dX * _t161));
+        double _buf6 = this.rX * _t178 + this.rW * _t177 + (this.rZ * _t166 - this.rY * _t176) + (this.dX * _t162 + this.dW * _t161 + (this.dZ * _t148 - this.dY * _t160));
+        d.dW = this.rW * _t166 - this.rX * _t176 + (-(this.rY * _t178) - this.rZ * _t177) + (this.dW * _t148 - this.dX * _t160 + (-(this.dY * _t162) - this.dZ * _t161));
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -1259,6 +1261,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     public DoubleDualQuat exp(@Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
         double _t8 = this.rX * this.rX + this.rY * this.rY + this.rZ * this.rZ;
+        double _t9 = this.rX * this.dX + this.rY * this.dY + this.rZ * this.dZ;
         double _t10 = (1.0 / Math.sqrt(_t8));
         double _t11 = Math.sqrt(_t8);
         double _t12 = Math.sin(_t11);
@@ -1266,17 +1269,17 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         double _t14 = this.rX * _t10;
         double _t15 = this.rY * _t10;
         double _t16 = this.rZ * _t10;
-        double _t17 = (this.rX * this.dX + this.rY * this.dY + this.rZ * this.dZ) * _t10;
+        double _t17 = _t9 * _t10;
         double _t18 = _t17 * _t13;
-        if (_t8 < 1.0e-12f) {
-            d.rX = 0.0;
-            d.rY = 0.0;
-            d.rZ = 0.0;
+        if (_t8 < 1.0E-28) {
+            d.rX = this.rX;
+            d.rY = this.rY;
+            d.rZ = this.rZ;
             d.rW = 1.0;
             d.dX = this.dX;
             d.dY = this.dY;
             d.dZ = this.dZ;
-            d.dW = 0.0;
+            d.dW = -_t9;
         } else {
             d.rX = _t14 * _t12;
             d.rY = _t15 * _t12;
@@ -1644,37 +1647,46 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      */
     public DoubleDualQuat log(@Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
-        double _t4 = this.rX * this.rX + this.rY * this.rY + this.rZ * this.rZ;
-        double _t5 = (1.0 / Math.sqrt(_t4));
-        double _t7 = this.rX * _t5;
-        double _t8 = Math.atan2(Math.sqrt(_t4), this.rW);
-        double _t9 = this.rY * _t5;
-        double _t10 = this.rZ * _t5;
-        double _t11 = this.dW * _t5;
-        double _t12 = this.rW * _t11;
-        if (_t4 < 1.0e-12f) {
-            if (this.rW < 0.0) {
-                d.rX = 0.0;
-                d.rY = 0.0;
-                d.rZ = 0.0;
-                d.dX = -this.dX;
-                d.dY = -this.dY;
-                d.dZ = -this.dZ;
-            } else {
-                d.rX = 0.0;
-                d.rY = 0.0;
-                d.rZ = 0.0;
-                d.dX = this.dX;
-                d.dY = this.dY;
-                d.dZ = this.dZ;
-            }
+        double _t8, _t9, _t10, _t11, _t12, _t14, _t15;
+        if (this.rW < 0.0) {
+            _t8 = -this.rX;
+            _t9 = -this.rY;
+            _t10 = -this.rZ;
+            _t11 = -this.rW;
+            _t12 = -this.dX;
+            _t14 = -this.dY;
+            _t15 = -this.dZ;
         } else {
-            d.rX = _t7 * _t8;
-            d.rY = _t9 * _t8;
-            d.rZ = _t10 * _t8;
-            d.dX = (_t7 * _t12 + this.dX) * _t5 * _t8 - _t7 * _t11;
-            d.dY = (_t9 * _t12 + this.dY) * _t5 * _t8 - _t9 * _t11;
-            d.dZ = (_t10 * _t12 + this.dZ) * _t5 * _t8 - _t10 * _t11;
+            _t8 = this.rX;
+            _t9 = this.rY;
+            _t10 = this.rZ;
+            _t11 = this.rW;
+            _t12 = this.dX;
+            _t14 = this.dY;
+            _t15 = this.dZ;
+        }
+        double _t20 = _t8 * _t8 + _t9 * _t9 + _t10 * _t10;
+        double _t21 = (1.0 / Math.sqrt(_t20));
+        double _t23 = _t21 * _t8;
+        double _t24 = Math.atan2(Math.sqrt(_t20), _t11);
+        double _t25 = _t21 * _t9;
+        double _t26 = _t21 * _t10;
+        double _t27 = _t21 * (this.rW < 0.0 ? -this.dW : this.dW);
+        double _t28 = _t27 * _t11;
+        if (_t20 < 1.0E-28) {
+            d.rX = _t8;
+            d.rY = _t9;
+            d.rZ = _t10;
+            d.dX = _t12;
+            d.dY = _t14;
+            d.dZ = _t15;
+        } else {
+            d.rX = _t23 * _t24;
+            d.rY = _t25 * _t24;
+            d.rZ = _t26 * _t24;
+            d.dX = (_t28 * _t23 + _t12) * _t21 * _t24 - _t23 * _t27;
+            d.dY = (_t28 * _t25 + _t14) * _t21 * _t24 - _t25 * _t27;
+            d.dZ = (_t28 * _t26 + _t15) * _t21 * _t24 - _t26 * _t27;
         }
         d.rW = 0.0;
         d.dW = 0.0;
@@ -1904,53 +1916,56 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      */
     public DoubleDualQuat pow(double t, @Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
-        double _t0 = t * this.dX;
-        double _t1 = t * this.dY;
-        double _t2 = t * this.dZ;
-        double _t7 = this.rX * this.rX + this.rY * this.rY + this.rZ * this.rZ;
-        double _t8 = (1.0 / Math.sqrt(_t7));
-        double _t10 = this.rX * _t8;
-        double _t12 = this.rY * _t8;
-        double _t13 = this.rZ * _t8;
-        double _t14 = this.dW * _t8;
-        double _t15 = t * Math.atan2(Math.sqrt(_t7), this.rW);
-        double _t16 = t * _t14;
-        double _t17 = Math.sin(_t15);
-        double _t18 = Math.cos(_t15);
-        double _t19 = this.rW * _t14;
-        double _t20 = _t16 * _t18;
-        if (_t7 < 1.0e-12f) {
-            if (this.rW < 0.0) {
-                d.rX = 0.0;
-                d.rY = 0.0;
-                d.rZ = 0.0;
-                double _buf0 = 1.0;
-                d.dX = -_t0;
-                d.dY = -_t1;
-                d.dZ = -_t2;
-                d.dW = t * this.dW;
-                d.rW = _buf0;
-            } else {
-                d.rX = 0.0;
-                d.rY = 0.0;
-                d.rZ = 0.0;
-                double _buf0 = 1.0;
-                d.dX = _t0;
-                d.dY = _t1;
-                d.dZ = _t2;
-                d.dW = t * this.dW;
-                d.rW = _buf0;
-            }
+        double _t8, _t9, _t10, _t11, _t12, _t13, _t14, _t15;
+        if (this.rW < 0.0) {
+            _t8 = -this.rX;
+            _t9 = -this.rY;
+            _t10 = -this.rZ;
+            _t11 = -this.rW;
+            _t12 = -this.dX;
+            _t13 = -this.dW;
+            _t14 = -this.dY;
+            _t15 = -this.dZ;
         } else {
-            d.rX = _t10 * _t17;
-            d.rY = _t12 * _t17;
-            d.rZ = _t13 * _t17;
-            double _buf0 = _t18;
-            d.dX = (_t10 * _t19 + this.dX) * _t8 * _t17 - _t10 * _t20;
-            d.dY = (_t12 * _t19 + this.dY) * _t8 * _t17 - _t12 * _t20;
-            d.dZ = (_t13 * _t19 + this.dZ) * _t8 * _t17 - _t13 * _t20;
-            d.dW = _t16 * _t17;
-            d.rW = _buf0;
+            _t8 = this.rX;
+            _t9 = this.rY;
+            _t10 = this.rZ;
+            _t11 = this.rW;
+            _t12 = this.dX;
+            _t13 = this.dW;
+            _t14 = this.dY;
+            _t15 = this.dZ;
+        }
+        double _t20 = _t8 * _t8 + _t9 * _t9 + _t10 * _t10;
+        double _t21 = (1.0 / Math.sqrt(_t20));
+        double _t23 = _t21 * _t8;
+        double _t25 = _t21 * _t9;
+        double _t26 = _t21 * _t10;
+        double _t27 = _t21 * _t13;
+        double _t28 = t * Math.atan2(Math.sqrt(_t20), _t11);
+        double _t29 = t * _t27;
+        double _t30 = Math.sin(_t28);
+        double _t31 = Math.cos(_t28);
+        double _t32 = _t27 * _t11;
+        double _t33 = _t29 * _t31;
+        if (_t20 < 1.0E-28) {
+            d.rX = t * _t8;
+            d.rY = t * _t9;
+            d.rZ = t * _t10;
+            d.rW = 1.0;
+            d.dX = t * _t12;
+            d.dY = t * _t14;
+            d.dZ = t * _t15;
+            d.dW = t * t * _t13;
+        } else {
+            d.rX = _t23 * _t30;
+            d.rY = _t25 * _t30;
+            d.rZ = _t26 * _t30;
+            d.rW = _t31;
+            d.dX = (_t32 * _t23 + _t12) * _t21 * _t30 - _t33 * _t23;
+            d.dY = (_t32 * _t25 + _t14) * _t21 * _t30 - _t33 * _t25;
+            d.dZ = (_t32 * _t26 + _t15) * _t21 * _t30 - _t33 * _t26;
+            d.dW = _t29 * _t30;
         }
         return d;
     }

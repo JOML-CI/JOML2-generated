@@ -38,6 +38,18 @@ import org.joml2.internal.unsafe.*;
  * except the {@code copy} methods, which translate between any two backings.
  * Element layout is column-major (the canonical Float4x4 storage order).</p>
  *
+ * <p>Configuration freezing: this class holds no static state of its own, so a call freezes only
+ * the flags its overload reads. Every non-bulk buffer and raw-address overload - and the
+ * array-to-array {@code copy} - reads {@code Joml.STORE_LOAD_BACKEND}, which class-initializes
+ * {@link Joml} and freezes the {@link JomlConfig} flags ({@code returnNew},
+ * {@code storeLoadBackend}, {@code vectorApi}); the bulk {@code count} overloads of the
+ * element-wise operations loop over the buffer API directly and freeze nothing. An array overload
+ * whose arithmetic contains a fused multiply-add or a transcendental function calls {@link Math}
+ * ({@code fma}, {@code sin}, {@code cos}, {@code atan2}, ...), which snapshots and freezes the
+ * {@code Math} flags ({@code useFma}, {@code fastmath}, {@code sinLookup}, {@code strictMath}) on
+ * its first use; the array overloads of the remaining operations (no multiply-add, no
+ * transcendental) freeze nothing.</p>
+ *
  * <p>Each method summary below is the one the {@link Float4x4} API carries, so
  * the two can never describe the same operation differently: "this matrix" there is the
  * matrix held in {@code src} at {@code srcOffset}, and the result is written to
@@ -2382,6 +2394,12 @@ public final class Float4x4Ops {
     /**
      * Compute the inverse of the product of this matrix and {@code other}, i.e.
      * {@code (this * other)^-1} and store the result in {@code dest}.
+     * <p>
+     * The product is formed first and inverted afterwards, so the result is the inverse of the
+     * rounded product: its accuracy is bounded by the condition number of {@code this * other}, not
+     * by the condition numbers of the two factors. For an ill-conditioned product (a near-singular
+     * factor, or factors of very different scale) invert both factors separately and multiply the
+     * inverses in reverse order instead.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts

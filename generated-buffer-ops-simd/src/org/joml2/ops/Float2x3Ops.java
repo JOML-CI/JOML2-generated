@@ -45,6 +45,20 @@ import org.joml2.internal.simd.*;
  * except the {@code copy} methods, which translate between any two backings.
  * Element layout is column-major (the canonical Float2x3 storage order).</p>
  *
+ * <p>Configuration freezing: this class holds no static state of its own, so a call freezes only
+ * the flags its overload reads. Every non-bulk buffer, segment and raw-address overload - and the
+ * array-to-array {@code copy} - reads {@code Joml.STORE_LOAD_BACKEND}, which class-initializes
+ * {@link Joml} and freezes the {@link JomlConfig} flags ({@code returnNew},
+ * {@code storeLoadBackend}, {@code vectorApi}); the bulk {@code count} overloads of the
+ * element-wise operations loop over the buffer API directly and freeze nothing. Every overload with
+ * a Vector-API or fused-multiply-add dispatch consults {@code SimdSupport}, whose initialization
+ * snapshots {@code Math.useFma()} - freezing all {@link Math} flags ({@code useFma},
+ * {@code fastmath}, {@code sinLookup}, {@code strictMath}) - and {@code Joml.VECTOR_API}, freezing
+ * the {@link JomlConfig} flags as well; the scalar kernels call {@link Math} for their
+ * multiply-adds and transcendentals, which freezes the {@code Math} flags likewise. Only the array
+ * overloads of operations with neither a SIMD path nor a multiply-add nor a transcendental freeze
+ * nothing.</p>
+ *
  * <p>Each method summary below is the one the {@link Float2x3} API carries, so
  * the two can never describe the same operation differently: "this matrix" there is the
  * matrix held in {@code src} at {@code srcOffset}, and the result is written to
@@ -384,6 +398,12 @@ public final class Float2x3Ops {
     /**
      * Compute the inverse of the product of this matrix and {@code other}, i.e.
      * {@code (this * other)^-1} and store the result in {@code dest}.
+     * <p>
+     * The product is formed first and inverted afterwards, so the result is the inverse of the
+     * rounded product: its accuracy is bounded by the condition number of {@code this * other}, not
+     * by the condition numbers of the two factors. For an ill-conditioned product (a near-singular
+     * factor, or factors of very different scale) invert both factors separately and multiply the
+     * inverses in reverse order instead.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts

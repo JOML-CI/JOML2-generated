@@ -56,7 +56,20 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Numerically determine the structural properties of this matrix (identity, translation,
-     * affinity) and return them as property bits. This is a pure query.
+     * affinity) and return them as property bits.
+     * <p>
+     * The comparison is exact: an element counts as {@code 0} or {@code 1} only when it is exactly
+     * that value (as by {@code ==}), with no tolerance. A {@code double} element {@code 1 + 1e-8}
+     * is therefore not an identity element, while the {@code float} literal {@code 1 + 1e-8f}
+     * already rounds to {@code 1.0f} and is.
+     * <p>
+     * Only identity, translation and affine are inferred (the identity and a pure translation carry
+     * the orthogonal bit they imply); a general rotation block is never recognised as orthogonal. A
+     * rotation loaded from a buffer or set from scalars therefore takes the affine dispatch arms
+     * until it is rebuilt through a {@code make*} factory, which sets the bits from what it
+     * constructs.
+     * <p>
+     * This is a pure query: it does not update this matrix's cached property bits.
      *
      * @return the determined property bits
      */
@@ -4890,6 +4903,12 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Compute the inverse of the product of this matrix and {@code other}, i.e.
      * {@code (this * other)^-1} and store the result in {@code dest}.
+     * <p>
+     * The product is formed first and inverted afterwards, so the result is the inverse of the
+     * rounded product: its accuracy is bounded by the condition number of {@code this * other}, not
+     * by the condition numbers of the two factors. For an ill-conditioned product (a near-singular
+     * factor, or factors of very different scale) invert both factors separately and multiply the
+     * inverses in reverse order instead.
      *
      * @param other the other matrix
      * @param dest will hold the result
@@ -4932,6 +4951,12 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Compute the inverse of the product of this matrix and {@code other}, i.e.
      * {@code (this * other)^-1}.
+     * <p>
+     * The product is formed first and inverted afterwards, so the result is the inverse of the
+     * rounded product: its accuracy is bounded by the condition number of {@code this * other}, not
+     * by the condition numbers of the two factors. For an ill-conditioned product (a near-singular
+     * factor, or factors of very different scale) invert both factors separately and multiply the
+     * inverses in reverse order instead.
      *
      * @param other the other matrix
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -4975,6 +5000,12 @@ public class Float4x4Impl implements Float4x4 {
      * Compute the inverse of the product of this matrix and {@code other}, i.e.
      * {@code (this * other)^-1} and store the result in {@code dest}.
      * <p>
+     * The product is formed first and inverted afterwards, so the result is the inverse of the
+     * rounded product: its accuracy is bounded by the condition number of {@code this * other}, not
+     * by the condition numbers of the two factors. For an ill-conditioned product (a near-singular
+     * factor, or factors of very different scale) invert both factors separately and multiply the
+     * inverses in reverse order instead.
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
@@ -4992,6 +5023,12 @@ public class Float4x4Impl implements Float4x4 {
      * {@code m03}, {@code m10}, {@code m11}, {@code m12}, {@code m13}, {@code m20}, {@code m21},
      * {@code m22}, {@code m23}, {@code m30}, {@code m31}, {@code m32}, {@code m33}) and store the
      * result in {@code dest}.
+     * <p>
+     * The product is formed first and inverted afterwards, so the result is the inverse of the
+     * rounded product: its accuracy is bounded by the condition number of the product, not by the
+     * condition numbers of the two factors. For an ill-conditioned product (a near-singular factor,
+     * or factors of very different scale) invert both factors separately and multiply the inverses
+     * in reverse order instead.
      *
      * @param m00 the element in row 0, column 0 of the matrix
      * @param m01 the element in row 0, column 1 of the matrix
@@ -5080,6 +5117,12 @@ public class Float4x4Impl implements Float4x4 {
      * {@code m03}, {@code m10}, {@code m11}, {@code m12}, {@code m13}, {@code m20}, {@code m21},
      * {@code m22}, {@code m23}, {@code m30}, {@code m31}, {@code m32}, {@code m33}) and store the
      * result in {@code dest}.
+     * <p>
+     * The product is formed first and inverted afterwards, so the result is the inverse of the
+     * rounded product: its accuracy is bounded by the condition number of the product, not by the
+     * condition numbers of the two factors. For an ill-conditioned product (a near-singular factor,
+     * or factors of very different scale) invert both factors separately and multiply the inverses
+     * in reverse order instead.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.

@@ -830,82 +830,88 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     public DoubleDualQuat sclerp(double otherRX, double otherRY, double otherRZ, double otherRW, double otherDX, double otherDY, double otherDZ, double otherDW, double t, @Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
         double _t0 = -this.rZ;
-        double _t1 = -this.dZ;
+        double _t2 = -this.dZ;
         double _t8 = Math.fma(otherRX, this.rX, otherRY * this.rY) + Math.fma(otherRZ, this.rZ, otherRW * this.rW) < 0.0 ? -1.0 : 1.0;
-        double _t9 = otherRX * _t8;
-        double _t10 = otherRW * _t8;
-        double _t11 = otherRZ * _t8;
-        double _t12 = otherRY * _t8;
+        double _t9 = otherRZ * _t8;
+        double _t10 = otherRY * _t8;
+        double _t11 = otherRX * _t8;
+        double _t12 = otherRW * _t8;
         double _t13 = otherDX * _t8;
         double _t14 = otherDW * _t8;
         double _t15 = otherDY * _t8;
         double _t16 = otherDZ * _t8;
-        double _t49 = -(this.dX * _t10);
-        double _t53 = -(this.dX * _t12);
-        double _t64 = Math.fma(this.dX, _t11, this.dW * _t12);
-        double _t71 = Math.fma(this.dZ, _t12, -(this.dY * _t11));
-        double _t75 = Math.fma(this.dY, _t9, -(this.dZ * _t10));
-        double _t81 = Math.fma(this.rZ, _t11, Math.fma(this.rY, _t12, Math.fma(this.rX, _t9, this.rW * _t10)));
-        double _t84 = Math.fma(this.rY, _t9, -(this.rZ * _t10)) + Math.fma(this.rW, _t11, -(this.rX * _t12));
-        double _t85 = Math.fma(this.rX, _t11, this.rW * _t12) + Math.fma(_t0, _t9, -(this.rY * _t10));
-        double _t86 = Math.fma(this.rZ, _t12, -(this.rY * _t11)) + Math.fma(this.rW, _t9, -(this.rX * _t10));
-        double _t87 = Math.fma(this.rZ, _t15, -(this.rY * _t16)) + Math.fma(this.rW, _t13, -(this.rX * _t14));
-        double _t89 = Math.fma(this.rY, _t13, -(this.rZ * _t14)) + Math.fma(this.rW, _t16, -(this.rX * _t15));
-        double _t91 = Math.fma(this.rX, _t16, this.rW * _t15) + Math.fma(_t0, _t13, -(this.rY * _t14));
-        double _t93 = Math.fma(this.rX, _t13, this.rW * _t14) + Math.fma(this.rY, _t15, this.rZ * _t16) + (Math.fma(this.dX, _t9, this.dW * _t10) + Math.fma(this.dY, _t12, this.dZ * _t11));
-        double _t99 = t * (_t87 + (_t71 + Math.fma(this.dW, _t9, _t49)));
-        double _t100 = t * (_t89 + (_t75 + Math.fma(this.dW, _t11, _t53)));
-        double _t101 = t * (_t91 + (_t64 + Math.fma(_t1, _t9, -(this.dY * _t10))));
-        double _t109 = Math.fma(_t84, _t84, Math.fma(_t85, _t85, _t86 * _t86));
-        double _t111 = (1.0 / Math.sqrt(_t109));
-        double _t113 = t * Math.atan2(Math.sqrt(_t109), _t81);
-        double _t114 = Math.cos(_t113);
-        double _t115 = _t86 * _t111;
-        double _t116 = Math.sin(_t113);
-        double _t117 = _t84 * _t111;
-        double _t118 = _t85 * _t111;
-        double _t119 = _t93 * _t111;
-        double _t120 = t * _t119;
-        double _t121 = _t81 * _t119;
-        double _t122, _t140, _t141, _t142, _t149;
-        if (_t109 < 1.0e-12f) {
-            _t122 = 1.0;
-            _t140 = 0.0;
-            _t141 = 0.0;
-            _t142 = 0.0;
-            _t149 = t * _t93;
+        double _t79 = Math.fma(this.rZ, _t9, Math.fma(this.rY, _t10, Math.fma(this.rX, _t11, this.rW * _t12)));
+        double _t83 = Math.fma(this.rY, _t11, -(this.rZ * _t12)) + Math.fma(this.rW, _t9, -(this.rX * _t10));
+        double _t84 = Math.fma(this.rX, _t9, this.rW * _t10) + Math.fma(_t0, _t11, -(this.rY * _t12));
+        double _t85 = Math.fma(this.rZ, _t10, -(this.rY * _t9)) + Math.fma(this.rW, _t11, -(this.rX * _t12));
+        double _t95 = Math.fma(this.rX, _t13, this.rW * _t14) + Math.fma(this.rY, _t15, this.rZ * _t16) + (Math.fma(this.dX, _t11, this.dW * _t12) + Math.fma(this.dY, _t10, this.dZ * _t9));
+        double _t97 = Math.fma(this.rZ, _t15, -(this.rY * _t16)) + Math.fma(this.rW, _t13, -(this.rX * _t14)) + (Math.fma(this.dZ, _t10, -(this.dY * _t9)) + Math.fma(this.dW, _t11, -(this.dX * _t12)));
+        double _t98 = Math.fma(this.rY, _t13, -(this.rZ * _t14)) + Math.fma(this.rW, _t16, -(this.rX * _t15)) + (Math.fma(this.dY, _t11, -(this.dZ * _t12)) + Math.fma(this.dW, _t9, -(this.dX * _t10)));
+        double _t99 = Math.fma(this.rX, _t16, this.rW * _t15) + Math.fma(_t0, _t13, -(this.rY * _t14)) + (Math.fma(this.dX, _t9, this.dW * _t10) + Math.fma(_t2, _t11, -(this.dY * _t12)));
+        double _t103, _t104, _t105, _t106, _t110, _t112, _t113, _t114;
+        if (_t79 < 0.0) {
+            _t103 = -_t79;
+            _t104 = -_t83;
+            _t105 = -_t84;
+            _t106 = -_t85;
+            _t110 = -_t95;
+            _t112 = -_t97;
+            _t113 = -_t98;
+            _t114 = -_t99;
         } else {
-            _t122 = _t114;
-            _t140 = _t115 * _t116;
-            _t141 = _t117 * _t116;
-            _t142 = _t118 * _t116;
-            _t149 = _t120 * _t116;
+            _t103 = _t79;
+            _t104 = _t83;
+            _t105 = _t84;
+            _t106 = _t85;
+            _t110 = _t95;
+            _t112 = _t97;
+            _t113 = _t98;
+            _t114 = _t99;
         }
-        double _t127 = _t120 * _t114;
-        double _t156, _t157, _t158;
-        if (_t109 < 1.0e-12f) {
-            if (_t81 < 0.0) {
-                _t156 = -_t99;
-                _t157 = -_t100;
-                _t158 = -_t101;
-            } else {
-                _t156 = _t99;
-                _t157 = _t100;
-                _t158 = _t101;
-            }
+        double _t120 = Math.fma(_t104, _t104, Math.fma(_t105, _t105, _t106 * _t106));
+        double _t122 = (1.0 / Math.sqrt(_t120));
+        double _t124 = t * Math.atan2(Math.sqrt(_t120), _t103);
+        double _t125 = Math.cos(_t124);
+        double _t126 = Math.sin(_t124);
+        double _t127 = _t122 * _t106;
+        double _t128 = _t122 * _t104;
+        double _t129 = _t122 * _t105;
+        double _t130 = _t122 * _t110;
+        double _t131 = t * _t130;
+        double _t132 = _t130 * _t103;
+        double _t133, _t142, _t143, _t144, _t151;
+        if (_t120 < 1.0E-28) {
+            _t133 = 1.0;
+            _t142 = t * _t106;
+            _t143 = t * _t104;
+            _t144 = t * _t105;
+            _t151 = t * t * _t110;
         } else {
-            _t156 = Math.fma((_t87 + (_t71 + Math.fma(this.dW, _t9, Math.fma(_t121, _t115, _t49)))) * _t111, _t116, -(_t115 * _t127));
-            _t157 = Math.fma((_t89 + (_t75 + Math.fma(this.dW, _t11, Math.fma(_t121, _t117, _t53)))) * _t111, _t116, -(_t117 * _t127));
-            _t158 = Math.fma((_t91 + (_t64 + Math.fma(-this.dY, _t10, Math.fma(_t121, _t118, -(this.dZ * _t9))))) * _t111, _t116, -(_t118 * _t127));
+            _t133 = _t125;
+            _t142 = _t127 * _t126;
+            _t143 = _t128 * _t126;
+            _t144 = _t129 * _t126;
+            _t151 = _t131 * _t126;
         }
-        double _buf0 = Math.fma(this.rX, _t122, this.rW * _t140) + Math.fma(this.rY, _t141, -(this.rZ * _t142));
-        double _buf1 = Math.fma(this.rY, _t122, this.rZ * _t140) + Math.fma(this.rW, _t142, -(this.rX * _t141));
-        double _buf2 = Math.fma(this.rX, _t142, this.rW * _t141) + Math.fma(this.rZ, _t122, -(this.rY * _t140));
-        double _buf3 = Math.fma(_t0, _t141, Math.fma(-this.rY, _t142, Math.fma(this.rW, _t122, -(this.rX * _t140))));
-        double _buf4 = Math.fma(this.rX, _t149, this.rW * _t156) + Math.fma(this.rY, _t157, -(this.rZ * _t158)) + (Math.fma(this.dX, _t122, this.dW * _t140) + Math.fma(this.dY, _t141, -(this.dZ * _t142)));
-        double _buf5 = Math.fma(this.rY, _t149, this.rZ * _t156) + Math.fma(this.rW, _t158, -(this.rX * _t157)) + (Math.fma(this.dY, _t122, this.dZ * _t140) + Math.fma(this.dW, _t142, -(this.dX * _t141)));
-        d.dZ = Math.fma(this.rX, _t158, this.rW * _t157) + Math.fma(this.rZ, _t149, -(this.rY * _t156)) + (Math.fma(this.dX, _t142, this.dW * _t141) + Math.fma(this.dZ, _t122, -(this.dY * _t140)));
-        d.dW = Math.fma(this.rW, _t149, -(this.rX * _t156)) + Math.fma(_t0, _t157, -(this.rY * _t158)) + (Math.fma(this.dW, _t122, -(this.dX * _t140)) + Math.fma(_t1, _t141, -(this.dY * _t142)));
+        double _t138 = _t131 * _t125;
+        double _t158, _t159, _t160;
+        if (_t120 < 1.0E-28) {
+            _t158 = t * _t112;
+            _t159 = t * _t113;
+            _t160 = t * _t114;
+        } else {
+            _t158 = Math.fma(Math.fma(_t132, _t127, _t112) * _t122, _t126, -(_t138 * _t127));
+            _t159 = Math.fma(Math.fma(_t132, _t128, _t113) * _t122, _t126, -(_t138 * _t128));
+            _t160 = Math.fma(Math.fma(_t132, _t129, _t114) * _t122, _t126, -(_t138 * _t129));
+        }
+        double _buf0 = Math.fma(this.rX, _t133, this.rW * _t142) + Math.fma(this.rY, _t143, -(this.rZ * _t144));
+        double _buf1 = Math.fma(this.rY, _t133, this.rZ * _t142) + Math.fma(this.rW, _t144, -(this.rX * _t143));
+        double _buf2 = Math.fma(this.rX, _t144, this.rW * _t143) + Math.fma(this.rZ, _t133, -(this.rY * _t142));
+        double _buf3 = Math.fma(_t0, _t143, Math.fma(-this.rY, _t144, Math.fma(this.rW, _t133, -(this.rX * _t142))));
+        double _buf4 = Math.fma(this.rX, _t151, this.rW * _t158) + Math.fma(this.rY, _t159, -(this.rZ * _t160)) + (Math.fma(this.dX, _t133, this.dW * _t142) + Math.fma(this.dY, _t143, -(this.dZ * _t144)));
+        double _buf5 = Math.fma(this.rY, _t151, this.rZ * _t158) + Math.fma(this.rW, _t160, -(this.rX * _t159)) + (Math.fma(this.dY, _t133, this.dZ * _t142) + Math.fma(this.dW, _t144, -(this.dX * _t143)));
+        d.dZ = Math.fma(this.rX, _t160, this.rW * _t159) + Math.fma(this.rZ, _t151, -(this.rY * _t158)) + (Math.fma(this.dX, _t144, this.dW * _t143) + Math.fma(this.dZ, _t133, -(this.dY * _t142)));
+        d.dW = Math.fma(this.rW, _t151, -(this.rX * _t158)) + Math.fma(_t0, _t159, -(this.rY * _t160)) + (Math.fma(this.dW, _t133, -(this.dX * _t142)) + Math.fma(_t2, _t143, -(this.dY * _t144)));
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -1264,6 +1270,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     public DoubleDualQuat exp(@Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
         double _t4 = Math.fma(this.rZ, this.rZ, Math.fma(this.rX, this.rX, this.rY * this.rY));
+        double _t5 = Math.fma(this.rZ, this.dZ, Math.fma(this.rX, this.dX, this.rY * this.dY));
         double _t6 = (1.0 / Math.sqrt(_t4));
         double _t7 = Math.sqrt(_t4);
         double _t8 = Math.sin(_t7);
@@ -1271,17 +1278,17 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         double _t10 = this.rX * _t6;
         double _t11 = this.rY * _t6;
         double _t12 = this.rZ * _t6;
-        double _t13 = Math.fma(this.rZ, this.dZ, Math.fma(this.rX, this.dX, this.rY * this.dY)) * _t6;
+        double _t13 = _t5 * _t6;
         double _t14 = _t13 * _t9;
-        if (_t4 < 1.0e-12f) {
-            d.rX = 0.0;
-            d.rY = 0.0;
-            d.rZ = 0.0;
+        if (_t4 < 1.0E-28) {
+            d.rX = this.rX;
+            d.rY = this.rY;
+            d.rZ = this.rZ;
             d.rW = 1.0;
             d.dX = this.dX;
             d.dY = this.dY;
             d.dZ = this.dZ;
-            d.dW = 0.0;
+            d.dW = -_t5;
         } else {
             d.rX = _t10 * _t8;
             d.rY = _t11 * _t8;
@@ -1633,37 +1640,46 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      */
     public DoubleDualQuat log(@Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
-        double _t2 = Math.fma(this.rZ, this.rZ, Math.fma(this.rX, this.rX, this.rY * this.rY));
-        double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t5 = this.rX * _t3;
-        double _t6 = Math.atan2(Math.sqrt(_t2), this.rW);
-        double _t7 = this.rY * _t3;
-        double _t8 = this.rZ * _t3;
-        double _t9 = this.dW * _t3;
-        double _t10 = this.rW * _t9;
-        if (_t2 < 1.0e-12f) {
-            if (this.rW < 0.0) {
-                d.rX = 0.0;
-                d.rY = 0.0;
-                d.rZ = 0.0;
-                d.dX = -this.dX;
-                d.dY = -this.dY;
-                d.dZ = -this.dZ;
-            } else {
-                d.rX = 0.0;
-                d.rY = 0.0;
-                d.rZ = 0.0;
-                d.dX = this.dX;
-                d.dY = this.dY;
-                d.dZ = this.dZ;
-            }
+        double _t8, _t9, _t10, _t11, _t12, _t14, _t15;
+        if (this.rW < 0.0) {
+            _t8 = -this.rZ;
+            _t9 = -this.rX;
+            _t10 = -this.rY;
+            _t11 = -this.rW;
+            _t12 = -this.dX;
+            _t14 = -this.dY;
+            _t15 = -this.dZ;
         } else {
-            d.rX = _t5 * _t6;
-            d.rY = _t7 * _t6;
-            d.rZ = _t8 * _t6;
-            d.dX = Math.fma(Math.fma(_t5, _t10, this.dX) * _t3, _t6, -(_t5 * _t9));
-            d.dY = Math.fma(Math.fma(_t7, _t10, this.dY) * _t3, _t6, -(_t7 * _t9));
-            d.dZ = Math.fma(Math.fma(_t8, _t10, this.dZ) * _t3, _t6, -(_t8 * _t9));
+            _t8 = this.rZ;
+            _t9 = this.rX;
+            _t10 = this.rY;
+            _t11 = this.rW;
+            _t12 = this.dX;
+            _t14 = this.dY;
+            _t15 = this.dZ;
+        }
+        double _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
+        double _t19 = (1.0 / Math.sqrt(_t18));
+        double _t21 = _t19 * _t9;
+        double _t22 = Math.atan2(Math.sqrt(_t18), _t11);
+        double _t23 = _t19 * _t10;
+        double _t24 = _t19 * _t8;
+        double _t25 = _t19 * (this.rW < 0.0 ? -this.dW : this.dW);
+        double _t26 = _t25 * _t11;
+        if (_t18 < 1.0E-28) {
+            d.rX = _t9;
+            d.rY = _t10;
+            d.rZ = _t8;
+            d.dX = _t12;
+            d.dY = _t14;
+            d.dZ = _t15;
+        } else {
+            d.rX = _t21 * _t22;
+            d.rY = _t23 * _t22;
+            d.rZ = _t24 * _t22;
+            d.dX = Math.fma(Math.fma(_t26, _t21, _t12) * _t19, _t22, -(_t21 * _t25));
+            d.dY = Math.fma(Math.fma(_t26, _t23, _t14) * _t19, _t22, -(_t23 * _t25));
+            d.dZ = Math.fma(Math.fma(_t26, _t24, _t15) * _t19, _t22, -(_t24 * _t25));
         }
         d.rW = 0.0;
         d.dW = 0.0;
@@ -1895,53 +1911,56 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      */
     public DoubleDualQuat pow(double t, @Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
-        double _t0 = t * this.dX;
-        double _t1 = t * this.dY;
-        double _t2 = t * this.dZ;
-        double _t5 = Math.fma(this.rZ, this.rZ, Math.fma(this.rX, this.rX, this.rY * this.rY));
-        double _t6 = (1.0 / Math.sqrt(_t5));
-        double _t8 = this.rX * _t6;
-        double _t10 = this.rY * _t6;
-        double _t11 = this.rZ * _t6;
-        double _t12 = this.dW * _t6;
-        double _t13 = t * Math.atan2(Math.sqrt(_t5), this.rW);
-        double _t14 = t * _t12;
-        double _t15 = Math.sin(_t13);
-        double _t16 = Math.cos(_t13);
-        double _t17 = this.rW * _t12;
-        double _t18 = _t14 * _t16;
-        if (_t5 < 1.0e-12f) {
-            if (this.rW < 0.0) {
-                d.rX = 0.0;
-                d.rY = 0.0;
-                d.rZ = 0.0;
-                double _buf0 = 1.0;
-                d.dX = -_t0;
-                d.dY = -_t1;
-                d.dZ = -_t2;
-                d.dW = t * this.dW;
-                d.rW = _buf0;
-            } else {
-                d.rX = 0.0;
-                d.rY = 0.0;
-                d.rZ = 0.0;
-                double _buf0 = 1.0;
-                d.dX = _t0;
-                d.dY = _t1;
-                d.dZ = _t2;
-                d.dW = t * this.dW;
-                d.rW = _buf0;
-            }
+        double _t8, _t9, _t10, _t11, _t12, _t13, _t14, _t15;
+        if (this.rW < 0.0) {
+            _t8 = -this.rZ;
+            _t9 = -this.rX;
+            _t10 = -this.rY;
+            _t11 = -this.rW;
+            _t12 = -this.dX;
+            _t13 = -this.dW;
+            _t14 = -this.dY;
+            _t15 = -this.dZ;
         } else {
-            d.rX = _t8 * _t15;
-            d.rY = _t10 * _t15;
-            d.rZ = _t11 * _t15;
-            double _buf0 = _t16;
-            d.dX = Math.fma(Math.fma(_t8, _t17, this.dX) * _t6, _t15, -(_t8 * _t18));
-            d.dY = Math.fma(Math.fma(_t10, _t17, this.dY) * _t6, _t15, -(_t10 * _t18));
-            d.dZ = Math.fma(Math.fma(_t11, _t17, this.dZ) * _t6, _t15, -(_t11 * _t18));
-            d.dW = _t14 * _t15;
-            d.rW = _buf0;
+            _t8 = this.rZ;
+            _t9 = this.rX;
+            _t10 = this.rY;
+            _t11 = this.rW;
+            _t12 = this.dX;
+            _t13 = this.dW;
+            _t14 = this.dY;
+            _t15 = this.dZ;
+        }
+        double _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
+        double _t19 = (1.0 / Math.sqrt(_t18));
+        double _t21 = _t19 * _t9;
+        double _t23 = _t19 * _t10;
+        double _t24 = _t19 * _t8;
+        double _t25 = _t19 * _t13;
+        double _t26 = t * Math.atan2(Math.sqrt(_t18), _t11);
+        double _t27 = t * _t25;
+        double _t28 = Math.sin(_t26);
+        double _t29 = Math.cos(_t26);
+        double _t30 = _t25 * _t11;
+        double _t31 = _t27 * _t29;
+        if (_t18 < 1.0E-28) {
+            d.rX = t * _t9;
+            d.rY = t * _t10;
+            d.rZ = t * _t8;
+            d.rW = 1.0;
+            d.dX = t * _t12;
+            d.dY = t * _t14;
+            d.dZ = t * _t15;
+            d.dW = t * t * _t13;
+        } else {
+            d.rX = _t21 * _t28;
+            d.rY = _t23 * _t28;
+            d.rZ = _t24 * _t28;
+            d.rW = _t29;
+            d.dX = Math.fma(Math.fma(_t30, _t21, _t12) * _t19, _t28, -(_t31 * _t21));
+            d.dY = Math.fma(Math.fma(_t30, _t23, _t14) * _t19, _t28, -(_t31 * _t23));
+            d.dZ = Math.fma(Math.fma(_t30, _t24, _t15) * _t19, _t28, -(_t31 * _t24));
+            d.dW = _t27 * _t28;
         }
         return d;
     }

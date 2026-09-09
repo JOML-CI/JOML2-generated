@@ -20,9 +20,17 @@ package org.joml2;
  *       {@code sun.misc.Unsafe} is available, else API). {@code unsafe} on a JVM without
  *       {@code sun.misc.Unsafe} logs one warning on {@code System.err} and uses API; an
  *       unrecognised value logs one warning and uses the default.</li>
- *   <li>{@code -Djoml.vectorApi=false} disables the SIMD kernels; any other value (or unset)
- *       leaves them enabled when {@code jdk.incubator.vector} is present.</li>
+ *   <li>{@code -Djoml.vectorApi=true} / {@code =false} (case-insensitive, surrounding whitespace
+ *       ignored); a bare {@code -Djoml.vectorApi} means {@code true}. Unset leaves the SIMD kernels
+ *       enabled when {@code jdk.incubator.vector} is present; any other value logs one warning on
+ *       {@code System.err} and disables them.</li>
  * </ul>
+ *
+ * <p>A setter always takes precedence over its system property, in both directions:
+ * {@link #setVectorApi setVectorApi(true)} re-enables the SIMD kernels under
+ * {@code -Djoml.vectorApi=false}, and {@code setVectorApi(false)} disables them under
+ * {@code =true}. Module presence still wins - nothing can enable SIMD when
+ * {@code jdk.incubator.vector} is absent.</p>
  *
  * <p>{@code returnNew} changes only the computing self-form operations ({@code v.add(o)},
  * {@code m.mul(n)}, {@code q.normalize()}, ...): they leave {@code this} unchanged and return
@@ -76,10 +84,14 @@ public final class JomlConfig {
      * (equivalent to launching with {@code -Djoml.vectorApi=...}). {@code false}
      * forces the scalar fallback paths even when {@code jdk.incubator.vector} is
      * present; {@code true} (the default) uses the Vector API when the module is
-     * available - it cannot enable SIMD on a JVM without the module. Has no effect
-     * in variants that ship scalar {@code *Ops}.
+     * available - it cannot enable SIMD on a JVM without the module. The override
+     * takes precedence over the {@code joml.vectorApi} system property in both
+     * directions: {@code setVectorApi(true)} wins over {@code -Djoml.vectorApi=false}.
+     * Has no effect in variants that ship scalar {@code *Ops}, where
+     * {@code Joml.VECTOR_API} is constant {@code false}.
      *
-     * @param enabled {@code false} to force the scalar paths
+     * @param enabled {@code false} to force the scalar paths, {@code true} to use the
+     *                Vector API when the module is present
      * @throws IllegalStateException if the flags have already been frozen
      */
     public static void setVectorApi(boolean enabled) {

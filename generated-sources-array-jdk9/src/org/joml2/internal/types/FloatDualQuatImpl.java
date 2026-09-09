@@ -1206,82 +1206,88 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float[] sd = this.data;
         float[] dd = ((FloatDualQuatImpl) dest).data;
         float _t0 = -sd[2];
-        float _t1 = -sd[6];
+        float _t2 = -sd[6];
         float _t8 = Math.fma(otherRX, sd[0], otherRY * sd[1]) + Math.fma(otherRZ, sd[2], otherRW * sd[3]) < 0.0f ? -1.0f : 1.0f;
-        float _t9 = otherRX * _t8;
-        float _t10 = otherRW * _t8;
-        float _t11 = otherRZ * _t8;
-        float _t12 = otherRY * _t8;
+        float _t9 = otherRZ * _t8;
+        float _t10 = otherRY * _t8;
+        float _t11 = otherRX * _t8;
+        float _t12 = otherRW * _t8;
         float _t13 = otherDX * _t8;
         float _t14 = otherDW * _t8;
         float _t15 = otherDY * _t8;
         float _t16 = otherDZ * _t8;
-        float _t49 = -(sd[4] * _t10);
-        float _t53 = -(sd[4] * _t12);
-        float _t64 = Math.fma(sd[4], _t11, sd[7] * _t12);
-        float _t71 = Math.fma(sd[6], _t12, -(sd[5] * _t11));
-        float _t75 = Math.fma(sd[5], _t9, -(sd[6] * _t10));
-        float _t81 = Math.fma(sd[2], _t11, Math.fma(sd[1], _t12, Math.fma(sd[0], _t9, sd[3] * _t10)));
-        float _t84 = Math.fma(sd[1], _t9, -(sd[2] * _t10)) + Math.fma(sd[3], _t11, -(sd[0] * _t12));
-        float _t85 = Math.fma(sd[0], _t11, sd[3] * _t12) + Math.fma(_t0, _t9, -(sd[1] * _t10));
-        float _t86 = Math.fma(sd[2], _t12, -(sd[1] * _t11)) + Math.fma(sd[3], _t9, -(sd[0] * _t10));
-        float _t87 = Math.fma(sd[2], _t15, -(sd[1] * _t16)) + Math.fma(sd[3], _t13, -(sd[0] * _t14));
-        float _t89 = Math.fma(sd[1], _t13, -(sd[2] * _t14)) + Math.fma(sd[3], _t16, -(sd[0] * _t15));
-        float _t91 = Math.fma(sd[0], _t16, sd[3] * _t15) + Math.fma(_t0, _t13, -(sd[1] * _t14));
-        float _t93 = Math.fma(sd[0], _t13, sd[3] * _t14) + Math.fma(sd[1], _t15, sd[2] * _t16) + (Math.fma(sd[4], _t9, sd[7] * _t10) + Math.fma(sd[5], _t12, sd[6] * _t11));
-        float _t99 = t * (_t87 + (_t71 + Math.fma(sd[7], _t9, _t49)));
-        float _t100 = t * (_t89 + (_t75 + Math.fma(sd[7], _t11, _t53)));
-        float _t101 = t * (_t91 + (_t64 + Math.fma(_t1, _t9, -(sd[5] * _t10))));
-        float _t109 = Math.fma(_t84, _t84, Math.fma(_t85, _t85, _t86 * _t86));
-        float _t111 = (1.0f / (float) Math.sqrt(_t109));
-        float _t113 = t * (float) Math.atan2((float) Math.sqrt(_t109), _t81);
-        float _t114 = (float) Math.cos(_t113);
-        float _t115 = _t86 * _t111;
-        float _t116 = (float) Math.sin(_t113);
-        float _t117 = _t84 * _t111;
-        float _t118 = _t85 * _t111;
-        float _t119 = _t93 * _t111;
-        float _t120 = t * _t119;
-        float _t121 = _t81 * _t119;
-        float _t122, _t140, _t141, _t142, _t149;
-        if (_t109 < 1.0e-12f) {
-            _t122 = 1.0f;
-            _t140 = 0.0f;
-            _t141 = 0.0f;
-            _t142 = 0.0f;
-            _t149 = t * _t93;
+        float _t79 = Math.fma(sd[2], _t9, Math.fma(sd[1], _t10, Math.fma(sd[0], _t11, sd[3] * _t12)));
+        float _t83 = Math.fma(sd[1], _t11, -(sd[2] * _t12)) + Math.fma(sd[3], _t9, -(sd[0] * _t10));
+        float _t84 = Math.fma(sd[0], _t9, sd[3] * _t10) + Math.fma(_t0, _t11, -(sd[1] * _t12));
+        float _t85 = Math.fma(sd[2], _t10, -(sd[1] * _t9)) + Math.fma(sd[3], _t11, -(sd[0] * _t12));
+        float _t95 = Math.fma(sd[0], _t13, sd[3] * _t14) + Math.fma(sd[1], _t15, sd[2] * _t16) + (Math.fma(sd[4], _t11, sd[7] * _t12) + Math.fma(sd[5], _t10, sd[6] * _t9));
+        float _t97 = Math.fma(sd[2], _t15, -(sd[1] * _t16)) + Math.fma(sd[3], _t13, -(sd[0] * _t14)) + (Math.fma(sd[6], _t10, -(sd[5] * _t9)) + Math.fma(sd[7], _t11, -(sd[4] * _t12)));
+        float _t98 = Math.fma(sd[1], _t13, -(sd[2] * _t14)) + Math.fma(sd[3], _t16, -(sd[0] * _t15)) + (Math.fma(sd[5], _t11, -(sd[6] * _t12)) + Math.fma(sd[7], _t9, -(sd[4] * _t10)));
+        float _t99 = Math.fma(sd[0], _t16, sd[3] * _t15) + Math.fma(_t0, _t13, -(sd[1] * _t14)) + (Math.fma(sd[4], _t9, sd[7] * _t10) + Math.fma(_t2, _t11, -(sd[5] * _t12)));
+        float _t103, _t104, _t105, _t106, _t110, _t112, _t113, _t114;
+        if (_t79 < 0.0f) {
+            _t103 = -_t79;
+            _t104 = -_t83;
+            _t105 = -_t84;
+            _t106 = -_t85;
+            _t110 = -_t95;
+            _t112 = -_t97;
+            _t113 = -_t98;
+            _t114 = -_t99;
         } else {
-            _t122 = _t114;
-            _t140 = _t115 * _t116;
-            _t141 = _t117 * _t116;
-            _t142 = _t118 * _t116;
-            _t149 = _t120 * _t116;
+            _t103 = _t79;
+            _t104 = _t83;
+            _t105 = _t84;
+            _t106 = _t85;
+            _t110 = _t95;
+            _t112 = _t97;
+            _t113 = _t98;
+            _t114 = _t99;
         }
-        float _t127 = _t120 * _t114;
-        float _t156, _t157, _t158;
-        if (_t109 < 1.0e-12f) {
-            if (_t81 < 0.0f) {
-                _t156 = -_t99;
-                _t157 = -_t100;
-                _t158 = -_t101;
-            } else {
-                _t156 = _t99;
-                _t157 = _t100;
-                _t158 = _t101;
-            }
+        float _t120 = Math.fma(_t104, _t104, Math.fma(_t105, _t105, _t106 * _t106));
+        float _t122 = (1.0f / (float) Math.sqrt(_t120));
+        float _t124 = t * (float) Math.atan2((float) Math.sqrt(_t120), _t103);
+        float _t125 = (float) Math.cos(_t124);
+        float _t126 = (float) Math.sin(_t124);
+        float _t127 = _t122 * _t106;
+        float _t128 = _t122 * _t104;
+        float _t129 = _t122 * _t105;
+        float _t130 = _t122 * _t110;
+        float _t131 = t * _t130;
+        float _t132 = _t130 * _t103;
+        float _t133, _t142, _t143, _t144, _t151;
+        if (_t120 < 1.0E-12f) {
+            _t133 = 1.0f;
+            _t142 = t * _t106;
+            _t143 = t * _t104;
+            _t144 = t * _t105;
+            _t151 = t * t * _t110;
         } else {
-            _t156 = Math.fma((_t87 + (_t71 + Math.fma(sd[7], _t9, Math.fma(_t121, _t115, _t49)))) * _t111, _t116, -(_t115 * _t127));
-            _t157 = Math.fma((_t89 + (_t75 + Math.fma(sd[7], _t11, Math.fma(_t121, _t117, _t53)))) * _t111, _t116, -(_t117 * _t127));
-            _t158 = Math.fma((_t91 + (_t64 + Math.fma(-sd[5], _t10, Math.fma(_t121, _t118, -(sd[6] * _t9))))) * _t111, _t116, -(_t118 * _t127));
+            _t133 = _t125;
+            _t142 = _t127 * _t126;
+            _t143 = _t128 * _t126;
+            _t144 = _t129 * _t126;
+            _t151 = _t131 * _t126;
         }
-        float _buf0 = Math.fma(sd[0], _t122, sd[3] * _t140) + Math.fma(sd[1], _t141, -(sd[2] * _t142));
-        float _buf1 = Math.fma(sd[1], _t122, sd[2] * _t140) + Math.fma(sd[3], _t142, -(sd[0] * _t141));
-        float _buf2 = Math.fma(sd[0], _t142, sd[3] * _t141) + Math.fma(sd[2], _t122, -(sd[1] * _t140));
-        float _buf3 = Math.fma(_t0, _t141, Math.fma(-sd[1], _t142, Math.fma(sd[3], _t122, -(sd[0] * _t140))));
-        float _buf4 = Math.fma(sd[0], _t149, sd[3] * _t156) + Math.fma(sd[1], _t157, -(sd[2] * _t158)) + (Math.fma(sd[4], _t122, sd[7] * _t140) + Math.fma(sd[5], _t141, -(sd[6] * _t142)));
-        float _buf5 = Math.fma(sd[1], _t149, sd[2] * _t156) + Math.fma(sd[3], _t158, -(sd[0] * _t157)) + (Math.fma(sd[5], _t122, sd[6] * _t140) + Math.fma(sd[7], _t142, -(sd[4] * _t141)));
-        dd[6] = Math.fma(sd[0], _t158, sd[3] * _t157) + Math.fma(sd[2], _t149, -(sd[1] * _t156)) + (Math.fma(sd[4], _t142, sd[7] * _t141) + Math.fma(sd[6], _t122, -(sd[5] * _t140)));
-        dd[7] = Math.fma(sd[3], _t149, -(sd[0] * _t156)) + Math.fma(_t0, _t157, -(sd[1] * _t158)) + (Math.fma(sd[7], _t122, -(sd[4] * _t140)) + Math.fma(_t1, _t141, -(sd[5] * _t142)));
+        float _t138 = _t131 * _t125;
+        float _t158, _t159, _t160;
+        if (_t120 < 1.0E-12f) {
+            _t158 = t * _t112;
+            _t159 = t * _t113;
+            _t160 = t * _t114;
+        } else {
+            _t158 = Math.fma(Math.fma(_t132, _t127, _t112) * _t122, _t126, -(_t138 * _t127));
+            _t159 = Math.fma(Math.fma(_t132, _t128, _t113) * _t122, _t126, -(_t138 * _t128));
+            _t160 = Math.fma(Math.fma(_t132, _t129, _t114) * _t122, _t126, -(_t138 * _t129));
+        }
+        float _buf0 = Math.fma(sd[0], _t133, sd[3] * _t142) + Math.fma(sd[1], _t143, -(sd[2] * _t144));
+        float _buf1 = Math.fma(sd[1], _t133, sd[2] * _t142) + Math.fma(sd[3], _t144, -(sd[0] * _t143));
+        float _buf2 = Math.fma(sd[0], _t144, sd[3] * _t143) + Math.fma(sd[2], _t133, -(sd[1] * _t142));
+        float _buf3 = Math.fma(_t0, _t143, Math.fma(-sd[1], _t144, Math.fma(sd[3], _t133, -(sd[0] * _t142))));
+        float _buf4 = Math.fma(sd[0], _t151, sd[3] * _t158) + Math.fma(sd[1], _t159, -(sd[2] * _t160)) + (Math.fma(sd[4], _t133, sd[7] * _t142) + Math.fma(sd[5], _t143, -(sd[6] * _t144)));
+        float _buf5 = Math.fma(sd[1], _t151, sd[2] * _t158) + Math.fma(sd[3], _t160, -(sd[0] * _t159)) + (Math.fma(sd[5], _t133, sd[6] * _t142) + Math.fma(sd[7], _t144, -(sd[4] * _t143)));
+        dd[6] = Math.fma(sd[0], _t160, sd[3] * _t159) + Math.fma(sd[2], _t151, -(sd[1] * _t158)) + (Math.fma(sd[4], _t144, sd[7] * _t143) + Math.fma(sd[6], _t133, -(sd[5] * _t142)));
+        dd[7] = Math.fma(sd[3], _t151, -(sd[0] * _t158)) + Math.fma(_t0, _t159, -(sd[1] * _t160)) + (Math.fma(sd[7], _t133, -(sd[4] * _t142)) + Math.fma(_t2, _t143, -(sd[5] * _t144)));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -1329,82 +1335,88 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float[] sd = this.data;
         double[] dd = ((DoubleDualQuatImpl) dest).data;
         float _t0 = -sd[2];
-        float _t1 = -sd[6];
+        float _t2 = -sd[6];
         float _t8 = Math.fma(otherRX, sd[0], otherRY * sd[1]) + Math.fma(otherRZ, sd[2], otherRW * sd[3]) < 0.0f ? -1.0f : 1.0f;
-        float _t9 = otherRX * _t8;
-        float _t10 = otherRW * _t8;
-        float _t11 = otherRZ * _t8;
-        float _t12 = otherRY * _t8;
+        float _t9 = otherRZ * _t8;
+        float _t10 = otherRY * _t8;
+        float _t11 = otherRX * _t8;
+        float _t12 = otherRW * _t8;
         float _t13 = otherDX * _t8;
         float _t14 = otherDW * _t8;
         float _t15 = otherDY * _t8;
         float _t16 = otherDZ * _t8;
-        float _t49 = -(sd[4] * _t10);
-        float _t53 = -(sd[4] * _t12);
-        float _t64 = Math.fma(sd[4], _t11, sd[7] * _t12);
-        float _t71 = Math.fma(sd[6], _t12, -(sd[5] * _t11));
-        float _t75 = Math.fma(sd[5], _t9, -(sd[6] * _t10));
-        float _t81 = Math.fma(sd[2], _t11, Math.fma(sd[1], _t12, Math.fma(sd[0], _t9, sd[3] * _t10)));
-        float _t84 = Math.fma(sd[1], _t9, -(sd[2] * _t10)) + Math.fma(sd[3], _t11, -(sd[0] * _t12));
-        float _t85 = Math.fma(sd[0], _t11, sd[3] * _t12) + Math.fma(_t0, _t9, -(sd[1] * _t10));
-        float _t86 = Math.fma(sd[2], _t12, -(sd[1] * _t11)) + Math.fma(sd[3], _t9, -(sd[0] * _t10));
-        float _t87 = Math.fma(sd[2], _t15, -(sd[1] * _t16)) + Math.fma(sd[3], _t13, -(sd[0] * _t14));
-        float _t89 = Math.fma(sd[1], _t13, -(sd[2] * _t14)) + Math.fma(sd[3], _t16, -(sd[0] * _t15));
-        float _t91 = Math.fma(sd[0], _t16, sd[3] * _t15) + Math.fma(_t0, _t13, -(sd[1] * _t14));
-        float _t93 = Math.fma(sd[0], _t13, sd[3] * _t14) + Math.fma(sd[1], _t15, sd[2] * _t16) + (Math.fma(sd[4], _t9, sd[7] * _t10) + Math.fma(sd[5], _t12, sd[6] * _t11));
-        float _t99 = t * (_t87 + (_t71 + Math.fma(sd[7], _t9, _t49)));
-        float _t100 = t * (_t89 + (_t75 + Math.fma(sd[7], _t11, _t53)));
-        float _t101 = t * (_t91 + (_t64 + Math.fma(_t1, _t9, -(sd[5] * _t10))));
-        float _t109 = Math.fma(_t84, _t84, Math.fma(_t85, _t85, _t86 * _t86));
-        float _t111 = (1.0f / (float) Math.sqrt(_t109));
-        float _t113 = t * (float) Math.atan2((float) Math.sqrt(_t109), _t81);
-        float _t114 = (float) Math.cos(_t113);
-        float _t115 = _t86 * _t111;
-        float _t116 = (float) Math.sin(_t113);
-        float _t117 = _t84 * _t111;
-        float _t118 = _t85 * _t111;
-        float _t119 = _t93 * _t111;
-        float _t120 = t * _t119;
-        float _t121 = _t81 * _t119;
-        float _t122, _t140, _t141, _t142, _t149;
-        if (_t109 < 1.0e-12f) {
-            _t122 = 1.0f;
-            _t140 = 0.0f;
-            _t141 = 0.0f;
-            _t142 = 0.0f;
-            _t149 = t * _t93;
+        float _t79 = Math.fma(sd[2], _t9, Math.fma(sd[1], _t10, Math.fma(sd[0], _t11, sd[3] * _t12)));
+        float _t83 = Math.fma(sd[1], _t11, -(sd[2] * _t12)) + Math.fma(sd[3], _t9, -(sd[0] * _t10));
+        float _t84 = Math.fma(sd[0], _t9, sd[3] * _t10) + Math.fma(_t0, _t11, -(sd[1] * _t12));
+        float _t85 = Math.fma(sd[2], _t10, -(sd[1] * _t9)) + Math.fma(sd[3], _t11, -(sd[0] * _t12));
+        float _t95 = Math.fma(sd[0], _t13, sd[3] * _t14) + Math.fma(sd[1], _t15, sd[2] * _t16) + (Math.fma(sd[4], _t11, sd[7] * _t12) + Math.fma(sd[5], _t10, sd[6] * _t9));
+        float _t97 = Math.fma(sd[2], _t15, -(sd[1] * _t16)) + Math.fma(sd[3], _t13, -(sd[0] * _t14)) + (Math.fma(sd[6], _t10, -(sd[5] * _t9)) + Math.fma(sd[7], _t11, -(sd[4] * _t12)));
+        float _t98 = Math.fma(sd[1], _t13, -(sd[2] * _t14)) + Math.fma(sd[3], _t16, -(sd[0] * _t15)) + (Math.fma(sd[5], _t11, -(sd[6] * _t12)) + Math.fma(sd[7], _t9, -(sd[4] * _t10)));
+        float _t99 = Math.fma(sd[0], _t16, sd[3] * _t15) + Math.fma(_t0, _t13, -(sd[1] * _t14)) + (Math.fma(sd[4], _t9, sd[7] * _t10) + Math.fma(_t2, _t11, -(sd[5] * _t12)));
+        float _t103, _t104, _t105, _t106, _t110, _t112, _t113, _t114;
+        if (_t79 < 0.0f) {
+            _t103 = -_t79;
+            _t104 = -_t83;
+            _t105 = -_t84;
+            _t106 = -_t85;
+            _t110 = -_t95;
+            _t112 = -_t97;
+            _t113 = -_t98;
+            _t114 = -_t99;
         } else {
-            _t122 = _t114;
-            _t140 = _t115 * _t116;
-            _t141 = _t117 * _t116;
-            _t142 = _t118 * _t116;
-            _t149 = _t120 * _t116;
+            _t103 = _t79;
+            _t104 = _t83;
+            _t105 = _t84;
+            _t106 = _t85;
+            _t110 = _t95;
+            _t112 = _t97;
+            _t113 = _t98;
+            _t114 = _t99;
         }
-        float _t127 = _t120 * _t114;
-        float _t156, _t157, _t158;
-        if (_t109 < 1.0e-12f) {
-            if (_t81 < 0.0f) {
-                _t156 = -_t99;
-                _t157 = -_t100;
-                _t158 = -_t101;
-            } else {
-                _t156 = _t99;
-                _t157 = _t100;
-                _t158 = _t101;
-            }
+        float _t120 = Math.fma(_t104, _t104, Math.fma(_t105, _t105, _t106 * _t106));
+        float _t122 = (1.0f / (float) Math.sqrt(_t120));
+        float _t124 = t * (float) Math.atan2((float) Math.sqrt(_t120), _t103);
+        float _t125 = (float) Math.cos(_t124);
+        float _t126 = (float) Math.sin(_t124);
+        float _t127 = _t122 * _t106;
+        float _t128 = _t122 * _t104;
+        float _t129 = _t122 * _t105;
+        float _t130 = _t122 * _t110;
+        float _t131 = t * _t130;
+        float _t132 = _t130 * _t103;
+        float _t133, _t142, _t143, _t144, _t151;
+        if (_t120 < 1.0E-12f) {
+            _t133 = 1.0f;
+            _t142 = t * _t106;
+            _t143 = t * _t104;
+            _t144 = t * _t105;
+            _t151 = t * t * _t110;
         } else {
-            _t156 = Math.fma((_t87 + (_t71 + Math.fma(sd[7], _t9, Math.fma(_t121, _t115, _t49)))) * _t111, _t116, -(_t115 * _t127));
-            _t157 = Math.fma((_t89 + (_t75 + Math.fma(sd[7], _t11, Math.fma(_t121, _t117, _t53)))) * _t111, _t116, -(_t117 * _t127));
-            _t158 = Math.fma((_t91 + (_t64 + Math.fma(-sd[5], _t10, Math.fma(_t121, _t118, -(sd[6] * _t9))))) * _t111, _t116, -(_t118 * _t127));
+            _t133 = _t125;
+            _t142 = _t127 * _t126;
+            _t143 = _t128 * _t126;
+            _t144 = _t129 * _t126;
+            _t151 = _t131 * _t126;
         }
-        float _buf0 = Math.fma(sd[0], _t122, sd[3] * _t140) + Math.fma(sd[1], _t141, -(sd[2] * _t142));
-        float _buf1 = Math.fma(sd[1], _t122, sd[2] * _t140) + Math.fma(sd[3], _t142, -(sd[0] * _t141));
-        float _buf2 = Math.fma(sd[0], _t142, sd[3] * _t141) + Math.fma(sd[2], _t122, -(sd[1] * _t140));
-        float _buf3 = Math.fma(_t0, _t141, Math.fma(-sd[1], _t142, Math.fma(sd[3], _t122, -(sd[0] * _t140))));
-        float _buf4 = Math.fma(sd[0], _t149, sd[3] * _t156) + Math.fma(sd[1], _t157, -(sd[2] * _t158)) + (Math.fma(sd[4], _t122, sd[7] * _t140) + Math.fma(sd[5], _t141, -(sd[6] * _t142)));
-        float _buf5 = Math.fma(sd[1], _t149, sd[2] * _t156) + Math.fma(sd[3], _t158, -(sd[0] * _t157)) + (Math.fma(sd[5], _t122, sd[6] * _t140) + Math.fma(sd[7], _t142, -(sd[4] * _t141)));
-        dd[6] = Math.fma(sd[0], _t158, sd[3] * _t157) + Math.fma(sd[2], _t149, -(sd[1] * _t156)) + (Math.fma(sd[4], _t142, sd[7] * _t141) + Math.fma(sd[6], _t122, -(sd[5] * _t140)));
-        dd[7] = Math.fma(sd[3], _t149, -(sd[0] * _t156)) + Math.fma(_t0, _t157, -(sd[1] * _t158)) + (Math.fma(sd[7], _t122, -(sd[4] * _t140)) + Math.fma(_t1, _t141, -(sd[5] * _t142)));
+        float _t138 = _t131 * _t125;
+        float _t158, _t159, _t160;
+        if (_t120 < 1.0E-12f) {
+            _t158 = t * _t112;
+            _t159 = t * _t113;
+            _t160 = t * _t114;
+        } else {
+            _t158 = Math.fma(Math.fma(_t132, _t127, _t112) * _t122, _t126, -(_t138 * _t127));
+            _t159 = Math.fma(Math.fma(_t132, _t128, _t113) * _t122, _t126, -(_t138 * _t128));
+            _t160 = Math.fma(Math.fma(_t132, _t129, _t114) * _t122, _t126, -(_t138 * _t129));
+        }
+        float _buf0 = Math.fma(sd[0], _t133, sd[3] * _t142) + Math.fma(sd[1], _t143, -(sd[2] * _t144));
+        float _buf1 = Math.fma(sd[1], _t133, sd[2] * _t142) + Math.fma(sd[3], _t144, -(sd[0] * _t143));
+        float _buf2 = Math.fma(sd[0], _t144, sd[3] * _t143) + Math.fma(sd[2], _t133, -(sd[1] * _t142));
+        float _buf3 = Math.fma(_t0, _t143, Math.fma(-sd[1], _t144, Math.fma(sd[3], _t133, -(sd[0] * _t142))));
+        float _buf4 = Math.fma(sd[0], _t151, sd[3] * _t158) + Math.fma(sd[1], _t159, -(sd[2] * _t160)) + (Math.fma(sd[4], _t133, sd[7] * _t142) + Math.fma(sd[5], _t143, -(sd[6] * _t144)));
+        float _buf5 = Math.fma(sd[1], _t151, sd[2] * _t158) + Math.fma(sd[3], _t160, -(sd[0] * _t159)) + (Math.fma(sd[5], _t133, sd[6] * _t142) + Math.fma(sd[7], _t144, -(sd[4] * _t143)));
+        dd[6] = Math.fma(sd[0], _t160, sd[3] * _t159) + Math.fma(sd[2], _t151, -(sd[1] * _t158)) + (Math.fma(sd[4], _t144, sd[7] * _t143) + Math.fma(sd[6], _t133, -(sd[5] * _t142)));
+        dd[7] = Math.fma(sd[3], _t151, -(sd[0] * _t158)) + Math.fma(_t0, _t159, -(sd[1] * _t160)) + (Math.fma(sd[7], _t133, -(sd[4] * _t142)) + Math.fma(_t2, _t143, -(sd[5] * _t144)));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -2105,6 +2117,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float[] sd = this.data;
         float[] dd = ((FloatDualQuatImpl) dest).data;
         float _t4 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
+        float _t5 = Math.fma(sd[2], sd[6], Math.fma(sd[0], sd[4], sd[1] * sd[5]));
         float _t6 = (1.0f / (float) Math.sqrt(_t4));
         float _t7 = (float) Math.sqrt(_t4);
         float _t8 = (float) Math.sin(_t7);
@@ -2112,17 +2125,17 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t10 = sd[0] * _t6;
         float _t11 = sd[1] * _t6;
         float _t12 = sd[2] * _t6;
-        float _t13 = Math.fma(sd[2], sd[6], Math.fma(sd[0], sd[4], sd[1] * sd[5])) * _t6;
+        float _t13 = _t5 * _t6;
         float _t14 = _t13 * _t9;
-        if (_t4 < 1.0e-12f) {
-            dd[0] = 0.0f;
-            dd[1] = 0.0f;
-            dd[2] = 0.0f;
+        if (_t4 < 1.0E-12f) {
+            dd[0] = sd[0];
+            dd[1] = sd[1];
+            dd[2] = sd[2];
             dd[3] = 1.0f;
             dd[4] = sd[4];
             dd[5] = sd[5];
             dd[6] = sd[6];
-            dd[7] = 0.0f;
+            dd[7] = -_t5;
         } else {
             dd[0] = _t10 * _t8;
             dd[1] = _t11 * _t8;
@@ -2150,6 +2163,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float[] sd = this.data;
         double[] dd = ((DoubleDualQuatImpl) dest).data;
         float _t4 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
+        float _t5 = Math.fma(sd[2], sd[6], Math.fma(sd[0], sd[4], sd[1] * sd[5]));
         float _t6 = (1.0f / (float) Math.sqrt(_t4));
         float _t7 = (float) Math.sqrt(_t4);
         float _t8 = (float) Math.sin(_t7);
@@ -2157,17 +2171,17 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t10 = sd[0] * _t6;
         float _t11 = sd[1] * _t6;
         float _t12 = sd[2] * _t6;
-        float _t13 = Math.fma(sd[2], sd[6], Math.fma(sd[0], sd[4], sd[1] * sd[5])) * _t6;
+        float _t13 = _t5 * _t6;
         float _t14 = _t13 * _t9;
-        if (_t4 < 1.0e-12f) {
-            dd[0] = 0.0f;
-            dd[1] = 0.0f;
-            dd[2] = 0.0f;
+        if (_t4 < 1.0E-12f) {
+            dd[0] = sd[0];
+            dd[1] = sd[1];
+            dd[2] = sd[2];
             dd[3] = 1.0f;
             dd[4] = sd[4];
             dd[5] = sd[5];
             dd[6] = sd[6];
-            dd[7] = 0.0f;
+            dd[7] = -_t5;
         } else {
             dd[0] = _t10 * _t8;
             dd[1] = _t11 * _t8;
@@ -2880,37 +2894,46 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
     public FloatDualQuat log(@Mutated FloatDualQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatDualQuatImpl) dest).data;
-        float _t2 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t5 = sd[0] * _t3;
-        float _t6 = (float) Math.atan2((float) Math.sqrt(_t2), sd[3]);
-        float _t7 = sd[1] * _t3;
-        float _t8 = sd[2] * _t3;
-        float _t9 = sd[7] * _t3;
-        float _t10 = sd[3] * _t9;
-        if (_t2 < 1.0e-12f) {
-            if (sd[3] < 0.0f) {
-                dd[0] = 0.0f;
-                dd[1] = 0.0f;
-                dd[2] = 0.0f;
-                dd[4] = -sd[4];
-                dd[5] = -sd[5];
-                dd[6] = -sd[6];
-            } else {
-                dd[0] = 0.0f;
-                dd[1] = 0.0f;
-                dd[2] = 0.0f;
-                dd[4] = sd[4];
-                dd[5] = sd[5];
-                dd[6] = sd[6];
-            }
+        float _t8, _t9, _t10, _t11, _t12, _t14, _t15;
+        if (sd[3] < 0.0f) {
+            _t8 = -sd[2];
+            _t9 = -sd[0];
+            _t10 = -sd[1];
+            _t11 = -sd[3];
+            _t12 = -sd[4];
+            _t14 = -sd[5];
+            _t15 = -sd[6];
         } else {
-            dd[0] = _t5 * _t6;
-            dd[1] = _t7 * _t6;
-            dd[2] = _t8 * _t6;
-            dd[4] = Math.fma(Math.fma(_t5, _t10, sd[4]) * _t3, _t6, -(_t5 * _t9));
-            dd[5] = Math.fma(Math.fma(_t7, _t10, sd[5]) * _t3, _t6, -(_t7 * _t9));
-            dd[6] = Math.fma(Math.fma(_t8, _t10, sd[6]) * _t3, _t6, -(_t8 * _t9));
+            _t8 = sd[2];
+            _t9 = sd[0];
+            _t10 = sd[1];
+            _t11 = sd[3];
+            _t12 = sd[4];
+            _t14 = sd[5];
+            _t15 = sd[6];
+        }
+        float _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t19 = (1.0f / (float) Math.sqrt(_t18));
+        float _t21 = _t19 * _t9;
+        float _t22 = (float) Math.atan2((float) Math.sqrt(_t18), _t11);
+        float _t23 = _t19 * _t10;
+        float _t24 = _t19 * _t8;
+        float _t25 = _t19 * (sd[3] < 0.0f ? -sd[7] : sd[7]);
+        float _t26 = _t25 * _t11;
+        if (_t18 < 1.0E-12f) {
+            dd[0] = _t9;
+            dd[1] = _t10;
+            dd[2] = _t8;
+            dd[4] = _t12;
+            dd[5] = _t14;
+            dd[6] = _t15;
+        } else {
+            dd[0] = _t21 * _t22;
+            dd[1] = _t23 * _t22;
+            dd[2] = _t24 * _t22;
+            dd[4] = Math.fma(Math.fma(_t26, _t21, _t12) * _t19, _t22, -(_t21 * _t25));
+            dd[5] = Math.fma(Math.fma(_t26, _t23, _t14) * _t19, _t22, -(_t23 * _t25));
+            dd[6] = Math.fma(Math.fma(_t26, _t24, _t15) * _t19, _t22, -(_t24 * _t25));
         }
         dd[3] = 0.0f;
         dd[7] = 0.0f;
@@ -2930,37 +2953,46 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
     public DoubleDualQuat log(@Mutated DoubleDualQuat dest) {
         float[] sd = this.data;
         double[] dd = ((DoubleDualQuatImpl) dest).data;
-        float _t2 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t5 = sd[0] * _t3;
-        float _t6 = (float) Math.atan2((float) Math.sqrt(_t2), sd[3]);
-        float _t7 = sd[1] * _t3;
-        float _t8 = sd[2] * _t3;
-        float _t9 = sd[7] * _t3;
-        float _t10 = sd[3] * _t9;
-        if (_t2 < 1.0e-12f) {
-            if (sd[3] < 0.0f) {
-                dd[0] = 0.0f;
-                dd[1] = 0.0f;
-                dd[2] = 0.0f;
-                dd[4] = -sd[4];
-                dd[5] = -sd[5];
-                dd[6] = -sd[6];
-            } else {
-                dd[0] = 0.0f;
-                dd[1] = 0.0f;
-                dd[2] = 0.0f;
-                dd[4] = sd[4];
-                dd[5] = sd[5];
-                dd[6] = sd[6];
-            }
+        float _t8, _t9, _t10, _t11, _t12, _t14, _t15;
+        if (sd[3] < 0.0f) {
+            _t8 = -sd[2];
+            _t9 = -sd[0];
+            _t10 = -sd[1];
+            _t11 = -sd[3];
+            _t12 = -sd[4];
+            _t14 = -sd[5];
+            _t15 = -sd[6];
         } else {
-            dd[0] = _t5 * _t6;
-            dd[1] = _t7 * _t6;
-            dd[2] = _t8 * _t6;
-            dd[4] = Math.fma(Math.fma(_t5, _t10, sd[4]) * _t3, _t6, -(_t5 * _t9));
-            dd[5] = Math.fma(Math.fma(_t7, _t10, sd[5]) * _t3, _t6, -(_t7 * _t9));
-            dd[6] = Math.fma(Math.fma(_t8, _t10, sd[6]) * _t3, _t6, -(_t8 * _t9));
+            _t8 = sd[2];
+            _t9 = sd[0];
+            _t10 = sd[1];
+            _t11 = sd[3];
+            _t12 = sd[4];
+            _t14 = sd[5];
+            _t15 = sd[6];
+        }
+        float _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t19 = (1.0f / (float) Math.sqrt(_t18));
+        float _t21 = _t19 * _t9;
+        float _t22 = (float) Math.atan2((float) Math.sqrt(_t18), _t11);
+        float _t23 = _t19 * _t10;
+        float _t24 = _t19 * _t8;
+        float _t25 = _t19 * (sd[3] < 0.0f ? -sd[7] : sd[7]);
+        float _t26 = _t25 * _t11;
+        if (_t18 < 1.0E-12f) {
+            dd[0] = _t9;
+            dd[1] = _t10;
+            dd[2] = _t8;
+            dd[4] = _t12;
+            dd[5] = _t14;
+            dd[6] = _t15;
+        } else {
+            dd[0] = _t21 * _t22;
+            dd[1] = _t23 * _t22;
+            dd[2] = _t24 * _t22;
+            dd[4] = Math.fma(Math.fma(_t26, _t21, _t12) * _t19, _t22, -(_t21 * _t25));
+            dd[5] = Math.fma(Math.fma(_t26, _t23, _t14) * _t19, _t22, -(_t23 * _t25));
+            dd[6] = Math.fma(Math.fma(_t26, _t24, _t15) * _t19, _t22, -(_t24 * _t25));
         }
         dd[3] = 0.0f;
         dd[7] = 0.0f;
@@ -3230,53 +3262,56 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
     public FloatDualQuat pow(float t, @Mutated FloatDualQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatDualQuatImpl) dest).data;
-        float _t0 = t * sd[4];
-        float _t1 = t * sd[5];
-        float _t2 = t * sd[6];
-        float _t5 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
-        float _t6 = (1.0f / (float) Math.sqrt(_t5));
-        float _t8 = sd[0] * _t6;
-        float _t10 = sd[1] * _t6;
-        float _t11 = sd[2] * _t6;
-        float _t12 = sd[7] * _t6;
-        float _t13 = t * (float) Math.atan2((float) Math.sqrt(_t5), sd[3]);
-        float _t14 = t * _t12;
-        float _t15 = (float) Math.sin(_t13);
-        float _t16 = (float) Math.cos(_t13);
-        float _t17 = sd[3] * _t12;
-        float _t18 = _t14 * _t16;
-        if (_t5 < 1.0e-12f) {
-            if (sd[3] < 0.0f) {
-                dd[0] = 0.0f;
-                dd[1] = 0.0f;
-                dd[2] = 0.0f;
-                float _buf0 = 1.0f;
-                dd[4] = -_t0;
-                dd[5] = -_t1;
-                dd[6] = -_t2;
-                dd[7] = t * sd[7];
-                dd[3] = _buf0;
-            } else {
-                dd[0] = 0.0f;
-                dd[1] = 0.0f;
-                dd[2] = 0.0f;
-                float _buf0 = 1.0f;
-                dd[4] = _t0;
-                dd[5] = _t1;
-                dd[6] = _t2;
-                dd[7] = t * sd[7];
-                dd[3] = _buf0;
-            }
+        float _t8, _t9, _t10, _t11, _t12, _t13, _t14, _t15;
+        if (sd[3] < 0.0f) {
+            _t8 = -sd[2];
+            _t9 = -sd[0];
+            _t10 = -sd[1];
+            _t11 = -sd[3];
+            _t12 = -sd[4];
+            _t13 = -sd[7];
+            _t14 = -sd[5];
+            _t15 = -sd[6];
         } else {
-            dd[0] = _t8 * _t15;
-            dd[1] = _t10 * _t15;
-            dd[2] = _t11 * _t15;
-            float _buf0 = _t16;
-            dd[4] = Math.fma(Math.fma(_t8, _t17, sd[4]) * _t6, _t15, -(_t8 * _t18));
-            dd[5] = Math.fma(Math.fma(_t10, _t17, sd[5]) * _t6, _t15, -(_t10 * _t18));
-            dd[6] = Math.fma(Math.fma(_t11, _t17, sd[6]) * _t6, _t15, -(_t11 * _t18));
-            dd[7] = _t14 * _t15;
-            dd[3] = _buf0;
+            _t8 = sd[2];
+            _t9 = sd[0];
+            _t10 = sd[1];
+            _t11 = sd[3];
+            _t12 = sd[4];
+            _t13 = sd[7];
+            _t14 = sd[5];
+            _t15 = sd[6];
+        }
+        float _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t19 = (1.0f / (float) Math.sqrt(_t18));
+        float _t21 = _t19 * _t9;
+        float _t23 = _t19 * _t10;
+        float _t24 = _t19 * _t8;
+        float _t25 = _t19 * _t13;
+        float _t26 = t * (float) Math.atan2((float) Math.sqrt(_t18), _t11);
+        float _t27 = t * _t25;
+        float _t28 = (float) Math.sin(_t26);
+        float _t29 = (float) Math.cos(_t26);
+        float _t30 = _t25 * _t11;
+        float _t31 = _t27 * _t29;
+        if (_t18 < 1.0E-12f) {
+            dd[0] = t * _t9;
+            dd[1] = t * _t10;
+            dd[2] = t * _t8;
+            dd[3] = 1.0f;
+            dd[4] = t * _t12;
+            dd[5] = t * _t14;
+            dd[6] = t * _t15;
+            dd[7] = t * t * _t13;
+        } else {
+            dd[0] = _t21 * _t28;
+            dd[1] = _t23 * _t28;
+            dd[2] = _t24 * _t28;
+            dd[3] = _t29;
+            dd[4] = Math.fma(Math.fma(_t30, _t21, _t12) * _t19, _t28, -(_t31 * _t21));
+            dd[5] = Math.fma(Math.fma(_t30, _t23, _t14) * _t19, _t28, -(_t31 * _t23));
+            dd[6] = Math.fma(Math.fma(_t30, _t24, _t15) * _t19, _t28, -(_t31 * _t24));
+            dd[7] = _t27 * _t28;
         }
         return dest;
     }
@@ -3296,53 +3331,56 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
     public DoubleDualQuat pow(float t, @Mutated DoubleDualQuat dest) {
         float[] sd = this.data;
         double[] dd = ((DoubleDualQuatImpl) dest).data;
-        float _t0 = t * sd[4];
-        float _t1 = t * sd[5];
-        float _t2 = t * sd[6];
-        float _t5 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
-        float _t6 = (1.0f / (float) Math.sqrt(_t5));
-        float _t8 = sd[0] * _t6;
-        float _t10 = sd[1] * _t6;
-        float _t11 = sd[2] * _t6;
-        float _t12 = sd[7] * _t6;
-        float _t13 = t * (float) Math.atan2((float) Math.sqrt(_t5), sd[3]);
-        float _t14 = t * _t12;
-        float _t15 = (float) Math.sin(_t13);
-        float _t16 = (float) Math.cos(_t13);
-        float _t17 = sd[3] * _t12;
-        float _t18 = _t14 * _t16;
-        if (_t5 < 1.0e-12f) {
-            if (sd[3] < 0.0f) {
-                dd[0] = 0.0f;
-                dd[1] = 0.0f;
-                dd[2] = 0.0f;
-                float _buf0 = 1.0f;
-                dd[4] = -_t0;
-                dd[5] = -_t1;
-                dd[6] = -_t2;
-                dd[7] = t * sd[7];
-                dd[3] = _buf0;
-            } else {
-                dd[0] = 0.0f;
-                dd[1] = 0.0f;
-                dd[2] = 0.0f;
-                float _buf0 = 1.0f;
-                dd[4] = _t0;
-                dd[5] = _t1;
-                dd[6] = _t2;
-                dd[7] = t * sd[7];
-                dd[3] = _buf0;
-            }
+        float _t8, _t9, _t10, _t11, _t12, _t13, _t14, _t15;
+        if (sd[3] < 0.0f) {
+            _t8 = -sd[2];
+            _t9 = -sd[0];
+            _t10 = -sd[1];
+            _t11 = -sd[3];
+            _t12 = -sd[4];
+            _t13 = -sd[7];
+            _t14 = -sd[5];
+            _t15 = -sd[6];
         } else {
-            dd[0] = _t8 * _t15;
-            dd[1] = _t10 * _t15;
-            dd[2] = _t11 * _t15;
-            float _buf0 = _t16;
-            dd[4] = Math.fma(Math.fma(_t8, _t17, sd[4]) * _t6, _t15, -(_t8 * _t18));
-            dd[5] = Math.fma(Math.fma(_t10, _t17, sd[5]) * _t6, _t15, -(_t10 * _t18));
-            dd[6] = Math.fma(Math.fma(_t11, _t17, sd[6]) * _t6, _t15, -(_t11 * _t18));
-            dd[7] = _t14 * _t15;
-            dd[3] = _buf0;
+            _t8 = sd[2];
+            _t9 = sd[0];
+            _t10 = sd[1];
+            _t11 = sd[3];
+            _t12 = sd[4];
+            _t13 = sd[7];
+            _t14 = sd[5];
+            _t15 = sd[6];
+        }
+        float _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t19 = (1.0f / (float) Math.sqrt(_t18));
+        float _t21 = _t19 * _t9;
+        float _t23 = _t19 * _t10;
+        float _t24 = _t19 * _t8;
+        float _t25 = _t19 * _t13;
+        float _t26 = t * (float) Math.atan2((float) Math.sqrt(_t18), _t11);
+        float _t27 = t * _t25;
+        float _t28 = (float) Math.sin(_t26);
+        float _t29 = (float) Math.cos(_t26);
+        float _t30 = _t25 * _t11;
+        float _t31 = _t27 * _t29;
+        if (_t18 < 1.0E-12f) {
+            dd[0] = t * _t9;
+            dd[1] = t * _t10;
+            dd[2] = t * _t8;
+            dd[3] = 1.0f;
+            dd[4] = t * _t12;
+            dd[5] = t * _t14;
+            dd[6] = t * _t15;
+            dd[7] = t * t * _t13;
+        } else {
+            dd[0] = _t21 * _t28;
+            dd[1] = _t23 * _t28;
+            dd[2] = _t24 * _t28;
+            dd[3] = _t29;
+            dd[4] = Math.fma(Math.fma(_t30, _t21, _t12) * _t19, _t28, -(_t31 * _t21));
+            dd[5] = Math.fma(Math.fma(_t30, _t23, _t14) * _t19, _t28, -(_t31 * _t23));
+            dd[6] = Math.fma(Math.fma(_t30, _t24, _t15) * _t19, _t28, -(_t31 * _t24));
+            dd[7] = _t27 * _t28;
         }
         return dest;
     }
