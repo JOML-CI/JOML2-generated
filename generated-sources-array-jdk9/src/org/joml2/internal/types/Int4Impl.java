@@ -2520,7 +2520,7 @@ public final class Int4Impl implements Int4 {
     /**
      * Set this vector to {@code s} and store the result in {@code dest}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -2541,7 +2541,7 @@ public final class Int4Impl implements Int4 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -2562,7 +2562,7 @@ public final class Int4Impl implements Int4 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -2813,8 +2813,8 @@ public final class Int4Impl implements Int4 {
      * Clamp each component of this vector between {@code min} and {@code max} and store the result
      * in {@code dest}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -2830,8 +2830,8 @@ public final class Int4Impl implements Int4 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code long} only when stored.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -2847,8 +2847,8 @@ public final class Int4Impl implements Int4 {
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */

@@ -659,7 +659,8 @@ public final class FloatQuatImpl implements FloatQuat {
 
 
     /**
-     * Compute the matrix representation of this quaternion and store the result in {@code dest}.
+     * Compute the matrix representation of this quaternion (which must have unit length) and store
+     * the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -688,13 +689,14 @@ public final class FloatQuatImpl implements FloatQuat {
         d.m00 = _buf0;
         d.m01 = _buf1;
         d.m02 = _buf2;
-        d.properties = 0;
+        d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
 
 
     /**
-     * Compute the matrix representation of this quaternion and store the result in {@code dest}.
+     * Compute the matrix representation of this quaternion (which must have unit length) and store
+     * the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -726,14 +728,14 @@ public final class FloatQuatImpl implements FloatQuat {
         d.m00 = _buf0;
         d.m01 = _buf1;
         d.m02 = _buf2;
-        d.properties = 0;
+        d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
 
 
     /**
-     * Compute the 3x3 rotation matrix representation of this quaternion and store the result in
-     * {@code dest}.
+     * Compute the 3x3 rotation matrix representation of this quaternion (which must have unit
+     * length) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -762,8 +764,8 @@ public final class FloatQuatImpl implements FloatQuat {
 
 
     /**
-     * Compute the 3x3 rotation matrix representation of this quaternion and store the result in
-     * {@code dest}.
+     * Compute the 3x3 rotation matrix representation of this quaternion (which must have unit
+     * length) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -795,8 +797,8 @@ public final class FloatQuatImpl implements FloatQuat {
 
 
     /**
-     * Compute the 3x4 matrix representation of this quaternion (the omitted last row is implicitly
-     * {@code 0, 0, 0, 1}) and store the result in {@code dest}.
+     * Compute the 3x4 matrix representation of this quaternion (which must have unit length; the
+     * omitted last row is implicitly {@code 0, 0, 0, 1}) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -822,14 +824,14 @@ public final class FloatQuatImpl implements FloatQuat {
         d.m01 = _buf1;
         d.m02 = _buf2;
         d.m03 = _buf3;
-        d.properties = 0;
+        d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
 
 
     /**
-     * Compute the 3x4 matrix representation of this quaternion (the omitted last row is implicitly
-     * {@code 0, 0, 0, 1}) and store the result in {@code dest}.
+     * Compute the 3x4 matrix representation of this quaternion (which must have unit length; the
+     * omitted last row is implicitly {@code 0, 0, 0, 1}) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -858,7 +860,7 @@ public final class FloatQuatImpl implements FloatQuat {
         d.m01 = _buf1;
         d.m02 = _buf2;
         d.m03 = _buf3;
-        d.properties = 0;
+        d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
 
@@ -905,9 +907,10 @@ public final class FloatQuatImpl implements FloatQuat {
 
 
     /**
-     * Decompose this quaternion into a swing about an axis perpendicular to {@code axisX} followed
-     * by a twist about {@code axisX}, storing them in {@code swing} and {@code twist} respectively,
-     * such that {@code swing * twist} is this rotation.
+     * Decompose this quaternion into a swing about an axis perpendicular to ({@code axisX},
+     * {@code axisY}, {@code axisZ}) followed by a twist about ({@code axisX}, {@code axisY},
+     * {@code axisZ}), storing them in {@code swing} and {@code twist} respectively, such that
+     * {@code swing * twist} is this rotation.
      * <p>
      * Equivalent to calling {@code getSwing} and {@code getTwist} separately, but shares the work.
      * The twist is the identity when the rotation is a pure swing, including the 180-degree
@@ -958,9 +961,10 @@ public final class FloatQuatImpl implements FloatQuat {
 
 
     /**
-     * Decompose this quaternion into a swing about an axis perpendicular to {@code axisX} followed
-     * by a twist about {@code axisX}, storing them in {@code swing} and {@code twist} respectively,
-     * such that {@code swing * twist} is this rotation.
+     * Decompose this quaternion into a swing about an axis perpendicular to ({@code axisX},
+     * {@code axisY}, {@code axisZ}) followed by a twist about ({@code axisX}, {@code axisY},
+     * {@code axisZ}), storing them in {@code swing} and {@code twist} respectively, such that
+     * {@code swing * twist} is this rotation.
      * <p>
      * Equivalent to calling {@code getSwing} and {@code getTwist} separately, but shares the work.
      * The twist is the identity when the rotation is a pure swing, including the 180-degree
@@ -2628,8 +2632,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
 
     /**
-     * Compute the difference between this quaternion and {@code other}, i.e. the rotation that,
-     * applied after {@code this}, results in {@code other} and store the result in {@code dest}.
+     * Compute the difference between this quaternion and {@code other}, i.e. the rotation {@code D}
+     * with {@code this * D = other}, that is {@code D = this^-1 * other} and store the result in
+     * {@code dest}.
      *
      * @param other the other quaternion
      * @param dest will hold the result
@@ -2641,8 +2646,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
 
     /**
-     * Compute the difference between this quaternion and {@code other}, i.e. the rotation that,
-     * applied after {@code this}, results in {@code other} and store the result in {@code dest}.
+     * Compute the difference between this quaternion and {@code other}, i.e. the rotation {@code D}
+     * with {@code this * D = other}, that is {@code D = this^-1 * other} and store the result in
+     * {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2658,9 +2664,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Compute the difference between this quaternion and ({@code otherX}, {@code otherY},
-     * {@code otherZ}, {@code otherW}), i.e. the rotation that, applied after {@code this}, results
-     * in ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) and store the result in
-     * {@code dest}.
+     * {@code otherZ}, {@code otherW}), i.e. the rotation {@code D} with
+     * {@code this * D = (otherX, otherY, otherZ, otherW)}, that is
+     * {@code D = this^-1 * (otherX, otherY, otherZ, otherW)} and store the result in {@code dest}.
      *
      * @param otherX the {@code x} component of the quaternion
      *        {@code (otherX, otherY, otherZ, otherW)}
@@ -2690,9 +2696,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Compute the difference between this quaternion and ({@code otherX}, {@code otherY},
-     * {@code otherZ}, {@code otherW}), i.e. the rotation that, applied after {@code this}, results
-     * in ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) and store the result in
-     * {@code dest}.
+     * {@code otherZ}, {@code otherW}), i.e. the rotation {@code D} with
+     * {@code this * D = (otherX, otherY, otherZ, otherW)}, that is
+     * {@code D = this^-1 * (otherX, otherY, otherZ, otherW)} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3514,8 +3520,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code -X} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -3535,8 +3541,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code -X} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3559,8 +3565,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code -Y} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -3580,8 +3586,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code -Y} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3604,8 +3610,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code -Z} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -3625,8 +3631,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code -Z} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3649,8 +3655,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code +X} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -3670,8 +3676,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code +X} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3694,8 +3700,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code +Y} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -3715,8 +3721,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code +Y} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3739,8 +3745,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code +Z} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -3760,8 +3766,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code +Z} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4252,8 +4258,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code -X} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -4273,8 +4279,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code -X} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4297,8 +4303,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code -Y} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -4318,8 +4324,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code -Y} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4342,8 +4348,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code -Z} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -4363,8 +4369,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code -Z} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4387,8 +4393,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code +X} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -4408,8 +4414,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code +X} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4432,8 +4438,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code +Y} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -4453,8 +4459,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code +Y} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4477,8 +4483,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code +Z} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -4498,8 +4504,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * Obtain the direction of {@code +Z} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -5516,7 +5522,8 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Set this quaternion to a rotation of {@code angleX}, {@code angleY} and {@code angleZ}
-     * radians about the X, Y and Z axes, in that order.
+     * radians about the X, Y and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so
+     * a vector is rotated about the Z axis first, then Y, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -5547,7 +5554,8 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Set this quaternion to a rotation of {@code angleX}, {@code angleZ} and {@code angleY}
-     * radians about the X, Z and Y axes, in that order.
+     * radians about the X, Z and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so
+     * a vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -5594,7 +5602,8 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Set this quaternion to a rotation of {@code angleY}, {@code angleX} and {@code angleZ}
-     * radians about the Y, X and Z axes, in that order.
+     * radians about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so
+     * a vector is rotated about the Z axis first, then X, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -5625,7 +5634,8 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Set this quaternion to a rotation of {@code angleY}, {@code angleZ} and {@code angleX}
-     * radians about the Y, Z and X axes, in that order.
+     * radians about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so
+     * a vector is rotated about the X axis first, then Z, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -5672,7 +5682,8 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Set this quaternion to a rotation of {@code angleZ}, {@code angleX} and {@code angleY}
-     * radians about the Z, X and Y axes, in that order.
+     * radians about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so
+     * a vector is rotated about the Y axis first, then X, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -5703,7 +5714,8 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Set this quaternion to a rotation of {@code angleZ}, {@code angleY} and {@code angleX}
-     * radians about the Z, Y and X axes, in that order.
+     * radians about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so
+     * a vector is rotated about the X axis first, then Y, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -6244,7 +6256,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -6288,7 +6302,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -6335,7 +6351,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -6379,7 +6397,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -6475,7 +6495,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -6519,7 +6541,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -6566,7 +6590,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -6610,7 +6636,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -6706,7 +6734,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -6750,7 +6780,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -6797,7 +6829,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -6841,7 +6875,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new

@@ -495,6 +495,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -504,6 +507,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -513,6 +519,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -523,6 +532,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -537,6 +549,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -546,6 +561,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -555,6 +573,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -565,6 +586,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -623,6 +647,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -632,6 +659,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -641,6 +671,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -651,6 +684,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -665,6 +701,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -674,6 +713,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -684,6 +726,9 @@ public interface Float4x3R {
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at the given absolute index (the position is not used or
      * modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -694,6 +739,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -753,6 +801,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -762,6 +813,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -771,6 +825,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -781,6 +838,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -795,6 +855,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -804,6 +867,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -813,6 +879,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -823,6 +892,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -881,6 +953,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -890,6 +965,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -899,6 +977,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -909,6 +990,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -923,6 +1007,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -932,6 +1019,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -941,6 +1031,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -951,6 +1044,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -1005,6 +1101,9 @@ public interface Float4x3R {
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1016,6 +1115,9 @@ public interface Float4x3R {
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -1028,6 +1130,9 @@ public interface Float4x3R {
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1044,6 +1149,9 @@ public interface Float4x3R {
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1055,6 +1163,9 @@ public interface Float4x3R {
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -1067,6 +1178,9 @@ public interface Float4x3R {
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1126,6 +1240,9 @@ public interface Float4x3R {
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1137,6 +1254,9 @@ public interface Float4x3R {
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -1149,6 +1269,9 @@ public interface Float4x3R {
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1165,6 +1288,9 @@ public interface Float4x3R {
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1176,6 +1302,9 @@ public interface Float4x3R {
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at the given absolute index (the position is not used or
      * modified), with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -1188,6 +1317,9 @@ public interface Float4x3R {
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position and advancing the position accordingly,
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1249,6 +1381,9 @@ public interface Float4x3R {
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1260,6 +1395,9 @@ public interface Float4x3R {
      * Store the elements into the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -1272,6 +1410,9 @@ public interface Float4x3R {
      * Store the elements into the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly, with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1288,6 +1429,9 @@ public interface Float4x3R {
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1299,6 +1443,9 @@ public interface Float4x3R {
      * Store the elements into the given byte buffer in row-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -1311,6 +1458,9 @@ public interface Float4x3R {
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1370,6 +1520,9 @@ public interface Float4x3R {
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1381,6 +1534,9 @@ public interface Float4x3R {
      * Store the elements into the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -1393,6 +1549,9 @@ public interface Float4x3R {
      * Store the elements into the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly, with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1409,6 +1568,9 @@ public interface Float4x3R {
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1420,6 +1582,9 @@ public interface Float4x3R {
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -1432,6 +1597,9 @@ public interface Float4x3R {
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1511,6 +1679,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -1520,6 +1691,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -1530,6 +1704,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -1558,6 +1735,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -1567,6 +1747,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -1577,6 +1760,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -1586,6 +1772,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -1595,6 +1784,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -1605,6 +1797,9 @@ public interface Float4x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -1665,6 +1860,9 @@ public interface Float4x3R {
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -1677,6 +1875,9 @@ public interface Float4x3R {
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1688,6 +1889,9 @@ public interface Float4x3R {
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -1700,6 +1904,9 @@ public interface Float4x3R {
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1711,6 +1918,9 @@ public interface Float4x3R {
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -1723,6 +1933,9 @@ public interface Float4x3R {
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows

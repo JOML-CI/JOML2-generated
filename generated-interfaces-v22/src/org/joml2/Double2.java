@@ -71,7 +71,7 @@ public interface Double2 extends Double2R {
 
     /**
      * Multiply this vector component-wise by {@code b} and add ({@code x}, {@code y}), i.e. compute
-     * {@code this * b + c} per component.
+     * {@code this * b + (x, y)} per component.
      *
      * @param b the factor to multiply this vector by
      * @param x the {@code x} component of the vector {@code (x, y)}
@@ -92,7 +92,7 @@ public interface Double2 extends Double2R {
 
     /**
      * Multiply this vector component-wise by ({@code bX}, {@code bY}) and add ({@code cX},
-     * {@code cY}), i.e. compute {@code this * b + c} per component.
+     * {@code cY}), i.e. compute {@code this * (bX, bY) + (cX, cY)} per component.
      *
      * @param bX the {@code x} component of the vector {@code (bX, bY)}
      * @param bY the {@code y} component of the vector {@code (bX, bY)}
@@ -171,7 +171,7 @@ public interface Double2 extends Double2R {
     /**
      * Set this vector to {@code s}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @return this
      */
     @Mutated default Double2 set(double s) { return set(s, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -583,7 +583,8 @@ public interface Double2 extends Double2R {
     @Mutated default Double2 atan() { return atan(Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} {@code x} (the denominator).
      *
      * @param x the value to take the arc tangent over (the denominator)
      * @return this
@@ -591,18 +592,21 @@ public interface Double2 extends Double2R {
     @Mutated default Double2 atan2(double x) { return atan2(x, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of {@code x} (the
+     * denominator).
      *
-     * @param x the value to take the arc tangent over (the denominator)
+     * @param x the vector of denominators, one per component
      * @return this
      */
     @Mutated default Double2 atan2(Double2R x) { return atan2(x, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Compute the component-wise arc tangent of this vector over ({@code x}, {@code y}).
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of ({@code x},
+     * {@code y}) (the denominator).
      *
-     * @param x the {@code x} component of the value to take the arc tangent over (the denominator)
-     *        {@code (x, y)}
+     * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
      * @return this
      */
@@ -634,8 +638,8 @@ public interface Double2 extends Double2R {
     /**
      * Clamp each component of this vector between {@code min} and {@code max}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @return this
      */
     @Mutated default Double2 clamp(Double2R min, Double2R max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -760,8 +764,8 @@ public interface Double2 extends Double2R {
     @Mutated default Double2 fract() { return fract(Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} {@code y}.
      *
      * @param y the other operand
      * @return this
@@ -769,20 +773,20 @@ public interface Double2 extends Double2R {
     @Mutated default Double2 hypot(double y) { return hypot(y, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of {@code y}.
      *
-     * @param y the other operand
+     * @param y the vector of other operands, one per component
      * @return this
      */
     @Mutated default Double2 hypot(Double2R y) { return hypot(y, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * ({@code x}, {@code y}).
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of ({@code x}, {@code y}).
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
-     * @param y the {@code y} component of the other operand {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
      * @return this
      */
     @Mutated default Double2 hypot(double x, double y) { return hypot(x, y, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -902,7 +906,7 @@ public interface Double2 extends Double2R {
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
      *
-     * @param y the divisor
+     * @param y the vector of divisors, one per component
      * @return this
      */
     @Mutated default Double2 mod(Double2R y) { return mod(y, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -915,7 +919,7 @@ public interface Double2 extends Double2R {
      * dividend.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
-     * @param y the {@code y} component of the divisor {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
      * @return this
      */
     @Mutated default Double2 mod(double x, double y) { return mod(x, y, Joml.RETURN_NEW ? Joml.double2() : this); }
@@ -937,10 +941,11 @@ public interface Double2 extends Double2R {
     @Mutated default Double2 nextUp() { return nextUp(Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Normalize this vector to unit length (the zero vector yields the zero vector). <p> The
-     * squared length is formed at the component precision, so components whose squares overflow or
-     * underflow that precision are out of domain: the result is the zero vector rather than a unit
-     * vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
+     * Normalize this vector to unit length (the zero vector yields the zero vector).
+     * <p>
+     * The squared length is formed at the component precision, so components whose squares overflow
+     * or underflow that precision are out of domain: the result is the zero vector rather than a
+     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
      * {@code float} and 1.3e154 for {@code double}).
      *
      * @return this
@@ -1071,7 +1076,8 @@ public interface Double2 extends Double2R {
     @Mutated default Double2 refract(double x, double y, double eta) { return refract(x, y, eta, Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Compute the rounded value of each component of this vector.
+     * Compute the value rounded to the nearest integer, ties to even ({@code Math.rint}) of each
+     * component of this vector.
      *
      * @return this
      */
@@ -1197,7 +1203,7 @@ public interface Double2 extends Double2R {
     @Mutated default Double2 ulp() { return ulp(Joml.RETURN_NEW ? Joml.double2() : this); }
 
     /**
-     * Pre-multiply {@code mat} onto this vector.
+     * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this}.
      *
      * @param mat the matrix
      * @return this
@@ -1280,6 +1286,9 @@ public interface Double2 extends Double2R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1289,6 +1298,9 @@ public interface Double2 extends Double2R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1298,6 +1310,9 @@ public interface Double2 extends Double2R {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1308,6 +1323,9 @@ public interface Double2 extends Double2R {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1322,6 +1340,9 @@ public interface Double2 extends Double2R {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1331,6 +1352,9 @@ public interface Double2 extends Double2R {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1340,6 +1364,9 @@ public interface Double2 extends Double2R {
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1350,6 +1377,9 @@ public interface Double2 extends Double2R {
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1407,6 +1437,9 @@ public interface Double2 extends Double2R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1416,6 +1449,9 @@ public interface Double2 extends Double2R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1425,6 +1461,9 @@ public interface Double2 extends Double2R {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1435,6 +1474,9 @@ public interface Double2 extends Double2R {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1449,6 +1491,9 @@ public interface Double2 extends Double2R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1458,6 +1503,9 @@ public interface Double2 extends Double2R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1467,6 +1515,9 @@ public interface Double2 extends Double2R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1477,6 +1528,9 @@ public interface Double2 extends Double2R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this

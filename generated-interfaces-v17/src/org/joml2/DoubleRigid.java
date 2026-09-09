@@ -184,7 +184,8 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Set this rigid transform to the rotation extracted from the given matrix, with zero
-     * translation (any scale or shear projects onto the nearest rotation).
+     * translation (scale is removed by normalizing the columns, but shear is not removed: a sheared
+     * block yields a rotation quaternion that is not unit length).
      *
      * @param m the matrix
      * @return this
@@ -193,8 +194,9 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Set this rigid transform to the rigid decomposition of the given affine matrix: translation
-     * from the last column, rotation from the orthonormalized upper-left 3x3 block (any scale or
-     * shear is discarded).
+     * from the last column, rotation from the column-normalized upper-left 3x3 block (scale is
+     * removed by normalizing the columns, but shear is not removed: a sheared block yields a
+     * rotation quaternion that is not unit length).
      *
      * @param m the matrix
      * @return this
@@ -203,8 +205,9 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Set this rigid transform to the rigid decomposition of the given affine matrix: translation
-     * from the last column, rotation from the orthonormalized upper-left 3x3 block (any scale or
-     * shear is discarded).
+     * from the last column, rotation from the column-normalized upper-left 3x3 block (scale is
+     * removed by normalizing the columns, but shear is not removed: a sheared block yields a
+     * rotation quaternion that is not unit length).
      *
      * @param m the matrix
      * @return this
@@ -266,7 +269,7 @@ public interface DoubleRigid extends DoubleRigidR {
     @Mutated DoubleRigid makeIdentity();
 
     /**
-     * Set this rigid transform to the given values.
+     * Set this rigid transform to a pure rotation by {@code rotation} (zero translation).
      *
      * @param rotation the quaternion
      * @return this
@@ -274,7 +277,8 @@ public interface DoubleRigid extends DoubleRigidR {
     @Mutated DoubleRigid set(DoubleQuatR rotation);
 
     /**
-     * Set this rigid transform to the given values.
+     * Set this rigid transform to a pure rotation by ({@code x}, {@code y}, {@code z}, {@code w})
+     * (zero translation).
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
@@ -285,7 +289,7 @@ public interface DoubleRigid extends DoubleRigidR {
     @Mutated DoubleRigid set(double x, double y, double z, double w);
 
     /**
-     * Set this rigid transform to the given values.
+     * Set this rigid transform to a pure rotation by {@code rotation} (zero translation).
      * <p>
      * Alias for {@code set}.
      *
@@ -295,7 +299,8 @@ public interface DoubleRigid extends DoubleRigidR {
     @Mutated default DoubleRigid makeRotation(DoubleQuatR rotation) { return set(rotation); }
 
     /**
-     * Set this rigid transform to the given values.
+     * Set this rigid transform to a pure rotation by ({@code x}, {@code y}, {@code z}, {@code w})
+     * (zero translation).
      * <p>
      * Alias for {@code set}.
      *
@@ -308,7 +313,7 @@ public interface DoubleRigid extends DoubleRigidR {
     @Mutated default DoubleRigid makeRotation(double x, double y, double z, double w) { return set(x, y, z, w); }
 
     /**
-     * Set this rigid transform to the given values.
+     * Set this rigid transform to a pure translation by {@code translation} (identity rotation).
      *
      * @param translation the vector
      * @return this
@@ -316,7 +321,8 @@ public interface DoubleRigid extends DoubleRigidR {
     @Mutated DoubleRigid set(Double3R translation);
 
     /**
-     * Set this rigid transform to the given values.
+     * Set this rigid transform to a pure translation by ({@code x}, {@code y}, {@code z}) (identity
+     * rotation).
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -326,7 +332,7 @@ public interface DoubleRigid extends DoubleRigidR {
     @Mutated DoubleRigid set(double x, double y, double z);
 
     /**
-     * Set this rigid transform to the given values.
+     * Set this rigid transform to a pure translation by {@code translation} (identity rotation).
      * <p>
      * Alias for {@code set}.
      *
@@ -336,7 +342,8 @@ public interface DoubleRigid extends DoubleRigidR {
     @Mutated default DoubleRigid makeTranslation(Double3R translation) { return set(translation); }
 
     /**
-     * Set this rigid transform to the given values.
+     * Set this rigid transform to a pure translation by ({@code x}, {@code y}, {@code z}) (identity
+     * rotation).
      * <p>
      * Alias for {@code set}.
      *
@@ -461,7 +468,7 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Compute the difference between this rigid transform and {@code other}, i.e. the rigid
-     * transformation that, applied after {@code this}, results in {@code other}.
+     * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}.
      *
      * @param other the other rigid transform
      * @return this
@@ -470,9 +477,9 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Compute the difference between this rigid transform and ({@code tX}, {@code tY}, {@code tZ},
-     * {@code rX}, {@code rY}, {@code rZ}, {@code rW}), i.e. the rigid transformation that, applied
-     * after {@code this}, results in ({@code tX}, {@code tY}, {@code tZ}, {@code rX}, {@code rY},
-     * {@code rZ}, {@code rW}).
+     * {@code rX}, {@code rY}, {@code rZ}, {@code rW}), i.e. the rigid transformation {@code D} with
+     * {@code this * D = (tX, tY, tZ, rX, rY, rZ, rW)}, that is
+     * {@code D = this^-1 * (tX, tY, tZ, rX, rY, rZ, rW)}.
      *
      * @param tX the {@code tX} component of the rigid transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
@@ -541,7 +548,8 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Set this rigid transform to a rotation of {@code angleX}, {@code angleY} and {@code angleZ}
-     * radians about the X, Y and Z axes, in that order.
+     * radians about the X, Y and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so
+     * a vector is rotated about the Z axis first, then Y, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -552,7 +560,8 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Set this rigid transform to a rotation of {@code angleX}, {@code angleZ} and {@code angleY}
-     * radians about the X, Z and Y axes, in that order.
+     * radians about the X, Z and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so
+     * a vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -571,7 +580,8 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Set this rigid transform to a rotation of {@code angleY}, {@code angleX} and {@code angleZ}
-     * radians about the Y, X and Z axes, in that order.
+     * radians about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so
+     * a vector is rotated about the Z axis first, then X, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -582,7 +592,8 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Set this rigid transform to a rotation of {@code angleY}, {@code angleZ} and {@code angleX}
-     * radians about the Y, Z and X axes, in that order.
+     * radians about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so
+     * a vector is rotated about the X axis first, then Z, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -601,7 +612,8 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Set this rigid transform to a rotation of {@code angleZ}, {@code angleX} and {@code angleY}
-     * radians about the Z, X and Y axes, in that order.
+     * radians about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so
+     * a vector is rotated about the Y axis first, then X, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -612,7 +624,8 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Set this rigid transform to a rotation of {@code angleZ}, {@code angleY} and {@code angleX}
-     * radians about the Z, Y and X axes, in that order.
+     * radians about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so
+     * a vector is rotated about the X axis first, then Y, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -700,7 +713,8 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this rigid transform.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this rigid transform.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -715,7 +729,8 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this rigid transform.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this rigid transform.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -742,7 +757,8 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this rigid transform.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this rigid transform.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -757,7 +773,8 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this rigid transform.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this rigid transform.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -784,7 +801,8 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this rigid transform.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this rigid transform.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -799,7 +817,8 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this rigid transform.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this rigid transform.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -860,6 +879,9 @@ public interface DoubleRigid extends DoubleRigidR {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -869,6 +891,9 @@ public interface DoubleRigid extends DoubleRigidR {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -878,6 +903,9 @@ public interface DoubleRigid extends DoubleRigidR {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -888,6 +916,9 @@ public interface DoubleRigid extends DoubleRigidR {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -902,6 +933,9 @@ public interface DoubleRigid extends DoubleRigidR {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -911,6 +945,9 @@ public interface DoubleRigid extends DoubleRigidR {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -920,6 +957,9 @@ public interface DoubleRigid extends DoubleRigidR {
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -930,6 +970,9 @@ public interface DoubleRigid extends DoubleRigidR {
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -970,6 +1013,9 @@ public interface DoubleRigid extends DoubleRigidR {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -979,6 +1025,9 @@ public interface DoubleRigid extends DoubleRigidR {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -988,6 +1037,9 @@ public interface DoubleRigid extends DoubleRigidR {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -998,6 +1050,9 @@ public interface DoubleRigid extends DoubleRigidR {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1012,6 +1067,9 @@ public interface DoubleRigid extends DoubleRigidR {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1021,6 +1079,9 @@ public interface DoubleRigid extends DoubleRigidR {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1030,6 +1091,9 @@ public interface DoubleRigid extends DoubleRigidR {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1040,6 +1104,9 @@ public interface DoubleRigid extends DoubleRigidR {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this

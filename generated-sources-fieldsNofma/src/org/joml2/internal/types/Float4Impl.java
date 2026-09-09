@@ -242,8 +242,8 @@ public final class Float4Impl implements Float4 {
 
     /**
      * Multiply this vector component-wise by {@code b} and add ({@code cX}, {@code cY}, {@code cZ},
-     * {@code cW}), i.e. compute {@code this * b + c} per component and store the result in
-     * {@code dest}.
+     * {@code cW}), i.e. compute {@code this * b + (cX, cY, cZ, cW)} per component and store the
+     * result in {@code dest}.
      *
      * @param b the factor to multiply this vector by
      * @param cX the {@code x} component of the vector {@code (cX, cY, cZ, cW)}
@@ -265,8 +265,8 @@ public final class Float4Impl implements Float4 {
 
     /**
      * Multiply this vector component-wise by {@code b} and add ({@code cX}, {@code cY}, {@code cZ},
-     * {@code cW}), i.e. compute {@code this * b + c} per component and store the result in
-     * {@code dest}.
+     * {@code cW}), i.e. compute {@code this * b + (cX, cY, cZ, cW)} per component and store the
+     * result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -322,8 +322,9 @@ public final class Float4Impl implements Float4 {
 
     /**
      * Multiply this vector component-wise by ({@code bX}, {@code bY}, {@code bZ}, {@code bW}) and
-     * add ({@code cX}, {@code cY}, {@code cZ}, {@code cW}), i.e. compute {@code this * b + c} per
-     * component and store the result in {@code dest}.
+     * add ({@code cX}, {@code cY}, {@code cZ}, {@code cW}), i.e. compute
+     * {@code this * (bX, bY, bZ, bW) + (cX, cY, cZ, cW)} per component and store the result in
+     * {@code dest}.
      *
      * @param bX the {@code x} component of the vector {@code (bX, bY, bZ, bW)}
      * @param bY the {@code y} component of the vector {@code (bX, bY, bZ, bW)}
@@ -348,8 +349,9 @@ public final class Float4Impl implements Float4 {
 
     /**
      * Multiply this vector component-wise by ({@code bX}, {@code bY}, {@code bZ}, {@code bW}) and
-     * add ({@code cX}, {@code cY}, {@code cZ}, {@code cW}), i.e. compute {@code this * b + c} per
-     * component and store the result in {@code dest}.
+     * add ({@code cX}, {@code cY}, {@code cZ}, {@code cW}), i.e. compute
+     * {@code this * (bX, bY, bZ, bW) + (cX, cY, cZ, cW)} per component and store the result in
+     * {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -615,7 +617,7 @@ public final class Float4Impl implements Float4 {
     /**
      * Set this vector to {@code s} and store the result in {@code dest}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -635,7 +637,7 @@ public final class Float4Impl implements Float4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -2285,7 +2287,8 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} {@code x} (the denominator) and store the result in
      * {@code dest}.
      *
      * @param x the value to take the arc tangent over (the denominator)
@@ -2298,7 +2301,8 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} {@code x} (the denominator) and store the result in
      * {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
@@ -2314,10 +2318,11 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
-     * {@code dest}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of {@code x} (the
+     * denominator) and store the result in {@code dest}.
      *
-     * @param x the value to take the arc tangent over (the denominator)
+     * @param x the vector of denominators, one per component
      * @param dest will hold the result
      * @return dest
      */
@@ -2327,13 +2332,14 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
-     * {@code dest}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of {@code x} (the
+     * denominator) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param x the value to take the arc tangent over (the denominator)
+     * @param x the vector of denominators, one per component
      * @param dest will hold the result
      * @return dest
      */
@@ -2343,8 +2349,9 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Compute the component-wise arc tangent of this vector over ({@code xX}, {@code xY},
-     * {@code xZ}, {@code xW}) and store the result in {@code dest}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of ({@code xX},
+     * {@code xY}, {@code xZ}, {@code xW}) (the denominator) and store the result in {@code dest}.
      *
      * @param xX the {@code x} component of the vector {@code (xX, xY, xZ, xW)}
      * @param xY the {@code y} component of the vector {@code (xX, xY, xZ, xW)}
@@ -2364,8 +2371,9 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Compute the component-wise arc tangent of this vector over ({@code xX}, {@code xY},
-     * {@code xZ}, {@code xW}) and store the result in {@code dest}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of ({@code xX},
+     * {@code xY}, {@code xZ}, {@code xW}) (the denominator) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2502,8 +2510,8 @@ public final class Float4Impl implements Float4 {
      * Clamp each component of this vector between {@code min} and {@code max} and store the result
      * in {@code dest}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -2519,8 +2527,8 @@ public final class Float4Impl implements Float4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -3217,8 +3225,8 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y} and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} {@code y} and store the result in {@code dest}.
      *
      * @param y the other operand
      * @param dest will hold the result
@@ -3230,8 +3238,8 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y} and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} {@code y} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3246,10 +3254,11 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y} and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of {@code y} and store the result in
+     * {@code dest}.
      *
-     * @param y the other operand
+     * @param y the vector of other operands, one per component
      * @param dest will hold the result
      * @return dest
      */
@@ -3259,13 +3268,14 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y} and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of {@code y} and store the result in
+     * {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param y the other operand
+     * @param y the vector of other operands, one per component
      * @param dest will hold the result
      * @return dest
      */
@@ -3275,8 +3285,9 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * ({@code yX}, {@code yY}, {@code yZ}, {@code yW}) and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of ({@code yX}, {@code yY},
+     * {@code yZ}, {@code yW}) and store the result in {@code dest}.
      *
      * @param yX the {@code x} component of the vector {@code (yX, yY, yZ, yW)}
      * @param yY the {@code y} component of the vector {@code (yX, yY, yZ, yW)}
@@ -3296,8 +3307,9 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * ({@code yX}, {@code yY}, {@code yZ}, {@code yW}) and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of ({@code yX}, {@code yY},
+     * {@code yZ}, {@code yW}) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3854,7 +3866,7 @@ public final class Float4Impl implements Float4 {
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
      *
-     * @param y the divisor
+     * @param y the vector of divisors, one per component
      * @param dest will hold the result
      * @return dest
      */
@@ -3873,7 +3885,7 @@ public final class Float4Impl implements Float4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param y the divisor
+     * @param y the vector of divisors, one per component
      * @param dest will hold the result
      * @return dest
      */
@@ -4010,11 +4022,13 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Normalize this vector to unit length (the zero vector yields the zero vector). <p> The
-     * squared length is formed at the component precision, so components whose squares overflow or
-     * underflow that precision are out of domain: the result is the zero vector rather than a unit
-     * vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}) and store the result in {@code dest}.
+     * Normalize this vector to unit length (the zero vector yields the zero vector) and store the
+     * result in {@code dest}.
+     * <p>
+     * The squared length is formed at the component precision, so components whose squares overflow
+     * or underflow that precision are out of domain: the result is the zero vector rather than a
+     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
+     * {@code float} and 1.3e154 for {@code double}).
      *
      * @param dest will hold the result
      * @return dest
@@ -4039,11 +4053,13 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Normalize this vector to unit length (the zero vector yields the zero vector). <p> The
-     * squared length is formed at the component precision, so components whose squares overflow or
-     * underflow that precision are out of domain: the result is the zero vector rather than a unit
-     * vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}) and store the result in {@code dest}.
+     * Normalize this vector to unit length (the zero vector yields the zero vector) and store the
+     * result in {@code dest}.
+     * <p>
+     * The squared length is formed at the component precision, so components whose squares overflow
+     * or underflow that precision are out of domain: the result is the zero vector rather than a
+     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
+     * {@code float} and 1.3e154 for {@code double}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4740,8 +4756,8 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Compute the rounded value of each component of this vector and store the result in
-     * {@code dest}.
+     * Compute the value rounded to the nearest integer, ties to even ({@code Math.rint}) of each
+     * component of this vector and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -4757,8 +4773,8 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Compute the rounded value of each component of this vector and store the result in
-     * {@code dest}.
+     * Compute the value rounded to the nearest integer, ties to even ({@code Math.rint}) of each
+     * component of this vector and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -5323,7 +5339,8 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Pre-multiply {@code mat} onto this vector and store the result in {@code dest}.
+     * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this} and store the
+     * result in {@code dest}.
      *
      * @param mat the matrix
      * @param dest will hold the result
@@ -5343,7 +5360,8 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Pre-multiply {@code mat} onto this vector and store the result in {@code dest}.
+     * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this} and store the
+     * result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -5642,8 +5660,8 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Rotate this vector by {@code angle} radians about the X axis and store the result in
-     * {@code dest}.
+     * Rotate the {@code (x, y, z)} components of this vector by {@code angle} radians about the X
+     * axis, leaving {@code w} unchanged, and store the result in {@code dest}.
      *
      * @param angle the angle in radians
      * @param dest will hold the result
@@ -5663,8 +5681,8 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Rotate this vector by {@code angle} radians about the X axis and store the result in
-     * {@code dest}.
+     * Rotate the {@code (x, y, z)} components of this vector by {@code angle} radians about the X
+     * axis, leaving {@code w} unchanged, and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -5687,8 +5705,8 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Rotate this vector by {@code angle} radians about the Y axis and store the result in
-     * {@code dest}.
+     * Rotate the {@code (x, y, z)} components of this vector by {@code angle} radians about the Y
+     * axis, leaving {@code w} unchanged, and store the result in {@code dest}.
      *
      * @param angle the angle in radians
      * @param dest will hold the result
@@ -5708,8 +5726,8 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Rotate this vector by {@code angle} radians about the Y axis and store the result in
-     * {@code dest}.
+     * Rotate the {@code (x, y, z)} components of this vector by {@code angle} radians about the Y
+     * axis, leaving {@code w} unchanged, and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -5732,8 +5750,8 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Rotate this vector by {@code angle} radians about the Z axis and store the result in
-     * {@code dest}.
+     * Rotate the {@code (x, y, z)} components of this vector by {@code angle} radians about the Z
+     * axis, leaving {@code w} unchanged, and store the result in {@code dest}.
      *
      * @param angle the angle in radians
      * @param dest will hold the result
@@ -5753,8 +5771,8 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Rotate this vector by {@code angle} radians about the Z axis and store the result in
-     * {@code dest}.
+     * Rotate the {@code (x, y, z)} components of this vector by {@code angle} radians about the Z
+     * axis, leaving {@code w} unchanged, and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.

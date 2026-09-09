@@ -158,7 +158,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     public boolean isIdentity() { return (this.properties & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY; }
     /** {@return whether this matrix is known to be a pure translation} O(1) read of the cached property bits; conservative. */
     public boolean isTranslation() { return (this.properties & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION; }
-    /** {@return whether this matrix is known to be orthogonal} O(1) read of the cached property bits; conservative. */
+    /** {@return whether this matrix is known to be orthogonal, i.e. its upper-left block is orthonormal with positive determinant (a proper rotation; a reflection is affine, not orthogonal)} O(1) read of the cached property bits; conservative. */
     public boolean isOrthogonal() { return (this.properties & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL; }
     /** {@return whether this matrix is known to be affine} O(1) read of the cached property bits; conservative. */
     public boolean isAffine() { return (this.properties & Joml.BIT_AFFINE) == Joml.BIT_AFFINE; }
@@ -593,8 +593,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
 
     /**
-     * Extract the rotation of this matrix as a unit quaternion, column-normalizing the linear block
-     * first to strip scale (skew is not removed), returning the result as a value.
+     * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
+     * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
+     * unit length), returning the result as a value.
      *
      * @return the resulting quaternion
      */
@@ -3403,7 +3404,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Create the given rigid transform's {@code T * R} composition.
      *
-     * @param r the rigid transform (must be a unit vector)
+     * @param r the rigid transform (whose rotation must be a unit quaternion)
      * @return the resulting matrix
      */
     public static Double4x4 makeFromRigid(DoubleRigid r) {
@@ -3415,19 +3416,23 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Create the given rigid transform's {@code T * R} composition.
      *
      * @param rTX the {@code tX} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)}
      * @param rTY the {@code tY} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)}
      * @param rTZ the {@code tZ} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)}
      * @param rRX the {@code rX} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the rotation quaternion must have unit
+     *        length)
      * @param rRY the {@code rY} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the rotation quaternion must have unit
+     *        length)
      * @param rRZ the {@code rZ} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the rotation quaternion must have unit
+     *        length)
      * @param rRW the {@code rW} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the rotation quaternion must have unit
+     *        length)
      * @return the resulting matrix
      */
     public static Double4x4 makeFromRigid(double rTX, double rTY, double rTZ, double rRX, double rRY, double rRZ, double rRW) {
@@ -3741,8 +3746,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
     /**
      * Decompose this matrix into a rigid transform: translation from the last column, rotation from
-     * the orthonormalized upper-left 3x3 block (any scale or shear projects onto the nearest
-     * rotation), returning the result as a value.
+     * the column-normalized upper-left 3x3 block (scale is removed by normalizing the columns, but
+     * shear is not removed: a sheared block yields a rotation quaternion that is not unit length),
+     * returning the result as a value.
      *
      * @return the resulting rigid transform
      */
@@ -3828,8 +3834,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
     /**
      * Decompose this matrix into a TRS transform: translation from the last column, scale from the
-     * column lengths of the upper-left 3x3 block, rotation from the orthonormalized block (a
-     * sheared matrix projects onto the nearest rotation), returning the result as a value.
+     * column lengths of the upper-left 3x3 block, rotation from the column-normalized block (scale
+     * is removed by normalizing the columns, but shear is not removed: a sheared block yields a
+     * rotation quaternion that is not unit length), returning the result as a value.
      *
      * @return the resulting transform
      */
@@ -9341,6 +9348,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -9372,6 +9383,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -9397,6 +9412,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -9423,6 +9442,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -10818,29 +10841,25 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * {@code dqDW}).
      *
      * @param dqRX the {@code rX} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the real part must have unit
+     *        length)
      * @param dqRY the {@code rY} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the real part must have unit
+     *        length)
      * @param dqRZ the {@code rZ} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the real part must have unit
+     *        length)
      * @param dqRW the {@code rW} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the real part must have unit
+     *        length)
      * @param dqDX the {@code dX} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)}
      * @param dqDY the {@code dY} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)}
      * @param dqDZ the {@code dZ} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)}
      * @param dqDW the {@code dW} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)}
      * @return the resulting matrix
      */
     public static Double4x4 makeFromDualQuat(double dqRX, double dqRY, double dqRZ, double dqRW, double dqDX, double dqDY, double dqDZ, double dqDW) {
@@ -10948,6 +10967,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
     /**
      * Create an arbitrary perspective projection frustum transformation.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -10974,6 +10997,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Create an arbitrary perspective projection frustum transformation.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -10994,6 +11021,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Create an arbitrary perspective projection frustum transformation.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -11015,6 +11046,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -11850,6 +11885,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
     /**
      * Create an orthographic projection transformation.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -11873,6 +11912,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Create an orthographic projection transformation.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -11890,6 +11933,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Create an orthographic projection transformation.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -11908,6 +11955,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -12002,6 +12053,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
     /**
      * Create a 2D orthographic projection transformation.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -12023,6 +12078,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Create a 2D orthographic projection transformation.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -12038,6 +12097,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Create a 2D orthographic projection transformation.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -12054,6 +12117,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -12142,6 +12209,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
     /**
      * Create a symmetric perspective projection frustum transformation.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -12167,6 +12238,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Create a symmetric perspective projection frustum transformation.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -12186,6 +12261,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Create a symmetric perspective projection frustum transformation.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -12206,6 +12285,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -12311,6 +12394,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Create a perspective projection frustum transformation for the given vertical field-of-view
      * range.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -12337,6 +12424,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * range.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -12357,6 +12448,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * range.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -12378,6 +12473,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -12500,6 +12599,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Create an asymmetric perspective projection frustum transformation with the frustum sides
      * given as view-axis angles.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -12529,6 +12632,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * given as view-axis angles.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -12552,6 +12659,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * given as view-axis angles.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -12576,6 +12687,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -13589,7 +13704,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
     /**
      * Create a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -13611,7 +13727,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
     /**
      * Create a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -13646,7 +13763,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
     /**
      * Create a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -13668,7 +13786,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
     /**
      * Create a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -13703,7 +13822,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
     /**
      * Create a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -13725,7 +13845,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
     /**
      * Create a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -17016,7 +17137,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * through the public {@code obliqueZ} dispatcher.
      */
     private Double4x4 obliqueZ_no_lh_identity(double planeX, double planeY, double planeZ, double planeW) {
-        return new Double4x4(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, planeX * Double.NaN, planeY * Double.NaN, planeZ * Double.NaN, Math.fma(planeW, Double.NaN, -1.0), 0.0, 0.0, 0.0, 1.0, Joml.BIT_ORTHOGONAL);
+        return new Double4x4(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, planeX * Double.NaN, planeY * Double.NaN, planeZ * Double.NaN, Math.fma(planeW, Double.NaN, -1.0), 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE);
     }
 
 
@@ -17239,7 +17360,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * through the public {@code obliqueZ} dispatcher.
      */
     private Double4x4 obliqueZ_zo_lh_identity(double planeX, double planeY, double planeZ, double planeW) {
-        return new Double4x4(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, planeX * Double.NaN, planeY * Double.NaN, planeZ * Double.NaN, planeW * Double.NaN, 0.0, 0.0, 0.0, 1.0, Joml.BIT_ORTHOGONAL);
+        return new Double4x4(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, planeX * Double.NaN, planeY * Double.NaN, planeZ * Double.NaN, planeW * Double.NaN, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE);
     }
 
 
@@ -17452,16 +17573,12 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      *
      * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeY the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeZ the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the resulting matrix
@@ -17485,7 +17602,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * The result is returned as a value; {@code this} is not modified.
      *
-     * @param plane the plane
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the resulting matrix
@@ -17576,16 +17694,12 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      *
      * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeY the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeZ the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the resulting matrix
      */
@@ -17607,16 +17721,12 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      *
      * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeY the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeZ the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param handedness the handedness of the coordinate system to map into
      * @return the resulting matrix
      */
@@ -17639,16 +17749,12 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      *
      * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeY the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeZ the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @return the resulting matrix
      */
     public Double4x4 obliqueZ(double planeX, double planeY, double planeZ, double planeW) { return obliqueZ(planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
@@ -17667,7 +17773,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
-     * @param plane the plane
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
      * @return the resulting matrix
      */
@@ -17687,7 +17794,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param plane the plane
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @return the resulting matrix
      */
@@ -17708,7 +17816,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param plane the plane
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
      * @return the resulting matrix
      */
     public Double4x4 obliqueZ(DoublePlane plane) { return obliqueZ(plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
@@ -18371,6 +18480,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * If {@code M} is {@code this} matrix and {@code O} the orthographic projection matrix, then
      * the new matrix will be {@code M * O}. So when transforming a vector {@code v} with the new
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -18399,6 +18512,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -18421,6 +18538,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -18444,6 +18565,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -18853,6 +18978,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * If {@code M} is {@code this} matrix and {@code O} the orthographic projection matrix, then
      * the new matrix will be {@code M * O}. So when transforming a vector {@code v} with the new
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -18879,6 +19008,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -18899,6 +19032,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -18920,6 +19057,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -25253,6 +25394,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -25283,6 +25428,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -25307,6 +25456,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -25332,6 +25485,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -25937,6 +26094,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -25967,6 +26128,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -25991,6 +26156,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -26016,6 +26185,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -27201,6 +27374,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -27234,6 +27411,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -27261,6 +27442,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -27289,6 +27474,10 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -28485,7 +28674,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code S * M * v}, the scaling will be applied last.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @return the resulting matrix
      */
@@ -29889,7 +30078,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this matrix, returning the result as a value.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this matrix, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -30081,7 +30271,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this matrix, returning the result as a value.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this matrix, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -30437,7 +30628,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this matrix, returning the result as a value.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this matrix, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -30629,7 +30821,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this matrix, returning the result as a value.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this matrix, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -30985,7 +31178,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this matrix, returning the result as a value.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this matrix, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -31177,7 +31371,8 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this matrix, returning the result as a value.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this matrix, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -31461,7 +31656,7 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * S * v}, the scaling will be applied first.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @return the resulting matrix
      */
@@ -32472,11 +32667,11 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * internally) and the given viewport, returning the result as a value.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -32516,11 +32711,11 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -32692,11 +32887,11 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * as a value.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -32738,11 +32933,11 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -33594,6 +33789,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -33605,6 +33803,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -33617,6 +33818,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -33631,6 +33835,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -33642,6 +33849,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -33654,6 +33864,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -33668,6 +33881,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -33679,6 +33895,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -33691,6 +33910,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -33705,6 +33927,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -33716,6 +33941,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -33728,6 +33956,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -33839,6 +34070,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code float}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -33850,6 +34084,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code float}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -33862,6 +34099,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code float}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -33876,6 +34116,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code float}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -33887,6 +34130,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code float}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -33899,6 +34145,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code float}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -33913,6 +34162,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code float}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -33925,6 +34177,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code float}, starting at the given absolute index (the position is not used or
      * modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -33937,6 +34192,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code float}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -33951,6 +34209,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code float}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -33963,6 +34224,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code float}, starting at the given absolute index (the position is not used or
      * modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -33975,6 +34239,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code float}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -34082,6 +34349,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -34093,6 +34363,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -34105,6 +34378,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -34119,6 +34395,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -34130,6 +34409,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -34142,6 +34424,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -34156,6 +34441,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -34167,6 +34455,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given byte buffer in row-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -34179,6 +34470,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -34193,6 +34487,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given byte buffer in row-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -34204,6 +34501,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given byte buffer in row-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -34216,6 +34516,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given byte buffer in row-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -34327,6 +34630,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given buffer in row-major order, converting each element to
      * {@code float}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -34338,6 +34644,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given buffer in row-major order, converting each element to
      * {@code float}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -34350,6 +34659,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given buffer in row-major order, converting each element to
      * {@code float}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -34364,6 +34676,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given buffer in row-major order, converting each element from
      * {@code float}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -34375,6 +34690,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given buffer in row-major order, converting each element from
      * {@code float}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -34387,6 +34705,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given buffer in row-major order, converting each element from
      * {@code float}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -34401,6 +34722,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code float}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -34412,6 +34736,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code float}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -34424,6 +34751,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code float}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -34438,6 +34768,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code float}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -34449,6 +34782,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code float}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -34461,6 +34797,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code float}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -34563,6 +34902,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -34576,6 +34918,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -34590,6 +34935,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -34606,6 +34954,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -34619,6 +34970,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -34633,6 +34987,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -34649,6 +35006,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -34662,6 +35022,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -34676,6 +35039,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -34692,6 +35058,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -34705,6 +35074,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -34719,6 +35091,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -34828,6 +35203,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code float}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -34841,6 +35219,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code float}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -34855,6 +35236,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code float}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -34871,6 +35255,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code float}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -34884,6 +35271,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code float}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -34898,6 +35288,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code float}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -34914,6 +35307,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code float}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -34927,6 +35323,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code float}, starting at the given absolute index (the position is not used or
      * modified), with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -34941,6 +35340,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code float}, starting at its current position and advancing the position accordingly,
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -34957,6 +35359,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code float}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -34970,6 +35375,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code float}, starting at the given absolute index (the position is not used or
      * modified), with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -34984,6 +35392,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code float}, starting at its current position and advancing the position accordingly,
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35091,6 +35502,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35104,6 +35518,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -35118,6 +35535,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly, with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35134,6 +35554,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given buffer in row-major order, starting at its current position
      * (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35147,6 +35570,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -35161,6 +35587,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly, with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35177,6 +35606,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35190,6 +35622,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given byte buffer in row-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -35204,6 +35639,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35220,6 +35658,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given byte buffer in row-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35233,6 +35674,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given byte buffer in row-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -35247,6 +35691,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given byte buffer in row-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35356,6 +35803,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given buffer in row-major order, converting each element to
      * {@code float}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35369,6 +35819,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given buffer in row-major order, converting each element to
      * {@code float}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -35383,6 +35836,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given buffer in row-major order, converting each element to
      * {@code float}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35399,6 +35855,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given buffer in row-major order, converting each element from
      * {@code float}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35412,6 +35871,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given buffer in row-major order, converting each element from
      * {@code float}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -35426,6 +35888,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given buffer in row-major order, converting each element from
      * {@code float}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35442,6 +35907,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code float}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35455,6 +35923,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code float}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -35469,6 +35940,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code float}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35485,6 +35959,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code float}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35498,6 +35975,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code float}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -35512,6 +35992,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code float}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35571,6 +36054,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -35580,6 +36066,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -35590,6 +36079,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -35618,6 +36110,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code float}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -35627,6 +36122,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code float}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -35637,6 +36135,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code float}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -35646,6 +36147,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -35655,6 +36159,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -35665,6 +36172,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -35707,6 +36217,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -35719,6 +36232,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35730,6 +36246,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code float}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -35742,6 +36261,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code float}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35753,6 +36275,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -35765,6 +36290,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35803,6 +36331,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -35812,6 +36343,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -35822,6 +36356,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -35850,6 +36387,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code float}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -35859,6 +36399,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code float}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -35869,6 +36412,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code float}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -35878,6 +36424,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -35887,6 +36436,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -35897,6 +36449,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
     /**
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return a new {@code Double4x4} holding the loaded elements
@@ -35939,6 +36494,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -35951,6 +36509,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35962,6 +36523,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code float}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -35974,6 +36538,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code float}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -35985,6 +36552,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -35997,6 +36567,9 @@ public record Double4x4(double m00, double m01, double m02, double m03, double m
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows

@@ -221,7 +221,7 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Set this matrix to the given rigid transform's rotation block (the translation is dropped).
      *
-     * @param r the rigid transform (must be a unit vector)
+     * @param r the rigid transform (whose rotation must be a unit quaternion)
      * @return this
      */
     @Mutated Float3x3 makeFromRigid(FloatRigidR r);
@@ -230,19 +230,19 @@ public interface Float3x3 extends Float3x3R {
      * Set this matrix to the given rigid transform's rotation block (the translation is dropped).
      *
      * @param tX the {@code tX} component of the rigid transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the vector must have unit length)
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
      * @param tY the {@code tY} component of the rigid transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the vector must have unit length)
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
      * @param tZ the {@code tZ} component of the rigid transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the vector must have unit length)
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
      * @param rX the {@code rX} component of the rigid transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the vector must have unit length)
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the rotation quaternion must have unit length)
      * @param rY the {@code rY} component of the rigid transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the vector must have unit length)
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the rotation quaternion must have unit length)
      * @param rZ the {@code rZ} component of the rigid transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the vector must have unit length)
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the rotation quaternion must have unit length)
      * @param rW the {@code rW} component of the rigid transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the vector must have unit length)
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the rotation quaternion must have unit length)
      * @return this
      */
     @Mutated Float3x3 makeFromRigid(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW);
@@ -515,21 +515,21 @@ public interface Float3x3 extends Float3x3R {
      * translation is dropped).
      *
      * @param rX the {@code rX} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the real part must have unit length)
      * @param rY the {@code rY} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the real part must have unit length)
      * @param rZ the {@code rZ} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the real part must have unit length)
      * @param rW the {@code rW} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the real part must have unit length)
      * @param dX the {@code dX} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dY the {@code dY} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dZ the {@code dZ} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dW the {@code dW} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @return this
      */
     @Mutated Float3x3 makeFromDualQuat(float rX, float rY, float rZ, float rW, float dX, float dY, float dZ, float dW);
@@ -623,7 +623,8 @@ public interface Float3x3 extends Float3x3R {
 
     /**
      * Set this matrix to a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians
-     * about the X, Y and Z axes, in that order.
+     * about the X, Y and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a
+     * vector is rotated about the Z axis first, then Y, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -634,7 +635,8 @@ public interface Float3x3 extends Float3x3R {
 
     /**
      * Set this matrix to a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians
-     * about the X, Z and Y axes, in that order.
+     * about the X, Z and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a
+     * vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -653,7 +655,8 @@ public interface Float3x3 extends Float3x3R {
 
     /**
      * Set this matrix to a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians
-     * about the Y, X and Z axes, in that order.
+     * about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a
+     * vector is rotated about the Z axis first, then X, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -664,7 +667,8 @@ public interface Float3x3 extends Float3x3R {
 
     /**
      * Set this matrix to a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians
-     * about the Y, Z and X axes, in that order.
+     * about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a
+     * vector is rotated about the X axis first, then Z, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -683,7 +687,8 @@ public interface Float3x3 extends Float3x3R {
 
     /**
      * Set this matrix to a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians
-     * about the Z, X and Y axes, in that order.
+     * about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a
+     * vector is rotated about the Y axis first, then X, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -694,7 +699,8 @@ public interface Float3x3 extends Float3x3R {
 
     /**
      * Set this matrix to a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians
-     * about the Z, Y and X axes, in that order.
+     * about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a
+     * vector is rotated about the X axis first, then Y, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -721,7 +727,8 @@ public interface Float3x3 extends Float3x3R {
     @Mutated Float3x3 makeScaling(float x, float y);
 
     /**
-     * Set this matrix to a scaling transformation that scales by {@code s}.
+     * Set this matrix to a scaling transformation that scales by {@code s} of the x and y axes only
+     * (the 2D homogeneous {@code diag(s, s, 1)}: the third row and column are left unscaled).
      *
      * @param s the uniform scale factor
      * @return this
@@ -892,7 +899,8 @@ public interface Float3x3 extends Float3x3R {
     @Mutated default Float3x3 preScale(float x, float y) { return preScale(x, y, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
     /**
-     * Pre-multiply a scaling by {@code s} onto this matrix.
+     * Pre-multiply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) onto this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
@@ -904,7 +912,9 @@ public interface Float3x3 extends Float3x3R {
     @Mutated default Float3x3 preScale(float s) { return preScale(s, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
     /**
-     * Pre-multiply a scaling by {@code s} about the pivot point {@code pivot} onto this matrix.
+     * Pre-multiply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) about the pivot point
+     * {@code pivot} onto this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
@@ -917,8 +927,9 @@ public interface Float3x3 extends Float3x3R {
     @Mutated default Float3x3 preScaleAround(float s, Float2R pivot) { return preScaleAround(s, pivot, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
     /**
-     * Pre-multiply a scaling by {@code s} about the pivot point ({@code x}, {@code y}) onto this
-     * matrix.
+     * Pre-multiply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) about the pivot point
+     * ({@code x}, {@code y}) onto this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
@@ -938,7 +949,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code S * M * v}, the scaling will be applied last.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @return this
      */
@@ -1103,7 +1114,8 @@ public interface Float3x3 extends Float3x3R {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this matrix.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -1118,7 +1130,8 @@ public interface Float3x3 extends Float3x3R {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this matrix.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -1211,7 +1224,8 @@ public interface Float3x3 extends Float3x3R {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this matrix.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -1226,7 +1240,8 @@ public interface Float3x3 extends Float3x3R {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this matrix.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -1319,7 +1334,8 @@ public interface Float3x3 extends Float3x3R {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this matrix.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -1334,7 +1350,8 @@ public interface Float3x3 extends Float3x3R {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this matrix.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -1406,7 +1423,8 @@ public interface Float3x3 extends Float3x3R {
     @Mutated default Float3x3 scale(float x, float y) { return scale(x, y, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
     /**
-     * Apply a scaling by {@code s} to this matrix.
+     * Apply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
@@ -1418,7 +1436,9 @@ public interface Float3x3 extends Float3x3R {
     @Mutated default Float3x3 scale(float s) { return scale(s, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
     /**
-     * Apply a scaling by {@code s} about the pivot point {@code pivot} to this matrix.
+     * Apply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) about the pivot point
+     * {@code pivot} to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
@@ -1431,7 +1451,9 @@ public interface Float3x3 extends Float3x3R {
     @Mutated default Float3x3 scaleAround(float s, Float2R pivot) { return scaleAround(s, pivot, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
     /**
-     * Apply a scaling by {@code s} about the pivot point ({@code x}, {@code y}) to this matrix.
+     * Apply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) about the pivot point
+     * ({@code x}, {@code y}) to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
@@ -1451,7 +1473,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * S * v}, the scaling will be applied first.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @return this
      */
@@ -1534,6 +1556,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1543,6 +1568,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1552,6 +1580,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1562,6 +1593,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1576,6 +1610,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1585,6 +1622,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1594,6 +1634,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1604,6 +1647,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1662,6 +1708,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1671,6 +1720,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1680,6 +1732,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1690,6 +1745,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1704,6 +1762,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1713,6 +1774,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1723,6 +1787,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code double}, starting at the given absolute index (the position is not used or
      * modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1733,6 +1800,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1792,6 +1862,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1801,6 +1874,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1810,6 +1886,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1820,6 +1899,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1834,6 +1916,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given byte buffer in row-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1843,6 +1928,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given byte buffer in row-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1852,6 +1940,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given byte buffer in row-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1862,6 +1953,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given byte buffer in row-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1920,6 +2014,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1929,6 +2026,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1938,6 +2038,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1948,6 +2051,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1962,6 +2068,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1971,6 +2080,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1980,6 +2092,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code double}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1990,6 +2105,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -2044,6 +2162,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2055,6 +2176,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2067,6 +2191,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2083,6 +2210,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2094,6 +2224,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2106,6 +2239,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2165,6 +2301,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2176,6 +2315,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2188,6 +2330,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2204,6 +2349,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code double}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2215,6 +2363,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code double}, starting at the given absolute index (the position is not used or
      * modified), with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2227,6 +2378,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code double}, starting at its current position and advancing the position accordingly,
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2288,6 +2442,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given buffer in row-major order, starting at its current position
      * (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2299,6 +2456,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2311,6 +2471,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly, with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2327,6 +2490,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given byte buffer in row-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2338,6 +2504,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given byte buffer in row-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2350,6 +2519,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given byte buffer in row-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2409,6 +2581,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given buffer in row-major order, starting at its current position
      * (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2420,6 +2595,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2432,6 +2610,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly, with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2448,6 +2629,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code double}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2459,6 +2643,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code double}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2471,6 +2658,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code double}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2537,6 +2727,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -2546,6 +2739,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2556,6 +2752,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -2584,6 +2783,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -2593,6 +2795,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code double}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2603,6 +2808,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -2612,6 +2820,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -2621,6 +2832,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2631,6 +2845,9 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -2691,6 +2908,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2703,6 +2923,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2714,6 +2937,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code double}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2726,6 +2952,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code double}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2737,6 +2966,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2749,6 +2981,9 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows

@@ -26,6 +26,10 @@ inline infix fun Double4.angleBetween(other: Double4): Double = angleBetween(oth
 inline infix fun Double4.distance(other: Double4): Double = distance(other)
 /** [Double4.dot] as an infix function, so `a dot b` parses. */
 inline infix fun Double4.dot(other: Double4): Double = dot(other)
+/** [Double4.mod] as the `mod` infix function, matching the name Kotlin uses for that operation. */
+inline infix fun Double4.mod(y: Double): Double4 = mod(y)
+/** [Double4.mod] as the `mod` infix function, matching the name Kotlin uses for that operation. */
+inline infix fun Double4.mod(y: Double4): Double4 = mod(y)
 /** [Double4.rotateAxis] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Double4.rotateAxis(angle: Angle, axis: Double3): Double4 = rotateAxis(angle.radians, axis)
 /** [Double4.rotateX] taking a type-safe [Angle] in place of the angle in radians. */

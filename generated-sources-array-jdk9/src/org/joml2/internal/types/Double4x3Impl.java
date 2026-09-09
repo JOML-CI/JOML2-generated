@@ -126,7 +126,7 @@ public class Double4x3Impl implements Double4x3 {
         dd[4] = _buf2;
         dd[5] = _buf3;
         dd[8] = _buf4;
-        ((Double3x4Impl) dest).properties = 0;
+        ((Double3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
 

@@ -380,7 +380,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
 
 
     /**
-     * Compute the matrix representation of this quaternion, returning the result as a value.
+     * Compute the matrix representation of this quaternion (which must have unit length), returning
+     * the result as a value.
      *
      * @return the resulting matrix
      */
@@ -388,13 +389,13 @@ public value record FloatQuat(float x, float y, float z, float w) {
         float _t0 = this.z * this.z;
         float _t1 = this.z * this.w;
         float _t2 = this.y * this.w;
-        return new Float4x4(Math.fma(-2.0f, Math.fma(this.y, this.y, _t0), 1.0f), 2.0f * Math.fma(this.x, this.y, -_t1), 2.0f * Math.fma(this.x, this.z, _t2), 0.0f, 2.0f * Math.fma(this.x, this.y, _t1), Math.fma(-2.0f, Math.fma(this.x, this.x, _t0), 1.0f), 2.0f * Math.fma(this.y, this.z, -(this.x * this.w)), 0.0f, 2.0f * Math.fma(this.x, this.z, -_t2), 2.0f * Math.fma(this.x, this.w, this.y * this.z), Math.fma(-2.0f, Math.fma(this.x, this.x, this.y * this.y), 1.0f), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0);
+        return new Float4x4(Math.fma(-2.0f, Math.fma(this.y, this.y, _t0), 1.0f), 2.0f * Math.fma(this.x, this.y, -_t1), 2.0f * Math.fma(this.x, this.z, _t2), 0.0f, 2.0f * Math.fma(this.x, this.y, _t1), Math.fma(-2.0f, Math.fma(this.x, this.x, _t0), 1.0f), 2.0f * Math.fma(this.y, this.z, -(this.x * this.w)), 0.0f, 2.0f * Math.fma(this.x, this.z, -_t2), 2.0f * Math.fma(this.x, this.w, this.y * this.z), Math.fma(-2.0f, Math.fma(this.x, this.x, this.y * this.y), 1.0f), 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
     /**
-     * Compute the 3x3 rotation matrix representation of this quaternion, returning the result as a
-     * value.
+     * Compute the 3x3 rotation matrix representation of this quaternion (which must have unit
+     * length), returning the result as a value.
      *
      * @return the resulting matrix
      */
@@ -407,8 +408,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
 
 
     /**
-     * Compute the 3x4 matrix representation of this quaternion (the omitted last row is implicitly
-     * {@code 0, 0, 0, 1}), returning the result as a value.
+     * Compute the 3x4 matrix representation of this quaternion (which must have unit length; the
+     * omitted last row is implicitly {@code 0, 0, 0, 1}), returning the result as a value.
      *
      * @return the resulting matrix
      */
@@ -416,7 +417,7 @@ public value record FloatQuat(float x, float y, float z, float w) {
         float _t0 = this.z * this.z;
         float _t1 = this.z * this.w;
         float _t2 = this.y * this.w;
-        return new Float3x4(Math.fma(-2.0f, Math.fma(this.y, this.y, _t0), 1.0f), 2.0f * Math.fma(this.x, this.y, -_t1), 2.0f * Math.fma(this.x, this.z, _t2), 0.0f, 2.0f * Math.fma(this.x, this.y, _t1), Math.fma(-2.0f, Math.fma(this.x, this.x, _t0), 1.0f), 2.0f * Math.fma(this.y, this.z, -(this.x * this.w)), 0.0f, 2.0f * Math.fma(this.x, this.z, -_t2), 2.0f * Math.fma(this.x, this.w, this.y * this.z), Math.fma(-2.0f, Math.fma(this.x, this.x, this.y * this.y), 1.0f), 0.0f, 0);
+        return new Float3x4(Math.fma(-2.0f, Math.fma(this.y, this.y, _t0), 1.0f), 2.0f * Math.fma(this.x, this.y, -_t1), 2.0f * Math.fma(this.x, this.z, _t2), 0.0f, 2.0f * Math.fma(this.x, this.y, _t1), Math.fma(-2.0f, Math.fma(this.x, this.x, _t0), 1.0f), 2.0f * Math.fma(this.y, this.z, -(this.x * this.w)), 0.0f, 2.0f * Math.fma(this.x, this.z, -_t2), 2.0f * Math.fma(this.x, this.w, this.y * this.z), Math.fma(-2.0f, Math.fma(this.x, this.x, this.y * this.y), 1.0f), 0.0f, Joml.BIT_ORTHOGONAL);
     }
 
     /** Result value of {@code decomposeSwingTwist}. */
@@ -1156,8 +1157,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
 
 
     /**
-     * Compute the difference between this quaternion and {@code other}, i.e. the rotation that,
-     * applied after {@code this}, results in {@code other}, returning the result as a value.
+     * Compute the difference between this quaternion and {@code other}, i.e. the rotation {@code D}
+     * with {@code this * D = other}, that is {@code D = this^-1 * other}, returning the result as a
+     * value.
      *
      * @param other the other quaternion
      * @return the resulting quaternion
@@ -1169,9 +1171,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
 
     /**
      * Compute the difference between this quaternion and ({@code otherX}, {@code otherY},
-     * {@code otherZ}, {@code otherW}), i.e. the rotation that, applied after {@code this}, results
-     * in ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}), returning the result as
-     * a value.
+     * {@code otherZ}, {@code otherW}), i.e. the rotation {@code D} with
+     * {@code this * D = (otherX, otherY, otherZ, otherW)}, that is
+     * {@code D = this^-1 * (otherX, otherY, otherZ, otherW)}, returning the result as a value.
      *
      * @param otherX the {@code x} component of the quaternion
      *        {@code (otherX, otherY, otherZ, otherW)}
@@ -1498,8 +1500,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * Obtain the direction of {@code -X} before the transformation represented by this quaternion
      * is applied, returning the result as a value.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @return the resulting vector
      */
@@ -1512,8 +1514,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * Obtain the direction of {@code -Y} before the transformation represented by this quaternion
      * is applied, returning the result as a value.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @return the resulting vector
      */
@@ -1526,8 +1528,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * Obtain the direction of {@code -Z} before the transformation represented by this quaternion
      * is applied, returning the result as a value.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @return the resulting vector
      */
@@ -1540,8 +1542,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * Obtain the direction of {@code +X} before the transformation represented by this quaternion
      * is applied, returning the result as a value.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @return the resulting vector
      */
@@ -1554,8 +1556,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * Obtain the direction of {@code +Y} before the transformation represented by this quaternion
      * is applied, returning the result as a value.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @return the resulting vector
      */
@@ -1568,8 +1570,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * Obtain the direction of {@code +Z} before the transformation represented by this quaternion
      * is applied, returning the result as a value.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @return the resulting vector
      */
@@ -1755,8 +1757,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * Obtain the direction of {@code -X} after the transformation represented by this quaternion is
      * applied, returning the result as a value.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @return the resulting vector
      */
@@ -1769,8 +1771,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * Obtain the direction of {@code -Y} after the transformation represented by this quaternion is
      * applied, returning the result as a value.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @return the resulting vector
      */
@@ -1783,8 +1785,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * Obtain the direction of {@code -Z} after the transformation represented by this quaternion is
      * applied, returning the result as a value.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @return the resulting vector
      */
@@ -1797,8 +1799,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * Obtain the direction of {@code +X} after the transformation represented by this quaternion is
      * applied, returning the result as a value.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @return the resulting vector
      */
@@ -1811,8 +1813,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * Obtain the direction of {@code +Y} after the transformation represented by this quaternion is
      * applied, returning the result as a value.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @return the resulting vector
      */
@@ -1825,8 +1827,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
      * Obtain the direction of {@code +Z} after the transformation represented by this quaternion is
      * applied, returning the result as a value.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @return the resulting vector
      */
@@ -2352,7 +2354,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
 
     /**
      * Create a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2379,7 +2382,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
 
     /**
      * Create a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2418,7 +2422,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
 
     /**
      * Create a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2445,7 +2450,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
 
     /**
      * Create a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2484,7 +2490,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
 
     /**
      * Create a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2511,7 +2518,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
 
     /**
      * Create a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2734,7 +2742,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this quaternion, returning the result as a value.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this quaternion, returning the result as a value.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -2769,7 +2778,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this quaternion, returning the result as a value.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this quaternion, returning the result as a value.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -2819,7 +2829,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this quaternion, returning the result as a value.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this quaternion, returning the result as a value.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -2854,7 +2865,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this quaternion, returning the result as a value.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this quaternion, returning the result as a value.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -2904,7 +2916,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this quaternion, returning the result as a value.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this quaternion, returning the result as a value.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -2939,7 +2952,8 @@ public value record FloatQuat(float x, float y, float z, float w) {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this quaternion, returning the result as a value.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this quaternion, returning the result as a value.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -3157,6 +3171,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3168,6 +3185,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -3180,6 +3200,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3194,6 +3217,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code FloatQuat} holding the loaded elements
@@ -3205,6 +3231,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -3217,6 +3246,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code FloatQuat} holding the loaded elements
@@ -3231,6 +3263,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3242,6 +3277,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Store the elements into the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -3254,6 +3292,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Store the elements into the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3268,6 +3309,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatQuat} holding the loaded elements
@@ -3279,6 +3323,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -3291,6 +3338,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatQuat} holding the loaded elements
@@ -3414,6 +3464,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Store the elements into the given buffer, converting each element to {@code double}, starting
      * at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3425,6 +3478,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Store the elements into the given buffer, converting each element to {@code double}, starting
      * at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -3437,6 +3493,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Store the elements into the given buffer, converting each element to {@code double}, starting
      * at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3451,6 +3510,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Load the elements from the given buffer, converting each element from {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code FloatQuat} holding the loaded elements
@@ -3462,6 +3524,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Load the elements from the given buffer, converting each element from {@code double},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -3474,6 +3539,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Load the elements from the given buffer, converting each element from {@code double},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code FloatQuat} holding the loaded elements
@@ -3488,6 +3556,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3499,6 +3570,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -3511,6 +3585,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3525,6 +3602,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatQuat} holding the loaded elements
@@ -3536,6 +3616,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -3548,6 +3631,9 @@ public value record FloatQuat(float x, float y, float z, float w) {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatQuat} holding the loaded elements

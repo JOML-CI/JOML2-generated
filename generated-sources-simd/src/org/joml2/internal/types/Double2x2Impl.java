@@ -59,7 +59,7 @@ public class Double2x2Impl implements Double2x2 {
     @Override public boolean isIdentity() { return (this.properties & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY; }
     /** {@return whether this matrix is known to be a pure translation} O(1) read of the cached property bits; conservative. */
     @Override public boolean isTranslation() { return (this.properties & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION; }
-    /** {@return whether this matrix is known to be orthogonal} O(1) read of the cached property bits; conservative. */
+    /** {@return whether this matrix is known to be orthogonal, i.e. its upper-left block is orthonormal with positive determinant (a proper rotation; a reflection is affine, not orthogonal)} O(1) read of the cached property bits; conservative. */
     @Override public boolean isOrthogonal() { return (this.properties & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL; }
     /** {@return whether this matrix is known to be affine} O(1) read of the cached property bits; conservative. */
     @Override public boolean isAffine() { return (this.properties & Joml.BIT_AFFINE) == Joml.BIT_AFFINE; }
@@ -2178,6 +2178,7 @@ public class Double2x2Impl implements Double2x2 {
         dd[1] = (float) (sd[1]);
         dd[2] = (float) (sd[2]);
         dd[3] = (float) (sd[3]);
+        ((Float2x2Impl) dest).properties = this.properties;
         return dest;
     }
 

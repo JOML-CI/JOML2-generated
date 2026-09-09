@@ -26,6 +26,10 @@ inline infix fun Float2.angleBetween(other: Float2): Float = angleBetween(other)
 inline infix fun Float2.distance(other: Float2): Float = distance(other)
 /** [Float2.dot] as an infix function, so `a dot b` parses. */
 inline infix fun Float2.dot(other: Float2): Float = dot(other)
+/** [Float2.mod] as the `mod` infix function, matching the name Kotlin uses for that operation. */
+inline infix fun Float2.mod(y: Float): Float2 = mod(y)
+/** [Float2.mod] as the `mod` infix function, matching the name Kotlin uses for that operation. */
+inline infix fun Float2.mod(y: Float2): Float2 = mod(y)
 /** [Float2.rotate] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Float2.rotate(angle: Angle): Float2 = rotate(angle.radians.toFloat())
 /** Component 1 of this Float2 (`x()`), for destructuring declarations. */
@@ -38,7 +42,7 @@ inline fun Float2.copy(x: Float = x(), y: Float = y()): Float2 = Float2(x, y)
 inline fun Float2.toFloatArray(): FloatArray = store(FloatArray(2))
 /** A Float2 read from this array in storage order, starting at index 0. */
 inline fun FloatArray.toFloat2(): Float2 = Float2.load(this)
-/** The component of this Float2 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. */
+/** The component of this Float2 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT `v[i] = x` (or `v[i] += x`) resolves to the Java 2-argument value factory `Float2.set(a, b)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Float2.get(index: Int): Float = when (index) {
     0 -> x()
     1 -> y()

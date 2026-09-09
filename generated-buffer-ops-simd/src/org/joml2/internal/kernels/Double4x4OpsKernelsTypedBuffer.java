@@ -27,7 +27,41 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.getColumn(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, col);
             return dest;
         }
-        Double4x4OpsKernelsSegment.getColumn_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, col);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.getColumn_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, col);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _idxSw0;
+        double _idxSw1;
+        double _idxSw2;
+        double _idxSw3;
+        switch (col) {
+            case 0: _idxSw0 = _self00; _idxSw1 = _self10; _idxSw2 = _self20; _idxSw3 = _self30; break;
+            case 1: _idxSw0 = _self01; _idxSw1 = _self11; _idxSw2 = _self21; _idxSw3 = _self31; break;
+            case 2: _idxSw0 = _self02; _idxSw1 = _self12; _idxSw2 = _self22; _idxSw3 = _self32; break;
+            case 3: _idxSw0 = _self03; _idxSw1 = _self13; _idxSw2 = _self23; _idxSw3 = _self33; break;
+            default: throw new IndexOutOfBoundsException("Index out of range: " + col);
+        }
+        dest.put(destOffset + 0, _idxSw0);
+        dest.put(destOffset + 1, _idxSw1);
+        dest.put(destOffset + 2, _idxSw2);
+        dest.put(destOffset + 3, _idxSw3);
         return dest;
     }
 
@@ -43,7 +77,27 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.getEulerAnglesXYZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.getEulerAnglesXYZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.getEulerAnglesXYZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _t1 = Math.fma(_self12, _self12, _self22 * _self22);
+        double _t3 = Math.fma(_self02, _self02, _t1) * 1.0E-15;
+        if (_t1 < _t3) {
+            dest.put(destOffset + 0, Math.atan2(_self21, _self11));
+            dest.put(destOffset + 2, 0.0);
+        } else {
+            dest.put(destOffset + 0, Math.atan2(-_self12, _self22));
+            dest.put(destOffset + 2, Math.atan2(-_self01, _self00));
+        }
+        dest.put(destOffset + 1, Math.asin(Math.min(1.0, Math.max(-1.0, _self02))));
         return dest;
     }
 
@@ -59,7 +113,27 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.getEulerAnglesXZY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.getEulerAnglesXZY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.getEulerAnglesXZY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _t1 = Math.fma(_self11, _self11, _self21 * _self21);
+        double _t3 = Math.fma(_self01, _self01, _t1) * 1.0E-15;
+        if (_t1 < _t3) {
+            dest.put(destOffset + 0, Math.atan2(-_self12, _self22));
+            dest.put(destOffset + 1, 0.0);
+        } else {
+            dest.put(destOffset + 0, Math.atan2(_self21, _self11));
+            dest.put(destOffset + 1, Math.atan2(_self02, _self00));
+        }
+        dest.put(destOffset + 2, Math.asin(Math.min(1.0, Math.max(-1.0, -_self01))));
         return dest;
     }
 
@@ -75,7 +149,27 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.getEulerAnglesYXZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.getEulerAnglesYXZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.getEulerAnglesYXZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self11 = src.get(srcOffset + 5);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _t1 = Math.fma(_self02, _self02, _self22 * _self22);
+        double _t3 = Math.fma(_self12, _self12, _t1) * 1.0E-15;
+        if (_t1 < _t3) {
+            dest.put(destOffset + 1, Math.atan2(-_self20, _self00));
+            dest.put(destOffset + 2, 0.0);
+        } else {
+            dest.put(destOffset + 1, Math.atan2(_self02, _self22));
+            dest.put(destOffset + 2, Math.atan2(_self10, _self11));
+        }
+        dest.put(destOffset + 0, Math.asin(Math.min(1.0, Math.max(-1.0, -_self12))));
         return dest;
     }
 
@@ -91,7 +185,27 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.getEulerAnglesYZX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.getEulerAnglesYZX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.getEulerAnglesYZX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self11 = src.get(srcOffset + 5);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _t1 = Math.fma(_self11, _self11, _self12 * _self12);
+        double _t3 = Math.fma(_self10, _self10, _t1) * 1.0E-15;
+        if (_t1 < _t3) {
+            dest.put(destOffset + 0, 0.0);
+            dest.put(destOffset + 1, Math.atan2(_self02, _self22));
+        } else {
+            dest.put(destOffset + 0, Math.atan2(-_self12, _self11));
+            dest.put(destOffset + 1, Math.atan2(-_self20, _self00));
+        }
+        dest.put(destOffset + 2, Math.asin(Math.min(1.0, Math.max(-1.0, _self10))));
         return dest;
     }
 
@@ -107,7 +221,27 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.getEulerAnglesZXY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.getEulerAnglesZXY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.getEulerAnglesZXY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self22 = src.get(srcOffset + 10);
+        double _t1 = Math.fma(_self01, _self01, _self11 * _self11);
+        double _t3 = Math.fma(_self21, _self21, _t1) * 1.0E-15;
+        if (_t1 < _t3) {
+            dest.put(destOffset + 1, 0.0);
+            dest.put(destOffset + 2, Math.atan2(_self10, _self00));
+        } else {
+            dest.put(destOffset + 1, Math.atan2(-_self20, _self22));
+            dest.put(destOffset + 2, Math.atan2(-_self01, _self11));
+        }
+        dest.put(destOffset + 0, Math.asin(Math.min(1.0, Math.max(-1.0, _self21))));
         return dest;
     }
 
@@ -123,7 +257,27 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.getEulerAnglesZYX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.getEulerAnglesZYX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.getEulerAnglesZYX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self22 = src.get(srcOffset + 10);
+        double _t1 = Math.fma(_self21, _self21, _self22 * _self22);
+        double _t3 = Math.fma(_self20, _self20, _t1) * 1.0E-15;
+        if (_t1 < _t3) {
+            dest.put(destOffset + 0, 0.0);
+            dest.put(destOffset + 2, Math.atan2(-_self01, _self11));
+        } else {
+            dest.put(destOffset + 0, Math.atan2(_self21, _self22));
+            dest.put(destOffset + 2, Math.atan2(_self10, _self00));
+        }
+        dest.put(destOffset + 1, Math.asin(Math.min(1.0, Math.max(-1.0, -_self20))));
         return dest;
     }
 
@@ -248,7 +402,41 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.getRow(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, row);
             return dest;
         }
-        Double4x4OpsKernelsSegment.getRow_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, row);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.getRow_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, row);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _idxSw0;
+        double _idxSw1;
+        double _idxSw2;
+        double _idxSw3;
+        switch (row) {
+            case 0: _idxSw0 = _self00; _idxSw1 = _self01; _idxSw2 = _self02; _idxSw3 = _self03; break;
+            case 1: _idxSw0 = _self10; _idxSw1 = _self11; _idxSw2 = _self12; _idxSw3 = _self13; break;
+            case 2: _idxSw0 = _self20; _idxSw1 = _self21; _idxSw2 = _self22; _idxSw3 = _self23; break;
+            case 3: _idxSw0 = _self30; _idxSw1 = _self31; _idxSw2 = _self32; _idxSw3 = _self33; break;
+            default: throw new IndexOutOfBoundsException("Index out of range: " + row);
+        }
+        dest.put(destOffset + 0, _idxSw0);
+        dest.put(destOffset + 1, _idxSw1);
+        dest.put(destOffset + 2, _idxSw2);
+        dest.put(destOffset + 3, _idxSw3);
         return dest;
     }
 
@@ -264,7 +452,22 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.getScale(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.getScale_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.getScale_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        dest.put(destOffset + 0, Math.sqrt(Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10))));
+        dest.put(destOffset + 1, Math.sqrt(Math.fma(_self21, _self21, Math.fma(_self01, _self01, _self11 * _self11))));
+        dest.put(destOffset + 2, Math.sqrt(Math.fma(_self22, _self22, Math.fma(_self02, _self02, _self12 * _self12))));
         return dest;
     }
 
@@ -280,7 +483,16 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.getTranslation(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.getTranslation_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.getTranslation_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        dest.put(destOffset + 0, _self03);
+        dest.put(destOffset + 1, _self13);
+        dest.put(destOffset + 2, _self23);
         return dest;
     }
 
@@ -358,7 +570,30 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.invNegativeX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.invNegativeX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.invNegativeX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _t6 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t7 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t8 = Math.fma(_self12, _self20, -(_self10 * _self22));
+        double _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
+        double _t12 = (1.0 / Math.sqrt(_t11));
+        if (_t11 > 0.0) {
+            dest.put(destOffset + 0, -(_t7 * _t12));
+            dest.put(destOffset + 1, -(_t8 * _t12));
+            dest.put(destOffset + 2, -(_t6 * _t12));
+        } else {
+            dest.put(destOffset + 0, -0.0);
+            dest.put(destOffset + 1, -0.0);
+            dest.put(destOffset + 2, -0.0);
+        }
         return dest;
     }
 
@@ -374,7 +609,30 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.invNegativeY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.invNegativeY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.invNegativeY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self22 = src.get(srcOffset + 10);
+        double _t6 = Math.fma(_self01, _self20, -(_self00 * _self21));
+        double _t7 = Math.fma(_self00, _self22, -(_self02 * _self20));
+        double _t8 = Math.fma(_self02, _self21, -(_self01 * _self22));
+        double _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
+        double _t12 = (1.0 / Math.sqrt(_t11));
+        if (_t11 > 0.0) {
+            dest.put(destOffset + 0, -(_t8 * _t12));
+            dest.put(destOffset + 1, -(_t7 * _t12));
+            dest.put(destOffset + 2, -(_t6 * _t12));
+        } else {
+            dest.put(destOffset + 0, -0.0);
+            dest.put(destOffset + 1, -0.0);
+            dest.put(destOffset + 2, -0.0);
+        }
         return dest;
     }
 
@@ -390,7 +648,30 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.invNegativeZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.invNegativeZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.invNegativeZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _t6 = Math.fma(_self00, _self11, -(_self01 * _self10));
+        double _t7 = Math.fma(_self01, _self12, -(_self02 * _self11));
+        double _t8 = Math.fma(_self02, _self10, -(_self00 * _self12));
+        double _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
+        double _t12 = (1.0 / Math.sqrt(_t11));
+        if (_t11 > 0.0) {
+            dest.put(destOffset + 0, -(_t7 * _t12));
+            dest.put(destOffset + 1, -(_t8 * _t12));
+            dest.put(destOffset + 2, -(_t6 * _t12));
+        } else {
+            dest.put(destOffset + 0, -0.0);
+            dest.put(destOffset + 1, -0.0);
+            dest.put(destOffset + 2, -0.0);
+        }
         return dest;
     }
 
@@ -406,7 +687,16 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.invNormalizedNegativeX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.invNormalizedNegativeX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.invNormalizedNegativeX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self01 = src.get(srcOffset + 4);
+        double _self02 = src.get(srcOffset + 8);
+        dest.put(destOffset + 0, -_self00);
+        dest.put(destOffset + 1, -_self01);
+        dest.put(destOffset + 2, -_self02);
         return dest;
     }
 
@@ -422,7 +712,16 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.invNormalizedNegativeY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.invNormalizedNegativeY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.invNormalizedNegativeY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self10 = src.get(srcOffset + 1);
+        double _self11 = src.get(srcOffset + 5);
+        double _self12 = src.get(srcOffset + 9);
+        dest.put(destOffset + 0, -_self10);
+        dest.put(destOffset + 1, -_self11);
+        dest.put(destOffset + 2, -_self12);
         return dest;
     }
 
@@ -438,7 +737,16 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.invNormalizedNegativeZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.invNormalizedNegativeZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.invNormalizedNegativeZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self20 = src.get(srcOffset + 2);
+        double _self21 = src.get(srcOffset + 6);
+        double _self22 = src.get(srcOffset + 10);
+        dest.put(destOffset + 0, -_self20);
+        dest.put(destOffset + 1, -_self21);
+        dest.put(destOffset + 2, -_self22);
         return dest;
     }
 
@@ -454,7 +762,16 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.invNormalizedPositiveX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.invNormalizedPositiveX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.invNormalizedPositiveX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self01 = src.get(srcOffset + 4);
+        double _self02 = src.get(srcOffset + 8);
+        dest.put(destOffset + 0, _self00);
+        dest.put(destOffset + 1, _self01);
+        dest.put(destOffset + 2, _self02);
         return dest;
     }
 
@@ -470,7 +787,16 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.invNormalizedPositiveY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.invNormalizedPositiveY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.invNormalizedPositiveY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self10 = src.get(srcOffset + 1);
+        double _self11 = src.get(srcOffset + 5);
+        double _self12 = src.get(srcOffset + 9);
+        dest.put(destOffset + 0, _self10);
+        dest.put(destOffset + 1, _self11);
+        dest.put(destOffset + 2, _self12);
         return dest;
     }
 
@@ -486,7 +812,16 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.invNormalizedPositiveZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.invNormalizedPositiveZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.invNormalizedPositiveZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self20 = src.get(srcOffset + 2);
+        double _self21 = src.get(srcOffset + 6);
+        double _self22 = src.get(srcOffset + 10);
+        dest.put(destOffset + 0, _self20);
+        dest.put(destOffset + 1, _self21);
+        dest.put(destOffset + 2, _self22);
         return dest;
     }
 
@@ -502,7 +837,30 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.invPositiveX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.invPositiveX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.invPositiveX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _t6 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t7 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t8 = Math.fma(_self12, _self20, -(_self10 * _self22));
+        double _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
+        double _t12 = (1.0 / Math.sqrt(_t11));
+        if (_t11 > 0.0) {
+            dest.put(destOffset + 0, _t7 * _t12);
+            dest.put(destOffset + 1, _t8 * _t12);
+            dest.put(destOffset + 2, _t6 * _t12);
+        } else {
+            dest.put(destOffset + 0, 0.0);
+            dest.put(destOffset + 1, 0.0);
+            dest.put(destOffset + 2, 0.0);
+        }
         return dest;
     }
 
@@ -518,7 +876,30 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.invPositiveY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.invPositiveY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.invPositiveY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self22 = src.get(srcOffset + 10);
+        double _t6 = Math.fma(_self01, _self20, -(_self00 * _self21));
+        double _t7 = Math.fma(_self00, _self22, -(_self02 * _self20));
+        double _t8 = Math.fma(_self02, _self21, -(_self01 * _self22));
+        double _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
+        double _t12 = (1.0 / Math.sqrt(_t11));
+        if (_t11 > 0.0) {
+            dest.put(destOffset + 0, _t8 * _t12);
+            dest.put(destOffset + 1, _t7 * _t12);
+            dest.put(destOffset + 2, _t6 * _t12);
+        } else {
+            dest.put(destOffset + 0, 0.0);
+            dest.put(destOffset + 1, 0.0);
+            dest.put(destOffset + 2, 0.0);
+        }
         return dest;
     }
 
@@ -534,7 +915,30 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.invPositiveZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.invPositiveZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.invPositiveZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _t6 = Math.fma(_self00, _self11, -(_self01 * _self10));
+        double _t7 = Math.fma(_self01, _self12, -(_self02 * _self11));
+        double _t8 = Math.fma(_self02, _self10, -(_self00 * _self12));
+        double _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
+        double _t12 = (1.0 / Math.sqrt(_t11));
+        if (_t11 > 0.0) {
+            dest.put(destOffset + 0, _t7 * _t12);
+            dest.put(destOffset + 1, _t8 * _t12);
+            dest.put(destOffset + 2, _t6 * _t12);
+        } else {
+            dest.put(destOffset + 0, 0.0);
+            dest.put(destOffset + 1, 0.0);
+            dest.put(destOffset + 2, 0.0);
+        }
         return dest;
     }
 
@@ -550,7 +954,24 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.negativeX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.negativeX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.negativeX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        if (_t2 > 0.0) {
+            dest.put(destOffset + 0, -(_self00 * _t3));
+            dest.put(destOffset + 1, -(_self10 * _t3));
+            dest.put(destOffset + 2, -(_self20 * _t3));
+        } else {
+            dest.put(destOffset + 0, -0.0);
+            dest.put(destOffset + 1, -0.0);
+            dest.put(destOffset + 2, -0.0);
+        }
         return dest;
     }
 
@@ -566,7 +987,24 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.negativeY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.negativeY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.negativeY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _t2 = Math.fma(_self21, _self21, Math.fma(_self01, _self01, _self11 * _self11));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        if (_t2 > 0.0) {
+            dest.put(destOffset + 0, -(_self01 * _t3));
+            dest.put(destOffset + 1, -(_self11 * _t3));
+            dest.put(destOffset + 2, -(_self21 * _t3));
+        } else {
+            dest.put(destOffset + 0, -0.0);
+            dest.put(destOffset + 1, -0.0);
+            dest.put(destOffset + 2, -0.0);
+        }
         return dest;
     }
 
@@ -582,7 +1020,24 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.negativeZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.negativeZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.negativeZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _t2 = Math.fma(_self22, _self22, Math.fma(_self02, _self02, _self12 * _self12));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        if (_t2 > 0.0) {
+            dest.put(destOffset + 0, -(_self02 * _t3));
+            dest.put(destOffset + 1, -(_self12 * _t3));
+            dest.put(destOffset + 2, -(_self22 * _t3));
+        } else {
+            dest.put(destOffset + 0, -0.0);
+            dest.put(destOffset + 1, -0.0);
+            dest.put(destOffset + 2, -0.0);
+        }
         return dest;
     }
 
@@ -598,7 +1053,16 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.normalizedNegativeX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.normalizedNegativeX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.normalizedNegativeX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        dest.put(destOffset + 0, -_self00);
+        dest.put(destOffset + 1, -_self10);
+        dest.put(destOffset + 2, -_self20);
         return dest;
     }
 
@@ -614,7 +1078,16 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.normalizedNegativeY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.normalizedNegativeY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.normalizedNegativeY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        dest.put(destOffset + 0, -_self01);
+        dest.put(destOffset + 1, -_self11);
+        dest.put(destOffset + 2, -_self21);
         return dest;
     }
 
@@ -630,7 +1103,16 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.normalizedNegativeZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.normalizedNegativeZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.normalizedNegativeZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        dest.put(destOffset + 0, -_self02);
+        dest.put(destOffset + 1, -_self12);
+        dest.put(destOffset + 2, -_self22);
         return dest;
     }
 
@@ -646,7 +1128,16 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.normalizedPositiveX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.normalizedPositiveX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.normalizedPositiveX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        dest.put(destOffset + 0, _self00);
+        dest.put(destOffset + 1, _self10);
+        dest.put(destOffset + 2, _self20);
         return dest;
     }
 
@@ -662,7 +1153,16 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.normalizedPositiveY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.normalizedPositiveY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.normalizedPositiveY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        dest.put(destOffset + 0, _self01);
+        dest.put(destOffset + 1, _self11);
+        dest.put(destOffset + 2, _self21);
         return dest;
     }
 
@@ -678,7 +1178,16 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.normalizedPositiveZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.normalizedPositiveZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.normalizedPositiveZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        dest.put(destOffset + 0, _self02);
+        dest.put(destOffset + 1, _self12);
+        dest.put(destOffset + 2, _self22);
         return dest;
     }
 
@@ -694,7 +1203,25 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.origin(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.origin_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.origin_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        dest.put(destOffset + 0, -Math.fma(_self20, _self23, Math.fma(_self00, _self03, _self10 * _self13)));
+        dest.put(destOffset + 1, -Math.fma(_self21, _self23, Math.fma(_self01, _self03, _self11 * _self13)));
+        dest.put(destOffset + 2, -Math.fma(_self22, _self23, Math.fma(_self02, _self03, _self12 * _self13)));
         return dest;
     }
 
@@ -710,7 +1237,33 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.originAffine(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.originAffine_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.originAffine_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _t12 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t13 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t14 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t15 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t16 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t17 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t21 = Math.fma(_self02, _t15, Math.fma(_self00, _t12, -(_self01 * _t16)));
+        double _t21_inv = 1.0 / _t21;
+        dest.put(destOffset + 0, -(Math.fma(_self03, _t12, Math.fma(_self01, _t13, -(_self02 * _t14))) * _t21_inv));
+        dest.put(destOffset + 1, Math.fma(_self03, _t16, Math.fma(_self00, _t13, -(_self02 * _t17))) * _t21_inv);
+        dest.put(destOffset + 2, -(Math.fma(_self03, _t15, Math.fma(_self00, _t14, -(_self01 * _t17))) * _t21_inv));
         return dest;
     }
 
@@ -726,7 +1279,24 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.positiveX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.positiveX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.positiveX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        if (_t2 > 0.0) {
+            dest.put(destOffset + 0, _self00 * _t3);
+            dest.put(destOffset + 1, _self10 * _t3);
+            dest.put(destOffset + 2, _self20 * _t3);
+        } else {
+            dest.put(destOffset + 0, 0.0);
+            dest.put(destOffset + 1, 0.0);
+            dest.put(destOffset + 2, 0.0);
+        }
         return dest;
     }
 
@@ -742,7 +1312,24 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.positiveY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.positiveY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.positiveY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _t2 = Math.fma(_self21, _self21, Math.fma(_self01, _self01, _self11 * _self11));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        if (_t2 > 0.0) {
+            dest.put(destOffset + 0, _self01 * _t3);
+            dest.put(destOffset + 1, _self11 * _t3);
+            dest.put(destOffset + 2, _self21 * _t3);
+        } else {
+            dest.put(destOffset + 0, 0.0);
+            dest.put(destOffset + 1, 0.0);
+            dest.put(destOffset + 2, 0.0);
+        }
         return dest;
     }
 
@@ -758,7 +1345,24 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.positiveZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.positiveZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.positiveZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _t2 = Math.fma(_self22, _self22, Math.fma(_self02, _self02, _self12 * _self12));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        if (_t2 > 0.0) {
+            dest.put(destOffset + 0, _self02 * _t3);
+            dest.put(destOffset + 1, _self12 * _t3);
+            dest.put(destOffset + 2, _self22 * _t3);
+        } else {
+            dest.put(destOffset + 0, 0.0);
+            dest.put(destOffset + 1, 0.0);
+            dest.put(destOffset + 2, 0.0);
+        }
         return dest;
     }
 
@@ -774,7 +1378,60 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.cofactor(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.cofactor_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.cofactor_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t36 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t37 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t38 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t39 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t40 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t41 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t42 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t43 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t44 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t45 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t46 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t47 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t48 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t49 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t50 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t51 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t52 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t53 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        dest.put(destOffset + 0, Math.fma(_self13, _t36, Math.fma(_self11, _t37, -(_self12 * _t38))));
+        dest.put(destOffset + 1, -Math.fma(_self03, _t36, Math.fma(_self01, _t37, -(_self02 * _t38))));
+        dest.put(destOffset + 2, Math.fma(_self03, _t42, Math.fma(_self01, _t43, -(_self02 * _t44))));
+        dest.put(destOffset + 3, -Math.fma(_self03, _t48, Math.fma(_self01, _t49, -(_self02 * _t50))));
+        dest.put(destOffset + 4, -Math.fma(_self13, _t39, Math.fma(_self10, _t37, -(_self12 * _t40))));
+        dest.put(destOffset + 5, Math.fma(_self03, _t39, Math.fma(_self00, _t37, -(_self02 * _t40))));
+        dest.put(destOffset + 6, -Math.fma(_self03, _t45, Math.fma(_self00, _t43, -(_self02 * _t46))));
+        dest.put(destOffset + 7, Math.fma(_self03, _t51, Math.fma(_self00, _t49, -(_self02 * _t52))));
+        dest.put(destOffset + 8, Math.fma(_self13, _t41, Math.fma(_self10, _t38, -(_self11 * _t40))));
+        dest.put(destOffset + 9, -Math.fma(_self03, _t41, Math.fma(_self00, _t38, -(_self01 * _t40))));
+        dest.put(destOffset + 10, Math.fma(_self03, _t47, Math.fma(_self00, _t44, -(_self01 * _t46))));
+        dest.put(destOffset + 11, -Math.fma(_self03, _t53, Math.fma(_self00, _t50, -(_self01 * _t52))));
+        dest.put(destOffset + 12, -Math.fma(_self12, _t41, Math.fma(_self10, _t36, -(_self11 * _t39))));
+        dest.put(destOffset + 13, Math.fma(_self02, _t41, Math.fma(_self00, _t36, -(_self01 * _t39))));
+        dest.put(destOffset + 14, -Math.fma(_self02, _t47, Math.fma(_self00, _t42, -(_self01 * _t45))));
+        dest.put(destOffset + 15, Math.fma(_self02, _t53, Math.fma(_self00, _t48, -(_self01 * _t51))));
         return dest;
     }
 
@@ -787,7 +1444,32 @@ public final class Double4x4OpsKernelsTypedBuffer {
         if (src.hasArray()) {
             return Double4x4Ops.determinant(src.array(), src.arrayOffset() + srcOffset);
         }
-        return Double4x4OpsKernelsSegment.determinant_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (src.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Double4x4OpsKernelsSegment.determinant_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t12 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t13 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t14 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t15 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t16 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t17 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        return Math.fma(-_self03, Math.fma(_self12, _t12, Math.fma(_self10, _t13, -(_self11 * _t14))), Math.fma(_self02, Math.fma(_self13, _t12, Math.fma(_self10, _t15, -(_self11 * _t16))), Math.fma(_self00, Math.fma(_self13, _t13, Math.fma(_self11, _t17, -(_self12 * _t15))), -(_self01 * Math.fma(_self13, _t14, Math.fma(_self10, _t17, -(_self12 * _t16)))))));
     }
 
     public static double frobeniusNorm_unsafe(java.nio.DoubleBuffer src, int srcOffset) {
@@ -799,7 +1481,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
         if (src.hasArray()) {
             return Double4x4Ops.frobeniusNorm(src.array(), src.arrayOffset() + srcOffset);
         }
-        return Double4x4OpsKernelsSegment.frobeniusNorm_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (src.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Double4x4OpsKernelsSegment.frobeniusNorm_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        return Math.sqrt(Math.fma(_self00, _self00, _self01 * _self01) + Math.fma(_self02, _self02, _self03 * _self03) + (Math.fma(_self10, _self10, _self11 * _self11) + Math.fma(_self12, _self12, _self13 * _self13)) + (Math.fma(_self20, _self20, _self21 * _self21) + Math.fma(_self22, _self22, _self23 * _self23) + (Math.fma(_self30, _self30, _self31 * _self31) + Math.fma(_self32, _self32, _self33 * _self33))));
     }
 
     public static java.nio.DoubleBuffer invert_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
@@ -814,7 +1515,66 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.invert(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.invert_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.invert_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t37 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t38 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t39 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t40 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t41 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t42 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t43 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t44 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t45 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t46 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t47 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t48 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t49 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t50 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t51 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t52 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t53 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t54 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t67 = Math.fma(_self13, _t37, Math.fma(_self11, _t38, -(_self12 * _t39)));
+        double _t68 = Math.fma(_self12, _t40, Math.fma(_self10, _t37, -(_self11 * _t41)));
+        double _t69 = Math.fma(_self13, _t40, Math.fma(_self10, _t39, -(_self11 * _t42)));
+        double _t70 = Math.fma(_self13, _t41, Math.fma(_self10, _t38, -(_self12 * _t42)));
+        double _t75 = Math.fma(-_self03, _t68, Math.fma(_self02, _t69, Math.fma(_self00, _t67, -(_self01 * _t70))));
+        double _t75_inv = 1.0 / _t75;
+        dest.put(destOffset + 0, _t67 * _t75_inv);
+        dest.put(destOffset + 1, -(_t70 * _t75_inv));
+        dest.put(destOffset + 2, _t69 * _t75_inv);
+        dest.put(destOffset + 3, -(_t68 * _t75_inv));
+        dest.put(destOffset + 4, -(Math.fma(_self03, _t37, Math.fma(_self01, _t38, -(_self02 * _t39))) * _t75_inv));
+        dest.put(destOffset + 5, Math.fma(_self03, _t41, Math.fma(_self00, _t38, -(_self02 * _t42))) * _t75_inv);
+        dest.put(destOffset + 6, -(Math.fma(_self03, _t40, Math.fma(_self00, _t39, -(_self01 * _t42))) * _t75_inv));
+        dest.put(destOffset + 7, Math.fma(_self02, _t40, Math.fma(_self00, _t37, -(_self01 * _t41))) * _t75_inv);
+        dest.put(destOffset + 8, Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))) * _t75_inv);
+        dest.put(destOffset + 9, -(Math.fma(_self03, _t49, Math.fma(_self00, _t44, -(_self02 * _t50))) * _t75_inv));
+        dest.put(destOffset + 10, Math.fma(_self03, _t53, Math.fma(_self00, _t45, -(_self01 * _t50))) * _t75_inv);
+        dest.put(destOffset + 11, -(Math.fma(_self02, _t53, Math.fma(_self00, _t43, -(_self01 * _t49))) * _t75_inv));
+        dest.put(destOffset + 12, -(Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48))) * _t75_inv));
+        dest.put(destOffset + 13, Math.fma(_self03, _t51, Math.fma(_self00, _t47, -(_self02 * _t52))) * _t75_inv);
+        dest.put(destOffset + 14, -(Math.fma(_self03, _t54, Math.fma(_self00, _t48, -(_self01 * _t52))) * _t75_inv));
+        dest.put(destOffset + 15, Math.fma(_self02, _t54, Math.fma(_self00, _t46, -(_self01 * _t51))) * _t75_inv);
         return dest;
     }
 
@@ -831,7 +1591,98 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.invertProduct(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.invertProduct_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.invertProduct_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _other00 = other.get(otherOffset + 0);
+        double _other10 = other.get(otherOffset + 1);
+        double _other20 = other.get(otherOffset + 2);
+        double _other30 = other.get(otherOffset + 3);
+        double _other01 = other.get(otherOffset + 4);
+        double _other11 = other.get(otherOffset + 5);
+        double _other21 = other.get(otherOffset + 6);
+        double _other31 = other.get(otherOffset + 7);
+        double _other02 = other.get(otherOffset + 8);
+        double _other12 = other.get(otherOffset + 9);
+        double _other22 = other.get(otherOffset + 10);
+        double _other32 = other.get(otherOffset + 11);
+        double _other03 = other.get(otherOffset + 12);
+        double _other13 = other.get(otherOffset + 13);
+        double _other23 = other.get(otherOffset + 14);
+        double _other33 = other.get(otherOffset + 15);
+        double _t48 = Math.fma(_other33, _self13, Math.fma(_other23, _self12, Math.fma(_other03, _self10, _other13 * _self11)));
+        double _t49 = Math.fma(_other31, _self23, Math.fma(_other21, _self22, Math.fma(_other01, _self20, _other11 * _self21)));
+        double _t50 = Math.fma(_other32, _self33, Math.fma(_other22, _self32, Math.fma(_other02, _self30, _other12 * _self31)));
+        double _t51 = Math.fma(_other31, _self33, Math.fma(_other21, _self32, Math.fma(_other01, _self30, _other11 * _self31)));
+        double _t52 = Math.fma(_other32, _self23, Math.fma(_other22, _self22, Math.fma(_other02, _self20, _other12 * _self21)));
+        double _t53 = Math.fma(_other31, _self13, Math.fma(_other21, _self12, Math.fma(_other01, _self10, _other11 * _self11)));
+        double _t54 = Math.fma(_other33, _self33, Math.fma(_other23, _self32, Math.fma(_other03, _self30, _other13 * _self31)));
+        double _t55 = Math.fma(_other33, _self23, Math.fma(_other23, _self22, Math.fma(_other03, _self20, _other13 * _self21)));
+        double _t56 = Math.fma(_other32, _self13, Math.fma(_other22, _self12, Math.fma(_other02, _self10, _other12 * _self11)));
+        double _t57 = Math.fma(_other33, _self03, Math.fma(_other23, _self02, Math.fma(_other03, _self00, _other13 * _self01)));
+        double _t58 = Math.fma(_other30, _self23, Math.fma(_other20, _self22, Math.fma(_other00, _self20, _other10 * _self21)));
+        double _t59 = Math.fma(_other30, _self33, Math.fma(_other20, _self32, Math.fma(_other00, _self30, _other10 * _self31)));
+        double _t60 = Math.fma(_other30, _self13, Math.fma(_other20, _self12, Math.fma(_other00, _self10, _other10 * _self11)));
+        double _t61 = Math.fma(_other32, _self03, Math.fma(_other22, _self02, Math.fma(_other02, _self00, _other12 * _self01)));
+        double _t62 = Math.fma(_other30, _self03, Math.fma(_other20, _self02, Math.fma(_other00, _self00, _other10 * _self01)));
+        double _t63 = Math.fma(_other31, _self03, Math.fma(_other21, _self02, Math.fma(_other01, _self00, _other11 * _self01)));
+        double _t101 = Math.fma(_t49, _t50, -(_t51 * _t52));
+        double _t102 = Math.fma(_t52, _t54, -(_t50 * _t55));
+        double _t103 = Math.fma(_t49, _t54, -(_t51 * _t55));
+        double _t104 = Math.fma(_t58, _t51, -(_t59 * _t49));
+        double _t105 = Math.fma(_t58, _t50, -(_t59 * _t52));
+        double _t106 = Math.fma(_t58, _t54, -(_t59 * _t55));
+        double _t107 = Math.fma(_t53, _t50, -(_t51 * _t56));
+        double _t108 = Math.fma(_t56, _t54, -(_t50 * _t48));
+        double _t109 = Math.fma(_t53, _t54, -(_t51 * _t48));
+        double _t110 = Math.fma(_t53, _t52, -(_t49 * _t56));
+        double _t111 = Math.fma(_t56, _t55, -(_t52 * _t48));
+        double _t112 = Math.fma(_t53, _t55, -(_t49 * _t48));
+        double _t113 = Math.fma(_t60, _t50, -(_t59 * _t56));
+        double _t114 = Math.fma(_t60, _t54, -(_t59 * _t48));
+        double _t115 = Math.fma(_t60, _t52, -(_t58 * _t56));
+        double _t116 = Math.fma(_t60, _t55, -(_t58 * _t48));
+        double _t117 = Math.fma(_t60, _t51, -(_t59 * _t53));
+        double _t118 = Math.fma(_t60, _t49, -(_t58 * _t53));
+        double _t131 = Math.fma(_t48, _t101, Math.fma(_t53, _t102, -(_t56 * _t103)));
+        double _t132 = Math.fma(_t56, _t104, Math.fma(_t60, _t101, -(_t53 * _t105)));
+        double _t133 = Math.fma(_t48, _t104, Math.fma(_t60, _t103, -(_t53 * _t106)));
+        double _t134 = Math.fma(_t48, _t105, Math.fma(_t60, _t102, -(_t56 * _t106)));
+        double _t139 = Math.fma(-_t57, _t132, Math.fma(_t61, _t133, Math.fma(_t62, _t131, -(_t63 * _t134))));
+        double _t139_inv = 1.0 / _t139;
+        dest.put(destOffset + 0, _t131 * _t139_inv);
+        dest.put(destOffset + 1, -(_t134 * _t139_inv));
+        dest.put(destOffset + 2, _t133 * _t139_inv);
+        dest.put(destOffset + 3, -(_t132 * _t139_inv));
+        dest.put(destOffset + 4, -(Math.fma(_t57, _t101, Math.fma(_t63, _t102, -(_t61 * _t103))) * _t139_inv));
+        dest.put(destOffset + 5, Math.fma(_t57, _t105, Math.fma(_t62, _t102, -(_t61 * _t106))) * _t139_inv);
+        dest.put(destOffset + 6, -(Math.fma(_t57, _t104, Math.fma(_t62, _t103, -(_t63 * _t106))) * _t139_inv));
+        dest.put(destOffset + 7, Math.fma(_t61, _t104, Math.fma(_t62, _t101, -(_t63 * _t105))) * _t139_inv);
+        dest.put(destOffset + 8, Math.fma(_t57, _t107, Math.fma(_t63, _t108, -(_t61 * _t109))) * _t139_inv);
+        dest.put(destOffset + 9, -(Math.fma(_t57, _t113, Math.fma(_t62, _t108, -(_t61 * _t114))) * _t139_inv));
+        dest.put(destOffset + 10, Math.fma(_t57, _t117, Math.fma(_t62, _t109, -(_t63 * _t114))) * _t139_inv);
+        dest.put(destOffset + 11, -(Math.fma(_t61, _t117, Math.fma(_t62, _t107, -(_t63 * _t113))) * _t139_inv));
+        dest.put(destOffset + 12, -(Math.fma(_t57, _t110, Math.fma(_t63, _t111, -(_t61 * _t112))) * _t139_inv));
+        dest.put(destOffset + 13, Math.fma(_t57, _t115, Math.fma(_t62, _t111, -(_t61 * _t116))) * _t139_inv);
+        dest.put(destOffset + 14, -(Math.fma(_t57, _t118, Math.fma(_t62, _t112, -(_t63 * _t116))) * _t139_inv));
+        dest.put(destOffset + 15, Math.fma(_t61, _t118, Math.fma(_t62, _t110, -(_t63 * _t115))) * _t139_inv);
         return dest;
     }
 
@@ -847,7 +1698,66 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.normal(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.normal_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.normal_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t37 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t38 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t39 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t40 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t41 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t42 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t43 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t44 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t45 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t46 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t47 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t48 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t49 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t50 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t52 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t53 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t54 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t67 = Math.fma(_self13, _t37, Math.fma(_self11, _t38, -(_self12 * _t39)));
+        double _t68 = Math.fma(_self12, _t40, Math.fma(_self10, _t37, -(_self11 * _t41)));
+        double _t69 = Math.fma(_self13, _t40, Math.fma(_self10, _t39, -(_self11 * _t42)));
+        double _t70 = Math.fma(_self13, _t41, Math.fma(_self10, _t38, -(_self12 * _t42)));
+        double _t75 = Math.fma(-_self03, _t68, Math.fma(_self02, _t69, Math.fma(_self00, _t67, -(_self01 * _t70))));
+        double _t75_inv = 1.0 / _t75;
+        dest.put(destOffset + 0, _t67 * _t75_inv);
+        dest.put(destOffset + 1, -(Math.fma(_self03, _t37, Math.fma(_self01, _t38, -(_self02 * _t39))) * _t75_inv));
+        dest.put(destOffset + 2, Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))) * _t75_inv);
+        dest.put(destOffset + 3, -(Math.fma(_self03, _t49, Math.fma(_self01, _t50, -(_self02 * _t51))) * _t75_inv));
+        dest.put(destOffset + 4, -(_t70 * _t75_inv));
+        dest.put(destOffset + 5, Math.fma(_self03, _t41, Math.fma(_self00, _t38, -(_self02 * _t42))) * _t75_inv);
+        dest.put(destOffset + 6, -(Math.fma(_self03, _t46, Math.fma(_self00, _t44, -(_self02 * _t47))) * _t75_inv));
+        dest.put(destOffset + 7, Math.fma(_self03, _t52, Math.fma(_self00, _t50, -(_self02 * _t53))) * _t75_inv);
+        dest.put(destOffset + 8, _t69 * _t75_inv);
+        dest.put(destOffset + 9, -(Math.fma(_self03, _t40, Math.fma(_self00, _t39, -(_self01 * _t42))) * _t75_inv));
+        dest.put(destOffset + 10, Math.fma(_self03, _t48, Math.fma(_self00, _t45, -(_self01 * _t47))) * _t75_inv);
+        dest.put(destOffset + 11, -(Math.fma(_self03, _t54, Math.fma(_self00, _t51, -(_self01 * _t53))) * _t75_inv));
+        dest.put(destOffset + 12, -(_t68 * _t75_inv));
+        dest.put(destOffset + 13, Math.fma(_self02, _t40, Math.fma(_self00, _t37, -(_self01 * _t41))) * _t75_inv);
+        dest.put(destOffset + 14, -(Math.fma(_self02, _t48, Math.fma(_self00, _t43, -(_self01 * _t46))) * _t75_inv));
+        dest.put(destOffset + 15, Math.fma(_self02, _t54, Math.fma(_self00, _t49, -(_self01 * _t52))) * _t75_inv);
         return dest;
     }
 
@@ -860,7 +1770,14 @@ public final class Double4x4OpsKernelsTypedBuffer {
         if (src.hasArray()) {
             return Double4x4Ops.trace(src.array(), src.arrayOffset() + srcOffset);
         }
-        return Double4x4OpsKernelsSegment.trace_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (src.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Double4x4OpsKernelsSegment.trace_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self11 = src.get(srcOffset + 5);
+        double _self22 = src.get(srcOffset + 10);
+        double _self33 = src.get(srcOffset + 15);
+        return _self33 + (_self22 + (_self00 + _self11));
     }
 
     public static java.nio.DoubleBuffer transpose_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
@@ -875,7 +1792,42 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.transpose(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.transpose_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.transpose_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        dest.put(destOffset + 0, _self00);
+        dest.put(destOffset + 1, _self01);
+        dest.put(destOffset + 2, _self02);
+        dest.put(destOffset + 3, _self03);
+        dest.put(destOffset + 4, _self10);
+        dest.put(destOffset + 5, _self11);
+        dest.put(destOffset + 6, _self12);
+        dest.put(destOffset + 7, _self13);
+        dest.put(destOffset + 8, _self20);
+        dest.put(destOffset + 9, _self21);
+        dest.put(destOffset + 10, _self22);
+        dest.put(destOffset + 11, _self23);
+        dest.put(destOffset + 12, _self30);
+        dest.put(destOffset + 13, _self31);
+        dest.put(destOffset + 14, _self32);
+        dest.put(destOffset + 15, _self33);
         return dest;
     }
 
@@ -955,7 +1907,35 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.setMat3x3(dest.array(), dest.arrayOffset() + destOffset, m.array(), m.arrayOffset() + mOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.setMat3x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(m.duplicate().position(0)), (long) mOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && m.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.setMat3x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(m.duplicate().position(0)), (long) mOffset * 8L);
+            return dest;
+        }
+        double _m00 = m.get(mOffset + 0);
+        double _m10 = m.get(mOffset + 1);
+        double _m20 = m.get(mOffset + 2);
+        double _m01 = m.get(mOffset + 3);
+        double _m11 = m.get(mOffset + 4);
+        double _m21 = m.get(mOffset + 5);
+        double _m02 = m.get(mOffset + 6);
+        double _m12 = m.get(mOffset + 7);
+        double _m22 = m.get(mOffset + 8);
+        dest.put(destOffset + 0, _m00);
+        dest.put(destOffset + 1, _m10);
+        dest.put(destOffset + 2, _m20);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, _m01);
+        dest.put(destOffset + 5, _m11);
+        dest.put(destOffset + 6, _m21);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _m02);
+        dest.put(destOffset + 9, _m12);
+        dest.put(destOffset + 10, _m22);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -971,7 +1951,38 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.setMat3x4(dest.array(), dest.arrayOffset() + destOffset, m.array(), m.arrayOffset() + mOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.setMat3x4_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(m.duplicate().position(0)), (long) mOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && m.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.setMat3x4_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(m.duplicate().position(0)), (long) mOffset * 8L);
+            return dest;
+        }
+        double _m00 = m.get(mOffset + 0);
+        double _m01 = m.get(mOffset + 1);
+        double _m02 = m.get(mOffset + 2);
+        double _m03 = m.get(mOffset + 3);
+        double _m10 = m.get(mOffset + 4);
+        double _m11 = m.get(mOffset + 5);
+        double _m12 = m.get(mOffset + 6);
+        double _m13 = m.get(mOffset + 7);
+        double _m20 = m.get(mOffset + 8);
+        double _m21 = m.get(mOffset + 9);
+        double _m22 = m.get(mOffset + 10);
+        double _m23 = m.get(mOffset + 11);
+        dest.put(destOffset + 0, _m00);
+        dest.put(destOffset + 1, _m10);
+        dest.put(destOffset + 2, _m20);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, _m01);
+        dest.put(destOffset + 5, _m11);
+        dest.put(destOffset + 6, _m21);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _m02);
+        dest.put(destOffset + 9, _m12);
+        dest.put(destOffset + 10, _m22);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, _m03);
+        dest.put(destOffset + 13, _m13);
+        dest.put(destOffset + 14, _m23);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -987,7 +1998,39 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.withTranslation(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, tX, tY, tZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.withTranslation_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, tX, tY, tZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.withTranslation_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, tX, tY, tZ);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self33 = src.get(srcOffset + 15);
+        dest.put(destOffset + 0, _self00);
+        dest.put(destOffset + 1, _self10);
+        dest.put(destOffset + 2, _self20);
+        dest.put(destOffset + 3, _self30);
+        dest.put(destOffset + 4, _self01);
+        dest.put(destOffset + 5, _self11);
+        dest.put(destOffset + 6, _self21);
+        dest.put(destOffset + 7, _self31);
+        dest.put(destOffset + 8, _self02);
+        dest.put(destOffset + 9, _self12);
+        dest.put(destOffset + 10, _self22);
+        dest.put(destOffset + 11, _self32);
+        dest.put(destOffset + 12, tX);
+        dest.put(destOffset + 13, tY);
+        dest.put(destOffset + 14, tZ);
+        dest.put(destOffset + 15, _self33);
         return dest;
     }
 
@@ -1004,7 +2047,42 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.withTranslation(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, t.array(), t.arrayOffset() + tOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.withTranslation_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(t.duplicate().position(0)), (long) tOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && t.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.withTranslation_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(t.duplicate().position(0)), (long) tOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self33 = src.get(srcOffset + 15);
+        double _tx = t.get(tOffset + 0);
+        double _ty = t.get(tOffset + 1);
+        double _tz = t.get(tOffset + 2);
+        dest.put(destOffset + 0, _self00);
+        dest.put(destOffset + 1, _self10);
+        dest.put(destOffset + 2, _self20);
+        dest.put(destOffset + 3, _self30);
+        dest.put(destOffset + 4, _self01);
+        dest.put(destOffset + 5, _self11);
+        dest.put(destOffset + 6, _self21);
+        dest.put(destOffset + 7, _self31);
+        dest.put(destOffset + 8, _self02);
+        dest.put(destOffset + 9, _self12);
+        dest.put(destOffset + 10, _self22);
+        dest.put(destOffset + 11, _self32);
+        dest.put(destOffset + 12, _tx);
+        dest.put(destOffset + 13, _ty);
+        dest.put(destOffset + 14, _tz);
+        dest.put(destOffset + 15, _self33);
         return dest;
     }
 
@@ -1019,7 +2097,29 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeFromRigid(dest.array(), dest.arrayOffset() + destOffset, rTX, rTY, rTZ, rRX, rRY, rRZ, rRW);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeFromRigid_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, rTX, rTY, rTZ, rRX, rRY, rRZ, rRW);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeFromRigid_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, rTX, rTY, rTZ, rRX, rRY, rRZ, rRW);
+            return dest;
+        }
+        double _t0 = rRZ * rRZ;
+        double _t1 = rRZ * rRW;
+        double _t2 = rRY * rRW;
+        dest.put(destOffset + 0, Math.fma(-2.0, Math.fma(rRY, rRY, _t0), 1.0));
+        dest.put(destOffset + 1, 2.0 * Math.fma(rRX, rRY, _t1));
+        dest.put(destOffset + 2, 2.0 * Math.fma(rRX, rRZ, -_t2));
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 2.0 * Math.fma(rRX, rRY, -_t1));
+        dest.put(destOffset + 5, Math.fma(-2.0, Math.fma(rRX, rRX, _t0), 1.0));
+        dest.put(destOffset + 6, 2.0 * Math.fma(rRX, rRW, rRY * rRZ));
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 2.0 * Math.fma(rRX, rRZ, _t2));
+        dest.put(destOffset + 9, 2.0 * Math.fma(rRY, rRZ, -(rRX * rRW)));
+        dest.put(destOffset + 10, Math.fma(-2.0, Math.fma(rRX, rRX, rRY * rRY), 1.0));
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, rTX);
+        dest.put(destOffset + 13, rTY);
+        dest.put(destOffset + 14, rTZ);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -1064,7 +2164,20 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.to3x3(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.to3x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.to3x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        for (int _l = 0; _l < 3; _l++) {
+            int _lo = _l * 3;
+            int _loself = _l * 4;
+            double _eself0 = src.get(srcOffset + _loself);
+            double _eself1 = src.get(srcOffset + _loself + 1);
+            double _eself2 = src.get(srcOffset + _loself + 2);
+            dest.put(destOffset + _lo, _eself0);
+            dest.put(destOffset + _lo + 1, _eself1);
+            dest.put(destOffset + _lo + 2, _eself2);
+        }
         return dest;
     }
 
@@ -1080,7 +2193,34 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.to3x4(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.to3x4_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.to3x4_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        dest.put(destOffset + 0, _self00);
+        dest.put(destOffset + 1, _self01);
+        dest.put(destOffset + 2, _self02);
+        dest.put(destOffset + 3, _self03);
+        dest.put(destOffset + 4, _self10);
+        dest.put(destOffset + 5, _self11);
+        dest.put(destOffset + 6, _self12);
+        dest.put(destOffset + 7, _self13);
+        dest.put(destOffset + 8, _self20);
+        dest.put(destOffset + 9, _self21);
+        dest.put(destOffset + 10, _self22);
+        dest.put(destOffset + 11, _self23);
         return dest;
     }
 
@@ -1096,7 +2236,74 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.toDualQuat(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.toDualQuat_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.toDualQuat_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _t0 = -_self23;
+        double _t2 = 1.0 - _self00;
+        double _t4 = _self21 - _self12;
+        double _t5 = Math.max(_self11, _self22);
+        double _t6 = _self01 + _self10;
+        double _t7 = _self02 + _self20;
+        double _t8 = _self02 - _self20;
+        double _t9 = _self12 + _self21;
+        double _t10 = _self10 - _self01;
+        double _t14 = _self22 + (_self00 + _self11);
+        double _t15 = 1.0 + _t14;
+        double _t16 = _self00 + (1.0 - _self11 - _self22);
+        double _t17 = _self11 + (_t2 - _self22);
+        double _t18 = _self22 + (_t2 - _self11);
+        double _t19 = (1.0 / Math.sqrt(_t15));
+        double _t21 = (1.0 / Math.sqrt(_t17));
+        double _t22 = (1.0 / Math.sqrt(_t18));
+        double _t23 = (1.0 / Math.sqrt(_t16));
+        double _t63, _t64, _t65, _t66;
+        if (_t14 > 0.0) {
+            _t63 = 0.5 * _t4 * _t19;
+            _t64 = 0.5 * _t8 * _t19;
+            _t65 = 0.5 * _t10 * _t19;
+            _t66 = 0.5 * Math.sqrt(_t15);
+        } else {
+            if (_self00 > _t5) {
+                _t63 = 0.5 * Math.sqrt(_t16);
+                _t64 = 0.5 * _t6 * _t23;
+                _t65 = 0.5 * _t7 * _t23;
+                _t66 = 0.5 * _t4 * _t23;
+            } else {
+                if (_self11 > _self22) {
+                    _t63 = 0.5 * _t6 * _t21;
+                    _t64 = 0.5 * Math.sqrt(_t17);
+                    _t65 = 0.5 * _t9 * _t21;
+                    _t66 = 0.5 * _t8 * _t21;
+                } else {
+                    _t63 = 0.5 * _t7 * _t22;
+                    _t64 = 0.5 * _t9 * _t22;
+                    _t65 = 0.5 * Math.sqrt(_t18);
+                    _t66 = 0.5 * _t10 * _t22;
+                }
+            }
+        }
+        dest.put(destOffset + 0, _t63);
+        dest.put(destOffset + 1, _t64);
+        dest.put(destOffset + 2, _t65);
+        dest.put(destOffset + 3, _t66);
+        dest.put(destOffset + 4, 0.5 * Math.fma(_t0, _t64, Math.fma(_self03, _t66, _self13 * _t65)));
+        dest.put(destOffset + 5, 0.5 * Math.fma(_self23, _t63, Math.fma(_self13, _t66, -(_self03 * _t65))));
+        dest.put(destOffset + 6, 0.5 * Math.fma(_self23, _t66, Math.fma(_self03, _t64, -(_self13 * _t63))));
+        dest.put(destOffset + 7, 0.5 * Math.fma(_t0, _t65, Math.fma(-_self13, _t64, -(_self03 * _t63))));
         return dest;
     }
 
@@ -1112,7 +2319,91 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.toRigid(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.toRigid_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.toRigid_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _t0 = -_self11;
+        double _t1 = -_self22;
+        double _t12 = (1.0 / Math.sqrt(Math.fma(_self21, _self21, Math.fma(_self01, _self01, _self11 * _self11))));
+        double _t13 = (1.0 / Math.sqrt(Math.fma(_self22, _self22, Math.fma(_self02, _self02, _self12 * _self12))));
+        double _t14 = (1.0 / Math.sqrt(Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10))));
+        double _t15 = _self10 * _t14;
+        double _t16 = _self22 * _t13;
+        double _t17 = _self12 * _t13;
+        double _t18 = _self20 * _t14;
+        double _t20 = _self21 * _t12;
+        double _t21 = _self11 * _t12;
+        double _t23 = _self00 * _t14;
+        double _t28 = Math.fma(_self12, _t13, _t20);
+        double _t32 = Math.fma(_self21, _t12, -_t17);
+        double _t33 = Math.max(_t21, _t16);
+        double _t43 = Math.fma(-Math.fma(_t15, _t16, -(_t17 * _t18)), _self01 * _t12, Math.fma(Math.fma(_t15, _t20, -(_t21 * _t18)), _self02 * _t13, Math.fma(_t21, _t16, -(_t17 * _t20)) * _t23));
+        double _t44, _t45, _t46;
+        if (_t43 < 0.0) {
+            _t44 = -_t23;
+            _t45 = -_t15;
+            _t46 = -_t18;
+        } else {
+            _t44 = _t23;
+            _t45 = _t15;
+            _t46 = _t18;
+        }
+        double _t48 = 1.0 + _t44;
+        double _t49 = 1.0 - _t44;
+        double _t51 = Math.fma(_self01, _t12, _t45);
+        double _t52 = Math.fma(_self02, _t13, _t46);
+        double _t53 = Math.fma(_self02, _t13, -_t46);
+        double _t54 = Math.fma(-_self01, _t12, _t45);
+        double _t59 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t44));
+        double _t60 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t48));
+        double _t61 = (1.0 / Math.sqrt(_t60));
+        double _t62 = Math.fma(_self11, _t12, Math.fma(_t1, _t13, _t49));
+        double _t63 = Math.fma(_self22, _t13, Math.fma(_t0, _t12, _t49));
+        double _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
+        double _t65 = (1.0 / Math.sqrt(_t62));
+        double _t66 = (1.0 / Math.sqrt(_t63));
+        double _t67 = (1.0 / Math.sqrt(_t64));
+        if (_t59 > 0.0) {
+            dest.put(destOffset + 3, 0.5 * _t32 * _t61);
+            dest.put(destOffset + 4, 0.5 * _t53 * _t61);
+            dest.put(destOffset + 5, 0.5 * _t54 * _t61);
+            dest.put(destOffset + 6, 0.5 * Math.sqrt(_t60));
+        } else {
+            if (_t44 > _t33) {
+                dest.put(destOffset + 3, 0.5 * Math.sqrt(_t64));
+                dest.put(destOffset + 4, 0.5 * _t51 * _t67);
+                dest.put(destOffset + 5, 0.5 * _t52 * _t67);
+                dest.put(destOffset + 6, 0.5 * _t32 * _t67);
+            } else {
+                if (_t21 > _t16) {
+                    dest.put(destOffset + 3, 0.5 * _t51 * _t65);
+                    dest.put(destOffset + 4, 0.5 * Math.sqrt(_t62));
+                    dest.put(destOffset + 5, 0.5 * _t28 * _t65);
+                    dest.put(destOffset + 6, 0.5 * _t53 * _t65);
+                } else {
+                    dest.put(destOffset + 3, 0.5 * _t52 * _t66);
+                    dest.put(destOffset + 4, 0.5 * _t28 * _t66);
+                    dest.put(destOffset + 5, 0.5 * Math.sqrt(_t63));
+                    dest.put(destOffset + 6, 0.5 * _t54 * _t66);
+                }
+            }
+        }
+        dest.put(destOffset + 0, _self03);
+        dest.put(destOffset + 1, _self13);
+        dest.put(destOffset + 2, _self23);
         return dest;
     }
 
@@ -1128,7 +2419,77 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.toTransform(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.toTransform_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.toTransform_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _t0 = -_self11;
+        double _t1 = -_self22;
+        double _t9 = Math.fma(_self21, _self21, Math.fma(_self01, _self01, _self11 * _self11));
+        double _t10 = Math.fma(_self22, _self22, Math.fma(_self02, _self02, _self12 * _self12));
+        double _t11 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
+        double _t12 = (1.0 / Math.sqrt(_t9));
+        double _t13 = (1.0 / Math.sqrt(_t10));
+        double _t14 = (1.0 / Math.sqrt(_t11));
+        double _t15 = Math.sqrt(_t11);
+        double _t16 = _self10 * _t14;
+        double _t17 = _self22 * _t13;
+        double _t18 = _self12 * _t13;
+        double _t19 = _self20 * _t14;
+        double _t21 = _self21 * _t12;
+        double _t22 = _self11 * _t12;
+        double _t24 = _self00 * _t14;
+        double _t29 = Math.fma(_self12, _t13, _t21);
+        double _t33 = Math.fma(_self21, _t12, -_t18);
+        double _t34 = Math.max(_t22, _t17);
+        double _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), _self01 * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), _self02 * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
+        double _t45, _t46, _t47;
+        if (_t44 < 0.0) {
+            _t45 = -_t24;
+            _t46 = -_t16;
+            _t47 = -_t19;
+        } else {
+            _t45 = _t24;
+            _t46 = _t16;
+            _t47 = _t19;
+        }
+        double _t49 = 1.0 + _t45;
+        double _t50 = 1.0 - _t45;
+        double _t52 = Math.fma(_self01, _t12, _t46);
+        double _t53 = Math.fma(_self02, _t13, _t47);
+        double _t54 = Math.fma(_self02, _t13, -_t47);
+        double _t55 = Math.fma(-_self01, _t12, _t46);
+        double _t60 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t45));
+        double _t61 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t49));
+        double _t62 = (1.0 / Math.sqrt(_t61));
+        double _t63 = Math.fma(_self11, _t12, Math.fma(_t1, _t13, _t50));
+        double _t64 = Math.fma(_self22, _t13, Math.fma(_t0, _t12, _t50));
+        double _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
+        double _t66 = (1.0 / Math.sqrt(_t63));
+        double _t67 = (1.0 / Math.sqrt(_t64));
+        double _t68 = (1.0 / Math.sqrt(_t65));
+        dest.put(destOffset + 0, _self03);
+        dest.put(destOffset + 1, _self13);
+        dest.put(destOffset + 2, _self23);
+        dest.put(destOffset + 3, _t60 > 0.0 ? 0.5 * _t33 * _t62 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? 0.5 * _t52 * _t66 : 0.5 * _t53 * _t67);
+        dest.put(destOffset + 4, _t60 > 0.0 ? 0.5 * _t54 * _t62 : _t45 > _t34 ? 0.5 * _t52 * _t68 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : 0.5 * _t29 * _t67);
+        dest.put(destOffset + 5, _t60 > 0.0 ? 0.5 * _t55 * _t62 : _t45 > _t34 ? 0.5 * _t53 * _t68 : _t22 > _t17 ? 0.5 * _t29 * _t66 : 0.5 * Math.sqrt(_t64));
+        dest.put(destOffset + 6, _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? 0.5 * _t33 * _t68 : _t22 > _t17 ? 0.5 * _t54 * _t66 : 0.5 * _t55 * _t67);
+        dest.put(destOffset + 7, _t44 < 0.0 ? -_t15 : _t15);
+        dest.put(destOffset + 8, Math.sqrt(_t9));
+        dest.put(destOffset + 9, Math.sqrt(_t10));
         return dest;
     }
 
@@ -1262,7 +2623,68 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.decomposeScale(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.decomposeScale_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.decomposeScale_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        double _t4 = Math.sqrt(_t2);
+        double _t8, _t9, _t10;
+        if (_t2 > 0.0) {
+            _t8 = _self20 * _t3;
+            _t9 = _self00 * _t3;
+            _t10 = _self10 * _t3;
+        } else {
+            _t8 = 0.0;
+            _t9 = 0.0;
+            _t10 = 0.0;
+        }
+        double _t17 = -Math.fma(_self21, _t8, Math.fma(_self01, _t9, _self11 * _t10));
+        double _t18 = -Math.fma(_self22, _t8, Math.fma(_self02, _t9, _self12 * _t10));
+        double _t19 = Math.fma(_t17, _t8, _self21);
+        double _t20 = Math.fma(_t17, _t9, _self01);
+        double _t21 = Math.fma(_t17, _t10, _self11);
+        double _t27 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
+        double _t28 = (1.0 / Math.sqrt(_t27));
+        double _t32, _t33, _t34;
+        if (_t27 > 0.0) {
+            _t32 = _t20 * _t28;
+            _t33 = _t19 * _t28;
+            _t34 = _t21 * _t28;
+        } else {
+            _t32 = 0.0;
+            _t33 = 0.0;
+            _t34 = 0.0;
+        }
+        double _t38 = -Math.fma(Math.fma(_t18, _t8, _self22), _t33, Math.fma(Math.fma(_t18, _t9, _self02), _t32, Math.fma(_t18, _t10, _self12) * _t34));
+        double _t42 = Math.fma(_t18, _t8, Math.fma(_t38, _t33, _self22));
+        double _t43 = Math.fma(_t18, _t9, Math.fma(_t38, _t32, _self02));
+        double _t44 = Math.fma(_t18, _t10, Math.fma(_t38, _t34, _self12));
+        double _t47 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, _t44 * _t44));
+        double _t48 = (1.0 / Math.sqrt(_t47));
+        double _t52, _t53, _t54;
+        if (_t47 > 0.0) {
+            _t52 = _t44 * _t48;
+            _t53 = _t43 * _t48;
+            _t54 = _t42 * _t48;
+        } else {
+            _t52 = 0.0;
+            _t53 = 0.0;
+            _t54 = 0.0;
+        }
+        dest.put(destOffset + 0, Math.fma(Math.fma(_t32, _t52, -(_t34 * _t53)), _t8, Math.fma(Math.fma(_t34, _t54, -(_t33 * _t52)), _t9, Math.fma(_t33, _t53, -(_t32 * _t54)) * _t10)) < 0.0 ? -_t4 : _t4);
+        dest.put(destOffset + 1, Math.sqrt(_t27));
+        dest.put(destOffset + 2, Math.sqrt(_t47));
         return dest;
     }
 
@@ -1278,7 +2700,78 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.decomposeSkew(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.decomposeSkew_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.decomposeSkew_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        double _t7, _t8, _t9;
+        if (_t2 > 0.0) {
+            _t7 = _self20 * _t3;
+            _t8 = _self00 * _t3;
+            _t9 = _self10 * _t3;
+        } else {
+            _t7 = 0.0;
+            _t8 = 0.0;
+            _t9 = 0.0;
+        }
+        double _t14 = Math.fma(_self22, _t7, Math.fma(_self02, _t8, _self12 * _t9));
+        double _t15 = Math.fma(_self21, _t7, Math.fma(_self01, _t8, _self11 * _t9));
+        double _t16 = -_t14;
+        double _t17 = -_t15;
+        double _t19 = Math.fma(_t17, _t7, _self21);
+        double _t20 = Math.fma(_t17, _t8, _self01);
+        double _t21 = Math.fma(_t17, _t9, _self11);
+        double _t26 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
+        double _t27 = (1.0 / Math.sqrt(_t26));
+        double _t28 = _t15 * _t27;
+        double _t32, _t33, _t34;
+        if (_t26 > 0.0) {
+            _t32 = _t19 * _t27;
+            _t33 = _t20 * _t27;
+            _t34 = _t21 * _t27;
+        } else {
+            _t32 = 0.0;
+            _t33 = 0.0;
+            _t34 = 0.0;
+        }
+        double _t37 = Math.fma(Math.fma(_t16, _t7, _self22), _t32, Math.fma(Math.fma(_t16, _t8, _self02), _t33, Math.fma(_t16, _t9, _self12) * _t34));
+        double _t38 = -_t37;
+        double _t42 = Math.fma(_t16, _t7, Math.fma(_t38, _t32, _self22));
+        double _t43 = Math.fma(_t16, _t8, Math.fma(_t38, _t33, _self02));
+        double _t44 = Math.fma(_t16, _t9, Math.fma(_t38, _t34, _self12));
+        double _t47 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, _t44 * _t44));
+        double _t48 = (1.0 / Math.sqrt(_t47));
+        double _t49 = _t14 * _t48;
+        double _t53, _t54, _t55;
+        if (_t47 > 0.0) {
+            _t53 = _t44 * _t48;
+            _t54 = _t43 * _t48;
+            _t55 = _t42 * _t48;
+        } else {
+            _t53 = 0.0;
+            _t54 = 0.0;
+            _t55 = 0.0;
+        }
+        double _t67 = Math.fma(Math.fma(_t33, _t53, -(_t34 * _t54)), _t7, Math.fma(Math.fma(_t34, _t55, -(_t32 * _t53)), _t8, Math.fma(_t32, _t54, -(_t33 * _t55)) * _t9));
+        if (_t67 < 0.0) {
+            dest.put(destOffset + 1, -_t49);
+            dest.put(destOffset + 2, -_t28);
+        } else {
+            dest.put(destOffset + 1, _t49);
+            dest.put(destOffset + 2, _t28);
+        }
+        dest.put(destOffset + 0, _t37 * _t48);
         return dest;
     }
 
@@ -1296,12 +2789,132 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.decomposeTRS(translation.array(), translation.arrayOffset() + translationOffset, rotation.array(), rotation.arrayOffset() + rotationOffset, scale.array(), scale.arrayOffset() + scaleOffset, src.array(), src.arrayOffset() + srcOffset);
             return translation;
         }
-        Double4x4OpsKernelsSegment.decomposeTRS_api(java.lang.foreign.MemorySegment.ofBuffer(translation.duplicate().position(0)), (long) translationOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rotation.duplicate().position(0)), (long) rotationOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(scale.duplicate().position(0)), (long) scaleOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (translation.order() == java.nio.ByteOrder.nativeOrder() && rotation.order() == java.nio.ByteOrder.nativeOrder() && scale.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.decomposeTRS_api(java.lang.foreign.MemorySegment.ofBuffer(translation.duplicate().position(0)), (long) translationOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rotation.duplicate().position(0)), (long) rotationOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(scale.duplicate().position(0)), (long) scaleOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return translation;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        double _t4 = Math.sqrt(_t2);
+        double _t8, _t9, _t10;
+        if (_t2 > 0.0) {
+            _t8 = _self20 * _t3;
+            _t9 = _self00 * _t3;
+            _t10 = _self10 * _t3;
+        } else {
+            _t8 = 0.0;
+            _t9 = 0.0;
+            _t10 = 0.0;
+        }
+        double _t20 = -Math.fma(_self21, _t8, Math.fma(_self01, _t9, _self11 * _t10));
+        double _t21 = -Math.fma(_self22, _t8, Math.fma(_self02, _t9, _self12 * _t10));
+        double _t22 = Math.fma(_t20, _t8, _self21);
+        double _t23 = Math.fma(_t20, _t9, _self01);
+        double _t24 = Math.fma(_t20, _t10, _self11);
+        double _t30 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24));
+        double _t31 = (1.0 / Math.sqrt(_t30));
+        double _t35, _t36, _t37;
+        if (_t30 > 0.0) {
+            _t35 = _t23 * _t31;
+            _t36 = _t22 * _t31;
+            _t37 = _t24 * _t31;
+        } else {
+            _t35 = 0.0;
+            _t36 = 0.0;
+            _t37 = 0.0;
+        }
+        double _t41 = -Math.fma(Math.fma(_t21, _t8, _self22), _t36, Math.fma(Math.fma(_t21, _t9, _self02), _t35, Math.fma(_t21, _t10, _self12) * _t37));
+        double _t45 = Math.fma(_t21, _t8, Math.fma(_t41, _t36, _self22));
+        double _t46 = Math.fma(_t21, _t9, Math.fma(_t41, _t35, _self02));
+        double _t47 = Math.fma(_t21, _t10, Math.fma(_t41, _t37, _self12));
+        double _t50 = Math.fma(_t45, _t45, Math.fma(_t46, _t46, _t47 * _t47));
+        double _t51 = (1.0 / Math.sqrt(_t50));
+        double _t55, _t56, _t57;
+        if (_t50 > 0.0) {
+            _t55 = _t47 * _t51;
+            _t56 = _t46 * _t51;
+            _t57 = _t45 * _t51;
+        } else {
+            _t55 = 0.0;
+            _t56 = 0.0;
+            _t57 = 0.0;
+        }
+        double _t61 = _t36 - _t55;
+        double _t62 = Math.max(_t37, _t57);
+        double _t64 = _t36 + _t55;
+        double _t73 = Math.fma(Math.fma(_t35, _t55, -(_t37 * _t56)), _t8, Math.fma(Math.fma(_t37, _t57, -(_t36 * _t55)), _t9, Math.fma(_t36, _t56, -(_t35 * _t57)) * _t10));
+        double _t74, _t75, _t76;
+        if (_t73 < 0.0) {
+            _t74 = -_t9;
+            _t75 = -_t10;
+            _t76 = -_t8;
+        } else {
+            _t74 = _t9;
+            _t75 = _t10;
+            _t76 = _t8;
+        }
+        double _t77 = _t74 + _t37;
+        double _t78 = _t75 + _t35;
+        double _t79 = _t75 - _t35;
+        double _t81 = _t76 + _t56;
+        double _t82 = _t56 - _t76;
+        double _t83 = _t77 + _t57;
+        double _t87 = 1.0 + _t83;
+        double _t88 = 1.0 + (_t74 - (_t37 + _t57));
+        double _t89 = 1.0 + (_t37 - (_t74 + _t57));
+        double _t90 = 1.0 + (_t57 - _t77);
+        double _t91 = (1.0 / Math.sqrt(_t87));
+        double _t92 = (1.0 / Math.sqrt(_t89));
+        double _t93 = (1.0 / Math.sqrt(_t90));
+        double _t94 = (1.0 / Math.sqrt(_t88));
+        translation.put(translationOffset + 0, _self03);
+        translation.put(translationOffset + 1, _self13);
+        translation.put(translationOffset + 2, _self23);
+        if (_t83 > 0.0) {
+            rotation.put(rotationOffset + 0, 0.5 * _t61 * _t91);
+            rotation.put(rotationOffset + 1, 0.5 * _t82 * _t91);
+            rotation.put(rotationOffset + 2, 0.5 * _t79 * _t91);
+            rotation.put(rotationOffset + 3, 0.5 * Math.sqrt(_t87));
+        } else {
+            if (_t74 > _t62) {
+                rotation.put(rotationOffset + 0, 0.5 * Math.sqrt(_t88));
+                rotation.put(rotationOffset + 1, 0.5 * _t78 * _t94);
+                rotation.put(rotationOffset + 2, 0.5 * _t81 * _t94);
+                rotation.put(rotationOffset + 3, 0.5 * _t61 * _t94);
+            } else {
+                if (_t37 > _t57) {
+                    rotation.put(rotationOffset + 0, 0.5 * _t78 * _t92);
+                    rotation.put(rotationOffset + 1, 0.5 * Math.sqrt(_t89));
+                    rotation.put(rotationOffset + 2, 0.5 * _t64 * _t92);
+                    rotation.put(rotationOffset + 3, 0.5 * _t82 * _t92);
+                } else {
+                    rotation.put(rotationOffset + 0, 0.5 * _t81 * _t93);
+                    rotation.put(rotationOffset + 1, 0.5 * _t64 * _t93);
+                    rotation.put(rotationOffset + 2, 0.5 * Math.sqrt(_t90));
+                    rotation.put(rotationOffset + 3, 0.5 * _t79 * _t93);
+                }
+            }
+        }
+        scale.put(scaleOffset + 0, _t73 < 0.0 ? -_t4 : _t4);
+        scale.put(scaleOffset + 1, Math.sqrt(_t30));
+        scale.put(scaleOffset + 2, Math.sqrt(_t50));
         return translation;
     }
 
     public static java.nio.DoubleBuffer frustumAabb_no(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.frustumAabb_no_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.frustumAabb_no_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsTypedBuffer.frustumAabb_no_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1317,12 +2930,136 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.frustumAabb_no(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.frustumAabb_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.frustumAabb_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t1 = -_self01;
+        double _t2 = -_self00;
+        double _t3 = -_self10;
+        double _t40 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t41 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t42 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t43 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t44 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t45 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t46 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t47 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t48 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t49 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t50 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t51 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t52 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t53 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t54 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t55 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t56 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t57 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t142 = Math.fma(_self01, _t40, Math.fma(_self03, _t41, -(_self02 * _t42)));
+        double _t143 = Math.fma(_self00, _t45, Math.fma(_self02, _t49, -(_self01 * _t50)));
+        double _t144 = Math.fma(_self10, _t41, Math.fma(_self12, _t51, -(_self11 * _t52)));
+        double _t145 = Math.fma(_self00, _t48, Math.fma(_self02, _t53, -(_self01 * _t54)));
+        double _t146 = Math.fma(_self11, _t40, Math.fma(_self13, _t41, -(_self12 * _t42)));
+        double _t147 = Math.fma(_self00, _t41, Math.fma(_self02, _t51, -(_self01 * _t52)));
+        double _t148 = Math.fma(_self01, _t43, Math.fma(_self03, _t45, -(_self02 * _t44)));
+        double _t149 = Math.fma(_self00, _t43, Math.fma(_self03, _t50, -(_self02 * _t55)));
+        double _t150 = Math.fma(_self10, _t40, Math.fma(_self13, _t52, -(_self12 * _t56)));
+        double _t151 = Math.fma(_self00, _t46, Math.fma(_self03, _t54, -(_self02 * _t57)));
+        double _t152 = Math.fma(_self00, _t40, Math.fma(_self03, _t52, -(_self02 * _t56)));
+        double _t153 = Math.fma(_self00, _t42, Math.fma(_self03, _t51, -(_self01 * _t56)));
+        double _t154 = Math.fma(_self10, _t42, Math.fma(_self13, _t51, -(_self11 * _t56)));
+        double _t155 = Math.fma(_self00, _t44, Math.fma(_self03, _t49, -(_self01 * _t55)));
+        double _t156 = Math.fma(-_self11, _t40, Math.fma(_self12, _t42, -(_self13 * _t41)));
+        double _t158 = Math.fma(_t1, _t46, Math.fma(_self02, _t47, -(_self03 * _t48)));
+        double _t159 = Math.fma(_t2, _t41, Math.fma(_self01, _t52, -(_self02 * _t51)));
+        double _t160 = Math.fma(_t3, _t41, Math.fma(_self11, _t52, -(_self12 * _t51)));
+        double _t161 = Math.fma(_t1, _t40, Math.fma(_self02, _t42, -(_self03 * _t41)));
+        double _t162 = Math.fma(_t2, _t45, Math.fma(_self01, _t50, -(_self02 * _t49)));
+        double _t163 = Math.fma(_t2, _t40, Math.fma(_self02, _t56, -(_self03 * _t52)));
+        double _t164 = Math.fma(_t3, _t40, Math.fma(_self12, _t56, -(_self13 * _t52)));
+        double _t165 = Math.fma(_t2, _t43, Math.fma(_self02, _t55, -(_self03 * _t50)));
+        double _t166 = Math.fma(_t3, _t42, Math.fma(_self11, _t56, -(_self13 * _t51)));
+        double _t168 = Math.fma(_t2, _t47, Math.fma(_self01, _t57, -(_self03 * _t53)));
+        double _t169 = Math.fma(_t2, _t42, Math.fma(_self01, _t56, -(_self03 * _t51)));
+        double _t171 = _t142 + _t146;
+        double _t178 = _t145 + _t147;
+        double _t184 = _t151 + _t152;
+        double _t185 = _t153 + _t154;
+        double _t189 = _t159 + _t145;
+        double _t197 = _t163 + _t151;
+        double _t206 = Math.fma(_t1, _t43, Math.fma(_self02, _t44, -(_self03 * _t45))) + _t158;
+        double _t209 = _t159 + _t162;
+        double _t210 = _t161 + _t158;
+        double _t212 = _t163 + _t165;
+        double _t214 = Math.fma(_t2, _t44, Math.fma(_self01, _t55, -(_self03 * _t49))) + _t168;
+        double _t217 = _t169 + _t168;
+        double _t218 = _t147 + _t144 + (_t143 + _t145);
+        double _t218_inv = 1.0 / _t218;
+        double _t220 = _t143 + _t144 + _t189;
+        double _t220_inv = 1.0 / _t220;
+        double _t221 = _t143 + _t147 + (_t160 + _t145);
+        double _t221_inv = 1.0 / _t221;
+        double _t223 = _t178 + (_t144 + _t162);
+        double _t223_inv = 1.0 / _t223;
+        double _t229 = _t143 + _t160 + _t189;
+        double _t229_inv = 1.0 / _t229;
+        double _t231 = _t145 + _t144 + _t209;
+        double _t231_inv = 1.0 / _t231;
+        double _t233 = _t178 + (_t160 + _t162);
+        double _t233_inv = 1.0 / _t233;
+        double _t242 = _t145 + _t160 + _t209;
+        double _t242_inv = 1.0 / _t242;
+        double _t250 = (_t152 + _t150 + (_t149 + _t151)) * _t218_inv;
+        double _t251 = (_t149 + _t150 + _t197) * _t220_inv;
+        double _t252 = (_t149 + _t152 + (_t164 + _t151)) * _t221_inv;
+        double _t253 = (_t184 + (_t150 + _t165)) * _t223_inv;
+        double _t254 = (_t142 + _t156 + _t206) * _t220_inv;
+        double _t255 = (_t171 + _t206) * _t229_inv;
+        double _t256 = (_t146 + _t161 + _t206) * _t221_inv;
+        double _t257 = (_t156 + _t161 + _t206) * _t218_inv;
+        double _t258 = (_t148 + _t142 + (_t156 + _t158)) * _t231_inv;
+        double _t259 = (_t171 + (_t148 + _t158)) * _t242_inv;
+        double _t260 = (_t148 + _t146 + _t210) * _t233_inv;
+        double _t261 = (_t148 + _t156 + _t210) * _t223_inv;
+        double _t262 = (_t149 + _t164 + _t197) * _t229_inv;
+        double _t263 = (_t151 + _t150 + _t212) * _t231_inv;
+        double _t264 = (_t184 + (_t164 + _t165)) * _t233_inv;
+        double _t265 = (_t153 + _t166 + _t214) * _t220_inv;
+        double _t266 = (_t185 + _t214) * _t229_inv;
+        double _t267 = (_t154 + _t169 + _t214) * _t221_inv;
+        double _t268 = (_t166 + _t169 + _t214) * _t218_inv;
+        double _t269 = (_t155 + _t153 + (_t166 + _t168)) * _t231_inv;
+        double _t270 = (_t185 + (_t155 + _t168)) * _t242_inv;
+        double _t271 = (_t155 + _t154 + _t217) * _t233_inv;
+        double _t272 = (_t155 + _t166 + _t217) * _t223_inv;
+        double _t273 = (_t151 + _t164 + _t212) * _t242_inv;
+        dest.put(destOffset + 0, Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t254, _t255), _t256), _t257), _t258), _t259), _t260), _t261));
+        dest.put(destOffset + 1, Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t251, _t262), _t252), _t250), _t263), _t273), _t264), _t253));
+        dest.put(destOffset + 2, Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t265, _t266), _t267), _t268), _t269), _t270), _t271), _t272));
+        dest.put(destOffset + 3, Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t254, _t255), _t256), _t257), _t258), _t259), _t260), _t261));
+        dest.put(destOffset + 4, Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t251, _t262), _t252), _t250), _t263), _t273), _t264), _t253));
+        dest.put(destOffset + 5, Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t265, _t266), _t267), _t268), _t269), _t270), _t271), _t272));
         return dest;
     }
 
     public static java.nio.DoubleBuffer frustumAabb_zo(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.frustumAabb_zo_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.frustumAabb_zo_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsTypedBuffer.frustumAabb_zo_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1338,12 +3075,158 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.frustumAabb_zo(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.frustumAabb_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.frustumAabb_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = -_self01;
+        double _t1 = -_self00;
+        double _t2 = -_self10;
+        double _t40 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t41 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t42 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t43 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t44 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t45 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t46 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t47 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t48 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t49 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t50 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t51 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t52 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t53 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t55 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t56 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t57 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t59 = _self11 * _t40;
+        double _t63 = _self10 * _t42;
+        double _t75 = _self10 * _t40;
+        double _t83 = _self10 * _t41;
+        double _t90 = -(_self02 * _t41);
+        double _t91 = -_t59;
+        double _t92 = -(_self13 * _t42);
+        double _t94 = -(_self01 * _t46);
+        double _t97 = -(_self12 * _t41);
+        double _t102 = -(_self01 * _t49);
+        double _t105 = -(_self02 * _t55);
+        double _t110 = -(_self02 * _t56);
+        double _t112 = -(_self01 * _t56);
+        double _t113 = -_t83;
+        double _t114 = -(_self13 * _t48);
+        double _t116 = -(_self11 * _t56);
+        double _t128 = Math.fma(_self01, _t40, _t90);
+        double _t130 = Math.fma(_self12, _t41, _t92);
+        double _t132 = Math.fma(_self00, _t45, _t94);
+        double _t133 = Math.fma(_self12, _t48, -(_self11 * _t49));
+        double _t135 = Math.fma(_self13, _t42, _t97);
+        double _t137 = Math.fma(_self11, _t49, -(_self12 * _t48));
+        double _t140 = Math.fma(_self02, _t41, -(_self03 * _t42));
+        double _t141 = Math.fma(_self02, _t48, _t102);
+        double _t148 = Math.fma(_self00, _t43, _t105);
+        double _t149 = Math.fma(_self13, _t49, -(_self12 * _t56));
+        double _t152 = Math.fma(_self12, _t56, -(_self13 * _t49));
+        double _t153 = Math.fma(_self03, _t49, _t110);
+        double _t157 = Math.fma(_self00, _t41, _t112);
+        double _t159 = Math.fma(_self11, _t56, _t114);
+        double _t161 = Math.fma(_self13, _t48, _t116);
+        double _t164 = Math.fma(_self01, _t56, -(_self03 * _t48));
+        double _t170 = Math.fma(_self00, _t45, Math.fma(_self02, _t47, _t94));
+        double _t171 = Math.fma(_self01, _t50, Math.fma(_self03, _t51, -(_self02 * _t52)));
+        double _t172 = Math.fma(_self01, _t40, Math.fma(_self03, _t42, _t90));
+        double _t173 = Math.fma(_self10, _t42, _t133);
+        double _t174 = Math.fma(_self11, _t40, _t135);
+        double _t176 = Math.fma(_self00, _t43, Math.fma(_self03, _t46, _t105));
+        double _t177 = Math.fma(_self10, _t40, _t149);
+        double _t179 = Math.fma(_self00, _t52, Math.fma(_self03, _t54, -(_self01 * _t57)));
+        double _t180 = Math.fma(_self00, _t41, Math.fma(_self03, _t48, _t112));
+        double _t181 = Math.fma(_self10, _t41, _t161);
+        double _t182 = Math.fma(_t0, _t43, Math.fma(_self02, _t44, -(_self03 * _t45)));
+        double _t183 = Math.fma(_t1, _t42, Math.fma(_self01, _t49, -(_self02 * _t48)));
+        double _t184 = Math.fma(_t2, _t42, _t137);
+        double _t185 = Math.fma(-_self11, _t40, _t130);
+        double _t186 = Math.fma(_t1, _t51, Math.fma(_self01, _t53, -(_self02 * _t54)));
+        double _t188 = Math.fma(_t1, _t40, Math.fma(_self02, _t56, -(_self03 * _t49)));
+        double _t189 = Math.fma(_t2, _t40, _t152);
+        double _t190 = Math.fma(_t1, _t50, Math.fma(_self02, _t57, -(_self03 * _t53)));
+        double _t191 = Math.fma(_t1, _t44, Math.fma(_self01, _t55, -(_self03 * _t47)));
+        double _t192 = Math.fma(_t2, _t41, _t159);
+        double _t216 = _t140 + _t182;
+        double _t223 = _t164 + _t191;
+        double _t228 = _t170 + Math.fma(_self00, _t42, _t141);
+        double _t230 = _t176 + Math.fma(_self00, _t40, _t153);
+        double _t243 = _t183 + _t186;
+        double _t244 = Math.fma(_t0, _t40, _t140) + _t182;
+        double _t246 = _t188 + _t190;
+        double _t249 = Math.fma(_t1, _t41, _t164) + _t191;
+        double _t250 = Math.fma(_self00, _t42, _t102) + Math.fma(_self02, _t48, _t63) + (_t133 + _t170);
+        double _t250_inv = 1.0 / _t250;
+        double _t252 = _t132 + Math.fma(_self02, _t47, _t63) + (_t133 + _t183);
+        double _t252_inv = 1.0 / _t252;
+        double _t254 = _t132 + Math.fma(_self02, _t47, _self00 * _t42) + (_t141 + _t184);
+        double _t254_inv = 1.0 / _t254;
+        double _t259 = _t132 + Math.fma(_self02, _t47, -_t63) + (_t137 + _t183);
+        double _t259_inv = 1.0 / _t259;
+        double _t267 = _t228 + (_t173 + _t186);
+        double _t267_inv = 1.0 / _t267;
+        double _t271 = _t170 + _t173 + _t243;
+        double _t271_inv = 1.0 / _t271;
+        double _t273 = _t228 + (_t184 + _t186);
+        double _t273_inv = 1.0 / _t273;
+        double _t278 = _t170 + _t184 + _t243;
+        double _t278_inv = 1.0 / _t278;
+        double _t282 = (Math.fma(_self00, _t40, _t110) + Math.fma(_self03, _t49, _t75) + (_t149 + _t176)) * _t250_inv;
+        double _t283 = (_t148 + Math.fma(_self03, _t46, _t75) + (_t149 + _t188)) * _t252_inv;
+        double _t284 = (_t148 + Math.fma(_self03, _t46, _self00 * _t40) + (_t153 + _t189)) * _t254_inv;
+        double _t285 = (_t128 + Math.fma(_self03, _t42, _t91) + (_t130 + _t182)) * _t252_inv;
+        double _t286 = (_t128 + Math.fma(_self03, _t42, _t59) + (_t135 + _t182)) * _t259_inv;
+        double _t287 = (Math.fma(_self11, _t40, _t97) + Math.fma(_self13, _t42, -(_self01 * _t40)) + _t216) * _t254_inv;
+        double _t288 = (Math.fma(_self12, _t41, _t91) + Math.fma(_t0, _t40, _t92) + _t216) * _t250_inv;
+        double _t289 = (_t157 + Math.fma(_self03, _t48, _t113) + (_t159 + _t191)) * _t252_inv;
+        double _t290 = (_t157 + Math.fma(_self03, _t48, _t83) + (_t161 + _t191)) * _t259_inv;
+        double _t291 = (Math.fma(_self10, _t41, _t116) + Math.fma(_self13, _t48, -(_self00 * _t41)) + _t223) * _t254_inv;
+        double _t292 = (Math.fma(_self11, _t56, _t113) + Math.fma(_t1, _t41, _t114) + _t223) * _t250_inv;
+        double _t293 = (_t148 + Math.fma(_self03, _t46, -_t75) + (_t152 + _t188)) * _t259_inv;
+        double _t294 = (_t230 + (_t177 + _t190)) * _t267_inv;
+        double _t295 = (_t171 + _t172 + (_t185 + _t182)) * _t271_inv;
+        double _t296 = (_t172 + _t174 + (_t171 + _t182)) * _t278_inv;
+        double _t297 = (_t171 + _t174 + _t244) * _t273_inv;
+        double _t298 = (_t171 + _t185 + _t244) * _t267_inv;
+        double _t299 = (_t176 + _t177 + _t246) * _t271_inv;
+        double _t300 = (_t230 + (_t189 + _t190)) * _t273_inv;
+        double _t301 = (_t179 + _t180 + (_t192 + _t191)) * _t271_inv;
+        double _t302 = (_t180 + _t181 + (_t179 + _t191)) * _t278_inv;
+        double _t303 = (_t179 + _t181 + _t249) * _t273_inv;
+        double _t304 = (_t179 + _t192 + _t249) * _t267_inv;
+        double _t305 = (_t176 + _t189 + _t246) * _t278_inv;
+        dest.put(destOffset + 0, Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t285, _t286), _t287), _t288), _t295), _t296), _t297), _t298));
+        dest.put(destOffset + 1, Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t283, _t293), _t284), _t282), _t299), _t305), _t300), _t294));
+        dest.put(destOffset + 2, Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t289, _t290), _t291), _t292), _t301), _t302), _t303), _t304));
+        dest.put(destOffset + 3, Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t285, _t286), _t287), _t288), _t295), _t296), _t297), _t298));
+        dest.put(destOffset + 4, Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t283, _t293), _t284), _t282), _t299), _t305), _t300), _t294));
+        dest.put(destOffset + 5, Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t289, _t290), _t291), _t292), _t301), _t302), _t303), _t304));
         return dest;
     }
 
     public static java.nio.DoubleBuffer frustumCorner_no(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, FrustumCorner corner) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.frustumCorner_no_unsafe(dest, destOffset, src, srcOffset, corner);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.frustumCorner_no_unsafe(dest, destOffset, src, srcOffset, corner);
         return Double4x4OpsKernelsTypedBuffer.frustumCorner_no_api(dest, destOffset, src, srcOffset, corner);
     }
 
@@ -1359,12 +3242,123 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.frustumCorner_no(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, corner);
             return dest;
         }
-        Double4x4OpsKernelsSegment.frustumCorner_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, corner);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.frustumCorner_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, corner);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t1 = -_self01;
+        double _t2 = -_self00;
+        double _t3 = -_self10;
+        double _t40 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t41 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t42 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t43 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t44 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t45 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t46 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t47 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t48 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t49 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t50 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t51 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t52 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t53 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t54 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t55 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t56 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t57 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t142 = Math.fma(_self01, _t40, Math.fma(_self03, _t41, -(_self02 * _t42)));
+        double _t143 = Math.fma(_self00, _t45, Math.fma(_self02, _t49, -(_self01 * _t50)));
+        double _t144 = Math.fma(_self10, _t41, Math.fma(_self12, _t51, -(_self11 * _t52)));
+        double _t145 = Math.fma(_self00, _t48, Math.fma(_self02, _t53, -(_self01 * _t54)));
+        double _t146 = Math.fma(_self11, _t40, Math.fma(_self13, _t41, -(_self12 * _t42)));
+        double _t147 = Math.fma(_self00, _t41, Math.fma(_self02, _t51, -(_self01 * _t52)));
+        double _t148 = Math.fma(_self01, _t43, Math.fma(_self03, _t45, -(_self02 * _t44)));
+        double _t149 = Math.fma(_self00, _t43, Math.fma(_self03, _t50, -(_self02 * _t55)));
+        double _t150 = Math.fma(_self10, _t40, Math.fma(_self13, _t52, -(_self12 * _t56)));
+        double _t151 = Math.fma(_self00, _t46, Math.fma(_self03, _t54, -(_self02 * _t57)));
+        double _t152 = Math.fma(_self00, _t40, Math.fma(_self03, _t52, -(_self02 * _t56)));
+        double _t153 = Math.fma(_self00, _t42, Math.fma(_self03, _t51, -(_self01 * _t56)));
+        double _t154 = Math.fma(_self10, _t42, Math.fma(_self13, _t51, -(_self11 * _t56)));
+        double _t155 = Math.fma(_self00, _t44, Math.fma(_self03, _t49, -(_self01 * _t55)));
+        double _t156 = Math.fma(-_self11, _t40, Math.fma(_self12, _t42, -(_self13 * _t41)));
+        double _t158 = Math.fma(_t1, _t46, Math.fma(_self02, _t47, -(_self03 * _t48)));
+        double _t159 = Math.fma(_t2, _t41, Math.fma(_self01, _t52, -(_self02 * _t51)));
+        double _t160 = Math.fma(_t3, _t41, Math.fma(_self11, _t52, -(_self12 * _t51)));
+        double _t161 = Math.fma(_t1, _t40, Math.fma(_self02, _t42, -(_self03 * _t41)));
+        double _t162 = Math.fma(_t2, _t45, Math.fma(_self01, _t50, -(_self02 * _t49)));
+        double _t163 = Math.fma(_t2, _t40, Math.fma(_self02, _t56, -(_self03 * _t52)));
+        double _t164 = Math.fma(_t3, _t40, Math.fma(_self12, _t56, -(_self13 * _t52)));
+        double _t165 = Math.fma(_t2, _t43, Math.fma(_self02, _t55, -(_self03 * _t50)));
+        double _t166 = Math.fma(_t3, _t42, Math.fma(_self11, _t56, -(_self13 * _t51)));
+        double _t168 = Math.fma(_t2, _t47, Math.fma(_self01, _t57, -(_self03 * _t53)));
+        double _t169 = Math.fma(_t2, _t42, Math.fma(_self01, _t56, -(_self03 * _t51)));
+        double _t171 = _t142 + _t146;
+        double _t176 = _t145 + _t147;
+        double _t177 = _t151 + _t152;
+        double _t178 = _t153 + _t154;
+        double _t179 = _t159 + _t145;
+        double _t184 = _t163 + _t151;
+        double _t185 = Math.fma(_t1, _t43, Math.fma(_self02, _t44, -(_self03 * _t45))) + _t158;
+        double _t186 = _t159 + _t162;
+        double _t187 = _t161 + _t158;
+        double _t189 = _t163 + _t165;
+        double _t190 = Math.fma(_t2, _t44, Math.fma(_self01, _t55, -(_self03 * _t49))) + _t168;
+        double _t191 = _t169 + _t168;
+        double _t192 = _t147 + _t144 + (_t143 + _t145);
+        double _t192_inv = 1.0 / _t192;
+        double _t193 = _t143 + _t144 + _t179;
+        double _t193_inv = 1.0 / _t193;
+        double _t194 = _t143 + _t147 + (_t160 + _t145);
+        double _t194_inv = 1.0 / _t194;
+        double _t195 = _t176 + (_t144 + _t162);
+        double _t195_inv = 1.0 / _t195;
+        double _t196 = _t143 + _t160 + _t179;
+        double _t196_inv = 1.0 / _t196;
+        double _t197 = _t145 + _t144 + _t186;
+        double _t197_inv = 1.0 / _t197;
+        double _t198 = _t176 + (_t160 + _t162);
+        double _t198_inv = 1.0 / _t198;
+        double _t199 = _t145 + _t160 + _t186;
+        double _t199_inv = 1.0 / _t199;
+        double _idxSw0;
+        double _idxSw1;
+        double _idxSw2;
+        switch (corner) {
+            case NXNYNZ: _idxSw0 = (_t142 + _t156 + _t185) * _t193_inv; _idxSw1 = (_t149 + _t150 + _t184) * _t193_inv; _idxSw2 = (_t153 + _t166 + _t190) * _t193_inv; break;
+            case PXNYNZ: _idxSw0 = (_t171 + _t185) * _t196_inv; _idxSw1 = (_t149 + _t164 + _t184) * _t196_inv; _idxSw2 = (_t178 + _t190) * _t196_inv; break;
+            case PXPYNZ: _idxSw0 = (_t146 + _t161 + _t185) * _t194_inv; _idxSw1 = (_t149 + _t152 + (_t164 + _t151)) * _t194_inv; _idxSw2 = (_t154 + _t169 + _t190) * _t194_inv; break;
+            case NXPYNZ: _idxSw0 = (_t156 + _t161 + _t185) * _t192_inv; _idxSw1 = (_t152 + _t150 + (_t149 + _t151)) * _t192_inv; _idxSw2 = (_t166 + _t169 + _t190) * _t192_inv; break;
+            case NXNYPZ: _idxSw0 = (_t148 + _t142 + (_t156 + _t158)) * _t197_inv; _idxSw1 = (_t151 + _t150 + _t189) * _t197_inv; _idxSw2 = (_t155 + _t153 + (_t166 + _t168)) * _t197_inv; break;
+            case PXNYPZ: _idxSw0 = (_t171 + (_t148 + _t158)) * _t199_inv; _idxSw1 = (_t151 + _t164 + _t189) * _t199_inv; _idxSw2 = (_t178 + (_t155 + _t168)) * _t199_inv; break;
+            case PXPYPZ: _idxSw0 = (_t148 + _t146 + _t187) * _t198_inv; _idxSw1 = (_t177 + (_t164 + _t165)) * _t198_inv; _idxSw2 = (_t155 + _t154 + _t191) * _t198_inv; break;
+            case NXPYPZ: _idxSw0 = (_t148 + _t156 + _t187) * _t195_inv; _idxSw1 = (_t177 + (_t150 + _t165)) * _t195_inv; _idxSw2 = (_t155 + _t166 + _t191) * _t195_inv; break;
+            default: throw new IllegalArgumentException("Unknown FrustumCorner: " + corner);
+        }
+        dest.put(destOffset + 0, _idxSw0);
+        dest.put(destOffset + 1, _idxSw1);
+        dest.put(destOffset + 2, _idxSw2);
         return dest;
     }
 
     public static java.nio.DoubleBuffer frustumCorner_zo(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, FrustumCorner corner) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.frustumCorner_zo_unsafe(dest, destOffset, src, srcOffset, corner);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.frustumCorner_zo_unsafe(dest, destOffset, src, srcOffset, corner);
         return Double4x4OpsKernelsTypedBuffer.frustumCorner_zo_api(dest, destOffset, src, srcOffset, corner);
     }
 
@@ -1380,12 +3374,145 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.frustumCorner_zo(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, corner);
             return dest;
         }
-        Double4x4OpsKernelsSegment.frustumCorner_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, corner);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.frustumCorner_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, corner);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = -_self01;
+        double _t1 = -_self00;
+        double _t2 = -_self10;
+        double _t40 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t41 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t42 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t43 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t44 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t45 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t46 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t47 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t48 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t49 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t50 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t51 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t52 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t53 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t55 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t56 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t57 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t59 = _self11 * _t40;
+        double _t63 = _self10 * _t42;
+        double _t74 = _self10 * _t40;
+        double _t81 = _self10 * _t41;
+        double _t87 = -(_self02 * _t41);
+        double _t88 = -_t59;
+        double _t89 = -(_self13 * _t42);
+        double _t91 = -(_self01 * _t46);
+        double _t94 = -(_self12 * _t41);
+        double _t98 = -(_self01 * _t49);
+        double _t101 = -(_self02 * _t55);
+        double _t105 = -(_self02 * _t56);
+        double _t107 = -(_self01 * _t56);
+        double _t108 = -_t81;
+        double _t109 = -(_self13 * _t48);
+        double _t111 = -(_self11 * _t56);
+        double _t117 = Math.fma(_self01, _t40, _t87);
+        double _t118 = Math.fma(_self12, _t41, _t89);
+        double _t120 = Math.fma(_self00, _t45, _t91);
+        double _t121 = Math.fma(_self12, _t48, -(_self11 * _t49));
+        double _t123 = Math.fma(_self13, _t42, _t94);
+        double _t125 = Math.fma(_self11, _t49, -(_self12 * _t48));
+        double _t126 = Math.fma(_self02, _t41, -(_self03 * _t42));
+        double _t127 = Math.fma(_self02, _t48, _t98);
+        double _t133 = Math.fma(_self00, _t43, _t101);
+        double _t134 = Math.fma(_self13, _t49, -(_self12 * _t56));
+        double _t136 = Math.fma(_self12, _t56, -(_self13 * _t49));
+        double _t137 = Math.fma(_self03, _t49, _t105);
+        double _t140 = Math.fma(_self00, _t41, _t107);
+        double _t141 = Math.fma(_self11, _t56, _t109);
+        double _t143 = Math.fma(_self13, _t48, _t111);
+        double _t144 = Math.fma(_self01, _t56, -(_self03 * _t48));
+        double _t147 = Math.fma(_self00, _t45, Math.fma(_self02, _t47, _t91));
+        double _t148 = Math.fma(_self01, _t50, Math.fma(_self03, _t51, -(_self02 * _t52)));
+        double _t149 = Math.fma(_self01, _t40, Math.fma(_self03, _t42, _t87));
+        double _t150 = Math.fma(_self10, _t42, _t121);
+        double _t151 = Math.fma(_self11, _t40, _t123);
+        double _t153 = Math.fma(_self00, _t43, Math.fma(_self03, _t46, _t101));
+        double _t154 = Math.fma(_self10, _t40, _t134);
+        double _t156 = Math.fma(_self00, _t52, Math.fma(_self03, _t54, -(_self01 * _t57)));
+        double _t157 = Math.fma(_self00, _t41, Math.fma(_self03, _t48, _t107));
+        double _t158 = Math.fma(_self10, _t41, _t143);
+        double _t159 = Math.fma(_t0, _t43, Math.fma(_self02, _t44, -(_self03 * _t45)));
+        double _t160 = Math.fma(_t1, _t42, Math.fma(_self01, _t49, -(_self02 * _t48)));
+        double _t161 = Math.fma(_t2, _t42, _t125);
+        double _t162 = Math.fma(-_self11, _t40, _t118);
+        double _t163 = Math.fma(_t1, _t51, Math.fma(_self01, _t53, -(_self02 * _t54)));
+        double _t165 = Math.fma(_t1, _t40, Math.fma(_self02, _t56, -(_self03 * _t49)));
+        double _t166 = Math.fma(_t2, _t40, _t136);
+        double _t167 = Math.fma(_t1, _t50, Math.fma(_self02, _t57, -(_self03 * _t53)));
+        double _t168 = Math.fma(_t1, _t44, Math.fma(_self01, _t55, -(_self03 * _t47)));
+        double _t169 = Math.fma(_t2, _t41, _t141);
+        double _t178 = _t126 + _t159;
+        double _t180 = _t144 + _t168;
+        double _t182 = _t147 + Math.fma(_self00, _t42, _t127);
+        double _t183 = _t153 + Math.fma(_self00, _t40, _t137);
+        double _t186 = _t160 + _t163;
+        double _t187 = Math.fma(_t0, _t40, _t126) + _t159;
+        double _t189 = _t165 + _t167;
+        double _t190 = Math.fma(_t1, _t41, _t144) + _t168;
+        double _t191 = Math.fma(_self00, _t42, _t98) + Math.fma(_self02, _t48, _t63) + (_t121 + _t147);
+        double _t191_inv = 1.0 / _t191;
+        double _t192 = _t120 + Math.fma(_self02, _t47, _t63) + (_t121 + _t160);
+        double _t192_inv = 1.0 / _t192;
+        double _t193 = _t120 + Math.fma(_self02, _t47, _self00 * _t42) + (_t127 + _t161);
+        double _t193_inv = 1.0 / _t193;
+        double _t194 = _t120 + Math.fma(_self02, _t47, -_t63) + (_t125 + _t160);
+        double _t194_inv = 1.0 / _t194;
+        double _t195 = _t182 + (_t150 + _t163);
+        double _t195_inv = 1.0 / _t195;
+        double _t196 = _t147 + _t150 + _t186;
+        double _t196_inv = 1.0 / _t196;
+        double _t197 = _t182 + (_t161 + _t163);
+        double _t197_inv = 1.0 / _t197;
+        double _t198 = _t147 + _t161 + _t186;
+        double _t198_inv = 1.0 / _t198;
+        double _idxSw0;
+        double _idxSw1;
+        double _idxSw2;
+        switch (corner) {
+            case NXNYNZ: _idxSw0 = (_t117 + Math.fma(_self03, _t42, _t88) + (_t118 + _t159)) * _t192_inv; _idxSw1 = (_t133 + Math.fma(_self03, _t46, _t74) + (_t134 + _t165)) * _t192_inv; _idxSw2 = (_t140 + Math.fma(_self03, _t48, _t108) + (_t141 + _t168)) * _t192_inv; break;
+            case PXNYNZ: _idxSw0 = (_t117 + Math.fma(_self03, _t42, _t59) + (_t123 + _t159)) * _t194_inv; _idxSw1 = (_t133 + Math.fma(_self03, _t46, -_t74) + (_t136 + _t165)) * _t194_inv; _idxSw2 = (_t140 + Math.fma(_self03, _t48, _t81) + (_t143 + _t168)) * _t194_inv; break;
+            case PXPYNZ: _idxSw0 = (Math.fma(_self11, _t40, _t94) + Math.fma(_self13, _t42, -(_self01 * _t40)) + _t178) * _t193_inv; _idxSw1 = (_t133 + Math.fma(_self03, _t46, _self00 * _t40) + (_t137 + _t166)) * _t193_inv; _idxSw2 = (Math.fma(_self10, _t41, _t111) + Math.fma(_self13, _t48, -(_self00 * _t41)) + _t180) * _t193_inv; break;
+            case NXPYNZ: _idxSw0 = (Math.fma(_self12, _t41, _t88) + Math.fma(_t0, _t40, _t89) + _t178) * _t191_inv; _idxSw1 = (Math.fma(_self00, _t40, _t105) + Math.fma(_self03, _t49, _t74) + (_t134 + _t153)) * _t191_inv; _idxSw2 = (Math.fma(_self11, _t56, _t108) + Math.fma(_t1, _t41, _t109) + _t180) * _t191_inv; break;
+            case NXNYPZ: _idxSw0 = (_t148 + _t149 + (_t162 + _t159)) * _t196_inv; _idxSw1 = (_t153 + _t154 + _t189) * _t196_inv; _idxSw2 = (_t156 + _t157 + (_t169 + _t168)) * _t196_inv; break;
+            case PXNYPZ: _idxSw0 = (_t149 + _t151 + (_t148 + _t159)) * _t198_inv; _idxSw1 = (_t153 + _t166 + _t189) * _t198_inv; _idxSw2 = (_t157 + _t158 + (_t156 + _t168)) * _t198_inv; break;
+            case PXPYPZ: _idxSw0 = (_t148 + _t151 + _t187) * _t197_inv; _idxSw1 = (_t183 + (_t166 + _t167)) * _t197_inv; _idxSw2 = (_t156 + _t158 + _t190) * _t197_inv; break;
+            case NXPYPZ: _idxSw0 = (_t148 + _t162 + _t187) * _t195_inv; _idxSw1 = (_t183 + (_t154 + _t167)) * _t195_inv; _idxSw2 = (_t156 + _t169 + _t190) * _t195_inv; break;
+            default: throw new IllegalArgumentException("Unknown FrustumCorner: " + corner);
+        }
+        dest.put(destOffset + 0, _idxSw0);
+        dest.put(destOffset + 1, _idxSw1);
+        dest.put(destOffset + 2, _idxSw2);
         return dest;
     }
 
     public static java.nio.DoubleBuffer frustumPlane_no(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, FrustumPlane plane) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.frustumPlane_no_unsafe(dest, destOffset, src, srcOffset, plane);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.frustumPlane_no_unsafe(dest, destOffset, src, srcOffset, plane);
         return Double4x4OpsKernelsTypedBuffer.frustumPlane_no_api(dest, destOffset, src, srcOffset, plane);
     }
 
@@ -1401,12 +3528,48 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.frustumPlane_no(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, plane);
             return dest;
         }
-        Double4x4OpsKernelsSegment.frustumPlane_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, plane);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.frustumPlane_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, plane);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _idxSw0;
+        double _idxSw1;
+        double _idxSw2;
+        double _idxSw3;
+        switch (plane) {
+            case NX: _idxSw0 = _self00 + _self30; _idxSw1 = _self01 + _self31; _idxSw2 = _self02 + _self32; _idxSw3 = _self03 + _self33; break;
+            case PX: _idxSw0 = _self30 - _self00; _idxSw1 = _self31 - _self01; _idxSw2 = _self32 - _self02; _idxSw3 = _self33 - _self03; break;
+            case NY: _idxSw0 = _self10 + _self30; _idxSw1 = _self11 + _self31; _idxSw2 = _self12 + _self32; _idxSw3 = _self13 + _self33; break;
+            case PY: _idxSw0 = _self30 - _self10; _idxSw1 = _self31 - _self11; _idxSw2 = _self32 - _self12; _idxSw3 = _self33 - _self13; break;
+            case NZ: _idxSw0 = _self20 + _self30; _idxSw1 = _self21 + _self31; _idxSw2 = _self22 + _self32; _idxSw3 = _self23 + _self33; break;
+            case PZ: _idxSw0 = _self30 - _self20; _idxSw1 = _self31 - _self21; _idxSw2 = _self32 - _self22; _idxSw3 = _self33 - _self23; break;
+            default: throw new IllegalArgumentException("Unknown FrustumPlane: " + plane);
+        }
+        dest.put(destOffset + 0, _idxSw0);
+        dest.put(destOffset + 1, _idxSw1);
+        dest.put(destOffset + 2, _idxSw2);
+        dest.put(destOffset + 3, _idxSw3);
         return dest;
     }
 
     public static java.nio.DoubleBuffer frustumPlane_zo(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, FrustumPlane plane) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.frustumPlane_zo_unsafe(dest, destOffset, src, srcOffset, plane);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.frustumPlane_zo_unsafe(dest, destOffset, src, srcOffset, plane);
         return Double4x4OpsKernelsTypedBuffer.frustumPlane_zo_api(dest, destOffset, src, srcOffset, plane);
     }
 
@@ -1422,12 +3585,48 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.frustumPlane_zo(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, plane);
             return dest;
         }
-        Double4x4OpsKernelsSegment.frustumPlane_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, plane);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.frustumPlane_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, plane);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _idxSw0;
+        double _idxSw1;
+        double _idxSw2;
+        double _idxSw3;
+        switch (plane) {
+            case NX: _idxSw0 = _self00 + _self30; _idxSw1 = _self01 + _self31; _idxSw2 = _self02 + _self32; _idxSw3 = _self03 + _self33; break;
+            case PX: _idxSw0 = _self30 - _self00; _idxSw1 = _self31 - _self01; _idxSw2 = _self32 - _self02; _idxSw3 = _self33 - _self03; break;
+            case NY: _idxSw0 = _self10 + _self30; _idxSw1 = _self11 + _self31; _idxSw2 = _self12 + _self32; _idxSw3 = _self13 + _self33; break;
+            case PY: _idxSw0 = _self30 - _self10; _idxSw1 = _self31 - _self11; _idxSw2 = _self32 - _self12; _idxSw3 = _self33 - _self13; break;
+            case NZ: _idxSw0 = _self20; _idxSw1 = _self21; _idxSw2 = _self22; _idxSw3 = _self23; break;
+            case PZ: _idxSw0 = _self30 - _self20; _idxSw1 = _self31 - _self21; _idxSw2 = _self32 - _self22; _idxSw3 = _self33 - _self23; break;
+            default: throw new IllegalArgumentException("Unknown FrustumPlane: " + plane);
+        }
+        dest.put(destOffset + 0, _idxSw0);
+        dest.put(destOffset + 1, _idxSw1);
+        dest.put(destOffset + 2, _idxSw2);
+        dest.put(destOffset + 3, _idxSw3);
         return dest;
     }
 
     public static java.nio.DoubleBuffer frustumRayDir_no(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double x, double y) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.frustumRayDir_no_unsafe(dest, destOffset, src, srcOffset, x, y);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.frustumRayDir_no_unsafe(dest, destOffset, src, srcOffset, x, y);
         return Double4x4OpsKernelsTypedBuffer.frustumRayDir_no_api(dest, destOffset, src, srcOffset, x, y);
     }
 
@@ -1443,12 +3642,72 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.frustumRayDir_no(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, x, y);
             return dest;
         }
-        Double4x4OpsKernelsSegment.frustumRayDir_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, x, y);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.frustumRayDir_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, x, y);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = -_self01;
+        double _t1 = -_self00;
+        double _t8 = Math.fma(2.0, x, -1.0);
+        double _t10 = Math.fma(2.0, y, -1.0);
+        double _t40 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t41 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t42 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t43 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t44 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t45 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t46 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t47 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t48 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t49 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t50 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t51 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t52 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t53 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t55 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t56 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t57 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t75 = -(_self01 * _t49);
+        double _t80 = -(_self02 * _t55);
+        double _t88 = Math.fma(_self02, _t47, -(_self03 * _t48));
+        double _t99 = Math.fma(_self01, _t55, -(_self03 * _t50));
+        double _t100 = Math.fma(_self13, _t43, Math.fma(_self11, _t44, -(_self12 * _t45)));
+        double _t106 = Math.fma(_self13, _t51, Math.fma(_self10, _t45, -(_self11 * _t56)));
+        double _t109 = Math.fma(_self02, _t51, Math.fma(_self00, _t43, -(_self01 * _t52))) * _t10;
+        double _t111 = Math.fma(_self03, _t52, Math.fma(_self00, _t44, -(_self02 * _t56))) * _t10;
+        double _t114 = -(Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))) * _t10);
+        double _t115 = -(Math.fma(_self12, _t51, Math.fma(_self10, _t43, -(_self11 * _t52))) * _t8);
+        double _t116 = -(Math.fma(_self13, _t52, Math.fma(_self10, _t44, -(_self12 * _t56))) * _t8);
+        double _t117 = -(Math.fma(_self03, _t51, Math.fma(_self00, _t45, -(_self01 * _t56))) * _t10);
+        double _t126 = Math.fma(_self00, _t42, -(_self01 * _t53)) + Math.fma(_self02, _t54, _t109) + (Math.fma(_self00, _t48, _t115) + Math.fma(_self02, _t50, _t75));
+        double _t126_inv = 1.0 / _t126;
+        double _t127 = Math.fma(_self00, _t48, _t75) + Math.fma(_self02, _t50, _t109) + (Math.fma(_t1, _t42, _t115) + Math.fma(_self01, _t53, -(_self02 * _t54)));
+        double _t127_inv = 1.0 / _t127;
+        dest.put(destOffset + 0, (Math.fma(_self01, _t40, -(_self02 * _t41)) + Math.fma(_self03, _t42, _t100 * _t8) + (Math.fma(_t0, _t46, _t114) + _t88)) * _t127_inv - (Math.fma(_t100, _t8, _t114) + Math.fma(_self02, _t41, -(_self01 * _t40)) + (Math.fma(_t0, _t46, -(_self03 * _t42)) + _t88)) * _t126_inv);
+        dest.put(destOffset + 1, (Math.fma(_self00, _t46, _t80) + Math.fma(_self03, _t49, _t111) + (Math.fma(_t1, _t40, _t116) + Math.fma(_self02, _t57, -(_self03 * _t53)))) * _t127_inv - (Math.fma(_self00, _t40, -(_self02 * _t57)) + Math.fma(_self03, _t53, _t111) + (Math.fma(_self00, _t46, _t116) + Math.fma(_self03, _t49, _t80))) * _t126_inv);
+        dest.put(destOffset + 2, (Math.fma(_self00, _t41, -(_self01 * _t57)) + Math.fma(_self03, _t54, _t106 * _t8) + (Math.fma(_t1, _t47, _t117) + _t99)) * _t127_inv - (Math.fma(_t106, _t8, _t117) + Math.fma(_self01, _t57, -(_self00 * _t41)) + (Math.fma(_t1, _t47, -(_self03 * _t54)) + _t99)) * _t126_inv);
         return dest;
     }
 
     public static java.nio.DoubleBuffer frustumRayDir_zo(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double x, double y) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.frustumRayDir_zo_unsafe(dest, destOffset, src, srcOffset, x, y);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.frustumRayDir_zo_unsafe(dest, destOffset, src, srcOffset, x, y);
         return Double4x4OpsKernelsTypedBuffer.frustumRayDir_zo_api(dest, destOffset, src, srcOffset, x, y);
     }
 
@@ -1464,12 +3723,69 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.frustumRayDir_zo(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, x, y);
             return dest;
         }
-        Double4x4OpsKernelsSegment.frustumRayDir_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, x, y);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.frustumRayDir_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, x, y);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = -_self00;
+        double _t7 = Math.fma(2.0, x, -1.0);
+        double _t9 = Math.fma(2.0, y, -1.0);
+        double _t39 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t40 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t41 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t42 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t43 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t44 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t45 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t46 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t47 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t48 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t49 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t50 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t51 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t52 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t53 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t54 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t55 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t56 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t81 = Math.fma(_self00, _t47, -(_self01 * _t48));
+        double _t85 = Math.fma(_self00, _t45, -(_self02 * _t54));
+        double _t90 = Math.fma(_self13, _t42, Math.fma(_self11, _t43, -(_self12 * _t44)));
+        double _t92 = Math.fma(_self02, _t50, Math.fma(_self00, _t42, -(_self01 * _t51)));
+        double _t95 = Math.fma(_self03, _t51, Math.fma(_self00, _t43, -(_self02 * _t55)));
+        double _t97 = Math.fma(_self13, _t50, Math.fma(_self10, _t44, -(_self11 * _t55)));
+        double _t104 = -(Math.fma(_self03, _t42, Math.fma(_self01, _t43, -(_self02 * _t44))) * _t9);
+        double _t105 = -(Math.fma(_self12, _t50, Math.fma(_self10, _t42, -(_self11 * _t51))) * _t7);
+        double _t106 = -(Math.fma(_self13, _t51, Math.fma(_self10, _t43, -(_self12 * _t55))) * _t7);
+        double _t107 = -(Math.fma(_self03, _t50, Math.fma(_self00, _t44, -(_self01 * _t55))) * _t9);
+        double _t113 = Math.fma(_self02, _t49, _t81) + Math.fma(_t92, _t9, _t105);
+        double _t113_inv = 1.0 / _t113;
+        double _t114 = _t81 + Math.fma(_self02, _t49, _t92 * _t9) + (Math.fma(_t0, _t41, _t105) + Math.fma(_self01, _t52, -(_self02 * _t53)));
+        double _t114_inv = 1.0 / _t114;
+        dest.put(destOffset + 0, (Math.fma(_self01, _t39, -(_self02 * _t40)) + Math.fma(_self03, _t41, _t90 * _t7) + (Math.fma(-_self01, _t45, _t104) + Math.fma(_self02, _t46, -(_self03 * _t47)))) * _t114_inv - (Math.fma(_t90, _t7, _t104) - Math.fma(_self03, _t47, Math.fma(_self01, _t45, -(_self02 * _t46)))) * _t113_inv);
+        dest.put(destOffset + 1, (_t85 + Math.fma(_self03, _t48, _t95 * _t9) + (Math.fma(_t0, _t39, _t106) + Math.fma(_self02, _t56, -(_self03 * _t52)))) * _t114_inv - (Math.fma(_self03, _t48, _t85) + Math.fma(_t95, _t9, _t106)) * _t113_inv);
+        dest.put(destOffset + 2, (Math.fma(_self00, _t40, -(_self01 * _t56)) + Math.fma(_self03, _t53, _t97 * _t7) + (Math.fma(_t0, _t46, _t107) + Math.fma(_self01, _t54, -(_self03 * _t49)))) * _t114_inv - (Math.fma(_t97, _t7, _t107) - Math.fma(_self03, _t49, Math.fma(_self00, _t46, -(_self01 * _t54)))) * _t113_inv);
         return dest;
     }
 
     public static double testAabb_no(java.nio.DoubleBuffer src, int srcOffset, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.testAabb_no_unsafe(src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.testAabb_no_unsafe(src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
         return Double4x4OpsKernelsTypedBuffer.testAabb_no_api(src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
     }
 
@@ -1482,11 +3798,48 @@ public final class Double4x4OpsKernelsTypedBuffer {
         if (src.hasArray()) {
             return Double4x4OpsKernelsArray.testAabb_no(src.array(), src.arrayOffset() + srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
         }
-        return Double4x4OpsKernelsSegment.testAabb_no_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, minX, minY, minZ, maxX, maxY, maxZ);
+        if (src.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Double4x4OpsKernelsSegment.testAabb_no_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, minX, minY, minZ, maxX, maxY, maxZ);
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = _self00 + _self30;
+        double _t1 = _self01 + _self31;
+        double _t2 = _self02 + _self32;
+        double _t3 = _self30 - _self00;
+        double _t4 = _self31 - _self01;
+        double _t5 = _self32 - _self02;
+        double _t6 = _self10 + _self30;
+        double _t7 = _self11 + _self31;
+        double _t8 = _self12 + _self32;
+        double _t9 = _self30 - _self10;
+        double _t10 = _self31 - _self11;
+        double _t11 = _self32 - _self12;
+        double _t12 = _self20 + _self30;
+        double _t13 = _self21 + _self31;
+        double _t14 = _self22 + _self32;
+        double _t15 = _self30 - _self20;
+        double _t16 = _self31 - _self21;
+        double _t17 = _self32 - _self22;
+        return Math.fma(_t0, _t0 >= 0.0 ? maxX : minX, Math.fma(_t1, _t1 >= 0.0 ? maxY : minY, Math.fma(_t2, _t2 >= 0.0 ? maxZ : minZ, _self03 + _self33))) < 0.0 ? 0.0 : Math.fma(_t3, _t3 >= 0.0 ? maxX : minX, Math.fma(_t4, _t4 >= 0.0 ? maxY : minY, Math.fma(_t5, _t5 >= 0.0 ? maxZ : minZ, _self33 - _self03))) < 0.0 ? 0.0 : Math.fma(_t6, _t6 >= 0.0 ? maxX : minX, Math.fma(_t7, _t7 >= 0.0 ? maxY : minY, Math.fma(_t8, _t8 >= 0.0 ? maxZ : minZ, _self13 + _self33))) < 0.0 ? 0.0 : Math.fma(_t9, _t9 >= 0.0 ? maxX : minX, Math.fma(_t10, _t10 >= 0.0 ? maxY : minY, Math.fma(_t11, _t11 >= 0.0 ? maxZ : minZ, _self33 - _self13))) < 0.0 ? 0.0 : Math.fma(_t12, _t12 >= 0.0 ? maxX : minX, Math.fma(_t13, _t13 >= 0.0 ? maxY : minY, Math.fma(_t14, _t14 >= 0.0 ? maxZ : minZ, _self23 + _self33))) < 0.0 ? 0.0 : Math.fma(_t15, _t15 >= 0.0 ? maxX : minX, Math.fma(_t16, _t16 >= 0.0 ? maxY : minY, Math.fma(_t17, _t17 >= 0.0 ? maxZ : minZ, _self33 - _self23))) < 0.0 ? 0.0 : 1.0;
     }
 
     public static double testAabb_zo(java.nio.DoubleBuffer src, int srcOffset, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.testAabb_zo_unsafe(src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.testAabb_zo_unsafe(src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
         return Double4x4OpsKernelsTypedBuffer.testAabb_zo_api(src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
     }
 
@@ -1499,11 +3852,45 @@ public final class Double4x4OpsKernelsTypedBuffer {
         if (src.hasArray()) {
             return Double4x4OpsKernelsArray.testAabb_zo(src.array(), src.arrayOffset() + srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
         }
-        return Double4x4OpsKernelsSegment.testAabb_zo_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, minX, minY, minZ, maxX, maxY, maxZ);
+        if (src.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Double4x4OpsKernelsSegment.testAabb_zo_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, minX, minY, minZ, maxX, maxY, maxZ);
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = _self00 + _self30;
+        double _t1 = _self01 + _self31;
+        double _t2 = _self02 + _self32;
+        double _t3 = _self30 - _self00;
+        double _t4 = _self31 - _self01;
+        double _t5 = _self32 - _self02;
+        double _t6 = _self10 + _self30;
+        double _t7 = _self11 + _self31;
+        double _t8 = _self12 + _self32;
+        double _t9 = _self30 - _self10;
+        double _t10 = _self31 - _self11;
+        double _t11 = _self32 - _self12;
+        double _t12 = _self30 - _self20;
+        double _t13 = _self31 - _self21;
+        double _t14 = _self32 - _self22;
+        return Math.fma(_t0, _t0 >= 0.0 ? maxX : minX, Math.fma(_t1, _t1 >= 0.0 ? maxY : minY, Math.fma(_t2, _t2 >= 0.0 ? maxZ : minZ, _self03 + _self33))) < 0.0 ? 0.0 : Math.fma(_t3, _t3 >= 0.0 ? maxX : minX, Math.fma(_t4, _t4 >= 0.0 ? maxY : minY, Math.fma(_t5, _t5 >= 0.0 ? maxZ : minZ, _self33 - _self03))) < 0.0 ? 0.0 : Math.fma(_t6, _t6 >= 0.0 ? maxX : minX, Math.fma(_t7, _t7 >= 0.0 ? maxY : minY, Math.fma(_t8, _t8 >= 0.0 ? maxZ : minZ, _self13 + _self33))) < 0.0 ? 0.0 : Math.fma(_t9, _t9 >= 0.0 ? maxX : minX, Math.fma(_t10, _t10 >= 0.0 ? maxY : minY, Math.fma(_t11, _t11 >= 0.0 ? maxZ : minZ, _self33 - _self13))) < 0.0 ? 0.0 : Math.fma(_self20, _self20 >= 0.0 ? maxX : minX, Math.fma(_self21, _self21 >= 0.0 ? maxY : minY, Math.fma(_self22, _self22 >= 0.0 ? maxZ : minZ, _self23))) < 0.0 ? 0.0 : Math.fma(_t12, _t12 >= 0.0 ? maxX : minX, Math.fma(_t13, _t13 >= 0.0 ? maxY : minY, Math.fma(_t14, _t14 >= 0.0 ? maxZ : minZ, _self33 - _self23))) < 0.0 ? 0.0 : 1.0;
     }
 
     public static double testAabb_no(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer min, int minOffset, java.nio.DoubleBuffer max, int maxOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && min.isDirect() && max.isDirect()) return Double4x4OpsKernelsTypedBuffer.testAabb_no_unsafe(src, srcOffset, min, minOffset, max, maxOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && min.isDirect() && min.order() == java.nio.ByteOrder.nativeOrder() && max.isDirect() && max.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.testAabb_no_unsafe(src, srcOffset, min, minOffset, max, maxOffset);
         return Double4x4OpsKernelsTypedBuffer.testAabb_no_api(src, srcOffset, min, minOffset, max, maxOffset);
     }
 
@@ -1518,11 +3905,54 @@ public final class Double4x4OpsKernelsTypedBuffer {
         if (src.hasArray() && min.hasArray() && max.hasArray()) {
             return Double4x4OpsKernelsArray.testAabb_no(src.array(), src.arrayOffset() + srcOffset, min.array(), min.arrayOffset() + minOffset, max.array(), max.arrayOffset() + maxOffset);
         }
-        return Double4x4OpsKernelsSegment.testAabb_no_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(min.duplicate().position(0)), (long) minOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(max.duplicate().position(0)), (long) maxOffset * 8L);
+        if (src.order() == java.nio.ByteOrder.nativeOrder() && min.order() == java.nio.ByteOrder.nativeOrder() && max.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Double4x4OpsKernelsSegment.testAabb_no_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(min.duplicate().position(0)), (long) minOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(max.duplicate().position(0)), (long) maxOffset * 8L);
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _minx = min.get(minOffset + 0);
+        double _miny = min.get(minOffset + 1);
+        double _minz = min.get(minOffset + 2);
+        double _maxx = max.get(maxOffset + 0);
+        double _maxy = max.get(maxOffset + 1);
+        double _maxz = max.get(maxOffset + 2);
+        double _t0 = _self00 + _self30;
+        double _t1 = _self01 + _self31;
+        double _t2 = _self02 + _self32;
+        double _t3 = _self30 - _self00;
+        double _t4 = _self31 - _self01;
+        double _t5 = _self32 - _self02;
+        double _t6 = _self10 + _self30;
+        double _t7 = _self11 + _self31;
+        double _t8 = _self12 + _self32;
+        double _t9 = _self30 - _self10;
+        double _t10 = _self31 - _self11;
+        double _t11 = _self32 - _self12;
+        double _t12 = _self20 + _self30;
+        double _t13 = _self21 + _self31;
+        double _t14 = _self22 + _self32;
+        double _t15 = _self30 - _self20;
+        double _t16 = _self31 - _self21;
+        double _t17 = _self32 - _self22;
+        return Math.fma(_t0, _t0 >= 0.0 ? _maxx : _minx, Math.fma(_t1, _t1 >= 0.0 ? _maxy : _miny, Math.fma(_t2, _t2 >= 0.0 ? _maxz : _minz, _self03 + _self33))) < 0.0 ? 0.0 : Math.fma(_t3, _t3 >= 0.0 ? _maxx : _minx, Math.fma(_t4, _t4 >= 0.0 ? _maxy : _miny, Math.fma(_t5, _t5 >= 0.0 ? _maxz : _minz, _self33 - _self03))) < 0.0 ? 0.0 : Math.fma(_t6, _t6 >= 0.0 ? _maxx : _minx, Math.fma(_t7, _t7 >= 0.0 ? _maxy : _miny, Math.fma(_t8, _t8 >= 0.0 ? _maxz : _minz, _self13 + _self33))) < 0.0 ? 0.0 : Math.fma(_t9, _t9 >= 0.0 ? _maxx : _minx, Math.fma(_t10, _t10 >= 0.0 ? _maxy : _miny, Math.fma(_t11, _t11 >= 0.0 ? _maxz : _minz, _self33 - _self13))) < 0.0 ? 0.0 : Math.fma(_t12, _t12 >= 0.0 ? _maxx : _minx, Math.fma(_t13, _t13 >= 0.0 ? _maxy : _miny, Math.fma(_t14, _t14 >= 0.0 ? _maxz : _minz, _self23 + _self33))) < 0.0 ? 0.0 : Math.fma(_t15, _t15 >= 0.0 ? _maxx : _minx, Math.fma(_t16, _t16 >= 0.0 ? _maxy : _miny, Math.fma(_t17, _t17 >= 0.0 ? _maxz : _minz, _self33 - _self23))) < 0.0 ? 0.0 : 1.0;
     }
 
     public static double testAabb_zo(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer min, int minOffset, java.nio.DoubleBuffer max, int maxOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && min.isDirect() && max.isDirect()) return Double4x4OpsKernelsTypedBuffer.testAabb_zo_unsafe(src, srcOffset, min, minOffset, max, maxOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && min.isDirect() && min.order() == java.nio.ByteOrder.nativeOrder() && max.isDirect() && max.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.testAabb_zo_unsafe(src, srcOffset, min, minOffset, max, maxOffset);
         return Double4x4OpsKernelsTypedBuffer.testAabb_zo_api(src, srcOffset, min, minOffset, max, maxOffset);
     }
 
@@ -1537,11 +3967,51 @@ public final class Double4x4OpsKernelsTypedBuffer {
         if (src.hasArray() && min.hasArray() && max.hasArray()) {
             return Double4x4OpsKernelsArray.testAabb_zo(src.array(), src.arrayOffset() + srcOffset, min.array(), min.arrayOffset() + minOffset, max.array(), max.arrayOffset() + maxOffset);
         }
-        return Double4x4OpsKernelsSegment.testAabb_zo_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(min.duplicate().position(0)), (long) minOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(max.duplicate().position(0)), (long) maxOffset * 8L);
+        if (src.order() == java.nio.ByteOrder.nativeOrder() && min.order() == java.nio.ByteOrder.nativeOrder() && max.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Double4x4OpsKernelsSegment.testAabb_zo_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(min.duplicate().position(0)), (long) minOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(max.duplicate().position(0)), (long) maxOffset * 8L);
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _minx = min.get(minOffset + 0);
+        double _miny = min.get(minOffset + 1);
+        double _minz = min.get(minOffset + 2);
+        double _maxx = max.get(maxOffset + 0);
+        double _maxy = max.get(maxOffset + 1);
+        double _maxz = max.get(maxOffset + 2);
+        double _t0 = _self00 + _self30;
+        double _t1 = _self01 + _self31;
+        double _t2 = _self02 + _self32;
+        double _t3 = _self30 - _self00;
+        double _t4 = _self31 - _self01;
+        double _t5 = _self32 - _self02;
+        double _t6 = _self10 + _self30;
+        double _t7 = _self11 + _self31;
+        double _t8 = _self12 + _self32;
+        double _t9 = _self30 - _self10;
+        double _t10 = _self31 - _self11;
+        double _t11 = _self32 - _self12;
+        double _t12 = _self30 - _self20;
+        double _t13 = _self31 - _self21;
+        double _t14 = _self32 - _self22;
+        return Math.fma(_t0, _t0 >= 0.0 ? _maxx : _minx, Math.fma(_t1, _t1 >= 0.0 ? _maxy : _miny, Math.fma(_t2, _t2 >= 0.0 ? _maxz : _minz, _self03 + _self33))) < 0.0 ? 0.0 : Math.fma(_t3, _t3 >= 0.0 ? _maxx : _minx, Math.fma(_t4, _t4 >= 0.0 ? _maxy : _miny, Math.fma(_t5, _t5 >= 0.0 ? _maxz : _minz, _self33 - _self03))) < 0.0 ? 0.0 : Math.fma(_t6, _t6 >= 0.0 ? _maxx : _minx, Math.fma(_t7, _t7 >= 0.0 ? _maxy : _miny, Math.fma(_t8, _t8 >= 0.0 ? _maxz : _minz, _self13 + _self33))) < 0.0 ? 0.0 : Math.fma(_t9, _t9 >= 0.0 ? _maxx : _minx, Math.fma(_t10, _t10 >= 0.0 ? _maxy : _miny, Math.fma(_t11, _t11 >= 0.0 ? _maxz : _minz, _self33 - _self13))) < 0.0 ? 0.0 : Math.fma(_self20, _self20 >= 0.0 ? _maxx : _minx, Math.fma(_self21, _self21 >= 0.0 ? _maxy : _miny, Math.fma(_self22, _self22 >= 0.0 ? _maxz : _minz, _self23))) < 0.0 ? 0.0 : Math.fma(_t12, _t12 >= 0.0 ? _maxx : _minx, Math.fma(_t13, _t13 >= 0.0 ? _maxy : _miny, Math.fma(_t14, _t14 >= 0.0 ? _maxz : _minz, _self33 - _self23))) < 0.0 ? 0.0 : 1.0;
     }
 
     public static double testPoint_no(java.nio.DoubleBuffer src, int srcOffset, double pointX, double pointY, double pointZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.testPoint_no_unsafe(src, srcOffset, pointX, pointY, pointZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.testPoint_no_unsafe(src, srcOffset, pointX, pointY, pointZ);
         return Double4x4OpsKernelsTypedBuffer.testPoint_no_api(src, srcOffset, pointX, pointY, pointZ);
     }
 
@@ -1554,11 +4024,30 @@ public final class Double4x4OpsKernelsTypedBuffer {
         if (src.hasArray()) {
             return Double4x4OpsKernelsArray.testPoint_no(src.array(), src.arrayOffset() + srcOffset, pointX, pointY, pointZ);
         }
-        return Double4x4OpsKernelsSegment.testPoint_no_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, pointX, pointY, pointZ);
+        if (src.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Double4x4OpsKernelsSegment.testPoint_no_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, pointX, pointY, pointZ);
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        return Math.fma(pointX, _self00 + _self30, Math.fma(pointY, _self01 + _self31, Math.fma(pointZ, _self02 + _self32, _self03 + _self33))) < 0.0 ? 0.0 : Math.fma(pointX, _self30 - _self00, Math.fma(pointY, _self31 - _self01, Math.fma(pointZ, _self32 - _self02, _self33 - _self03))) < 0.0 ? 0.0 : Math.fma(pointX, _self10 + _self30, Math.fma(pointY, _self11 + _self31, Math.fma(pointZ, _self12 + _self32, _self13 + _self33))) < 0.0 ? 0.0 : Math.fma(pointX, _self30 - _self10, Math.fma(pointY, _self31 - _self11, Math.fma(pointZ, _self32 - _self12, _self33 - _self13))) < 0.0 ? 0.0 : Math.fma(pointX, _self20 + _self30, Math.fma(pointY, _self21 + _self31, Math.fma(pointZ, _self22 + _self32, _self23 + _self33))) < 0.0 ? 0.0 : Math.fma(pointX, _self30 - _self20, Math.fma(pointY, _self31 - _self21, Math.fma(pointZ, _self32 - _self22, _self33 - _self23))) < 0.0 ? 0.0 : 1.0;
     }
 
     public static double testPoint_zo(java.nio.DoubleBuffer src, int srcOffset, double pointX, double pointY, double pointZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.testPoint_zo_unsafe(src, srcOffset, pointX, pointY, pointZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.testPoint_zo_unsafe(src, srcOffset, pointX, pointY, pointZ);
         return Double4x4OpsKernelsTypedBuffer.testPoint_zo_api(src, srcOffset, pointX, pointY, pointZ);
     }
 
@@ -1571,11 +4060,30 @@ public final class Double4x4OpsKernelsTypedBuffer {
         if (src.hasArray()) {
             return Double4x4OpsKernelsArray.testPoint_zo(src.array(), src.arrayOffset() + srcOffset, pointX, pointY, pointZ);
         }
-        return Double4x4OpsKernelsSegment.testPoint_zo_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, pointX, pointY, pointZ);
+        if (src.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Double4x4OpsKernelsSegment.testPoint_zo_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, pointX, pointY, pointZ);
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        return Math.fma(pointX, _self00 + _self30, Math.fma(pointY, _self01 + _self31, Math.fma(pointZ, _self02 + _self32, _self03 + _self33))) < 0.0 ? 0.0 : Math.fma(pointX, _self30 - _self00, Math.fma(pointY, _self31 - _self01, Math.fma(pointZ, _self32 - _self02, _self33 - _self03))) < 0.0 ? 0.0 : Math.fma(pointX, _self10 + _self30, Math.fma(pointY, _self11 + _self31, Math.fma(pointZ, _self12 + _self32, _self13 + _self33))) < 0.0 ? 0.0 : Math.fma(pointX, _self30 - _self10, Math.fma(pointY, _self31 - _self11, Math.fma(pointZ, _self32 - _self12, _self33 - _self13))) < 0.0 ? 0.0 : Math.fma(pointX, _self20, Math.fma(pointY, _self21, Math.fma(pointZ, _self22, _self23))) < 0.0 ? 0.0 : Math.fma(pointX, _self30 - _self20, Math.fma(pointY, _self31 - _self21, Math.fma(pointZ, _self32 - _self22, _self33 - _self23))) < 0.0 ? 0.0 : 1.0;
     }
 
     public static double testPoint_no(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer point, int pointOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && point.isDirect()) return Double4x4OpsKernelsTypedBuffer.testPoint_no_unsafe(src, srcOffset, point, pointOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && point.isDirect() && point.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.testPoint_no_unsafe(src, srcOffset, point, pointOffset);
         return Double4x4OpsKernelsTypedBuffer.testPoint_no_api(src, srcOffset, point, pointOffset);
     }
 
@@ -1589,11 +4097,33 @@ public final class Double4x4OpsKernelsTypedBuffer {
         if (src.hasArray() && point.hasArray()) {
             return Double4x4OpsKernelsArray.testPoint_no(src.array(), src.arrayOffset() + srcOffset, point.array(), point.arrayOffset() + pointOffset);
         }
-        return Double4x4OpsKernelsSegment.testPoint_no_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(point.duplicate().position(0)), (long) pointOffset * 8L);
+        if (src.order() == java.nio.ByteOrder.nativeOrder() && point.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Double4x4OpsKernelsSegment.testPoint_no_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(point.duplicate().position(0)), (long) pointOffset * 8L);
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _pointx = point.get(pointOffset + 0);
+        double _pointy = point.get(pointOffset + 1);
+        double _pointz = point.get(pointOffset + 2);
+        return Math.fma(_pointx, _self00 + _self30, Math.fma(_pointy, _self01 + _self31, Math.fma(_pointz, _self02 + _self32, _self03 + _self33))) < 0.0 ? 0.0 : Math.fma(_pointx, _self30 - _self00, Math.fma(_pointy, _self31 - _self01, Math.fma(_pointz, _self32 - _self02, _self33 - _self03))) < 0.0 ? 0.0 : Math.fma(_pointx, _self10 + _self30, Math.fma(_pointy, _self11 + _self31, Math.fma(_pointz, _self12 + _self32, _self13 + _self33))) < 0.0 ? 0.0 : Math.fma(_pointx, _self30 - _self10, Math.fma(_pointy, _self31 - _self11, Math.fma(_pointz, _self32 - _self12, _self33 - _self13))) < 0.0 ? 0.0 : Math.fma(_pointx, _self20 + _self30, Math.fma(_pointy, _self21 + _self31, Math.fma(_pointz, _self22 + _self32, _self23 + _self33))) < 0.0 ? 0.0 : Math.fma(_pointx, _self30 - _self20, Math.fma(_pointy, _self31 - _self21, Math.fma(_pointz, _self32 - _self22, _self33 - _self23))) < 0.0 ? 0.0 : 1.0;
     }
 
     public static double testPoint_zo(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer point, int pointOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && point.isDirect()) return Double4x4OpsKernelsTypedBuffer.testPoint_zo_unsafe(src, srcOffset, point, pointOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && point.isDirect() && point.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.testPoint_zo_unsafe(src, srcOffset, point, pointOffset);
         return Double4x4OpsKernelsTypedBuffer.testPoint_zo_api(src, srcOffset, point, pointOffset);
     }
 
@@ -1607,11 +4137,33 @@ public final class Double4x4OpsKernelsTypedBuffer {
         if (src.hasArray() && point.hasArray()) {
             return Double4x4OpsKernelsArray.testPoint_zo(src.array(), src.arrayOffset() + srcOffset, point.array(), point.arrayOffset() + pointOffset);
         }
-        return Double4x4OpsKernelsSegment.testPoint_zo_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(point.duplicate().position(0)), (long) pointOffset * 8L);
+        if (src.order() == java.nio.ByteOrder.nativeOrder() && point.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Double4x4OpsKernelsSegment.testPoint_zo_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(point.duplicate().position(0)), (long) pointOffset * 8L);
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _pointx = point.get(pointOffset + 0);
+        double _pointy = point.get(pointOffset + 1);
+        double _pointz = point.get(pointOffset + 2);
+        return Math.fma(_pointx, _self00 + _self30, Math.fma(_pointy, _self01 + _self31, Math.fma(_pointz, _self02 + _self32, _self03 + _self33))) < 0.0 ? 0.0 : Math.fma(_pointx, _self30 - _self00, Math.fma(_pointy, _self31 - _self01, Math.fma(_pointz, _self32 - _self02, _self33 - _self03))) < 0.0 ? 0.0 : Math.fma(_pointx, _self10 + _self30, Math.fma(_pointy, _self11 + _self31, Math.fma(_pointz, _self12 + _self32, _self13 + _self33))) < 0.0 ? 0.0 : Math.fma(_pointx, _self30 - _self10, Math.fma(_pointy, _self31 - _self11, Math.fma(_pointz, _self32 - _self12, _self33 - _self13))) < 0.0 ? 0.0 : Math.fma(_pointx, _self20, Math.fma(_pointy, _self21, Math.fma(_pointz, _self22, _self23))) < 0.0 ? 0.0 : Math.fma(_pointx, _self30 - _self20, Math.fma(_pointy, _self31 - _self21, Math.fma(_pointz, _self32 - _self22, _self33 - _self23))) < 0.0 ? 0.0 : 1.0;
     }
 
     public static double testSphere_no(java.nio.DoubleBuffer src, int srcOffset, double centerX, double centerY, double centerZ, double radius) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.testSphere_no_unsafe(src, srcOffset, centerX, centerY, centerZ, radius);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.testSphere_no_unsafe(src, srcOffset, centerX, centerY, centerZ, radius);
         return Double4x4OpsKernelsTypedBuffer.testSphere_no_api(src, srcOffset, centerX, centerY, centerZ, radius);
     }
 
@@ -1624,11 +4176,60 @@ public final class Double4x4OpsKernelsTypedBuffer {
         if (src.hasArray()) {
             return Double4x4OpsKernelsArray.testSphere_no(src.array(), src.arrayOffset() + srcOffset, centerX, centerY, centerZ, radius);
         }
-        return Double4x4OpsKernelsSegment.testSphere_no_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, centerX, centerY, centerZ, radius);
+        if (src.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Double4x4OpsKernelsSegment.testSphere_no_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, centerX, centerY, centerZ, radius);
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = radius * radius;
+        double _t1 = _self00 + _self30;
+        double _t2 = _self01 + _self31;
+        double _t3 = _self02 + _self32;
+        double _t5 = _self30 - _self00;
+        double _t6 = _self31 - _self01;
+        double _t7 = _self32 - _self02;
+        double _t9 = _self10 + _self30;
+        double _t10 = _self11 + _self31;
+        double _t11 = _self12 + _self32;
+        double _t13 = _self30 - _self10;
+        double _t14 = _self31 - _self11;
+        double _t15 = _self32 - _self12;
+        double _t17 = _self20 + _self30;
+        double _t18 = _self21 + _self31;
+        double _t19 = _self22 + _self32;
+        double _t21 = _self30 - _self20;
+        double _t22 = _self31 - _self21;
+        double _t23 = _self32 - _self22;
+        double _t47 = Math.fma(centerX, _t1, Math.fma(centerY, _t2, Math.fma(centerZ, _t3, _self03 + _self33)));
+        double _t48 = Math.fma(centerX, _t5, Math.fma(centerY, _t6, Math.fma(centerZ, _t7, _self33 - _self03)));
+        double _t49 = Math.fma(centerX, _t9, Math.fma(centerY, _t10, Math.fma(centerZ, _t11, _self13 + _self33)));
+        double _t50 = Math.fma(centerX, _t13, Math.fma(centerY, _t14, Math.fma(centerZ, _t15, _self33 - _self13)));
+        double _t51 = Math.fma(centerX, _t17, Math.fma(centerY, _t18, Math.fma(centerZ, _t19, _self23 + _self33)));
+        double _t52 = Math.fma(centerX, _t21, Math.fma(centerY, _t22, Math.fma(centerZ, _t23, _self33 - _self23)));
+        double _t69 = _t52 < 0.0 ? _t52 * _t52 > Math.fma(_t23, _t23, Math.fma(_t21, _t21, _t22 * _t22)) * _t0 ? 0.0 : 1.0 : 1.0;
+        double _t71 = _t51 < 0.0 ? _t51 * _t51 > Math.fma(_t19, _t19, Math.fma(_t17, _t17, _t18 * _t18)) * _t0 ? 0.0 : _t69 : _t69;
+        double _t73 = _t50 < 0.0 ? _t50 * _t50 > Math.fma(_t15, _t15, Math.fma(_t13, _t13, _t14 * _t14)) * _t0 ? 0.0 : _t71 : _t71;
+        double _t75 = _t49 < 0.0 ? _t49 * _t49 > Math.fma(_t11, _t11, Math.fma(_t9, _t9, _t10 * _t10)) * _t0 ? 0.0 : _t73 : _t73;
+        double _t77 = _t48 < 0.0 ? _t48 * _t48 > Math.fma(_t7, _t7, Math.fma(_t5, _t5, _t6 * _t6)) * _t0 ? 0.0 : _t75 : _t75;
+        return _t47 < 0.0 ? _t47 * _t47 > Math.fma(_t3, _t3, Math.fma(_t1, _t1, _t2 * _t2)) * _t0 ? 0.0 : _t77 : _t77;
     }
 
     public static double testSphere_zo(java.nio.DoubleBuffer src, int srcOffset, double centerX, double centerY, double centerZ, double radius) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.testSphere_zo_unsafe(src, srcOffset, centerX, centerY, centerZ, radius);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.testSphere_zo_unsafe(src, srcOffset, centerX, centerY, centerZ, radius);
         return Double4x4OpsKernelsTypedBuffer.testSphere_zo_api(src, srcOffset, centerX, centerY, centerZ, radius);
     }
 
@@ -1641,11 +4242,57 @@ public final class Double4x4OpsKernelsTypedBuffer {
         if (src.hasArray()) {
             return Double4x4OpsKernelsArray.testSphere_zo(src.array(), src.arrayOffset() + srcOffset, centerX, centerY, centerZ, radius);
         }
-        return Double4x4OpsKernelsSegment.testSphere_zo_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, centerX, centerY, centerZ, radius);
+        if (src.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Double4x4OpsKernelsSegment.testSphere_zo_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, centerX, centerY, centerZ, radius);
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = radius * radius;
+        double _t1 = _self00 + _self30;
+        double _t2 = _self01 + _self31;
+        double _t3 = _self02 + _self32;
+        double _t5 = _self30 - _self00;
+        double _t6 = _self31 - _self01;
+        double _t7 = _self32 - _self02;
+        double _t9 = _self10 + _self30;
+        double _t10 = _self11 + _self31;
+        double _t11 = _self12 + _self32;
+        double _t13 = _self30 - _self10;
+        double _t14 = _self31 - _self11;
+        double _t15 = _self32 - _self12;
+        double _t18 = _self30 - _self20;
+        double _t19 = _self31 - _self21;
+        double _t20 = _self32 - _self22;
+        double _t35 = Math.fma(centerX, _self20, Math.fma(centerY, _self21, Math.fma(centerZ, _self22, _self23)));
+        double _t46 = Math.fma(centerX, _t1, Math.fma(centerY, _t2, Math.fma(centerZ, _t3, _self03 + _self33)));
+        double _t47 = Math.fma(centerX, _t5, Math.fma(centerY, _t6, Math.fma(centerZ, _t7, _self33 - _self03)));
+        double _t48 = Math.fma(centerX, _t9, Math.fma(centerY, _t10, Math.fma(centerZ, _t11, _self13 + _self33)));
+        double _t49 = Math.fma(centerX, _t13, Math.fma(centerY, _t14, Math.fma(centerZ, _t15, _self33 - _self13)));
+        double _t50 = Math.fma(centerX, _t18, Math.fma(centerY, _t19, Math.fma(centerZ, _t20, _self33 - _self23)));
+        double _t65 = _t50 < 0.0 ? _t50 * _t50 > Math.fma(_t20, _t20, Math.fma(_t18, _t18, _t19 * _t19)) * _t0 ? 0.0 : 1.0 : 1.0;
+        double _t67 = _t35 < 0.0 ? _t35 * _t35 > Math.fma(_self22, _self22, Math.fma(_self20, _self20, _self21 * _self21)) * _t0 ? 0.0 : _t65 : _t65;
+        double _t69 = _t49 < 0.0 ? _t49 * _t49 > Math.fma(_t15, _t15, Math.fma(_t13, _t13, _t14 * _t14)) * _t0 ? 0.0 : _t67 : _t67;
+        double _t71 = _t48 < 0.0 ? _t48 * _t48 > Math.fma(_t11, _t11, Math.fma(_t9, _t9, _t10 * _t10)) * _t0 ? 0.0 : _t69 : _t69;
+        double _t73 = _t47 < 0.0 ? _t47 * _t47 > Math.fma(_t7, _t7, Math.fma(_t5, _t5, _t6 * _t6)) * _t0 ? 0.0 : _t71 : _t71;
+        return _t46 < 0.0 ? _t46 * _t46 > Math.fma(_t3, _t3, Math.fma(_t1, _t1, _t2 * _t2)) * _t0 ? 0.0 : _t73 : _t73;
     }
 
     public static double testSphere_no(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer center, int centerOffset, double radius) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && center.isDirect()) return Double4x4OpsKernelsTypedBuffer.testSphere_no_unsafe(src, srcOffset, center, centerOffset, radius);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && center.isDirect() && center.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.testSphere_no_unsafe(src, srcOffset, center, centerOffset, radius);
         return Double4x4OpsKernelsTypedBuffer.testSphere_no_api(src, srcOffset, center, centerOffset, radius);
     }
 
@@ -1659,11 +4306,63 @@ public final class Double4x4OpsKernelsTypedBuffer {
         if (src.hasArray() && center.hasArray()) {
             return Double4x4OpsKernelsArray.testSphere_no(src.array(), src.arrayOffset() + srcOffset, center.array(), center.arrayOffset() + centerOffset, radius);
         }
-        return Double4x4OpsKernelsSegment.testSphere_no_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(center.duplicate().position(0)), (long) centerOffset * 8L, radius);
+        if (src.order() == java.nio.ByteOrder.nativeOrder() && center.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Double4x4OpsKernelsSegment.testSphere_no_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(center.duplicate().position(0)), (long) centerOffset * 8L, radius);
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _centerx = center.get(centerOffset + 0);
+        double _centery = center.get(centerOffset + 1);
+        double _centerz = center.get(centerOffset + 2);
+        double _t0 = radius * radius;
+        double _t1 = _self00 + _self30;
+        double _t2 = _self01 + _self31;
+        double _t3 = _self02 + _self32;
+        double _t5 = _self30 - _self00;
+        double _t6 = _self31 - _self01;
+        double _t7 = _self32 - _self02;
+        double _t9 = _self10 + _self30;
+        double _t10 = _self11 + _self31;
+        double _t11 = _self12 + _self32;
+        double _t13 = _self30 - _self10;
+        double _t14 = _self31 - _self11;
+        double _t15 = _self32 - _self12;
+        double _t17 = _self20 + _self30;
+        double _t18 = _self21 + _self31;
+        double _t19 = _self22 + _self32;
+        double _t21 = _self30 - _self20;
+        double _t22 = _self31 - _self21;
+        double _t23 = _self32 - _self22;
+        double _t47 = Math.fma(_centerx, _t1, Math.fma(_centery, _t2, Math.fma(_centerz, _t3, _self03 + _self33)));
+        double _t48 = Math.fma(_centerx, _t5, Math.fma(_centery, _t6, Math.fma(_centerz, _t7, _self33 - _self03)));
+        double _t49 = Math.fma(_centerx, _t9, Math.fma(_centery, _t10, Math.fma(_centerz, _t11, _self13 + _self33)));
+        double _t50 = Math.fma(_centerx, _t13, Math.fma(_centery, _t14, Math.fma(_centerz, _t15, _self33 - _self13)));
+        double _t51 = Math.fma(_centerx, _t17, Math.fma(_centery, _t18, Math.fma(_centerz, _t19, _self23 + _self33)));
+        double _t52 = Math.fma(_centerx, _t21, Math.fma(_centery, _t22, Math.fma(_centerz, _t23, _self33 - _self23)));
+        double _t69 = _t52 < 0.0 ? _t52 * _t52 > Math.fma(_t23, _t23, Math.fma(_t21, _t21, _t22 * _t22)) * _t0 ? 0.0 : 1.0 : 1.0;
+        double _t71 = _t51 < 0.0 ? _t51 * _t51 > Math.fma(_t19, _t19, Math.fma(_t17, _t17, _t18 * _t18)) * _t0 ? 0.0 : _t69 : _t69;
+        double _t73 = _t50 < 0.0 ? _t50 * _t50 > Math.fma(_t15, _t15, Math.fma(_t13, _t13, _t14 * _t14)) * _t0 ? 0.0 : _t71 : _t71;
+        double _t75 = _t49 < 0.0 ? _t49 * _t49 > Math.fma(_t11, _t11, Math.fma(_t9, _t9, _t10 * _t10)) * _t0 ? 0.0 : _t73 : _t73;
+        double _t77 = _t48 < 0.0 ? _t48 * _t48 > Math.fma(_t7, _t7, Math.fma(_t5, _t5, _t6 * _t6)) * _t0 ? 0.0 : _t75 : _t75;
+        return _t47 < 0.0 ? _t47 * _t47 > Math.fma(_t3, _t3, Math.fma(_t1, _t1, _t2 * _t2)) * _t0 ? 0.0 : _t77 : _t77;
     }
 
     public static double testSphere_zo(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer center, int centerOffset, double radius) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && center.isDirect()) return Double4x4OpsKernelsTypedBuffer.testSphere_zo_unsafe(src, srcOffset, center, centerOffset, radius);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && center.isDirect() && center.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.testSphere_zo_unsafe(src, srcOffset, center, centerOffset, radius);
         return Double4x4OpsKernelsTypedBuffer.testSphere_zo_api(src, srcOffset, center, centerOffset, radius);
     }
 
@@ -1677,7 +4376,56 @@ public final class Double4x4OpsKernelsTypedBuffer {
         if (src.hasArray() && center.hasArray()) {
             return Double4x4OpsKernelsArray.testSphere_zo(src.array(), src.arrayOffset() + srcOffset, center.array(), center.arrayOffset() + centerOffset, radius);
         }
-        return Double4x4OpsKernelsSegment.testSphere_zo_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(center.duplicate().position(0)), (long) centerOffset * 8L, radius);
+        if (src.order() == java.nio.ByteOrder.nativeOrder() && center.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Double4x4OpsKernelsSegment.testSphere_zo_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(center.duplicate().position(0)), (long) centerOffset * 8L, radius);
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _centerx = center.get(centerOffset + 0);
+        double _centery = center.get(centerOffset + 1);
+        double _centerz = center.get(centerOffset + 2);
+        double _t0 = radius * radius;
+        double _t1 = _self00 + _self30;
+        double _t2 = _self01 + _self31;
+        double _t3 = _self02 + _self32;
+        double _t5 = _self30 - _self00;
+        double _t6 = _self31 - _self01;
+        double _t7 = _self32 - _self02;
+        double _t9 = _self10 + _self30;
+        double _t10 = _self11 + _self31;
+        double _t11 = _self12 + _self32;
+        double _t13 = _self30 - _self10;
+        double _t14 = _self31 - _self11;
+        double _t15 = _self32 - _self12;
+        double _t18 = _self30 - _self20;
+        double _t19 = _self31 - _self21;
+        double _t20 = _self32 - _self22;
+        double _t35 = Math.fma(_centerx, _self20, Math.fma(_centery, _self21, Math.fma(_centerz, _self22, _self23)));
+        double _t46 = Math.fma(_centerx, _t1, Math.fma(_centery, _t2, Math.fma(_centerz, _t3, _self03 + _self33)));
+        double _t47 = Math.fma(_centerx, _t5, Math.fma(_centery, _t6, Math.fma(_centerz, _t7, _self33 - _self03)));
+        double _t48 = Math.fma(_centerx, _t9, Math.fma(_centery, _t10, Math.fma(_centerz, _t11, _self13 + _self33)));
+        double _t49 = Math.fma(_centerx, _t13, Math.fma(_centery, _t14, Math.fma(_centerz, _t15, _self33 - _self13)));
+        double _t50 = Math.fma(_centerx, _t18, Math.fma(_centery, _t19, Math.fma(_centerz, _t20, _self33 - _self23)));
+        double _t65 = _t50 < 0.0 ? _t50 * _t50 > Math.fma(_t20, _t20, Math.fma(_t18, _t18, _t19 * _t19)) * _t0 ? 0.0 : 1.0 : 1.0;
+        double _t67 = _t35 < 0.0 ? _t35 * _t35 > Math.fma(_self22, _self22, Math.fma(_self20, _self20, _self21 * _self21)) * _t0 ? 0.0 : _t65 : _t65;
+        double _t69 = _t49 < 0.0 ? _t49 * _t49 > Math.fma(_t15, _t15, Math.fma(_t13, _t13, _t14 * _t14)) * _t0 ? 0.0 : _t67 : _t67;
+        double _t71 = _t48 < 0.0 ? _t48 * _t48 > Math.fma(_t11, _t11, Math.fma(_t9, _t9, _t10 * _t10)) * _t0 ? 0.0 : _t69 : _t69;
+        double _t73 = _t47 < 0.0 ? _t47 * _t47 > Math.fma(_t7, _t7, Math.fma(_t5, _t5, _t6 * _t6)) * _t0 ? 0.0 : _t71 : _t71;
+        return _t46 < 0.0 ? _t46 * _t46 > Math.fma(_t3, _t3, Math.fma(_t1, _t1, _t2 * _t2)) * _t0 ? 0.0 : _t73 : _t73;
     }
 
     public static java.nio.DoubleBuffer makeIdentity_unsafe(java.nio.DoubleBuffer dest, int destOffset) {
@@ -1691,7 +4439,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeIdentity(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeIdentity_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeIdentity_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -2010,7 +4777,25 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.preMulMat2x2(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.preMulMat2x2_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.preMulMat2x2_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 8L);
+            return dest;
+        }
+        double _other00 = other.get(otherOffset + 0);
+        double _other10 = other.get(otherOffset + 1);
+        double _other01 = other.get(otherOffset + 2);
+        double _other11 = other.get(otherOffset + 3);
+        for (int _l = 0; _l < 4; _l++) {
+            int _lo = _l * 4;
+            double _eself0 = src.get(srcOffset + _lo);
+            double _eself1 = src.get(srcOffset + _lo + 1);
+            double _eself2 = src.get(srcOffset + _lo + 2);
+            double _eself3 = src.get(srcOffset + _lo + 3);
+            dest.put(destOffset + _lo, Math.fma(_other00, _eself0, _other01 * _eself1));
+            dest.put(destOffset + _lo + 1, Math.fma(_other10, _eself0, _other11 * _eself1));
+            dest.put(destOffset + _lo + 2, _eself2);
+            dest.put(destOffset + _lo + 3, _eself3);
+        }
         return dest;
     }
 
@@ -2027,7 +4812,27 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.preMulMat2x3(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.preMulMat2x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.preMulMat2x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 8L);
+            return dest;
+        }
+        double _other00 = other.get(otherOffset + 0);
+        double _other10 = other.get(otherOffset + 1);
+        double _other01 = other.get(otherOffset + 2);
+        double _other11 = other.get(otherOffset + 3);
+        double _other02 = other.get(otherOffset + 4);
+        double _other12 = other.get(otherOffset + 5);
+        for (int _l = 0; _l < 4; _l++) {
+            int _lo = _l * 4;
+            double _eself0 = src.get(srcOffset + _lo);
+            double _eself1 = src.get(srcOffset + _lo + 1);
+            double _eself2 = src.get(srcOffset + _lo + 2);
+            double _eself3 = src.get(srcOffset + _lo + 3);
+            dest.put(destOffset + _lo, Math.fma(_other02, _eself2, Math.fma(_other00, _eself0, _other01 * _eself1)));
+            dest.put(destOffset + _lo + 1, Math.fma(_other12, _eself2, Math.fma(_other10, _eself0, _other11 * _eself1)));
+            dest.put(destOffset + _lo + 2, _eself2);
+            dest.put(destOffset + _lo + 3, _eself3);
+        }
         return dest;
     }
 
@@ -2044,7 +4849,30 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.preMulMat3x3(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.preMulMat3x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.preMulMat3x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 8L);
+            return dest;
+        }
+        double _other00 = other.get(otherOffset + 0);
+        double _other10 = other.get(otherOffset + 1);
+        double _other20 = other.get(otherOffset + 2);
+        double _other01 = other.get(otherOffset + 3);
+        double _other11 = other.get(otherOffset + 4);
+        double _other21 = other.get(otherOffset + 5);
+        double _other02 = other.get(otherOffset + 6);
+        double _other12 = other.get(otherOffset + 7);
+        double _other22 = other.get(otherOffset + 8);
+        for (int _l = 0; _l < 4; _l++) {
+            int _lo = _l * 4;
+            double _eself0 = src.get(srcOffset + _lo);
+            double _eself1 = src.get(srcOffset + _lo + 1);
+            double _eself2 = src.get(srcOffset + _lo + 2);
+            double _eself3 = src.get(srcOffset + _lo + 3);
+            dest.put(destOffset + _lo, Math.fma(_other02, _eself2, Math.fma(_other00, _eself0, _other01 * _eself1)));
+            dest.put(destOffset + _lo + 1, Math.fma(_other12, _eself2, Math.fma(_other10, _eself0, _other11 * _eself1)));
+            dest.put(destOffset + _lo + 2, Math.fma(_other22, _eself2, Math.fma(_other20, _eself0, _other21 * _eself1)));
+            dest.put(destOffset + _lo + 3, _eself3);
+        }
         return dest;
     }
 
@@ -2061,7 +4889,33 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.preMulMat3x4(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.preMulMat3x4_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.preMulMat3x4_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 8L);
+            return dest;
+        }
+        double _other00 = other.get(otherOffset + 0);
+        double _other01 = other.get(otherOffset + 1);
+        double _other02 = other.get(otherOffset + 2);
+        double _other03 = other.get(otherOffset + 3);
+        double _other10 = other.get(otherOffset + 4);
+        double _other11 = other.get(otherOffset + 5);
+        double _other12 = other.get(otherOffset + 6);
+        double _other13 = other.get(otherOffset + 7);
+        double _other20 = other.get(otherOffset + 8);
+        double _other21 = other.get(otherOffset + 9);
+        double _other22 = other.get(otherOffset + 10);
+        double _other23 = other.get(otherOffset + 11);
+        for (int _l = 0; _l < 4; _l++) {
+            int _lo = _l * 4;
+            double _eself0 = src.get(srcOffset + _lo);
+            double _eself1 = src.get(srcOffset + _lo + 1);
+            double _eself2 = src.get(srcOffset + _lo + 2);
+            double _eself3 = src.get(srcOffset + _lo + 3);
+            dest.put(destOffset + _lo, Math.fma(_other03, _eself3, Math.fma(_other02, _eself2, Math.fma(_other00, _eself0, _other01 * _eself1))));
+            dest.put(destOffset + _lo + 1, Math.fma(_other13, _eself3, Math.fma(_other12, _eself2, Math.fma(_other10, _eself0, _other11 * _eself1))));
+            dest.put(destOffset + _lo + 2, Math.fma(_other23, _eself3, Math.fma(_other22, _eself2, Math.fma(_other20, _eself0, _other21 * _eself1))));
+            dest.put(destOffset + _lo + 3, _eself3);
+        }
         return dest;
     }
 
@@ -2076,7 +4930,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeOuterProduct(dest.array(), dest.arrayOffset() + destOffset, colX, colY, colZ, colW, rowX, rowY, rowZ, rowW);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeOuterProduct_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, colX, colY, colZ, colW, rowX, rowY, rowZ, rowW);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeOuterProduct_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, colX, colY, colZ, colW, rowX, rowY, rowZ, rowW);
+            return dest;
+        }
+        dest.put(destOffset + 0, colX * rowX);
+        dest.put(destOffset + 1, colY * rowX);
+        dest.put(destOffset + 2, colZ * rowX);
+        dest.put(destOffset + 3, colW * rowX);
+        dest.put(destOffset + 4, colX * rowY);
+        dest.put(destOffset + 5, colY * rowY);
+        dest.put(destOffset + 6, colZ * rowY);
+        dest.put(destOffset + 7, colW * rowY);
+        dest.put(destOffset + 8, colX * rowZ);
+        dest.put(destOffset + 9, colY * rowZ);
+        dest.put(destOffset + 10, colZ * rowZ);
+        dest.put(destOffset + 11, colW * rowZ);
+        dest.put(destOffset + 12, colX * rowW);
+        dest.put(destOffset + 13, colY * rowW);
+        dest.put(destOffset + 14, colZ * rowW);
+        dest.put(destOffset + 15, colW * rowW);
         return dest;
     }
 
@@ -2296,7 +5169,57 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.axonometricIsometric(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.axonometricIsometric_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.axonometricIsometric_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = Math.sqrt(3.0);
+        double _t1 = Math.sqrt(2.0);
+        double _t2 = Math.sqrt(6.0);
+        double _t3 = _self02 * _t0;
+        double _t4 = _self00 * _t1;
+        double _t6 = _self12 * _t0;
+        double _t7 = _self10 * _t1;
+        double _t9 = _self22 * _t0;
+        double _t10 = _self20 * _t1;
+        double _t12 = _self32 * _t0;
+        double _t13 = _self30 * _t1;
+        double _t15 = 0.16666666666666666 * _self01 * _t2;
+        double _t16 = 0.16666666666666666 * _self11 * _t2;
+        double _t17 = 0.16666666666666666 * _self21 * _t2;
+        double _t18 = 0.16666666666666666 * _self31 * _t2;
+        dest.put(destOffset + 0, Math.fma(-0.3333333333333333, _t3, Math.fma(0.5, _t4, _t15)));
+        dest.put(destOffset + 1, Math.fma(-0.3333333333333333, _t6, Math.fma(0.5, _t7, _t16)));
+        dest.put(destOffset + 2, Math.fma(-0.3333333333333333, _t9, Math.fma(0.5, _t10, _t17)));
+        dest.put(destOffset + 3, Math.fma(-0.3333333333333333, _t12, Math.fma(0.5, _t13, _t18)));
+        dest.put(destOffset + 4, 0.3333333333333333 * Math.fma(_self01, _t2, _t3));
+        dest.put(destOffset + 5, 0.3333333333333333 * Math.fma(_self11, _t2, _t6));
+        dest.put(destOffset + 6, 0.3333333333333333 * Math.fma(_self21, _t2, _t9));
+        dest.put(destOffset + 7, 0.3333333333333333 * Math.fma(_self31, _t2, _t12));
+        dest.put(destOffset + 8, Math.fma(0.3333333333333333, _t3, Math.fma(0.5, _t4, -_t15)));
+        dest.put(destOffset + 9, Math.fma(0.3333333333333333, _t6, Math.fma(0.5, _t7, -_t16)));
+        dest.put(destOffset + 10, Math.fma(0.3333333333333333, _t9, Math.fma(0.5, _t10, -_t17)));
+        dest.put(destOffset + 11, Math.fma(0.3333333333333333, _t12, Math.fma(0.5, _t13, -_t18)));
+        dest.put(destOffset + 12, _self03);
+        dest.put(destOffset + 13, _self13);
+        dest.put(destOffset + 14, _self23);
+        dest.put(destOffset + 15, _self33);
         return dest;
     }
 
@@ -2434,7 +5357,54 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.composeTRSMul(dest.array(), dest.arrayOffset() + destOffset, m.array(), m.arrayOffset() + mOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.composeTRSMul_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(m.duplicate().position(0)), (long) mOffset * 8L, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && m.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.composeTRSMul_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(m.duplicate().position(0)), (long) mOffset * 8L, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
+            return dest;
+        }
+        double _m00 = m.get(mOffset + 0);
+        double _m10 = m.get(mOffset + 1);
+        double _m20 = m.get(mOffset + 2);
+        double _m30 = m.get(mOffset + 3);
+        double _m01 = m.get(mOffset + 4);
+        double _m11 = m.get(mOffset + 5);
+        double _m21 = m.get(mOffset + 6);
+        double _m31 = m.get(mOffset + 7);
+        double _m02 = m.get(mOffset + 8);
+        double _m12 = m.get(mOffset + 9);
+        double _m22 = m.get(mOffset + 10);
+        double _m32 = m.get(mOffset + 11);
+        double _m03 = m.get(mOffset + 12);
+        double _m13 = m.get(mOffset + 13);
+        double _m23 = m.get(mOffset + 14);
+        double _m33 = m.get(mOffset + 15);
+        double _t0 = rotationY * rotationW;
+        double _t1 = rotationZ * rotationZ;
+        double _t2 = rotationZ * rotationW;
+        double _t27 = scaleZ * 2.0 * Math.fma(rotationX, rotationZ, _t0);
+        double _t28 = scaleX * 2.0 * Math.fma(rotationX, rotationY, _t2);
+        double _t29 = scaleY * 2.0 * Math.fma(rotationX, rotationW, rotationY * rotationZ);
+        double _t30 = scaleY * 2.0 * Math.fma(rotationX, rotationY, -_t2);
+        double _t31 = scaleZ * 2.0 * Math.fma(rotationY, rotationZ, -(rotationX * rotationW));
+        double _t32 = scaleX * 2.0 * Math.fma(rotationX, rotationZ, -_t0);
+        double _t33 = scaleX * Math.fma(-2.0, Math.fma(rotationY, rotationY, _t1), 1.0);
+        double _t34 = scaleY * Math.fma(-2.0, Math.fma(rotationX, rotationX, _t1), 1.0);
+        double _t35 = scaleZ * Math.fma(-2.0, Math.fma(rotationX, rotationX, rotationY * rotationY), 1.0);
+        dest.put(destOffset + 0, Math.fma(_m30, translationX, Math.fma(_m20, _t27, Math.fma(_m00, _t33, _m10 * _t30))));
+        dest.put(destOffset + 1, Math.fma(_m30, translationY, Math.fma(_m20, _t31, Math.fma(_m00, _t28, _m10 * _t34))));
+        dest.put(destOffset + 2, Math.fma(_m30, translationZ, Math.fma(_m20, _t35, Math.fma(_m00, _t32, _m10 * _t29))));
+        dest.put(destOffset + 3, _m30);
+        dest.put(destOffset + 4, Math.fma(_m31, translationX, Math.fma(_m21, _t27, Math.fma(_m01, _t33, _m11 * _t30))));
+        dest.put(destOffset + 5, Math.fma(_m31, translationY, Math.fma(_m21, _t31, Math.fma(_m01, _t28, _m11 * _t34))));
+        dest.put(destOffset + 6, Math.fma(_m31, translationZ, Math.fma(_m21, _t35, Math.fma(_m01, _t32, _m11 * _t29))));
+        dest.put(destOffset + 7, _m31);
+        dest.put(destOffset + 8, Math.fma(_m32, translationX, Math.fma(_m22, _t27, Math.fma(_m02, _t33, _m12 * _t30))));
+        dest.put(destOffset + 9, Math.fma(_m32, translationY, Math.fma(_m22, _t31, Math.fma(_m02, _t28, _m12 * _t34))));
+        dest.put(destOffset + 10, Math.fma(_m32, translationZ, Math.fma(_m22, _t35, Math.fma(_m02, _t32, _m12 * _t29))));
+        dest.put(destOffset + 11, _m32);
+        dest.put(destOffset + 12, Math.fma(_m33, translationX, Math.fma(_m23, _t27, Math.fma(_m03, _t33, _m13 * _t30))));
+        dest.put(destOffset + 13, Math.fma(_m33, translationY, Math.fma(_m23, _t31, Math.fma(_m03, _t28, _m13 * _t34))));
+        dest.put(destOffset + 14, Math.fma(_m33, translationZ, Math.fma(_m23, _t35, Math.fma(_m03, _t32, _m13 * _t29))));
+        dest.put(destOffset + 15, _m33);
         return dest;
     }
 
@@ -2453,12 +5423,69 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.composeTRSMul(dest.array(), dest.arrayOffset() + destOffset, translation.array(), translation.arrayOffset() + translationOffset, rotation.array(), rotation.arrayOffset() + rotationOffset, scale.array(), scale.arrayOffset() + scaleOffset, m.array(), m.arrayOffset() + mOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.composeTRSMul_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(translation.duplicate().position(0)), (long) translationOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rotation.duplicate().position(0)), (long) rotationOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(scale.duplicate().position(0)), (long) scaleOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(m.duplicate().position(0)), (long) mOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && translation.order() == java.nio.ByteOrder.nativeOrder() && rotation.order() == java.nio.ByteOrder.nativeOrder() && scale.order() == java.nio.ByteOrder.nativeOrder() && m.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.composeTRSMul_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(translation.duplicate().position(0)), (long) translationOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rotation.duplicate().position(0)), (long) rotationOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(scale.duplicate().position(0)), (long) scaleOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(m.duplicate().position(0)), (long) mOffset * 8L);
+            return dest;
+        }
+        double _translationx = translation.get(translationOffset + 0);
+        double _translationy = translation.get(translationOffset + 1);
+        double _translationz = translation.get(translationOffset + 2);
+        double _rotationx = rotation.get(rotationOffset + 0);
+        double _rotationy = rotation.get(rotationOffset + 1);
+        double _rotationz = rotation.get(rotationOffset + 2);
+        double _rotationw = rotation.get(rotationOffset + 3);
+        double _scalex = scale.get(scaleOffset + 0);
+        double _scaley = scale.get(scaleOffset + 1);
+        double _scalez = scale.get(scaleOffset + 2);
+        double _m00 = m.get(mOffset + 0);
+        double _m10 = m.get(mOffset + 1);
+        double _m20 = m.get(mOffset + 2);
+        double _m30 = m.get(mOffset + 3);
+        double _m01 = m.get(mOffset + 4);
+        double _m11 = m.get(mOffset + 5);
+        double _m21 = m.get(mOffset + 6);
+        double _m31 = m.get(mOffset + 7);
+        double _m02 = m.get(mOffset + 8);
+        double _m12 = m.get(mOffset + 9);
+        double _m22 = m.get(mOffset + 10);
+        double _m32 = m.get(mOffset + 11);
+        double _m03 = m.get(mOffset + 12);
+        double _m13 = m.get(mOffset + 13);
+        double _m23 = m.get(mOffset + 14);
+        double _m33 = m.get(mOffset + 15);
+        double _t0 = _rotationy * _rotationw;
+        double _t1 = _rotationz * _rotationz;
+        double _t2 = _rotationz * _rotationw;
+        double _t27 = _scalez * 2.0 * Math.fma(_rotationx, _rotationz, _t0);
+        double _t28 = _scalex * 2.0 * Math.fma(_rotationx, _rotationy, _t2);
+        double _t29 = _scaley * 2.0 * Math.fma(_rotationx, _rotationw, _rotationy * _rotationz);
+        double _t30 = _scaley * 2.0 * Math.fma(_rotationx, _rotationy, -_t2);
+        double _t31 = _scalez * 2.0 * Math.fma(_rotationy, _rotationz, -(_rotationx * _rotationw));
+        double _t32 = _scalex * 2.0 * Math.fma(_rotationx, _rotationz, -_t0);
+        double _t33 = _scalex * Math.fma(-2.0, Math.fma(_rotationy, _rotationy, _t1), 1.0);
+        double _t34 = _scaley * Math.fma(-2.0, Math.fma(_rotationx, _rotationx, _t1), 1.0);
+        double _t35 = _scalez * Math.fma(-2.0, Math.fma(_rotationx, _rotationx, _rotationy * _rotationy), 1.0);
+        dest.put(destOffset + 0, Math.fma(_m30, _translationx, Math.fma(_m20, _t27, Math.fma(_m00, _t33, _m10 * _t30))));
+        dest.put(destOffset + 1, Math.fma(_m30, _translationy, Math.fma(_m20, _t31, Math.fma(_m00, _t28, _m10 * _t34))));
+        dest.put(destOffset + 2, Math.fma(_m30, _translationz, Math.fma(_m20, _t35, Math.fma(_m00, _t32, _m10 * _t29))));
+        dest.put(destOffset + 3, _m30);
+        dest.put(destOffset + 4, Math.fma(_m31, _translationx, Math.fma(_m21, _t27, Math.fma(_m01, _t33, _m11 * _t30))));
+        dest.put(destOffset + 5, Math.fma(_m31, _translationy, Math.fma(_m21, _t31, Math.fma(_m01, _t28, _m11 * _t34))));
+        dest.put(destOffset + 6, Math.fma(_m31, _translationz, Math.fma(_m21, _t35, Math.fma(_m01, _t32, _m11 * _t29))));
+        dest.put(destOffset + 7, _m31);
+        dest.put(destOffset + 8, Math.fma(_m32, _translationx, Math.fma(_m22, _t27, Math.fma(_m02, _t33, _m12 * _t30))));
+        dest.put(destOffset + 9, Math.fma(_m32, _translationy, Math.fma(_m22, _t31, Math.fma(_m02, _t28, _m12 * _t34))));
+        dest.put(destOffset + 10, Math.fma(_m32, _translationz, Math.fma(_m22, _t35, Math.fma(_m02, _t32, _m12 * _t29))));
+        dest.put(destOffset + 11, _m32);
+        dest.put(destOffset + 12, Math.fma(_m33, _translationx, Math.fma(_m23, _t27, Math.fma(_m03, _t33, _m13 * _t30))));
+        dest.put(destOffset + 13, Math.fma(_m33, _translationy, Math.fma(_m23, _t31, Math.fma(_m03, _t28, _m13 * _t34))));
+        dest.put(destOffset + 14, Math.fma(_m33, _translationz, Math.fma(_m23, _t35, Math.fma(_m03, _t32, _m13 * _t29))));
+        dest.put(destOffset + 15, _m33);
         return dest;
     }
 
     public static java.nio.DoubleBuffer frustum_no_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.frustum_no_lh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.frustum_no_lh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
         return Double4x4OpsKernelsTypedBuffer.frustum_no_lh_api(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
     }
 
@@ -2528,7 +5555,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer frustum_no_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.frustum_no_rh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.frustum_no_rh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
         return Double4x4OpsKernelsTypedBuffer.frustum_no_rh_api(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
     }
 
@@ -2605,7 +5632,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer frustum_zo_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.frustum_zo_lh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.frustum_zo_lh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
         return Double4x4OpsKernelsTypedBuffer.frustum_zo_lh_api(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
     }
 
@@ -2675,7 +5702,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer frustum_zo_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.frustum_zo_rh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.frustum_zo_rh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
         return Double4x4OpsKernelsTypedBuffer.frustum_zo_rh_api(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
     }
 
@@ -2906,7 +5933,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer lookAt_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.lookAt_lh_unsafe(dest, destOffset, src, srcOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.lookAt_lh_unsafe(dest, destOffset, src, srcOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
         return Double4x4OpsKernelsTypedBuffer.lookAt_lh_api(dest, destOffset, src, srcOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
     }
 
@@ -2990,7 +6017,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer lookAt_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.lookAt_rh_unsafe(dest, destOffset, src, srcOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.lookAt_rh_unsafe(dest, destOffset, src, srcOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
         return Double4x4OpsKernelsTypedBuffer.lookAt_rh_api(dest, destOffset, src, srcOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
     }
 
@@ -3078,7 +6105,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer lookAt_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer eye, int eyeOffset, java.nio.DoubleBuffer center, int centerOffset, java.nio.DoubleBuffer up, int upOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && eye.isDirect() && center.isDirect() && up.isDirect()) return Double4x4OpsKernelsTypedBuffer.lookAt_lh_unsafe(dest, destOffset, src, srcOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && eye.isDirect() && eye.order() == java.nio.ByteOrder.nativeOrder() && center.isDirect() && center.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.lookAt_lh_unsafe(dest, destOffset, src, srcOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
         return Double4x4OpsKernelsTypedBuffer.lookAt_lh_api(dest, destOffset, src, srcOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
     }
 
@@ -3174,7 +6201,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer lookAt_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer eye, int eyeOffset, java.nio.DoubleBuffer center, int centerOffset, java.nio.DoubleBuffer up, int upOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && eye.isDirect() && center.isDirect() && up.isDirect()) return Double4x4OpsKernelsTypedBuffer.lookAt_rh_unsafe(dest, destOffset, src, srcOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && eye.isDirect() && eye.order() == java.nio.ByteOrder.nativeOrder() && center.isDirect() && center.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.lookAt_rh_unsafe(dest, destOffset, src, srcOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
         return Double4x4OpsKernelsTypedBuffer.lookAt_rh_api(dest, destOffset, src, srcOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
     }
 
@@ -3284,7 +6311,36 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeArcball(dest.array(), dest.arrayOffset() + destOffset, radius, centerX, centerY, centerZ, angleX, angleY);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeArcball_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, radius, centerX, centerY, centerZ, angleX, angleY);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeArcball_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, radius, centerX, centerY, centerZ, angleX, angleY);
+            return dest;
+        }
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.sin(angleY);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cos(angleX);
+        double _t4 = -centerZ;
+        double _t5 = -centerY;
+        double _t6 = _t2 * _t1;
+        double _t7 = _t2 * _t0;
+        double _t8 = _t1 * _t3;
+        double _t9 = _t3 * _t0;
+        dest.put(destOffset + 0, _t0);
+        dest.put(destOffset + 1, _t6);
+        dest.put(destOffset + 2, -_t8);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, _t3);
+        dest.put(destOffset + 6, _t2);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t1);
+        dest.put(destOffset + 9, -_t7);
+        dest.put(destOffset + 10, _t9);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, Math.fma(_t4, _t1, -(centerX * _t0)));
+        dest.put(destOffset + 13, Math.fma(centerZ, _t7, Math.fma(_t5, _t3, -(centerX * _t6))));
+        dest.put(destOffset + 14, Math.fma(centerX, _t8, Math.fma(_t5, _t2, Math.fma(_t4, _t9, -radius))));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3300,7 +6356,39 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeArcball(dest.array(), dest.arrayOffset() + destOffset, center.array(), center.arrayOffset() + centerOffset, radius, angleX, angleY);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeArcball_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(center.duplicate().position(0)), (long) centerOffset * 8L, radius, angleX, angleY);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && center.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeArcball_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(center.duplicate().position(0)), (long) centerOffset * 8L, radius, angleX, angleY);
+            return dest;
+        }
+        double _centerx = center.get(centerOffset + 0);
+        double _centery = center.get(centerOffset + 1);
+        double _centerz = center.get(centerOffset + 2);
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.sin(angleY);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.cos(angleX);
+        double _t4 = -_centerz;
+        double _t5 = -_centery;
+        double _t6 = _t2 * _t1;
+        double _t7 = _t2 * _t0;
+        double _t8 = _t1 * _t3;
+        double _t9 = _t3 * _t0;
+        dest.put(destOffset + 0, _t0);
+        dest.put(destOffset + 1, _t6);
+        dest.put(destOffset + 2, -_t8);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, _t3);
+        dest.put(destOffset + 6, _t2);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t1);
+        dest.put(destOffset + 9, -_t7);
+        dest.put(destOffset + 10, _t9);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, Math.fma(_t4, _t1, -(_centerx * _t0)));
+        dest.put(destOffset + 13, Math.fma(_centerz, _t7, Math.fma(_t5, _t3, -(_centerx * _t6))));
+        dest.put(destOffset + 14, Math.fma(_centerx, _t8, Math.fma(_t5, _t2, Math.fma(_t4, _t9, -radius))));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3315,7 +6403,32 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeAxonometricDimetric(dest.array(), dest.arrayOffset() + destOffset, alpha);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeAxonometricDimetric_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, alpha);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeAxonometricDimetric_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, alpha);
+            return dest;
+        }
+        double _t0 = Math.sqrt(2.0);
+        double _t1 = Math.sin(alpha);
+        double _t2 = Math.cos(alpha);
+        double _t3 = 0.5 * _t0;
+        double _t6 = 0.5 * _t1 * _t0;
+        double _t7 = 0.5 * _t2 * _t0;
+        dest.put(destOffset + 0, _t3);
+        dest.put(destOffset + 1, _t6);
+        dest.put(destOffset + 2, -_t7);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, _t2);
+        dest.put(destOffset + 6, _t1);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t3);
+        dest.put(destOffset + 9, -_t6);
+        dest.put(destOffset + 10, _t7);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3330,7 +6443,30 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeAxonometricIsometric(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeAxonometricIsometric_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeAxonometricIsometric_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        double _t1 = Math.sqrt(6.0);
+        double _t3 = 0.5 * Math.sqrt(2.0);
+        double _t4 = 0.16666666666666666 * _t1;
+        double _t5 = 0.3333333333333333 * Math.sqrt(3.0);
+        dest.put(destOffset + 0, _t3);
+        dest.put(destOffset + 1, _t4);
+        dest.put(destOffset + 2, -_t5);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 0.3333333333333333 * _t1);
+        dest.put(destOffset + 6, _t5);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t3);
+        dest.put(destOffset + 9, -_t4);
+        dest.put(destOffset + 10, _t5);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3345,7 +6481,30 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeAxonometricTrimetric(dest.array(), dest.arrayOffset() + destOffset, alphaX, alphaY);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeAxonometricTrimetric_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, alphaX, alphaY);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeAxonometricTrimetric_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, alphaX, alphaY);
+            return dest;
+        }
+        double _t0 = Math.cos(alphaY);
+        double _t1 = Math.sin(alphaY);
+        double _t2 = Math.sin(alphaX);
+        double _t3 = Math.cos(alphaX);
+        dest.put(destOffset + 0, _t0);
+        dest.put(destOffset + 1, _t2 * _t1);
+        dest.put(destOffset + 2, -(_t1 * _t3));
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, _t3);
+        dest.put(destOffset + 6, _t2);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t1);
+        dest.put(destOffset + 9, -(_t2 * _t0));
+        dest.put(destOffset + 10, _t3 * _t0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3360,7 +6519,55 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeBillboardCylindrical(dest.array(), dest.arrayOffset() + destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeBillboardCylindrical_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeBillboardCylindrical_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
+            return dest;
+        }
+        double _t0 = targetPosY - objPosY;
+        double _t1 = targetPosX - objPosX;
+        double _t2 = targetPosZ - objPosZ;
+        double _t9 = Math.fma(upX, _t0, -(upY * _t1));
+        double _t10 = Math.fma(upY, _t2, -(upZ * _t0));
+        double _t11 = Math.fma(upZ, _t1, -(upX * _t2));
+        double _t14 = Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11));
+        double _t15 = (1.0 / Math.sqrt(_t14));
+        double _t19, _t20, _t21;
+        if (_t14 > 0.0) {
+            _t19 = _t10 * _t15;
+            _t20 = _t11 * _t15;
+            _t21 = _t9 * _t15;
+        } else {
+            _t19 = 0.0;
+            _t20 = 0.0;
+            _t21 = 0.0;
+        }
+        double _t28 = Math.fma(upY, _t19, -(upX * _t20));
+        double _t29 = Math.fma(upX, _t21, -(upZ * _t19));
+        double _t30 = Math.fma(upZ, _t20, -(upY * _t21));
+        double _t33 = Math.fma(_t28, _t28, Math.fma(_t29, _t29, _t30 * _t30));
+        double _t34 = (1.0 / Math.sqrt(_t33));
+        if (_t33 > 0.0) {
+            dest.put(destOffset + 8, _t30 * _t34);
+            dest.put(destOffset + 9, _t29 * _t34);
+            dest.put(destOffset + 10, _t28 * _t34);
+        } else {
+            dest.put(destOffset + 8, 0.0);
+            dest.put(destOffset + 9, 0.0);
+            dest.put(destOffset + 10, 0.0);
+        }
+        dest.put(destOffset + 0, _t19);
+        dest.put(destOffset + 1, _t20);
+        dest.put(destOffset + 2, _t21);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, upX);
+        dest.put(destOffset + 5, upY);
+        dest.put(destOffset + 6, upZ);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, objPosX);
+        dest.put(destOffset + 13, objPosY);
+        dest.put(destOffset + 14, objPosZ);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3378,7 +6585,64 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeBillboardCylindrical(dest.array(), dest.arrayOffset() + destOffset, objPos.array(), objPos.arrayOffset() + objPosOffset, targetPos.array(), targetPos.arrayOffset() + targetPosOffset, up.array(), up.arrayOffset() + upOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeBillboardCylindrical_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(objPos.duplicate().position(0)), (long) objPosOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(targetPos.duplicate().position(0)), (long) targetPosOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(up.duplicate().position(0)), (long) upOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && objPos.order() == java.nio.ByteOrder.nativeOrder() && targetPos.order() == java.nio.ByteOrder.nativeOrder() && up.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeBillboardCylindrical_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(objPos.duplicate().position(0)), (long) objPosOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(targetPos.duplicate().position(0)), (long) targetPosOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(up.duplicate().position(0)), (long) upOffset * 8L);
+            return dest;
+        }
+        double _objPosx = objPos.get(objPosOffset + 0);
+        double _objPosy = objPos.get(objPosOffset + 1);
+        double _objPosz = objPos.get(objPosOffset + 2);
+        double _targetPosx = targetPos.get(targetPosOffset + 0);
+        double _targetPosy = targetPos.get(targetPosOffset + 1);
+        double _targetPosz = targetPos.get(targetPosOffset + 2);
+        double _upx = up.get(upOffset + 0);
+        double _upy = up.get(upOffset + 1);
+        double _upz = up.get(upOffset + 2);
+        double _t0 = _targetPosy - _objPosy;
+        double _t1 = _targetPosx - _objPosx;
+        double _t2 = _targetPosz - _objPosz;
+        double _t9 = Math.fma(_upx, _t0, -(_upy * _t1));
+        double _t10 = Math.fma(_upy, _t2, -(_upz * _t0));
+        double _t11 = Math.fma(_upz, _t1, -(_upx * _t2));
+        double _t14 = Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11));
+        double _t15 = (1.0 / Math.sqrt(_t14));
+        double _t19, _t20, _t21;
+        if (_t14 > 0.0) {
+            _t19 = _t10 * _t15;
+            _t20 = _t11 * _t15;
+            _t21 = _t9 * _t15;
+        } else {
+            _t19 = 0.0;
+            _t20 = 0.0;
+            _t21 = 0.0;
+        }
+        double _t28 = Math.fma(_upy, _t19, -(_upx * _t20));
+        double _t29 = Math.fma(_upx, _t21, -(_upz * _t19));
+        double _t30 = Math.fma(_upz, _t20, -(_upy * _t21));
+        double _t33 = Math.fma(_t28, _t28, Math.fma(_t29, _t29, _t30 * _t30));
+        double _t34 = (1.0 / Math.sqrt(_t33));
+        if (_t33 > 0.0) {
+            dest.put(destOffset + 8, _t30 * _t34);
+            dest.put(destOffset + 9, _t29 * _t34);
+            dest.put(destOffset + 10, _t28 * _t34);
+        } else {
+            dest.put(destOffset + 8, 0.0);
+            dest.put(destOffset + 9, 0.0);
+            dest.put(destOffset + 10, 0.0);
+        }
+        dest.put(destOffset + 0, _t19);
+        dest.put(destOffset + 1, _t20);
+        dest.put(destOffset + 2, _t21);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, _upx);
+        dest.put(destOffset + 5, _upy);
+        dest.put(destOffset + 6, _upz);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, _objPosx);
+        dest.put(destOffset + 13, _objPosy);
+        dest.put(destOffset + 14, _objPosz);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3393,7 +6657,56 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeBillboardSpherical(dest.array(), dest.arrayOffset() + destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeBillboardSpherical_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeBillboardSpherical_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
+            return dest;
+        }
+        double _t0 = targetPosZ - objPosZ;
+        double _t1 = targetPosX - objPosX;
+        double _t2 = targetPosY - objPosY;
+        double _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        double _t6 = (1.0 / Math.sqrt(_t5));
+        double _t10, _t11, _t12;
+        if (_t5 > 0.0) {
+            _t10 = _t2 * _t6;
+            _t11 = _t1 * _t6;
+            _t12 = _t0 * _t6;
+        } else {
+            _t10 = 0.0;
+            _t11 = 0.0;
+            _t12 = 0.0;
+        }
+        double _t19 = Math.fma(upX, _t10, -(upY * _t11));
+        double _t20 = Math.fma(upY, _t12, -(upZ * _t10));
+        double _t21 = Math.fma(upZ, _t11, -(upX * _t12));
+        double _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
+        double _t25 = (1.0 / Math.sqrt(_t24));
+        double _t29, _t30, _t31;
+        if (_t24 > 0.0) {
+            _t29 = _t20 * _t25;
+            _t30 = _t19 * _t25;
+            _t31 = _t21 * _t25;
+        } else {
+            _t29 = 0.0;
+            _t30 = 0.0;
+            _t31 = 0.0;
+        }
+        dest.put(destOffset + 0, _t29);
+        dest.put(destOffset + 1, _t31);
+        dest.put(destOffset + 2, _t30);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, Math.fma(_t10, _t30, -(_t12 * _t31)));
+        dest.put(destOffset + 5, Math.fma(_t12, _t29, -(_t11 * _t30)));
+        dest.put(destOffset + 6, Math.fma(_t11, _t31, -(_t10 * _t29)));
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t11);
+        dest.put(destOffset + 9, _t10);
+        dest.put(destOffset + 10, _t12);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, objPosX);
+        dest.put(destOffset + 13, objPosY);
+        dest.put(destOffset + 14, objPosZ);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3411,7 +6724,65 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeBillboardSpherical(dest.array(), dest.arrayOffset() + destOffset, objPos.array(), objPos.arrayOffset() + objPosOffset, targetPos.array(), targetPos.arrayOffset() + targetPosOffset, up.array(), up.arrayOffset() + upOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeBillboardSpherical_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(objPos.duplicate().position(0)), (long) objPosOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(targetPos.duplicate().position(0)), (long) targetPosOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(up.duplicate().position(0)), (long) upOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && objPos.order() == java.nio.ByteOrder.nativeOrder() && targetPos.order() == java.nio.ByteOrder.nativeOrder() && up.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeBillboardSpherical_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(objPos.duplicate().position(0)), (long) objPosOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(targetPos.duplicate().position(0)), (long) targetPosOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(up.duplicate().position(0)), (long) upOffset * 8L);
+            return dest;
+        }
+        double _objPosx = objPos.get(objPosOffset + 0);
+        double _objPosy = objPos.get(objPosOffset + 1);
+        double _objPosz = objPos.get(objPosOffset + 2);
+        double _targetPosx = targetPos.get(targetPosOffset + 0);
+        double _targetPosy = targetPos.get(targetPosOffset + 1);
+        double _targetPosz = targetPos.get(targetPosOffset + 2);
+        double _upx = up.get(upOffset + 0);
+        double _upy = up.get(upOffset + 1);
+        double _upz = up.get(upOffset + 2);
+        double _t0 = _targetPosz - _objPosz;
+        double _t1 = _targetPosx - _objPosx;
+        double _t2 = _targetPosy - _objPosy;
+        double _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        double _t6 = (1.0 / Math.sqrt(_t5));
+        double _t10, _t11, _t12;
+        if (_t5 > 0.0) {
+            _t10 = _t2 * _t6;
+            _t11 = _t1 * _t6;
+            _t12 = _t0 * _t6;
+        } else {
+            _t10 = 0.0;
+            _t11 = 0.0;
+            _t12 = 0.0;
+        }
+        double _t19 = Math.fma(_upx, _t10, -(_upy * _t11));
+        double _t20 = Math.fma(_upy, _t12, -(_upz * _t10));
+        double _t21 = Math.fma(_upz, _t11, -(_upx * _t12));
+        double _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
+        double _t25 = (1.0 / Math.sqrt(_t24));
+        double _t29, _t30, _t31;
+        if (_t24 > 0.0) {
+            _t29 = _t20 * _t25;
+            _t30 = _t19 * _t25;
+            _t31 = _t21 * _t25;
+        } else {
+            _t29 = 0.0;
+            _t30 = 0.0;
+            _t31 = 0.0;
+        }
+        dest.put(destOffset + 0, _t29);
+        dest.put(destOffset + 1, _t31);
+        dest.put(destOffset + 2, _t30);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, Math.fma(_t10, _t30, -(_t12 * _t31)));
+        dest.put(destOffset + 5, Math.fma(_t12, _t29, -(_t11 * _t30)));
+        dest.put(destOffset + 6, Math.fma(_t11, _t31, -(_t10 * _t29)));
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t11);
+        dest.put(destOffset + 9, _t10);
+        dest.put(destOffset + 10, _t12);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, _objPosx);
+        dest.put(destOffset + 13, _objPosy);
+        dest.put(destOffset + 14, _objPosz);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3426,7 +6797,42 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeBillboardSphericalShortest(dest.array(), dest.arrayOffset() + destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeBillboardSphericalShortest_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeBillboardSphericalShortest_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ);
+            return dest;
+        }
+        double _t0 = targetPosX - objPosX;
+        double _t1 = targetPosZ - objPosZ;
+        double _t2 = targetPosY - objPosY;
+        double _t3 = objPosY - targetPosY;
+        double _t10 = _t1 + Math.sqrt(Math.fma(_t1, _t1, Math.fma(_t0, _t0, _t2 * _t2)));
+        double _t12 = (1.0 / Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
+        double _t13 = _t0 * _t12;
+        double _t14 = _t3 * _t12;
+        double _t15 = 2.0 * _t13;
+        double _t16 = 2.0 * _t14;
+        double _t17 = -_t15;
+        double _t19 = _t10 * _t12;
+        double _t20 = _t16 * _t13;
+        double _t21 = Math.fma(-_t16, _t14, 1.0);
+        double _t22 = _t15 * _t19;
+        double _t23 = _t16 * _t19;
+        dest.put(destOffset + 0, Math.fma(_t17, _t13, 1.0));
+        dest.put(destOffset + 1, _t20);
+        dest.put(destOffset + 2, -_t22);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, _t20);
+        dest.put(destOffset + 5, _t21);
+        dest.put(destOffset + 6, _t23);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t22);
+        dest.put(destOffset + 9, -_t23);
+        dest.put(destOffset + 10, Math.fma(_t17, _t13, _t21));
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, objPosX);
+        dest.put(destOffset + 13, objPosY);
+        dest.put(destOffset + 14, objPosZ);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3443,7 +6849,48 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeBillboardSphericalShortest(dest.array(), dest.arrayOffset() + destOffset, objPos.array(), objPos.arrayOffset() + objPosOffset, targetPos.array(), targetPos.arrayOffset() + targetPosOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeBillboardSphericalShortest_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(objPos.duplicate().position(0)), (long) objPosOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(targetPos.duplicate().position(0)), (long) targetPosOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && objPos.order() == java.nio.ByteOrder.nativeOrder() && targetPos.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeBillboardSphericalShortest_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(objPos.duplicate().position(0)), (long) objPosOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(targetPos.duplicate().position(0)), (long) targetPosOffset * 8L);
+            return dest;
+        }
+        double _objPosx = objPos.get(objPosOffset + 0);
+        double _objPosy = objPos.get(objPosOffset + 1);
+        double _objPosz = objPos.get(objPosOffset + 2);
+        double _targetPosx = targetPos.get(targetPosOffset + 0);
+        double _targetPosy = targetPos.get(targetPosOffset + 1);
+        double _targetPosz = targetPos.get(targetPosOffset + 2);
+        double _t0 = _targetPosx - _objPosx;
+        double _t1 = _targetPosz - _objPosz;
+        double _t2 = _targetPosy - _objPosy;
+        double _t3 = _objPosy - _targetPosy;
+        double _t10 = _t1 + Math.sqrt(Math.fma(_t1, _t1, Math.fma(_t0, _t0, _t2 * _t2)));
+        double _t12 = (1.0 / Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
+        double _t13 = _t0 * _t12;
+        double _t14 = _t3 * _t12;
+        double _t15 = 2.0 * _t13;
+        double _t16 = 2.0 * _t14;
+        double _t17 = -_t15;
+        double _t19 = _t10 * _t12;
+        double _t20 = _t16 * _t13;
+        double _t21 = Math.fma(-_t16, _t14, 1.0);
+        double _t22 = _t15 * _t19;
+        double _t23 = _t16 * _t19;
+        dest.put(destOffset + 0, Math.fma(_t17, _t13, 1.0));
+        dest.put(destOffset + 1, _t20);
+        dest.put(destOffset + 2, -_t22);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, _t20);
+        dest.put(destOffset + 5, _t21);
+        dest.put(destOffset + 6, _t23);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t22);
+        dest.put(destOffset + 9, -_t23);
+        dest.put(destOffset + 10, Math.fma(_t17, _t13, _t21));
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, _objPosx);
+        dest.put(destOffset + 13, _objPosy);
+        dest.put(destOffset + 14, _objPosz);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3458,12 +6905,37 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeFromDualQuat(dest.array(), dest.arrayOffset() + destOffset, dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeFromDualQuat_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeFromDualQuat_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW);
+            return dest;
+        }
+        double _t0 = dqRY * dqRY;
+        double _t2 = dqRZ * dqRW;
+        double _t3 = dqRY * dqRW;
+        double _t4 = dqRX * dqRX;
+        double _t5 = dqRY * dqRZ;
+        double _t6 = Math.fma(-2.0, dqRZ * dqRZ, 1.0);
+        dest.put(destOffset + 0, Math.fma(-2.0, _t0, _t6));
+        dest.put(destOffset + 1, 2.0 * Math.fma(dqRX, dqRY, _t2));
+        dest.put(destOffset + 2, Math.fma(-2.0, _t3, 2.0 * dqRX * dqRZ));
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, Math.fma(-2.0, _t2, 2.0 * dqRX * dqRY));
+        dest.put(destOffset + 5, Math.fma(-2.0, _t4, _t6));
+        dest.put(destOffset + 6, 2.0 * Math.fma(dqRX, dqRW, _t5));
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 2.0 * Math.fma(dqRX, dqRZ, _t3));
+        dest.put(destOffset + 9, Math.fma(-2.0, dqRX * dqRW, 2.0 * _t5));
+        dest.put(destOffset + 10, Math.fma(-2.0, _t4, Math.fma(-2.0, _t0, 1.0)));
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 2.0 * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW))));
+        dest.put(destOffset + 13, 2.0 * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW))));
+        dest.put(destOffset + 14, 2.0 * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW))));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makeFrustum_no_lh(java.nio.DoubleBuffer dest, int destOffset, double left, double right, double bottom, double top, double zNear, double zFar) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makeFrustum_no_lh_unsafe(dest, destOffset, left, right, bottom, top, zNear, zFar);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makeFrustum_no_lh_unsafe(dest, destOffset, left, right, bottom, top, zNear, zFar);
         return Double4x4OpsKernelsTypedBuffer.makeFrustum_no_lh_api(dest, destOffset, left, right, bottom, top, zNear, zFar);
     }
 
@@ -3478,12 +6950,48 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makeFrustum_no_lh(dest.array(), dest.arrayOffset() + destOffset, left, right, bottom, top, zNear, zFar);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeFrustum_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeFrustum_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
+            return dest;
+        }
+        double _t0 = 2.0 * zNear;
+        double _t1 = right - left;
+        double _t1_inv = 1.0 / _t1;
+        double _t2 = top - bottom;
+        double _t2_inv = 1.0 / _t2;
+        double _t3 = zNear - zFar;
+        double _t3_inv = 1.0 / _t3;
+        if (zFar == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, 1.0);
+            dest.put(destOffset + 14, -_t0);
+        } else {
+            if (zNear == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, -1.0);
+                dest.put(destOffset + 14, 2.0 * zFar);
+            } else {
+                dest.put(destOffset + 10, -((zFar + zNear) * _t3_inv));
+                dest.put(destOffset + 14, 2.0 * zFar * zNear * _t3_inv);
+            }
+        }
+        dest.put(destOffset + 0, _t0 * _t1_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, _t0 * _t2_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, -((left + right) * _t1_inv));
+        dest.put(destOffset + 9, -((bottom + top) * _t2_inv));
+        dest.put(destOffset + 11, 1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makeFrustum_no_rh(java.nio.DoubleBuffer dest, int destOffset, double left, double right, double bottom, double top, double zNear, double zFar) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makeFrustum_no_rh_unsafe(dest, destOffset, left, right, bottom, top, zNear, zFar);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makeFrustum_no_rh_unsafe(dest, destOffset, left, right, bottom, top, zNear, zFar);
         return Double4x4OpsKernelsTypedBuffer.makeFrustum_no_rh_api(dest, destOffset, left, right, bottom, top, zNear, zFar);
     }
 
@@ -3498,7 +7006,43 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makeFrustum_no_rh(dest.array(), dest.arrayOffset() + destOffset, left, right, bottom, top, zNear, zFar);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeFrustum_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeFrustum_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
+            return dest;
+        }
+        double _t0 = 2.0 * zNear;
+        double _t1 = right - left;
+        double _t1_inv = 1.0 / _t1;
+        double _t2 = top - bottom;
+        double _t2_inv = 1.0 / _t2;
+        double _t3 = zNear - zFar;
+        double _t3_inv = 1.0 / _t3;
+        if (zFar == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, -1.0);
+            dest.put(destOffset + 14, -_t0);
+        } else {
+            if (zNear == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, 1.0);
+                dest.put(destOffset + 14, 2.0 * zFar);
+            } else {
+                dest.put(destOffset + 10, (zFar + zNear) * _t3_inv);
+                dest.put(destOffset + 14, 2.0 * zFar * zNear * _t3_inv);
+            }
+        }
+        dest.put(destOffset + 0, _t0 * _t1_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, _t0 * _t2_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, (left + right) * _t1_inv);
+        dest.put(destOffset + 9, (bottom + top) * _t2_inv);
+        dest.put(destOffset + 11, -1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
@@ -3510,7 +7054,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeFrustum_zo_lh(java.nio.DoubleBuffer dest, int destOffset, double left, double right, double bottom, double top, double zNear, double zFar) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makeFrustum_zo_lh_unsafe(dest, destOffset, left, right, bottom, top, zNear, zFar);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makeFrustum_zo_lh_unsafe(dest, destOffset, left, right, bottom, top, zNear, zFar);
         return Double4x4OpsKernelsTypedBuffer.makeFrustum_zo_lh_api(dest, destOffset, left, right, bottom, top, zNear, zFar);
     }
 
@@ -3525,12 +7069,48 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makeFrustum_zo_lh(dest.array(), dest.arrayOffset() + destOffset, left, right, bottom, top, zNear, zFar);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeFrustum_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeFrustum_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
+            return dest;
+        }
+        double _t0 = 2.0 * zNear;
+        double _t1 = right - left;
+        double _t1_inv = 1.0 / _t1;
+        double _t2 = top - bottom;
+        double _t2_inv = 1.0 / _t2;
+        double _t3 = zNear - zFar;
+        double _t3_inv = 1.0 / _t3;
+        if (zFar == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, 1.0);
+            dest.put(destOffset + 14, -zNear);
+        } else {
+            if (zNear == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, 0.0);
+                dest.put(destOffset + 14, zFar);
+            } else {
+                dest.put(destOffset + 10, -(zFar * _t3_inv));
+                dest.put(destOffset + 14, zFar * zNear * _t3_inv);
+            }
+        }
+        dest.put(destOffset + 0, _t0 * _t1_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, _t0 * _t2_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, -((left + right) * _t1_inv));
+        dest.put(destOffset + 9, -((bottom + top) * _t2_inv));
+        dest.put(destOffset + 11, 1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makeFrustum_zo_rh(java.nio.DoubleBuffer dest, int destOffset, double left, double right, double bottom, double top, double zNear, double zFar) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makeFrustum_zo_rh_unsafe(dest, destOffset, left, right, bottom, top, zNear, zFar);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makeFrustum_zo_rh_unsafe(dest, destOffset, left, right, bottom, top, zNear, zFar);
         return Double4x4OpsKernelsTypedBuffer.makeFrustum_zo_rh_api(dest, destOffset, left, right, bottom, top, zNear, zFar);
     }
 
@@ -3545,7 +7125,43 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makeFrustum_zo_rh(dest.array(), dest.arrayOffset() + destOffset, left, right, bottom, top, zNear, zFar);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeFrustum_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeFrustum_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
+            return dest;
+        }
+        double _t0 = 2.0 * zNear;
+        double _t1 = right - left;
+        double _t1_inv = 1.0 / _t1;
+        double _t2 = top - bottom;
+        double _t2_inv = 1.0 / _t2;
+        double _t3 = zNear - zFar;
+        double _t3_inv = 1.0 / _t3;
+        if (zFar == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, -1.0);
+            dest.put(destOffset + 14, -zNear);
+        } else {
+            if (zNear == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, 0.0);
+                dest.put(destOffset + 14, zFar);
+            } else {
+                dest.put(destOffset + 10, zFar * _t3_inv);
+                dest.put(destOffset + 14, zFar * zNear * _t3_inv);
+            }
+        }
+        dest.put(destOffset + 0, _t0 * _t1_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, _t0 * _t2_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, (left + right) * _t1_inv);
+        dest.put(destOffset + 9, (bottom + top) * _t2_inv);
+        dest.put(destOffset + 11, -1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
@@ -3557,7 +7173,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeLookAt_lh(java.nio.DoubleBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makeLookAt_lh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makeLookAt_lh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
         return Double4x4OpsKernelsTypedBuffer.makeLookAt_lh_api(dest, destOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
     }
 
@@ -3572,12 +7188,64 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makeLookAt_lh(dest.array(), dest.arrayOffset() + destOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeLookAt_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeLookAt_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+            return dest;
+        }
+        double _t0 = centerZ - eyeZ;
+        double _t1 = centerX - eyeX;
+        double _t2 = centerY - eyeY;
+        double _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        double _t6 = (1.0 / Math.sqrt(_t5));
+        double _t10, _t11, _t12;
+        if (_t5 > 0.0) {
+            _t10 = _t2 * _t6;
+            _t11 = _t1 * _t6;
+            _t12 = _t0 * _t6;
+        } else {
+            _t10 = 0.0;
+            _t11 = 0.0;
+            _t12 = 0.0;
+        }
+        double _t19 = Math.fma(upX, _t10, -(upY * _t11));
+        double _t20 = Math.fma(upY, _t12, -(upZ * _t10));
+        double _t21 = Math.fma(upZ, _t11, -(upX * _t12));
+        double _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
+        double _t25 = (1.0 / Math.sqrt(_t24));
+        double _t29, _t30, _t31;
+        if (_t24 > 0.0) {
+            _t29 = _t20 * _t25;
+            _t30 = _t21 * _t25;
+            _t31 = _t19 * _t25;
+        } else {
+            _t29 = 0.0;
+            _t30 = 0.0;
+            _t31 = 0.0;
+        }
+        double _t38 = Math.fma(_t10, _t31, -(_t12 * _t30));
+        double _t39 = Math.fma(_t12, _t29, -(_t11 * _t31));
+        double _t40 = Math.fma(_t11, _t30, -(_t10 * _t29));
+        dest.put(destOffset + 0, _t29);
+        dest.put(destOffset + 1, _t38);
+        dest.put(destOffset + 2, _t11);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, _t30);
+        dest.put(destOffset + 5, _t39);
+        dest.put(destOffset + 6, _t10);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t31);
+        dest.put(destOffset + 9, _t40);
+        dest.put(destOffset + 10, _t12);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -Math.fma(eyeZ, _t31, Math.fma(eyeX, _t29, eyeY * _t30)));
+        dest.put(destOffset + 13, -Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39)));
+        dest.put(destOffset + 14, -Math.fma(eyeZ, _t12, Math.fma(eyeX, _t11, eyeY * _t10)));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makeLookAt_rh(java.nio.DoubleBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makeLookAt_rh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makeLookAt_rh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
         return Double4x4OpsKernelsTypedBuffer.makeLookAt_rh_api(dest, destOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
     }
 
@@ -3592,12 +7260,64 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makeLookAt_rh(dest.array(), dest.arrayOffset() + destOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeLookAt_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeLookAt_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+            return dest;
+        }
+        double _t0 = centerZ - eyeZ;
+        double _t1 = centerX - eyeX;
+        double _t2 = centerY - eyeY;
+        double _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        double _t6 = (1.0 / Math.sqrt(_t5));
+        double _t10, _t11, _t12;
+        if (_t5 > 0.0) {
+            _t10 = _t1 * _t6;
+            _t11 = _t2 * _t6;
+            _t12 = _t0 * _t6;
+        } else {
+            _t10 = 0.0;
+            _t11 = 0.0;
+            _t12 = 0.0;
+        }
+        double _t19 = Math.fma(upY, _t10, -(upX * _t11));
+        double _t20 = Math.fma(upX, _t12, -(upZ * _t10));
+        double _t21 = Math.fma(upZ, _t11, -(upY * _t12));
+        double _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
+        double _t25 = (1.0 / Math.sqrt(_t24));
+        double _t29, _t30, _t31;
+        if (_t24 > 0.0) {
+            _t29 = _t21 * _t25;
+            _t30 = _t20 * _t25;
+            _t31 = _t19 * _t25;
+        } else {
+            _t29 = 0.0;
+            _t30 = 0.0;
+            _t31 = 0.0;
+        }
+        double _t38 = Math.fma(_t12, _t30, -(_t11 * _t31));
+        double _t39 = Math.fma(_t10, _t31, -(_t12 * _t29));
+        double _t40 = Math.fma(_t11, _t29, -(_t10 * _t30));
+        dest.put(destOffset + 0, _t29);
+        dest.put(destOffset + 1, _t38);
+        dest.put(destOffset + 2, -_t10);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, _t30);
+        dest.put(destOffset + 5, _t39);
+        dest.put(destOffset + 6, -_t11);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t31);
+        dest.put(destOffset + 9, _t40);
+        dest.put(destOffset + 10, -_t12);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -Math.fma(eyeZ, _t31, Math.fma(eyeX, _t29, eyeY * _t30)));
+        dest.put(destOffset + 13, -Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39)));
+        dest.put(destOffset + 14, Math.fma(eyeZ, _t12, Math.fma(eyeX, _t10, eyeY * _t11)));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makeLookAt_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer eye, int eyeOffset, java.nio.DoubleBuffer center, int centerOffset, java.nio.DoubleBuffer up, int upOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && eye.isDirect() && center.isDirect() && up.isDirect()) return Double4x4OpsKernelsTypedBuffer.makeLookAt_lh_unsafe(dest, destOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && eye.isDirect() && eye.order() == java.nio.ByteOrder.nativeOrder() && center.isDirect() && center.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makeLookAt_lh_unsafe(dest, destOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
         return Double4x4OpsKernelsTypedBuffer.makeLookAt_lh_api(dest, destOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
     }
 
@@ -3615,12 +7335,73 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makeLookAt_lh(dest.array(), dest.arrayOffset() + destOffset, eye.array(), eye.arrayOffset() + eyeOffset, center.array(), center.arrayOffset() + centerOffset, up.array(), up.arrayOffset() + upOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeLookAt_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(eye.duplicate().position(0)), (long) eyeOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(center.duplicate().position(0)), (long) centerOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(up.duplicate().position(0)), (long) upOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && eye.order() == java.nio.ByteOrder.nativeOrder() && center.order() == java.nio.ByteOrder.nativeOrder() && up.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeLookAt_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(eye.duplicate().position(0)), (long) eyeOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(center.duplicate().position(0)), (long) centerOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(up.duplicate().position(0)), (long) upOffset * 8L);
+            return dest;
+        }
+        double _eyex = eye.get(eyeOffset + 0);
+        double _eyey = eye.get(eyeOffset + 1);
+        double _eyez = eye.get(eyeOffset + 2);
+        double _centerx = center.get(centerOffset + 0);
+        double _centery = center.get(centerOffset + 1);
+        double _centerz = center.get(centerOffset + 2);
+        double _upx = up.get(upOffset + 0);
+        double _upy = up.get(upOffset + 1);
+        double _upz = up.get(upOffset + 2);
+        double _t0 = _centerz - _eyez;
+        double _t1 = _centerx - _eyex;
+        double _t2 = _centery - _eyey;
+        double _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        double _t6 = (1.0 / Math.sqrt(_t5));
+        double _t10, _t11, _t12;
+        if (_t5 > 0.0) {
+            _t10 = _t2 * _t6;
+            _t11 = _t1 * _t6;
+            _t12 = _t0 * _t6;
+        } else {
+            _t10 = 0.0;
+            _t11 = 0.0;
+            _t12 = 0.0;
+        }
+        double _t19 = Math.fma(_upx, _t10, -(_upy * _t11));
+        double _t20 = Math.fma(_upy, _t12, -(_upz * _t10));
+        double _t21 = Math.fma(_upz, _t11, -(_upx * _t12));
+        double _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
+        double _t25 = (1.0 / Math.sqrt(_t24));
+        double _t29, _t30, _t31;
+        if (_t24 > 0.0) {
+            _t29 = _t20 * _t25;
+            _t30 = _t21 * _t25;
+            _t31 = _t19 * _t25;
+        } else {
+            _t29 = 0.0;
+            _t30 = 0.0;
+            _t31 = 0.0;
+        }
+        double _t38 = Math.fma(_t10, _t31, -(_t12 * _t30));
+        double _t39 = Math.fma(_t12, _t29, -(_t11 * _t31));
+        double _t40 = Math.fma(_t11, _t30, -(_t10 * _t29));
+        dest.put(destOffset + 0, _t29);
+        dest.put(destOffset + 1, _t38);
+        dest.put(destOffset + 2, _t11);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, _t30);
+        dest.put(destOffset + 5, _t39);
+        dest.put(destOffset + 6, _t10);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t31);
+        dest.put(destOffset + 9, _t40);
+        dest.put(destOffset + 10, _t12);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -Math.fma(_eyez, _t31, Math.fma(_eyex, _t29, _eyey * _t30)));
+        dest.put(destOffset + 13, -Math.fma(_eyez, _t40, Math.fma(_eyex, _t38, _eyey * _t39)));
+        dest.put(destOffset + 14, -Math.fma(_eyez, _t12, Math.fma(_eyex, _t11, _eyey * _t10)));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makeLookAt_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer eye, int eyeOffset, java.nio.DoubleBuffer center, int centerOffset, java.nio.DoubleBuffer up, int upOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && eye.isDirect() && center.isDirect() && up.isDirect()) return Double4x4OpsKernelsTypedBuffer.makeLookAt_rh_unsafe(dest, destOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && eye.isDirect() && eye.order() == java.nio.ByteOrder.nativeOrder() && center.isDirect() && center.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makeLookAt_rh_unsafe(dest, destOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
         return Double4x4OpsKernelsTypedBuffer.makeLookAt_rh_api(dest, destOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
     }
 
@@ -3638,7 +7419,68 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makeLookAt_rh(dest.array(), dest.arrayOffset() + destOffset, eye.array(), eye.arrayOffset() + eyeOffset, center.array(), center.arrayOffset() + centerOffset, up.array(), up.arrayOffset() + upOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeLookAt_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(eye.duplicate().position(0)), (long) eyeOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(center.duplicate().position(0)), (long) centerOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(up.duplicate().position(0)), (long) upOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && eye.order() == java.nio.ByteOrder.nativeOrder() && center.order() == java.nio.ByteOrder.nativeOrder() && up.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeLookAt_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(eye.duplicate().position(0)), (long) eyeOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(center.duplicate().position(0)), (long) centerOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(up.duplicate().position(0)), (long) upOffset * 8L);
+            return dest;
+        }
+        double _eyex = eye.get(eyeOffset + 0);
+        double _eyey = eye.get(eyeOffset + 1);
+        double _eyez = eye.get(eyeOffset + 2);
+        double _centerx = center.get(centerOffset + 0);
+        double _centery = center.get(centerOffset + 1);
+        double _centerz = center.get(centerOffset + 2);
+        double _upx = up.get(upOffset + 0);
+        double _upy = up.get(upOffset + 1);
+        double _upz = up.get(upOffset + 2);
+        double _t0 = _centerz - _eyez;
+        double _t1 = _centerx - _eyex;
+        double _t2 = _centery - _eyey;
+        double _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        double _t6 = (1.0 / Math.sqrt(_t5));
+        double _t10, _t11, _t12;
+        if (_t5 > 0.0) {
+            _t10 = _t1 * _t6;
+            _t11 = _t2 * _t6;
+            _t12 = _t0 * _t6;
+        } else {
+            _t10 = 0.0;
+            _t11 = 0.0;
+            _t12 = 0.0;
+        }
+        double _t19 = Math.fma(_upy, _t10, -(_upx * _t11));
+        double _t20 = Math.fma(_upx, _t12, -(_upz * _t10));
+        double _t21 = Math.fma(_upz, _t11, -(_upy * _t12));
+        double _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
+        double _t25 = (1.0 / Math.sqrt(_t24));
+        double _t29, _t30, _t31;
+        if (_t24 > 0.0) {
+            _t29 = _t21 * _t25;
+            _t30 = _t20 * _t25;
+            _t31 = _t19 * _t25;
+        } else {
+            _t29 = 0.0;
+            _t30 = 0.0;
+            _t31 = 0.0;
+        }
+        double _t38 = Math.fma(_t12, _t30, -(_t11 * _t31));
+        double _t39 = Math.fma(_t10, _t31, -(_t12 * _t29));
+        double _t40 = Math.fma(_t11, _t29, -(_t10 * _t30));
+        dest.put(destOffset + 0, _t29);
+        dest.put(destOffset + 1, _t38);
+        dest.put(destOffset + 2, -_t10);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, _t30);
+        dest.put(destOffset + 5, _t39);
+        dest.put(destOffset + 6, -_t11);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t31);
+        dest.put(destOffset + 9, _t40);
+        dest.put(destOffset + 10, -_t12);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -Math.fma(_eyez, _t31, Math.fma(_eyex, _t29, _eyey * _t30)));
+        dest.put(destOffset + 13, -Math.fma(_eyez, _t40, Math.fma(_eyex, _t38, _eyey * _t39)));
+        dest.put(destOffset + 14, Math.fma(_eyez, _t12, Math.fma(_eyex, _t10, _eyey * _t11)));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3653,7 +7495,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingXYnZ(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingXYnZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingXYnZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, -1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3668,7 +7529,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingXZY(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingXZY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingXZY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 1.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 1.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3683,7 +7563,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingXZnY(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingXZnY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingXZnY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 1.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, -1.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3698,7 +7597,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingXnYZ(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingXnYZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingXnYZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, -1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3713,7 +7631,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingXnYnZ(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingXnYnZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingXnYnZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, -1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, -1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3728,7 +7665,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingXnZY(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingXnZY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingXnZY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, -1.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 1.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3743,7 +7699,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingXnZnY(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingXnZnY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingXnZnY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, -1.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, -1.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3758,7 +7733,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingYXZ(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingYXZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingYXZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 1.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 1.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3773,7 +7767,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingYXnZ(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingYXnZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingYXnZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 1.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 1.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, -1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3788,7 +7801,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingYZX(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingYZX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingYZX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 1.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 1.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 1.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3803,7 +7835,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingYZnX(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingYZnX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingYZnX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 1.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 1.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, -1.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3818,7 +7869,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingYnXZ(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingYnXZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingYnXZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 1.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, -1.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3833,7 +7903,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingYnXnZ(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingYnXnZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingYnXnZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 1.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, -1.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, -1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3848,7 +7937,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingYnZX(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingYnZX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingYnZX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 1.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, -1.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 1.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3863,7 +7971,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingYnZnX(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingYnZnX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingYnZnX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 1.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, -1.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, -1.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3878,7 +8005,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingZXY(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingZXY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingZXY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 1.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 1.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 1.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3893,7 +8039,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingZXnY(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingZXnY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingZXnY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 1.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 1.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, -1.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3908,7 +8073,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingZYX(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingZYX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingZYX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 1.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 1.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3923,7 +8107,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingZYnX(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingZYnX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingZYnX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 1.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, -1.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3938,7 +8141,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingZnXY(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingZnXY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingZnXY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 1.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, -1.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 1.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3953,7 +8175,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingZnXnY(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingZnXnY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingZnXnY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 1.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, -1.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, -1.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3968,7 +8209,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingZnYX(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingZnYX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingZnYX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 1.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, -1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 1.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3983,7 +8243,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingZnYnX(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingZnYnX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingZnYnX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 1.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, -1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, -1.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -3998,7 +8277,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnXYZ(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnXYZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnXYZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, -1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4013,7 +8311,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnXYnZ(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnXYnZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnXYnZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, -1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, -1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4028,7 +8345,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnXZY(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnXZY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnXZY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, -1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 1.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 1.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4043,7 +8379,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnXZnY(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnXZnY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnXZnY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, -1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 1.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, -1.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4058,7 +8413,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnXnYZ(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnXnYZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnXnYZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, -1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, -1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4073,7 +8447,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnXnYnZ(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnXnYnZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnXnYnZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, -1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, -1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, -1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4088,7 +8481,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnXnZY(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnXnZY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnXnZY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, -1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, -1.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 1.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4103,7 +8515,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnXnZnY(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnXnZnY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnXnZnY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, -1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, -1.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, -1.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4118,7 +8549,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnYXZ(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnYXZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnYXZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, -1.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 1.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4133,7 +8583,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnYXnZ(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnYXnZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnYXnZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, -1.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 1.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, -1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4148,7 +8617,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnYZX(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnYZX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnYZX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, -1.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 1.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 1.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4163,7 +8651,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnYZnX(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnYZnX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnYZnX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, -1.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 1.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, -1.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4178,7 +8685,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnYnXZ(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnYnXZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnYnXZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, -1.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, -1.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4193,7 +8719,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnYnXnZ(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnYnXnZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnYnXnZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, -1.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, -1.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, -1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4208,7 +8753,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnYnZX(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnYnZX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnYnZX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, -1.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, -1.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 1.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4223,7 +8787,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnYnZnX(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnYnZnX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnYnZnX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, -1.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, -1.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, -1.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4238,7 +8821,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnZXY(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnZXY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnZXY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, -1.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 1.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 1.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4253,7 +8855,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnZXnY(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnZXnY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnZXnY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, -1.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 1.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, -1.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4268,7 +8889,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnZYX(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnZYX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnZYX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, -1.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 1.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4283,7 +8923,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnZYnX(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnZYnX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnZYnX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, -1.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, -1.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4298,7 +8957,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnZnXY(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnZnXY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnZnXY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, -1.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, -1.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 1.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4313,7 +8991,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnZnXnY(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnZnXnY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnZnXnY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, -1.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, -1.0);
+        dest.put(destOffset + 5, 0.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, -1.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4328,7 +9025,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnZnYX(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnZnYX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnZnYX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, -1.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, -1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 1.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4343,7 +9059,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeMappingnZnYnX(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeMappingnZnYnX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeMappingnZnYnX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 0.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, -1.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, -1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, -1.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4358,7 +9093,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeObliqueCabinet(dest.array(), dest.arrayOffset() + destOffset, angle);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeObliqueCabinet_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angle);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeObliqueCabinet_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angle);
+            return dest;
+        }
+        dest.put(destOffset + 0, 1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, -(0.5 * Math.cos(angle)));
+        dest.put(destOffset + 9, -(0.5 * Math.sin(angle)));
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4373,7 +9127,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeObliqueCavalier(dest.array(), dest.arrayOffset() + destOffset, angle);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeObliqueCavalier_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angle);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeObliqueCavalier_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angle);
+            return dest;
+        }
+        dest.put(destOffset + 0, 1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, -Math.cos(angle));
+        dest.put(destOffset + 9, -Math.sin(angle));
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4388,12 +9161,31 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeObliqueMilitary(dest.array(), dest.arrayOffset() + destOffset, angle);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeObliqueMilitary_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angle);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeObliqueMilitary_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angle);
+            return dest;
+        }
+        dest.put(destOffset + 0, 1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, Math.cos(angle));
+        dest.put(destOffset + 5, Math.sin(angle));
+        dest.put(destOffset + 6, -1.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 1.0);
+        dest.put(destOffset + 10, 0.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makeOrtho_no_lh(java.nio.DoubleBuffer dest, int destOffset, double left, double right, double bottom, double top, double zNear, double zFar) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makeOrtho_no_lh_unsafe(dest, destOffset, left, right, bottom, top, zNear, zFar);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makeOrtho_no_lh_unsafe(dest, destOffset, left, right, bottom, top, zNear, zFar);
         return Double4x4OpsKernelsTypedBuffer.makeOrtho_no_lh_api(dest, destOffset, left, right, bottom, top, zNear, zFar);
     }
 
@@ -4408,12 +9200,37 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makeOrtho_no_lh(dest.array(), dest.arrayOffset() + destOffset, left, right, bottom, top, zNear, zFar);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeOrtho_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeOrtho_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
+            return dest;
+        }
+        double _t0 = right - left;
+        double _t0_inv = 1.0 / _t0;
+        double _t1 = top - bottom;
+        double _t1_inv = 1.0 / _t1;
+        double _t2 = zFar - zNear;
+        double _t2_inv = 1.0 / _t2;
+        dest.put(destOffset + 0, 2.0 * _t0_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t1_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 2.0 * _t2_inv);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -((left + right) * _t0_inv));
+        dest.put(destOffset + 13, -((bottom + top) * _t1_inv));
+        dest.put(destOffset + 14, -((zFar + zNear) * _t2_inv));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makeOrtho_no_rh(java.nio.DoubleBuffer dest, int destOffset, double left, double right, double bottom, double top, double zNear, double zFar) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makeOrtho_no_rh_unsafe(dest, destOffset, left, right, bottom, top, zNear, zFar);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makeOrtho_no_rh_unsafe(dest, destOffset, left, right, bottom, top, zNear, zFar);
         return Double4x4OpsKernelsTypedBuffer.makeOrtho_no_rh_api(dest, destOffset, left, right, bottom, top, zNear, zFar);
     }
 
@@ -4428,7 +9245,32 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makeOrtho_no_rh(dest.array(), dest.arrayOffset() + destOffset, left, right, bottom, top, zNear, zFar);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeOrtho_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeOrtho_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
+            return dest;
+        }
+        double _t0 = right - left;
+        double _t0_inv = 1.0 / _t0;
+        double _t1 = top - bottom;
+        double _t1_inv = 1.0 / _t1;
+        double _t2 = zFar - zNear;
+        double _t2_inv = 1.0 / _t2;
+        dest.put(destOffset + 0, 2.0 * _t0_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t1_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, -2.0 * _t2_inv);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -((left + right) * _t0_inv));
+        dest.put(destOffset + 13, -((bottom + top) * _t1_inv));
+        dest.put(destOffset + 14, -((zFar + zNear) * _t2_inv));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4440,7 +9282,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeOrtho_zo_lh(java.nio.DoubleBuffer dest, int destOffset, double left, double right, double bottom, double top, double zNear, double zFar) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makeOrtho_zo_lh_unsafe(dest, destOffset, left, right, bottom, top, zNear, zFar);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makeOrtho_zo_lh_unsafe(dest, destOffset, left, right, bottom, top, zNear, zFar);
         return Double4x4OpsKernelsTypedBuffer.makeOrtho_zo_lh_api(dest, destOffset, left, right, bottom, top, zNear, zFar);
     }
 
@@ -4455,12 +9297,37 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makeOrtho_zo_lh(dest.array(), dest.arrayOffset() + destOffset, left, right, bottom, top, zNear, zFar);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeOrtho_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeOrtho_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
+            return dest;
+        }
+        double _t0 = right - left;
+        double _t0_inv = 1.0 / _t0;
+        double _t1 = top - bottom;
+        double _t1_inv = 1.0 / _t1;
+        double _t2 = zFar - zNear;
+        double _t2_inv = 1.0 / _t2;
+        dest.put(destOffset + 0, 2.0 * _t0_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t1_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0 * _t2_inv);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -((left + right) * _t0_inv));
+        dest.put(destOffset + 13, -((bottom + top) * _t1_inv));
+        dest.put(destOffset + 14, -(zNear * _t2_inv));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makeOrtho_zo_rh(java.nio.DoubleBuffer dest, int destOffset, double left, double right, double bottom, double top, double zNear, double zFar) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makeOrtho_zo_rh_unsafe(dest, destOffset, left, right, bottom, top, zNear, zFar);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makeOrtho_zo_rh_unsafe(dest, destOffset, left, right, bottom, top, zNear, zFar);
         return Double4x4OpsKernelsTypedBuffer.makeOrtho_zo_rh_api(dest, destOffset, left, right, bottom, top, zNear, zFar);
     }
 
@@ -4475,7 +9342,32 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makeOrtho_zo_rh(dest.array(), dest.arrayOffset() + destOffset, left, right, bottom, top, zNear, zFar);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeOrtho_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeOrtho_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top, zNear, zFar);
+            return dest;
+        }
+        double _t0 = right - left;
+        double _t0_inv = 1.0 / _t0;
+        double _t1 = top - bottom;
+        double _t1_inv = 1.0 / _t1;
+        double _t2 = zFar - zNear;
+        double _t2_inv = 1.0 / _t2;
+        dest.put(destOffset + 0, 2.0 * _t0_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t1_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, -1.0 * _t2_inv);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -((left + right) * _t0_inv));
+        dest.put(destOffset + 13, -((bottom + top) * _t1_inv));
+        dest.put(destOffset + 14, -(zNear * _t2_inv));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4487,7 +9379,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeOrtho2D_no_lh(java.nio.DoubleBuffer dest, int destOffset, double left, double right, double bottom, double top) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makeOrtho2D_no_lh_unsafe(dest, destOffset, left, right, bottom, top);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makeOrtho2D_no_lh_unsafe(dest, destOffset, left, right, bottom, top);
         return Double4x4OpsKernelsTypedBuffer.makeOrtho2D_no_lh_api(dest, destOffset, left, right, bottom, top);
     }
 
@@ -4502,12 +9394,35 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makeOrtho2D_no_lh(dest.array(), dest.arrayOffset() + destOffset, left, right, bottom, top);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeOrtho2D_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeOrtho2D_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top);
+            return dest;
+        }
+        double _t0 = right - left;
+        double _t0_inv = 1.0 / _t0;
+        double _t1 = top - bottom;
+        double _t1_inv = 1.0 / _t1;
+        dest.put(destOffset + 0, 2.0 * _t0_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t1_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -((left + right) * _t0_inv));
+        dest.put(destOffset + 13, -((bottom + top) * _t1_inv));
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makeOrtho2D_no_rh(java.nio.DoubleBuffer dest, int destOffset, double left, double right, double bottom, double top) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makeOrtho2D_no_rh_unsafe(dest, destOffset, left, right, bottom, top);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makeOrtho2D_no_rh_unsafe(dest, destOffset, left, right, bottom, top);
         return Double4x4OpsKernelsTypedBuffer.makeOrtho2D_no_rh_api(dest, destOffset, left, right, bottom, top);
     }
 
@@ -4522,7 +9437,30 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makeOrtho2D_no_rh(dest.array(), dest.arrayOffset() + destOffset, left, right, bottom, top);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeOrtho2D_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeOrtho2D_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top);
+            return dest;
+        }
+        double _t0 = right - left;
+        double _t0_inv = 1.0 / _t0;
+        double _t1 = top - bottom;
+        double _t1_inv = 1.0 / _t1;
+        dest.put(destOffset + 0, 2.0 * _t0_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t1_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, -1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -((left + right) * _t0_inv));
+        dest.put(destOffset + 13, -((bottom + top) * _t1_inv));
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4534,7 +9472,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeOrtho2D_zo_lh(java.nio.DoubleBuffer dest, int destOffset, double left, double right, double bottom, double top) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makeOrtho2D_zo_lh_unsafe(dest, destOffset, left, right, bottom, top);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makeOrtho2D_zo_lh_unsafe(dest, destOffset, left, right, bottom, top);
         return Double4x4OpsKernelsTypedBuffer.makeOrtho2D_zo_lh_api(dest, destOffset, left, right, bottom, top);
     }
 
@@ -4549,12 +9487,35 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makeOrtho2D_zo_lh(dest.array(), dest.arrayOffset() + destOffset, left, right, bottom, top);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeOrtho2D_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeOrtho2D_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top);
+            return dest;
+        }
+        double _t0 = right - left;
+        double _t0_inv = 1.0 / _t0;
+        double _t1 = top - bottom;
+        double _t1_inv = 1.0 / _t1;
+        dest.put(destOffset + 0, 2.0 * _t0_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t1_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 0.5);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -((left + right) * _t0_inv));
+        dest.put(destOffset + 13, -((bottom + top) * _t1_inv));
+        dest.put(destOffset + 14, 0.5);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makeOrtho2D_zo_rh(java.nio.DoubleBuffer dest, int destOffset, double left, double right, double bottom, double top) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makeOrtho2D_zo_rh_unsafe(dest, destOffset, left, right, bottom, top);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makeOrtho2D_zo_rh_unsafe(dest, destOffset, left, right, bottom, top);
         return Double4x4OpsKernelsTypedBuffer.makeOrtho2D_zo_rh_api(dest, destOffset, left, right, bottom, top);
     }
 
@@ -4569,7 +9530,30 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makeOrtho2D_zo_rh(dest.array(), dest.arrayOffset() + destOffset, left, right, bottom, top);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeOrtho2D_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeOrtho2D_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, left, right, bottom, top);
+            return dest;
+        }
+        double _t0 = right - left;
+        double _t0_inv = 1.0 / _t0;
+        double _t1 = top - bottom;
+        double _t1_inv = 1.0 / _t1;
+        dest.put(destOffset + 0, 2.0 * _t0_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t1_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, -0.5);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -((left + right) * _t0_inv));
+        dest.put(destOffset + 13, -((bottom + top) * _t1_inv));
+        dest.put(destOffset + 14, 0.5);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -4581,7 +9565,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makePerspective_no_lh(java.nio.DoubleBuffer dest, int destOffset, double fovy, double aspect, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makePerspective_no_lh_unsafe(dest, destOffset, fovy, aspect, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspective_no_lh_unsafe(dest, destOffset, fovy, aspect, near, far);
         return Double4x4OpsKernelsTypedBuffer.makePerspective_no_lh_api(dest, destOffset, fovy, aspect, near, far);
     }
 
@@ -4596,12 +9580,44 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspective_no_lh(dest.array(), dest.arrayOffset() + destOffset, fovy, aspect, near, far);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspective_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, fovy, aspect, near, far);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspective_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, fovy, aspect, near, far);
+            return dest;
+        }
+        double _t1 = near - far;
+        double _t1_inv = 1.0 / _t1;
+        double _t2 = Math.tan(0.5 * fovy);
+        if (far == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, 1.0);
+            dest.put(destOffset + 14, -(2.0 * near));
+        } else {
+            if (near == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, -1.0);
+                dest.put(destOffset + 14, 2.0 * far);
+            } else {
+                dest.put(destOffset + 10, -((far + near) * _t1_inv));
+                dest.put(destOffset + 14, 2.0 * far * near * _t1_inv);
+            }
+        }
+        dest.put(destOffset + 0, 1.0 / (aspect * _t2));
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 1.0 / _t2);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 11, 1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makePerspective_no_rh(java.nio.DoubleBuffer dest, int destOffset, double fovy, double aspect, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makePerspective_no_rh_unsafe(dest, destOffset, fovy, aspect, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspective_no_rh_unsafe(dest, destOffset, fovy, aspect, near, far);
         return Double4x4OpsKernelsTypedBuffer.makePerspective_no_rh_api(dest, destOffset, fovy, aspect, near, far);
     }
 
@@ -4616,7 +9632,39 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspective_no_rh(dest.array(), dest.arrayOffset() + destOffset, fovy, aspect, near, far);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspective_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, fovy, aspect, near, far);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspective_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, fovy, aspect, near, far);
+            return dest;
+        }
+        double _t1 = near - far;
+        double _t1_inv = 1.0 / _t1;
+        double _t2 = Math.tan(0.5 * fovy);
+        if (far == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, -1.0);
+            dest.put(destOffset + 14, -(2.0 * near));
+        } else {
+            if (near == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, 1.0);
+                dest.put(destOffset + 14, 2.0 * far);
+            } else {
+                dest.put(destOffset + 10, (far + near) * _t1_inv);
+                dest.put(destOffset + 14, 2.0 * far * near * _t1_inv);
+            }
+        }
+        dest.put(destOffset + 0, 1.0 / (aspect * _t2));
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 1.0 / _t2);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 11, -1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
@@ -4628,7 +9676,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makePerspective_zo_lh(java.nio.DoubleBuffer dest, int destOffset, double fovy, double aspect, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makePerspective_zo_lh_unsafe(dest, destOffset, fovy, aspect, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspective_zo_lh_unsafe(dest, destOffset, fovy, aspect, near, far);
         return Double4x4OpsKernelsTypedBuffer.makePerspective_zo_lh_api(dest, destOffset, fovy, aspect, near, far);
     }
 
@@ -4643,12 +9691,44 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspective_zo_lh(dest.array(), dest.arrayOffset() + destOffset, fovy, aspect, near, far);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspective_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, fovy, aspect, near, far);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspective_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, fovy, aspect, near, far);
+            return dest;
+        }
+        double _t1 = near - far;
+        double _t1_inv = 1.0 / _t1;
+        double _t2 = Math.tan(0.5 * fovy);
+        if (far == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, 1.0);
+            dest.put(destOffset + 14, -near);
+        } else {
+            if (near == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, 0.0);
+                dest.put(destOffset + 14, far);
+            } else {
+                dest.put(destOffset + 10, -(far * _t1_inv));
+                dest.put(destOffset + 14, far * near * _t1_inv);
+            }
+        }
+        dest.put(destOffset + 0, 1.0 / (aspect * _t2));
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 1.0 / _t2);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 11, 1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makePerspective_zo_rh(java.nio.DoubleBuffer dest, int destOffset, double fovy, double aspect, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makePerspective_zo_rh_unsafe(dest, destOffset, fovy, aspect, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspective_zo_rh_unsafe(dest, destOffset, fovy, aspect, near, far);
         return Double4x4OpsKernelsTypedBuffer.makePerspective_zo_rh_api(dest, destOffset, fovy, aspect, near, far);
     }
 
@@ -4663,7 +9743,39 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspective_zo_rh(dest.array(), dest.arrayOffset() + destOffset, fovy, aspect, near, far);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspective_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, fovy, aspect, near, far);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspective_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, fovy, aspect, near, far);
+            return dest;
+        }
+        double _t1 = near - far;
+        double _t1_inv = 1.0 / _t1;
+        double _t2 = Math.tan(0.5 * fovy);
+        if (far == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, -1.0);
+            dest.put(destOffset + 14, -near);
+        } else {
+            if (near == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, 0.0);
+                dest.put(destOffset + 14, far);
+            } else {
+                dest.put(destOffset + 10, far * _t1_inv);
+                dest.put(destOffset + 14, far * near * _t1_inv);
+            }
+        }
+        dest.put(destOffset + 0, 1.0 / (aspect * _t2));
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 1.0 / _t2);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 11, -1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
@@ -4675,7 +9787,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makePerspectiveFovRange_no_lh(java.nio.DoubleBuffer dest, int destOffset, double angleMin, double angleMax, double aspect, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveFovRange_no_lh_unsafe(dest, destOffset, angleMin, angleMax, aspect, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveFovRange_no_lh_unsafe(dest, destOffset, angleMin, angleMax, aspect, near, far);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveFovRange_no_lh_api(dest, destOffset, angleMin, angleMax, aspect, near, far);
     }
 
@@ -4690,12 +9802,47 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveFovRange_no_lh(dest.array(), dest.arrayOffset() + destOffset, angleMin, angleMax, aspect, near, far);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveFovRange_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleMin, angleMax, aspect, near, far);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveFovRange_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleMin, angleMax, aspect, near, far);
+            return dest;
+        }
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
+        double _t2 = near - far;
+        double _t2_inv = 1.0 / _t2;
+        double _t3 = _t0 - _t1;
+        double _t3_inv = 1.0 / _t3;
+        if (far == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, 1.0);
+            dest.put(destOffset + 14, -(2.0 * near));
+        } else {
+            if (near == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, -1.0);
+                dest.put(destOffset + 14, 2.0 * far);
+            } else {
+                dest.put(destOffset + 10, -((far + near) * _t2_inv));
+                dest.put(destOffset + 14, 2.0 * far * near * _t2_inv);
+            }
+        }
+        dest.put(destOffset + 0, 2.0 / (aspect * _t3));
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t3_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, -((_t0 + _t1) * _t3_inv));
+        dest.put(destOffset + 11, 1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makePerspectiveFovRange_no_rh(java.nio.DoubleBuffer dest, int destOffset, double angleMin, double angleMax, double aspect, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveFovRange_no_rh_unsafe(dest, destOffset, angleMin, angleMax, aspect, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveFovRange_no_rh_unsafe(dest, destOffset, angleMin, angleMax, aspect, near, far);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveFovRange_no_rh_api(dest, destOffset, angleMin, angleMax, aspect, near, far);
     }
 
@@ -4710,7 +9857,42 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveFovRange_no_rh(dest.array(), dest.arrayOffset() + destOffset, angleMin, angleMax, aspect, near, far);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveFovRange_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleMin, angleMax, aspect, near, far);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveFovRange_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleMin, angleMax, aspect, near, far);
+            return dest;
+        }
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
+        double _t2 = near - far;
+        double _t2_inv = 1.0 / _t2;
+        double _t3 = _t0 - _t1;
+        double _t3_inv = 1.0 / _t3;
+        if (far == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, -1.0);
+            dest.put(destOffset + 14, -(2.0 * near));
+        } else {
+            if (near == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, 1.0);
+                dest.put(destOffset + 14, 2.0 * far);
+            } else {
+                dest.put(destOffset + 10, (far + near) * _t2_inv);
+                dest.put(destOffset + 14, 2.0 * far * near * _t2_inv);
+            }
+        }
+        dest.put(destOffset + 0, 2.0 / (aspect * _t3));
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t3_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, (_t0 + _t1) * _t3_inv);
+        dest.put(destOffset + 11, -1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
@@ -4722,7 +9904,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makePerspectiveFovRange_zo_lh(java.nio.DoubleBuffer dest, int destOffset, double angleMin, double angleMax, double aspect, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveFovRange_zo_lh_unsafe(dest, destOffset, angleMin, angleMax, aspect, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveFovRange_zo_lh_unsafe(dest, destOffset, angleMin, angleMax, aspect, near, far);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveFovRange_zo_lh_api(dest, destOffset, angleMin, angleMax, aspect, near, far);
     }
 
@@ -4737,12 +9919,47 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveFovRange_zo_lh(dest.array(), dest.arrayOffset() + destOffset, angleMin, angleMax, aspect, near, far);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveFovRange_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleMin, angleMax, aspect, near, far);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveFovRange_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleMin, angleMax, aspect, near, far);
+            return dest;
+        }
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
+        double _t2 = near - far;
+        double _t2_inv = 1.0 / _t2;
+        double _t3 = _t0 - _t1;
+        double _t3_inv = 1.0 / _t3;
+        if (far == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, 1.0);
+            dest.put(destOffset + 14, -near);
+        } else {
+            if (near == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, 0.0);
+                dest.put(destOffset + 14, far);
+            } else {
+                dest.put(destOffset + 10, -(far * _t2_inv));
+                dest.put(destOffset + 14, far * near * _t2_inv);
+            }
+        }
+        dest.put(destOffset + 0, 2.0 / (aspect * _t3));
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t3_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, -((_t0 + _t1) * _t3_inv));
+        dest.put(destOffset + 11, 1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makePerspectiveFovRange_zo_rh(java.nio.DoubleBuffer dest, int destOffset, double angleMin, double angleMax, double aspect, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveFovRange_zo_rh_unsafe(dest, destOffset, angleMin, angleMax, aspect, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveFovRange_zo_rh_unsafe(dest, destOffset, angleMin, angleMax, aspect, near, far);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveFovRange_zo_rh_api(dest, destOffset, angleMin, angleMax, aspect, near, far);
     }
 
@@ -4757,7 +9974,42 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveFovRange_zo_rh(dest.array(), dest.arrayOffset() + destOffset, angleMin, angleMax, aspect, near, far);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveFovRange_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleMin, angleMax, aspect, near, far);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveFovRange_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleMin, angleMax, aspect, near, far);
+            return dest;
+        }
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
+        double _t2 = near - far;
+        double _t2_inv = 1.0 / _t2;
+        double _t3 = _t0 - _t1;
+        double _t3_inv = 1.0 / _t3;
+        if (far == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, -1.0);
+            dest.put(destOffset + 14, -near);
+        } else {
+            if (near == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, 0.0);
+                dest.put(destOffset + 14, far);
+            } else {
+                dest.put(destOffset + 10, far * _t2_inv);
+                dest.put(destOffset + 14, far * near * _t2_inv);
+            }
+        }
+        dest.put(destOffset + 0, 2.0 / (aspect * _t3));
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t3_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, (_t0 + _t1) * _t3_inv);
+        dest.put(destOffset + 11, -1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
@@ -4769,7 +10021,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makePerspectiveOffCenterFov_no_lh(java.nio.DoubleBuffer dest, int destOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterFov_no_lh_unsafe(dest, destOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterFov_no_lh_unsafe(dest, destOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterFov_no_lh_api(dest, destOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
     }
 
@@ -4784,12 +10036,51 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveOffCenterFov_no_lh(dest.array(), dest.arrayOffset() + destOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveOffCenterFov_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleLeft, angleRight, angleDown, angleUp, near, far);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveOffCenterFov_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleLeft, angleRight, angleDown, angleUp, near, far);
+            return dest;
+        }
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
+        double _t4 = near - far;
+        double _t4_inv = 1.0 / _t4;
+        double _t5 = _t0 - _t1;
+        double _t5_inv = 1.0 / _t5;
+        double _t6 = _t2 - _t3;
+        double _t6_inv = 1.0 / _t6;
+        if (far == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, 1.0);
+            dest.put(destOffset + 14, -(2.0 * near));
+        } else {
+            if (near == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, -1.0);
+                dest.put(destOffset + 14, 2.0 * far);
+            } else {
+                dest.put(destOffset + 10, -((far + near) * _t4_inv));
+                dest.put(destOffset + 14, 2.0 * far * near * _t4_inv);
+            }
+        }
+        dest.put(destOffset + 0, 2.0 * _t5_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t6_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, -((_t1 + _t0) * _t5_inv));
+        dest.put(destOffset + 9, -((_t3 + _t2) * _t6_inv));
+        dest.put(destOffset + 11, 1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makePerspectiveOffCenterFov_no_rh(java.nio.DoubleBuffer dest, int destOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterFov_no_rh_unsafe(dest, destOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterFov_no_rh_unsafe(dest, destOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterFov_no_rh_api(dest, destOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
     }
 
@@ -4804,7 +10095,46 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveOffCenterFov_no_rh(dest.array(), dest.arrayOffset() + destOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveOffCenterFov_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleLeft, angleRight, angleDown, angleUp, near, far);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveOffCenterFov_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleLeft, angleRight, angleDown, angleUp, near, far);
+            return dest;
+        }
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
+        double _t4 = near - far;
+        double _t4_inv = 1.0 / _t4;
+        double _t5 = _t0 - _t1;
+        double _t5_inv = 1.0 / _t5;
+        double _t6 = _t2 - _t3;
+        double _t6_inv = 1.0 / _t6;
+        if (far == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, -1.0);
+            dest.put(destOffset + 14, -(2.0 * near));
+        } else {
+            if (near == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, 1.0);
+                dest.put(destOffset + 14, 2.0 * far);
+            } else {
+                dest.put(destOffset + 10, (far + near) * _t4_inv);
+                dest.put(destOffset + 14, 2.0 * far * near * _t4_inv);
+            }
+        }
+        dest.put(destOffset + 0, 2.0 * _t5_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t6_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, (_t1 + _t0) * _t5_inv);
+        dest.put(destOffset + 9, (_t3 + _t2) * _t6_inv);
+        dest.put(destOffset + 11, -1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
@@ -4816,7 +10146,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makePerspectiveOffCenterFov_zo_lh(java.nio.DoubleBuffer dest, int destOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterFov_zo_lh_unsafe(dest, destOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterFov_zo_lh_unsafe(dest, destOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterFov_zo_lh_api(dest, destOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
     }
 
@@ -4831,12 +10161,51 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveOffCenterFov_zo_lh(dest.array(), dest.arrayOffset() + destOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveOffCenterFov_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleLeft, angleRight, angleDown, angleUp, near, far);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveOffCenterFov_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleLeft, angleRight, angleDown, angleUp, near, far);
+            return dest;
+        }
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
+        double _t4 = near - far;
+        double _t4_inv = 1.0 / _t4;
+        double _t5 = _t0 - _t1;
+        double _t5_inv = 1.0 / _t5;
+        double _t6 = _t2 - _t3;
+        double _t6_inv = 1.0 / _t6;
+        if (far == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, 1.0);
+            dest.put(destOffset + 14, -near);
+        } else {
+            if (near == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, 0.0);
+                dest.put(destOffset + 14, far);
+            } else {
+                dest.put(destOffset + 10, -(far * _t4_inv));
+                dest.put(destOffset + 14, far * near * _t4_inv);
+            }
+        }
+        dest.put(destOffset + 0, 2.0 * _t5_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t6_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, -((_t1 + _t0) * _t5_inv));
+        dest.put(destOffset + 9, -((_t3 + _t2) * _t6_inv));
+        dest.put(destOffset + 11, 1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makePerspectiveOffCenterFov_zo_rh(java.nio.DoubleBuffer dest, int destOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterFov_zo_rh_unsafe(dest, destOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterFov_zo_rh_unsafe(dest, destOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterFov_zo_rh_api(dest, destOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
     }
 
@@ -4851,7 +10220,46 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveOffCenterFov_zo_rh(dest.array(), dest.arrayOffset() + destOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveOffCenterFov_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleLeft, angleRight, angleDown, angleUp, near, far);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveOffCenterFov_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleLeft, angleRight, angleDown, angleUp, near, far);
+            return dest;
+        }
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
+        double _t4 = near - far;
+        double _t4_inv = 1.0 / _t4;
+        double _t5 = _t0 - _t1;
+        double _t5_inv = 1.0 / _t5;
+        double _t6 = _t2 - _t3;
+        double _t6_inv = 1.0 / _t6;
+        if (far == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, -1.0);
+            dest.put(destOffset + 14, -near);
+        } else {
+            if (near == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, 0.0);
+                dest.put(destOffset + 14, far);
+            } else {
+                dest.put(destOffset + 10, far * _t4_inv);
+                dest.put(destOffset + 14, far * near * _t4_inv);
+            }
+        }
+        dest.put(destOffset + 0, 2.0 * _t5_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t6_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, (_t1 + _t0) * _t5_inv);
+        dest.put(destOffset + 9, (_t3 + _t2) * _t6_inv);
+        dest.put(destOffset + 11, -1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
@@ -4863,7 +10271,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makePerspectiveOffCenterRectangleProj_no_lh(java.nio.DoubleBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_no_lh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_no_lh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_no_lh_api(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
     }
 
@@ -4878,12 +10286,103 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveOffCenterRectangleProj_no_lh(dest.array(), dest.arrayOffset() + destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleProj_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleProj_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
+            return dest;
+        }
+        double _t0 = -eyeZ;
+        double _t1 = -pY;
+        double _t14 = Math.fma(xY, yX, -(xX * yY));
+        double _t15 = Math.fma(xZ, yY, -(xY * yZ));
+        double _t16 = Math.fma(xX, yZ, -(xZ * yX));
+        double _t19 = Math.fma(pZ - eyeZ, _t14, Math.fma(pX - eyeX, _t15, (pY - eyeY) * _t16));
+        double _t20 = _t19 >= 0.0 ? 1.0 : -1.0;
+        double _t21 = _t14 * _t20;
+        double _t22 = _t16 * _t20;
+        double _t23 = _t15 * _t20;
+        double _t24 = Math.fma(_t14, _t20, eyeZ - eyeZ);
+        double _t25 = Math.fma(_t15, _t20, eyeX - eyeX);
+        double _t26 = Math.fma(_t16, _t20, eyeY - eyeY);
+        double _t27 = _t19 * _t20;
+        double _t34 = (1.0 / Math.sqrt(Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23))));
+        double _t35 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
+        double _t36 = (1.0 / Math.sqrt(_t35));
+        double _t40 = _t27 * _t34;
+        double _t41 = Math.fma(_t27, _t34, nearFarDist);
+        double _t42 = 2.0 * _t40;
+        double _t44, _t45, _t46;
+        if (_t35 > 0.0) {
+            _t44 = _t26 * _t36;
+            _t45 = _t25 * _t36;
+            _t46 = _t24 * _t36;
+        } else {
+            _t44 = 0.0;
+            _t45 = 0.0;
+            _t46 = 0.0;
+        }
+        double _t53 = Math.fma(_t27, _t34, Math.fma(-_t27, _t34, -nearFarDist));
+        double _t53_inv = 1.0 / _t53;
+        double _t54 = Math.fma(yX, _t44, -(yY * _t45));
+        double _t55 = Math.fma(yY, _t46, -(yZ * _t44));
+        double _t56 = Math.fma(yZ, _t45, -(yX * _t46));
+        double _t59 = Math.fma(_t54, _t54, Math.fma(_t55, _t55, _t56 * _t56));
+        double _t60 = (1.0 / Math.sqrt(_t59));
+        double _t64, _t65, _t66;
+        if (_t59 > 0.0) {
+            _t64 = _t55 * _t60;
+            _t65 = _t56 * _t60;
+            _t66 = _t54 * _t60;
+        } else {
+            _t64 = 0.0;
+            _t65 = 0.0;
+            _t66 = 0.0;
+        }
+        double _t85 = Math.fma(pX, _t64, pY * _t65);
+        double _t87 = Math.fma(pZ, _t66, -(eyeX * _t64));
+        double _t89 = Math.fma(_t0, _t66, -(eyeY * _t65));
+        double _t91 = Math.fma(_t44, _t66, -(_t46 * _t65));
+        double _t92 = Math.fma(_t46, _t64, -(_t45 * _t66));
+        double _t93 = Math.fma(_t45, _t65, -(_t44 * _t64));
+        double _t110 = Math.fma(pX, _t91, pY * _t92);
+        double _t112 = Math.fma(pZ, _t93, -(eyeX * _t91));
+        double _t114 = Math.fma(_t0, _t93, -(eyeY * _t92));
+        double _t117 = Math.fma(xX, _t64, Math.fma(xY, _t65, xZ * _t66)) + (_t85 + _t87);
+        double _t122 = Math.fma(yX, _t91, Math.fma(yY, _t92, yZ * _t93)) + (_t110 + _t112);
+        double _t123 = _t117 + (_t89 + Math.fma(_t1, _t65, -(pX * _t64)) + (Math.fma(eyeX, _t64, -(pZ * _t66)) + Math.fma(eyeY, _t65, eyeZ * _t66)));
+        double _t123_inv = 1.0 / _t123;
+        double _t125 = _t122 + (_t114 + Math.fma(_t1, _t92, -(pX * _t91)) + (Math.fma(eyeX, _t91, -(pZ * _t93)) + Math.fma(eyeY, _t92, eyeZ * _t93)));
+        double _t125_inv = 1.0 / _t125;
+        if (_t41 == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, 1.0);
+            dest.put(destOffset + 14, -_t42);
+        } else {
+            if (_t40 == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, -1.0);
+                dest.put(destOffset + 14, 2.0 * _t41);
+            } else {
+                dest.put(destOffset + 10, -(Math.fma(_t27, _t34, _t41) * _t53_inv));
+                dest.put(destOffset + 14, 2.0 * _t41 * _t40 * _t53_inv);
+            }
+        }
+        dest.put(destOffset + 0, _t42 * _t123_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, _t42 * _t125_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, -((_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv));
+        dest.put(destOffset + 9, -((_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv));
+        dest.put(destOffset + 11, 1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makePerspectiveOffCenterRectangleProj_no_rh(java.nio.DoubleBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_no_rh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_no_rh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_no_rh_api(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
     }
 
@@ -4898,7 +10397,98 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveOffCenterRectangleProj_no_rh(dest.array(), dest.arrayOffset() + destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleProj_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleProj_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
+            return dest;
+        }
+        double _t0 = -eyeZ;
+        double _t1 = -pY;
+        double _t14 = Math.fma(xY, yX, -(xX * yY));
+        double _t15 = Math.fma(xZ, yY, -(xY * yZ));
+        double _t16 = Math.fma(xX, yZ, -(xZ * yX));
+        double _t19 = Math.fma(pZ - eyeZ, _t14, Math.fma(pX - eyeX, _t15, (pY - eyeY) * _t16));
+        double _t20 = _t19 >= 0.0 ? 1.0 : -1.0;
+        double _t21 = _t14 * _t20;
+        double _t22 = _t16 * _t20;
+        double _t23 = _t15 * _t20;
+        double _t24 = Math.fma(_t14, _t20, eyeZ - eyeZ);
+        double _t25 = Math.fma(_t15, _t20, eyeX - eyeX);
+        double _t26 = Math.fma(_t16, _t20, eyeY - eyeY);
+        double _t27 = _t19 * _t20;
+        double _t34 = (1.0 / Math.sqrt(Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23))));
+        double _t35 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
+        double _t36 = (1.0 / Math.sqrt(_t35));
+        double _t40 = _t27 * _t34;
+        double _t41 = Math.fma(_t27, _t34, nearFarDist);
+        double _t42 = 2.0 * _t40;
+        double _t44, _t45, _t46;
+        if (_t35 > 0.0) {
+            _t44 = _t25 * _t36;
+            _t45 = _t26 * _t36;
+            _t46 = _t24 * _t36;
+        } else {
+            _t44 = 0.0;
+            _t45 = 0.0;
+            _t46 = 0.0;
+        }
+        double _t53 = Math.fma(_t27, _t34, Math.fma(-_t27, _t34, -nearFarDist));
+        double _t53_inv = 1.0 / _t53;
+        double _t54 = Math.fma(yY, _t44, -(yX * _t45));
+        double _t55 = Math.fma(yX, _t46, -(yZ * _t44));
+        double _t56 = Math.fma(yZ, _t45, -(yY * _t46));
+        double _t59 = Math.fma(_t54, _t54, Math.fma(_t55, _t55, _t56 * _t56));
+        double _t60 = (1.0 / Math.sqrt(_t59));
+        double _t64, _t65, _t66;
+        if (_t59 > 0.0) {
+            _t64 = _t56 * _t60;
+            _t65 = _t55 * _t60;
+            _t66 = _t54 * _t60;
+        } else {
+            _t64 = 0.0;
+            _t65 = 0.0;
+            _t66 = 0.0;
+        }
+        double _t85 = Math.fma(pX, _t64, pY * _t65);
+        double _t87 = Math.fma(pZ, _t66, -(eyeX * _t64));
+        double _t89 = Math.fma(_t0, _t66, -(eyeY * _t65));
+        double _t91 = Math.fma(_t46, _t65, -(_t45 * _t66));
+        double _t92 = Math.fma(_t44, _t66, -(_t46 * _t64));
+        double _t93 = Math.fma(_t45, _t64, -(_t44 * _t65));
+        double _t110 = Math.fma(pX, _t91, pY * _t92);
+        double _t112 = Math.fma(pZ, _t93, -(eyeX * _t91));
+        double _t114 = Math.fma(_t0, _t93, -(eyeY * _t92));
+        double _t117 = Math.fma(xX, _t64, Math.fma(xY, _t65, xZ * _t66)) + (_t85 + _t87);
+        double _t122 = Math.fma(yX, _t91, Math.fma(yY, _t92, yZ * _t93)) + (_t110 + _t112);
+        double _t123 = _t117 + (_t89 + Math.fma(_t1, _t65, -(pX * _t64)) + (Math.fma(eyeX, _t64, -(pZ * _t66)) + Math.fma(eyeY, _t65, eyeZ * _t66)));
+        double _t123_inv = 1.0 / _t123;
+        double _t125 = _t122 + (_t114 + Math.fma(_t1, _t92, -(pX * _t91)) + (Math.fma(eyeX, _t91, -(pZ * _t93)) + Math.fma(eyeY, _t92, eyeZ * _t93)));
+        double _t125_inv = 1.0 / _t125;
+        if (_t41 == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, -1.0);
+            dest.put(destOffset + 14, -_t42);
+        } else {
+            if (_t40 == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, 1.0);
+                dest.put(destOffset + 14, 2.0 * _t41);
+            } else {
+                dest.put(destOffset + 10, Math.fma(_t27, _t34, _t41) * _t53_inv);
+                dest.put(destOffset + 14, 2.0 * _t41 * _t40 * _t53_inv);
+            }
+        }
+        dest.put(destOffset + 0, _t42 * _t123_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, _t42 * _t125_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, (_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv);
+        dest.put(destOffset + 9, (_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv);
+        dest.put(destOffset + 11, -1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
@@ -4910,7 +10500,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makePerspectiveOffCenterRectangleProj_zo_lh(java.nio.DoubleBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_zo_lh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_zo_lh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_zo_lh_api(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
     }
 
@@ -4925,12 +10515,103 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveOffCenterRectangleProj_zo_lh(dest.array(), dest.arrayOffset() + destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleProj_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleProj_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
+            return dest;
+        }
+        double _t0 = -eyeZ;
+        double _t1 = -pY;
+        double _t14 = Math.fma(xY, yX, -(xX * yY));
+        double _t15 = Math.fma(xZ, yY, -(xY * yZ));
+        double _t16 = Math.fma(xX, yZ, -(xZ * yX));
+        double _t19 = Math.fma(pZ - eyeZ, _t14, Math.fma(pX - eyeX, _t15, (pY - eyeY) * _t16));
+        double _t20 = _t19 >= 0.0 ? 1.0 : -1.0;
+        double _t21 = _t14 * _t20;
+        double _t22 = _t16 * _t20;
+        double _t23 = _t15 * _t20;
+        double _t24 = Math.fma(_t14, _t20, eyeZ - eyeZ);
+        double _t25 = Math.fma(_t15, _t20, eyeX - eyeX);
+        double _t26 = Math.fma(_t16, _t20, eyeY - eyeY);
+        double _t27 = _t19 * _t20;
+        double _t34 = (1.0 / Math.sqrt(Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23))));
+        double _t35 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
+        double _t36 = (1.0 / Math.sqrt(_t35));
+        double _t40 = _t27 * _t34;
+        double _t41 = Math.fma(_t27, _t34, nearFarDist);
+        double _t42 = 2.0 * _t40;
+        double _t44, _t45, _t46;
+        if (_t35 > 0.0) {
+            _t44 = _t26 * _t36;
+            _t45 = _t25 * _t36;
+            _t46 = _t24 * _t36;
+        } else {
+            _t44 = 0.0;
+            _t45 = 0.0;
+            _t46 = 0.0;
+        }
+        double _t53 = Math.fma(_t27, _t34, Math.fma(-_t27, _t34, -nearFarDist));
+        double _t53_inv = 1.0 / _t53;
+        double _t54 = Math.fma(yX, _t44, -(yY * _t45));
+        double _t55 = Math.fma(yY, _t46, -(yZ * _t44));
+        double _t56 = Math.fma(yZ, _t45, -(yX * _t46));
+        double _t59 = Math.fma(_t54, _t54, Math.fma(_t55, _t55, _t56 * _t56));
+        double _t60 = (1.0 / Math.sqrt(_t59));
+        double _t64, _t65, _t66;
+        if (_t59 > 0.0) {
+            _t64 = _t55 * _t60;
+            _t65 = _t56 * _t60;
+            _t66 = _t54 * _t60;
+        } else {
+            _t64 = 0.0;
+            _t65 = 0.0;
+            _t66 = 0.0;
+        }
+        double _t85 = Math.fma(pX, _t64, pY * _t65);
+        double _t87 = Math.fma(pZ, _t66, -(eyeX * _t64));
+        double _t89 = Math.fma(_t0, _t66, -(eyeY * _t65));
+        double _t91 = Math.fma(_t44, _t66, -(_t46 * _t65));
+        double _t92 = Math.fma(_t46, _t64, -(_t45 * _t66));
+        double _t93 = Math.fma(_t45, _t65, -(_t44 * _t64));
+        double _t110 = Math.fma(pX, _t91, pY * _t92);
+        double _t112 = Math.fma(pZ, _t93, -(eyeX * _t91));
+        double _t114 = Math.fma(_t0, _t93, -(eyeY * _t92));
+        double _t117 = Math.fma(xX, _t64, Math.fma(xY, _t65, xZ * _t66)) + (_t85 + _t87);
+        double _t122 = Math.fma(yX, _t91, Math.fma(yY, _t92, yZ * _t93)) + (_t110 + _t112);
+        double _t123 = _t117 + (_t89 + Math.fma(_t1, _t65, -(pX * _t64)) + (Math.fma(eyeX, _t64, -(pZ * _t66)) + Math.fma(eyeY, _t65, eyeZ * _t66)));
+        double _t123_inv = 1.0 / _t123;
+        double _t125 = _t122 + (_t114 + Math.fma(_t1, _t92, -(pX * _t91)) + (Math.fma(eyeX, _t91, -(pZ * _t93)) + Math.fma(eyeY, _t92, eyeZ * _t93)));
+        double _t125_inv = 1.0 / _t125;
+        if (_t41 == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, 1.0);
+            dest.put(destOffset + 14, -_t40);
+        } else {
+            if (_t40 == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, 0.0);
+                dest.put(destOffset + 14, _t41);
+            } else {
+                dest.put(destOffset + 10, -(_t41 * _t53_inv));
+                dest.put(destOffset + 14, _t41 * _t40 * _t53_inv);
+            }
+        }
+        dest.put(destOffset + 0, _t42 * _t123_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, _t42 * _t125_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, -((_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv));
+        dest.put(destOffset + 9, -((_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv));
+        dest.put(destOffset + 11, 1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makePerspectiveOffCenterRectangleProj_zo_rh(java.nio.DoubleBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_zo_rh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_zo_rh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_zo_rh_api(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
     }
 
@@ -4945,7 +10626,98 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveOffCenterRectangleProj_zo_rh(dest.array(), dest.arrayOffset() + destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleProj_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleProj_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist);
+            return dest;
+        }
+        double _t0 = -eyeZ;
+        double _t1 = -pY;
+        double _t14 = Math.fma(xY, yX, -(xX * yY));
+        double _t15 = Math.fma(xZ, yY, -(xY * yZ));
+        double _t16 = Math.fma(xX, yZ, -(xZ * yX));
+        double _t19 = Math.fma(pZ - eyeZ, _t14, Math.fma(pX - eyeX, _t15, (pY - eyeY) * _t16));
+        double _t20 = _t19 >= 0.0 ? 1.0 : -1.0;
+        double _t21 = _t14 * _t20;
+        double _t22 = _t16 * _t20;
+        double _t23 = _t15 * _t20;
+        double _t24 = Math.fma(_t14, _t20, eyeZ - eyeZ);
+        double _t25 = Math.fma(_t15, _t20, eyeX - eyeX);
+        double _t26 = Math.fma(_t16, _t20, eyeY - eyeY);
+        double _t27 = _t19 * _t20;
+        double _t34 = (1.0 / Math.sqrt(Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23))));
+        double _t35 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
+        double _t36 = (1.0 / Math.sqrt(_t35));
+        double _t40 = _t27 * _t34;
+        double _t41 = Math.fma(_t27, _t34, nearFarDist);
+        double _t42 = 2.0 * _t40;
+        double _t44, _t45, _t46;
+        if (_t35 > 0.0) {
+            _t44 = _t25 * _t36;
+            _t45 = _t26 * _t36;
+            _t46 = _t24 * _t36;
+        } else {
+            _t44 = 0.0;
+            _t45 = 0.0;
+            _t46 = 0.0;
+        }
+        double _t53 = Math.fma(_t27, _t34, Math.fma(-_t27, _t34, -nearFarDist));
+        double _t53_inv = 1.0 / _t53;
+        double _t54 = Math.fma(yY, _t44, -(yX * _t45));
+        double _t55 = Math.fma(yX, _t46, -(yZ * _t44));
+        double _t56 = Math.fma(yZ, _t45, -(yY * _t46));
+        double _t59 = Math.fma(_t54, _t54, Math.fma(_t55, _t55, _t56 * _t56));
+        double _t60 = (1.0 / Math.sqrt(_t59));
+        double _t64, _t65, _t66;
+        if (_t59 > 0.0) {
+            _t64 = _t56 * _t60;
+            _t65 = _t55 * _t60;
+            _t66 = _t54 * _t60;
+        } else {
+            _t64 = 0.0;
+            _t65 = 0.0;
+            _t66 = 0.0;
+        }
+        double _t85 = Math.fma(pX, _t64, pY * _t65);
+        double _t87 = Math.fma(pZ, _t66, -(eyeX * _t64));
+        double _t89 = Math.fma(_t0, _t66, -(eyeY * _t65));
+        double _t91 = Math.fma(_t46, _t65, -(_t45 * _t66));
+        double _t92 = Math.fma(_t44, _t66, -(_t46 * _t64));
+        double _t93 = Math.fma(_t45, _t64, -(_t44 * _t65));
+        double _t110 = Math.fma(pX, _t91, pY * _t92);
+        double _t112 = Math.fma(pZ, _t93, -(eyeX * _t91));
+        double _t114 = Math.fma(_t0, _t93, -(eyeY * _t92));
+        double _t117 = Math.fma(xX, _t64, Math.fma(xY, _t65, xZ * _t66)) + (_t85 + _t87);
+        double _t122 = Math.fma(yX, _t91, Math.fma(yY, _t92, yZ * _t93)) + (_t110 + _t112);
+        double _t123 = _t117 + (_t89 + Math.fma(_t1, _t65, -(pX * _t64)) + (Math.fma(eyeX, _t64, -(pZ * _t66)) + Math.fma(eyeY, _t65, eyeZ * _t66)));
+        double _t123_inv = 1.0 / _t123;
+        double _t125 = _t122 + (_t114 + Math.fma(_t1, _t92, -(pX * _t91)) + (Math.fma(eyeX, _t91, -(pZ * _t93)) + Math.fma(eyeY, _t92, eyeZ * _t93)));
+        double _t125_inv = 1.0 / _t125;
+        if (_t41 == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, -1.0);
+            dest.put(destOffset + 14, -_t40);
+        } else {
+            if (_t40 == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, 0.0);
+                dest.put(destOffset + 14, _t41);
+            } else {
+                dest.put(destOffset + 10, _t41 * _t53_inv);
+                dest.put(destOffset + 14, _t41 * _t40 * _t53_inv);
+            }
+        }
+        dest.put(destOffset + 0, _t42 * _t123_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, _t42 * _t125_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, (_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv);
+        dest.put(destOffset + 9, (_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv);
+        dest.put(destOffset + 11, -1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
@@ -4957,7 +10729,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makePerspectiveOffCenterRectangleProj_no_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer eye, int eyeOffset, java.nio.DoubleBuffer p, int pOffset, java.nio.DoubleBuffer x, int xOffset, java.nio.DoubleBuffer y, int yOffset, double nearFarDist) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && eye.isDirect() && p.isDirect() && x.isDirect() && y.isDirect()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_no_lh_unsafe(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, nearFarDist);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && eye.isDirect() && eye.order() == java.nio.ByteOrder.nativeOrder() && p.isDirect() && p.order() == java.nio.ByteOrder.nativeOrder() && x.isDirect() && x.order() == java.nio.ByteOrder.nativeOrder() && y.isDirect() && y.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_no_lh_unsafe(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, nearFarDist);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_no_lh_api(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, nearFarDist);
     }
 
@@ -4976,12 +10748,115 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveOffCenterRectangleProj_no_lh(dest.array(), dest.arrayOffset() + destOffset, eye.array(), eye.arrayOffset() + eyeOffset, p.array(), p.arrayOffset() + pOffset, x.array(), x.arrayOffset() + xOffset, y.array(), y.arrayOffset() + yOffset, nearFarDist);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleProj_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(eye.duplicate().position(0)), (long) eyeOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p.duplicate().position(0)), (long) pOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(x.duplicate().position(0)), (long) xOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(y.duplicate().position(0)), (long) yOffset * 8L, nearFarDist);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && eye.order() == java.nio.ByteOrder.nativeOrder() && p.order() == java.nio.ByteOrder.nativeOrder() && x.order() == java.nio.ByteOrder.nativeOrder() && y.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleProj_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(eye.duplicate().position(0)), (long) eyeOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p.duplicate().position(0)), (long) pOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(x.duplicate().position(0)), (long) xOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(y.duplicate().position(0)), (long) yOffset * 8L, nearFarDist);
+            return dest;
+        }
+        double _eyex = eye.get(eyeOffset + 0);
+        double _eyey = eye.get(eyeOffset + 1);
+        double _eyez = eye.get(eyeOffset + 2);
+        double _px = p.get(pOffset + 0);
+        double _py = p.get(pOffset + 1);
+        double _pz = p.get(pOffset + 2);
+        double _xx = x.get(xOffset + 0);
+        double _xy = x.get(xOffset + 1);
+        double _xz = x.get(xOffset + 2);
+        double _yx = y.get(yOffset + 0);
+        double _yy = y.get(yOffset + 1);
+        double _yz = y.get(yOffset + 2);
+        double _t0 = -_eyez;
+        double _t1 = -_py;
+        double _t14 = Math.fma(_xy, _yx, -(_xx * _yy));
+        double _t15 = Math.fma(_xz, _yy, -(_xy * _yz));
+        double _t16 = Math.fma(_xx, _yz, -(_xz * _yx));
+        double _t19 = Math.fma(_pz - _eyez, _t14, Math.fma(_px - _eyex, _t15, (_py - _eyey) * _t16));
+        double _t20 = _t19 >= 0.0 ? 1.0 : -1.0;
+        double _t21 = _t14 * _t20;
+        double _t22 = _t16 * _t20;
+        double _t23 = _t15 * _t20;
+        double _t24 = Math.fma(_t14, _t20, _eyez - _eyez);
+        double _t25 = Math.fma(_t15, _t20, _eyex - _eyex);
+        double _t26 = Math.fma(_t16, _t20, _eyey - _eyey);
+        double _t27 = _t19 * _t20;
+        double _t34 = (1.0 / Math.sqrt(Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23))));
+        double _t35 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
+        double _t36 = (1.0 / Math.sqrt(_t35));
+        double _t40 = _t27 * _t34;
+        double _t41 = Math.fma(_t27, _t34, nearFarDist);
+        double _t42 = 2.0 * _t40;
+        double _t44, _t45, _t46;
+        if (_t35 > 0.0) {
+            _t44 = _t26 * _t36;
+            _t45 = _t25 * _t36;
+            _t46 = _t24 * _t36;
+        } else {
+            _t44 = 0.0;
+            _t45 = 0.0;
+            _t46 = 0.0;
+        }
+        double _t53 = Math.fma(_t27, _t34, Math.fma(-_t27, _t34, -nearFarDist));
+        double _t53_inv = 1.0 / _t53;
+        double _t54 = Math.fma(_yx, _t44, -(_yy * _t45));
+        double _t55 = Math.fma(_yy, _t46, -(_yz * _t44));
+        double _t56 = Math.fma(_yz, _t45, -(_yx * _t46));
+        double _t59 = Math.fma(_t54, _t54, Math.fma(_t55, _t55, _t56 * _t56));
+        double _t60 = (1.0 / Math.sqrt(_t59));
+        double _t64, _t65, _t66;
+        if (_t59 > 0.0) {
+            _t64 = _t55 * _t60;
+            _t65 = _t56 * _t60;
+            _t66 = _t54 * _t60;
+        } else {
+            _t64 = 0.0;
+            _t65 = 0.0;
+            _t66 = 0.0;
+        }
+        double _t85 = Math.fma(_px, _t64, _py * _t65);
+        double _t87 = Math.fma(_pz, _t66, -(_eyex * _t64));
+        double _t89 = Math.fma(_t0, _t66, -(_eyey * _t65));
+        double _t91 = Math.fma(_t44, _t66, -(_t46 * _t65));
+        double _t92 = Math.fma(_t46, _t64, -(_t45 * _t66));
+        double _t93 = Math.fma(_t45, _t65, -(_t44 * _t64));
+        double _t110 = Math.fma(_px, _t91, _py * _t92);
+        double _t112 = Math.fma(_pz, _t93, -(_eyex * _t91));
+        double _t114 = Math.fma(_t0, _t93, -(_eyey * _t92));
+        double _t117 = Math.fma(_xx, _t64, Math.fma(_xy, _t65, _xz * _t66)) + (_t85 + _t87);
+        double _t122 = Math.fma(_yx, _t91, Math.fma(_yy, _t92, _yz * _t93)) + (_t110 + _t112);
+        double _t123 = _t117 + (_t89 + Math.fma(_t1, _t65, -(_px * _t64)) + (Math.fma(_eyex, _t64, -(_pz * _t66)) + Math.fma(_eyey, _t65, _eyez * _t66)));
+        double _t123_inv = 1.0 / _t123;
+        double _t125 = _t122 + (_t114 + Math.fma(_t1, _t92, -(_px * _t91)) + (Math.fma(_eyex, _t91, -(_pz * _t93)) + Math.fma(_eyey, _t92, _eyez * _t93)));
+        double _t125_inv = 1.0 / _t125;
+        if (_t41 == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, 1.0);
+            dest.put(destOffset + 14, -_t42);
+        } else {
+            if (_t40 == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, -1.0);
+                dest.put(destOffset + 14, 2.0 * _t41);
+            } else {
+                dest.put(destOffset + 10, -(Math.fma(_t27, _t34, _t41) * _t53_inv));
+                dest.put(destOffset + 14, 2.0 * _t41 * _t40 * _t53_inv);
+            }
+        }
+        dest.put(destOffset + 0, _t42 * _t123_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, _t42 * _t125_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, -((_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv));
+        dest.put(destOffset + 9, -((_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv));
+        dest.put(destOffset + 11, 1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makePerspectiveOffCenterRectangleProj_no_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer eye, int eyeOffset, java.nio.DoubleBuffer p, int pOffset, java.nio.DoubleBuffer x, int xOffset, java.nio.DoubleBuffer y, int yOffset, double nearFarDist) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && eye.isDirect() && p.isDirect() && x.isDirect() && y.isDirect()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_no_rh_unsafe(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, nearFarDist);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && eye.isDirect() && eye.order() == java.nio.ByteOrder.nativeOrder() && p.isDirect() && p.order() == java.nio.ByteOrder.nativeOrder() && x.isDirect() && x.order() == java.nio.ByteOrder.nativeOrder() && y.isDirect() && y.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_no_rh_unsafe(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, nearFarDist);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_no_rh_api(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, nearFarDist);
     }
 
@@ -5000,7 +10875,110 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveOffCenterRectangleProj_no_rh(dest.array(), dest.arrayOffset() + destOffset, eye.array(), eye.arrayOffset() + eyeOffset, p.array(), p.arrayOffset() + pOffset, x.array(), x.arrayOffset() + xOffset, y.array(), y.arrayOffset() + yOffset, nearFarDist);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleProj_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(eye.duplicate().position(0)), (long) eyeOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p.duplicate().position(0)), (long) pOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(x.duplicate().position(0)), (long) xOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(y.duplicate().position(0)), (long) yOffset * 8L, nearFarDist);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && eye.order() == java.nio.ByteOrder.nativeOrder() && p.order() == java.nio.ByteOrder.nativeOrder() && x.order() == java.nio.ByteOrder.nativeOrder() && y.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleProj_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(eye.duplicate().position(0)), (long) eyeOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p.duplicate().position(0)), (long) pOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(x.duplicate().position(0)), (long) xOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(y.duplicate().position(0)), (long) yOffset * 8L, nearFarDist);
+            return dest;
+        }
+        double _eyex = eye.get(eyeOffset + 0);
+        double _eyey = eye.get(eyeOffset + 1);
+        double _eyez = eye.get(eyeOffset + 2);
+        double _px = p.get(pOffset + 0);
+        double _py = p.get(pOffset + 1);
+        double _pz = p.get(pOffset + 2);
+        double _xx = x.get(xOffset + 0);
+        double _xy = x.get(xOffset + 1);
+        double _xz = x.get(xOffset + 2);
+        double _yx = y.get(yOffset + 0);
+        double _yy = y.get(yOffset + 1);
+        double _yz = y.get(yOffset + 2);
+        double _t0 = -_eyez;
+        double _t1 = -_py;
+        double _t14 = Math.fma(_xy, _yx, -(_xx * _yy));
+        double _t15 = Math.fma(_xz, _yy, -(_xy * _yz));
+        double _t16 = Math.fma(_xx, _yz, -(_xz * _yx));
+        double _t19 = Math.fma(_pz - _eyez, _t14, Math.fma(_px - _eyex, _t15, (_py - _eyey) * _t16));
+        double _t20 = _t19 >= 0.0 ? 1.0 : -1.0;
+        double _t21 = _t14 * _t20;
+        double _t22 = _t16 * _t20;
+        double _t23 = _t15 * _t20;
+        double _t24 = Math.fma(_t14, _t20, _eyez - _eyez);
+        double _t25 = Math.fma(_t15, _t20, _eyex - _eyex);
+        double _t26 = Math.fma(_t16, _t20, _eyey - _eyey);
+        double _t27 = _t19 * _t20;
+        double _t34 = (1.0 / Math.sqrt(Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23))));
+        double _t35 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
+        double _t36 = (1.0 / Math.sqrt(_t35));
+        double _t40 = _t27 * _t34;
+        double _t41 = Math.fma(_t27, _t34, nearFarDist);
+        double _t42 = 2.0 * _t40;
+        double _t44, _t45, _t46;
+        if (_t35 > 0.0) {
+            _t44 = _t25 * _t36;
+            _t45 = _t26 * _t36;
+            _t46 = _t24 * _t36;
+        } else {
+            _t44 = 0.0;
+            _t45 = 0.0;
+            _t46 = 0.0;
+        }
+        double _t53 = Math.fma(_t27, _t34, Math.fma(-_t27, _t34, -nearFarDist));
+        double _t53_inv = 1.0 / _t53;
+        double _t54 = Math.fma(_yy, _t44, -(_yx * _t45));
+        double _t55 = Math.fma(_yx, _t46, -(_yz * _t44));
+        double _t56 = Math.fma(_yz, _t45, -(_yy * _t46));
+        double _t59 = Math.fma(_t54, _t54, Math.fma(_t55, _t55, _t56 * _t56));
+        double _t60 = (1.0 / Math.sqrt(_t59));
+        double _t64, _t65, _t66;
+        if (_t59 > 0.0) {
+            _t64 = _t56 * _t60;
+            _t65 = _t55 * _t60;
+            _t66 = _t54 * _t60;
+        } else {
+            _t64 = 0.0;
+            _t65 = 0.0;
+            _t66 = 0.0;
+        }
+        double _t85 = Math.fma(_px, _t64, _py * _t65);
+        double _t87 = Math.fma(_pz, _t66, -(_eyex * _t64));
+        double _t89 = Math.fma(_t0, _t66, -(_eyey * _t65));
+        double _t91 = Math.fma(_t46, _t65, -(_t45 * _t66));
+        double _t92 = Math.fma(_t44, _t66, -(_t46 * _t64));
+        double _t93 = Math.fma(_t45, _t64, -(_t44 * _t65));
+        double _t110 = Math.fma(_px, _t91, _py * _t92);
+        double _t112 = Math.fma(_pz, _t93, -(_eyex * _t91));
+        double _t114 = Math.fma(_t0, _t93, -(_eyey * _t92));
+        double _t117 = Math.fma(_xx, _t64, Math.fma(_xy, _t65, _xz * _t66)) + (_t85 + _t87);
+        double _t122 = Math.fma(_yx, _t91, Math.fma(_yy, _t92, _yz * _t93)) + (_t110 + _t112);
+        double _t123 = _t117 + (_t89 + Math.fma(_t1, _t65, -(_px * _t64)) + (Math.fma(_eyex, _t64, -(_pz * _t66)) + Math.fma(_eyey, _t65, _eyez * _t66)));
+        double _t123_inv = 1.0 / _t123;
+        double _t125 = _t122 + (_t114 + Math.fma(_t1, _t92, -(_px * _t91)) + (Math.fma(_eyex, _t91, -(_pz * _t93)) + Math.fma(_eyey, _t92, _eyez * _t93)));
+        double _t125_inv = 1.0 / _t125;
+        if (_t41 == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, -1.0);
+            dest.put(destOffset + 14, -_t42);
+        } else {
+            if (_t40 == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, 1.0);
+                dest.put(destOffset + 14, 2.0 * _t41);
+            } else {
+                dest.put(destOffset + 10, Math.fma(_t27, _t34, _t41) * _t53_inv);
+                dest.put(destOffset + 14, 2.0 * _t41 * _t40 * _t53_inv);
+            }
+        }
+        dest.put(destOffset + 0, _t42 * _t123_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, _t42 * _t125_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, (_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv);
+        dest.put(destOffset + 9, (_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv);
+        dest.put(destOffset + 11, -1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
@@ -5012,7 +10990,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makePerspectiveOffCenterRectangleProj_zo_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer eye, int eyeOffset, java.nio.DoubleBuffer p, int pOffset, java.nio.DoubleBuffer x, int xOffset, java.nio.DoubleBuffer y, int yOffset, double nearFarDist) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && eye.isDirect() && p.isDirect() && x.isDirect() && y.isDirect()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_zo_lh_unsafe(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, nearFarDist);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && eye.isDirect() && eye.order() == java.nio.ByteOrder.nativeOrder() && p.isDirect() && p.order() == java.nio.ByteOrder.nativeOrder() && x.isDirect() && x.order() == java.nio.ByteOrder.nativeOrder() && y.isDirect() && y.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_zo_lh_unsafe(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, nearFarDist);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_zo_lh_api(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, nearFarDist);
     }
 
@@ -5031,12 +11009,115 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveOffCenterRectangleProj_zo_lh(dest.array(), dest.arrayOffset() + destOffset, eye.array(), eye.arrayOffset() + eyeOffset, p.array(), p.arrayOffset() + pOffset, x.array(), x.arrayOffset() + xOffset, y.array(), y.arrayOffset() + yOffset, nearFarDist);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleProj_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(eye.duplicate().position(0)), (long) eyeOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p.duplicate().position(0)), (long) pOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(x.duplicate().position(0)), (long) xOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(y.duplicate().position(0)), (long) yOffset * 8L, nearFarDist);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && eye.order() == java.nio.ByteOrder.nativeOrder() && p.order() == java.nio.ByteOrder.nativeOrder() && x.order() == java.nio.ByteOrder.nativeOrder() && y.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleProj_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(eye.duplicate().position(0)), (long) eyeOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p.duplicate().position(0)), (long) pOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(x.duplicate().position(0)), (long) xOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(y.duplicate().position(0)), (long) yOffset * 8L, nearFarDist);
+            return dest;
+        }
+        double _eyex = eye.get(eyeOffset + 0);
+        double _eyey = eye.get(eyeOffset + 1);
+        double _eyez = eye.get(eyeOffset + 2);
+        double _px = p.get(pOffset + 0);
+        double _py = p.get(pOffset + 1);
+        double _pz = p.get(pOffset + 2);
+        double _xx = x.get(xOffset + 0);
+        double _xy = x.get(xOffset + 1);
+        double _xz = x.get(xOffset + 2);
+        double _yx = y.get(yOffset + 0);
+        double _yy = y.get(yOffset + 1);
+        double _yz = y.get(yOffset + 2);
+        double _t0 = -_eyez;
+        double _t1 = -_py;
+        double _t14 = Math.fma(_xy, _yx, -(_xx * _yy));
+        double _t15 = Math.fma(_xz, _yy, -(_xy * _yz));
+        double _t16 = Math.fma(_xx, _yz, -(_xz * _yx));
+        double _t19 = Math.fma(_pz - _eyez, _t14, Math.fma(_px - _eyex, _t15, (_py - _eyey) * _t16));
+        double _t20 = _t19 >= 0.0 ? 1.0 : -1.0;
+        double _t21 = _t14 * _t20;
+        double _t22 = _t16 * _t20;
+        double _t23 = _t15 * _t20;
+        double _t24 = Math.fma(_t14, _t20, _eyez - _eyez);
+        double _t25 = Math.fma(_t15, _t20, _eyex - _eyex);
+        double _t26 = Math.fma(_t16, _t20, _eyey - _eyey);
+        double _t27 = _t19 * _t20;
+        double _t34 = (1.0 / Math.sqrt(Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23))));
+        double _t35 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
+        double _t36 = (1.0 / Math.sqrt(_t35));
+        double _t40 = _t27 * _t34;
+        double _t41 = Math.fma(_t27, _t34, nearFarDist);
+        double _t42 = 2.0 * _t40;
+        double _t44, _t45, _t46;
+        if (_t35 > 0.0) {
+            _t44 = _t26 * _t36;
+            _t45 = _t25 * _t36;
+            _t46 = _t24 * _t36;
+        } else {
+            _t44 = 0.0;
+            _t45 = 0.0;
+            _t46 = 0.0;
+        }
+        double _t53 = Math.fma(_t27, _t34, Math.fma(-_t27, _t34, -nearFarDist));
+        double _t53_inv = 1.0 / _t53;
+        double _t54 = Math.fma(_yx, _t44, -(_yy * _t45));
+        double _t55 = Math.fma(_yy, _t46, -(_yz * _t44));
+        double _t56 = Math.fma(_yz, _t45, -(_yx * _t46));
+        double _t59 = Math.fma(_t54, _t54, Math.fma(_t55, _t55, _t56 * _t56));
+        double _t60 = (1.0 / Math.sqrt(_t59));
+        double _t64, _t65, _t66;
+        if (_t59 > 0.0) {
+            _t64 = _t55 * _t60;
+            _t65 = _t56 * _t60;
+            _t66 = _t54 * _t60;
+        } else {
+            _t64 = 0.0;
+            _t65 = 0.0;
+            _t66 = 0.0;
+        }
+        double _t85 = Math.fma(_px, _t64, _py * _t65);
+        double _t87 = Math.fma(_pz, _t66, -(_eyex * _t64));
+        double _t89 = Math.fma(_t0, _t66, -(_eyey * _t65));
+        double _t91 = Math.fma(_t44, _t66, -(_t46 * _t65));
+        double _t92 = Math.fma(_t46, _t64, -(_t45 * _t66));
+        double _t93 = Math.fma(_t45, _t65, -(_t44 * _t64));
+        double _t110 = Math.fma(_px, _t91, _py * _t92);
+        double _t112 = Math.fma(_pz, _t93, -(_eyex * _t91));
+        double _t114 = Math.fma(_t0, _t93, -(_eyey * _t92));
+        double _t117 = Math.fma(_xx, _t64, Math.fma(_xy, _t65, _xz * _t66)) + (_t85 + _t87);
+        double _t122 = Math.fma(_yx, _t91, Math.fma(_yy, _t92, _yz * _t93)) + (_t110 + _t112);
+        double _t123 = _t117 + (_t89 + Math.fma(_t1, _t65, -(_px * _t64)) + (Math.fma(_eyex, _t64, -(_pz * _t66)) + Math.fma(_eyey, _t65, _eyez * _t66)));
+        double _t123_inv = 1.0 / _t123;
+        double _t125 = _t122 + (_t114 + Math.fma(_t1, _t92, -(_px * _t91)) + (Math.fma(_eyex, _t91, -(_pz * _t93)) + Math.fma(_eyey, _t92, _eyez * _t93)));
+        double _t125_inv = 1.0 / _t125;
+        if (_t41 == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, 1.0);
+            dest.put(destOffset + 14, -_t40);
+        } else {
+            if (_t40 == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, 0.0);
+                dest.put(destOffset + 14, _t41);
+            } else {
+                dest.put(destOffset + 10, -(_t41 * _t53_inv));
+                dest.put(destOffset + 14, _t41 * _t40 * _t53_inv);
+            }
+        }
+        dest.put(destOffset + 0, _t42 * _t123_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, _t42 * _t125_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, -((_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv));
+        dest.put(destOffset + 9, -((_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv));
+        dest.put(destOffset + 11, 1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makePerspectiveOffCenterRectangleProj_zo_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer eye, int eyeOffset, java.nio.DoubleBuffer p, int pOffset, java.nio.DoubleBuffer x, int xOffset, java.nio.DoubleBuffer y, int yOffset, double nearFarDist) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && eye.isDirect() && p.isDirect() && x.isDirect() && y.isDirect()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_zo_rh_unsafe(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, nearFarDist);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && eye.isDirect() && eye.order() == java.nio.ByteOrder.nativeOrder() && p.isDirect() && p.order() == java.nio.ByteOrder.nativeOrder() && x.isDirect() && x.order() == java.nio.ByteOrder.nativeOrder() && y.isDirect() && y.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_zo_rh_unsafe(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, nearFarDist);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleProj_zo_rh_api(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, nearFarDist);
     }
 
@@ -5055,7 +11136,110 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveOffCenterRectangleProj_zo_rh(dest.array(), dest.arrayOffset() + destOffset, eye.array(), eye.arrayOffset() + eyeOffset, p.array(), p.arrayOffset() + pOffset, x.array(), x.arrayOffset() + xOffset, y.array(), y.arrayOffset() + yOffset, nearFarDist);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleProj_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(eye.duplicate().position(0)), (long) eyeOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p.duplicate().position(0)), (long) pOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(x.duplicate().position(0)), (long) xOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(y.duplicate().position(0)), (long) yOffset * 8L, nearFarDist);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && eye.order() == java.nio.ByteOrder.nativeOrder() && p.order() == java.nio.ByteOrder.nativeOrder() && x.order() == java.nio.ByteOrder.nativeOrder() && y.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleProj_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(eye.duplicate().position(0)), (long) eyeOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p.duplicate().position(0)), (long) pOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(x.duplicate().position(0)), (long) xOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(y.duplicate().position(0)), (long) yOffset * 8L, nearFarDist);
+            return dest;
+        }
+        double _eyex = eye.get(eyeOffset + 0);
+        double _eyey = eye.get(eyeOffset + 1);
+        double _eyez = eye.get(eyeOffset + 2);
+        double _px = p.get(pOffset + 0);
+        double _py = p.get(pOffset + 1);
+        double _pz = p.get(pOffset + 2);
+        double _xx = x.get(xOffset + 0);
+        double _xy = x.get(xOffset + 1);
+        double _xz = x.get(xOffset + 2);
+        double _yx = y.get(yOffset + 0);
+        double _yy = y.get(yOffset + 1);
+        double _yz = y.get(yOffset + 2);
+        double _t0 = -_eyez;
+        double _t1 = -_py;
+        double _t14 = Math.fma(_xy, _yx, -(_xx * _yy));
+        double _t15 = Math.fma(_xz, _yy, -(_xy * _yz));
+        double _t16 = Math.fma(_xx, _yz, -(_xz * _yx));
+        double _t19 = Math.fma(_pz - _eyez, _t14, Math.fma(_px - _eyex, _t15, (_py - _eyey) * _t16));
+        double _t20 = _t19 >= 0.0 ? 1.0 : -1.0;
+        double _t21 = _t14 * _t20;
+        double _t22 = _t16 * _t20;
+        double _t23 = _t15 * _t20;
+        double _t24 = Math.fma(_t14, _t20, _eyez - _eyez);
+        double _t25 = Math.fma(_t15, _t20, _eyex - _eyex);
+        double _t26 = Math.fma(_t16, _t20, _eyey - _eyey);
+        double _t27 = _t19 * _t20;
+        double _t34 = (1.0 / Math.sqrt(Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23))));
+        double _t35 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
+        double _t36 = (1.0 / Math.sqrt(_t35));
+        double _t40 = _t27 * _t34;
+        double _t41 = Math.fma(_t27, _t34, nearFarDist);
+        double _t42 = 2.0 * _t40;
+        double _t44, _t45, _t46;
+        if (_t35 > 0.0) {
+            _t44 = _t25 * _t36;
+            _t45 = _t26 * _t36;
+            _t46 = _t24 * _t36;
+        } else {
+            _t44 = 0.0;
+            _t45 = 0.0;
+            _t46 = 0.0;
+        }
+        double _t53 = Math.fma(_t27, _t34, Math.fma(-_t27, _t34, -nearFarDist));
+        double _t53_inv = 1.0 / _t53;
+        double _t54 = Math.fma(_yy, _t44, -(_yx * _t45));
+        double _t55 = Math.fma(_yx, _t46, -(_yz * _t44));
+        double _t56 = Math.fma(_yz, _t45, -(_yy * _t46));
+        double _t59 = Math.fma(_t54, _t54, Math.fma(_t55, _t55, _t56 * _t56));
+        double _t60 = (1.0 / Math.sqrt(_t59));
+        double _t64, _t65, _t66;
+        if (_t59 > 0.0) {
+            _t64 = _t56 * _t60;
+            _t65 = _t55 * _t60;
+            _t66 = _t54 * _t60;
+        } else {
+            _t64 = 0.0;
+            _t65 = 0.0;
+            _t66 = 0.0;
+        }
+        double _t85 = Math.fma(_px, _t64, _py * _t65);
+        double _t87 = Math.fma(_pz, _t66, -(_eyex * _t64));
+        double _t89 = Math.fma(_t0, _t66, -(_eyey * _t65));
+        double _t91 = Math.fma(_t46, _t65, -(_t45 * _t66));
+        double _t92 = Math.fma(_t44, _t66, -(_t46 * _t64));
+        double _t93 = Math.fma(_t45, _t64, -(_t44 * _t65));
+        double _t110 = Math.fma(_px, _t91, _py * _t92);
+        double _t112 = Math.fma(_pz, _t93, -(_eyex * _t91));
+        double _t114 = Math.fma(_t0, _t93, -(_eyey * _t92));
+        double _t117 = Math.fma(_xx, _t64, Math.fma(_xy, _t65, _xz * _t66)) + (_t85 + _t87);
+        double _t122 = Math.fma(_yx, _t91, Math.fma(_yy, _t92, _yz * _t93)) + (_t110 + _t112);
+        double _t123 = _t117 + (_t89 + Math.fma(_t1, _t65, -(_px * _t64)) + (Math.fma(_eyex, _t64, -(_pz * _t66)) + Math.fma(_eyey, _t65, _eyez * _t66)));
+        double _t123_inv = 1.0 / _t123;
+        double _t125 = _t122 + (_t114 + Math.fma(_t1, _t92, -(_px * _t91)) + (Math.fma(_eyex, _t91, -(_pz * _t93)) + Math.fma(_eyey, _t92, _eyez * _t93)));
+        double _t125_inv = 1.0 / _t125;
+        if (_t41 == Double.POSITIVE_INFINITY) {
+            dest.put(destOffset + 10, -1.0);
+            dest.put(destOffset + 14, -_t40);
+        } else {
+            if (_t40 == Double.POSITIVE_INFINITY) {
+                dest.put(destOffset + 10, 0.0);
+                dest.put(destOffset + 14, _t41);
+            } else {
+                dest.put(destOffset + 10, _t41 * _t53_inv);
+                dest.put(destOffset + 14, _t41 * _t40 * _t53_inv);
+            }
+        }
+        dest.put(destOffset + 0, _t42 * _t123_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, _t42 * _t125_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, (_t117 + (_t89 + _t85 + (_t87 + _t89))) * _t123_inv);
+        dest.put(destOffset + 9, (_t122 + (_t114 + _t110 + (_t112 + _t114))) * _t125_inv);
+        dest.put(destOffset + 11, -1.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 15, 0.0);
         return dest;
     }
 
@@ -5067,7 +11251,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makePerspectiveOffCenterRectangleView_lh(java.nio.DoubleBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleView_lh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleView_lh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleView_lh_api(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ);
     }
 
@@ -5082,12 +11266,68 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveOffCenterRectangleView_lh(dest.array(), dest.arrayOffset() + destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleView_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleView_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ);
+            return dest;
+        }
+        double _t12 = Math.fma(xY, yX, -(xX * yY));
+        double _t13 = Math.fma(xZ, yY, -(xY * yZ));
+        double _t14 = Math.fma(xX, yZ, -(xZ * yX));
+        double _t18 = Math.fma(pZ - eyeZ, _t12, Math.fma(pX - eyeX, _t13, (pY - eyeY) * _t14)) >= 0.0 ? 1.0 : -1.0;
+        double _t19 = Math.fma(_t12, _t18, eyeZ - eyeZ);
+        double _t20 = Math.fma(_t13, _t18, eyeX - eyeX);
+        double _t21 = Math.fma(_t14, _t18, eyeY - eyeY);
+        double _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
+        double _t25 = (1.0 / Math.sqrt(_t24));
+        double _t29, _t30, _t31;
+        if (_t24 > 0.0) {
+            _t29 = _t21 * _t25;
+            _t30 = _t20 * _t25;
+            _t31 = _t19 * _t25;
+        } else {
+            _t29 = 0.0;
+            _t30 = 0.0;
+            _t31 = 0.0;
+        }
+        double _t38 = Math.fma(yX, _t29, -(yY * _t30));
+        double _t39 = Math.fma(yY, _t31, -(yZ * _t29));
+        double _t40 = Math.fma(yZ, _t30, -(yX * _t31));
+        double _t43 = Math.fma(_t38, _t38, Math.fma(_t39, _t39, _t40 * _t40));
+        double _t44 = (1.0 / Math.sqrt(_t43));
+        double _t48, _t49, _t50;
+        if (_t43 > 0.0) {
+            _t48 = _t39 * _t44;
+            _t49 = _t40 * _t44;
+            _t50 = _t38 * _t44;
+        } else {
+            _t48 = 0.0;
+            _t49 = 0.0;
+            _t50 = 0.0;
+        }
+        double _t57 = Math.fma(_t29, _t50, -(_t31 * _t49));
+        double _t58 = Math.fma(_t31, _t48, -(_t30 * _t50));
+        double _t59 = Math.fma(_t30, _t49, -(_t29 * _t48));
+        dest.put(destOffset + 0, _t48);
+        dest.put(destOffset + 1, _t57);
+        dest.put(destOffset + 2, _t30);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, _t49);
+        dest.put(destOffset + 5, _t58);
+        dest.put(destOffset + 6, _t29);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t50);
+        dest.put(destOffset + 9, _t59);
+        dest.put(destOffset + 10, _t31);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -Math.fma(eyeZ, _t50, Math.fma(eyeX, _t48, eyeY * _t49)));
+        dest.put(destOffset + 13, -Math.fma(eyeZ, _t59, Math.fma(eyeX, _t57, eyeY * _t58)));
+        dest.put(destOffset + 14, -Math.fma(eyeZ, _t31, Math.fma(eyeX, _t30, eyeY * _t29)));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makePerspectiveOffCenterRectangleView_rh(java.nio.DoubleBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleView_rh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleView_rh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleView_rh_api(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ);
     }
 
@@ -5102,12 +11342,68 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveOffCenterRectangleView_rh(dest.array(), dest.arrayOffset() + destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleView_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleView_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ);
+            return dest;
+        }
+        double _t12 = Math.fma(xY, yX, -(xX * yY));
+        double _t13 = Math.fma(xZ, yY, -(xY * yZ));
+        double _t14 = Math.fma(xX, yZ, -(xZ * yX));
+        double _t18 = Math.fma(pZ - eyeZ, _t12, Math.fma(pX - eyeX, _t13, (pY - eyeY) * _t14)) >= 0.0 ? 1.0 : -1.0;
+        double _t19 = Math.fma(_t12, _t18, eyeZ - eyeZ);
+        double _t20 = Math.fma(_t13, _t18, eyeX - eyeX);
+        double _t21 = Math.fma(_t14, _t18, eyeY - eyeY);
+        double _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
+        double _t25 = (1.0 / Math.sqrt(_t24));
+        double _t29, _t30, _t31;
+        if (_t24 > 0.0) {
+            _t29 = _t20 * _t25;
+            _t30 = _t21 * _t25;
+            _t31 = _t19 * _t25;
+        } else {
+            _t29 = 0.0;
+            _t30 = 0.0;
+            _t31 = 0.0;
+        }
+        double _t38 = Math.fma(yY, _t29, -(yX * _t30));
+        double _t39 = Math.fma(yX, _t31, -(yZ * _t29));
+        double _t40 = Math.fma(yZ, _t30, -(yY * _t31));
+        double _t43 = Math.fma(_t38, _t38, Math.fma(_t39, _t39, _t40 * _t40));
+        double _t44 = (1.0 / Math.sqrt(_t43));
+        double _t48, _t49, _t50;
+        if (_t43 > 0.0) {
+            _t48 = _t40 * _t44;
+            _t49 = _t39 * _t44;
+            _t50 = _t38 * _t44;
+        } else {
+            _t48 = 0.0;
+            _t49 = 0.0;
+            _t50 = 0.0;
+        }
+        double _t57 = Math.fma(_t31, _t49, -(_t30 * _t50));
+        double _t58 = Math.fma(_t29, _t50, -(_t31 * _t48));
+        double _t59 = Math.fma(_t30, _t48, -(_t29 * _t49));
+        dest.put(destOffset + 0, _t48);
+        dest.put(destOffset + 1, _t57);
+        dest.put(destOffset + 2, -_t29);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, _t49);
+        dest.put(destOffset + 5, _t58);
+        dest.put(destOffset + 6, -_t30);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t50);
+        dest.put(destOffset + 9, _t59);
+        dest.put(destOffset + 10, -_t31);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -Math.fma(eyeZ, _t50, Math.fma(eyeX, _t48, eyeY * _t49)));
+        dest.put(destOffset + 13, -Math.fma(eyeZ, _t59, Math.fma(eyeX, _t57, eyeY * _t58)));
+        dest.put(destOffset + 14, Math.fma(eyeZ, _t31, Math.fma(eyeX, _t29, eyeY * _t30)));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makePerspectiveOffCenterRectangleView_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer eye, int eyeOffset, java.nio.DoubleBuffer p, int pOffset, java.nio.DoubleBuffer x, int xOffset, java.nio.DoubleBuffer y, int yOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && eye.isDirect() && p.isDirect() && x.isDirect() && y.isDirect()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleView_lh_unsafe(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && eye.isDirect() && eye.order() == java.nio.ByteOrder.nativeOrder() && p.isDirect() && p.order() == java.nio.ByteOrder.nativeOrder() && x.isDirect() && x.order() == java.nio.ByteOrder.nativeOrder() && y.isDirect() && y.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleView_lh_unsafe(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleView_lh_api(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset);
     }
 
@@ -5126,12 +11422,80 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveOffCenterRectangleView_lh(dest.array(), dest.arrayOffset() + destOffset, eye.array(), eye.arrayOffset() + eyeOffset, p.array(), p.arrayOffset() + pOffset, x.array(), x.arrayOffset() + xOffset, y.array(), y.arrayOffset() + yOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleView_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(eye.duplicate().position(0)), (long) eyeOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p.duplicate().position(0)), (long) pOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(x.duplicate().position(0)), (long) xOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(y.duplicate().position(0)), (long) yOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && eye.order() == java.nio.ByteOrder.nativeOrder() && p.order() == java.nio.ByteOrder.nativeOrder() && x.order() == java.nio.ByteOrder.nativeOrder() && y.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleView_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(eye.duplicate().position(0)), (long) eyeOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p.duplicate().position(0)), (long) pOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(x.duplicate().position(0)), (long) xOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(y.duplicate().position(0)), (long) yOffset * 8L);
+            return dest;
+        }
+        double _eyex = eye.get(eyeOffset + 0);
+        double _eyey = eye.get(eyeOffset + 1);
+        double _eyez = eye.get(eyeOffset + 2);
+        double _px = p.get(pOffset + 0);
+        double _py = p.get(pOffset + 1);
+        double _pz = p.get(pOffset + 2);
+        double _xx = x.get(xOffset + 0);
+        double _xy = x.get(xOffset + 1);
+        double _xz = x.get(xOffset + 2);
+        double _yx = y.get(yOffset + 0);
+        double _yy = y.get(yOffset + 1);
+        double _yz = y.get(yOffset + 2);
+        double _t12 = Math.fma(_xy, _yx, -(_xx * _yy));
+        double _t13 = Math.fma(_xz, _yy, -(_xy * _yz));
+        double _t14 = Math.fma(_xx, _yz, -(_xz * _yx));
+        double _t18 = Math.fma(_pz - _eyez, _t12, Math.fma(_px - _eyex, _t13, (_py - _eyey) * _t14)) >= 0.0 ? 1.0 : -1.0;
+        double _t19 = Math.fma(_t12, _t18, _eyez - _eyez);
+        double _t20 = Math.fma(_t13, _t18, _eyex - _eyex);
+        double _t21 = Math.fma(_t14, _t18, _eyey - _eyey);
+        double _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
+        double _t25 = (1.0 / Math.sqrt(_t24));
+        double _t29, _t30, _t31;
+        if (_t24 > 0.0) {
+            _t29 = _t21 * _t25;
+            _t30 = _t20 * _t25;
+            _t31 = _t19 * _t25;
+        } else {
+            _t29 = 0.0;
+            _t30 = 0.0;
+            _t31 = 0.0;
+        }
+        double _t38 = Math.fma(_yx, _t29, -(_yy * _t30));
+        double _t39 = Math.fma(_yy, _t31, -(_yz * _t29));
+        double _t40 = Math.fma(_yz, _t30, -(_yx * _t31));
+        double _t43 = Math.fma(_t38, _t38, Math.fma(_t39, _t39, _t40 * _t40));
+        double _t44 = (1.0 / Math.sqrt(_t43));
+        double _t48, _t49, _t50;
+        if (_t43 > 0.0) {
+            _t48 = _t39 * _t44;
+            _t49 = _t40 * _t44;
+            _t50 = _t38 * _t44;
+        } else {
+            _t48 = 0.0;
+            _t49 = 0.0;
+            _t50 = 0.0;
+        }
+        double _t57 = Math.fma(_t29, _t50, -(_t31 * _t49));
+        double _t58 = Math.fma(_t31, _t48, -(_t30 * _t50));
+        double _t59 = Math.fma(_t30, _t49, -(_t29 * _t48));
+        dest.put(destOffset + 0, _t48);
+        dest.put(destOffset + 1, _t57);
+        dest.put(destOffset + 2, _t30);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, _t49);
+        dest.put(destOffset + 5, _t58);
+        dest.put(destOffset + 6, _t29);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t50);
+        dest.put(destOffset + 9, _t59);
+        dest.put(destOffset + 10, _t31);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -Math.fma(_eyez, _t50, Math.fma(_eyex, _t48, _eyey * _t49)));
+        dest.put(destOffset + 13, -Math.fma(_eyez, _t59, Math.fma(_eyex, _t57, _eyey * _t58)));
+        dest.put(destOffset + 14, -Math.fma(_eyez, _t31, Math.fma(_eyex, _t30, _eyey * _t29)));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer makePerspectiveOffCenterRectangleView_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer eye, int eyeOffset, java.nio.DoubleBuffer p, int pOffset, java.nio.DoubleBuffer x, int xOffset, java.nio.DoubleBuffer y, int yOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && eye.isDirect() && p.isDirect() && x.isDirect() && y.isDirect()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleView_rh_unsafe(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && eye.isDirect() && eye.order() == java.nio.ByteOrder.nativeOrder() && p.isDirect() && p.order() == java.nio.ByteOrder.nativeOrder() && x.isDirect() && x.order() == java.nio.ByteOrder.nativeOrder() && y.isDirect() && y.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleView_rh_unsafe(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset);
         return Double4x4OpsKernelsTypedBuffer.makePerspectiveOffCenterRectangleView_rh_api(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset);
     }
 
@@ -5150,7 +11514,75 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.makePerspectiveOffCenterRectangleView_rh(dest.array(), dest.arrayOffset() + destOffset, eye.array(), eye.arrayOffset() + eyeOffset, p.array(), p.arrayOffset() + pOffset, x.array(), x.arrayOffset() + xOffset, y.array(), y.arrayOffset() + yOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleView_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(eye.duplicate().position(0)), (long) eyeOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p.duplicate().position(0)), (long) pOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(x.duplicate().position(0)), (long) xOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(y.duplicate().position(0)), (long) yOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && eye.order() == java.nio.ByteOrder.nativeOrder() && p.order() == java.nio.ByteOrder.nativeOrder() && x.order() == java.nio.ByteOrder.nativeOrder() && y.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePerspectiveOffCenterRectangleView_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(eye.duplicate().position(0)), (long) eyeOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p.duplicate().position(0)), (long) pOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(x.duplicate().position(0)), (long) xOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(y.duplicate().position(0)), (long) yOffset * 8L);
+            return dest;
+        }
+        double _eyex = eye.get(eyeOffset + 0);
+        double _eyey = eye.get(eyeOffset + 1);
+        double _eyez = eye.get(eyeOffset + 2);
+        double _px = p.get(pOffset + 0);
+        double _py = p.get(pOffset + 1);
+        double _pz = p.get(pOffset + 2);
+        double _xx = x.get(xOffset + 0);
+        double _xy = x.get(xOffset + 1);
+        double _xz = x.get(xOffset + 2);
+        double _yx = y.get(yOffset + 0);
+        double _yy = y.get(yOffset + 1);
+        double _yz = y.get(yOffset + 2);
+        double _t12 = Math.fma(_xy, _yx, -(_xx * _yy));
+        double _t13 = Math.fma(_xz, _yy, -(_xy * _yz));
+        double _t14 = Math.fma(_xx, _yz, -(_xz * _yx));
+        double _t18 = Math.fma(_pz - _eyez, _t12, Math.fma(_px - _eyex, _t13, (_py - _eyey) * _t14)) >= 0.0 ? 1.0 : -1.0;
+        double _t19 = Math.fma(_t12, _t18, _eyez - _eyez);
+        double _t20 = Math.fma(_t13, _t18, _eyex - _eyex);
+        double _t21 = Math.fma(_t14, _t18, _eyey - _eyey);
+        double _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
+        double _t25 = (1.0 / Math.sqrt(_t24));
+        double _t29, _t30, _t31;
+        if (_t24 > 0.0) {
+            _t29 = _t20 * _t25;
+            _t30 = _t21 * _t25;
+            _t31 = _t19 * _t25;
+        } else {
+            _t29 = 0.0;
+            _t30 = 0.0;
+            _t31 = 0.0;
+        }
+        double _t38 = Math.fma(_yy, _t29, -(_yx * _t30));
+        double _t39 = Math.fma(_yx, _t31, -(_yz * _t29));
+        double _t40 = Math.fma(_yz, _t30, -(_yy * _t31));
+        double _t43 = Math.fma(_t38, _t38, Math.fma(_t39, _t39, _t40 * _t40));
+        double _t44 = (1.0 / Math.sqrt(_t43));
+        double _t48, _t49, _t50;
+        if (_t43 > 0.0) {
+            _t48 = _t40 * _t44;
+            _t49 = _t39 * _t44;
+            _t50 = _t38 * _t44;
+        } else {
+            _t48 = 0.0;
+            _t49 = 0.0;
+            _t50 = 0.0;
+        }
+        double _t57 = Math.fma(_t31, _t49, -(_t30 * _t50));
+        double _t58 = Math.fma(_t29, _t50, -(_t31 * _t48));
+        double _t59 = Math.fma(_t30, _t48, -(_t29 * _t49));
+        dest.put(destOffset + 0, _t48);
+        dest.put(destOffset + 1, _t57);
+        dest.put(destOffset + 2, -_t29);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, _t49);
+        dest.put(destOffset + 5, _t58);
+        dest.put(destOffset + 6, -_t30);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t50);
+        dest.put(destOffset + 9, _t59);
+        dest.put(destOffset + 10, -_t31);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -Math.fma(_eyez, _t50, Math.fma(_eyex, _t48, _eyey * _t49)));
+        dest.put(destOffset + 13, -Math.fma(_eyez, _t59, Math.fma(_eyex, _t57, _eyey * _t58)));
+        dest.put(destOffset + 14, Math.fma(_eyez, _t31, Math.fma(_eyex, _t29, _eyey * _t30)));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5165,7 +11597,28 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makePickMatrix(dest.array(), dest.arrayOffset() + destOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makePickMatrix_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makePickMatrix_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
+            return dest;
+        }
+        double _rcp0 = 1.0 / deltaX;
+        double _rcp1 = 1.0 / deltaY;
+        dest.put(destOffset + 0, vpW * _rcp0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, vpH * _rcp1);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, Math.fma(-2.0, centerX - vpX, vpW) * _rcp0);
+        dest.put(destOffset + 13, Math.fma(-2.0, centerY - vpY, vpH) * _rcp1);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5180,7 +11633,29 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeReflection(dest.array(), dest.arrayOffset() + destOffset, normalX, normalY, normalZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeReflection_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, normalX, normalY, normalZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeReflection_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, normalX, normalY, normalZ);
+            return dest;
+        }
+        double _t6 = -(2.0 * normalX * normalY);
+        double _t7 = -(2.0 * normalX * normalZ);
+        double _t8 = -(2.0 * normalY * normalZ);
+        dest.put(destOffset + 0, Math.fma(-2.0, normalX * normalX, 1.0));
+        dest.put(destOffset + 1, _t6);
+        dest.put(destOffset + 2, _t7);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, _t6);
+        dest.put(destOffset + 5, Math.fma(-2.0, normalY * normalY, 1.0));
+        dest.put(destOffset + 6, _t8);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t7);
+        dest.put(destOffset + 9, _t8);
+        dest.put(destOffset + 10, Math.fma(-2.0, normalZ * normalZ, 1.0));
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5196,7 +11671,32 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeReflection(dest.array(), dest.arrayOffset() + destOffset, normal.array(), normal.arrayOffset() + normalOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeReflection_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(normal.duplicate().position(0)), (long) normalOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && normal.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeReflection_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(normal.duplicate().position(0)), (long) normalOffset * 8L);
+            return dest;
+        }
+        double _normalx = normal.get(normalOffset + 0);
+        double _normaly = normal.get(normalOffset + 1);
+        double _normalz = normal.get(normalOffset + 2);
+        double _t6 = -(2.0 * _normalx * _normaly);
+        double _t7 = -(2.0 * _normalx * _normalz);
+        double _t8 = -(2.0 * _normaly * _normalz);
+        dest.put(destOffset + 0, Math.fma(-2.0, _normalx * _normalx, 1.0));
+        dest.put(destOffset + 1, _t6);
+        dest.put(destOffset + 2, _t7);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, _t6);
+        dest.put(destOffset + 5, Math.fma(-2.0, _normaly * _normaly, 1.0));
+        dest.put(destOffset + 6, _t8);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t7);
+        dest.put(destOffset + 9, _t8);
+        dest.put(destOffset + 10, Math.fma(-2.0, _normalz * _normalz, 1.0));
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5211,7 +11711,32 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeRotationAxis(dest.array(), dest.arrayOffset() + destOffset, angle, axisX, axisY, axisZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeRotationAxis_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angle, axisX, axisY, axisZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeRotationAxis_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angle, axisX, axisY, axisZ);
+            return dest;
+        }
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _t2 = 1.0 - _t0;
+        double _t3 = axisX * axisY;
+        double _t4 = axisX * axisZ;
+        double _t5 = axisY * axisZ;
+        dest.put(destOffset + 0, Math.fma(_t2, axisX * axisX, _t0));
+        dest.put(destOffset + 1, Math.fma(axisZ, _t1, _t2 * _t3));
+        dest.put(destOffset + 2, Math.fma(_t2, _t4, -(axisY * _t1)));
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, Math.fma(_t2, _t3, -(axisZ * _t1)));
+        dest.put(destOffset + 5, Math.fma(_t2, axisY * axisY, _t0));
+        dest.put(destOffset + 6, Math.fma(axisX, _t1, _t2 * _t5));
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, Math.fma(axisY, _t1, _t2 * _t4));
+        dest.put(destOffset + 9, Math.fma(_t2, _t5, -(axisX * _t1)));
+        dest.put(destOffset + 10, Math.fma(_t2, axisZ * axisZ, _t0));
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5227,7 +11752,35 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeRotationAxis(dest.array(), dest.arrayOffset() + destOffset, axis.array(), axis.arrayOffset() + axisOffset, angle);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeRotationAxis_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(axis.duplicate().position(0)), (long) axisOffset * 8L, angle);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && axis.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeRotationAxis_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(axis.duplicate().position(0)), (long) axisOffset * 8L, angle);
+            return dest;
+        }
+        double _axisx = axis.get(axisOffset + 0);
+        double _axisy = axis.get(axisOffset + 1);
+        double _axisz = axis.get(axisOffset + 2);
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        double _t2 = 1.0 - _t0;
+        double _t3 = _axisx * _axisy;
+        double _t4 = _axisx * _axisz;
+        double _t5 = _axisy * _axisz;
+        dest.put(destOffset + 0, Math.fma(_t2, _axisx * _axisx, _t0));
+        dest.put(destOffset + 1, Math.fma(_axisz, _t1, _t2 * _t3));
+        dest.put(destOffset + 2, Math.fma(_t2, _t4, -(_axisy * _t1)));
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, Math.fma(_t2, _t3, -(_axisz * _t1)));
+        dest.put(destOffset + 5, Math.fma(_t2, _axisy * _axisy, _t0));
+        dest.put(destOffset + 6, Math.fma(_axisx, _t1, _t2 * _t5));
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, Math.fma(_axisy, _t1, _t2 * _t4));
+        dest.put(destOffset + 9, Math.fma(_t2, _t5, -(_axisx * _t1)));
+        dest.put(destOffset + 10, Math.fma(_t2, _axisz * _axisz, _t0));
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5242,7 +11795,53 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeRotationLookAlong(dest.array(), dest.arrayOffset() + destOffset, dirX, dirY, dirZ, upX, upY, upZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeRotationLookAlong_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, dirX, dirY, dirZ, upX, upY, upZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeRotationLookAlong_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, dirX, dirY, dirZ, upX, upY, upZ);
+            return dest;
+        }
+        double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        double _t7, _t8, _t9;
+        if (_t2 > 0.0) {
+            _t7 = dirY * _t3;
+            _t8 = dirX * _t3;
+            _t9 = dirZ * _t3;
+        } else {
+            _t7 = 0.0;
+            _t8 = 0.0;
+            _t9 = 0.0;
+        }
+        double _t16 = Math.fma(upX, _t7, -(upY * _t8));
+        double _t17 = Math.fma(upY, _t9, -(upZ * _t7));
+        double _t18 = Math.fma(upZ, _t8, -(upX * _t9));
+        double _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
+        double _t22 = (1.0 / Math.sqrt(_t21));
+        double _t26, _t27, _t28;
+        if (_t21 > 0.0) {
+            _t26 = _t17 * _t22;
+            _t27 = _t16 * _t22;
+            _t28 = _t18 * _t22;
+        } else {
+            _t26 = 0.0;
+            _t27 = 0.0;
+            _t28 = 0.0;
+        }
+        dest.put(destOffset + 0, _t26);
+        dest.put(destOffset + 1, _t28);
+        dest.put(destOffset + 2, _t27);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, Math.fma(_t7, _t27, -(_t9 * _t28)));
+        dest.put(destOffset + 5, Math.fma(_t9, _t26, -(_t8 * _t27)));
+        dest.put(destOffset + 6, Math.fma(_t8, _t28, -(_t7 * _t26)));
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t8);
+        dest.put(destOffset + 9, _t7);
+        dest.put(destOffset + 10, _t9);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5259,7 +11858,59 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeRotationLookAlong(dest.array(), dest.arrayOffset() + destOffset, dir.array(), dir.arrayOffset() + dirOffset, up.array(), up.arrayOffset() + upOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeRotationLookAlong_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(dir.duplicate().position(0)), (long) dirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(up.duplicate().position(0)), (long) upOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && dir.order() == java.nio.ByteOrder.nativeOrder() && up.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeRotationLookAlong_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(dir.duplicate().position(0)), (long) dirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(up.duplicate().position(0)), (long) upOffset * 8L);
+            return dest;
+        }
+        double _dirx = dir.get(dirOffset + 0);
+        double _diry = dir.get(dirOffset + 1);
+        double _dirz = dir.get(dirOffset + 2);
+        double _upx = up.get(upOffset + 0);
+        double _upy = up.get(upOffset + 1);
+        double _upz = up.get(upOffset + 2);
+        double _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        double _t7, _t8, _t9;
+        if (_t2 > 0.0) {
+            _t7 = _diry * _t3;
+            _t8 = _dirx * _t3;
+            _t9 = _dirz * _t3;
+        } else {
+            _t7 = 0.0;
+            _t8 = 0.0;
+            _t9 = 0.0;
+        }
+        double _t16 = Math.fma(_upx, _t7, -(_upy * _t8));
+        double _t17 = Math.fma(_upy, _t9, -(_upz * _t7));
+        double _t18 = Math.fma(_upz, _t8, -(_upx * _t9));
+        double _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
+        double _t22 = (1.0 / Math.sqrt(_t21));
+        double _t26, _t27, _t28;
+        if (_t21 > 0.0) {
+            _t26 = _t17 * _t22;
+            _t27 = _t16 * _t22;
+            _t28 = _t18 * _t22;
+        } else {
+            _t26 = 0.0;
+            _t27 = 0.0;
+            _t28 = 0.0;
+        }
+        dest.put(destOffset + 0, _t26);
+        dest.put(destOffset + 1, _t28);
+        dest.put(destOffset + 2, _t27);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, Math.fma(_t7, _t27, -(_t9 * _t28)));
+        dest.put(destOffset + 5, Math.fma(_t9, _t26, -(_t8 * _t27)));
+        dest.put(destOffset + 6, Math.fma(_t8, _t28, -(_t7 * _t26)));
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t8);
+        dest.put(destOffset + 9, _t7);
+        dest.put(destOffset + 10, _t9);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5274,7 +11925,29 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeRotationQuat(dest.array(), dest.arrayOffset() + destOffset, qX, qY, qZ, qW);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeRotationQuat_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, qX, qY, qZ, qW);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeRotationQuat_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, qX, qY, qZ, qW);
+            return dest;
+        }
+        double _t0 = qZ * qZ;
+        double _t1 = qZ * qW;
+        double _t2 = qY * qW;
+        dest.put(destOffset + 0, Math.fma(-2.0, Math.fma(qY, qY, _t0), 1.0));
+        dest.put(destOffset + 1, 2.0 * Math.fma(qX, qY, _t1));
+        dest.put(destOffset + 2, 2.0 * Math.fma(qX, qZ, -_t2));
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 2.0 * Math.fma(qX, qY, -_t1));
+        dest.put(destOffset + 5, Math.fma(-2.0, Math.fma(qX, qX, _t0), 1.0));
+        dest.put(destOffset + 6, 2.0 * Math.fma(qX, qW, qY * qZ));
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 2.0 * Math.fma(qX, qZ, _t2));
+        dest.put(destOffset + 9, 2.0 * Math.fma(qY, qZ, -(qX * qW)));
+        dest.put(destOffset + 10, Math.fma(-2.0, Math.fma(qX, qX, qY * qY), 1.0));
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5290,7 +11963,33 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeRotationQuat(dest.array(), dest.arrayOffset() + destOffset, q.array(), q.arrayOffset() + qOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeRotationQuat_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(q.duplicate().position(0)), (long) qOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && q.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeRotationQuat_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(q.duplicate().position(0)), (long) qOffset * 8L);
+            return dest;
+        }
+        double _qx = q.get(qOffset + 0);
+        double _qy = q.get(qOffset + 1);
+        double _qz = q.get(qOffset + 2);
+        double _qw = q.get(qOffset + 3);
+        double _t0 = _qz * _qz;
+        double _t1 = _qz * _qw;
+        double _t2 = _qy * _qw;
+        dest.put(destOffset + 0, Math.fma(-2.0, Math.fma(_qy, _qy, _t0), 1.0));
+        dest.put(destOffset + 1, 2.0 * Math.fma(_qx, _qy, _t1));
+        dest.put(destOffset + 2, 2.0 * Math.fma(_qx, _qz, -_t2));
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 2.0 * Math.fma(_qx, _qy, -_t1));
+        dest.put(destOffset + 5, Math.fma(-2.0, Math.fma(_qx, _qx, _t0), 1.0));
+        dest.put(destOffset + 6, 2.0 * Math.fma(_qx, _qw, _qy * _qz));
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 2.0 * Math.fma(_qx, _qz, _t2));
+        dest.put(destOffset + 9, 2.0 * Math.fma(_qy, _qz, -(_qx * _qw)));
+        dest.put(destOffset + 10, Math.fma(-2.0, Math.fma(_qx, _qx, _qy * _qy), 1.0));
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5305,7 +12004,28 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeRotationX(dest.array(), dest.arrayOffset() + destOffset, angle);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeRotationX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angle);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeRotationX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angle);
+            return dest;
+        }
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        dest.put(destOffset + 0, 1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, _t0);
+        dest.put(destOffset + 6, _t1);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, -_t1);
+        dest.put(destOffset + 10, _t0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5320,7 +12040,34 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeRotationXYZ(dest.array(), dest.arrayOffset() + destOffset, angleX, angleY, angleZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeRotationXYZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleX, angleY, angleZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeRotationXYZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleX, angleY, angleZ);
+            return dest;
+        }
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.sin(angleY);
+        double _t4 = Math.sin(angleX);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t4 * _t3;
+        double _t7 = _t3 * _t5;
+        dest.put(destOffset + 0, _t0 * _t1);
+        dest.put(destOffset + 1, Math.fma(_t6, _t1, _t2 * _t5));
+        dest.put(destOffset + 2, Math.fma(_t4, _t2, -(_t7 * _t1)));
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, -(_t2 * _t0));
+        dest.put(destOffset + 5, Math.fma(_t5, _t1, -(_t6 * _t2)));
+        dest.put(destOffset + 6, Math.fma(_t7, _t2, _t4 * _t1));
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t3);
+        dest.put(destOffset + 9, -(_t4 * _t0));
+        dest.put(destOffset + 10, _t5 * _t0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5335,7 +12082,34 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeRotationXZY(dest.array(), dest.arrayOffset() + destOffset, angleX, angleY, angleZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeRotationXZY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleX, angleY, angleZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeRotationXZY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleX, angleY, angleZ);
+            return dest;
+        }
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.sin(angleY);
+        double _t4 = Math.cos(angleX);
+        double _t5 = Math.sin(angleX);
+        double _t6 = _t2 * _t4;
+        double _t7 = _t5 * _t2;
+        dest.put(destOffset + 0, _t0 * _t1);
+        dest.put(destOffset + 1, Math.fma(_t6, _t0, _t5 * _t3));
+        dest.put(destOffset + 2, Math.fma(_t7, _t0, -(_t3 * _t4)));
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, -_t2);
+        dest.put(destOffset + 5, _t4 * _t1);
+        dest.put(destOffset + 6, _t5 * _t1);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t3 * _t1);
+        dest.put(destOffset + 9, Math.fma(_t6, _t3, -(_t5 * _t0)));
+        dest.put(destOffset + 10, Math.fma(_t7, _t3, _t4 * _t0));
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5350,7 +12124,28 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeRotationY(dest.array(), dest.arrayOffset() + destOffset, angle);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeRotationY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angle);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeRotationY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angle);
+            return dest;
+        }
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        dest.put(destOffset + 0, _t0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, -_t1);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t1);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, _t0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5365,7 +12160,34 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeRotationYXZ(dest.array(), dest.arrayOffset() + destOffset, angleX, angleY, angleZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeRotationYXZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleX, angleY, angleZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeRotationYXZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleX, angleY, angleZ);
+            return dest;
+        }
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleY);
+        double _t2 = Math.sin(angleZ);
+        double _t3 = Math.cos(angleY);
+        double _t4 = Math.cos(angleZ);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t0 * _t1;
+        double _t7 = _t0 * _t3;
+        dest.put(destOffset + 0, Math.fma(_t6, _t2, _t3 * _t4));
+        dest.put(destOffset + 1, _t2 * _t5);
+        dest.put(destOffset + 2, Math.fma(_t7, _t2, -(_t1 * _t4)));
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, Math.fma(_t6, _t4, -(_t2 * _t3)));
+        dest.put(destOffset + 5, _t5 * _t4);
+        dest.put(destOffset + 6, Math.fma(_t7, _t4, _t1 * _t2));
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t1 * _t5);
+        dest.put(destOffset + 9, -_t0);
+        dest.put(destOffset + 10, _t5 * _t3);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5380,7 +12202,34 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeRotationYZX(dest.array(), dest.arrayOffset() + destOffset, angleX, angleY, angleZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeRotationYZX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleX, angleY, angleZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeRotationYZX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleX, angleY, angleZ);
+            return dest;
+        }
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.sin(angleY);
+        double _t4 = Math.sin(angleZ);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t4 * _t0;
+        double _t7 = _t3 * _t4;
+        dest.put(destOffset + 0, _t0 * _t1);
+        dest.put(destOffset + 1, _t4);
+        dest.put(destOffset + 2, -(_t3 * _t1));
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, Math.fma(_t2, _t3, -(_t6 * _t5)));
+        dest.put(destOffset + 5, _t5 * _t1);
+        dest.put(destOffset + 6, Math.fma(_t7, _t5, _t2 * _t0));
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, Math.fma(_t6, _t2, _t3 * _t5));
+        dest.put(destOffset + 9, -(_t2 * _t1));
+        dest.put(destOffset + 10, Math.fma(_t5, _t0, -(_t7 * _t2)));
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5395,7 +12244,28 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeRotationZ(dest.array(), dest.arrayOffset() + destOffset, angle);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeRotationZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angle);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeRotationZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angle);
+            return dest;
+        }
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        dest.put(destOffset + 0, _t0);
+        dest.put(destOffset + 1, _t1);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, -_t1);
+        dest.put(destOffset + 5, _t0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5410,7 +12280,34 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeRotationZXY(dest.array(), dest.arrayOffset() + destOffset, angleX, angleY, angleZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeRotationZXY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleX, angleY, angleZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeRotationZXY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleX, angleY, angleZ);
+            return dest;
+        }
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleX);
+        double _t3 = Math.sin(angleZ);
+        double _t4 = Math.sin(angleY);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t2 * _t3;
+        double _t7 = _t2 * _t1;
+        dest.put(destOffset + 0, Math.fma(_t0, _t1, -(_t6 * _t4)));
+        dest.put(destOffset + 1, Math.fma(_t7, _t4, _t3 * _t0));
+        dest.put(destOffset + 2, -(_t4 * _t5));
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, -(_t3 * _t5));
+        dest.put(destOffset + 5, _t5 * _t1);
+        dest.put(destOffset + 6, _t2);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, Math.fma(_t6, _t0, _t4 * _t1));
+        dest.put(destOffset + 9, Math.fma(_t4, _t3, -(_t7 * _t0)));
+        dest.put(destOffset + 10, _t5 * _t0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5425,7 +12322,34 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeRotationZYX(dest.array(), dest.arrayOffset() + destOffset, angleX, angleY, angleZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeRotationZYX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleX, angleY, angleZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeRotationZYX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleX, angleY, angleZ);
+            return dest;
+        }
+        double _t0 = Math.cos(angleY);
+        double _t1 = Math.cos(angleZ);
+        double _t2 = Math.sin(angleY);
+        double _t3 = Math.sin(angleX);
+        double _t4 = Math.sin(angleZ);
+        double _t5 = Math.cos(angleX);
+        double _t6 = _t2 * _t1;
+        double _t7 = _t2 * _t4;
+        dest.put(destOffset + 0, _t0 * _t1);
+        dest.put(destOffset + 1, _t4 * _t0);
+        dest.put(destOffset + 2, -_t2);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, Math.fma(_t6, _t3, -(_t4 * _t5)));
+        dest.put(destOffset + 5, Math.fma(_t7, _t3, _t5 * _t1));
+        dest.put(destOffset + 6, _t3 * _t0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, Math.fma(_t6, _t5, _t3 * _t4));
+        dest.put(destOffset + 9, Math.fma(_t7, _t5, -(_t3 * _t1)));
+        dest.put(destOffset + 10, _t5 * _t0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5440,7 +12364,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeScaling(dest.array(), dest.arrayOffset() + destOffset, vX, vY, vZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeScaling_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, vX, vY, vZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeScaling_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, vX, vY, vZ);
+            return dest;
+        }
+        dest.put(destOffset + 0, vX);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, vY);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, vZ);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5456,7 +12399,29 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeScaling(dest.array(), dest.arrayOffset() + destOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeScaling_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && v.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeScaling_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 8L);
+            return dest;
+        }
+        double _vx = v.get(vOffset + 0);
+        double _vy = v.get(vOffset + 1);
+        double _vz = v.get(vOffset + 2);
+        dest.put(destOffset + 0, _vx);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, _vy);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, _vz);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5471,7 +12436,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeScaling(dest.array(), dest.arrayOffset() + destOffset, s);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeScaling_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, s);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeScaling_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, s);
+            return dest;
+        }
+        dest.put(destOffset + 0, s);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, s);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, s);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5486,7 +12470,27 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeShadow(dest.array(), dest.arrayOffset() + destOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeShadow_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeShadow_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
+            return dest;
+        }
+        double _t4 = Math.fma(lightX, planeX, lightY * planeY) + Math.fma(lightZ, planeZ, lightW * planeW);
+        dest.put(destOffset + 0, Math.fma(-lightX, planeX, _t4));
+        dest.put(destOffset + 1, -(lightY * planeX));
+        dest.put(destOffset + 2, -(lightZ * planeX));
+        dest.put(destOffset + 3, -(lightW * planeX));
+        dest.put(destOffset + 4, -(lightX * planeY));
+        dest.put(destOffset + 5, Math.fma(-lightY, planeY, _t4));
+        dest.put(destOffset + 6, -(lightZ * planeY));
+        dest.put(destOffset + 7, -(lightW * planeY));
+        dest.put(destOffset + 8, -(lightX * planeZ));
+        dest.put(destOffset + 9, -(lightY * planeZ));
+        dest.put(destOffset + 10, Math.fma(-lightZ, planeZ, _t4));
+        dest.put(destOffset + 11, -(lightW * planeZ));
+        dest.put(destOffset + 12, -(lightX * planeW));
+        dest.put(destOffset + 13, -(lightY * planeW));
+        dest.put(destOffset + 14, -(lightZ * planeW));
+        dest.put(destOffset + 15, Math.fma(-lightW, planeW, _t4));
         return dest;
     }
 
@@ -5503,7 +12507,35 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeShadow(dest.array(), dest.arrayOffset() + destOffset, light.array(), light.arrayOffset() + lightOffset, plane.array(), plane.arrayOffset() + planeOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeShadow_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(light.duplicate().position(0)), (long) lightOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(plane.duplicate().position(0)), (long) planeOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && light.order() == java.nio.ByteOrder.nativeOrder() && plane.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeShadow_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(light.duplicate().position(0)), (long) lightOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(plane.duplicate().position(0)), (long) planeOffset * 8L);
+            return dest;
+        }
+        double _lightx = light.get(lightOffset + 0);
+        double _lighty = light.get(lightOffset + 1);
+        double _lightz = light.get(lightOffset + 2);
+        double _lightw = light.get(lightOffset + 3);
+        double _planex = plane.get(planeOffset + 0);
+        double _planey = plane.get(planeOffset + 1);
+        double _planez = plane.get(planeOffset + 2);
+        double _planew = plane.get(planeOffset + 3);
+        double _t4 = Math.fma(_lightx, _planex, _lighty * _planey) + Math.fma(_lightz, _planez, _lightw * _planew);
+        dest.put(destOffset + 0, Math.fma(-_lightx, _planex, _t4));
+        dest.put(destOffset + 1, -(_lighty * _planex));
+        dest.put(destOffset + 2, -(_lightz * _planex));
+        dest.put(destOffset + 3, -(_lightw * _planex));
+        dest.put(destOffset + 4, -(_lightx * _planey));
+        dest.put(destOffset + 5, Math.fma(-_lighty, _planey, _t4));
+        dest.put(destOffset + 6, -(_lightz * _planey));
+        dest.put(destOffset + 7, -(_lightw * _planey));
+        dest.put(destOffset + 8, -(_lightx * _planez));
+        dest.put(destOffset + 9, -(_lighty * _planez));
+        dest.put(destOffset + 10, Math.fma(-_lightz, _planez, _t4));
+        dest.put(destOffset + 11, -(_lightw * _planez));
+        dest.put(destOffset + 12, -(_lightx * _planew));
+        dest.put(destOffset + 13, -(_lighty * _planew));
+        dest.put(destOffset + 14, -(_lightz * _planew));
+        dest.put(destOffset + 15, Math.fma(-_lightw, _planew, _t4));
         return dest;
     }
 
@@ -5518,7 +12550,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeShear(dest.array(), dest.arrayOffset() + destOffset, xy, xz, yx, yz, zx, zy);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeShear_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, xy, xz, yx, yz, zx, zy);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeShear_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, xy, xz, yx, yz, zx, zy);
+            return dest;
+        }
+        dest.put(destOffset + 0, 1.0);
+        dest.put(destOffset + 1, yx);
+        dest.put(destOffset + 2, zx);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, xy);
+        dest.put(destOffset + 5, 1.0);
+        dest.put(destOffset + 6, zy);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, xz);
+        dest.put(destOffset + 9, yz);
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 0.0);
+        dest.put(destOffset + 13, 0.0);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5533,7 +12584,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeTile(dest.array(), dest.arrayOffset() + destOffset, x, y, w, h);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeTile_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, x, y, w, h);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeTile_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, x, y, w, h);
+            return dest;
+        }
+        dest.put(destOffset + 0, w);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, h);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, Math.fma(-2.0, x, w - 1.0));
+        dest.put(destOffset + 13, Math.fma(-2.0, y, h - 1.0));
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5548,7 +12618,26 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeTranslation(dest.array(), dest.arrayOffset() + destOffset, vX, vY, vZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeTranslation_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, vX, vY, vZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeTranslation_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, vX, vY, vZ);
+            return dest;
+        }
+        dest.put(destOffset + 0, 1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, vX);
+        dest.put(destOffset + 13, vY);
+        dest.put(destOffset + 14, vZ);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5564,7 +12653,29 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeTranslation(dest.array(), dest.arrayOffset() + destOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeTranslation_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && v.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeTranslation_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 8L);
+            return dest;
+        }
+        double _vx = v.get(vOffset + 0);
+        double _vy = v.get(vOffset + 1);
+        double _vz = v.get(vOffset + 2);
+        dest.put(destOffset + 0, 1.0);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 1.0);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, _vx);
+        dest.put(destOffset + 13, _vy);
+        dest.put(destOffset + 14, _vz);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -5579,7 +12690,51 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeTrapezoidCrop(dest.array(), dest.arrayOffset() + destOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeTrapezoidCrop_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeTrapezoidCrop_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
+            return dest;
+        }
+        double _t0 = -p0X;
+        double _t3 = p0X - p1X;
+        double _t4 = p0Y - p1Y;
+        double _t5 = p1Y - p0Y;
+        double _t15 = Math.fma(p0X, _t5, p0Y * _t3);
+        double _t16 = Math.fma(p0Y, _t5, -(p0X * _t3));
+        double _t18 = Math.fma(p3X, _t5, p3Y * _t3) - _t15;
+        double _t18_inv = 1.0 / _t18;
+        double _t19 = Math.fma(p3X, _t3, p3Y * _t4) + _t16;
+        double _t25 = _t3 - _t19 * _t5 * _t18_inv;
+        double _t26 = _t4 - _t19 * _t3 * _t18_inv;
+        double _t30 = _t19 * _t15 * _t18_inv;
+        double _t41 = Math.fma(p0Y, _t5, Math.fma(_t0, _t3, Math.fma(p2X, _t25, Math.fma(p2Y, _t26, _t30))));
+        double _t41_inv = 1.0 / _t41;
+        double _t45 = Math.fma(p0Y, _t5, Math.fma(_t0, _t3, Math.fma(p1X, _t25, Math.fma(p1Y, _t26, _t30)))) * _t18;
+        double _t47 = _t16 + (_t30 + Math.fma(p2X, _t25, p2Y * _t26)) + (Math.fma(p0X, _t3, -(p0Y * _t5)) + (Math.fma(-p1Y, _t26, -(p1X * _t25)) - _t30));
+        double _t50 = Math.fma(_t0, _t5, Math.fma(-p0Y, _t3, _t45 / _t47));
+        double _t52 = Math.fma(p3X, _t5, Math.fma(p3Y, _t3, _t50));
+        double _t52_inv = 1.0 / _t52;
+        double _t53 = _t5 * _t52_inv;
+        double _t54 = _t3 * _t52_inv;
+        double _t55 = _t52 * _t47;
+        double _t58 = _t50 * _t52_inv;
+        double _t60 = 2.0 * _t45 / ((1.0 - _t45 / _t55) * _t55);
+        double _t61 = 1.0 + _t60;
+        dest.put(destOffset + 0, 2.0 * _t25 * _t41_inv - _t53);
+        dest.put(destOffset + 1, _t61 * _t5 * _t52_inv);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, _t53);
+        dest.put(destOffset + 4, 2.0 * _t26 * _t41_inv - _t54);
+        dest.put(destOffset + 5, _t61 * _t3 * _t52_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, _t54);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 2.0 * Math.fma(p0Y, _t5, Math.fma(_t0, _t3, _t30)) * _t41_inv - _t58);
+        dest.put(destOffset + 13, _t61 * _t50 * _t52_inv - _t60);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, _t58);
         return dest;
     }
 
@@ -5598,7 +12753,59 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.makeTrapezoidCrop(dest.array(), dest.arrayOffset() + destOffset, p0.array(), p0.arrayOffset() + p0Offset, p1.array(), p1.arrayOffset() + p1Offset, p2.array(), p2.arrayOffset() + p2Offset, p3.array(), p3.arrayOffset() + p3Offset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.makeTrapezoidCrop_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p0.duplicate().position(0)), (long) p0Offset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p1.duplicate().position(0)), (long) p1Offset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p2.duplicate().position(0)), (long) p2Offset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p3.duplicate().position(0)), (long) p3Offset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && p0.order() == java.nio.ByteOrder.nativeOrder() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.order() == java.nio.ByteOrder.nativeOrder() && p3.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.makeTrapezoidCrop_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p0.duplicate().position(0)), (long) p0Offset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p1.duplicate().position(0)), (long) p1Offset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p2.duplicate().position(0)), (long) p2Offset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p3.duplicate().position(0)), (long) p3Offset * 8L);
+            return dest;
+        }
+        double _p0x = p0.get(p0Offset + 0);
+        double _p0y = p0.get(p0Offset + 1);
+        double _p1x = p1.get(p1Offset + 0);
+        double _p1y = p1.get(p1Offset + 1);
+        double _p2x = p2.get(p2Offset + 0);
+        double _p2y = p2.get(p2Offset + 1);
+        double _p3x = p3.get(p3Offset + 0);
+        double _p3y = p3.get(p3Offset + 1);
+        double _t0 = -_p0x;
+        double _t3 = _p0x - _p1x;
+        double _t4 = _p0y - _p1y;
+        double _t5 = _p1y - _p0y;
+        double _t15 = Math.fma(_p0x, _t5, _p0y * _t3);
+        double _t16 = Math.fma(_p0y, _t5, -(_p0x * _t3));
+        double _t18 = Math.fma(_p3x, _t5, _p3y * _t3) - _t15;
+        double _t18_inv = 1.0 / _t18;
+        double _t19 = Math.fma(_p3x, _t3, _p3y * _t4) + _t16;
+        double _t25 = _t3 - _t19 * _t5 * _t18_inv;
+        double _t26 = _t4 - _t19 * _t3 * _t18_inv;
+        double _t30 = _t19 * _t15 * _t18_inv;
+        double _t41 = Math.fma(_p0y, _t5, Math.fma(_t0, _t3, Math.fma(_p2x, _t25, Math.fma(_p2y, _t26, _t30))));
+        double _t41_inv = 1.0 / _t41;
+        double _t45 = Math.fma(_p0y, _t5, Math.fma(_t0, _t3, Math.fma(_p1x, _t25, Math.fma(_p1y, _t26, _t30)))) * _t18;
+        double _t47 = _t16 + (_t30 + Math.fma(_p2x, _t25, _p2y * _t26)) + (Math.fma(_p0x, _t3, -(_p0y * _t5)) + (Math.fma(-_p1y, _t26, -(_p1x * _t25)) - _t30));
+        double _t50 = Math.fma(_t0, _t5, Math.fma(-_p0y, _t3, _t45 / _t47));
+        double _t52 = Math.fma(_p3x, _t5, Math.fma(_p3y, _t3, _t50));
+        double _t52_inv = 1.0 / _t52;
+        double _t53 = _t5 * _t52_inv;
+        double _t54 = _t3 * _t52_inv;
+        double _t55 = _t52 * _t47;
+        double _t58 = _t50 * _t52_inv;
+        double _t60 = 2.0 * _t45 / ((1.0 - _t45 / _t55) * _t55);
+        double _t61 = 1.0 + _t60;
+        dest.put(destOffset + 0, 2.0 * _t25 * _t41_inv - _t53);
+        dest.put(destOffset + 1, _t61 * _t5 * _t52_inv);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, _t53);
+        dest.put(destOffset + 4, 2.0 * _t26 * _t41_inv - _t54);
+        dest.put(destOffset + 5, _t61 * _t3 * _t52_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, _t54);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, 2.0 * Math.fma(_p0y, _t5, Math.fma(_t0, _t3, _t30)) * _t41_inv - _t58);
+        dest.put(destOffset + 13, _t61 * _t50 * _t52_inv - _t60);
+        dest.put(destOffset + 14, 0.0);
+        dest.put(destOffset + 15, _t58);
         return dest;
     }
 
@@ -7774,7 +14981,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer obliqueZ_no_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_lh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_lh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
         return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_lh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
     }
 
@@ -7823,7 +15030,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer obliqueZ_no_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_rh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_rh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
         return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_rh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
     }
 
@@ -7879,7 +15086,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer obliqueZ_zo_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_lh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_lh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
         return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_lh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
     }
 
@@ -7927,7 +15134,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer obliqueZ_zo_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_rh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_rh_unsafe(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
         return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_rh_api(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW);
     }
 
@@ -7982,7 +15189,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer obliqueZ_no_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && plane.isDirect()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_lh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && plane.isDirect() && plane.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_lh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
         return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_lh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
     }
 
@@ -8036,7 +15243,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer obliqueZ_no_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && plane.isDirect()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_rh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && plane.isDirect() && plane.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_rh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
         return Double4x4OpsKernelsTypedBuffer.obliqueZ_no_rh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
     }
 
@@ -8097,7 +15304,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer obliqueZ_zo_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && plane.isDirect()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_lh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && plane.isDirect() && plane.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_lh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
         return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_lh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
     }
 
@@ -8150,7 +15357,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer obliqueZ_zo_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && plane.isDirect()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_rh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && plane.isDirect() && plane.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_rh_unsafe(dest, destOffset, src, srcOffset, plane, planeOffset);
         return Double4x4OpsKernelsTypedBuffer.obliqueZ_zo_rh_api(dest, destOffset, src, srcOffset, plane, planeOffset);
     }
 
@@ -8210,7 +15417,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer ortho_no_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.ortho_no_lh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.ortho_no_lh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
         return Double4x4OpsKernelsTypedBuffer.ortho_no_lh_api(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
     }
 
@@ -8267,7 +15474,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer ortho_no_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.ortho_no_rh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.ortho_no_rh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
         return Double4x4OpsKernelsTypedBuffer.ortho_no_rh_api(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
     }
 
@@ -8331,7 +15538,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer ortho_zo_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.ortho_zo_lh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.ortho_zo_lh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
         return Double4x4OpsKernelsTypedBuffer.ortho_zo_lh_api(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
     }
 
@@ -8387,7 +15594,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer ortho_zo_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.ortho_zo_rh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.ortho_zo_rh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
         return Double4x4OpsKernelsTypedBuffer.ortho_zo_rh_api(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar);
     }
 
@@ -8450,7 +15657,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer ortho2D_no_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double left, double right, double bottom, double top) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.ortho2D_no_lh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.ortho2D_no_lh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top);
         return Double4x4OpsKernelsTypedBuffer.ortho2D_no_lh_api(dest, destOffset, src, srcOffset, left, right, bottom, top);
     }
 
@@ -8504,7 +15711,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer ortho2D_no_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double left, double right, double bottom, double top) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.ortho2D_no_rh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.ortho2D_no_rh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top);
         return Double4x4OpsKernelsTypedBuffer.ortho2D_no_rh_api(dest, destOffset, src, srcOffset, left, right, bottom, top);
     }
 
@@ -8565,7 +15772,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer ortho2D_zo_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double left, double right, double bottom, double top) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.ortho2D_zo_lh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.ortho2D_zo_lh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top);
         return Double4x4OpsKernelsTypedBuffer.ortho2D_zo_lh_api(dest, destOffset, src, srcOffset, left, right, bottom, top);
     }
 
@@ -8619,7 +15826,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer ortho2D_zo_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double left, double right, double bottom, double top) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.ortho2D_zo_rh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.ortho2D_zo_rh_unsafe(dest, destOffset, src, srcOffset, left, right, bottom, top);
         return Double4x4OpsKernelsTypedBuffer.ortho2D_zo_rh_api(dest, destOffset, src, srcOffset, left, right, bottom, top);
     }
 
@@ -8680,7 +15887,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer orthoCrop_no_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer view, int viewOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && view.isDirect()) return Double4x4OpsKernelsTypedBuffer.orthoCrop_no_lh_unsafe(dest, destOffset, src, srcOffset, view, viewOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && view.isDirect() && view.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.orthoCrop_no_lh_unsafe(dest, destOffset, src, srcOffset, view, viewOffset);
         return Double4x4OpsKernelsTypedBuffer.orthoCrop_no_lh_api(dest, destOffset, src, srcOffset, view, viewOffset);
     }
 
@@ -8697,12 +15904,151 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.orthoCrop_no_lh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, view.array(), view.arrayOffset() + viewOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.orthoCrop_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(view.duplicate().position(0)), (long) viewOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && view.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.orthoCrop_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(view.duplicate().position(0)), (long) viewOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _view00 = view.get(viewOffset + 0);
+        double _view10 = view.get(viewOffset + 1);
+        double _view20 = view.get(viewOffset + 2);
+        double _view01 = view.get(viewOffset + 4);
+        double _view11 = view.get(viewOffset + 5);
+        double _view21 = view.get(viewOffset + 6);
+        double _view02 = view.get(viewOffset + 8);
+        double _view12 = view.get(viewOffset + 9);
+        double _view22 = view.get(viewOffset + 10);
+        double _view03 = view.get(viewOffset + 12);
+        double _view13 = view.get(viewOffset + 13);
+        double _view23 = view.get(viewOffset + 14);
+        double _t4 = _self20 - _self21;
+        double _t5 = _self00 - _self01;
+        double _t6 = _self10 - _self11;
+        double _t7 = _self30 - _self31;
+        double _t8 = _self21 - _self20;
+        double _t9 = _self01 - _self00;
+        double _t10 = _self11 - _self10;
+        double _t11 = _self31 - _self30;
+        double _t12 = _self20 + _self21;
+        double _t13 = _self00 + _self01;
+        double _t14 = _self10 + _self11;
+        double _t15 = _self30 + _self31;
+        double _t16 = -_self20 - _self21;
+        double _t17 = -_self00 - _self01;
+        double _t18 = -_self10 - _self11;
+        double _t19 = -_self30 - _self31;
+        double _t52 = _self23 + (_t4 - _self22);
+        double _t53 = _self03 + (_t5 - _self02);
+        double _t54 = _self13 + (_t6 - _self12);
+        double _t55 = _self33 + (_t7 - _self32);
+        double _t55_inv = 1.0 / _t55;
+        double _t56 = _self23 + (_t8 - _self22);
+        double _t57 = _self03 + (_t9 - _self02);
+        double _t58 = _self13 + (_t10 - _self12);
+        double _t59 = _self33 + (_t11 - _self32);
+        double _t59_inv = 1.0 / _t59;
+        double _t60 = _self23 + (_t12 - _self22);
+        double _t61 = _self03 + (_t13 - _self02);
+        double _t62 = _self13 + (_t14 - _self12);
+        double _t63 = _self33 + (_t15 - _self32);
+        double _t63_inv = 1.0 / _t63;
+        double _t64 = _self23 + (_self22 + _t4);
+        double _t65 = _self03 + (_self02 + _t5);
+        double _t66 = _self13 + (_self12 + _t6);
+        double _t67 = _self33 + (_self32 + _t7);
+        double _t67_inv = 1.0 / _t67;
+        double _t68 = _self23 + (_self22 + _t8);
+        double _t69 = _self03 + (_self02 + _t9);
+        double _t70 = _self13 + (_self12 + _t10);
+        double _t71 = _self33 + (_self32 + _t11);
+        double _t71_inv = 1.0 / _t71;
+        double _t72 = _self23 + (_self22 + _t12);
+        double _t73 = _self03 + (_self02 + _t13);
+        double _t74 = _self13 + (_self12 + _t14);
+        double _t75 = _self33 + (_self32 + _t15);
+        double _t75_inv = 1.0 / _t75;
+        double _t76 = _self23 + (_t16 - _self22);
+        double _t77 = _self03 + (_t17 - _self02);
+        double _t78 = _self13 + (_t18 - _self12);
+        double _t79 = _self33 + (_t19 - _self32);
+        double _t79_inv = 1.0 / _t79;
+        double _t80 = _self23 + (_self22 + _t16);
+        double _t81 = _self03 + (_self02 + _t17);
+        double _t82 = _self13 + (_self12 + _t18);
+        double _t83 = _self33 + (_self32 + _t19);
+        double _t83_inv = 1.0 / _t83;
+        double _t174 = _view03 + Math.fma(_view02, _t52, Math.fma(_view00, _t53, _view01 * _t54)) * _t55_inv;
+        double _t175 = _view03 + Math.fma(_view02, _t56, Math.fma(_view00, _t57, _view01 * _t58)) * _t59_inv;
+        double _t176 = _view03 + Math.fma(_view02, _t60, Math.fma(_view00, _t61, _view01 * _t62)) * _t63_inv;
+        double _t177 = _view03 + Math.fma(_view02, _t64, Math.fma(_view00, _t65, _view01 * _t66)) * _t67_inv;
+        double _t178 = _view03 + Math.fma(_view02, _t68, Math.fma(_view00, _t69, _view01 * _t70)) * _t71_inv;
+        double _t179 = _view03 + Math.fma(_view02, _t72, Math.fma(_view00, _t73, _view01 * _t74)) * _t75_inv;
+        double _t180 = _view13 + Math.fma(_view12, _t52, Math.fma(_view10, _t53, _view11 * _t54)) * _t55_inv;
+        double _t181 = _view13 + Math.fma(_view12, _t56, Math.fma(_view10, _t57, _view11 * _t58)) * _t59_inv;
+        double _t182 = _view13 + Math.fma(_view12, _t60, Math.fma(_view10, _t61, _view11 * _t62)) * _t63_inv;
+        double _t183 = _view13 + Math.fma(_view12, _t64, Math.fma(_view10, _t65, _view11 * _t66)) * _t67_inv;
+        double _t184 = _view13 + Math.fma(_view12, _t68, Math.fma(_view10, _t69, _view11 * _t70)) * _t71_inv;
+        double _t185 = _view13 + Math.fma(_view12, _t72, Math.fma(_view10, _t73, _view11 * _t74)) * _t75_inv;
+        double _t186 = _view23 + Math.fma(_view22, _t52, Math.fma(_view20, _t53, _view21 * _t54)) * _t55_inv;
+        double _t187 = _view23 + Math.fma(_view22, _t56, Math.fma(_view20, _t57, _view21 * _t58)) * _t59_inv;
+        double _t188 = _view23 + Math.fma(_view22, _t60, Math.fma(_view20, _t61, _view21 * _t62)) * _t63_inv;
+        double _t189 = _view23 + Math.fma(_view22, _t64, Math.fma(_view20, _t65, _view21 * _t66)) * _t67_inv;
+        double _t190 = _view23 + Math.fma(_view22, _t68, Math.fma(_view20, _t69, _view21 * _t70)) * _t71_inv;
+        double _t191 = _view23 + Math.fma(_view22, _t72, Math.fma(_view20, _t73, _view21 * _t74)) * _t75_inv;
+        double _t198 = _view03 + Math.fma(_view02, _t76, Math.fma(_view00, _t77, _view01 * _t78)) * _t79_inv;
+        double _t199 = _view03 + Math.fma(_view02, _t80, Math.fma(_view00, _t81, _view01 * _t82)) * _t83_inv;
+        double _t200 = _view13 + Math.fma(_view12, _t76, Math.fma(_view10, _t77, _view11 * _t78)) * _t79_inv;
+        double _t201 = _view13 + Math.fma(_view12, _t80, Math.fma(_view10, _t81, _view11 * _t82)) * _t83_inv;
+        double _t202 = _view23 + Math.fma(_view22, _t76, Math.fma(_view20, _t77, _view21 * _t78)) * _t79_inv;
+        double _t203 = _view23 + Math.fma(_view22, _t80, Math.fma(_view20, _t81, _view21 * _t82)) * _t83_inv;
+        double _t240 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t198, _t174), _t175), _t176), _t199), _t177), _t178), _t179);
+        double _t241 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t198, _t174), _t175), _t176), _t199), _t177), _t178), _t179);
+        double _t242 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t200, _t180), _t181), _t182), _t201), _t183), _t184), _t185);
+        double _t243 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t200, _t180), _t181), _t182), _t201), _t183), _t184), _t185);
+        double _t244 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t202, _t186), _t187), _t188), _t203), _t189), _t190), _t191);
+        double _t245 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t202, _t186), _t187), _t188), _t203), _t189), _t190), _t191);
+        double _t246 = _t240 - _t241;
+        double _t246_inv = 1.0 / _t246;
+        double _t247 = _t242 - _t243;
+        double _t247_inv = 1.0 / _t247;
+        double _t248 = _t244 - _t245;
+        double _t248_inv = 1.0 / _t248;
+        dest.put(destOffset + 0, 2.0 * _t246_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t247_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 2.0 * _t248_inv);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -((_t241 + _t240) * _t246_inv));
+        dest.put(destOffset + 13, -((_t243 + _t242) * _t247_inv));
+        dest.put(destOffset + 14, -((_t245 + _t244) * _t248_inv));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer orthoCrop_no_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer view, int viewOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && view.isDirect()) return Double4x4OpsKernelsTypedBuffer.orthoCrop_no_rh_unsafe(dest, destOffset, src, srcOffset, view, viewOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && view.isDirect() && view.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.orthoCrop_no_rh_unsafe(dest, destOffset, src, srcOffset, view, viewOffset);
         return Double4x4OpsKernelsTypedBuffer.orthoCrop_no_rh_api(dest, destOffset, src, srcOffset, view, viewOffset);
     }
 
@@ -8719,7 +16065,146 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.orthoCrop_no_rh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, view.array(), view.arrayOffset() + viewOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.orthoCrop_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(view.duplicate().position(0)), (long) viewOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && view.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.orthoCrop_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(view.duplicate().position(0)), (long) viewOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _view00 = view.get(viewOffset + 0);
+        double _view10 = view.get(viewOffset + 1);
+        double _view20 = view.get(viewOffset + 2);
+        double _view01 = view.get(viewOffset + 4);
+        double _view11 = view.get(viewOffset + 5);
+        double _view21 = view.get(viewOffset + 6);
+        double _view02 = view.get(viewOffset + 8);
+        double _view12 = view.get(viewOffset + 9);
+        double _view22 = view.get(viewOffset + 10);
+        double _view03 = view.get(viewOffset + 12);
+        double _view13 = view.get(viewOffset + 13);
+        double _view23 = view.get(viewOffset + 14);
+        double _t4 = _self20 - _self21;
+        double _t5 = _self00 - _self01;
+        double _t6 = _self10 - _self11;
+        double _t7 = _self30 - _self31;
+        double _t8 = _self21 - _self20;
+        double _t9 = _self01 - _self00;
+        double _t10 = _self11 - _self10;
+        double _t11 = _self31 - _self30;
+        double _t12 = _self20 + _self21;
+        double _t13 = _self00 + _self01;
+        double _t14 = _self10 + _self11;
+        double _t15 = _self30 + _self31;
+        double _t16 = -_self20 - _self21;
+        double _t17 = -_self00 - _self01;
+        double _t18 = -_self10 - _self11;
+        double _t19 = -_self30 - _self31;
+        double _t52 = _self23 + (_t4 - _self22);
+        double _t53 = _self03 + (_t5 - _self02);
+        double _t54 = _self13 + (_t6 - _self12);
+        double _t55 = _self33 + (_t7 - _self32);
+        double _t55_inv = 1.0 / _t55;
+        double _t56 = _self23 + (_t8 - _self22);
+        double _t57 = _self03 + (_t9 - _self02);
+        double _t58 = _self13 + (_t10 - _self12);
+        double _t59 = _self33 + (_t11 - _self32);
+        double _t59_inv = 1.0 / _t59;
+        double _t60 = _self23 + (_t12 - _self22);
+        double _t61 = _self03 + (_t13 - _self02);
+        double _t62 = _self13 + (_t14 - _self12);
+        double _t63 = _self33 + (_t15 - _self32);
+        double _t63_inv = 1.0 / _t63;
+        double _t64 = _self23 + (_self22 + _t4);
+        double _t65 = _self03 + (_self02 + _t5);
+        double _t66 = _self13 + (_self12 + _t6);
+        double _t67 = _self33 + (_self32 + _t7);
+        double _t67_inv = 1.0 / _t67;
+        double _t68 = _self23 + (_self22 + _t8);
+        double _t69 = _self03 + (_self02 + _t9);
+        double _t70 = _self13 + (_self12 + _t10);
+        double _t71 = _self33 + (_self32 + _t11);
+        double _t71_inv = 1.0 / _t71;
+        double _t72 = _self23 + (_self22 + _t12);
+        double _t73 = _self03 + (_self02 + _t13);
+        double _t74 = _self13 + (_self12 + _t14);
+        double _t75 = _self33 + (_self32 + _t15);
+        double _t75_inv = 1.0 / _t75;
+        double _t76 = _self23 + (_t16 - _self22);
+        double _t77 = _self03 + (_t17 - _self02);
+        double _t78 = _self13 + (_t18 - _self12);
+        double _t79 = _self33 + (_t19 - _self32);
+        double _t79_inv = 1.0 / _t79;
+        double _t80 = _self23 + (_self22 + _t16);
+        double _t81 = _self03 + (_self02 + _t17);
+        double _t82 = _self13 + (_self12 + _t18);
+        double _t83 = _self33 + (_self32 + _t19);
+        double _t83_inv = 1.0 / _t83;
+        double _t174 = _view03 + Math.fma(_view02, _t52, Math.fma(_view00, _t53, _view01 * _t54)) * _t55_inv;
+        double _t175 = _view03 + Math.fma(_view02, _t56, Math.fma(_view00, _t57, _view01 * _t58)) * _t59_inv;
+        double _t176 = _view03 + Math.fma(_view02, _t60, Math.fma(_view00, _t61, _view01 * _t62)) * _t63_inv;
+        double _t177 = _view03 + Math.fma(_view02, _t64, Math.fma(_view00, _t65, _view01 * _t66)) * _t67_inv;
+        double _t178 = _view03 + Math.fma(_view02, _t68, Math.fma(_view00, _t69, _view01 * _t70)) * _t71_inv;
+        double _t179 = _view03 + Math.fma(_view02, _t72, Math.fma(_view00, _t73, _view01 * _t74)) * _t75_inv;
+        double _t180 = _view13 + Math.fma(_view12, _t52, Math.fma(_view10, _t53, _view11 * _t54)) * _t55_inv;
+        double _t181 = _view13 + Math.fma(_view12, _t56, Math.fma(_view10, _t57, _view11 * _t58)) * _t59_inv;
+        double _t182 = _view13 + Math.fma(_view12, _t60, Math.fma(_view10, _t61, _view11 * _t62)) * _t63_inv;
+        double _t183 = _view13 + Math.fma(_view12, _t64, Math.fma(_view10, _t65, _view11 * _t66)) * _t67_inv;
+        double _t184 = _view13 + Math.fma(_view12, _t68, Math.fma(_view10, _t69, _view11 * _t70)) * _t71_inv;
+        double _t185 = _view13 + Math.fma(_view12, _t72, Math.fma(_view10, _t73, _view11 * _t74)) * _t75_inv;
+        double _t186 = _view23 + Math.fma(_view22, _t52, Math.fma(_view20, _t53, _view21 * _t54)) * _t55_inv;
+        double _t187 = _view23 + Math.fma(_view22, _t56, Math.fma(_view20, _t57, _view21 * _t58)) * _t59_inv;
+        double _t188 = _view23 + Math.fma(_view22, _t60, Math.fma(_view20, _t61, _view21 * _t62)) * _t63_inv;
+        double _t189 = _view23 + Math.fma(_view22, _t64, Math.fma(_view20, _t65, _view21 * _t66)) * _t67_inv;
+        double _t190 = _view23 + Math.fma(_view22, _t68, Math.fma(_view20, _t69, _view21 * _t70)) * _t71_inv;
+        double _t191 = _view23 + Math.fma(_view22, _t72, Math.fma(_view20, _t73, _view21 * _t74)) * _t75_inv;
+        double _t198 = _view03 + Math.fma(_view02, _t76, Math.fma(_view00, _t77, _view01 * _t78)) * _t79_inv;
+        double _t199 = _view03 + Math.fma(_view02, _t80, Math.fma(_view00, _t81, _view01 * _t82)) * _t83_inv;
+        double _t200 = _view13 + Math.fma(_view12, _t76, Math.fma(_view10, _t77, _view11 * _t78)) * _t79_inv;
+        double _t201 = _view13 + Math.fma(_view12, _t80, Math.fma(_view10, _t81, _view11 * _t82)) * _t83_inv;
+        double _t202 = _view23 + Math.fma(_view22, _t76, Math.fma(_view20, _t77, _view21 * _t78)) * _t79_inv;
+        double _t203 = _view23 + Math.fma(_view22, _t80, Math.fma(_view20, _t81, _view21 * _t82)) * _t83_inv;
+        double _t240 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t198, _t174), _t175), _t176), _t199), _t177), _t178), _t179);
+        double _t241 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t198, _t174), _t175), _t176), _t199), _t177), _t178), _t179);
+        double _t242 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t200, _t180), _t181), _t182), _t201), _t183), _t184), _t185);
+        double _t243 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t200, _t180), _t181), _t182), _t201), _t183), _t184), _t185);
+        double _t244 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t202, _t186), _t187), _t188), _t203), _t189), _t190), _t191);
+        double _t245 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t202, _t186), _t187), _t188), _t203), _t189), _t190), _t191);
+        double _t246 = _t240 - _t241;
+        double _t246_inv = 1.0 / _t246;
+        double _t247 = _t242 - _t243;
+        double _t247_inv = 1.0 / _t247;
+        double _t248 = _t244 - _t245;
+        double _t248_inv = 1.0 / _t248;
+        dest.put(destOffset + 0, 2.0 * _t246_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t247_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, -2.0 * _t248_inv);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -((_t241 + _t240) * _t246_inv));
+        dest.put(destOffset + 13, -((_t243 + _t242) * _t247_inv));
+        dest.put(destOffset + 14, -((-_t245 - _t244) * _t248_inv));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -8731,7 +16216,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer orthoCrop_zo_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer view, int viewOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && view.isDirect()) return Double4x4OpsKernelsTypedBuffer.orthoCrop_zo_lh_unsafe(dest, destOffset, src, srcOffset, view, viewOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && view.isDirect() && view.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.orthoCrop_zo_lh_unsafe(dest, destOffset, src, srcOffset, view, viewOffset);
         return Double4x4OpsKernelsTypedBuffer.orthoCrop_zo_lh_api(dest, destOffset, src, srcOffset, view, viewOffset);
     }
 
@@ -8748,12 +16233,150 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.orthoCrop_zo_lh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, view.array(), view.arrayOffset() + viewOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.orthoCrop_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(view.duplicate().position(0)), (long) viewOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && view.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.orthoCrop_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(view.duplicate().position(0)), (long) viewOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _view00 = view.get(viewOffset + 0);
+        double _view10 = view.get(viewOffset + 1);
+        double _view20 = view.get(viewOffset + 2);
+        double _view01 = view.get(viewOffset + 4);
+        double _view11 = view.get(viewOffset + 5);
+        double _view21 = view.get(viewOffset + 6);
+        double _view02 = view.get(viewOffset + 8);
+        double _view12 = view.get(viewOffset + 9);
+        double _view22 = view.get(viewOffset + 10);
+        double _view03 = view.get(viewOffset + 12);
+        double _view13 = view.get(viewOffset + 13);
+        double _view23 = view.get(viewOffset + 14);
+        double _t4 = _self20 - _self21;
+        double _t5 = _self00 - _self01;
+        double _t6 = _self10 - _self11;
+        double _t7 = _self30 - _self31;
+        double _t8 = _self21 - _self20;
+        double _t9 = _self01 - _self00;
+        double _t10 = _self11 - _self10;
+        double _t11 = _self31 - _self30;
+        double _t12 = _self20 + _self21;
+        double _t13 = _self00 + _self01;
+        double _t14 = _self10 + _self11;
+        double _t15 = _self30 + _self31;
+        double _t16 = -_self20 - _self21;
+        double _t17 = -_self00 - _self01;
+        double _t18 = -_self10 - _self11;
+        double _t19 = -_self30 - _self31;
+        double _t20 = _self23 + _t4;
+        double _t21 = _self03 + _t5;
+        double _t22 = _self13 + _t6;
+        double _t23 = _self33 + _t7;
+        double _t23_inv = 1.0 / _t23;
+        double _t24 = _self23 + _t8;
+        double _t25 = _self03 + _t9;
+        double _t26 = _self13 + _t10;
+        double _t27 = _self33 + _t11;
+        double _t27_inv = 1.0 / _t27;
+        double _t28 = _self23 + _t12;
+        double _t29 = _self03 + _t13;
+        double _t30 = _self13 + _t14;
+        double _t31 = _self33 + _t15;
+        double _t31_inv = 1.0 / _t31;
+        double _t44 = _self23 + _t16;
+        double _t45 = _self03 + _t17;
+        double _t46 = _self13 + _t18;
+        double _t47 = _self33 + _t19;
+        double _t47_inv = 1.0 / _t47;
+        double _t55 = _self23 + (_self22 + _t4);
+        double _t56 = _self03 + (_self02 + _t5);
+        double _t57 = _self13 + (_self12 + _t6);
+        double _t58 = _self33 + (_self32 + _t7);
+        double _t58_inv = 1.0 / _t58;
+        double _t59 = _self23 + (_self22 + _t8);
+        double _t60 = _self03 + (_self02 + _t9);
+        double _t61 = _self13 + (_self12 + _t10);
+        double _t62 = _self33 + (_self32 + _t11);
+        double _t62_inv = 1.0 / _t62;
+        double _t63 = _self23 + (_self22 + _t12);
+        double _t64 = _self03 + (_self02 + _t13);
+        double _t65 = _self13 + (_self12 + _t14);
+        double _t66 = _self33 + (_self32 + _t15);
+        double _t66_inv = 1.0 / _t66;
+        double _t74 = _self23 + (_self22 + _t16);
+        double _t75 = _self03 + (_self02 + _t17);
+        double _t76 = _self13 + (_self12 + _t18);
+        double _t77 = _self33 + (_self32 + _t19);
+        double _t77_inv = 1.0 / _t77;
+        double _t146 = _view03 + Math.fma(_view02, _t20, Math.fma(_view00, _t21, _view01 * _t22)) * _t23_inv;
+        double _t147 = _view03 + Math.fma(_view02, _t24, Math.fma(_view00, _t25, _view01 * _t26)) * _t27_inv;
+        double _t148 = _view03 + Math.fma(_view02, _t28, Math.fma(_view00, _t29, _view01 * _t30)) * _t31_inv;
+        double _t150 = _view13 + Math.fma(_view12, _t20, Math.fma(_view10, _t21, _view11 * _t22)) * _t23_inv;
+        double _t151 = _view13 + Math.fma(_view12, _t24, Math.fma(_view10, _t25, _view11 * _t26)) * _t27_inv;
+        double _t152 = _view13 + Math.fma(_view12, _t28, Math.fma(_view10, _t29, _view11 * _t30)) * _t31_inv;
+        double _t154 = _view23 + Math.fma(_view22, _t20, Math.fma(_view20, _t21, _view21 * _t22)) * _t23_inv;
+        double _t155 = _view23 + Math.fma(_view22, _t24, Math.fma(_view20, _t25, _view21 * _t26)) * _t27_inv;
+        double _t156 = _view23 + Math.fma(_view22, _t28, Math.fma(_view20, _t29, _view21 * _t30)) * _t31_inv;
+        double _t161 = _view03 + Math.fma(_view02, _t44, Math.fma(_view00, _t45, _view01 * _t46)) * _t47_inv;
+        double _t162 = _view13 + Math.fma(_view12, _t44, Math.fma(_view10, _t45, _view11 * _t46)) * _t47_inv;
+        double _t163 = _view23 + Math.fma(_view22, _t44, Math.fma(_view20, _t45, _view21 * _t46)) * _t47_inv;
+        double _t173 = _view03 + Math.fma(_view02, _t55, Math.fma(_view00, _t56, _view01 * _t57)) * _t58_inv;
+        double _t174 = _view03 + Math.fma(_view02, _t59, Math.fma(_view00, _t60, _view01 * _t61)) * _t62_inv;
+        double _t175 = _view03 + Math.fma(_view02, _t63, Math.fma(_view00, _t64, _view01 * _t65)) * _t66_inv;
+        double _t176 = _view13 + Math.fma(_view12, _t55, Math.fma(_view10, _t56, _view11 * _t57)) * _t58_inv;
+        double _t177 = _view13 + Math.fma(_view12, _t59, Math.fma(_view10, _t60, _view11 * _t61)) * _t62_inv;
+        double _t178 = _view13 + Math.fma(_view12, _t63, Math.fma(_view10, _t64, _view11 * _t65)) * _t66_inv;
+        double _t179 = _view23 + Math.fma(_view22, _t55, Math.fma(_view20, _t56, _view21 * _t57)) * _t58_inv;
+        double _t180 = _view23 + Math.fma(_view22, _t59, Math.fma(_view20, _t60, _view21 * _t61)) * _t62_inv;
+        double _t181 = _view23 + Math.fma(_view22, _t63, Math.fma(_view20, _t64, _view21 * _t65)) * _t66_inv;
+        double _t185 = _view03 + Math.fma(_view02, _t74, Math.fma(_view00, _t75, _view01 * _t76)) * _t77_inv;
+        double _t186 = _view13 + Math.fma(_view12, _t74, Math.fma(_view10, _t75, _view11 * _t76)) * _t77_inv;
+        double _t187 = _view23 + Math.fma(_view22, _t74, Math.fma(_view20, _t75, _view21 * _t76)) * _t77_inv;
+        double _t224 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t161, _t146), _t147), _t148), _t185), _t173), _t174), _t175);
+        double _t225 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t161, _t146), _t147), _t148), _t185), _t173), _t174), _t175);
+        double _t226 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t162, _t150), _t151), _t152), _t186), _t176), _t177), _t178);
+        double _t227 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t162, _t150), _t151), _t152), _t186), _t176), _t177), _t178);
+        double _t229 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181);
+        double _t230 = _t224 - _t225;
+        double _t230_inv = 1.0 / _t230;
+        double _t231 = _t226 - _t227;
+        double _t231_inv = 1.0 / _t231;
+        double _t232 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181) - _t229;
+        double _t232_inv = 1.0 / _t232;
+        dest.put(destOffset + 0, 2.0 * _t230_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t231_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0 * _t232_inv);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -((_t225 + _t224) * _t230_inv));
+        dest.put(destOffset + 13, -((_t227 + _t226) * _t231_inv));
+        dest.put(destOffset + 14, -(_t229 * _t232_inv));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer orthoCrop_zo_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer view, int viewOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && view.isDirect()) return Double4x4OpsKernelsTypedBuffer.orthoCrop_zo_rh_unsafe(dest, destOffset, src, srcOffset, view, viewOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && view.isDirect() && view.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.orthoCrop_zo_rh_unsafe(dest, destOffset, src, srcOffset, view, viewOffset);
         return Double4x4OpsKernelsTypedBuffer.orthoCrop_zo_rh_api(dest, destOffset, src, srcOffset, view, viewOffset);
     }
 
@@ -8770,7 +16393,145 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.orthoCrop_zo_rh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, view.array(), view.arrayOffset() + viewOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.orthoCrop_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(view.duplicate().position(0)), (long) viewOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && view.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.orthoCrop_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(view.duplicate().position(0)), (long) viewOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _view00 = view.get(viewOffset + 0);
+        double _view10 = view.get(viewOffset + 1);
+        double _view20 = view.get(viewOffset + 2);
+        double _view01 = view.get(viewOffset + 4);
+        double _view11 = view.get(viewOffset + 5);
+        double _view21 = view.get(viewOffset + 6);
+        double _view02 = view.get(viewOffset + 8);
+        double _view12 = view.get(viewOffset + 9);
+        double _view22 = view.get(viewOffset + 10);
+        double _view03 = view.get(viewOffset + 12);
+        double _view13 = view.get(viewOffset + 13);
+        double _view23 = view.get(viewOffset + 14);
+        double _t4 = _self20 - _self21;
+        double _t5 = _self00 - _self01;
+        double _t6 = _self10 - _self11;
+        double _t7 = _self30 - _self31;
+        double _t8 = _self21 - _self20;
+        double _t9 = _self01 - _self00;
+        double _t10 = _self11 - _self10;
+        double _t11 = _self31 - _self30;
+        double _t12 = _self20 + _self21;
+        double _t13 = _self00 + _self01;
+        double _t14 = _self10 + _self11;
+        double _t15 = _self30 + _self31;
+        double _t16 = -_self20 - _self21;
+        double _t17 = -_self00 - _self01;
+        double _t18 = -_self10 - _self11;
+        double _t19 = -_self30 - _self31;
+        double _t20 = _self23 + _t4;
+        double _t21 = _self03 + _t5;
+        double _t22 = _self13 + _t6;
+        double _t23 = _self33 + _t7;
+        double _t23_inv = 1.0 / _t23;
+        double _t24 = _self23 + _t8;
+        double _t25 = _self03 + _t9;
+        double _t26 = _self13 + _t10;
+        double _t27 = _self33 + _t11;
+        double _t27_inv = 1.0 / _t27;
+        double _t28 = _self23 + _t12;
+        double _t29 = _self03 + _t13;
+        double _t30 = _self13 + _t14;
+        double _t31 = _self33 + _t15;
+        double _t31_inv = 1.0 / _t31;
+        double _t44 = _self23 + _t16;
+        double _t45 = _self03 + _t17;
+        double _t46 = _self13 + _t18;
+        double _t47 = _self33 + _t19;
+        double _t47_inv = 1.0 / _t47;
+        double _t55 = _self23 + (_self22 + _t4);
+        double _t56 = _self03 + (_self02 + _t5);
+        double _t57 = _self13 + (_self12 + _t6);
+        double _t58 = _self33 + (_self32 + _t7);
+        double _t58_inv = 1.0 / _t58;
+        double _t59 = _self23 + (_self22 + _t8);
+        double _t60 = _self03 + (_self02 + _t9);
+        double _t61 = _self13 + (_self12 + _t10);
+        double _t62 = _self33 + (_self32 + _t11);
+        double _t62_inv = 1.0 / _t62;
+        double _t63 = _self23 + (_self22 + _t12);
+        double _t64 = _self03 + (_self02 + _t13);
+        double _t65 = _self13 + (_self12 + _t14);
+        double _t66 = _self33 + (_self32 + _t15);
+        double _t66_inv = 1.0 / _t66;
+        double _t74 = _self23 + (_self22 + _t16);
+        double _t75 = _self03 + (_self02 + _t17);
+        double _t76 = _self13 + (_self12 + _t18);
+        double _t77 = _self33 + (_self32 + _t19);
+        double _t77_inv = 1.0 / _t77;
+        double _t146 = _view03 + Math.fma(_view02, _t20, Math.fma(_view00, _t21, _view01 * _t22)) * _t23_inv;
+        double _t147 = _view03 + Math.fma(_view02, _t24, Math.fma(_view00, _t25, _view01 * _t26)) * _t27_inv;
+        double _t148 = _view03 + Math.fma(_view02, _t28, Math.fma(_view00, _t29, _view01 * _t30)) * _t31_inv;
+        double _t150 = _view13 + Math.fma(_view12, _t20, Math.fma(_view10, _t21, _view11 * _t22)) * _t23_inv;
+        double _t151 = _view13 + Math.fma(_view12, _t24, Math.fma(_view10, _t25, _view11 * _t26)) * _t27_inv;
+        double _t152 = _view13 + Math.fma(_view12, _t28, Math.fma(_view10, _t29, _view11 * _t30)) * _t31_inv;
+        double _t154 = _view23 + Math.fma(_view22, _t20, Math.fma(_view20, _t21, _view21 * _t22)) * _t23_inv;
+        double _t155 = _view23 + Math.fma(_view22, _t24, Math.fma(_view20, _t25, _view21 * _t26)) * _t27_inv;
+        double _t156 = _view23 + Math.fma(_view22, _t28, Math.fma(_view20, _t29, _view21 * _t30)) * _t31_inv;
+        double _t161 = _view03 + Math.fma(_view02, _t44, Math.fma(_view00, _t45, _view01 * _t46)) * _t47_inv;
+        double _t162 = _view13 + Math.fma(_view12, _t44, Math.fma(_view10, _t45, _view11 * _t46)) * _t47_inv;
+        double _t163 = _view23 + Math.fma(_view22, _t44, Math.fma(_view20, _t45, _view21 * _t46)) * _t47_inv;
+        double _t173 = _view03 + Math.fma(_view02, _t55, Math.fma(_view00, _t56, _view01 * _t57)) * _t58_inv;
+        double _t174 = _view03 + Math.fma(_view02, _t59, Math.fma(_view00, _t60, _view01 * _t61)) * _t62_inv;
+        double _t175 = _view03 + Math.fma(_view02, _t63, Math.fma(_view00, _t64, _view01 * _t65)) * _t66_inv;
+        double _t176 = _view13 + Math.fma(_view12, _t55, Math.fma(_view10, _t56, _view11 * _t57)) * _t58_inv;
+        double _t177 = _view13 + Math.fma(_view12, _t59, Math.fma(_view10, _t60, _view11 * _t61)) * _t62_inv;
+        double _t178 = _view13 + Math.fma(_view12, _t63, Math.fma(_view10, _t64, _view11 * _t65)) * _t66_inv;
+        double _t179 = _view23 + Math.fma(_view22, _t55, Math.fma(_view20, _t56, _view21 * _t57)) * _t58_inv;
+        double _t180 = _view23 + Math.fma(_view22, _t59, Math.fma(_view20, _t60, _view21 * _t61)) * _t62_inv;
+        double _t181 = _view23 + Math.fma(_view22, _t63, Math.fma(_view20, _t64, _view21 * _t65)) * _t66_inv;
+        double _t185 = _view03 + Math.fma(_view02, _t74, Math.fma(_view00, _t75, _view01 * _t76)) * _t77_inv;
+        double _t186 = _view13 + Math.fma(_view12, _t74, Math.fma(_view10, _t75, _view11 * _t76)) * _t77_inv;
+        double _t187 = _view23 + Math.fma(_view22, _t74, Math.fma(_view20, _t75, _view21 * _t76)) * _t77_inv;
+        double _t224 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t161, _t146), _t147), _t148), _t185), _t173), _t174), _t175);
+        double _t225 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t161, _t146), _t147), _t148), _t185), _t173), _t174), _t175);
+        double _t226 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t162, _t150), _t151), _t152), _t186), _t176), _t177), _t178);
+        double _t227 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t162, _t150), _t151), _t152), _t186), _t176), _t177), _t178);
+        double _t228 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181);
+        double _t230 = _t224 - _t225;
+        double _t230_inv = 1.0 / _t230;
+        double _t231 = _t226 - _t227;
+        double _t231_inv = 1.0 / _t231;
+        double _t232 = _t228 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t163, _t154), _t155), _t156), _t187), _t179), _t180), _t181);
+        double _t232_inv = 1.0 / _t232;
+        dest.put(destOffset + 0, 2.0 * _t230_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t231_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, -1.0 * _t232_inv);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -((_t225 + _t224) * _t230_inv));
+        dest.put(destOffset + 13, -((_t227 + _t226) * _t231_inv));
+        dest.put(destOffset + 14, _t228 * _t232_inv);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -8782,7 +16543,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer orthoCrop_no_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer view, int viewOffset, double minZ, double maxZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && view.isDirect()) return Double4x4OpsKernelsTypedBuffer.orthoCrop_no_lh_unsafe(dest, destOffset, src, srcOffset, view, viewOffset, minZ, maxZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && view.isDirect() && view.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.orthoCrop_no_lh_unsafe(dest, destOffset, src, srcOffset, view, viewOffset, minZ, maxZ);
         return Double4x4OpsKernelsTypedBuffer.orthoCrop_no_lh_api(dest, destOffset, src, srcOffset, view, viewOffset, minZ, maxZ);
     }
 
@@ -8799,12 +16560,155 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.orthoCrop_no_lh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, view.array(), view.arrayOffset() + viewOffset, minZ, maxZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.orthoCrop_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(view.duplicate().position(0)), (long) viewOffset * 8L, minZ, maxZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && view.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.orthoCrop_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(view.duplicate().position(0)), (long) viewOffset * 8L, minZ, maxZ);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _view00 = view.get(viewOffset + 0);
+        double _view10 = view.get(viewOffset + 1);
+        double _view20 = view.get(viewOffset + 2);
+        double _view01 = view.get(viewOffset + 4);
+        double _view11 = view.get(viewOffset + 5);
+        double _view21 = view.get(viewOffset + 6);
+        double _view02 = view.get(viewOffset + 8);
+        double _view12 = view.get(viewOffset + 9);
+        double _view22 = view.get(viewOffset + 10);
+        double _view03 = view.get(viewOffset + 12);
+        double _view13 = view.get(viewOffset + 13);
+        double _view23 = view.get(viewOffset + 14);
+        double _t4 = _self23 + _self20;
+        double _t5 = _self03 + _self00;
+        double _t6 = _self13 + _self10;
+        double _t7 = _self33 + _self30;
+        double _t12 = _self23 - _self20 - _self21;
+        double _t13 = _self03 - _self00 - _self01;
+        double _t14 = _self13 - _self10 - _self11;
+        double _t15 = _self33 - _self30 - _self31;
+        double _t16 = _t4 - _self21;
+        double _t17 = _t5 - _self01;
+        double _t18 = _t6 - _self11;
+        double _t19 = _t7 - _self31;
+        double _t20 = _self23 + _self21 - _self20;
+        double _t21 = _self03 + _self01 - _self00;
+        double _t22 = _self13 + _self11 - _self10;
+        double _t23 = _self33 + _self31 - _self30;
+        double _t24 = _t4 + _self21;
+        double _t25 = _t5 + _self01;
+        double _t26 = _t6 + _self11;
+        double _t27 = _t7 + _self31;
+        double _t28 = Math.fma(minZ, _self22, _t12);
+        double _t29 = Math.fma(minZ, _self02, _t13);
+        double _t30 = Math.fma(minZ, _self12, _t14);
+        double _t31 = Math.fma(minZ, _self32, _t15);
+        double _t31_inv = 1.0 / _t31;
+        double _t32 = Math.fma(minZ, _self22, _t16);
+        double _t33 = Math.fma(minZ, _self02, _t17);
+        double _t34 = Math.fma(minZ, _self12, _t18);
+        double _t35 = Math.fma(minZ, _self32, _t19);
+        double _t35_inv = 1.0 / _t35;
+        double _t36 = Math.fma(minZ, _self22, _t20);
+        double _t37 = Math.fma(minZ, _self02, _t21);
+        double _t38 = Math.fma(minZ, _self12, _t22);
+        double _t39 = Math.fma(minZ, _self32, _t23);
+        double _t39_inv = 1.0 / _t39;
+        double _t40 = Math.fma(minZ, _self22, _t24);
+        double _t41 = Math.fma(minZ, _self02, _t25);
+        double _t42 = Math.fma(minZ, _self12, _t26);
+        double _t43 = Math.fma(minZ, _self32, _t27);
+        double _t43_inv = 1.0 / _t43;
+        double _t44 = Math.fma(maxZ, _self22, _t12);
+        double _t45 = Math.fma(maxZ, _self02, _t13);
+        double _t46 = Math.fma(maxZ, _self12, _t14);
+        double _t47 = Math.fma(maxZ, _self32, _t15);
+        double _t47_inv = 1.0 / _t47;
+        double _t48 = Math.fma(maxZ, _self22, _t16);
+        double _t49 = Math.fma(maxZ, _self02, _t17);
+        double _t50 = Math.fma(maxZ, _self12, _t18);
+        double _t51 = Math.fma(maxZ, _self32, _t19);
+        double _t51_inv = 1.0 / _t51;
+        double _t52 = Math.fma(maxZ, _self22, _t20);
+        double _t53 = Math.fma(maxZ, _self02, _t21);
+        double _t54 = Math.fma(maxZ, _self12, _t22);
+        double _t55 = Math.fma(maxZ, _self32, _t23);
+        double _t55_inv = 1.0 / _t55;
+        double _t56 = Math.fma(maxZ, _self22, _t24);
+        double _t57 = Math.fma(maxZ, _self02, _t25);
+        double _t58 = Math.fma(maxZ, _self12, _t26);
+        double _t59 = Math.fma(maxZ, _self32, _t27);
+        double _t59_inv = 1.0 / _t59;
+        double _t156 = _view03 + Math.fma(_view02, _t28, Math.fma(_view00, _t29, _view01 * _t30)) * _t31_inv;
+        double _t157 = _view03 + Math.fma(_view02, _t32, Math.fma(_view00, _t33, _view01 * _t34)) * _t35_inv;
+        double _t158 = _view03 + Math.fma(_view02, _t36, Math.fma(_view00, _t37, _view01 * _t38)) * _t39_inv;
+        double _t159 = _view03 + Math.fma(_view02, _t40, Math.fma(_view00, _t41, _view01 * _t42)) * _t43_inv;
+        double _t160 = _view03 + Math.fma(_view02, _t44, Math.fma(_view00, _t45, _view01 * _t46)) * _t47_inv;
+        double _t161 = _view03 + Math.fma(_view02, _t48, Math.fma(_view00, _t49, _view01 * _t50)) * _t51_inv;
+        double _t162 = _view03 + Math.fma(_view02, _t52, Math.fma(_view00, _t53, _view01 * _t54)) * _t55_inv;
+        double _t163 = _view03 + Math.fma(_view02, _t56, Math.fma(_view00, _t57, _view01 * _t58)) * _t59_inv;
+        double _t164 = _view13 + Math.fma(_view12, _t28, Math.fma(_view10, _t29, _view11 * _t30)) * _t31_inv;
+        double _t165 = _view13 + Math.fma(_view12, _t32, Math.fma(_view10, _t33, _view11 * _t34)) * _t35_inv;
+        double _t166 = _view13 + Math.fma(_view12, _t36, Math.fma(_view10, _t37, _view11 * _t38)) * _t39_inv;
+        double _t167 = _view13 + Math.fma(_view12, _t40, Math.fma(_view10, _t41, _view11 * _t42)) * _t43_inv;
+        double _t168 = _view13 + Math.fma(_view12, _t44, Math.fma(_view10, _t45, _view11 * _t46)) * _t47_inv;
+        double _t169 = _view13 + Math.fma(_view12, _t48, Math.fma(_view10, _t49, _view11 * _t50)) * _t51_inv;
+        double _t170 = _view13 + Math.fma(_view12, _t52, Math.fma(_view10, _t53, _view11 * _t54)) * _t55_inv;
+        double _t171 = _view13 + Math.fma(_view12, _t56, Math.fma(_view10, _t57, _view11 * _t58)) * _t59_inv;
+        double _t172 = _view23 + Math.fma(_view22, _t28, Math.fma(_view20, _t29, _view21 * _t30)) * _t31_inv;
+        double _t173 = _view23 + Math.fma(_view22, _t32, Math.fma(_view20, _t33, _view21 * _t34)) * _t35_inv;
+        double _t174 = _view23 + Math.fma(_view22, _t36, Math.fma(_view20, _t37, _view21 * _t38)) * _t39_inv;
+        double _t175 = _view23 + Math.fma(_view22, _t40, Math.fma(_view20, _t41, _view21 * _t42)) * _t43_inv;
+        double _t176 = _view23 + Math.fma(_view22, _t44, Math.fma(_view20, _t45, _view21 * _t46)) * _t47_inv;
+        double _t177 = _view23 + Math.fma(_view22, _t48, Math.fma(_view20, _t49, _view21 * _t50)) * _t51_inv;
+        double _t178 = _view23 + Math.fma(_view22, _t52, Math.fma(_view20, _t53, _view21 * _t54)) * _t55_inv;
+        double _t179 = _view23 + Math.fma(_view22, _t56, Math.fma(_view20, _t57, _view21 * _t58)) * _t59_inv;
+        double _t216 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t156, _t157), _t158), _t159), _t160), _t161), _t162), _t163);
+        double _t217 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t156, _t157), _t158), _t159), _t160), _t161), _t162), _t163);
+        double _t218 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t164, _t165), _t166), _t167), _t168), _t169), _t170), _t171);
+        double _t219 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t164, _t165), _t166), _t167), _t168), _t169), _t170), _t171);
+        double _t220 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
+        double _t221 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
+        double _t222 = _t216 - _t217;
+        double _t222_inv = 1.0 / _t222;
+        double _t223 = _t218 - _t219;
+        double _t223_inv = 1.0 / _t223;
+        double _t224 = _t220 - _t221;
+        double _t224_inv = 1.0 / _t224;
+        dest.put(destOffset + 0, 2.0 * _t222_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t223_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 2.0 * _t224_inv);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -((_t217 + _t216) * _t222_inv));
+        dest.put(destOffset + 13, -((_t219 + _t218) * _t223_inv));
+        dest.put(destOffset + 14, -((_t221 + _t220) * _t224_inv));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer orthoCrop_no_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer view, int viewOffset, double minZ, double maxZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && view.isDirect()) return Double4x4OpsKernelsTypedBuffer.orthoCrop_no_rh_unsafe(dest, destOffset, src, srcOffset, view, viewOffset, minZ, maxZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && view.isDirect() && view.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.orthoCrop_no_rh_unsafe(dest, destOffset, src, srcOffset, view, viewOffset, minZ, maxZ);
         return Double4x4OpsKernelsTypedBuffer.orthoCrop_no_rh_api(dest, destOffset, src, srcOffset, view, viewOffset, minZ, maxZ);
     }
 
@@ -8821,7 +16725,150 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.orthoCrop_no_rh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, view.array(), view.arrayOffset() + viewOffset, minZ, maxZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.orthoCrop_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(view.duplicate().position(0)), (long) viewOffset * 8L, minZ, maxZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && view.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.orthoCrop_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(view.duplicate().position(0)), (long) viewOffset * 8L, minZ, maxZ);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _view00 = view.get(viewOffset + 0);
+        double _view10 = view.get(viewOffset + 1);
+        double _view20 = view.get(viewOffset + 2);
+        double _view01 = view.get(viewOffset + 4);
+        double _view11 = view.get(viewOffset + 5);
+        double _view21 = view.get(viewOffset + 6);
+        double _view02 = view.get(viewOffset + 8);
+        double _view12 = view.get(viewOffset + 9);
+        double _view22 = view.get(viewOffset + 10);
+        double _view03 = view.get(viewOffset + 12);
+        double _view13 = view.get(viewOffset + 13);
+        double _view23 = view.get(viewOffset + 14);
+        double _t4 = _self23 + _self20;
+        double _t5 = _self03 + _self00;
+        double _t6 = _self13 + _self10;
+        double _t7 = _self33 + _self30;
+        double _t12 = _self23 - _self20 - _self21;
+        double _t13 = _self03 - _self00 - _self01;
+        double _t14 = _self13 - _self10 - _self11;
+        double _t15 = _self33 - _self30 - _self31;
+        double _t16 = _t4 - _self21;
+        double _t17 = _t5 - _self01;
+        double _t18 = _t6 - _self11;
+        double _t19 = _t7 - _self31;
+        double _t20 = _self23 + _self21 - _self20;
+        double _t21 = _self03 + _self01 - _self00;
+        double _t22 = _self13 + _self11 - _self10;
+        double _t23 = _self33 + _self31 - _self30;
+        double _t24 = _t4 + _self21;
+        double _t25 = _t5 + _self01;
+        double _t26 = _t6 + _self11;
+        double _t27 = _t7 + _self31;
+        double _t28 = Math.fma(minZ, _self22, _t12);
+        double _t29 = Math.fma(minZ, _self02, _t13);
+        double _t30 = Math.fma(minZ, _self12, _t14);
+        double _t31 = Math.fma(minZ, _self32, _t15);
+        double _t31_inv = 1.0 / _t31;
+        double _t32 = Math.fma(minZ, _self22, _t16);
+        double _t33 = Math.fma(minZ, _self02, _t17);
+        double _t34 = Math.fma(minZ, _self12, _t18);
+        double _t35 = Math.fma(minZ, _self32, _t19);
+        double _t35_inv = 1.0 / _t35;
+        double _t36 = Math.fma(minZ, _self22, _t20);
+        double _t37 = Math.fma(minZ, _self02, _t21);
+        double _t38 = Math.fma(minZ, _self12, _t22);
+        double _t39 = Math.fma(minZ, _self32, _t23);
+        double _t39_inv = 1.0 / _t39;
+        double _t40 = Math.fma(minZ, _self22, _t24);
+        double _t41 = Math.fma(minZ, _self02, _t25);
+        double _t42 = Math.fma(minZ, _self12, _t26);
+        double _t43 = Math.fma(minZ, _self32, _t27);
+        double _t43_inv = 1.0 / _t43;
+        double _t44 = Math.fma(maxZ, _self22, _t12);
+        double _t45 = Math.fma(maxZ, _self02, _t13);
+        double _t46 = Math.fma(maxZ, _self12, _t14);
+        double _t47 = Math.fma(maxZ, _self32, _t15);
+        double _t47_inv = 1.0 / _t47;
+        double _t48 = Math.fma(maxZ, _self22, _t16);
+        double _t49 = Math.fma(maxZ, _self02, _t17);
+        double _t50 = Math.fma(maxZ, _self12, _t18);
+        double _t51 = Math.fma(maxZ, _self32, _t19);
+        double _t51_inv = 1.0 / _t51;
+        double _t52 = Math.fma(maxZ, _self22, _t20);
+        double _t53 = Math.fma(maxZ, _self02, _t21);
+        double _t54 = Math.fma(maxZ, _self12, _t22);
+        double _t55 = Math.fma(maxZ, _self32, _t23);
+        double _t55_inv = 1.0 / _t55;
+        double _t56 = Math.fma(maxZ, _self22, _t24);
+        double _t57 = Math.fma(maxZ, _self02, _t25);
+        double _t58 = Math.fma(maxZ, _self12, _t26);
+        double _t59 = Math.fma(maxZ, _self32, _t27);
+        double _t59_inv = 1.0 / _t59;
+        double _t156 = _view03 + Math.fma(_view02, _t28, Math.fma(_view00, _t29, _view01 * _t30)) * _t31_inv;
+        double _t157 = _view03 + Math.fma(_view02, _t32, Math.fma(_view00, _t33, _view01 * _t34)) * _t35_inv;
+        double _t158 = _view03 + Math.fma(_view02, _t36, Math.fma(_view00, _t37, _view01 * _t38)) * _t39_inv;
+        double _t159 = _view03 + Math.fma(_view02, _t40, Math.fma(_view00, _t41, _view01 * _t42)) * _t43_inv;
+        double _t160 = _view03 + Math.fma(_view02, _t44, Math.fma(_view00, _t45, _view01 * _t46)) * _t47_inv;
+        double _t161 = _view03 + Math.fma(_view02, _t48, Math.fma(_view00, _t49, _view01 * _t50)) * _t51_inv;
+        double _t162 = _view03 + Math.fma(_view02, _t52, Math.fma(_view00, _t53, _view01 * _t54)) * _t55_inv;
+        double _t163 = _view03 + Math.fma(_view02, _t56, Math.fma(_view00, _t57, _view01 * _t58)) * _t59_inv;
+        double _t164 = _view13 + Math.fma(_view12, _t28, Math.fma(_view10, _t29, _view11 * _t30)) * _t31_inv;
+        double _t165 = _view13 + Math.fma(_view12, _t32, Math.fma(_view10, _t33, _view11 * _t34)) * _t35_inv;
+        double _t166 = _view13 + Math.fma(_view12, _t36, Math.fma(_view10, _t37, _view11 * _t38)) * _t39_inv;
+        double _t167 = _view13 + Math.fma(_view12, _t40, Math.fma(_view10, _t41, _view11 * _t42)) * _t43_inv;
+        double _t168 = _view13 + Math.fma(_view12, _t44, Math.fma(_view10, _t45, _view11 * _t46)) * _t47_inv;
+        double _t169 = _view13 + Math.fma(_view12, _t48, Math.fma(_view10, _t49, _view11 * _t50)) * _t51_inv;
+        double _t170 = _view13 + Math.fma(_view12, _t52, Math.fma(_view10, _t53, _view11 * _t54)) * _t55_inv;
+        double _t171 = _view13 + Math.fma(_view12, _t56, Math.fma(_view10, _t57, _view11 * _t58)) * _t59_inv;
+        double _t172 = _view23 + Math.fma(_view22, _t28, Math.fma(_view20, _t29, _view21 * _t30)) * _t31_inv;
+        double _t173 = _view23 + Math.fma(_view22, _t32, Math.fma(_view20, _t33, _view21 * _t34)) * _t35_inv;
+        double _t174 = _view23 + Math.fma(_view22, _t36, Math.fma(_view20, _t37, _view21 * _t38)) * _t39_inv;
+        double _t175 = _view23 + Math.fma(_view22, _t40, Math.fma(_view20, _t41, _view21 * _t42)) * _t43_inv;
+        double _t176 = _view23 + Math.fma(_view22, _t44, Math.fma(_view20, _t45, _view21 * _t46)) * _t47_inv;
+        double _t177 = _view23 + Math.fma(_view22, _t48, Math.fma(_view20, _t49, _view21 * _t50)) * _t51_inv;
+        double _t178 = _view23 + Math.fma(_view22, _t52, Math.fma(_view20, _t53, _view21 * _t54)) * _t55_inv;
+        double _t179 = _view23 + Math.fma(_view22, _t56, Math.fma(_view20, _t57, _view21 * _t58)) * _t59_inv;
+        double _t216 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t156, _t157), _t158), _t159), _t160), _t161), _t162), _t163);
+        double _t217 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t156, _t157), _t158), _t159), _t160), _t161), _t162), _t163);
+        double _t218 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t164, _t165), _t166), _t167), _t168), _t169), _t170), _t171);
+        double _t219 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t164, _t165), _t166), _t167), _t168), _t169), _t170), _t171);
+        double _t220 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
+        double _t221 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
+        double _t222 = _t216 - _t217;
+        double _t222_inv = 1.0 / _t222;
+        double _t223 = _t218 - _t219;
+        double _t223_inv = 1.0 / _t223;
+        double _t224 = _t220 - _t221;
+        double _t224_inv = 1.0 / _t224;
+        dest.put(destOffset + 0, 2.0 * _t222_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t223_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, -2.0 * _t224_inv);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -((_t217 + _t216) * _t222_inv));
+        dest.put(destOffset + 13, -((_t219 + _t218) * _t223_inv));
+        dest.put(destOffset + 14, -((-_t221 - _t220) * _t224_inv));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -8833,7 +16880,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer orthoCrop_zo_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer view, int viewOffset, double minZ, double maxZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && view.isDirect()) return Double4x4OpsKernelsTypedBuffer.orthoCrop_zo_lh_unsafe(dest, destOffset, src, srcOffset, view, viewOffset, minZ, maxZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && view.isDirect() && view.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.orthoCrop_zo_lh_unsafe(dest, destOffset, src, srcOffset, view, viewOffset, minZ, maxZ);
         return Double4x4OpsKernelsTypedBuffer.orthoCrop_zo_lh_api(dest, destOffset, src, srcOffset, view, viewOffset, minZ, maxZ);
     }
 
@@ -8850,12 +16897,154 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.orthoCrop_zo_lh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, view.array(), view.arrayOffset() + viewOffset, minZ, maxZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.orthoCrop_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(view.duplicate().position(0)), (long) viewOffset * 8L, minZ, maxZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && view.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.orthoCrop_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(view.duplicate().position(0)), (long) viewOffset * 8L, minZ, maxZ);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _view00 = view.get(viewOffset + 0);
+        double _view10 = view.get(viewOffset + 1);
+        double _view20 = view.get(viewOffset + 2);
+        double _view01 = view.get(viewOffset + 4);
+        double _view11 = view.get(viewOffset + 5);
+        double _view21 = view.get(viewOffset + 6);
+        double _view02 = view.get(viewOffset + 8);
+        double _view12 = view.get(viewOffset + 9);
+        double _view22 = view.get(viewOffset + 10);
+        double _view03 = view.get(viewOffset + 12);
+        double _view13 = view.get(viewOffset + 13);
+        double _view23 = view.get(viewOffset + 14);
+        double _t4 = _self23 + _self20;
+        double _t5 = _self03 + _self00;
+        double _t6 = _self13 + _self10;
+        double _t7 = _self33 + _self30;
+        double _t12 = _self23 - _self20 - _self21;
+        double _t13 = _self03 - _self00 - _self01;
+        double _t14 = _self13 - _self10 - _self11;
+        double _t15 = _self33 - _self30 - _self31;
+        double _t16 = _t4 - _self21;
+        double _t17 = _t5 - _self01;
+        double _t18 = _t6 - _self11;
+        double _t19 = _t7 - _self31;
+        double _t20 = _self23 + _self21 - _self20;
+        double _t21 = _self03 + _self01 - _self00;
+        double _t22 = _self13 + _self11 - _self10;
+        double _t23 = _self33 + _self31 - _self30;
+        double _t24 = _t4 + _self21;
+        double _t25 = _t5 + _self01;
+        double _t26 = _t6 + _self11;
+        double _t27 = _t7 + _self31;
+        double _t28 = Math.fma(minZ, _self22, _t12);
+        double _t29 = Math.fma(minZ, _self02, _t13);
+        double _t30 = Math.fma(minZ, _self12, _t14);
+        double _t31 = Math.fma(minZ, _self32, _t15);
+        double _t31_inv = 1.0 / _t31;
+        double _t32 = Math.fma(minZ, _self22, _t16);
+        double _t33 = Math.fma(minZ, _self02, _t17);
+        double _t34 = Math.fma(minZ, _self12, _t18);
+        double _t35 = Math.fma(minZ, _self32, _t19);
+        double _t35_inv = 1.0 / _t35;
+        double _t36 = Math.fma(minZ, _self22, _t20);
+        double _t37 = Math.fma(minZ, _self02, _t21);
+        double _t38 = Math.fma(minZ, _self12, _t22);
+        double _t39 = Math.fma(minZ, _self32, _t23);
+        double _t39_inv = 1.0 / _t39;
+        double _t40 = Math.fma(minZ, _self22, _t24);
+        double _t41 = Math.fma(minZ, _self02, _t25);
+        double _t42 = Math.fma(minZ, _self12, _t26);
+        double _t43 = Math.fma(minZ, _self32, _t27);
+        double _t43_inv = 1.0 / _t43;
+        double _t44 = Math.fma(maxZ, _self22, _t12);
+        double _t45 = Math.fma(maxZ, _self02, _t13);
+        double _t46 = Math.fma(maxZ, _self12, _t14);
+        double _t47 = Math.fma(maxZ, _self32, _t15);
+        double _t47_inv = 1.0 / _t47;
+        double _t48 = Math.fma(maxZ, _self22, _t16);
+        double _t49 = Math.fma(maxZ, _self02, _t17);
+        double _t50 = Math.fma(maxZ, _self12, _t18);
+        double _t51 = Math.fma(maxZ, _self32, _t19);
+        double _t51_inv = 1.0 / _t51;
+        double _t52 = Math.fma(maxZ, _self22, _t20);
+        double _t53 = Math.fma(maxZ, _self02, _t21);
+        double _t54 = Math.fma(maxZ, _self12, _t22);
+        double _t55 = Math.fma(maxZ, _self32, _t23);
+        double _t55_inv = 1.0 / _t55;
+        double _t56 = Math.fma(maxZ, _self22, _t24);
+        double _t57 = Math.fma(maxZ, _self02, _t25);
+        double _t58 = Math.fma(maxZ, _self12, _t26);
+        double _t59 = Math.fma(maxZ, _self32, _t27);
+        double _t59_inv = 1.0 / _t59;
+        double _t156 = _view03 + Math.fma(_view02, _t28, Math.fma(_view00, _t29, _view01 * _t30)) * _t31_inv;
+        double _t157 = _view03 + Math.fma(_view02, _t32, Math.fma(_view00, _t33, _view01 * _t34)) * _t35_inv;
+        double _t158 = _view03 + Math.fma(_view02, _t36, Math.fma(_view00, _t37, _view01 * _t38)) * _t39_inv;
+        double _t159 = _view03 + Math.fma(_view02, _t40, Math.fma(_view00, _t41, _view01 * _t42)) * _t43_inv;
+        double _t160 = _view03 + Math.fma(_view02, _t44, Math.fma(_view00, _t45, _view01 * _t46)) * _t47_inv;
+        double _t161 = _view03 + Math.fma(_view02, _t48, Math.fma(_view00, _t49, _view01 * _t50)) * _t51_inv;
+        double _t162 = _view03 + Math.fma(_view02, _t52, Math.fma(_view00, _t53, _view01 * _t54)) * _t55_inv;
+        double _t163 = _view03 + Math.fma(_view02, _t56, Math.fma(_view00, _t57, _view01 * _t58)) * _t59_inv;
+        double _t164 = _view13 + Math.fma(_view12, _t28, Math.fma(_view10, _t29, _view11 * _t30)) * _t31_inv;
+        double _t165 = _view13 + Math.fma(_view12, _t32, Math.fma(_view10, _t33, _view11 * _t34)) * _t35_inv;
+        double _t166 = _view13 + Math.fma(_view12, _t36, Math.fma(_view10, _t37, _view11 * _t38)) * _t39_inv;
+        double _t167 = _view13 + Math.fma(_view12, _t40, Math.fma(_view10, _t41, _view11 * _t42)) * _t43_inv;
+        double _t168 = _view13 + Math.fma(_view12, _t44, Math.fma(_view10, _t45, _view11 * _t46)) * _t47_inv;
+        double _t169 = _view13 + Math.fma(_view12, _t48, Math.fma(_view10, _t49, _view11 * _t50)) * _t51_inv;
+        double _t170 = _view13 + Math.fma(_view12, _t52, Math.fma(_view10, _t53, _view11 * _t54)) * _t55_inv;
+        double _t171 = _view13 + Math.fma(_view12, _t56, Math.fma(_view10, _t57, _view11 * _t58)) * _t59_inv;
+        double _t172 = _view23 + Math.fma(_view22, _t28, Math.fma(_view20, _t29, _view21 * _t30)) * _t31_inv;
+        double _t173 = _view23 + Math.fma(_view22, _t32, Math.fma(_view20, _t33, _view21 * _t34)) * _t35_inv;
+        double _t174 = _view23 + Math.fma(_view22, _t36, Math.fma(_view20, _t37, _view21 * _t38)) * _t39_inv;
+        double _t175 = _view23 + Math.fma(_view22, _t40, Math.fma(_view20, _t41, _view21 * _t42)) * _t43_inv;
+        double _t176 = _view23 + Math.fma(_view22, _t44, Math.fma(_view20, _t45, _view21 * _t46)) * _t47_inv;
+        double _t177 = _view23 + Math.fma(_view22, _t48, Math.fma(_view20, _t49, _view21 * _t50)) * _t51_inv;
+        double _t178 = _view23 + Math.fma(_view22, _t52, Math.fma(_view20, _t53, _view21 * _t54)) * _t55_inv;
+        double _t179 = _view23 + Math.fma(_view22, _t56, Math.fma(_view20, _t57, _view21 * _t58)) * _t59_inv;
+        double _t216 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t156, _t157), _t158), _t159), _t160), _t161), _t162), _t163);
+        double _t217 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t156, _t157), _t158), _t159), _t160), _t161), _t162), _t163);
+        double _t218 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t164, _t165), _t166), _t167), _t168), _t169), _t170), _t171);
+        double _t219 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t164, _t165), _t166), _t167), _t168), _t169), _t170), _t171);
+        double _t221 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
+        double _t222 = _t216 - _t217;
+        double _t222_inv = 1.0 / _t222;
+        double _t223 = _t218 - _t219;
+        double _t223_inv = 1.0 / _t223;
+        double _t224 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179) - _t221;
+        double _t224_inv = 1.0 / _t224;
+        dest.put(destOffset + 0, 2.0 * _t222_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t223_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, 1.0 * _t224_inv);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -((_t217 + _t216) * _t222_inv));
+        dest.put(destOffset + 13, -((_t219 + _t218) * _t223_inv));
+        dest.put(destOffset + 14, -(_t221 * _t224_inv));
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
     public static java.nio.DoubleBuffer orthoCrop_zo_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer view, int viewOffset, double minZ, double maxZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && view.isDirect()) return Double4x4OpsKernelsTypedBuffer.orthoCrop_zo_rh_unsafe(dest, destOffset, src, srcOffset, view, viewOffset, minZ, maxZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && view.isDirect() && view.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.orthoCrop_zo_rh_unsafe(dest, destOffset, src, srcOffset, view, viewOffset, minZ, maxZ);
         return Double4x4OpsKernelsTypedBuffer.orthoCrop_zo_rh_api(dest, destOffset, src, srcOffset, view, viewOffset, minZ, maxZ);
     }
 
@@ -8872,7 +17061,149 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.orthoCrop_zo_rh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, view.array(), view.arrayOffset() + viewOffset, minZ, maxZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.orthoCrop_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(view.duplicate().position(0)), (long) viewOffset * 8L, minZ, maxZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && view.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.orthoCrop_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(view.duplicate().position(0)), (long) viewOffset * 8L, minZ, maxZ);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _view00 = view.get(viewOffset + 0);
+        double _view10 = view.get(viewOffset + 1);
+        double _view20 = view.get(viewOffset + 2);
+        double _view01 = view.get(viewOffset + 4);
+        double _view11 = view.get(viewOffset + 5);
+        double _view21 = view.get(viewOffset + 6);
+        double _view02 = view.get(viewOffset + 8);
+        double _view12 = view.get(viewOffset + 9);
+        double _view22 = view.get(viewOffset + 10);
+        double _view03 = view.get(viewOffset + 12);
+        double _view13 = view.get(viewOffset + 13);
+        double _view23 = view.get(viewOffset + 14);
+        double _t4 = _self23 + _self20;
+        double _t5 = _self03 + _self00;
+        double _t6 = _self13 + _self10;
+        double _t7 = _self33 + _self30;
+        double _t12 = _self23 - _self20 - _self21;
+        double _t13 = _self03 - _self00 - _self01;
+        double _t14 = _self13 - _self10 - _self11;
+        double _t15 = _self33 - _self30 - _self31;
+        double _t16 = _t4 - _self21;
+        double _t17 = _t5 - _self01;
+        double _t18 = _t6 - _self11;
+        double _t19 = _t7 - _self31;
+        double _t20 = _self23 + _self21 - _self20;
+        double _t21 = _self03 + _self01 - _self00;
+        double _t22 = _self13 + _self11 - _self10;
+        double _t23 = _self33 + _self31 - _self30;
+        double _t24 = _t4 + _self21;
+        double _t25 = _t5 + _self01;
+        double _t26 = _t6 + _self11;
+        double _t27 = _t7 + _self31;
+        double _t28 = Math.fma(minZ, _self22, _t12);
+        double _t29 = Math.fma(minZ, _self02, _t13);
+        double _t30 = Math.fma(minZ, _self12, _t14);
+        double _t31 = Math.fma(minZ, _self32, _t15);
+        double _t31_inv = 1.0 / _t31;
+        double _t32 = Math.fma(minZ, _self22, _t16);
+        double _t33 = Math.fma(minZ, _self02, _t17);
+        double _t34 = Math.fma(minZ, _self12, _t18);
+        double _t35 = Math.fma(minZ, _self32, _t19);
+        double _t35_inv = 1.0 / _t35;
+        double _t36 = Math.fma(minZ, _self22, _t20);
+        double _t37 = Math.fma(minZ, _self02, _t21);
+        double _t38 = Math.fma(minZ, _self12, _t22);
+        double _t39 = Math.fma(minZ, _self32, _t23);
+        double _t39_inv = 1.0 / _t39;
+        double _t40 = Math.fma(minZ, _self22, _t24);
+        double _t41 = Math.fma(minZ, _self02, _t25);
+        double _t42 = Math.fma(minZ, _self12, _t26);
+        double _t43 = Math.fma(minZ, _self32, _t27);
+        double _t43_inv = 1.0 / _t43;
+        double _t44 = Math.fma(maxZ, _self22, _t12);
+        double _t45 = Math.fma(maxZ, _self02, _t13);
+        double _t46 = Math.fma(maxZ, _self12, _t14);
+        double _t47 = Math.fma(maxZ, _self32, _t15);
+        double _t47_inv = 1.0 / _t47;
+        double _t48 = Math.fma(maxZ, _self22, _t16);
+        double _t49 = Math.fma(maxZ, _self02, _t17);
+        double _t50 = Math.fma(maxZ, _self12, _t18);
+        double _t51 = Math.fma(maxZ, _self32, _t19);
+        double _t51_inv = 1.0 / _t51;
+        double _t52 = Math.fma(maxZ, _self22, _t20);
+        double _t53 = Math.fma(maxZ, _self02, _t21);
+        double _t54 = Math.fma(maxZ, _self12, _t22);
+        double _t55 = Math.fma(maxZ, _self32, _t23);
+        double _t55_inv = 1.0 / _t55;
+        double _t56 = Math.fma(maxZ, _self22, _t24);
+        double _t57 = Math.fma(maxZ, _self02, _t25);
+        double _t58 = Math.fma(maxZ, _self12, _t26);
+        double _t59 = Math.fma(maxZ, _self32, _t27);
+        double _t59_inv = 1.0 / _t59;
+        double _t156 = _view03 + Math.fma(_view02, _t28, Math.fma(_view00, _t29, _view01 * _t30)) * _t31_inv;
+        double _t157 = _view03 + Math.fma(_view02, _t32, Math.fma(_view00, _t33, _view01 * _t34)) * _t35_inv;
+        double _t158 = _view03 + Math.fma(_view02, _t36, Math.fma(_view00, _t37, _view01 * _t38)) * _t39_inv;
+        double _t159 = _view03 + Math.fma(_view02, _t40, Math.fma(_view00, _t41, _view01 * _t42)) * _t43_inv;
+        double _t160 = _view03 + Math.fma(_view02, _t44, Math.fma(_view00, _t45, _view01 * _t46)) * _t47_inv;
+        double _t161 = _view03 + Math.fma(_view02, _t48, Math.fma(_view00, _t49, _view01 * _t50)) * _t51_inv;
+        double _t162 = _view03 + Math.fma(_view02, _t52, Math.fma(_view00, _t53, _view01 * _t54)) * _t55_inv;
+        double _t163 = _view03 + Math.fma(_view02, _t56, Math.fma(_view00, _t57, _view01 * _t58)) * _t59_inv;
+        double _t164 = _view13 + Math.fma(_view12, _t28, Math.fma(_view10, _t29, _view11 * _t30)) * _t31_inv;
+        double _t165 = _view13 + Math.fma(_view12, _t32, Math.fma(_view10, _t33, _view11 * _t34)) * _t35_inv;
+        double _t166 = _view13 + Math.fma(_view12, _t36, Math.fma(_view10, _t37, _view11 * _t38)) * _t39_inv;
+        double _t167 = _view13 + Math.fma(_view12, _t40, Math.fma(_view10, _t41, _view11 * _t42)) * _t43_inv;
+        double _t168 = _view13 + Math.fma(_view12, _t44, Math.fma(_view10, _t45, _view11 * _t46)) * _t47_inv;
+        double _t169 = _view13 + Math.fma(_view12, _t48, Math.fma(_view10, _t49, _view11 * _t50)) * _t51_inv;
+        double _t170 = _view13 + Math.fma(_view12, _t52, Math.fma(_view10, _t53, _view11 * _t54)) * _t55_inv;
+        double _t171 = _view13 + Math.fma(_view12, _t56, Math.fma(_view10, _t57, _view11 * _t58)) * _t59_inv;
+        double _t172 = _view23 + Math.fma(_view22, _t28, Math.fma(_view20, _t29, _view21 * _t30)) * _t31_inv;
+        double _t173 = _view23 + Math.fma(_view22, _t32, Math.fma(_view20, _t33, _view21 * _t34)) * _t35_inv;
+        double _t174 = _view23 + Math.fma(_view22, _t36, Math.fma(_view20, _t37, _view21 * _t38)) * _t39_inv;
+        double _t175 = _view23 + Math.fma(_view22, _t40, Math.fma(_view20, _t41, _view21 * _t42)) * _t43_inv;
+        double _t176 = _view23 + Math.fma(_view22, _t44, Math.fma(_view20, _t45, _view21 * _t46)) * _t47_inv;
+        double _t177 = _view23 + Math.fma(_view22, _t48, Math.fma(_view20, _t49, _view21 * _t50)) * _t51_inv;
+        double _t178 = _view23 + Math.fma(_view22, _t52, Math.fma(_view20, _t53, _view21 * _t54)) * _t55_inv;
+        double _t179 = _view23 + Math.fma(_view22, _t56, Math.fma(_view20, _t57, _view21 * _t58)) * _t59_inv;
+        double _t216 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t156, _t157), _t158), _t159), _t160), _t161), _t162), _t163);
+        double _t217 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t156, _t157), _t158), _t159), _t160), _t161), _t162), _t163);
+        double _t218 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t164, _t165), _t166), _t167), _t168), _t169), _t170), _t171);
+        double _t219 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t164, _t165), _t166), _t167), _t168), _t169), _t170), _t171);
+        double _t220 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
+        double _t222 = _t216 - _t217;
+        double _t222_inv = 1.0 / _t222;
+        double _t223 = _t218 - _t219;
+        double _t223_inv = 1.0 / _t223;
+        double _t224 = _t220 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
+        double _t224_inv = 1.0 / _t224;
+        dest.put(destOffset + 0, 2.0 * _t222_inv);
+        dest.put(destOffset + 1, 0.0);
+        dest.put(destOffset + 2, 0.0);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, 0.0);
+        dest.put(destOffset + 5, 2.0 * _t223_inv);
+        dest.put(destOffset + 6, 0.0);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, 0.0);
+        dest.put(destOffset + 9, 0.0);
+        dest.put(destOffset + 10, -1.0 * _t224_inv);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, -((_t217 + _t216) * _t222_inv));
+        dest.put(destOffset + 13, -((_t219 + _t218) * _t223_inv));
+        dest.put(destOffset + 14, _t220 * _t224_inv);
+        dest.put(destOffset + 15, 1.0);
         return dest;
     }
 
@@ -8884,7 +17215,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer perspective_no_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double fovy, double aspect, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.perspective_no_lh_unsafe(dest, destOffset, src, srcOffset, fovy, aspect, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.perspective_no_lh_unsafe(dest, destOffset, src, srcOffset, fovy, aspect, near, far);
         return Double4x4OpsKernelsTypedBuffer.perspective_no_lh_api(dest, destOffset, src, srcOffset, fovy, aspect, near, far);
     }
 
@@ -8951,7 +17282,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer perspective_no_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double fovy, double aspect, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.perspective_no_rh_unsafe(dest, destOffset, src, srcOffset, fovy, aspect, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.perspective_no_rh_unsafe(dest, destOffset, src, srcOffset, fovy, aspect, near, far);
         return Double4x4OpsKernelsTypedBuffer.perspective_no_rh_api(dest, destOffset, src, srcOffset, fovy, aspect, near, far);
     }
 
@@ -9025,7 +17356,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer perspective_zo_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double fovy, double aspect, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.perspective_zo_lh_unsafe(dest, destOffset, src, srcOffset, fovy, aspect, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.perspective_zo_lh_unsafe(dest, destOffset, src, srcOffset, fovy, aspect, near, far);
         return Double4x4OpsKernelsTypedBuffer.perspective_zo_lh_api(dest, destOffset, src, srcOffset, fovy, aspect, near, far);
     }
 
@@ -9092,7 +17423,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer perspective_zo_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double fovy, double aspect, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.perspective_zo_rh_unsafe(dest, destOffset, src, srcOffset, fovy, aspect, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.perspective_zo_rh_unsafe(dest, destOffset, src, srcOffset, fovy, aspect, near, far);
         return Double4x4OpsKernelsTypedBuffer.perspective_zo_rh_api(dest, destOffset, src, srcOffset, fovy, aspect, near, far);
     }
 
@@ -9166,7 +17497,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer perspectiveFovRange_no_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleMin, double angleMax, double aspect, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.perspectiveFovRange_no_lh_unsafe(dest, destOffset, src, srcOffset, angleMin, angleMax, aspect, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.perspectiveFovRange_no_lh_unsafe(dest, destOffset, src, srcOffset, angleMin, angleMax, aspect, near, far);
         return Double4x4OpsKernelsTypedBuffer.perspectiveFovRange_no_lh_api(dest, destOffset, src, srcOffset, angleMin, angleMax, aspect, near, far);
     }
 
@@ -9236,7 +17567,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer perspectiveFovRange_no_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleMin, double angleMax, double aspect, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.perspectiveFovRange_no_rh_unsafe(dest, destOffset, src, srcOffset, angleMin, angleMax, aspect, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.perspectiveFovRange_no_rh_unsafe(dest, destOffset, src, srcOffset, angleMin, angleMax, aspect, near, far);
         return Double4x4OpsKernelsTypedBuffer.perspectiveFovRange_no_rh_api(dest, destOffset, src, srcOffset, angleMin, angleMax, aspect, near, far);
     }
 
@@ -9313,7 +17644,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer perspectiveFovRange_zo_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleMin, double angleMax, double aspect, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.perspectiveFovRange_zo_lh_unsafe(dest, destOffset, src, srcOffset, angleMin, angleMax, aspect, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.perspectiveFovRange_zo_lh_unsafe(dest, destOffset, src, srcOffset, angleMin, angleMax, aspect, near, far);
         return Double4x4OpsKernelsTypedBuffer.perspectiveFovRange_zo_lh_api(dest, destOffset, src, srcOffset, angleMin, angleMax, aspect, near, far);
     }
 
@@ -9383,7 +17714,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer perspectiveFovRange_zo_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleMin, double angleMax, double aspect, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.perspectiveFovRange_zo_rh_unsafe(dest, destOffset, src, srcOffset, angleMin, angleMax, aspect, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.perspectiveFovRange_zo_rh_unsafe(dest, destOffset, src, srcOffset, angleMin, angleMax, aspect, near, far);
         return Double4x4OpsKernelsTypedBuffer.perspectiveFovRange_zo_rh_api(dest, destOffset, src, srcOffset, angleMin, angleMax, aspect, near, far);
     }
 
@@ -9460,7 +17791,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer perspectiveFrustumSlice_no_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.perspectiveFrustumSlice_no_lh_unsafe(dest, destOffset, src, srcOffset, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.perspectiveFrustumSlice_no_lh_unsafe(dest, destOffset, src, srcOffset, near, far);
         return Double4x4OpsKernelsTypedBuffer.perspectiveFrustumSlice_no_lh_api(dest, destOffset, src, srcOffset, near, far);
     }
 
@@ -9518,7 +17849,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer perspectiveFrustumSlice_no_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.perspectiveFrustumSlice_no_rh_unsafe(dest, destOffset, src, srcOffset, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.perspectiveFrustumSlice_no_rh_unsafe(dest, destOffset, src, srcOffset, near, far);
         return Double4x4OpsKernelsTypedBuffer.perspectiveFrustumSlice_no_rh_api(dest, destOffset, src, srcOffset, near, far);
     }
 
@@ -9583,7 +17914,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer perspectiveFrustumSlice_zo_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.perspectiveFrustumSlice_zo_lh_unsafe(dest, destOffset, src, srcOffset, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.perspectiveFrustumSlice_zo_lh_unsafe(dest, destOffset, src, srcOffset, near, far);
         return Double4x4OpsKernelsTypedBuffer.perspectiveFrustumSlice_zo_lh_api(dest, destOffset, src, srcOffset, near, far);
     }
 
@@ -9641,7 +17972,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer perspectiveFrustumSlice_zo_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.perspectiveFrustumSlice_zo_rh_unsafe(dest, destOffset, src, srcOffset, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.perspectiveFrustumSlice_zo_rh_unsafe(dest, destOffset, src, srcOffset, near, far);
         return Double4x4OpsKernelsTypedBuffer.perspectiveFrustumSlice_zo_rh_api(dest, destOffset, src, srcOffset, near, far);
     }
 
@@ -9706,7 +18037,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer perspectiveOffCenterFov_no_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.perspectiveOffCenterFov_no_lh_unsafe(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.perspectiveOffCenterFov_no_lh_unsafe(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
         return Double4x4OpsKernelsTypedBuffer.perspectiveOffCenterFov_no_lh_api(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
     }
 
@@ -9779,7 +18110,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer perspectiveOffCenterFov_no_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.perspectiveOffCenterFov_no_rh_unsafe(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.perspectiveOffCenterFov_no_rh_unsafe(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
         return Double4x4OpsKernelsTypedBuffer.perspectiveOffCenterFov_no_rh_api(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
     }
 
@@ -9859,7 +18190,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer perspectiveOffCenterFov_zo_lh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.perspectiveOffCenterFov_zo_lh_unsafe(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.perspectiveOffCenterFov_zo_lh_unsafe(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
         return Double4x4OpsKernelsTypedBuffer.perspectiveOffCenterFov_zo_lh_api(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
     }
 
@@ -9932,7 +18263,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer perspectiveOffCenterFov_zo_rh(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.perspectiveOffCenterFov_zo_rh_unsafe(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.perspectiveOffCenterFov_zo_rh_unsafe(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
         return Double4x4OpsKernelsTypedBuffer.perspectiveOffCenterFov_zo_rh_api(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far);
     }
 
@@ -10070,7 +18401,60 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.preRotateAround(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.preRotateAround_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.preRotateAround_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = -pivotX;
+        double _t1 = -pivotY;
+        double _t2 = -pivotZ;
+        double _t3 = rotZ * rotZ;
+        double _t4 = rotZ * rotW;
+        double _t5 = rotY * rotW;
+        double _t21 = 2.0 * Math.fma(rotX, rotZ, _t5);
+        double _t22 = 2.0 * Math.fma(rotX, rotY, _t4);
+        double _t23 = 2.0 * Math.fma(rotX, rotW, rotY * rotZ);
+        double _t24 = 2.0 * Math.fma(rotX, rotY, -_t4);
+        double _t25 = 2.0 * Math.fma(rotY, rotZ, -(rotX * rotW));
+        double _t26 = 2.0 * Math.fma(rotX, rotZ, -_t5);
+        double _t27 = Math.fma(-2.0, Math.fma(rotY, rotY, _t3), 1.0);
+        double _t28 = Math.fma(-2.0, Math.fma(rotX, rotX, _t3), 1.0);
+        double _t29 = Math.fma(-2.0, Math.fma(rotX, rotX, rotY * rotY), 1.0);
+        double _t36 = Math.fma(_t0, _t27, Math.fma(_t1, _t24, Math.fma(_t2, _t21, pivotX)));
+        double _t37 = Math.fma(_t0, _t22, Math.fma(_t1, _t28, Math.fma(_t2, _t25, pivotY)));
+        double _t38 = Math.fma(_t0, _t26, Math.fma(_t1, _t23, Math.fma(_t2, _t29, pivotZ)));
+        dest.put(destOffset + 0, Math.fma(_self30, _t36, Math.fma(_self20, _t21, Math.fma(_self00, _t27, _self10 * _t24))));
+        dest.put(destOffset + 1, Math.fma(_self30, _t37, Math.fma(_self20, _t25, Math.fma(_self00, _t22, _self10 * _t28))));
+        dest.put(destOffset + 2, Math.fma(_self30, _t38, Math.fma(_self20, _t29, Math.fma(_self00, _t26, _self10 * _t23))));
+        dest.put(destOffset + 3, _self30);
+        dest.put(destOffset + 4, Math.fma(_self31, _t36, Math.fma(_self21, _t21, Math.fma(_self01, _t27, _self11 * _t24))));
+        dest.put(destOffset + 5, Math.fma(_self31, _t37, Math.fma(_self21, _t25, Math.fma(_self01, _t22, _self11 * _t28))));
+        dest.put(destOffset + 6, Math.fma(_self31, _t38, Math.fma(_self21, _t29, Math.fma(_self01, _t26, _self11 * _t23))));
+        dest.put(destOffset + 7, _self31);
+        dest.put(destOffset + 8, Math.fma(_self32, _t36, Math.fma(_self22, _t21, Math.fma(_self02, _t27, _self12 * _t24))));
+        dest.put(destOffset + 9, Math.fma(_self32, _t37, Math.fma(_self22, _t25, Math.fma(_self02, _t22, _self12 * _t28))));
+        dest.put(destOffset + 10, Math.fma(_self32, _t38, Math.fma(_self22, _t29, Math.fma(_self02, _t26, _self12 * _t23))));
+        dest.put(destOffset + 11, _self32);
+        dest.put(destOffset + 12, Math.fma(_self33, _t36, Math.fma(_self23, _t21, Math.fma(_self03, _t27, _self13 * _t24))));
+        dest.put(destOffset + 13, Math.fma(_self33, _t37, Math.fma(_self23, _t25, Math.fma(_self03, _t22, _self13 * _t28))));
+        dest.put(destOffset + 14, Math.fma(_self33, _t38, Math.fma(_self23, _t29, Math.fma(_self03, _t26, _self13 * _t23))));
+        dest.put(destOffset + 15, _self33);
         return dest;
     }
 
@@ -10088,7 +18472,67 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.preRotateAround(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, rot.array(), rot.arrayOffset() + rotOffset, pivot.array(), pivot.arrayOffset() + pivotOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.preRotateAround_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rot.duplicate().position(0)), (long) rotOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(pivot.duplicate().position(0)), (long) pivotOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && rot.order() == java.nio.ByteOrder.nativeOrder() && pivot.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.preRotateAround_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rot.duplicate().position(0)), (long) rotOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(pivot.duplicate().position(0)), (long) pivotOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _rotx = rot.get(rotOffset + 0);
+        double _roty = rot.get(rotOffset + 1);
+        double _rotz = rot.get(rotOffset + 2);
+        double _rotw = rot.get(rotOffset + 3);
+        double _pivotx = pivot.get(pivotOffset + 0);
+        double _pivoty = pivot.get(pivotOffset + 1);
+        double _pivotz = pivot.get(pivotOffset + 2);
+        double _t0 = -_pivotx;
+        double _t1 = -_pivoty;
+        double _t2 = -_pivotz;
+        double _t3 = _rotz * _rotz;
+        double _t4 = _rotz * _rotw;
+        double _t5 = _roty * _rotw;
+        double _t21 = 2.0 * Math.fma(_rotx, _rotz, _t5);
+        double _t22 = 2.0 * Math.fma(_rotx, _roty, _t4);
+        double _t23 = 2.0 * Math.fma(_rotx, _rotw, _roty * _rotz);
+        double _t24 = 2.0 * Math.fma(_rotx, _roty, -_t4);
+        double _t25 = 2.0 * Math.fma(_roty, _rotz, -(_rotx * _rotw));
+        double _t26 = 2.0 * Math.fma(_rotx, _rotz, -_t5);
+        double _t27 = Math.fma(-2.0, Math.fma(_roty, _roty, _t3), 1.0);
+        double _t28 = Math.fma(-2.0, Math.fma(_rotx, _rotx, _t3), 1.0);
+        double _t29 = Math.fma(-2.0, Math.fma(_rotx, _rotx, _roty * _roty), 1.0);
+        double _t36 = Math.fma(_t0, _t27, Math.fma(_t1, _t24, Math.fma(_t2, _t21, _pivotx)));
+        double _t37 = Math.fma(_t0, _t22, Math.fma(_t1, _t28, Math.fma(_t2, _t25, _pivoty)));
+        double _t38 = Math.fma(_t0, _t26, Math.fma(_t1, _t23, Math.fma(_t2, _t29, _pivotz)));
+        dest.put(destOffset + 0, Math.fma(_self30, _t36, Math.fma(_self20, _t21, Math.fma(_self00, _t27, _self10 * _t24))));
+        dest.put(destOffset + 1, Math.fma(_self30, _t37, Math.fma(_self20, _t25, Math.fma(_self00, _t22, _self10 * _t28))));
+        dest.put(destOffset + 2, Math.fma(_self30, _t38, Math.fma(_self20, _t29, Math.fma(_self00, _t26, _self10 * _t23))));
+        dest.put(destOffset + 3, _self30);
+        dest.put(destOffset + 4, Math.fma(_self31, _t36, Math.fma(_self21, _t21, Math.fma(_self01, _t27, _self11 * _t24))));
+        dest.put(destOffset + 5, Math.fma(_self31, _t37, Math.fma(_self21, _t25, Math.fma(_self01, _t22, _self11 * _t28))));
+        dest.put(destOffset + 6, Math.fma(_self31, _t38, Math.fma(_self21, _t29, Math.fma(_self01, _t26, _self11 * _t23))));
+        dest.put(destOffset + 7, _self31);
+        dest.put(destOffset + 8, Math.fma(_self32, _t36, Math.fma(_self22, _t21, Math.fma(_self02, _t27, _self12 * _t24))));
+        dest.put(destOffset + 9, Math.fma(_self32, _t37, Math.fma(_self22, _t25, Math.fma(_self02, _t22, _self12 * _t28))));
+        dest.put(destOffset + 10, Math.fma(_self32, _t38, Math.fma(_self22, _t29, Math.fma(_self02, _t26, _self12 * _t23))));
+        dest.put(destOffset + 11, _self32);
+        dest.put(destOffset + 12, Math.fma(_self33, _t36, Math.fma(_self23, _t21, Math.fma(_self03, _t27, _self13 * _t24))));
+        dest.put(destOffset + 13, Math.fma(_self33, _t37, Math.fma(_self23, _t25, Math.fma(_self03, _t22, _self13 * _t28))));
+        dest.put(destOffset + 14, Math.fma(_self33, _t38, Math.fma(_self23, _t29, Math.fma(_self03, _t26, _self13 * _t23))));
+        dest.put(destOffset + 15, _self33);
         return dest;
     }
 
@@ -10104,7 +18548,57 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.preRotateAxis(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle, axisX, axisY, axisZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.preRotateAxis_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle, axisX, axisY, axisZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.preRotateAxis_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle, axisX, axisY, axisZ);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cos(angle);
+        double _t2 = 1.0 - _t1;
+        double _t3 = axisX * axisZ;
+        double _t5 = axisX * axisY;
+        double _t7 = axisY * axisZ;
+        double _t18 = Math.fma(_t2, axisX * axisX, _t1);
+        double _t19 = Math.fma(_t2, axisY * axisY, _t1);
+        double _t20 = Math.fma(_t2, axisZ * axisZ, _t1);
+        double _t21 = Math.fma(axisY, _t0, _t2 * _t3);
+        double _t22 = Math.fma(axisZ, _t0, _t2 * _t5);
+        double _t23 = Math.fma(axisX, _t0, _t2 * _t7);
+        double _t24 = Math.fma(_t2, _t5, -(axisZ * _t0));
+        double _t25 = Math.fma(_t2, _t7, -(axisX * _t0));
+        double _t26 = Math.fma(_t2, _t3, -(axisY * _t0));
+        dest.put(destOffset + 0, Math.fma(_self20, _t21, Math.fma(_self00, _t18, _self10 * _t24)));
+        dest.put(destOffset + 1, Math.fma(_self20, _t25, Math.fma(_self00, _t22, _self10 * _t19)));
+        dest.put(destOffset + 2, Math.fma(_self20, _t20, Math.fma(_self00, _t26, _self10 * _t23)));
+        dest.put(destOffset + 3, _self30);
+        dest.put(destOffset + 4, Math.fma(_self21, _t21, Math.fma(_self01, _t18, _self11 * _t24)));
+        dest.put(destOffset + 5, Math.fma(_self21, _t25, Math.fma(_self01, _t22, _self11 * _t19)));
+        dest.put(destOffset + 6, Math.fma(_self21, _t20, Math.fma(_self01, _t26, _self11 * _t23)));
+        dest.put(destOffset + 7, _self31);
+        dest.put(destOffset + 8, Math.fma(_self22, _t21, Math.fma(_self02, _t18, _self12 * _t24)));
+        dest.put(destOffset + 9, Math.fma(_self22, _t25, Math.fma(_self02, _t22, _self12 * _t19)));
+        dest.put(destOffset + 10, Math.fma(_self22, _t20, Math.fma(_self02, _t26, _self12 * _t23)));
+        dest.put(destOffset + 11, _self32);
+        dest.put(destOffset + 12, Math.fma(_self23, _t21, Math.fma(_self03, _t18, _self13 * _t24)));
+        dest.put(destOffset + 13, Math.fma(_self23, _t25, Math.fma(_self03, _t22, _self13 * _t19)));
+        dest.put(destOffset + 14, Math.fma(_self23, _t20, Math.fma(_self03, _t26, _self13 * _t23)));
+        dest.put(destOffset + 15, _self33);
         return dest;
     }
 
@@ -10121,7 +18615,60 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.preRotateAxis(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, axis.array(), axis.arrayOffset() + axisOffset, angle);
             return dest;
         }
-        Double4x4OpsKernelsSegment.preRotateAxis_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(axis.duplicate().position(0)), (long) axisOffset * 8L, angle);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && axis.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.preRotateAxis_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(axis.duplicate().position(0)), (long) axisOffset * 8L, angle);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _axisx = axis.get(axisOffset + 0);
+        double _axisy = axis.get(axisOffset + 1);
+        double _axisz = axis.get(axisOffset + 2);
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cos(angle);
+        double _t2 = 1.0 - _t1;
+        double _t3 = _axisx * _axisz;
+        double _t5 = _axisx * _axisy;
+        double _t7 = _axisy * _axisz;
+        double _t18 = Math.fma(_t2, _axisx * _axisx, _t1);
+        double _t19 = Math.fma(_t2, _axisy * _axisy, _t1);
+        double _t20 = Math.fma(_t2, _axisz * _axisz, _t1);
+        double _t21 = Math.fma(_axisy, _t0, _t2 * _t3);
+        double _t22 = Math.fma(_axisz, _t0, _t2 * _t5);
+        double _t23 = Math.fma(_axisx, _t0, _t2 * _t7);
+        double _t24 = Math.fma(_t2, _t5, -(_axisz * _t0));
+        double _t25 = Math.fma(_t2, _t7, -(_axisx * _t0));
+        double _t26 = Math.fma(_t2, _t3, -(_axisy * _t0));
+        dest.put(destOffset + 0, Math.fma(_self20, _t21, Math.fma(_self00, _t18, _self10 * _t24)));
+        dest.put(destOffset + 1, Math.fma(_self20, _t25, Math.fma(_self00, _t22, _self10 * _t19)));
+        dest.put(destOffset + 2, Math.fma(_self20, _t20, Math.fma(_self00, _t26, _self10 * _t23)));
+        dest.put(destOffset + 3, _self30);
+        dest.put(destOffset + 4, Math.fma(_self21, _t21, Math.fma(_self01, _t18, _self11 * _t24)));
+        dest.put(destOffset + 5, Math.fma(_self21, _t25, Math.fma(_self01, _t22, _self11 * _t19)));
+        dest.put(destOffset + 6, Math.fma(_self21, _t20, Math.fma(_self01, _t26, _self11 * _t23)));
+        dest.put(destOffset + 7, _self31);
+        dest.put(destOffset + 8, Math.fma(_self22, _t21, Math.fma(_self02, _t18, _self12 * _t24)));
+        dest.put(destOffset + 9, Math.fma(_self22, _t25, Math.fma(_self02, _t22, _self12 * _t19)));
+        dest.put(destOffset + 10, Math.fma(_self22, _t20, Math.fma(_self02, _t26, _self12 * _t23)));
+        dest.put(destOffset + 11, _self32);
+        dest.put(destOffset + 12, Math.fma(_self23, _t21, Math.fma(_self03, _t18, _self13 * _t24)));
+        dest.put(destOffset + 13, Math.fma(_self23, _t25, Math.fma(_self03, _t22, _self13 * _t19)));
+        dest.put(destOffset + 14, Math.fma(_self23, _t20, Math.fma(_self03, _t26, _self13 * _t23)));
+        dest.put(destOffset + 15, _self33);
         return dest;
     }
 
@@ -10137,7 +18684,54 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.preRotateQuat(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, qX, qY, qZ, qW);
             return dest;
         }
-        Double4x4OpsKernelsSegment.preRotateQuat_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, qX, qY, qZ, qW);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.preRotateQuat_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, qX, qY, qZ, qW);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = qY * qW;
+        double _t1 = qZ * qZ;
+        double _t2 = qZ * qW;
+        double _t18 = 2.0 * Math.fma(qX, qZ, _t0);
+        double _t19 = 2.0 * Math.fma(qX, qY, _t2);
+        double _t20 = 2.0 * Math.fma(qX, qW, qY * qZ);
+        double _t21 = 2.0 * Math.fma(qX, qY, -_t2);
+        double _t22 = 2.0 * Math.fma(qY, qZ, -(qX * qW));
+        double _t23 = 2.0 * Math.fma(qX, qZ, -_t0);
+        double _t24 = Math.fma(-2.0, Math.fma(qY, qY, _t1), 1.0);
+        double _t25 = Math.fma(-2.0, Math.fma(qX, qX, _t1), 1.0);
+        double _t26 = Math.fma(-2.0, Math.fma(qX, qX, qY * qY), 1.0);
+        dest.put(destOffset + 0, Math.fma(_self20, _t18, Math.fma(_self00, _t24, _self10 * _t21)));
+        dest.put(destOffset + 1, Math.fma(_self20, _t22, Math.fma(_self00, _t19, _self10 * _t25)));
+        dest.put(destOffset + 2, Math.fma(_self20, _t26, Math.fma(_self00, _t23, _self10 * _t20)));
+        dest.put(destOffset + 3, _self30);
+        dest.put(destOffset + 4, Math.fma(_self21, _t18, Math.fma(_self01, _t24, _self11 * _t21)));
+        dest.put(destOffset + 5, Math.fma(_self21, _t22, Math.fma(_self01, _t19, _self11 * _t25)));
+        dest.put(destOffset + 6, Math.fma(_self21, _t26, Math.fma(_self01, _t23, _self11 * _t20)));
+        dest.put(destOffset + 7, _self31);
+        dest.put(destOffset + 8, Math.fma(_self22, _t18, Math.fma(_self02, _t24, _self12 * _t21)));
+        dest.put(destOffset + 9, Math.fma(_self22, _t22, Math.fma(_self02, _t19, _self12 * _t25)));
+        dest.put(destOffset + 10, Math.fma(_self22, _t26, Math.fma(_self02, _t23, _self12 * _t20)));
+        dest.put(destOffset + 11, _self32);
+        dest.put(destOffset + 12, Math.fma(_self23, _t18, Math.fma(_self03, _t24, _self13 * _t21)));
+        dest.put(destOffset + 13, Math.fma(_self23, _t22, Math.fma(_self03, _t19, _self13 * _t25)));
+        dest.put(destOffset + 14, Math.fma(_self23, _t26, Math.fma(_self03, _t23, _self13 * _t20)));
+        dest.put(destOffset + 15, _self33);
         return dest;
     }
 
@@ -10154,7 +18748,58 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.preRotateQuat(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, q.array(), q.arrayOffset() + qOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.preRotateQuat_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(q.duplicate().position(0)), (long) qOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && q.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.preRotateQuat_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(q.duplicate().position(0)), (long) qOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _qx = q.get(qOffset + 0);
+        double _qy = q.get(qOffset + 1);
+        double _qz = q.get(qOffset + 2);
+        double _qw = q.get(qOffset + 3);
+        double _t0 = _qy * _qw;
+        double _t1 = _qz * _qz;
+        double _t2 = _qz * _qw;
+        double _t18 = 2.0 * Math.fma(_qx, _qz, _t0);
+        double _t19 = 2.0 * Math.fma(_qx, _qy, _t2);
+        double _t20 = 2.0 * Math.fma(_qx, _qw, _qy * _qz);
+        double _t21 = 2.0 * Math.fma(_qx, _qy, -_t2);
+        double _t22 = 2.0 * Math.fma(_qy, _qz, -(_qx * _qw));
+        double _t23 = 2.0 * Math.fma(_qx, _qz, -_t0);
+        double _t24 = Math.fma(-2.0, Math.fma(_qy, _qy, _t1), 1.0);
+        double _t25 = Math.fma(-2.0, Math.fma(_qx, _qx, _t1), 1.0);
+        double _t26 = Math.fma(-2.0, Math.fma(_qx, _qx, _qy * _qy), 1.0);
+        dest.put(destOffset + 0, Math.fma(_self20, _t18, Math.fma(_self00, _t24, _self10 * _t21)));
+        dest.put(destOffset + 1, Math.fma(_self20, _t22, Math.fma(_self00, _t19, _self10 * _t25)));
+        dest.put(destOffset + 2, Math.fma(_self20, _t26, Math.fma(_self00, _t23, _self10 * _t20)));
+        dest.put(destOffset + 3, _self30);
+        dest.put(destOffset + 4, Math.fma(_self21, _t18, Math.fma(_self01, _t24, _self11 * _t21)));
+        dest.put(destOffset + 5, Math.fma(_self21, _t22, Math.fma(_self01, _t19, _self11 * _t25)));
+        dest.put(destOffset + 6, Math.fma(_self21, _t26, Math.fma(_self01, _t23, _self11 * _t20)));
+        dest.put(destOffset + 7, _self31);
+        dest.put(destOffset + 8, Math.fma(_self22, _t18, Math.fma(_self02, _t24, _self12 * _t21)));
+        dest.put(destOffset + 9, Math.fma(_self22, _t22, Math.fma(_self02, _t19, _self12 * _t25)));
+        dest.put(destOffset + 10, Math.fma(_self22, _t26, Math.fma(_self02, _t23, _self12 * _t20)));
+        dest.put(destOffset + 11, _self32);
+        dest.put(destOffset + 12, Math.fma(_self23, _t18, Math.fma(_self03, _t24, _self13 * _t21)));
+        dest.put(destOffset + 13, Math.fma(_self23, _t22, Math.fma(_self03, _t19, _self13 * _t25)));
+        dest.put(destOffset + 14, Math.fma(_self23, _t26, Math.fma(_self03, _t23, _self13 * _t20)));
+        dest.put(destOffset + 15, _self33);
         return dest;
     }
 
@@ -10170,7 +18815,44 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.preRotateX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
-        Double4x4OpsKernelsSegment.preRotateX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.preRotateX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        dest.put(destOffset + 0, _self00);
+        dest.put(destOffset + 1, Math.fma(_self10, _t0, -(_self20 * _t1)));
+        dest.put(destOffset + 2, Math.fma(_self10, _t1, _self20 * _t0));
+        dest.put(destOffset + 3, _self30);
+        dest.put(destOffset + 4, _self01);
+        dest.put(destOffset + 5, Math.fma(_self11, _t0, -(_self21 * _t1)));
+        dest.put(destOffset + 6, Math.fma(_self11, _t1, _self21 * _t0));
+        dest.put(destOffset + 7, _self31);
+        dest.put(destOffset + 8, _self02);
+        dest.put(destOffset + 9, Math.fma(_self12, _t0, -(_self22 * _t1)));
+        dest.put(destOffset + 10, Math.fma(_self12, _t1, _self22 * _t0));
+        dest.put(destOffset + 11, _self32);
+        dest.put(destOffset + 12, _self03);
+        dest.put(destOffset + 13, Math.fma(_self13, _t0, -(_self23 * _t1)));
+        dest.put(destOffset + 14, Math.fma(_self13, _t1, _self23 * _t0));
+        dest.put(destOffset + 15, _self33);
         return dest;
     }
 
@@ -10186,7 +18868,44 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.preRotateY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
-        Double4x4OpsKernelsSegment.preRotateY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.preRotateY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        dest.put(destOffset + 0, Math.fma(_self00, _t0, _self20 * _t1));
+        dest.put(destOffset + 1, _self10);
+        dest.put(destOffset + 2, Math.fma(_self20, _t0, -(_self00 * _t1)));
+        dest.put(destOffset + 3, _self30);
+        dest.put(destOffset + 4, Math.fma(_self01, _t0, _self21 * _t1));
+        dest.put(destOffset + 5, _self11);
+        dest.put(destOffset + 6, Math.fma(_self21, _t0, -(_self01 * _t1)));
+        dest.put(destOffset + 7, _self31);
+        dest.put(destOffset + 8, Math.fma(_self02, _t0, _self22 * _t1));
+        dest.put(destOffset + 9, _self12);
+        dest.put(destOffset + 10, Math.fma(_self22, _t0, -(_self02 * _t1)));
+        dest.put(destOffset + 11, _self32);
+        dest.put(destOffset + 12, Math.fma(_self03, _t0, _self23 * _t1));
+        dest.put(destOffset + 13, _self13);
+        dest.put(destOffset + 14, Math.fma(_self23, _t0, -(_self03 * _t1)));
+        dest.put(destOffset + 15, _self33);
         return dest;
     }
 
@@ -10202,7 +18921,44 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.preRotateZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
-        Double4x4OpsKernelsSegment.preRotateZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.preRotateZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = Math.cos(angle);
+        double _t1 = Math.sin(angle);
+        dest.put(destOffset + 0, Math.fma(_self00, _t0, -(_self10 * _t1)));
+        dest.put(destOffset + 1, Math.fma(_self00, _t1, _self10 * _t0));
+        dest.put(destOffset + 2, _self20);
+        dest.put(destOffset + 3, _self30);
+        dest.put(destOffset + 4, Math.fma(_self01, _t0, -(_self11 * _t1)));
+        dest.put(destOffset + 5, Math.fma(_self01, _t1, _self11 * _t0));
+        dest.put(destOffset + 6, _self21);
+        dest.put(destOffset + 7, _self31);
+        dest.put(destOffset + 8, Math.fma(_self02, _t0, -(_self12 * _t1)));
+        dest.put(destOffset + 9, Math.fma(_self02, _t1, _self12 * _t0));
+        dest.put(destOffset + 10, _self22);
+        dest.put(destOffset + 11, _self32);
+        dest.put(destOffset + 12, Math.fma(_self03, _t0, -(_self13 * _t1)));
+        dest.put(destOffset + 13, Math.fma(_self03, _t1, _self13 * _t0));
+        dest.put(destOffset + 14, _self23);
+        dest.put(destOffset + 15, _self33);
         return dest;
     }
 
@@ -10384,7 +19140,45 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.preScaleAround(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.preScaleAround_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, sX, sY, sZ, pivotX, pivotY, pivotZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.preScaleAround_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, sX, sY, sZ, pivotX, pivotY, pivotZ);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t3 = Math.fma(-pivotX, sX, pivotX);
+        double _t4 = Math.fma(-pivotY, sY, pivotY);
+        double _t5 = Math.fma(-pivotZ, sZ, pivotZ);
+        dest.put(destOffset + 0, Math.fma(sX, _self00, _self30 * _t3));
+        dest.put(destOffset + 1, Math.fma(sY, _self10, _self30 * _t4));
+        dest.put(destOffset + 2, Math.fma(sZ, _self20, _self30 * _t5));
+        dest.put(destOffset + 3, _self30);
+        dest.put(destOffset + 4, Math.fma(sX, _self01, _self31 * _t3));
+        dest.put(destOffset + 5, Math.fma(sY, _self11, _self31 * _t4));
+        dest.put(destOffset + 6, Math.fma(sZ, _self21, _self31 * _t5));
+        dest.put(destOffset + 7, _self31);
+        dest.put(destOffset + 8, Math.fma(sX, _self02, _self32 * _t3));
+        dest.put(destOffset + 9, Math.fma(sY, _self12, _self32 * _t4));
+        dest.put(destOffset + 10, Math.fma(sZ, _self22, _self32 * _t5));
+        dest.put(destOffset + 11, _self32);
+        dest.put(destOffset + 12, Math.fma(sX, _self03, _self33 * _t3));
+        dest.put(destOffset + 13, Math.fma(sY, _self13, _self33 * _t4));
+        dest.put(destOffset + 14, Math.fma(sZ, _self23, _self33 * _t5));
+        dest.put(destOffset + 15, _self33);
         return dest;
     }
 
@@ -10402,7 +19196,51 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.preScaleAround(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, s.array(), s.arrayOffset() + sOffset, pivot.array(), pivot.arrayOffset() + pivotOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.preScaleAround_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(s.duplicate().position(0)), (long) sOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(pivot.duplicate().position(0)), (long) pivotOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && s.order() == java.nio.ByteOrder.nativeOrder() && pivot.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.preScaleAround_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(s.duplicate().position(0)), (long) sOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(pivot.duplicate().position(0)), (long) pivotOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _sx = s.get(sOffset + 0);
+        double _sy = s.get(sOffset + 1);
+        double _sz = s.get(sOffset + 2);
+        double _pivotx = pivot.get(pivotOffset + 0);
+        double _pivoty = pivot.get(pivotOffset + 1);
+        double _pivotz = pivot.get(pivotOffset + 2);
+        double _t3 = Math.fma(-_pivotx, _sx, _pivotx);
+        double _t4 = Math.fma(-_pivoty, _sy, _pivoty);
+        double _t5 = Math.fma(-_pivotz, _sz, _pivotz);
+        dest.put(destOffset + 0, Math.fma(_sx, _self00, _self30 * _t3));
+        dest.put(destOffset + 1, Math.fma(_sy, _self10, _self30 * _t4));
+        dest.put(destOffset + 2, Math.fma(_sz, _self20, _self30 * _t5));
+        dest.put(destOffset + 3, _self30);
+        dest.put(destOffset + 4, Math.fma(_sx, _self01, _self31 * _t3));
+        dest.put(destOffset + 5, Math.fma(_sy, _self11, _self31 * _t4));
+        dest.put(destOffset + 6, Math.fma(_sz, _self21, _self31 * _t5));
+        dest.put(destOffset + 7, _self31);
+        dest.put(destOffset + 8, Math.fma(_sx, _self02, _self32 * _t3));
+        dest.put(destOffset + 9, Math.fma(_sy, _self12, _self32 * _t4));
+        dest.put(destOffset + 10, Math.fma(_sz, _self22, _self32 * _t5));
+        dest.put(destOffset + 11, _self32);
+        dest.put(destOffset + 12, Math.fma(_sx, _self03, _self33 * _t3));
+        dest.put(destOffset + 13, Math.fma(_sy, _self13, _self33 * _t4));
+        dest.put(destOffset + 14, Math.fma(_sz, _self23, _self33 * _t5));
+        dest.put(destOffset + 15, _self33);
         return dest;
     }
 
@@ -10455,7 +19293,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer project_no(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.project_no_unsafe(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.project_no_unsafe(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
         return Double4x4OpsKernelsTypedBuffer.project_no_api(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
     }
 
@@ -10471,12 +19309,36 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.project_no(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
             return dest;
         }
-        Double4x4OpsKernelsSegment.project_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.project_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t2 = Math.fma(objX, _self30, Math.fma(objY, _self31, Math.fma(objZ, _self32, _self33)));
+        double _t2_inv = 1.0 / _t2;
+        dest.put(destOffset + 0, Math.fma(0.5, viewportZ * (1.0 + Math.fma(objX, _self00, Math.fma(objY, _self01, Math.fma(objZ, _self02, _self03))) * _t2_inv), viewportX));
+        dest.put(destOffset + 1, Math.fma(0.5, viewportW * (1.0 + Math.fma(objX, _self10, Math.fma(objY, _self11, Math.fma(objZ, _self12, _self13))) * _t2_inv), viewportY));
+        dest.put(destOffset + 2, 0.5 * (1.0 + Math.fma(objX, _self20, Math.fma(objY, _self21, Math.fma(objZ, _self22, _self23))) * _t2_inv));
         return dest;
     }
 
     public static java.nio.DoubleBuffer project_zo(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.project_zo_unsafe(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.project_zo_unsafe(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
         return Double4x4OpsKernelsTypedBuffer.project_zo_api(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
     }
 
@@ -10492,12 +19354,36 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.project_zo(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
             return dest;
         }
-        Double4x4OpsKernelsSegment.project_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.project_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t2 = Math.fma(objX, _self30, Math.fma(objY, _self31, Math.fma(objZ, _self32, _self33)));
+        double _t2_inv = 1.0 / _t2;
+        dest.put(destOffset + 0, Math.fma(0.5, viewportZ * (1.0 + Math.fma(objX, _self00, Math.fma(objY, _self01, Math.fma(objZ, _self02, _self03))) * _t2_inv), viewportX));
+        dest.put(destOffset + 1, Math.fma(0.5, viewportW * (1.0 + Math.fma(objX, _self10, Math.fma(objY, _self11, Math.fma(objZ, _self12, _self13))) * _t2_inv), viewportY));
+        dest.put(destOffset + 2, Math.fma(objX, _self20, Math.fma(objY, _self21, Math.fma(objZ, _self22, _self23))) * _t2_inv);
         return dest;
     }
 
     public static java.nio.DoubleBuffer project_no(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer obj, int objOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && obj.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.project_no_unsafe(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && obj.isDirect() && obj.order() == java.nio.ByteOrder.nativeOrder() && viewport.isDirect() && viewport.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.project_no_unsafe(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
         return Double4x4OpsKernelsTypedBuffer.project_no_api(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
     }
 
@@ -10515,12 +19401,43 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.project_no(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, obj.array(), obj.arrayOffset() + objOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.project_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(obj.duplicate().position(0)), (long) objOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && obj.order() == java.nio.ByteOrder.nativeOrder() && viewport.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.project_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(obj.duplicate().position(0)), (long) objOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _objx = obj.get(objOffset + 0);
+        double _objy = obj.get(objOffset + 1);
+        double _objz = obj.get(objOffset + 2);
+        double _viewportx = viewport.get(viewportOffset + 0);
+        double _viewporty = viewport.get(viewportOffset + 1);
+        double _viewportz = viewport.get(viewportOffset + 2);
+        double _viewportw = viewport.get(viewportOffset + 3);
+        double _t2 = Math.fma(_objx, _self30, Math.fma(_objy, _self31, Math.fma(_objz, _self32, _self33)));
+        double _t2_inv = 1.0 / _t2;
+        dest.put(destOffset + 0, Math.fma(0.5, _viewportz * (1.0 + Math.fma(_objx, _self00, Math.fma(_objy, _self01, Math.fma(_objz, _self02, _self03))) * _t2_inv), _viewportx));
+        dest.put(destOffset + 1, Math.fma(0.5, _viewportw * (1.0 + Math.fma(_objx, _self10, Math.fma(_objy, _self11, Math.fma(_objz, _self12, _self13))) * _t2_inv), _viewporty));
+        dest.put(destOffset + 2, 0.5 * (1.0 + Math.fma(_objx, _self20, Math.fma(_objy, _self21, Math.fma(_objz, _self22, _self23))) * _t2_inv));
         return dest;
     }
 
     public static java.nio.DoubleBuffer project_zo(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer obj, int objOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && obj.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.project_zo_unsafe(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && obj.isDirect() && obj.order() == java.nio.ByteOrder.nativeOrder() && viewport.isDirect() && viewport.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.project_zo_unsafe(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
         return Double4x4OpsKernelsTypedBuffer.project_zo_api(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset);
     }
 
@@ -10538,7 +19455,38 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.project_zo(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, obj.array(), obj.arrayOffset() + objOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.project_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(obj.duplicate().position(0)), (long) objOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && obj.order() == java.nio.ByteOrder.nativeOrder() && viewport.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.project_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(obj.duplicate().position(0)), (long) objOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _objx = obj.get(objOffset + 0);
+        double _objy = obj.get(objOffset + 1);
+        double _objz = obj.get(objOffset + 2);
+        double _viewportx = viewport.get(viewportOffset + 0);
+        double _viewporty = viewport.get(viewportOffset + 1);
+        double _viewportz = viewport.get(viewportOffset + 2);
+        double _viewportw = viewport.get(viewportOffset + 3);
+        double _t2 = Math.fma(_objx, _self30, Math.fma(_objy, _self31, Math.fma(_objz, _self32, _self33)));
+        double _t2_inv = 1.0 / _t2;
+        dest.put(destOffset + 0, Math.fma(0.5, _viewportz * (1.0 + Math.fma(_objx, _self00, Math.fma(_objy, _self01, Math.fma(_objz, _self02, _self03))) * _t2_inv), _viewportx));
+        dest.put(destOffset + 1, Math.fma(0.5, _viewportw * (1.0 + Math.fma(_objx, _self10, Math.fma(_objy, _self11, Math.fma(_objz, _self12, _self13))) * _t2_inv), _viewporty));
+        dest.put(destOffset + 2, Math.fma(_objx, _self20, Math.fma(_objy, _self21, Math.fma(_objz, _self22, _self23))) * _t2_inv);
         return dest;
     }
 
@@ -12180,7 +21128,70 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.trapezoidCrop(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
             return dest;
         }
-        Double4x4OpsKernelsSegment.trapezoidCrop_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.trapezoidCrop_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = -p0X;
+        double _t3 = p1Y - p0Y;
+        double _t4 = p0X - p1X;
+        double _t5 = p0Y - p1Y;
+        double _t14 = Math.fma(p0X, _t3, p0Y * _t4);
+        double _t16 = Math.fma(p0Y, _t3, -(p0X * _t4));
+        double _t18 = Math.fma(p3X, _t3, p3Y * _t4) - _t14;
+        double _t18_inv = 1.0 / _t18;
+        double _t19 = Math.fma(p3X, _t4, p3Y * _t5) + _t16;
+        double _t25 = _t4 - _t19 * _t3 * _t18_inv;
+        double _t26 = _t5 - _t19 * _t4 * _t18_inv;
+        double _t32 = _t19 * _t14 * _t18_inv;
+        double _t46 = Math.fma(p0Y, _t3, Math.fma(_t0, _t4, Math.fma(p2X, _t25, Math.fma(p2Y, _t26, _t32))));
+        double _t46_inv = 1.0 / _t46;
+        double _t50 = Math.fma(p0Y, _t3, Math.fma(_t0, _t4, Math.fma(p1X, _t25, Math.fma(p1Y, _t26, _t32)))) * _t18;
+        double _t55 = _t16 + (_t32 + Math.fma(p2X, _t25, p2Y * _t26)) + (Math.fma(p0X, _t4, -(p0Y * _t3)) + (Math.fma(-p1Y, _t26, -(p1X * _t25)) - _t32));
+        double _t58 = Math.fma(_t0, _t3, Math.fma(-p0Y, _t4, _t50 / _t55));
+        double _t60 = Math.fma(p3X, _t3, Math.fma(p3Y, _t4, _t58));
+        double _t60_inv = 1.0 / _t60;
+        double _t63 = 2.0 * _t25 * _t46_inv - _t3 * _t60_inv;
+        double _t64 = 2.0 * _t26 * _t46_inv - _t4 * _t60_inv;
+        double _t65 = _t60 * _t55;
+        double _t69 = 2.0 * Math.fma(p0Y, _t3, Math.fma(_t0, _t4, _t32)) * _t46_inv - _t58 * _t60_inv;
+        double _t71 = 2.0 * _t50 / ((1.0 - _t50 / _t65) * _t65);
+        double _t72 = 1.0 + _t71;
+        double _t73 = _t72 * _t3;
+        double _t74 = _t72 * _t4;
+        double _t77 = _t72 * _t58 * _t60_inv - _t71;
+        dest.put(destOffset + 0, Math.fma(_self30, _t69, Math.fma(_self00, _t63, _self10 * _t64)));
+        dest.put(destOffset + 1, Math.fma(_self30, _t77, Math.fma(_self00, _t73, _self10 * _t74) * _t60_inv));
+        dest.put(destOffset + 2, _self20);
+        dest.put(destOffset + 3, Math.fma(_self30, _t58, Math.fma(_self00, _t3, _self10 * _t4)) * _t60_inv);
+        dest.put(destOffset + 4, Math.fma(_self31, _t69, Math.fma(_self01, _t63, _self11 * _t64)));
+        dest.put(destOffset + 5, Math.fma(_self31, _t77, Math.fma(_self01, _t73, _self11 * _t74) * _t60_inv));
+        dest.put(destOffset + 6, _self21);
+        dest.put(destOffset + 7, Math.fma(_self31, _t58, Math.fma(_self01, _t3, _self11 * _t4)) * _t60_inv);
+        dest.put(destOffset + 8, Math.fma(_self32, _t69, Math.fma(_self02, _t63, _self12 * _t64)));
+        dest.put(destOffset + 9, Math.fma(_self32, _t77, Math.fma(_self02, _t73, _self12 * _t74) * _t60_inv));
+        dest.put(destOffset + 10, _self22);
+        dest.put(destOffset + 11, Math.fma(_self32, _t58, Math.fma(_self02, _t3, _self12 * _t4)) * _t60_inv);
+        dest.put(destOffset + 12, Math.fma(_self33, _t69, Math.fma(_self03, _t63, _self13 * _t64)));
+        dest.put(destOffset + 13, Math.fma(_self33, _t77, Math.fma(_self03, _t73, _self13 * _t74) * _t60_inv));
+        dest.put(destOffset + 14, _self23);
+        dest.put(destOffset + 15, Math.fma(_self33, _t58, Math.fma(_self03, _t3, _self13 * _t4)) * _t60_inv);
         return dest;
     }
 
@@ -12200,12 +21211,83 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.trapezoidCrop(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, p0.array(), p0.arrayOffset() + p0Offset, p1.array(), p1.arrayOffset() + p1Offset, p2.array(), p2.arrayOffset() + p2Offset, p3.array(), p3.arrayOffset() + p3Offset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.trapezoidCrop_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p0.duplicate().position(0)), (long) p0Offset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p1.duplicate().position(0)), (long) p1Offset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p2.duplicate().position(0)), (long) p2Offset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p3.duplicate().position(0)), (long) p3Offset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && p0.order() == java.nio.ByteOrder.nativeOrder() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.order() == java.nio.ByteOrder.nativeOrder() && p3.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.trapezoidCrop_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p0.duplicate().position(0)), (long) p0Offset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p1.duplicate().position(0)), (long) p1Offset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p2.duplicate().position(0)), (long) p2Offset * 8L, java.lang.foreign.MemorySegment.ofBuffer(p3.duplicate().position(0)), (long) p3Offset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _p0x = p0.get(p0Offset + 0);
+        double _p0y = p0.get(p0Offset + 1);
+        double _p1x = p1.get(p1Offset + 0);
+        double _p1y = p1.get(p1Offset + 1);
+        double _p2x = p2.get(p2Offset + 0);
+        double _p2y = p2.get(p2Offset + 1);
+        double _p3x = p3.get(p3Offset + 0);
+        double _p3y = p3.get(p3Offset + 1);
+        double _t0 = -_p0x;
+        double _t3 = _p1y - _p0y;
+        double _t4 = _p0x - _p1x;
+        double _t5 = _p0y - _p1y;
+        double _t14 = Math.fma(_p0x, _t3, _p0y * _t4);
+        double _t16 = Math.fma(_p0y, _t3, -(_p0x * _t4));
+        double _t18 = Math.fma(_p3x, _t3, _p3y * _t4) - _t14;
+        double _t18_inv = 1.0 / _t18;
+        double _t19 = Math.fma(_p3x, _t4, _p3y * _t5) + _t16;
+        double _t25 = _t4 - _t19 * _t3 * _t18_inv;
+        double _t26 = _t5 - _t19 * _t4 * _t18_inv;
+        double _t32 = _t19 * _t14 * _t18_inv;
+        double _t46 = Math.fma(_p0y, _t3, Math.fma(_t0, _t4, Math.fma(_p2x, _t25, Math.fma(_p2y, _t26, _t32))));
+        double _t46_inv = 1.0 / _t46;
+        double _t50 = Math.fma(_p0y, _t3, Math.fma(_t0, _t4, Math.fma(_p1x, _t25, Math.fma(_p1y, _t26, _t32)))) * _t18;
+        double _t55 = _t16 + (_t32 + Math.fma(_p2x, _t25, _p2y * _t26)) + (Math.fma(_p0x, _t4, -(_p0y * _t3)) + (Math.fma(-_p1y, _t26, -(_p1x * _t25)) - _t32));
+        double _t58 = Math.fma(_t0, _t3, Math.fma(-_p0y, _t4, _t50 / _t55));
+        double _t60 = Math.fma(_p3x, _t3, Math.fma(_p3y, _t4, _t58));
+        double _t60_inv = 1.0 / _t60;
+        double _t63 = 2.0 * _t25 * _t46_inv - _t3 * _t60_inv;
+        double _t64 = 2.0 * _t26 * _t46_inv - _t4 * _t60_inv;
+        double _t65 = _t60 * _t55;
+        double _t69 = 2.0 * Math.fma(_p0y, _t3, Math.fma(_t0, _t4, _t32)) * _t46_inv - _t58 * _t60_inv;
+        double _t71 = 2.0 * _t50 / ((1.0 - _t50 / _t65) * _t65);
+        double _t72 = 1.0 + _t71;
+        double _t73 = _t72 * _t3;
+        double _t74 = _t72 * _t4;
+        double _t77 = _t72 * _t58 * _t60_inv - _t71;
+        dest.put(destOffset + 0, Math.fma(_self30, _t69, Math.fma(_self00, _t63, _self10 * _t64)));
+        dest.put(destOffset + 1, Math.fma(_self30, _t77, Math.fma(_self00, _t73, _self10 * _t74) * _t60_inv));
+        dest.put(destOffset + 2, _self20);
+        dest.put(destOffset + 3, Math.fma(_self30, _t58, Math.fma(_self00, _t3, _self10 * _t4)) * _t60_inv);
+        dest.put(destOffset + 4, Math.fma(_self31, _t69, Math.fma(_self01, _t63, _self11 * _t64)));
+        dest.put(destOffset + 5, Math.fma(_self31, _t77, Math.fma(_self01, _t73, _self11 * _t74) * _t60_inv));
+        dest.put(destOffset + 6, _self21);
+        dest.put(destOffset + 7, Math.fma(_self31, _t58, Math.fma(_self01, _t3, _self11 * _t4)) * _t60_inv);
+        dest.put(destOffset + 8, Math.fma(_self32, _t69, Math.fma(_self02, _t63, _self12 * _t64)));
+        dest.put(destOffset + 9, Math.fma(_self32, _t77, Math.fma(_self02, _t73, _self12 * _t74) * _t60_inv));
+        dest.put(destOffset + 10, _self22);
+        dest.put(destOffset + 11, Math.fma(_self32, _t58, Math.fma(_self02, _t3, _self12 * _t4)) * _t60_inv);
+        dest.put(destOffset + 12, Math.fma(_self33, _t69, Math.fma(_self03, _t63, _self13 * _t64)));
+        dest.put(destOffset + 13, Math.fma(_self33, _t77, Math.fma(_self03, _t73, _self13 * _t74) * _t60_inv));
+        dest.put(destOffset + 14, _self23);
+        dest.put(destOffset + 15, Math.fma(_self33, _t58, Math.fma(_self03, _t3, _self13 * _t4)) * _t60_inv);
         return dest;
     }
 
     public static java.nio.DoubleBuffer unproject_no(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.unproject_no_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.unproject_no_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
         return Double4x4OpsKernelsTypedBuffer.unproject_no_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
     }
 
@@ -12221,12 +21303,57 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.unproject_no(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
             return dest;
         }
-        Double4x4OpsKernelsSegment.unproject_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.unproject_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t23 = Math.fma(2.0, winCoordsZ, -1.0);
+        double _t43 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t44 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t45 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t46 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t47 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t48 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t49 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t50 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t52 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t53 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t55 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t56 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t57 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t58 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t61 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t62 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t84 = Math.fma(_self02, _t52, Math.fma(_self00, _t49, -(_self01 * _t53))) + Math.fma(-Math.fma(_self02, _t54, Math.fma(_self00, _t43, -(_self01 * _t55))), _t23, Math.fma(Math.fma(_self02, _t56, Math.fma(_self00, _t46, -(_self01 * _t57))), _t62, -(Math.fma(_self12, _t56, Math.fma(_self10, _t46, -(_self11 * _t57))) * _t61)));
+        double _t84_inv = 1.0 / _t84;
+        dest.put(destOffset + 0, (Math.fma(Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))), _t23, Math.fma(Math.fma(_self13, _t46, Math.fma(_self11, _t47, -(_self12 * _t48))), _t61, -(Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48))) * _t62))) - Math.fma(_self03, _t49, Math.fma(_self01, _t50, -(_self02 * _t51)))) * _t84_inv);
+        dest.put(destOffset + 1, (Math.fma(_self03, _t53, Math.fma(_self00, _t50, -(_self02 * _t58))) + Math.fma(-Math.fma(_self03, _t55, Math.fma(_self00, _t44, -(_self02 * _t59))), _t23, Math.fma(Math.fma(_self03, _t57, Math.fma(_self00, _t47, -(_self02 * _t60))), _t62, -(Math.fma(_self13, _t57, Math.fma(_self10, _t47, -(_self12 * _t60))) * _t61)))) * _t84_inv);
+        dest.put(destOffset + 2, (Math.fma(Math.fma(_self03, _t54, Math.fma(_self00, _t45, -(_self01 * _t59))), _t23, Math.fma(Math.fma(_self13, _t56, Math.fma(_self10, _t48, -(_self11 * _t60))), _t61, -(Math.fma(_self03, _t56, Math.fma(_self00, _t48, -(_self01 * _t60))) * _t62))) - Math.fma(_self03, _t52, Math.fma(_self00, _t51, -(_self01 * _t58)))) * _t84_inv);
         return dest;
     }
 
     public static java.nio.DoubleBuffer unproject_zo(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.unproject_zo_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.unproject_zo_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
         return Double4x4OpsKernelsTypedBuffer.unproject_zo_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
     }
 
@@ -12242,12 +21369,57 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.unproject_zo(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
             return dest;
         }
-        Double4x4OpsKernelsSegment.unproject_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.unproject_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = -winCoordsZ;
+        double _t43 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t44 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t45 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t46 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t47 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t48 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t49 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t50 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t52 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t53 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t55 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t56 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t57 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t58 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t61 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t62 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t83 = Math.fma(_self02, _t52, Math.fma(_self00, _t49, -(_self01 * _t53))) + Math.fma(_t0, Math.fma(_self02, _t54, Math.fma(_self00, _t43, -(_self01 * _t55))), Math.fma(Math.fma(_self02, _t56, Math.fma(_self00, _t46, -(_self01 * _t57))), _t62, -(Math.fma(_self12, _t56, Math.fma(_self10, _t46, -(_self11 * _t57))) * _t61)));
+        double _t83_inv = 1.0 / _t83;
+        dest.put(destOffset + 0, (Math.fma(winCoordsZ, Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))), Math.fma(Math.fma(_self13, _t46, Math.fma(_self11, _t47, -(_self12 * _t48))), _t61, -(Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48))) * _t62))) - Math.fma(_self03, _t49, Math.fma(_self01, _t50, -(_self02 * _t51)))) * _t83_inv);
+        dest.put(destOffset + 1, (Math.fma(_self03, _t53, Math.fma(_self00, _t50, -(_self02 * _t58))) + Math.fma(_t0, Math.fma(_self03, _t55, Math.fma(_self00, _t44, -(_self02 * _t59))), Math.fma(Math.fma(_self03, _t57, Math.fma(_self00, _t47, -(_self02 * _t60))), _t62, -(Math.fma(_self13, _t57, Math.fma(_self10, _t47, -(_self12 * _t60))) * _t61)))) * _t83_inv);
+        dest.put(destOffset + 2, (Math.fma(winCoordsZ, Math.fma(_self03, _t54, Math.fma(_self00, _t45, -(_self01 * _t59))), Math.fma(Math.fma(_self13, _t56, Math.fma(_self10, _t48, -(_self11 * _t60))), _t61, -(Math.fma(_self03, _t56, Math.fma(_self00, _t48, -(_self01 * _t60))) * _t62))) - Math.fma(_self03, _t52, Math.fma(_self00, _t51, -(_self01 * _t58)))) * _t83_inv);
         return dest;
     }
 
     public static java.nio.DoubleBuffer unproject_no(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.unproject_no_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && winCoords.isDirect() && winCoords.order() == java.nio.ByteOrder.nativeOrder() && viewport.isDirect() && viewport.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.unproject_no_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
         return Double4x4OpsKernelsTypedBuffer.unproject_no_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
     }
 
@@ -12265,12 +21437,64 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.unproject_no(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.unproject_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && winCoords.order() == java.nio.ByteOrder.nativeOrder() && viewport.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.unproject_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _winCoordsx = winCoords.get(winCoordsOffset + 0);
+        double _winCoordsy = winCoords.get(winCoordsOffset + 1);
+        double _winCoordsz = winCoords.get(winCoordsOffset + 2);
+        double _viewportx = viewport.get(viewportOffset + 0);
+        double _viewporty = viewport.get(viewportOffset + 1);
+        double _viewportz = viewport.get(viewportOffset + 2);
+        double _viewportw = viewport.get(viewportOffset + 3);
+        double _t23 = Math.fma(2.0, _winCoordsz, -1.0);
+        double _t43 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t44 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t45 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t46 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t47 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t48 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t49 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t50 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t52 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t53 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t55 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t56 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t57 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t58 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t61 = 2.0 * (_winCoordsx - _viewportx) / _viewportz - 1.0;
+        double _t62 = 2.0 * (_winCoordsy - _viewporty) / _viewportw - 1.0;
+        double _t84 = Math.fma(_self02, _t52, Math.fma(_self00, _t49, -(_self01 * _t53))) + Math.fma(-Math.fma(_self02, _t54, Math.fma(_self00, _t43, -(_self01 * _t55))), _t23, Math.fma(Math.fma(_self02, _t56, Math.fma(_self00, _t46, -(_self01 * _t57))), _t62, -(Math.fma(_self12, _t56, Math.fma(_self10, _t46, -(_self11 * _t57))) * _t61)));
+        double _t84_inv = 1.0 / _t84;
+        dest.put(destOffset + 0, (Math.fma(Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))), _t23, Math.fma(Math.fma(_self13, _t46, Math.fma(_self11, _t47, -(_self12 * _t48))), _t61, -(Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48))) * _t62))) - Math.fma(_self03, _t49, Math.fma(_self01, _t50, -(_self02 * _t51)))) * _t84_inv);
+        dest.put(destOffset + 1, (Math.fma(_self03, _t53, Math.fma(_self00, _t50, -(_self02 * _t58))) + Math.fma(-Math.fma(_self03, _t55, Math.fma(_self00, _t44, -(_self02 * _t59))), _t23, Math.fma(Math.fma(_self03, _t57, Math.fma(_self00, _t47, -(_self02 * _t60))), _t62, -(Math.fma(_self13, _t57, Math.fma(_self10, _t47, -(_self12 * _t60))) * _t61)))) * _t84_inv);
+        dest.put(destOffset + 2, (Math.fma(Math.fma(_self03, _t54, Math.fma(_self00, _t45, -(_self01 * _t59))), _t23, Math.fma(Math.fma(_self13, _t56, Math.fma(_self10, _t48, -(_self11 * _t60))), _t61, -(Math.fma(_self03, _t56, Math.fma(_self00, _t48, -(_self01 * _t60))) * _t62))) - Math.fma(_self03, _t52, Math.fma(_self00, _t51, -(_self01 * _t58)))) * _t84_inv);
         return dest;
     }
 
     public static java.nio.DoubleBuffer unproject_zo(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.unproject_zo_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && winCoords.isDirect() && winCoords.order() == java.nio.ByteOrder.nativeOrder() && viewport.isDirect() && viewport.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.unproject_zo_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
         return Double4x4OpsKernelsTypedBuffer.unproject_zo_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
     }
 
@@ -12288,12 +21512,64 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.unproject_zo(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.unproject_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && winCoords.order() == java.nio.ByteOrder.nativeOrder() && viewport.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.unproject_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _winCoordsx = winCoords.get(winCoordsOffset + 0);
+        double _winCoordsy = winCoords.get(winCoordsOffset + 1);
+        double _winCoordsz = winCoords.get(winCoordsOffset + 2);
+        double _viewportx = viewport.get(viewportOffset + 0);
+        double _viewporty = viewport.get(viewportOffset + 1);
+        double _viewportz = viewport.get(viewportOffset + 2);
+        double _viewportw = viewport.get(viewportOffset + 3);
+        double _t0 = -_winCoordsz;
+        double _t43 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t44 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t45 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t46 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t47 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t48 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t49 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t50 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t52 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t53 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t55 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t56 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t57 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t58 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t61 = 2.0 * (_winCoordsx - _viewportx) / _viewportz - 1.0;
+        double _t62 = 2.0 * (_winCoordsy - _viewporty) / _viewportw - 1.0;
+        double _t83 = Math.fma(_self02, _t52, Math.fma(_self00, _t49, -(_self01 * _t53))) + Math.fma(_t0, Math.fma(_self02, _t54, Math.fma(_self00, _t43, -(_self01 * _t55))), Math.fma(Math.fma(_self02, _t56, Math.fma(_self00, _t46, -(_self01 * _t57))), _t62, -(Math.fma(_self12, _t56, Math.fma(_self10, _t46, -(_self11 * _t57))) * _t61)));
+        double _t83_inv = 1.0 / _t83;
+        dest.put(destOffset + 0, (Math.fma(_winCoordsz, Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))), Math.fma(Math.fma(_self13, _t46, Math.fma(_self11, _t47, -(_self12 * _t48))), _t61, -(Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48))) * _t62))) - Math.fma(_self03, _t49, Math.fma(_self01, _t50, -(_self02 * _t51)))) * _t83_inv);
+        dest.put(destOffset + 1, (Math.fma(_self03, _t53, Math.fma(_self00, _t50, -(_self02 * _t58))) + Math.fma(_t0, Math.fma(_self03, _t55, Math.fma(_self00, _t44, -(_self02 * _t59))), Math.fma(Math.fma(_self03, _t57, Math.fma(_self00, _t47, -(_self02 * _t60))), _t62, -(Math.fma(_self13, _t57, Math.fma(_self10, _t47, -(_self12 * _t60))) * _t61)))) * _t83_inv);
+        dest.put(destOffset + 2, (Math.fma(_winCoordsz, Math.fma(_self03, _t54, Math.fma(_self00, _t45, -(_self01 * _t59))), Math.fma(Math.fma(_self13, _t56, Math.fma(_self10, _t48, -(_self11 * _t60))), _t61, -(Math.fma(_self03, _t56, Math.fma(_self00, _t48, -(_self01 * _t60))) * _t62))) - Math.fma(_self03, _t52, Math.fma(_self00, _t51, -(_self01 * _t58)))) * _t83_inv);
         return dest;
     }
 
     public static java.nio.DoubleBuffer unprojectInv_no(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectInv_no_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.unprojectInv_no_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
         return Double4x4OpsKernelsTypedBuffer.unprojectInv_no_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
     }
 
@@ -12309,12 +21585,39 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.unprojectInv_no(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
             return dest;
         }
-        Double4x4OpsKernelsSegment.unprojectInv_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.unprojectInv_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t2 = Math.fma(2.0, winCoordsZ, -1.0);
+        double _t8 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t9 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t11 = Math.fma(_self30, _t8, Math.fma(_self31, _t9, Math.fma(_self32, _t2, _self33)));
+        double _t11_inv = 1.0 / _t11;
+        dest.put(destOffset + 0, Math.fma(_self00, _t8, Math.fma(_self01, _t9, Math.fma(_self02, _t2, _self03))) * _t11_inv);
+        dest.put(destOffset + 1, Math.fma(_self10, _t8, Math.fma(_self11, _t9, Math.fma(_self12, _t2, _self13))) * _t11_inv);
+        dest.put(destOffset + 2, Math.fma(_self20, _t8, Math.fma(_self21, _t9, Math.fma(_self22, _t2, _self23))) * _t11_inv);
         return dest;
     }
 
     public static java.nio.DoubleBuffer unprojectInv_zo(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectInv_zo_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.unprojectInv_zo_unsafe(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
         return Double4x4OpsKernelsTypedBuffer.unprojectInv_zo_api(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
     }
 
@@ -12330,12 +21633,38 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.unprojectInv_zo(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
             return dest;
         }
-        Double4x4OpsKernelsSegment.unprojectInv_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.unprojectInv_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t7 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t8 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t10 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, Math.fma(_self32, winCoordsZ, _self33)));
+        double _t10_inv = 1.0 / _t10;
+        dest.put(destOffset + 0, Math.fma(_self00, _t7, Math.fma(_self01, _t8, Math.fma(_self02, winCoordsZ, _self03))) * _t10_inv);
+        dest.put(destOffset + 1, Math.fma(_self10, _t7, Math.fma(_self11, _t8, Math.fma(_self12, winCoordsZ, _self13))) * _t10_inv);
+        dest.put(destOffset + 2, Math.fma(_self20, _t7, Math.fma(_self21, _t8, Math.fma(_self22, winCoordsZ, _self23))) * _t10_inv);
         return dest;
     }
 
     public static java.nio.DoubleBuffer unprojectInv_no(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectInv_no_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && winCoords.isDirect() && winCoords.order() == java.nio.ByteOrder.nativeOrder() && viewport.isDirect() && viewport.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.unprojectInv_no_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
         return Double4x4OpsKernelsTypedBuffer.unprojectInv_no_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
     }
 
@@ -12353,12 +21682,46 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.unprojectInv_no(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.unprojectInv_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && winCoords.order() == java.nio.ByteOrder.nativeOrder() && viewport.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.unprojectInv_no_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _winCoordsx = winCoords.get(winCoordsOffset + 0);
+        double _winCoordsy = winCoords.get(winCoordsOffset + 1);
+        double _winCoordsz = winCoords.get(winCoordsOffset + 2);
+        double _viewportx = viewport.get(viewportOffset + 0);
+        double _viewporty = viewport.get(viewportOffset + 1);
+        double _viewportz = viewport.get(viewportOffset + 2);
+        double _viewportw = viewport.get(viewportOffset + 3);
+        double _t2 = Math.fma(2.0, _winCoordsz, -1.0);
+        double _t8 = 2.0 * (_winCoordsx - _viewportx) / _viewportz - 1.0;
+        double _t9 = 2.0 * (_winCoordsy - _viewporty) / _viewportw - 1.0;
+        double _t11 = Math.fma(_self30, _t8, Math.fma(_self31, _t9, Math.fma(_self32, _t2, _self33)));
+        double _t11_inv = 1.0 / _t11;
+        dest.put(destOffset + 0, Math.fma(_self00, _t8, Math.fma(_self01, _t9, Math.fma(_self02, _t2, _self03))) * _t11_inv);
+        dest.put(destOffset + 1, Math.fma(_self10, _t8, Math.fma(_self11, _t9, Math.fma(_self12, _t2, _self13))) * _t11_inv);
+        dest.put(destOffset + 2, Math.fma(_self20, _t8, Math.fma(_self21, _t9, Math.fma(_self22, _t2, _self23))) * _t11_inv);
         return dest;
     }
 
     public static java.nio.DoubleBuffer unprojectInv_zo(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectInv_zo_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && winCoords.isDirect() && winCoords.order() == java.nio.ByteOrder.nativeOrder() && viewport.isDirect() && viewport.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.unprojectInv_zo_unsafe(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
         return Double4x4OpsKernelsTypedBuffer.unprojectInv_zo_api(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
     }
 
@@ -12376,12 +21739,45 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.unprojectInv_zo(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.unprojectInv_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && winCoords.order() == java.nio.ByteOrder.nativeOrder() && viewport.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.unprojectInv_zo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _winCoordsx = winCoords.get(winCoordsOffset + 0);
+        double _winCoordsy = winCoords.get(winCoordsOffset + 1);
+        double _winCoordsz = winCoords.get(winCoordsOffset + 2);
+        double _viewportx = viewport.get(viewportOffset + 0);
+        double _viewporty = viewport.get(viewportOffset + 1);
+        double _viewportz = viewport.get(viewportOffset + 2);
+        double _viewportw = viewport.get(viewportOffset + 3);
+        double _t7 = 2.0 * (_winCoordsx - _viewportx) / _viewportz - 1.0;
+        double _t8 = 2.0 * (_winCoordsy - _viewporty) / _viewportw - 1.0;
+        double _t10 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, Math.fma(_self32, _winCoordsz, _self33)));
+        double _t10_inv = 1.0 / _t10;
+        dest.put(destOffset + 0, Math.fma(_self00, _t7, Math.fma(_self01, _t8, Math.fma(_self02, _winCoordsz, _self03))) * _t10_inv);
+        dest.put(destOffset + 1, Math.fma(_self10, _t7, Math.fma(_self11, _t8, Math.fma(_self12, _winCoordsz, _self13))) * _t10_inv);
+        dest.put(destOffset + 2, Math.fma(_self20, _t7, Math.fma(_self21, _t8, Math.fma(_self22, _winCoordsz, _self23))) * _t10_inv);
         return dest;
     }
 
     public static java.nio.DoubleBuffer unprojectInvRay_no(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayOrigin.order() == java.nio.ByteOrder.nativeOrder() && rayDir.isDirect() && !rayDir.isReadOnly() && rayDir.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
         return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_no_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
     }
 
@@ -12398,12 +21794,46 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.unprojectInvRay_no(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
             return rayOrigin;
         }
-        Double4x4OpsKernelsSegment.unprojectInvRay_no_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        if (rayOrigin.order() == java.nio.ByteOrder.nativeOrder() && rayDir.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.unprojectInvRay_no_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+            return rayOrigin;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t11 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t12 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t19 = Math.fma(_self30, _t11, Math.fma(_self31, _t12, _self33 - _self32));
+        double _t19_inv = 1.0 / _t19;
+        double _t22 = Math.fma(_self30, _t11, Math.fma(_self31, _t12, _self33 + _self32));
+        double _t22_inv = 1.0 / _t22;
+        double _t23 = Math.fma(_self00, _t11, Math.fma(_self01, _t12, _self03 - _self02)) * _t19_inv;
+        double _t24 = Math.fma(_self10, _t11, Math.fma(_self11, _t12, _self13 - _self12)) * _t19_inv;
+        double _t25 = Math.fma(_self20, _t11, Math.fma(_self21, _t12, _self23 - _self22)) * _t19_inv;
+        rayOrigin.put(rayOriginOffset + 0, _t23);
+        rayOrigin.put(rayOriginOffset + 1, _t24);
+        rayOrigin.put(rayOriginOffset + 2, _t25);
+        rayDir.put(rayDirOffset + 0, Math.fma(_self00, _t11, Math.fma(_self01, _t12, _self03 + _self02)) * _t22_inv - _t23);
+        rayDir.put(rayDirOffset + 1, Math.fma(_self10, _t11, Math.fma(_self11, _t12, _self13 + _self12)) * _t22_inv - _t24);
+        rayDir.put(rayDirOffset + 2, Math.fma(_self20, _t11, Math.fma(_self21, _t12, _self23 + _self22)) * _t22_inv - _t25);
         return rayOrigin;
     }
 
     public static java.nio.DoubleBuffer unprojectInvRay_zo(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayOrigin.order() == java.nio.ByteOrder.nativeOrder() && rayDir.isDirect() && !rayDir.isReadOnly() && rayDir.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
         return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_zo_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
     }
 
@@ -12420,12 +21850,46 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.unprojectInvRay_zo(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
             return rayOrigin;
         }
-        Double4x4OpsKernelsSegment.unprojectInvRay_zo_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        if (rayOrigin.order() == java.nio.ByteOrder.nativeOrder() && rayDir.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.unprojectInvRay_zo_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+            return rayOrigin;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t7 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t8 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t15 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33));
+        double _t15_inv = 1.0 / _t15;
+        double _t18 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33 + _self32));
+        double _t18_inv = 1.0 / _t18;
+        double _t19 = Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03)) * _t15_inv;
+        double _t20 = Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13)) * _t15_inv;
+        double _t21 = Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23)) * _t15_inv;
+        rayOrigin.put(rayOriginOffset + 0, _t19);
+        rayOrigin.put(rayOriginOffset + 1, _t20);
+        rayOrigin.put(rayOriginOffset + 2, _t21);
+        rayDir.put(rayDirOffset + 0, Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03 + _self02)) * _t18_inv - _t19);
+        rayDir.put(rayDirOffset + 1, Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13 + _self12)) * _t18_inv - _t20);
+        rayDir.put(rayDirOffset + 2, Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23 + _self22)) * _t18_inv - _t21);
         return rayOrigin;
     }
 
     public static java.nio.DoubleBuffer unprojectInvRay_no(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayOrigin.order() == java.nio.ByteOrder.nativeOrder() && rayDir.isDirect() && !rayDir.isReadOnly() && rayDir.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && winCoords.isDirect() && winCoords.order() == java.nio.ByteOrder.nativeOrder() && viewport.isDirect() && viewport.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
         return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_no_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
     }
 
@@ -12444,12 +21908,52 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.unprojectInvRay_no(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
             return rayOrigin;
         }
-        Double4x4OpsKernelsSegment.unprojectInvRay_no_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        if (rayOrigin.order() == java.nio.ByteOrder.nativeOrder() && rayDir.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && winCoords.order() == java.nio.ByteOrder.nativeOrder() && viewport.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.unprojectInvRay_no_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+            return rayOrigin;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _winCoordsx = winCoords.get(winCoordsOffset + 0);
+        double _winCoordsy = winCoords.get(winCoordsOffset + 1);
+        double _viewportx = viewport.get(viewportOffset + 0);
+        double _viewporty = viewport.get(viewportOffset + 1);
+        double _viewportz = viewport.get(viewportOffset + 2);
+        double _viewportw = viewport.get(viewportOffset + 3);
+        double _t11 = 2.0 * (_winCoordsx - _viewportx) / _viewportz - 1.0;
+        double _t12 = 2.0 * (_winCoordsy - _viewporty) / _viewportw - 1.0;
+        double _t19 = Math.fma(_self30, _t11, Math.fma(_self31, _t12, _self33 - _self32));
+        double _t19_inv = 1.0 / _t19;
+        double _t22 = Math.fma(_self30, _t11, Math.fma(_self31, _t12, _self33 + _self32));
+        double _t22_inv = 1.0 / _t22;
+        double _t23 = Math.fma(_self00, _t11, Math.fma(_self01, _t12, _self03 - _self02)) * _t19_inv;
+        double _t24 = Math.fma(_self10, _t11, Math.fma(_self11, _t12, _self13 - _self12)) * _t19_inv;
+        double _t25 = Math.fma(_self20, _t11, Math.fma(_self21, _t12, _self23 - _self22)) * _t19_inv;
+        rayOrigin.put(rayOriginOffset + 0, _t23);
+        rayOrigin.put(rayOriginOffset + 1, _t24);
+        rayOrigin.put(rayOriginOffset + 2, _t25);
+        rayDir.put(rayDirOffset + 0, Math.fma(_self00, _t11, Math.fma(_self01, _t12, _self03 + _self02)) * _t22_inv - _t23);
+        rayDir.put(rayDirOffset + 1, Math.fma(_self10, _t11, Math.fma(_self11, _t12, _self13 + _self12)) * _t22_inv - _t24);
+        rayDir.put(rayDirOffset + 2, Math.fma(_self20, _t11, Math.fma(_self21, _t12, _self23 + _self22)) * _t22_inv - _t25);
         return rayOrigin;
     }
 
     public static java.nio.DoubleBuffer unprojectInvRay_zo(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayOrigin.order() == java.nio.ByteOrder.nativeOrder() && rayDir.isDirect() && !rayDir.isReadOnly() && rayDir.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && winCoords.isDirect() && winCoords.order() == java.nio.ByteOrder.nativeOrder() && viewport.isDirect() && viewport.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
         return Double4x4OpsKernelsTypedBuffer.unprojectInvRay_zo_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
     }
 
@@ -12468,12 +21972,52 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.unprojectInvRay_zo(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
             return rayOrigin;
         }
-        Double4x4OpsKernelsSegment.unprojectInvRay_zo_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        if (rayOrigin.order() == java.nio.ByteOrder.nativeOrder() && rayDir.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && winCoords.order() == java.nio.ByteOrder.nativeOrder() && viewport.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.unprojectInvRay_zo_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+            return rayOrigin;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _winCoordsx = winCoords.get(winCoordsOffset + 0);
+        double _winCoordsy = winCoords.get(winCoordsOffset + 1);
+        double _viewportx = viewport.get(viewportOffset + 0);
+        double _viewporty = viewport.get(viewportOffset + 1);
+        double _viewportz = viewport.get(viewportOffset + 2);
+        double _viewportw = viewport.get(viewportOffset + 3);
+        double _t7 = 2.0 * (_winCoordsx - _viewportx) / _viewportz - 1.0;
+        double _t8 = 2.0 * (_winCoordsy - _viewporty) / _viewportw - 1.0;
+        double _t15 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33));
+        double _t15_inv = 1.0 / _t15;
+        double _t18 = Math.fma(_self30, _t7, Math.fma(_self31, _t8, _self33 + _self32));
+        double _t18_inv = 1.0 / _t18;
+        double _t19 = Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03)) * _t15_inv;
+        double _t20 = Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13)) * _t15_inv;
+        double _t21 = Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23)) * _t15_inv;
+        rayOrigin.put(rayOriginOffset + 0, _t19);
+        rayOrigin.put(rayOriginOffset + 1, _t20);
+        rayOrigin.put(rayOriginOffset + 2, _t21);
+        rayDir.put(rayDirOffset + 0, Math.fma(_self00, _t7, Math.fma(_self01, _t8, _self03 + _self02)) * _t18_inv - _t19);
+        rayDir.put(rayDirOffset + 1, Math.fma(_self10, _t7, Math.fma(_self11, _t8, _self13 + _self12)) * _t18_inv - _t20);
+        rayDir.put(rayDirOffset + 2, Math.fma(_self20, _t7, Math.fma(_self21, _t8, _self23 + _self22)) * _t18_inv - _t21);
         return rayOrigin;
     }
 
     public static java.nio.DoubleBuffer unprojectRay_no(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayOrigin.order() == java.nio.ByteOrder.nativeOrder() && rayDir.isDirect() && !rayDir.isReadOnly() && rayDir.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.unprojectRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
         return Double4x4OpsKernelsTypedBuffer.unprojectRay_no_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
     }
 
@@ -12490,12 +22034,78 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.unprojectRay_no(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
             return rayOrigin;
         }
-        Double4x4OpsKernelsSegment.unprojectRay_no_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        if (rayOrigin.order() == java.nio.ByteOrder.nativeOrder() && rayDir.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.unprojectRay_no_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+            return rayOrigin;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = -_self01;
+        double _t1 = -_self00;
+        double _t44 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t45 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t46 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t47 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t48 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t49 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t50 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t52 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t53 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t55 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t56 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t57 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t58 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t61 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t62 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t63 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t91 = -(_self01 * _t58);
+        double _t95 = -(_self02 * _t61);
+        double _t105 = Math.fma(_self02, _t51, -(_self03 * _t52));
+        double _t117 = Math.fma(_self01, _t61, -(_self03 * _t57));
+        double _t122 = Math.fma(_self13, _t44, Math.fma(_self11, _t45, -(_self12 * _t46)));
+        double _t128 = Math.fma(_self13, _t55, Math.fma(_self10, _t46, -(_self11 * _t60)));
+        double _t131 = Math.fma(_self02, _t55, Math.fma(_self00, _t44, -(_self01 * _t56))) * _t63;
+        double _t133 = Math.fma(_self03, _t56, Math.fma(_self00, _t45, -(_self02 * _t60))) * _t63;
+        double _t136 = -(Math.fma(_self03, _t44, Math.fma(_self01, _t45, -(_self02 * _t46))) * _t63);
+        double _t137 = -(Math.fma(_self12, _t55, Math.fma(_self10, _t44, -(_self11 * _t56))) * _t62);
+        double _t138 = -(Math.fma(_self13, _t56, Math.fma(_self10, _t45, -(_self12 * _t60))) * _t62);
+        double _t139 = -(Math.fma(_self03, _t55, Math.fma(_self00, _t46, -(_self01 * _t60))) * _t63);
+        double _t158 = Math.fma(_self00, _t50, -(_self01 * _t53)) + Math.fma(_self02, _t54, _t131) + (Math.fma(_self00, _t52, _t137) + Math.fma(_self02, _t57, _t91));
+        double _t158_inv = 1.0 / _t158;
+        double _t160 = Math.fma(_self00, _t52, _t91) + Math.fma(_self02, _t57, _t131) + (Math.fma(_t1, _t50, _t137) + Math.fma(_self01, _t53, -(_self02 * _t54)));
+        double _t160_inv = 1.0 / _t160;
+        double _t163 = (Math.fma(_self00, _t48, -(_self02 * _t59)) + Math.fma(_self03, _t53, _t133) + (Math.fma(_self00, _t49, _t138) + Math.fma(_self03, _t58, _t95))) * _t158_inv;
+        double _t164 = (Math.fma(_t122, _t62, _t136) + Math.fma(_self02, _t47, -(_self01 * _t48)) + (Math.fma(_t0, _t49, -(_self03 * _t50)) + _t105)) * _t158_inv;
+        double _t165 = (Math.fma(_t128, _t62, _t139) + Math.fma(_self01, _t59, -(_self00 * _t47)) + (Math.fma(_t1, _t51, -(_self03 * _t54)) + _t117)) * _t158_inv;
+        rayOrigin.put(rayOriginOffset + 0, _t164);
+        rayOrigin.put(rayOriginOffset + 1, _t163);
+        rayOrigin.put(rayOriginOffset + 2, _t165);
+        rayDir.put(rayDirOffset + 0, (Math.fma(_self01, _t48, -(_self02 * _t47)) + Math.fma(_self03, _t50, _t122 * _t62) + (Math.fma(_t0, _t49, _t136) + _t105)) * _t160_inv - _t164);
+        rayDir.put(rayDirOffset + 1, (Math.fma(_self00, _t49, _t95) + Math.fma(_self03, _t58, _t133) + (Math.fma(_t1, _t48, _t138) + Math.fma(_self02, _t59, -(_self03 * _t53)))) * _t160_inv - _t163);
+        rayDir.put(rayDirOffset + 2, (Math.fma(_self00, _t47, -(_self01 * _t59)) + Math.fma(_self03, _t54, _t128 * _t62) + (Math.fma(_t1, _t51, _t139) + _t117)) * _t160_inv - _t165);
         return rayOrigin;
     }
 
     public static java.nio.DoubleBuffer unprojectRay_zo(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayOrigin.order() == java.nio.ByteOrder.nativeOrder() && rayDir.isDirect() && !rayDir.isReadOnly() && rayDir.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.unprojectRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
         return Double4x4OpsKernelsTypedBuffer.unprojectRay_zo_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
     }
 
@@ -12512,12 +22122,75 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.unprojectRay_zo(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
             return rayOrigin;
         }
-        Double4x4OpsKernelsSegment.unprojectRay_zo_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+        if (rayOrigin.order() == java.nio.ByteOrder.nativeOrder() && rayDir.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.unprojectRay_zo_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW);
+            return rayOrigin;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t0 = -_self00;
+        double _t43 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t44 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t45 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t46 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t47 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t48 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t49 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t50 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t51 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t52 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t53 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t54 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t55 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t56 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t57 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t58 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t59 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t60 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t61 = 2.0 * (winCoordsX - viewportX) / viewportZ - 1.0;
+        double _t62 = 2.0 * (winCoordsY - viewportY) / viewportW - 1.0;
+        double _t92 = Math.fma(_self00, _t46, -(_self01 * _t50));
+        double _t95 = Math.fma(_self00, _t47, -(_self02 * _t53));
+        double _t102 = Math.fma(_self13, _t43, Math.fma(_self11, _t44, -(_self12 * _t45)));
+        double _t106 = Math.fma(_self02, _t51, Math.fma(_self00, _t43, -(_self01 * _t52)));
+        double _t109 = Math.fma(_self03, _t52, Math.fma(_self00, _t44, -(_self02 * _t54)));
+        double _t111 = Math.fma(_self13, _t51, Math.fma(_self10, _t45, -(_self11 * _t54)));
+        double _t119 = -(Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))) * _t62);
+        double _t120 = -(Math.fma(_self12, _t51, Math.fma(_self10, _t43, -(_self11 * _t52))) * _t61);
+        double _t121 = -(Math.fma(_self13, _t52, Math.fma(_self10, _t44, -(_self12 * _t54))) * _t61);
+        double _t122 = -(Math.fma(_self03, _t51, Math.fma(_self00, _t45, -(_self01 * _t54))) * _t62);
+        double _t132 = Math.fma(_self02, _t49, _t92) + Math.fma(_t106, _t62, _t120);
+        double _t132_inv = 1.0 / _t132;
+        double _t135 = _t92 + Math.fma(_self02, _t49, _t106 * _t62) + (Math.fma(_t0, _t57, _t120) + Math.fma(_self01, _t58, -(_self02 * _t59)));
+        double _t135_inv = 1.0 / _t135;
+        double _t136 = (Math.fma(_t102, _t61, _t119) - Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48)))) * _t132_inv;
+        double _t137 = (Math.fma(_self03, _t50, _t95) + Math.fma(_t109, _t62, _t121)) * _t132_inv;
+        double _t138 = (Math.fma(_t111, _t61, _t122) - Math.fma(_self03, _t49, Math.fma(_self00, _t48, -(_self01 * _t53)))) * _t132_inv;
+        rayOrigin.put(rayOriginOffset + 0, _t136);
+        rayOrigin.put(rayOriginOffset + 1, _t137);
+        rayOrigin.put(rayOriginOffset + 2, _t138);
+        rayDir.put(rayDirOffset + 0, (Math.fma(_self01, _t55, -(_self02 * _t56)) + Math.fma(_self03, _t57, _t102 * _t61) + (Math.fma(-_self01, _t47, _t119) + Math.fma(_self02, _t48, -(_self03 * _t46)))) * _t135_inv - _t136);
+        rayDir.put(rayDirOffset + 1, (_t95 + Math.fma(_self03, _t50, _t109 * _t62) + (Math.fma(_t0, _t55, _t121) + Math.fma(_self02, _t60, -(_self03 * _t58)))) * _t135_inv - _t137);
+        rayDir.put(rayDirOffset + 2, (Math.fma(_self00, _t56, -(_self01 * _t60)) + Math.fma(_self03, _t59, _t111 * _t61) + (Math.fma(_t0, _t48, _t122) + Math.fma(_self01, _t53, -(_self03 * _t49)))) * _t135_inv - _t138);
         return rayOrigin;
     }
 
     public static java.nio.DoubleBuffer unprojectRay_no(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayOrigin.order() == java.nio.ByteOrder.nativeOrder() && rayDir.isDirect() && !rayDir.isReadOnly() && rayDir.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && winCoords.isDirect() && winCoords.order() == java.nio.ByteOrder.nativeOrder() && viewport.isDirect() && viewport.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.unprojectRay_no_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
         return Double4x4OpsKernelsTypedBuffer.unprojectRay_no_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
     }
 
@@ -12536,12 +22209,84 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.unprojectRay_no(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
             return rayOrigin;
         }
-        Double4x4OpsKernelsSegment.unprojectRay_no_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        if (rayOrigin.order() == java.nio.ByteOrder.nativeOrder() && rayDir.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && winCoords.order() == java.nio.ByteOrder.nativeOrder() && viewport.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.unprojectRay_no_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+            return rayOrigin;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _winCoordsx = winCoords.get(winCoordsOffset + 0);
+        double _winCoordsy = winCoords.get(winCoordsOffset + 1);
+        double _viewportx = viewport.get(viewportOffset + 0);
+        double _viewporty = viewport.get(viewportOffset + 1);
+        double _viewportz = viewport.get(viewportOffset + 2);
+        double _viewportw = viewport.get(viewportOffset + 3);
+        double _t0 = -_self01;
+        double _t1 = -_self00;
+        double _t44 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t45 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t46 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t47 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t48 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t49 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t50 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t51 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t52 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t53 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t54 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t55 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t56 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t57 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t58 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t59 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t60 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t61 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t62 = 2.0 * (_winCoordsx - _viewportx) / _viewportz - 1.0;
+        double _t63 = 2.0 * (_winCoordsy - _viewporty) / _viewportw - 1.0;
+        double _t91 = -(_self01 * _t58);
+        double _t95 = -(_self02 * _t61);
+        double _t105 = Math.fma(_self02, _t51, -(_self03 * _t52));
+        double _t117 = Math.fma(_self01, _t61, -(_self03 * _t57));
+        double _t122 = Math.fma(_self13, _t44, Math.fma(_self11, _t45, -(_self12 * _t46)));
+        double _t128 = Math.fma(_self13, _t55, Math.fma(_self10, _t46, -(_self11 * _t60)));
+        double _t131 = Math.fma(_self02, _t55, Math.fma(_self00, _t44, -(_self01 * _t56))) * _t63;
+        double _t133 = Math.fma(_self03, _t56, Math.fma(_self00, _t45, -(_self02 * _t60))) * _t63;
+        double _t136 = -(Math.fma(_self03, _t44, Math.fma(_self01, _t45, -(_self02 * _t46))) * _t63);
+        double _t137 = -(Math.fma(_self12, _t55, Math.fma(_self10, _t44, -(_self11 * _t56))) * _t62);
+        double _t138 = -(Math.fma(_self13, _t56, Math.fma(_self10, _t45, -(_self12 * _t60))) * _t62);
+        double _t139 = -(Math.fma(_self03, _t55, Math.fma(_self00, _t46, -(_self01 * _t60))) * _t63);
+        double _t158 = Math.fma(_self00, _t50, -(_self01 * _t53)) + Math.fma(_self02, _t54, _t131) + (Math.fma(_self00, _t52, _t137) + Math.fma(_self02, _t57, _t91));
+        double _t158_inv = 1.0 / _t158;
+        double _t160 = Math.fma(_self00, _t52, _t91) + Math.fma(_self02, _t57, _t131) + (Math.fma(_t1, _t50, _t137) + Math.fma(_self01, _t53, -(_self02 * _t54)));
+        double _t160_inv = 1.0 / _t160;
+        double _t163 = (Math.fma(_self00, _t48, -(_self02 * _t59)) + Math.fma(_self03, _t53, _t133) + (Math.fma(_self00, _t49, _t138) + Math.fma(_self03, _t58, _t95))) * _t158_inv;
+        double _t164 = (Math.fma(_t122, _t62, _t136) + Math.fma(_self02, _t47, -(_self01 * _t48)) + (Math.fma(_t0, _t49, -(_self03 * _t50)) + _t105)) * _t158_inv;
+        double _t165 = (Math.fma(_t128, _t62, _t139) + Math.fma(_self01, _t59, -(_self00 * _t47)) + (Math.fma(_t1, _t51, -(_self03 * _t54)) + _t117)) * _t158_inv;
+        rayOrigin.put(rayOriginOffset + 0, _t164);
+        rayOrigin.put(rayOriginOffset + 1, _t163);
+        rayOrigin.put(rayOriginOffset + 2, _t165);
+        rayDir.put(rayDirOffset + 0, (Math.fma(_self01, _t48, -(_self02 * _t47)) + Math.fma(_self03, _t50, _t122 * _t62) + (Math.fma(_t0, _t49, _t136) + _t105)) * _t160_inv - _t164);
+        rayDir.put(rayDirOffset + 1, (Math.fma(_self00, _t49, _t95) + Math.fma(_self03, _t58, _t133) + (Math.fma(_t1, _t48, _t138) + Math.fma(_self02, _t59, -(_self03 * _t53)))) * _t160_inv - _t163);
+        rayDir.put(rayDirOffset + 2, (Math.fma(_self00, _t47, -(_self01 * _t59)) + Math.fma(_self03, _t54, _t128 * _t62) + (Math.fma(_t1, _t51, _t139) + _t117)) * _t160_inv - _t165);
         return rayOrigin;
     }
 
     public static java.nio.DoubleBuffer unprojectRay_zo(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayDir.isDirect() && !rayDir.isReadOnly() && src.isDirect() && winCoords.isDirect() && viewport.isDirect()) return Double4x4OpsKernelsTypedBuffer.unprojectRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && rayOrigin.isDirect() && !rayOrigin.isReadOnly() && rayOrigin.order() == java.nio.ByteOrder.nativeOrder() && rayDir.isDirect() && !rayDir.isReadOnly() && rayDir.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && winCoords.isDirect() && winCoords.order() == java.nio.ByteOrder.nativeOrder() && viewport.isDirect() && viewport.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.unprojectRay_zo_unsafe(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
         return Double4x4OpsKernelsTypedBuffer.unprojectRay_zo_api(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset);
     }
 
@@ -12560,7 +22305,76 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsArray.unprojectRay_zo(rayOrigin.array(), rayOrigin.arrayOffset() + rayOriginOffset, rayDir.array(), rayDir.arrayOffset() + rayDirOffset, src.array(), src.arrayOffset() + srcOffset, winCoords.array(), winCoords.arrayOffset() + winCoordsOffset, viewport.array(), viewport.arrayOffset() + viewportOffset);
             return rayOrigin;
         }
-        Double4x4OpsKernelsSegment.unprojectRay_zo_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+        if (rayOrigin.order() == java.nio.ByteOrder.nativeOrder() && rayDir.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && winCoords.order() == java.nio.ByteOrder.nativeOrder() && viewport.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.unprojectRay_zo_api(java.lang.foreign.MemorySegment.ofBuffer(rayOrigin.duplicate().position(0)), (long) rayOriginOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rayDir.duplicate().position(0)), (long) rayDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(winCoords.duplicate().position(0)), (long) winCoordsOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(viewport.duplicate().position(0)), (long) viewportOffset * 8L);
+            return rayOrigin;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _winCoordsx = winCoords.get(winCoordsOffset + 0);
+        double _winCoordsy = winCoords.get(winCoordsOffset + 1);
+        double _viewportx = viewport.get(viewportOffset + 0);
+        double _viewporty = viewport.get(viewportOffset + 1);
+        double _viewportz = viewport.get(viewportOffset + 2);
+        double _viewportw = viewport.get(viewportOffset + 3);
+        double _t0 = -_self00;
+        double _t43 = Math.fma(_self21, _self32, -(_self22 * _self31));
+        double _t44 = Math.fma(_self22, _self33, -(_self23 * _self32));
+        double _t45 = Math.fma(_self21, _self33, -(_self23 * _self31));
+        double _t46 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t47 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t48 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t49 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t50 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t51 = Math.fma(_self20, _self31, -(_self21 * _self30));
+        double _t52 = Math.fma(_self20, _self32, -(_self22 * _self30));
+        double _t53 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t54 = Math.fma(_self20, _self33, -(_self23 * _self30));
+        double _t55 = Math.fma(_self12, _self33, -(_self13 * _self32));
+        double _t56 = Math.fma(_self11, _self33, -(_self13 * _self31));
+        double _t57 = Math.fma(_self11, _self32, -(_self12 * _self31));
+        double _t58 = Math.fma(_self10, _self32, -(_self12 * _self30));
+        double _t59 = Math.fma(_self10, _self31, -(_self11 * _self30));
+        double _t60 = Math.fma(_self10, _self33, -(_self13 * _self30));
+        double _t61 = 2.0 * (_winCoordsx - _viewportx) / _viewportz - 1.0;
+        double _t62 = 2.0 * (_winCoordsy - _viewporty) / _viewportw - 1.0;
+        double _t92 = Math.fma(_self00, _t46, -(_self01 * _t50));
+        double _t95 = Math.fma(_self00, _t47, -(_self02 * _t53));
+        double _t102 = Math.fma(_self13, _t43, Math.fma(_self11, _t44, -(_self12 * _t45)));
+        double _t106 = Math.fma(_self02, _t51, Math.fma(_self00, _t43, -(_self01 * _t52)));
+        double _t109 = Math.fma(_self03, _t52, Math.fma(_self00, _t44, -(_self02 * _t54)));
+        double _t111 = Math.fma(_self13, _t51, Math.fma(_self10, _t45, -(_self11 * _t54)));
+        double _t119 = -(Math.fma(_self03, _t43, Math.fma(_self01, _t44, -(_self02 * _t45))) * _t62);
+        double _t120 = -(Math.fma(_self12, _t51, Math.fma(_self10, _t43, -(_self11 * _t52))) * _t61);
+        double _t121 = -(Math.fma(_self13, _t52, Math.fma(_self10, _t44, -(_self12 * _t54))) * _t61);
+        double _t122 = -(Math.fma(_self03, _t51, Math.fma(_self00, _t45, -(_self01 * _t54))) * _t62);
+        double _t132 = Math.fma(_self02, _t49, _t92) + Math.fma(_t106, _t62, _t120);
+        double _t132_inv = 1.0 / _t132;
+        double _t135 = _t92 + Math.fma(_self02, _t49, _t106 * _t62) + (Math.fma(_t0, _t57, _t120) + Math.fma(_self01, _t58, -(_self02 * _t59)));
+        double _t135_inv = 1.0 / _t135;
+        double _t136 = (Math.fma(_t102, _t61, _t119) - Math.fma(_self03, _t46, Math.fma(_self01, _t47, -(_self02 * _t48)))) * _t132_inv;
+        double _t137 = (Math.fma(_self03, _t50, _t95) + Math.fma(_t109, _t62, _t121)) * _t132_inv;
+        double _t138 = (Math.fma(_t111, _t61, _t122) - Math.fma(_self03, _t49, Math.fma(_self00, _t48, -(_self01 * _t53)))) * _t132_inv;
+        rayOrigin.put(rayOriginOffset + 0, _t136);
+        rayOrigin.put(rayOriginOffset + 1, _t137);
+        rayOrigin.put(rayOriginOffset + 2, _t138);
+        rayDir.put(rayDirOffset + 0, (Math.fma(_self01, _t55, -(_self02 * _t56)) + Math.fma(_self03, _t57, _t102 * _t61) + (Math.fma(-_self01, _t47, _t119) + Math.fma(_self02, _t48, -(_self03 * _t46)))) * _t135_inv - _t136);
+        rayDir.put(rayDirOffset + 1, (_t95 + Math.fma(_self03, _t50, _t109 * _t62) + (Math.fma(_t0, _t55, _t121) + Math.fma(_self02, _t60, -(_self03 * _t58)))) * _t135_inv - _t137);
+        rayDir.put(rayDirOffset + 2, (Math.fma(_self00, _t56, -(_self01 * _t60)) + Math.fma(_self03, _t59, _t111 * _t61) + (Math.fma(_t0, _t48, _t122) + Math.fma(_self01, _t53, -(_self03 * _t49)))) * _t135_inv - _t138);
         return rayOrigin;
     }
 
@@ -12643,7 +22457,46 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.transformAabb(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.transformAabb_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, minX, minY, minZ, maxX, maxY, maxZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.transformAabb_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, minX, minY, minZ, maxX, maxY, maxZ);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _t0 = minX * _self00;
+        double _t1 = maxX * _self00;
+        double _t2 = minY * _self01;
+        double _t3 = maxY * _self01;
+        double _t4 = minZ * _self02;
+        double _t5 = maxZ * _self02;
+        double _t6 = minX * _self10;
+        double _t7 = maxX * _self10;
+        double _t8 = minY * _self11;
+        double _t9 = maxY * _self11;
+        double _t10 = minZ * _self12;
+        double _t11 = maxZ * _self12;
+        double _t12 = minX * _self20;
+        double _t13 = maxX * _self20;
+        double _t14 = minY * _self21;
+        double _t15 = maxY * _self21;
+        double _t16 = minZ * _self22;
+        double _t17 = maxZ * _self22;
+        dest.put(destOffset + 0, _self03 + Math.min(_t0, _t1) + Math.min(_t2, _t3) + Math.min(_t4, _t5));
+        dest.put(destOffset + 1, _self13 + Math.min(_t6, _t7) + Math.min(_t8, _t9) + Math.min(_t10, _t11));
+        dest.put(destOffset + 2, _self23 + Math.min(_t12, _t13) + Math.min(_t14, _t15) + Math.min(_t16, _t17));
+        dest.put(destOffset + 3, _self03 + Math.max(_t0, _t1) + Math.max(_t2, _t3) + Math.max(_t4, _t5));
+        dest.put(destOffset + 4, _self13 + Math.max(_t6, _t7) + Math.max(_t8, _t9) + Math.max(_t10, _t11));
+        dest.put(destOffset + 5, _self23 + Math.max(_t12, _t13) + Math.max(_t14, _t15) + Math.max(_t16, _t17));
         return dest;
     }
 
@@ -12659,7 +22512,22 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.transformDirection(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, vX, vY, vZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.transformDirection_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, vX, vY, vZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.transformDirection_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, vX, vY, vZ);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        dest.put(destOffset + 0, Math.fma(_self02, vZ, Math.fma(_self00, vX, _self01 * vY)));
+        dest.put(destOffset + 1, Math.fma(_self12, vZ, Math.fma(_self10, vX, _self11 * vY)));
+        dest.put(destOffset + 2, Math.fma(_self22, vZ, Math.fma(_self20, vX, _self21 * vY)));
         return dest;
     }
 
@@ -12676,7 +22544,25 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.transformDirection(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.transformDirection_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && v.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.transformDirection_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _vx = v.get(vOffset + 0);
+        double _vy = v.get(vOffset + 1);
+        double _vz = v.get(vOffset + 2);
+        dest.put(destOffset + 0, Math.fma(_self02, _vz, Math.fma(_self00, _vx, _self01 * _vy)));
+        dest.put(destOffset + 1, Math.fma(_self12, _vz, Math.fma(_self10, _vx, _self11 * _vy)));
+        dest.put(destOffset + 2, Math.fma(_self22, _vz, Math.fma(_self20, _vx, _self21 * _vy)));
         return dest;
     }
 
@@ -12692,7 +22578,25 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.transformPosition(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, vX, vY, vZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.transformPosition_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, vX, vY, vZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.transformPosition_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, vX, vY, vZ);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        dest.put(destOffset + 0, Math.fma(_self00, vX, Math.fma(_self01, vY, Math.fma(_self02, vZ, _self03))));
+        dest.put(destOffset + 1, Math.fma(_self10, vX, Math.fma(_self11, vY, Math.fma(_self12, vZ, _self13))));
+        dest.put(destOffset + 2, Math.fma(_self20, vX, Math.fma(_self21, vY, Math.fma(_self22, vZ, _self23))));
         return dest;
     }
 
@@ -12709,7 +22613,28 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.transformPosition(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.transformPosition_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && v.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.transformPosition_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _vx = v.get(vOffset + 0);
+        double _vy = v.get(vOffset + 1);
+        double _vz = v.get(vOffset + 2);
+        dest.put(destOffset + 0, Math.fma(_self00, _vx, Math.fma(_self01, _vy, Math.fma(_self02, _vz, _self03))));
+        dest.put(destOffset + 1, Math.fma(_self10, _vx, Math.fma(_self11, _vy, Math.fma(_self12, _vz, _self13))));
+        dest.put(destOffset + 2, Math.fma(_self20, _vx, Math.fma(_self21, _vy, Math.fma(_self22, _vz, _self23))));
         return dest;
     }
 
@@ -12725,7 +22650,31 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.transformProject(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, vX, vY, vZ);
             return dest;
         }
-        Double4x4OpsKernelsSegment.transformProject_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, vX, vY, vZ);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.transformProject_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, vX, vY, vZ);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _t2 = Math.fma(_self30, vX, Math.fma(_self31, vY, Math.fma(_self32, vZ, _self33)));
+        double _t2_inv = 1.0 / _t2;
+        dest.put(destOffset + 0, Math.fma(_self00, vX, Math.fma(_self01, vY, Math.fma(_self02, vZ, _self03))) * _t2_inv);
+        dest.put(destOffset + 1, Math.fma(_self10, vX, Math.fma(_self11, vY, Math.fma(_self12, vZ, _self13))) * _t2_inv);
+        dest.put(destOffset + 2, Math.fma(_self20, vX, Math.fma(_self21, vY, Math.fma(_self22, vZ, _self23))) * _t2_inv);
         return dest;
     }
 
@@ -12742,7 +22691,34 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4Ops.transformProject(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
-        Double4x4OpsKernelsSegment.transformProject_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 8L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && v.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.transformProject_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 8L);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self20 = src.get(srcOffset + 2);
+        double _self30 = src.get(srcOffset + 3);
+        double _self01 = src.get(srcOffset + 4);
+        double _self11 = src.get(srcOffset + 5);
+        double _self21 = src.get(srcOffset + 6);
+        double _self31 = src.get(srcOffset + 7);
+        double _self02 = src.get(srcOffset + 8);
+        double _self12 = src.get(srcOffset + 9);
+        double _self22 = src.get(srcOffset + 10);
+        double _self32 = src.get(srcOffset + 11);
+        double _self03 = src.get(srcOffset + 12);
+        double _self13 = src.get(srcOffset + 13);
+        double _self23 = src.get(srcOffset + 14);
+        double _self33 = src.get(srcOffset + 15);
+        double _vx = v.get(vOffset + 0);
+        double _vy = v.get(vOffset + 1);
+        double _vz = v.get(vOffset + 2);
+        double _t2 = Math.fma(_self30, _vx, Math.fma(_self31, _vy, Math.fma(_self32, _vz, _self33)));
+        double _t2_inv = 1.0 / _t2;
+        dest.put(destOffset + 0, Math.fma(_self00, _vx, Math.fma(_self01, _vy, Math.fma(_self02, _vz, _self03))) * _t2_inv);
+        dest.put(destOffset + 1, Math.fma(_self10, _vx, Math.fma(_self11, _vy, Math.fma(_self12, _vz, _self13))) * _t2_inv);
+        dest.put(destOffset + 2, Math.fma(_self20, _vx, Math.fma(_self21, _vy, Math.fma(_self22, _vz, _self23))) * _t2_inv);
         return dest;
     }
 

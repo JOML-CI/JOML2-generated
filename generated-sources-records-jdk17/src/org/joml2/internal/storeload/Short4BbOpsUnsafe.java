@@ -4,6 +4,7 @@ import org.joml2.*;
 import org.joml2.Math;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.ShortBuffer;
 import static org.joml2.internal.unsafe.UnsafeOpsHolder.U;
 
@@ -22,30 +23,30 @@ public final class Short4BbOpsUnsafe implements Short4BbOps {
     }
 
     public ShortBuffer storeAbsolute(Short4 self, int index, ShortBuffer buf) {
-        if (!buf.isDirect() || buf.isReadOnly()) return API.storeAbsolute(self, index, buf);
+        if (!buf.isDirect() || buf.isReadOnly() || buf.order() != ByteOrder.nativeOrder()) return API.storeAbsolute(self, index, buf);
         RAW.storeUnsafe(self, U.getLong(buf, BB_ADDRESS_OFFSET) + (long) index * 2);
         return buf;
     }
     public Short4 loadAbsolute(int index, ShortBuffer buf) {
-        if (!buf.isDirect()) return API.loadAbsolute(index, buf);
+        if (!buf.isDirect() || buf.order() != ByteOrder.nativeOrder()) return API.loadAbsolute(index, buf);
         return RAW.loadUnsafe(U.getLong(buf, BB_ADDRESS_OFFSET) + (long) index * 2);
     }
     public ByteBuffer storeAbsolute(Short4 self, int index, ByteBuffer buf) {
-        if (!buf.isDirect() || buf.isReadOnly()) return API.storeAbsolute(self, index, buf);
+        if (!buf.isDirect() || buf.isReadOnly() || buf.order() != ByteOrder.nativeOrder()) return API.storeAbsolute(self, index, buf);
         RAW.storeUnsafe(self, U.getLong(buf, BB_ADDRESS_OFFSET) + index);
         return buf;
     }
     public Short4 loadAbsolute(int index, ByteBuffer buf) {
-        if (!buf.isDirect()) return API.loadAbsolute(index, buf);
+        if (!buf.isDirect() || buf.order() != ByteOrder.nativeOrder()) return API.loadAbsolute(index, buf);
         return RAW.loadUnsafe(U.getLong(buf, BB_ADDRESS_OFFSET) + index);
     }
     public ByteBuffer storeByteAbsolute(Short4 self, int index, ByteBuffer buf) {
-        if (!buf.isDirect() || buf.isReadOnly()) return API.storeByteAbsolute(self, index, buf);
+        if (!buf.isDirect() || buf.isReadOnly() || buf.order() != ByteOrder.nativeOrder()) return API.storeByteAbsolute(self, index, buf);
         RAW.storeByteUnsafe(self, U.getLong(buf, BB_ADDRESS_OFFSET) + index);
         return buf;
     }
     public Short4 loadByteAbsolute(int index, ByteBuffer buf) {
-        if (!buf.isDirect()) return API.loadByteAbsolute(index, buf);
+        if (!buf.isDirect() || buf.order() != ByteOrder.nativeOrder()) return API.loadByteAbsolute(index, buf);
         return RAW.loadByteUnsafe(U.getLong(buf, BB_ADDRESS_OFFSET) + index);
     }
 }

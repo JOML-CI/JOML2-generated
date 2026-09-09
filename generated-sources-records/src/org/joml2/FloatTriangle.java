@@ -272,26 +272,26 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     }
 
     /**
-     * Determine whether this triangle contains the given point (boundary inclusive). Delegates to
-     * the shared {@code Intersectionf} kernels.
+     * Determine whether the projection of the given point onto this triangle's plane lies inside or
+     * on this triangle (boundary inclusive). Delegates to the shared {@code Intersectionf} kernels.
      *
      * @param pX the x coordinate of the point
      * @param pY the y coordinate of the point
      * @param pZ the z coordinate of the point
-     * @return {@code true} if the given point lies inside or on this triangle, {@code false}
-     *        otherwise
+     * @return {@code true} if the projection of the given point onto this triangle's plane lies
+     *        inside or on this triangle, {@code false} otherwise
      */
     public boolean containsPoint(float pX, float pY, float pZ) {
         return Intersectionf.testPointInTriangle(pX, pY, pZ, v0X(), v0Y(), v0Z(), v1X(), v1Y(), v1Z(), v2X(), v2Y(), v2Z());
     }
 
     /**
-     * Determine whether this triangle contains the given point (boundary inclusive). Delegates to
-     * the shared {@code Intersectionf} kernels.
+     * Determine whether the projection of the given point onto this triangle's plane lies inside or
+     * on this triangle (boundary inclusive). Delegates to the shared {@code Intersectionf} kernels.
      *
      * @param p the point
-     * @return {@code true} if the given point lies inside or on this triangle, {@code false}
-     *        otherwise
+     * @return {@code true} if the projection of the given point onto this triangle's plane lies
+     *        inside or on this triangle, {@code false} otherwise
      */
     public boolean containsPoint(Float3 p) {
         return containsPoint(p.x(), p.y(), p.z());
@@ -518,6 +518,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -529,6 +532,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -541,6 +547,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -555,6 +564,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code FloatTriangle} holding the loaded elements
@@ -566,6 +578,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -578,6 +593,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code FloatTriangle} holding the loaded elements
@@ -592,6 +610,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -603,6 +624,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Store the elements into the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -615,6 +639,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Store the elements into the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -629,6 +656,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatTriangle} holding the loaded elements
@@ -640,6 +670,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -652,6 +685,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatTriangle} holding the loaded elements
@@ -785,6 +821,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Store the elements into the given buffer, converting each element to {@code double}, starting
      * at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -796,6 +835,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Store the elements into the given buffer, converting each element to {@code double}, starting
      * at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -808,6 +850,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Store the elements into the given buffer, converting each element to {@code double}, starting
      * at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -822,6 +867,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Load the elements from the given buffer, converting each element from {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code FloatTriangle} holding the loaded elements
@@ -833,6 +881,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Load the elements from the given buffer, converting each element from {@code double},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -845,6 +896,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Load the elements from the given buffer, converting each element from {@code double},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code FloatTriangle} holding the loaded elements
@@ -859,6 +913,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -870,6 +927,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -882,6 +942,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -896,6 +959,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatTriangle} holding the loaded elements
@@ -907,6 +973,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -919,6 +988,9 @@ public record FloatTriangle(float v0X, float v0Y, float v0Z, float v1X, float v1
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatTriangle} holding the loaded elements

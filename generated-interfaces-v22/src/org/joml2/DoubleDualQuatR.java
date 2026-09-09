@@ -237,21 +237,21 @@ public interface DoubleDualQuatR {
      * {@code dW}) using the interpolation factor {@code t} and store the result in {@code dest}.
      *
      * @param rX the {@code rX} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the real part must have unit length)
      * @param rY the {@code rY} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the real part must have unit length)
      * @param rZ the {@code rZ} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the real part must have unit length)
      * @param rW the {@code rW} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the real part must have unit length)
      * @param dX the {@code dX} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dY the {@code dY} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dZ the {@code dZ} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dW the {@code dW} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -397,8 +397,8 @@ public interface DoubleDualQuatR {
 
     /**
      * Compute the difference between this dual quaternion and {@code other}, i.e. the rigid
-     * transformation that, applied after {@code this}, results in {@code other} and store the
-     * result in {@code dest}.
+     * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}
+     * and store the result in {@code dest}.
      *
      * @param other the other dual quaternion
      * @param dest will hold the result
@@ -409,8 +409,8 @@ public interface DoubleDualQuatR {
     /**
      * Compute the difference between this dual quaternion and ({@code rX}, {@code rY}, {@code rZ},
      * {@code rW}, {@code dX}, {@code dY}, {@code dZ}, {@code dW}), i.e. the rigid transformation
-     * that, applied after {@code this}, results in ({@code rX}, {@code rY}, {@code rZ}, {@code rW},
-     * {@code dX}, {@code dY}, {@code dZ}, {@code dW}) and store the result in {@code dest}.
+     * {@code D} with {@code this * D = (rX, rY, rZ, rW, dX, dY, dZ, dW)}, that is
+     * {@code D = this^-1 * (rX, rY, rZ, rW, dX, dY, dZ, dW)} and store the result in {@code dest}.
      *
      * @param rX the {@code rX} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
@@ -686,8 +686,8 @@ public interface DoubleDualQuatR {
     DoubleDualQuat setTranslation(double x, double y, double z, @Mutated DoubleDualQuat dest);
 
     /**
-     * Compute the matrix representation of this dual quaternion and store the result in
-     * {@code dest}.
+     * Compute the matrix representation of this dual quaternion (which must be a unit dual
+     * quaternion) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -695,8 +695,9 @@ public interface DoubleDualQuatR {
     Double4x4 toMatrix(@Mutated Double4x4 dest);
 
     /**
-     * Compute the 3x3 matrix representation of this dual quaternion's rotation part (the encoded
-     * translation is dropped) and store the result in {@code dest}.
+     * Compute the 3x3 matrix representation of the rotation part of this dual quaternion (which
+     * must be a unit dual quaternion; the encoded translation is dropped) and store the result in
+     * {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -704,8 +705,9 @@ public interface DoubleDualQuatR {
     Double3x3 toMatrix3x3(@Mutated Double3x3 dest);
 
     /**
-     * Compute the 3x4 matrix representation of this dual quaternion (the omitted last row is
-     * implicitly {@code 0, 0, 0, 1}) and store the result in {@code dest}.
+     * Compute the 3x4 matrix representation of this dual quaternion (which must be a unit dual
+     * quaternion; the omitted last row is implicitly {@code 0, 0, 0, 1}) and store the result in
+     * {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -834,7 +836,9 @@ public interface DoubleDualQuatR {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this dual quaternion and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this dual quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -850,7 +854,9 @@ public interface DoubleDualQuatR {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this dual quaternion and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this dual quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -880,7 +886,9 @@ public interface DoubleDualQuatR {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this dual quaternion and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this dual quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -896,7 +904,9 @@ public interface DoubleDualQuatR {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this dual quaternion and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this dual quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -926,7 +936,9 @@ public interface DoubleDualQuatR {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this dual quaternion and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this dual quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -942,7 +954,9 @@ public interface DoubleDualQuatR {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this dual quaternion and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this dual quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -1050,8 +1064,8 @@ public interface DoubleDualQuatR {
 
     /**
      * Transform the given direction by the inverse of this dual quaternion's rotation (world to
-     * local), ignoring the translation, without materializing {@code invert()} and store the result
-     * in {@code dest}.
+     * local), ignoring the translation, without materializing {@code invert()} (assumes a unit,
+     * rigid dual quaternion) and store the result in {@code dest}.
      *
      * @param v the vector
      * @param dest will hold the result
@@ -1061,8 +1075,8 @@ public interface DoubleDualQuatR {
 
     /**
      * Transform the given direction by the inverse of this dual quaternion's rotation (world to
-     * local), ignoring the translation, without materializing {@code invert()} and store the result
-     * in {@code dest}.
+     * local), ignoring the translation, without materializing {@code invert()} (assumes a unit,
+     * rigid dual quaternion) and store the result in {@code dest}.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1074,8 +1088,8 @@ public interface DoubleDualQuatR {
 
     /**
      * Transform the given direction by the inverse of this dual quaternion's rotation (world to
-     * local), ignoring the translation, without materializing {@code invert()} and store the result
-     * back into {@code v}.
+     * local), ignoring the translation, without materializing {@code invert()} (assumes a unit,
+     * rigid dual quaternion) and store the result back into {@code v}.
      *
      * @param v the vector (also receives the result)
      * @return {@code v}
@@ -1146,7 +1160,8 @@ public interface DoubleDualQuatR {
 
     /**
      * Transform the given position by the inverse of this dual quaternion (world to local), without
-     * materializing {@code invert()} and store the result in {@code dest}.
+     * materializing {@code invert()} (assumes a unit, rigid dual quaternion) and store the result
+     * in {@code dest}.
      *
      * @param p the vector
      * @param dest will hold the result
@@ -1156,7 +1171,8 @@ public interface DoubleDualQuatR {
 
     /**
      * Transform the given position by the inverse of this dual quaternion (world to local), without
-     * materializing {@code invert()} and store the result in {@code dest}.
+     * materializing {@code invert()} (assumes a unit, rigid dual quaternion) and store the result
+     * in {@code dest}.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1168,7 +1184,8 @@ public interface DoubleDualQuatR {
 
     /**
      * Transform the given position by the inverse of this dual quaternion (world to local), without
-     * materializing {@code invert()} and store the result back into {@code p}.
+     * materializing {@code invert()} (assumes a unit, rigid dual quaternion) and store the result
+     * back into {@code p}.
      *
      * @param p the vector (also receives the result)
      * @return {@code p}
@@ -1242,6 +1259,9 @@ public interface DoubleDualQuatR {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -1251,6 +1271,9 @@ public interface DoubleDualQuatR {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -1260,6 +1283,9 @@ public interface DoubleDualQuatR {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -1270,6 +1296,9 @@ public interface DoubleDualQuatR {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -1284,6 +1313,9 @@ public interface DoubleDualQuatR {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -1293,6 +1325,9 @@ public interface DoubleDualQuatR {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -1302,6 +1337,9 @@ public interface DoubleDualQuatR {
     /**
      * Store the elements into the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -1312,6 +1350,9 @@ public interface DoubleDualQuatR {
     /**
      * Store the elements into the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -1369,6 +1410,9 @@ public interface DoubleDualQuatR {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -1378,6 +1422,9 @@ public interface DoubleDualQuatR {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -1387,6 +1434,9 @@ public interface DoubleDualQuatR {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -1397,6 +1447,9 @@ public interface DoubleDualQuatR {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -1411,6 +1464,9 @@ public interface DoubleDualQuatR {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -1420,6 +1476,9 @@ public interface DoubleDualQuatR {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -1429,6 +1488,9 @@ public interface DoubleDualQuatR {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -1439,6 +1501,9 @@ public interface DoubleDualQuatR {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest

@@ -465,6 +465,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -476,6 +479,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -488,6 +494,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -502,6 +511,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code FloatRay} holding the loaded elements
@@ -513,6 +525,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -525,6 +540,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code FloatRay} holding the loaded elements
@@ -539,6 +557,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -550,6 +571,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Store the elements into the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -562,6 +586,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Store the elements into the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -576,6 +603,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatRay} holding the loaded elements
@@ -587,6 +617,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -599,6 +632,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatRay} holding the loaded elements
@@ -726,6 +762,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Store the elements into the given buffer, converting each element to {@code double}, starting
      * at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -737,6 +776,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Store the elements into the given buffer, converting each element to {@code double}, starting
      * at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -749,6 +791,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Store the elements into the given buffer, converting each element to {@code double}, starting
      * at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -763,6 +808,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Load the elements from the given buffer, converting each element from {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code FloatRay} holding the loaded elements
@@ -774,6 +822,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Load the elements from the given buffer, converting each element from {@code double},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -786,6 +837,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Load the elements from the given buffer, converting each element from {@code double},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code FloatRay} holding the loaded elements
@@ -800,6 +854,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -811,6 +868,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -823,6 +883,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -837,6 +900,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatRay} holding the loaded elements
@@ -848,6 +914,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -860,6 +929,9 @@ public value record FloatRay(float oX, float oY, float oZ, float dX, float dY, f
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatRay} holding the loaded elements

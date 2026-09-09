@@ -12,7 +12,7 @@ public final class Joml {
 
     /** Property bit mask: the matrix is known to be affine (last row {@code 0..0 1}). */
     public static final int BIT_AFFINE      = 1;
-    /** Property bit mask: the matrix is known to be orthogonal. Includes {@link #BIT_AFFINE}. */
+    /** Property bit mask: the matrix is known to be orthogonal, i.e. its upper-left block is orthonormal with positive determinant (a proper rotation; a reflection is affine, not orthogonal). Includes {@link #BIT_AFFINE}. */
     public static final int BIT_ORTHOGONAL  = 3;
     /** Property bit mask: the matrix is known to be a pure translation. Includes {@link #BIT_ORTHOGONAL} (a pure translation is rigid). */
     public static final int BIT_TRANSLATION = 7;

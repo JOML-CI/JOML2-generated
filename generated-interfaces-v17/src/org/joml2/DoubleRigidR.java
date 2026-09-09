@@ -84,8 +84,8 @@ public interface DoubleRigidR {
     DoubleDualQuat toDualQuat(@Mutated DoubleDualQuat dest);
 
     /**
-     * Compute the matrix representation of this rigid transform and store the result in
-     * {@code dest}.
+     * Compute the matrix representation of this rigid transform (whose rotation must be a unit
+     * quaternion) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -93,8 +93,8 @@ public interface DoubleRigidR {
     Double4x4 toMatrix(@Mutated Double4x4 dest);
 
     /**
-     * Compute the 3x3 matrix representation of this rigid transform's rotation (the translation is
-     * dropped) and store the result in {@code dest}.
+     * Compute the 3x3 matrix representation of the rotation of this rigid transform (whose rotation
+     * must be a unit quaternion; the translation is dropped) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -102,8 +102,9 @@ public interface DoubleRigidR {
     Double3x3 toMatrix3x3(@Mutated Double3x3 dest);
 
     /**
-     * Compute the 3x4 matrix representation of this rigid transform (the omitted last row is
-     * implicitly {@code 0, 0, 0, 1}) and store the result in {@code dest}.
+     * Compute the 3x4 matrix representation of this rigid transform (whose rotation must be a unit
+     * quaternion; the omitted last row is implicitly {@code 0, 0, 0, 1}) and store the result in
+     * {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -241,8 +242,8 @@ public interface DoubleRigidR {
 
     /**
      * Compute the difference between this rigid transform and {@code other}, i.e. the rigid
-     * transformation that, applied after {@code this}, results in {@code other} and store the
-     * result in {@code dest}.
+     * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}
+     * and store the result in {@code dest}.
      *
      * @param other the other rigid transform
      * @param dest will hold the result
@@ -252,9 +253,9 @@ public interface DoubleRigidR {
 
     /**
      * Compute the difference between this rigid transform and ({@code tX}, {@code tY}, {@code tZ},
-     * {@code rX}, {@code rY}, {@code rZ}, {@code rW}), i.e. the rigid transformation that, applied
-     * after {@code this}, results in ({@code tX}, {@code tY}, {@code tZ}, {@code rX}, {@code rY},
-     * {@code rZ}, {@code rW}) and store the result in {@code dest}.
+     * {@code rX}, {@code rY}, {@code rZ}, {@code rW}), i.e. the rigid transformation {@code D} with
+     * {@code this * D = (tX, tY, tZ, rX, rY, rZ, rW)}, that is
+     * {@code D = this^-1 * (tX, tY, tZ, rX, rY, rZ, rW)} and store the result in {@code dest}.
      *
      * @param tX the {@code tX} component of the rigid transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
@@ -468,7 +469,9 @@ public interface DoubleRigidR {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this rigid transform and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this rigid transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -484,7 +487,9 @@ public interface DoubleRigidR {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this rigid transform and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this rigid transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -514,7 +519,9 @@ public interface DoubleRigidR {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this rigid transform and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this rigid transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -530,7 +537,9 @@ public interface DoubleRigidR {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this rigid transform and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this rigid transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -560,7 +569,9 @@ public interface DoubleRigidR {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this rigid transform and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this rigid transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -576,7 +587,9 @@ public interface DoubleRigidR {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this rigid transform and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this rigid transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -843,6 +856,9 @@ public interface DoubleRigidR {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -852,6 +868,9 @@ public interface DoubleRigidR {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -861,6 +880,9 @@ public interface DoubleRigidR {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -871,6 +893,9 @@ public interface DoubleRigidR {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -885,6 +910,9 @@ public interface DoubleRigidR {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -894,6 +922,9 @@ public interface DoubleRigidR {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -903,6 +934,9 @@ public interface DoubleRigidR {
     /**
      * Store the elements into the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -913,6 +947,9 @@ public interface DoubleRigidR {
     /**
      * Store the elements into the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -953,6 +990,9 @@ public interface DoubleRigidR {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -962,6 +1002,9 @@ public interface DoubleRigidR {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -971,6 +1014,9 @@ public interface DoubleRigidR {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -981,6 +1027,9 @@ public interface DoubleRigidR {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -995,6 +1044,9 @@ public interface DoubleRigidR {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -1004,6 +1056,9 @@ public interface DoubleRigidR {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -1013,6 +1068,9 @@ public interface DoubleRigidR {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -1023,6 +1081,9 @@ public interface DoubleRigidR {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest

@@ -193,7 +193,7 @@ public class Float4x3Impl implements Float4x3 {
         d.m10 = _buf2;
         d.m11 = _buf3;
         d.m20 = _buf4;
-        d.properties = 0;
+        d.properties = Joml.BIT_AFFINE;
         return d;
     }
 
@@ -226,7 +226,7 @@ public class Float4x3Impl implements Float4x3 {
         d.m10 = _buf2;
         d.m11 = _buf3;
         d.m20 = _buf4;
-        d.properties = 0;
+        d.properties = Joml.BIT_AFFINE;
         return d;
     }
 

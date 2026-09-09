@@ -181,6 +181,9 @@ public interface DoubleTriangleR {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -190,6 +193,9 @@ public interface DoubleTriangleR {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -199,6 +205,9 @@ public interface DoubleTriangleR {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -209,6 +218,9 @@ public interface DoubleTriangleR {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -223,6 +235,9 @@ public interface DoubleTriangleR {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -232,6 +247,9 @@ public interface DoubleTriangleR {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -241,6 +259,9 @@ public interface DoubleTriangleR {
     /**
      * Store the elements into the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -251,6 +272,9 @@ public interface DoubleTriangleR {
     /**
      * Store the elements into the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -291,6 +315,9 @@ public interface DoubleTriangleR {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -300,6 +327,9 @@ public interface DoubleTriangleR {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -309,6 +339,9 @@ public interface DoubleTriangleR {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -319,6 +352,9 @@ public interface DoubleTriangleR {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -333,6 +369,9 @@ public interface DoubleTriangleR {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -342,6 +381,9 @@ public interface DoubleTriangleR {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -351,6 +393,9 @@ public interface DoubleTriangleR {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -361,6 +406,9 @@ public interface DoubleTriangleR {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -395,24 +443,24 @@ public interface DoubleTriangleR {
     boolean equalsEpsilon(DoubleTriangleR other, double epsilon);
 
     /**
-     * Determine whether this triangle contains the given point (boundary inclusive). Delegates to
-     * the shared {@code Intersectiond} kernels.
+     * Determine whether the projection of the given point onto this triangle's plane lies inside or
+     * on this triangle (boundary inclusive). Delegates to the shared {@code Intersectiond} kernels.
      *
      * @param pX the x coordinate of the point
      * @param pY the y coordinate of the point
      * @param pZ the z coordinate of the point
-     * @return {@code true} if the given point lies inside or on this triangle, {@code false}
-     *        otherwise
+     * @return {@code true} if the projection of the given point onto this triangle's plane lies
+     *        inside or on this triangle, {@code false} otherwise
      */
     boolean containsPoint(double pX, double pY, double pZ);
 
     /**
-     * Determine whether this triangle contains the given point (boundary inclusive). Delegates to
-     * the shared {@code Intersectiond} kernels.
+     * Determine whether the projection of the given point onto this triangle's plane lies inside or
+     * on this triangle (boundary inclusive). Delegates to the shared {@code Intersectiond} kernels.
      *
      * @param p the point
-     * @return {@code true} if the given point lies inside or on this triangle, {@code false}
-     *        otherwise
+     * @return {@code true} if the projection of the given point onto this triangle's plane lies
+     *        inside or on this triangle, {@code false} otherwise
      */
     boolean containsPoint(Double3R p);
 

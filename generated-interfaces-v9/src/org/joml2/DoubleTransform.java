@@ -175,7 +175,7 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Set the scale of this transform to {@code s}.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @return this
      */
     @Mutated default DoubleTransform setScale(Double3R s) { return setScale(s, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
@@ -252,7 +252,8 @@ public interface DoubleTransform extends DoubleTransformR {
 
     /**
      * Set this transform to the decomposition of the given matrix's linear {@code R * S} block,
-     * with zero translation (a sheared matrix projects onto the nearest rotation).
+     * with zero translation (scale is removed by normalizing the columns, but shear is not removed:
+     * a sheared block yields a rotation quaternion that is not unit length).
      *
      * @param m the matrix
      * @return this
@@ -262,7 +263,8 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Set this transform to the TRS decomposition of the given affine matrix: translation from the
      * last column, scale from the column lengths of the upper-left 3x3 block, rotation from the
-     * orthonormalized block (a sheared matrix projects onto the nearest rotation).
+     * column-normalized block (scale is removed by normalizing the columns, but shear is not
+     * removed: a sheared block yields a rotation quaternion that is not unit length).
      *
      * @param m the matrix
      * @return this
@@ -272,7 +274,8 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Set this transform to the TRS decomposition of the given affine matrix: translation from the
      * last column, scale from the column lengths of the upper-left 3x3 block, rotation from the
-     * orthonormalized block (a sheared matrix projects onto the nearest rotation).
+     * column-normalized block (scale is removed by normalizing the columns, but shear is not
+     * removed: a sheared block yields a rotation quaternion that is not unit length).
      *
      * @param m the matrix
      * @return this
@@ -327,7 +330,7 @@ public interface DoubleTransform extends DoubleTransformR {
     @Mutated DoubleTransform makeIdentity();
 
     /**
-     * Set this transform to the given values.
+     * Set this transform to a pure rotation by {@code rotation} (zero translation, unit scale).
      *
      * @param rotation the quaternion
      * @return this
@@ -335,7 +338,8 @@ public interface DoubleTransform extends DoubleTransformR {
     @Mutated DoubleTransform set(DoubleQuatR rotation);
 
     /**
-     * Set this transform to the given values.
+     * Set this transform to a pure rotation by ({@code x}, {@code y}, {@code z}, {@code w}) (zero
+     * translation, unit scale).
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
@@ -346,7 +350,7 @@ public interface DoubleTransform extends DoubleTransformR {
     @Mutated DoubleTransform set(double x, double y, double z, double w);
 
     /**
-     * Set this transform to the given values.
+     * Set this transform to a pure rotation by {@code rotation} (zero translation, unit scale).
      * <p>
      * Alias for {@code set}.
      *
@@ -356,7 +360,8 @@ public interface DoubleTransform extends DoubleTransformR {
     @Mutated default DoubleTransform makeRotation(DoubleQuatR rotation) { return set(rotation); }
 
     /**
-     * Set this transform to the given values.
+     * Set this transform to a pure rotation by ({@code x}, {@code y}, {@code z}, {@code w}) (zero
+     * translation, unit scale).
      * <p>
      * Alias for {@code set}.
      *
@@ -369,7 +374,8 @@ public interface DoubleTransform extends DoubleTransformR {
     @Mutated default DoubleTransform makeRotation(double x, double y, double z, double w) { return set(x, y, z, w); }
 
     /**
-     * Set this transform to the given values.
+     * Set this transform to a pure translation by {@code translation} (identity rotation, unit
+     * scale).
      *
      * @param translation the vector
      * @return this
@@ -377,7 +383,8 @@ public interface DoubleTransform extends DoubleTransformR {
     @Mutated DoubleTransform set(Double3R translation);
 
     /**
-     * Set this transform to the given values.
+     * Set this transform to a pure translation by ({@code x}, {@code y}, {@code z}) (identity
+     * rotation, unit scale).
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -387,7 +394,8 @@ public interface DoubleTransform extends DoubleTransformR {
     @Mutated DoubleTransform set(double x, double y, double z);
 
     /**
-     * Set this transform to the given values.
+     * Set this transform to a pure translation by {@code translation} (identity rotation, unit
+     * scale).
      * <p>
      * Alias for {@code set}.
      *
@@ -397,7 +405,8 @@ public interface DoubleTransform extends DoubleTransformR {
     @Mutated default DoubleTransform makeTranslation(Double3R translation) { return set(translation); }
 
     /**
-     * Set this transform to the given values.
+     * Set this transform to a pure translation by ({@code x}, {@code y}, {@code z}) (identity
+     * rotation, unit scale).
      * <p>
      * Alias for {@code set}.
      *
@@ -456,6 +465,12 @@ public interface DoubleTransform extends DoubleTransformR {
      * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
      * be {@code M * R}. So when transforming a vector {@code v} with the new transform by using
      * {@code M * R * v}, the transformation of the operand will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param other the other transform
      * @return this
@@ -469,6 +484,12 @@ public interface DoubleTransform extends DoubleTransformR {
      * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
      * be {@code M * R}. So when transforming a vector {@code v} with the new transform by using
      * {@code M * R * v}, the transformation of the operand will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param tX the {@code tX} component of the transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
@@ -500,6 +521,12 @@ public interface DoubleTransform extends DoubleTransformR {
      * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
      * be {@code R * M}. So when transforming a vector {@code v} with the new transform by using
      * {@code R * M * v}, the transformation of the operand will be applied last.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param other the other transform
      * @return this
@@ -513,6 +540,12 @@ public interface DoubleTransform extends DoubleTransformR {
      * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
      * be {@code R * M}. So when transforming a vector {@code v} with the new transform by using
      * {@code R * M * v}, the transformation of the operand will be applied last.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param tX the {@code tX} component of the transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
@@ -540,8 +573,14 @@ public interface DoubleTransform extends DoubleTransformR {
 
     /**
      * Compute the difference between this transform and {@code other}, i.e. the
-     * translation-rotation-scale transformation that, applied after {@code this}, results in
-     * {@code other}.
+     * translation-rotation-scale transformation {@code D} with {@code this * D = other}, that is
+     * {@code D = this^-1 * other}.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param other the other transform
      * @return this
@@ -551,9 +590,15 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Compute the difference between this transform and ({@code tX}, {@code tY}, {@code tZ},
      * {@code rX}, {@code rY}, {@code rZ}, {@code rW}, {@code sX}, {@code sY}, {@code sZ}), i.e. the
-     * translation-rotation-scale transformation that, applied after {@code this}, results in
-     * ({@code tX}, {@code tY}, {@code tZ}, {@code rX}, {@code rY}, {@code rZ}, {@code rW},
-     * {@code sX}, {@code sY}, {@code sZ}).
+     * translation-rotation-scale transformation {@code D} with
+     * {@code this * D = (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}, that is
+     * {@code D = this^-1 * (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param tX the {@code tX} component of the transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
@@ -629,7 +674,8 @@ public interface DoubleTransform extends DoubleTransformR {
 
     /**
      * Set this transform to a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians
-     * about the X, Y and Z axes, in that order.
+     * about the X, Y and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a
+     * vector is rotated about the Z axis first, then Y, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -640,7 +686,8 @@ public interface DoubleTransform extends DoubleTransformR {
 
     /**
      * Set this transform to a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians
-     * about the X, Z and Y axes, in that order.
+     * about the X, Z and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a
+     * vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -659,7 +706,8 @@ public interface DoubleTransform extends DoubleTransformR {
 
     /**
      * Set this transform to a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians
-     * about the Y, X and Z axes, in that order.
+     * about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a
+     * vector is rotated about the Z axis first, then X, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -670,7 +718,8 @@ public interface DoubleTransform extends DoubleTransformR {
 
     /**
      * Set this transform to a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians
-     * about the Y, Z and X axes, in that order.
+     * about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a
+     * vector is rotated about the X axis first, then Z, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -689,7 +738,8 @@ public interface DoubleTransform extends DoubleTransformR {
 
     /**
      * Set this transform to a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians
-     * about the Z, X and Y axes, in that order.
+     * about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a
+     * vector is rotated about the Y axis first, then X, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -700,7 +750,8 @@ public interface DoubleTransform extends DoubleTransformR {
 
     /**
      * Set this transform to a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians
-     * about the Z, Y and X axes, in that order.
+     * about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a
+     * vector is rotated about the X axis first, then Y, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -742,6 +793,12 @@ public interface DoubleTransform extends DoubleTransformR {
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param rotation the quaternion (must be a unit quaternion)
      * @return this
@@ -755,6 +812,12 @@ public interface DoubleTransform extends DoubleTransformR {
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
@@ -774,6 +837,12 @@ public interface DoubleTransform extends DoubleTransformR {
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
@@ -788,6 +857,12 @@ public interface DoubleTransform extends DoubleTransformR {
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angle the angle in radians
      * @param x the {@code x} component of the vector {@code (x, y, z)} (the vector must have unit
@@ -806,6 +881,12 @@ public interface DoubleTransform extends DoubleTransformR {
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angle the angle in radians
      * @return this
@@ -814,11 +895,18 @@ public interface DoubleTransform extends DoubleTransformR {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this transform.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this transform.
      * <p>
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -829,11 +917,18 @@ public interface DoubleTransform extends DoubleTransformR {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this transform.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this transform.
      * <p>
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -848,6 +943,12 @@ public interface DoubleTransform extends DoubleTransformR {
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angle the angle in radians
      * @return this
@@ -856,11 +957,18 @@ public interface DoubleTransform extends DoubleTransformR {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this transform.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this transform.
      * <p>
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -871,11 +979,18 @@ public interface DoubleTransform extends DoubleTransformR {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this transform.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this transform.
      * <p>
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -890,6 +1005,12 @@ public interface DoubleTransform extends DoubleTransformR {
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angle the angle in radians
      * @return this
@@ -898,11 +1019,18 @@ public interface DoubleTransform extends DoubleTransformR {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this transform.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this transform.
      * <p>
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -913,11 +1041,18 @@ public interface DoubleTransform extends DoubleTransformR {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this transform.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this transform.
      * <p>
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1010,6 +1145,9 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1019,6 +1157,9 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1028,6 +1169,9 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1038,6 +1182,9 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1052,6 +1199,9 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1061,6 +1211,9 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1070,6 +1223,9 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1080,6 +1236,9 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1120,6 +1279,9 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1129,6 +1291,9 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1138,6 +1303,9 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1148,6 +1316,9 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1162,6 +1333,9 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1171,6 +1345,9 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1180,6 +1357,9 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1190,6 +1370,9 @@ public interface DoubleTransform extends DoubleTransformR {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this

@@ -120,7 +120,7 @@ public class Double3x2Impl implements Double3x2 {
         dd[5] = sd[5];
         dd[1] = _buf0;
         dd[3] = _buf1;
-        ((Double2x3Impl) dest).properties = 0;
+        ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
 

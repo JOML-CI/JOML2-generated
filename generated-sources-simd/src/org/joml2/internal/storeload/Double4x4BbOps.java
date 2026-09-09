@@ -8,6 +8,10 @@ import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 
 public interface Double4x4BbOps {
+    DoubleBuffer storeCMAbsolute(Double4x4Impl self, int index, DoubleBuffer buf);
+    Double4x4 loadCMAbsolute(Double4x4Impl self, int index, DoubleBuffer buf);
+    ByteBuffer storeCMAbsolute(Double4x4Impl self, int index, ByteBuffer buf);
+    Double4x4 loadCMAbsolute(Double4x4Impl self, int index, ByteBuffer buf);
     FloatBuffer storeCMAbsolute(Double4x4Impl self, int index, FloatBuffer buf);
     Double4x4 loadCMAbsolute(Double4x4Impl self, int index, FloatBuffer buf);
     ByteBuffer storeCMFloatAbsolute(Double4x4Impl self, int index, ByteBuffer buf);

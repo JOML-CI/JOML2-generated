@@ -261,8 +261,9 @@ public interface Float4x4R {
     Double3 getEulerAnglesZYX(@Mutated Double3 dest);
 
     /**
-     * Extract the rotation of this matrix as a unit quaternion, column-normalizing the linear block
-     * first to strip scale (skew is not removed) and store the result in {@code dest}.
+     * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
+     * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
+     * unit length) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -270,8 +271,9 @@ public interface Float4x4R {
     FloatQuat getNormalizedRotation(@Mutated FloatQuat dest);
 
     /**
-     * Extract the rotation of this matrix as a unit quaternion, column-normalizing the linear block
-     * first to strip scale (skew is not removed) and store the result in {@code dest}.
+     * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
+     * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
+     * unit length) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1488,8 +1490,9 @@ public interface Float4x4R {
 
     /**
      * Decompose this matrix into a rigid transform: translation from the last column, rotation from
-     * the orthonormalized upper-left 3x3 block (any scale or shear projects onto the nearest
-     * rotation) and store the result in {@code dest}.
+     * the column-normalized upper-left 3x3 block (scale is removed by normalizing the columns, but
+     * shear is not removed: a sheared block yields a rotation quaternion that is not unit length)
+     * and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -1498,8 +1501,9 @@ public interface Float4x4R {
 
     /**
      * Decompose this matrix into a rigid transform: translation from the last column, rotation from
-     * the orthonormalized upper-left 3x3 block (any scale or shear projects onto the nearest
-     * rotation) and store the result in {@code dest}.
+     * the column-normalized upper-left 3x3 block (scale is removed by normalizing the columns, but
+     * shear is not removed: a sheared block yields a rotation quaternion that is not unit length)
+     * and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1511,8 +1515,9 @@ public interface Float4x4R {
 
     /**
      * Decompose this matrix into a TRS transform: translation from the last column, scale from the
-     * column lengths of the upper-left 3x3 block, rotation from the orthonormalized block (a
-     * sheared matrix projects onto the nearest rotation) and store the result in {@code dest}.
+     * column lengths of the upper-left 3x3 block, rotation from the column-normalized block (scale
+     * is removed by normalizing the columns, but shear is not removed: a sheared block yields a
+     * rotation quaternion that is not unit length) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -1521,8 +1526,9 @@ public interface Float4x4R {
 
     /**
      * Decompose this matrix into a TRS transform: translation from the last column, scale from the
-     * column lengths of the upper-left 3x3 block, rotation from the orthonormalized block (a
-     * sheared matrix projects onto the nearest rotation) and store the result in {@code dest}.
+     * column lengths of the upper-left 3x3 block, rotation from the column-normalized block (scale
+     * is removed by normalizing the columns, but shear is not removed: a sheared block yields a
+     * rotation quaternion that is not unit length) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2862,6 +2868,10 @@ public interface Float4x4R {
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -2886,6 +2896,10 @@ public interface Float4x4R {
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2915,6 +2929,10 @@ public interface Float4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -2940,6 +2958,10 @@ public interface Float4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2968,6 +2990,10 @@ public interface Float4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -2993,6 +3019,10 @@ public interface Float4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3022,6 +3052,10 @@ public interface Float4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -3047,6 +3081,10 @@ public interface Float4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4859,13 +4897,13 @@ public interface Float4x4R {
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
      * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param y the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param z the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
@@ -4888,13 +4926,13 @@ public interface Float4x4R {
      * {@code double} only when stored.
      *
      * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param y the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param z the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
@@ -4913,7 +4951,8 @@ public interface Float4x4R {
      * <p>
      * The result is stored in {@code dest}; {@code this} is not modified.
      *
-     * @param plane the plane
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
@@ -4935,7 +4974,8 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param plane the plane
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
@@ -5002,13 +5042,13 @@ public interface Float4x4R {
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
      * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param y the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param z the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
      * @return dest
@@ -5032,13 +5072,13 @@ public interface Float4x4R {
      * {@code double} only when stored.
      *
      * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param y the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param z the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
      * @return dest
@@ -5104,13 +5144,13 @@ public interface Float4x4R {
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param y the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param z the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param dest will hold the result
      * @return dest
@@ -5134,13 +5174,13 @@ public interface Float4x4R {
      * {@code double} only when stored.
      *
      * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param y the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param z the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param dest will hold the result
      * @return dest
@@ -5207,13 +5247,13 @@ public interface Float4x4R {
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param y the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param z the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param dest will hold the result
      * @return dest
      */
@@ -5237,13 +5277,13 @@ public interface Float4x4R {
      * {@code double} only when stored.
      *
      * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param y the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param z the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param dest will hold the result
      * @return dest
      */
@@ -5262,7 +5302,8 @@ public interface Float4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
-     * @param plane the plane
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
      * @return dest
@@ -5285,7 +5326,8 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param plane the plane
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
      * @param dest will hold the result
      * @return dest
@@ -5305,7 +5347,8 @@ public interface Float4x4R {
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param plane the plane
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param dest will hold the result
      * @return dest
@@ -5328,7 +5371,8 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param plane the plane
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param dest will hold the result
      * @return dest
@@ -5349,7 +5393,8 @@ public interface Float4x4R {
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param plane the plane
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
      * @param dest will hold the result
      * @return dest
      */
@@ -5372,7 +5417,8 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param plane the plane
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
      * @param dest will hold the result
      * @return dest
      */
@@ -5385,6 +5431,10 @@ public interface Float4x4R {
      * If {@code M} is {@code this} matrix and {@code O} the orthographic projection matrix, then
      * the new matrix will be {@code M * O}. So when transforming a vector {@code v} with the new
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -5406,6 +5456,10 @@ public interface Float4x4R {
      * If {@code M} is {@code this} matrix and {@code O} the orthographic projection matrix, then
      * the new matrix will be {@code M * O}. So when transforming a vector {@code v} with the new
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -5432,6 +5486,10 @@ public interface Float4x4R {
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -5454,6 +5512,10 @@ public interface Float4x4R {
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -5479,6 +5541,10 @@ public interface Float4x4R {
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -5501,6 +5567,10 @@ public interface Float4x4R {
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -5527,6 +5597,10 @@ public interface Float4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -5550,6 +5624,10 @@ public interface Float4x4R {
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
@@ -5571,6 +5649,10 @@ public interface Float4x4R {
      * If {@code M} is {@code this} matrix and {@code O} the orthographic projection matrix, then
      * the new matrix will be {@code M * O}. So when transforming a vector {@code v} with the new
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -5590,6 +5672,10 @@ public interface Float4x4R {
      * If {@code M} is {@code this} matrix and {@code O} the orthographic projection matrix, then
      * the new matrix will be {@code M * O}. So when transforming a vector {@code v} with the new
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -5614,6 +5700,10 @@ public interface Float4x4R {
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -5634,6 +5724,10 @@ public interface Float4x4R {
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -5657,6 +5751,10 @@ public interface Float4x4R {
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -5677,6 +5775,10 @@ public interface Float4x4R {
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -5701,6 +5803,10 @@ public interface Float4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -5721,6 +5827,10 @@ public interface Float4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6161,6 +6271,10 @@ public interface Float4x4R {
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -6184,6 +6298,10 @@ public interface Float4x4R {
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6212,6 +6330,10 @@ public interface Float4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -6236,6 +6358,10 @@ public interface Float4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6263,6 +6389,10 @@ public interface Float4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -6287,6 +6417,10 @@ public interface Float4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6315,6 +6449,10 @@ public interface Float4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -6340,6 +6478,10 @@ public interface Float4x4R {
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
@@ -6363,6 +6505,10 @@ public interface Float4x4R {
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -6386,6 +6532,10 @@ public interface Float4x4R {
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6414,6 +6564,10 @@ public interface Float4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -6438,6 +6592,10 @@ public interface Float4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6465,6 +6623,10 @@ public interface Float4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -6489,6 +6651,10 @@ public interface Float4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6517,6 +6683,10 @@ public interface Float4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -6541,6 +6711,10 @@ public interface Float4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6767,6 +6941,10 @@ public interface Float4x4R {
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -6793,6 +6971,10 @@ public interface Float4x4R {
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6824,6 +7006,10 @@ public interface Float4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -6851,6 +7037,10 @@ public interface Float4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6881,6 +7071,10 @@ public interface Float4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -6908,6 +7102,10 @@ public interface Float4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6939,6 +7137,10 @@ public interface Float4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -6966,6 +7168,10 @@ public interface Float4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -7533,7 +7739,7 @@ public interface Float4x4R {
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code S * M * v}, the scaling will be applied last.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -7551,7 +7757,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -8257,7 +8463,8 @@ public interface Float4x4R {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -8273,7 +8480,8 @@ public interface Float4x4R {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -8292,7 +8500,8 @@ public interface Float4x4R {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -8308,7 +8517,8 @@ public interface Float4x4R {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -8532,7 +8742,8 @@ public interface Float4x4R {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -8548,7 +8759,8 @@ public interface Float4x4R {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -8567,7 +8779,8 @@ public interface Float4x4R {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this matrix and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -8583,7 +8796,8 @@ public interface Float4x4R {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this matrix and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -8807,7 +9021,8 @@ public interface Float4x4R {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -8823,7 +9038,8 @@ public interface Float4x4R {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -8842,7 +9058,8 @@ public interface Float4x4R {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this matrix and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -8858,7 +9075,8 @@ public interface Float4x4R {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this matrix and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -9133,7 +9351,7 @@ public interface Float4x4R {
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * S * v}, the scaling will be applied first.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -9151,7 +9369,7 @@ public interface Float4x4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -9539,11 +9757,11 @@ public interface Float4x4R {
      * internally) and the given viewport and store the result in {@code dest}.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -9566,11 +9784,11 @@ public interface Float4x4R {
      * {@code double} only when stored.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -9621,11 +9839,11 @@ public interface Float4x4R {
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -9649,11 +9867,11 @@ public interface Float4x4R {
      * {@code double} only when stored.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -9702,11 +9920,11 @@ public interface Float4x4R {
      * {@code dest}.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -9730,11 +9948,11 @@ public interface Float4x4R {
      * {@code double} only when stored.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -9788,11 +10006,11 @@ public interface Float4x4R {
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -9817,11 +10035,11 @@ public interface Float4x4R {
      * {@code double} only when stored.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -9872,9 +10090,9 @@ public interface Float4x4R {
      * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -9899,9 +10117,9 @@ public interface Float4x4R {
      * {@code double} only when stored.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -9958,9 +10176,9 @@ public interface Float4x4R {
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -9986,9 +10204,9 @@ public interface Float4x4R {
      * {@code double} only when stored.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -10040,9 +10258,9 @@ public interface Float4x4R {
      * the ray direction in {@code rayDir}.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -10067,9 +10285,9 @@ public interface Float4x4R {
      * {@code double} only when stored.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -10126,9 +10344,9 @@ public interface Float4x4R {
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -10154,9 +10372,9 @@ public interface Float4x4R {
      * {@code double} only when stored.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -10609,6 +10827,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10618,6 +10839,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10627,6 +10851,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -10637,6 +10864,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10651,6 +10881,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -10660,6 +10893,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -10669,6 +10905,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -10679,6 +10918,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -10719,6 +10961,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10728,6 +10973,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10737,6 +10985,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -10747,6 +10998,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10761,6 +11015,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -10770,6 +11027,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -10780,6 +11040,9 @@ public interface Float4x4R {
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at the given absolute index (the position is not used or
      * modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -10790,6 +11053,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -10830,6 +11096,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10839,6 +11108,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10848,6 +11120,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -10858,6 +11133,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10872,6 +11150,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -10881,6 +11162,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -10890,6 +11174,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given byte buffer in row-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -10900,6 +11187,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -10940,6 +11230,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10949,6 +11242,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10958,6 +11254,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -10968,6 +11267,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10982,6 +11284,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -10991,6 +11296,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -11000,6 +11308,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -11010,6 +11321,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -11045,6 +11359,9 @@ public interface Float4x4R {
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11056,6 +11373,9 @@ public interface Float4x4R {
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -11068,6 +11388,9 @@ public interface Float4x4R {
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11084,6 +11407,9 @@ public interface Float4x4R {
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11095,6 +11421,9 @@ public interface Float4x4R {
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -11107,6 +11436,9 @@ public interface Float4x4R {
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11145,6 +11477,9 @@ public interface Float4x4R {
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11156,6 +11491,9 @@ public interface Float4x4R {
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -11168,6 +11506,9 @@ public interface Float4x4R {
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11184,6 +11525,9 @@ public interface Float4x4R {
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11195,6 +11539,9 @@ public interface Float4x4R {
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at the given absolute index (the position is not used or
      * modified), with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -11207,6 +11554,9 @@ public interface Float4x4R {
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position and advancing the position accordingly,
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11245,6 +11595,9 @@ public interface Float4x4R {
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11256,6 +11609,9 @@ public interface Float4x4R {
      * Store the elements into the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -11268,6 +11624,9 @@ public interface Float4x4R {
      * Store the elements into the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly, with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11284,6 +11643,9 @@ public interface Float4x4R {
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11295,6 +11657,9 @@ public interface Float4x4R {
      * Store the elements into the given byte buffer in row-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -11307,6 +11672,9 @@ public interface Float4x4R {
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11345,6 +11713,9 @@ public interface Float4x4R {
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11356,6 +11727,9 @@ public interface Float4x4R {
      * Store the elements into the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -11368,6 +11742,9 @@ public interface Float4x4R {
      * Store the elements into the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly, with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11384,6 +11761,9 @@ public interface Float4x4R {
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11395,6 +11775,9 @@ public interface Float4x4R {
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -11407,6 +11790,9 @@ public interface Float4x4R {
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11457,7 +11843,7 @@ public interface Float4x4R {
     boolean isIdentity();
     /** {@return whether this matrix is known to be a pure translation} O(1) read of the cached property bits; conservative. */
     boolean isTranslation();
-    /** {@return whether this matrix is known to be orthogonal} O(1) read of the cached property bits; conservative. */
+    /** {@return whether this matrix is known to be orthogonal, i.e. its upper-left block is orthonormal with positive determinant (a proper rotation; a reflection is affine, not orthogonal)} O(1) read of the cached property bits; conservative. */
     boolean isOrthogonal();
     /** {@return whether this matrix is known to be affine} O(1) read of the cached property bits; conservative. */
     boolean isAffine();
@@ -11482,6 +11868,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -11491,6 +11880,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -11501,6 +11893,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -11529,6 +11924,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -11538,6 +11936,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -11548,6 +11949,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -11557,6 +11961,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -11566,6 +11973,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -11576,6 +11986,9 @@ public interface Float4x4R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -11618,6 +12031,9 @@ public interface Float4x4R {
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -11630,6 +12046,9 @@ public interface Float4x4R {
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11641,6 +12060,9 @@ public interface Float4x4R {
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -11653,6 +12075,9 @@ public interface Float4x4R {
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11664,6 +12089,9 @@ public interface Float4x4R {
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -11676,6 +12104,9 @@ public interface Float4x4R {
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows

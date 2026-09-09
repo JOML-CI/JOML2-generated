@@ -284,7 +284,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
     @Mutated FloatDualQuat makeZero();
 
     /**
-     * Set this dual quaternion to the given values.
+     * Set this dual quaternion to a pure rotation by {@code rotation} (zero translation).
      *
      * @param rotation the quaternion
      * @return this
@@ -292,7 +292,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
     @Mutated FloatDualQuat set(FloatQuatR rotation);
 
     /**
-     * Set this dual quaternion to the given values.
+     * Set this dual quaternion to a pure rotation by ({@code x}, {@code y}, {@code z}, {@code w})
+     * (zero translation).
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
@@ -303,7 +304,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
     @Mutated FloatDualQuat set(float x, float y, float z, float w);
 
     /**
-     * Set this dual quaternion to the given values.
+     * Set this dual quaternion to a pure rotation by {@code rotation} (zero translation).
      * <p>
      * Alias for {@code set}.
      *
@@ -313,7 +314,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
     @Mutated default FloatDualQuat makeRotation(FloatQuatR rotation) { return set(rotation); }
 
     /**
-     * Set this dual quaternion to the given values.
+     * Set this dual quaternion to a pure rotation by ({@code x}, {@code y}, {@code z}, {@code w})
+     * (zero translation).
      * <p>
      * Alias for {@code set}.
      *
@@ -356,7 +358,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
     @Mutated FloatDualQuat set(float rotationX, float rotationY, float rotationZ, float rotationW, float translationX, float translationY, float translationZ);
 
     /**
-     * Set this dual quaternion to the given values.
+     * Set this dual quaternion to a pure translation by {@code translation} (identity rotation).
      *
      * @param translation the vector
      * @return this
@@ -364,7 +366,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
     @Mutated FloatDualQuat set(Float3R translation);
 
     /**
-     * Set this dual quaternion to the given values.
+     * Set this dual quaternion to a pure translation by ({@code x}, {@code y}, {@code z}) (identity
+     * rotation).
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -374,7 +377,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
     @Mutated FloatDualQuat set(float x, float y, float z);
 
     /**
-     * Set this dual quaternion to the given values.
+     * Set this dual quaternion to a pure translation by {@code translation} (identity rotation).
      * <p>
      * Alias for {@code set}.
      *
@@ -384,7 +387,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
     @Mutated default FloatDualQuat makeTranslation(Float3R translation) { return set(translation); }
 
     /**
-     * Set this dual quaternion to the given values.
+     * Set this dual quaternion to a pure translation by ({@code x}, {@code y}, {@code z}) (identity
+     * rotation).
      * <p>
      * Alias for {@code set}.
      *
@@ -483,21 +487,21 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * {@code dW}) using the interpolation factor {@code t}.
      *
      * @param rX the {@code rX} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the real part must have unit length)
      * @param rY the {@code rY} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the real part must have unit length)
      * @param rZ the {@code rZ} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the real part must have unit length)
      * @param rW the {@code rW} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the real part must have unit length)
      * @param dX the {@code dX} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dY the {@code dY} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dZ the {@code dZ} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dW the {@code dW} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @return this
      */
@@ -632,7 +636,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
 
     /**
      * Compute the difference between this dual quaternion and {@code other}, i.e. the rigid
-     * transformation that, applied after {@code this}, results in {@code other}.
+     * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}.
      *
      * @param other the other dual quaternion
      * @return this
@@ -642,8 +646,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Compute the difference between this dual quaternion and ({@code rX}, {@code rY}, {@code rZ},
      * {@code rW}, {@code dX}, {@code dY}, {@code dZ}, {@code dW}), i.e. the rigid transformation
-     * that, applied after {@code this}, results in ({@code rX}, {@code rY}, {@code rZ}, {@code rW},
-     * {@code dX}, {@code dY}, {@code dZ}, {@code dW}).
+     * {@code D} with {@code this * D = (rX, rY, rZ, rW, dX, dY, dZ, dW)}, that is
+     * {@code D = this^-1 * (rX, rY, rZ, rW, dX, dY, dZ, dW)}.
      *
      * @param rX the {@code rX} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
@@ -873,7 +877,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
 
     /**
      * Set this dual quaternion to a rotation of {@code angleX}, {@code angleY} and {@code angleZ}
-     * radians about the X, Y and Z axes, in that order.
+     * radians about the X, Y and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so
+     * a vector is rotated about the Z axis first, then Y, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -884,7 +889,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
 
     /**
      * Set this dual quaternion to a rotation of {@code angleX}, {@code angleZ} and {@code angleY}
-     * radians about the X, Z and Y axes, in that order.
+     * radians about the X, Z and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so
+     * a vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -903,7 +909,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
 
     /**
      * Set this dual quaternion to a rotation of {@code angleY}, {@code angleX} and {@code angleZ}
-     * radians about the Y, X and Z axes, in that order.
+     * radians about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so
+     * a vector is rotated about the Z axis first, then X, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -914,7 +921,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
 
     /**
      * Set this dual quaternion to a rotation of {@code angleY}, {@code angleZ} and {@code angleX}
-     * radians about the Y, Z and X axes, in that order.
+     * radians about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so
+     * a vector is rotated about the X axis first, then Z, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -933,7 +941,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
 
     /**
      * Set this dual quaternion to a rotation of {@code angleZ}, {@code angleX} and {@code angleY}
-     * radians about the Z, X and Y axes, in that order.
+     * radians about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so
+     * a vector is rotated about the Y axis first, then X, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -944,7 +953,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
 
     /**
      * Set this dual quaternion to a rotation of {@code angleZ}, {@code angleY} and {@code angleX}
-     * radians about the Z, Y and X axes, in that order.
+     * radians about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so
+     * a vector is rotated about the X axis first, then Y, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1032,7 +1042,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this dual quaternion.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this dual quaternion.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -1047,7 +1058,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this dual quaternion.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this dual quaternion.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -1074,7 +1086,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this dual quaternion.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this dual quaternion.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -1089,7 +1102,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this dual quaternion.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this dual quaternion.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -1116,7 +1130,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this dual quaternion.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this dual quaternion.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -1131,7 +1146,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this dual quaternion.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this dual quaternion.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -1192,6 +1208,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1201,6 +1220,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1210,6 +1232,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1220,6 +1245,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1234,6 +1262,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1243,6 +1274,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1252,6 +1286,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1262,6 +1299,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1319,6 +1359,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1328,6 +1371,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1337,6 +1383,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1347,6 +1396,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1361,6 +1413,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1370,6 +1425,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1379,6 +1437,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1389,6 +1450,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this

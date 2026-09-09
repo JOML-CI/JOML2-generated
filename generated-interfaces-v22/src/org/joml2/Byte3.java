@@ -352,7 +352,9 @@ public interface Byte3 extends Byte3R {
     @Mutated default Byte3 rotateRight(byte distance) { return rotateRight(distance, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
-     * Shift each component of this vector left by {@code shift} bits.
+     * Shift each component of this vector left by {@code shift} bits (the shift count is taken
+     * modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to {@code int}
+     * and takes it modulo 32).
      *
      * @param shift the number of bit positions to shift by
      * @return this
@@ -360,7 +362,9 @@ public interface Byte3 extends Byte3R {
     @Mutated default Byte3 shl(byte shift) { return shl(shift, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
-     * Arithmetically shift each component of this vector right by {@code shift} bits.
+     * Arithmetically shift each component of this vector right by {@code shift} bits (the shift
+     * count is taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes
+     * to {@code int} and takes it modulo 32).
      *
      * @param shift the number of bit positions to shift by
      * @return this
@@ -368,7 +372,9 @@ public interface Byte3 extends Byte3R {
     @Mutated default Byte3 shr(byte shift) { return shr(shift, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits.
+     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
+     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
+     * {@code int} and takes it modulo 32).
      *
      * @param shift the number of bit positions to shift by
      * @return this
@@ -415,7 +421,7 @@ public interface Byte3 extends Byte3R {
     /**
      * Set this vector to {@code s}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @return this
      */
     @Mutated default Byte3 set(byte s) { return set(s, Joml.RETURN_NEW ? Joml.byte3() : this); }
@@ -481,8 +487,8 @@ public interface Byte3 extends Byte3R {
     /**
      * Clamp each component of this vector between {@code min} and {@code max}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @return this
      */
     @Mutated default Byte3 clamp(Byte3R min, Byte3R max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.byte3() : this); }
@@ -855,6 +861,9 @@ public interface Byte3 extends Byte3R {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -864,6 +873,9 @@ public interface Byte3 extends Byte3R {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -873,6 +885,9 @@ public interface Byte3 extends Byte3R {
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -883,6 +898,9 @@ public interface Byte3 extends Byte3R {
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -940,6 +958,9 @@ public interface Byte3 extends Byte3R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -949,6 +970,9 @@ public interface Byte3 extends Byte3R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -958,6 +982,9 @@ public interface Byte3 extends Byte3R {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -968,6 +995,9 @@ public interface Byte3 extends Byte3R {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -982,6 +1012,9 @@ public interface Byte3 extends Byte3R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code short},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -991,6 +1024,9 @@ public interface Byte3 extends Byte3R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code short},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1000,6 +1036,9 @@ public interface Byte3 extends Byte3R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code short},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1010,6 +1049,9 @@ public interface Byte3 extends Byte3R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code short},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this

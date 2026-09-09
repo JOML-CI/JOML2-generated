@@ -28,6 +28,10 @@ inline infix fun Double3.cross(other: Double3): Double3 = cross(other)
 inline infix fun Double3.distance(other: Double3): Double = distance(other)
 /** [Double3.dot] as an infix function, so `a dot b` parses. */
 inline infix fun Double3.dot(other: Double3): Double = dot(other)
+/** [Double3.mod] as the `mod` infix function, matching the name Kotlin uses for that operation. */
+inline infix fun Double3.mod(y: Double): Double3 = mod(y)
+/** [Double3.mod] as the `mod` infix function, matching the name Kotlin uses for that operation. */
+inline infix fun Double3.mod(y: Double3): Double3 = mod(y)
 /** [Double3.rotateAxis] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Double3.rotateAxis(angle: Angle, axis: Double3): Double3 = rotateAxis(angle.radians, axis)
 /** [Double3.rotateX] taking a type-safe [Angle] in place of the angle in radians. */

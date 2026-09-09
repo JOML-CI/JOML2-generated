@@ -243,7 +243,8 @@ public interface FloatQuatR {
     DoubleDualQuat toDualQuat(@Mutated DoubleDualQuat dest);
 
     /**
-     * Compute the matrix representation of this quaternion and store the result in {@code dest}.
+     * Compute the matrix representation of this quaternion (which must have unit length) and store
+     * the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -251,7 +252,8 @@ public interface FloatQuatR {
     Float4x4 toMatrix(@Mutated Float4x4 dest);
 
     /**
-     * Compute the matrix representation of this quaternion and store the result in {@code dest}.
+     * Compute the matrix representation of this quaternion (which must have unit length) and store
+     * the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -262,8 +264,8 @@ public interface FloatQuatR {
     Double4x4 toMatrix(@Mutated Double4x4 dest);
 
     /**
-     * Compute the 3x3 rotation matrix representation of this quaternion and store the result in
-     * {@code dest}.
+     * Compute the 3x3 rotation matrix representation of this quaternion (which must have unit
+     * length) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -271,8 +273,8 @@ public interface FloatQuatR {
     Float3x3 toMatrix3x3(@Mutated Float3x3 dest);
 
     /**
-     * Compute the 3x3 rotation matrix representation of this quaternion and store the result in
-     * {@code dest}.
+     * Compute the 3x3 rotation matrix representation of this quaternion (which must have unit
+     * length) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -283,8 +285,8 @@ public interface FloatQuatR {
     Double3x3 toMatrix3x3(@Mutated Double3x3 dest);
 
     /**
-     * Compute the 3x4 matrix representation of this quaternion (the omitted last row is implicitly
-     * {@code 0, 0, 0, 1}) and store the result in {@code dest}.
+     * Compute the 3x4 matrix representation of this quaternion (which must have unit length; the
+     * omitted last row is implicitly {@code 0, 0, 0, 1}) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -292,8 +294,8 @@ public interface FloatQuatR {
     Float3x4 toMatrix3x4(@Mutated Float3x4 dest);
 
     /**
-     * Compute the 3x4 matrix representation of this quaternion (the omitted last row is implicitly
-     * {@code 0, 0, 0, 1}) and store the result in {@code dest}.
+     * Compute the 3x4 matrix representation of this quaternion (which must have unit length; the
+     * omitted last row is implicitly {@code 0, 0, 0, 1}) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -339,9 +341,10 @@ public interface FloatQuatR {
     FloatQuat decomposeSwingTwist(Float3R axis, @Mutated DoubleQuat swing, @Mutated DoubleQuat twist);
 
     /**
-     * Decompose this quaternion into a swing about an axis perpendicular to {@code x} followed by a
-     * twist about {@code x}, storing them in {@code swing} and {@code twist} respectively, such
-     * that {@code swing * twist} is this rotation.
+     * Decompose this quaternion into a swing about an axis perpendicular to ({@code x}, {@code y},
+     * {@code z}) followed by a twist about ({@code x}, {@code y}, {@code z}), storing them in
+     * {@code swing} and {@code twist} respectively, such that {@code swing * twist} is this
+     * rotation.
      * <p>
      * Equivalent to calling {@code getSwing} and {@code getTwist} separately, but shares the work.
      * The twist is the identity when the rotation is a pure swing, including the 180-degree
@@ -360,9 +363,10 @@ public interface FloatQuatR {
     FloatQuat decomposeSwingTwist(float x, float y, float z, @Mutated FloatQuat swing, @Mutated FloatQuat twist);
 
     /**
-     * Decompose this quaternion into a swing about an axis perpendicular to {@code x} followed by a
-     * twist about {@code x}, storing them in {@code swing} and {@code twist} respectively, such
-     * that {@code swing * twist} is this rotation.
+     * Decompose this quaternion into a swing about an axis perpendicular to ({@code x}, {@code y},
+     * {@code z}) followed by a twist about ({@code x}, {@code y}, {@code z}), storing them in
+     * {@code swing} and {@code twist} respectively, such that {@code swing * twist} is this
+     * rotation.
      * <p>
      * Equivalent to calling {@code getSwing} and {@code getTwist} separately, but shares the work.
      * The twist is the identity when the rotation is a pure swing, including the 180-degree
@@ -1233,8 +1237,9 @@ public interface FloatQuatR {
     DoubleQuat conjugateBy(float x, float y, float z, float w, @Mutated DoubleQuat dest);
 
     /**
-     * Compute the difference between this quaternion and {@code other}, i.e. the rotation that,
-     * applied after {@code this}, results in {@code other} and store the result in {@code dest}.
+     * Compute the difference between this quaternion and {@code other}, i.e. the rotation {@code D}
+     * with {@code this * D = other}, that is {@code D = this^-1 * other} and store the result in
+     * {@code dest}.
      *
      * @param other the other quaternion
      * @param dest will hold the result
@@ -1243,8 +1248,9 @@ public interface FloatQuatR {
     FloatQuat difference(FloatQuatR other, @Mutated FloatQuat dest);
 
     /**
-     * Compute the difference between this quaternion and {@code other}, i.e. the rotation that,
-     * applied after {@code this}, results in {@code other} and store the result in {@code dest}.
+     * Compute the difference between this quaternion and {@code other}, i.e. the rotation {@code D}
+     * with {@code this * D = other}, that is {@code D = this^-1 * other} and store the result in
+     * {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1257,8 +1263,8 @@ public interface FloatQuatR {
 
     /**
      * Compute the difference between this quaternion and ({@code x}, {@code y}, {@code z},
-     * {@code w}), i.e. the rotation that, applied after {@code this}, results in ({@code x},
-     * {@code y}, {@code z}, {@code w}) and store the result in {@code dest}.
+     * {@code w}), i.e. the rotation {@code D} with {@code this * D = (x, y, z, w)}, that is
+     * {@code D = this^-1 * (x, y, z, w)} and store the result in {@code dest}.
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
@@ -1271,8 +1277,8 @@ public interface FloatQuatR {
 
     /**
      * Compute the difference between this quaternion and ({@code x}, {@code y}, {@code z},
-     * {@code w}), i.e. the rotation that, applied after {@code this}, results in ({@code x},
-     * {@code y}, {@code z}, {@code w}) and store the result in {@code dest}.
+     * {@code w}), i.e. the rotation {@code D} with {@code this * D = (x, y, z, w)}, that is
+     * {@code D = this^-1 * (x, y, z, w)} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1607,8 +1613,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code -X} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -1619,8 +1625,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code -X} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1634,8 +1640,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code -Y} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -1646,8 +1652,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code -Y} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1661,8 +1667,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code -Z} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -1673,8 +1679,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code -Z} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1688,8 +1694,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code +X} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -1700,8 +1706,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code +X} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1715,8 +1721,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code +Y} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -1727,8 +1733,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code +Y} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1742,8 +1748,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code +Z} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -1754,8 +1760,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code +Z} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1947,8 +1953,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code -X} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -1959,8 +1965,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code -X} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1974,8 +1980,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code -Y} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -1986,8 +1992,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code -Y} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2001,8 +2007,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code -Z} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -2013,8 +2019,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code -Z} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2028,8 +2034,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code +X} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -2040,8 +2046,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code +X} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2055,8 +2061,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code +Y} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -2067,8 +2073,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code +Y} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2082,8 +2088,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code +Z} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      *
      * @param dest will hold the result
      * @return dest
@@ -2094,8 +2100,8 @@ public interface FloatQuatR {
      * Obtain the direction of {@code +Z} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
      * <p>
-     * This method assumes the transformation to be orthogonal (i.e. free of scaling), and skips the
-     * normalization the plain variant performs.
+     * This method assumes this quaternion to be normalized, and skips the normalization the plain
+     * variant performs.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2673,7 +2679,9 @@ public interface FloatQuatR {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -2689,7 +2697,9 @@ public interface FloatQuatR {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -2708,7 +2718,9 @@ public interface FloatQuatR {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -2724,7 +2736,9 @@ public interface FloatQuatR {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -2766,7 +2780,9 @@ public interface FloatQuatR {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -2782,7 +2798,9 @@ public interface FloatQuatR {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -2801,7 +2819,9 @@ public interface FloatQuatR {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -2817,7 +2837,9 @@ public interface FloatQuatR {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -2859,7 +2881,9 @@ public interface FloatQuatR {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -2875,7 +2899,9 @@ public interface FloatQuatR {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -2894,7 +2920,9 @@ public interface FloatQuatR {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -2910,7 +2938,9 @@ public interface FloatQuatR {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this quaternion and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
@@ -3070,6 +3100,9 @@ public interface FloatQuatR {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3079,6 +3112,9 @@ public interface FloatQuatR {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3088,6 +3124,9 @@ public interface FloatQuatR {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -3098,6 +3137,9 @@ public interface FloatQuatR {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3112,6 +3154,9 @@ public interface FloatQuatR {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3121,6 +3166,9 @@ public interface FloatQuatR {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3130,6 +3178,9 @@ public interface FloatQuatR {
     /**
      * Store the elements into the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -3140,6 +3191,9 @@ public interface FloatQuatR {
     /**
      * Store the elements into the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3197,6 +3251,9 @@ public interface FloatQuatR {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3206,6 +3263,9 @@ public interface FloatQuatR {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3215,6 +3275,9 @@ public interface FloatQuatR {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -3225,6 +3288,9 @@ public interface FloatQuatR {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3239,6 +3305,9 @@ public interface FloatQuatR {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3248,6 +3317,9 @@ public interface FloatQuatR {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3257,6 +3329,9 @@ public interface FloatQuatR {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -3267,6 +3342,9 @@ public interface FloatQuatR {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest

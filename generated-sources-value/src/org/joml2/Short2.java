@@ -506,38 +506,41 @@ public value record Short2(short x, short y) {
 
 
     /**
-     * Shift each component of this vector left by {@code shift} bits, returning the result as a
-     * value.
+     * Shift each component of this vector left by {@code shift} bits (the shift count is taken
+     * modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to {@code int}
+     * and takes it modulo 32), returning the result as a value.
      *
      * @param shift the number of bit positions to shift by
      * @return the resulting vector
      */
     public Short2 shl(short shift) {
-        return new Short2((short) (this.x << shift), (short) (this.y << shift));
+        return new Short2((short) (this.x << (shift & 15)), (short) (this.y << (shift & 15)));
     }
 
 
     /**
-     * Arithmetically shift each component of this vector right by {@code shift} bits, returning the
-     * result as a value.
+     * Arithmetically shift each component of this vector right by {@code shift} bits (the shift
+     * count is taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes
+     * to {@code int} and takes it modulo 32), returning the result as a value.
      *
      * @param shift the number of bit positions to shift by
      * @return the resulting vector
      */
     public Short2 shr(short shift) {
-        return new Short2((short) (this.x >> shift), (short) (this.y >> shift));
+        return new Short2((short) (this.x >> (shift & 15)), (short) (this.y >> (shift & 15)));
     }
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits, returning the
-     * result as a value.
+     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
+     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
+     * {@code int} and takes it modulo 32), returning the result as a value.
      *
      * @param shift the number of bit positions to shift by
      * @return the resulting vector
      */
     public Short2 ushr(short shift) {
-        return new Short2((short) ((this.x & 0xFFFF) >>> shift), (short) ((this.y & 0xFFFF) >>> shift));
+        return new Short2((short) ((this.x & 0xFFFF) >>> (shift & 15)), (short) ((this.y & 0xFFFF) >>> (shift & 15)));
     }
 
 
@@ -592,7 +595,7 @@ public value record Short2(short x, short y) {
     /**
      * Set this vector to {@code s}, returning the result as a value.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @return the resulting vector
      */
     public Short2 set(short s) {
@@ -689,8 +692,8 @@ public value record Short2(short x, short y) {
      * Clamp each component of this vector between {@code min} and {@code max}, returning the result
      * as a value.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @return the resulting vector
      */
     public Short2 clamp(Short2 min, Short2 max) {
@@ -715,6 +718,9 @@ public value record Short2(short x, short y) {
 
     /**
      * Compute the sum of all components of this vector.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @return the sum of all components of this vector
      */
@@ -725,6 +731,9 @@ public value record Short2(short x, short y) {
 
     /**
      * Compute the largest component of this vector.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @return the largest component of this vector
      */
@@ -735,6 +744,9 @@ public value record Short2(short x, short y) {
 
     /**
      * Compute the smallest component of this vector.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @return the smallest component of this vector
      */
@@ -745,6 +757,9 @@ public value record Short2(short x, short y) {
 
     /**
      * Compute the product of all components of this vector.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @return the product of all components of this vector
      */
@@ -755,6 +770,9 @@ public value record Short2(short x, short y) {
 
     /**
      * Compute the squared distance between this vector and {@code other}.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @param other the other vector
      * @return the squared distance between this vector and {@code other}
@@ -766,6 +784,9 @@ public value record Short2(short x, short y) {
 
     /**
      * Compute the squared distance between this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
@@ -780,6 +801,9 @@ public value record Short2(short x, short y) {
 
     /**
      * Compute the dot product of this vector and {@code other}.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @param other the other vector
      * @return the dot product of this vector and {@code other}
@@ -791,6 +815,9 @@ public value record Short2(short x, short y) {
 
     /**
      * Compute the dot product of this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
@@ -803,6 +830,9 @@ public value record Short2(short x, short y) {
 
     /**
      * Compute the squared length of this vector.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @return the squared length of this vector
      */
@@ -813,6 +843,9 @@ public value record Short2(short x, short y) {
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @param other the other vector
      * @return the Manhattan distance between this vector and {@code other}
@@ -824,6 +857,9 @@ public value record Short2(short x, short y) {
 
     /**
      * Compute the Manhattan distance between this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
@@ -836,6 +872,9 @@ public value record Short2(short x, short y) {
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */
@@ -1264,6 +1303,9 @@ public value record Short2(short x, short y) {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -1275,6 +1317,9 @@ public value record Short2(short x, short y) {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -1287,6 +1332,9 @@ public value record Short2(short x, short y) {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -1301,6 +1349,9 @@ public value record Short2(short x, short y) {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Short2} holding the loaded elements
@@ -1312,6 +1363,9 @@ public value record Short2(short x, short y) {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -1324,6 +1378,9 @@ public value record Short2(short x, short y) {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Short2} holding the loaded elements
@@ -1338,6 +1395,9 @@ public value record Short2(short x, short y) {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -1349,6 +1409,9 @@ public value record Short2(short x, short y) {
     /**
      * Store the elements into the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -1361,6 +1424,9 @@ public value record Short2(short x, short y) {
     /**
      * Store the elements into the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -1375,6 +1441,9 @@ public value record Short2(short x, short y) {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Short2} holding the loaded elements
@@ -1386,6 +1455,9 @@ public value record Short2(short x, short y) {
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -1398,6 +1470,9 @@ public value record Short2(short x, short y) {
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Short2} holding the loaded elements
@@ -1517,6 +1592,9 @@ public value record Short2(short x, short y) {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code byte},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -1528,6 +1606,9 @@ public value record Short2(short x, short y) {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code byte},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -1540,6 +1621,9 @@ public value record Short2(short x, short y) {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code byte},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -1554,6 +1638,9 @@ public value record Short2(short x, short y) {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code byte},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Short2} holding the loaded elements
@@ -1565,6 +1652,9 @@ public value record Short2(short x, short y) {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code byte},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -1577,6 +1667,9 @@ public value record Short2(short x, short y) {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code byte},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Short2} holding the loaded elements

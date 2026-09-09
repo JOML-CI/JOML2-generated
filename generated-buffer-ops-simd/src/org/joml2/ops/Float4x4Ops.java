@@ -17,6 +17,10 @@ import org.joml2.internal.simd.*;
  * The portable fallback taken for heap {@code ByteBuffer}s, read-only buffers, and the
  * API backend may wrap buffers in lightweight {@link java.lang.foreign.MemorySegment} views.</p>
  *
+ * <p>NIO buffers in native byte order take the fast paths; any other byte order
+ * (the {@code ByteBuffer} default is big-endian) is honoured through the slower
+ * API path.</p>
+ *
  * <p>All buffer parameters in a single call must use the same storage backing,
  * except the {@code copy} methods, which translate between any two backings.
  * Element layout is column-major (the canonical Float4x4 storage order).</p>
@@ -78,13 +82,13 @@ public final class Float4x4Ops {
 
     /** {@link #getColumn(float[], int, float[], int, int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer getColumn(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int col) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.getColumn_unsafe(dest, destOffset, src, srcOffset, col);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.getColumn_unsafe(dest, destOffset, src, srcOffset, col);
         return Float4x4OpsKernelsTypedBuffer.getColumn_api(dest, destOffset, src, srcOffset, col);
     }
 
     /** {@link #getColumn(float[], int, float[], int, int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer getColumn(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int col) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.getColumn_unsafe(dest, destOffset, src, srcOffset, col);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.getColumn_unsafe(dest, destOffset, src, srcOffset, col);
         return Float4x4OpsKernelsByteBuffer.getColumn_api(dest, destOffset, src, srcOffset, col);
     }
 
@@ -141,13 +145,13 @@ public final class Float4x4Ops {
 
     /** {@link #getEulerAnglesXYZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer getEulerAnglesXYZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.getEulerAnglesXYZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.getEulerAnglesXYZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.getEulerAnglesXYZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #getEulerAnglesXYZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer getEulerAnglesXYZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.getEulerAnglesXYZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.getEulerAnglesXYZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.getEulerAnglesXYZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -204,13 +208,13 @@ public final class Float4x4Ops {
 
     /** {@link #getEulerAnglesXZY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer getEulerAnglesXZY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.getEulerAnglesXZY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.getEulerAnglesXZY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.getEulerAnglesXZY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #getEulerAnglesXZY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer getEulerAnglesXZY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.getEulerAnglesXZY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.getEulerAnglesXZY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.getEulerAnglesXZY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -267,13 +271,13 @@ public final class Float4x4Ops {
 
     /** {@link #getEulerAnglesYXZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer getEulerAnglesYXZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.getEulerAnglesYXZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.getEulerAnglesYXZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.getEulerAnglesYXZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #getEulerAnglesYXZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer getEulerAnglesYXZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.getEulerAnglesYXZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.getEulerAnglesYXZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.getEulerAnglesYXZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -330,13 +334,13 @@ public final class Float4x4Ops {
 
     /** {@link #getEulerAnglesYZX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer getEulerAnglesYZX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.getEulerAnglesYZX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.getEulerAnglesYZX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.getEulerAnglesYZX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #getEulerAnglesYZX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer getEulerAnglesYZX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.getEulerAnglesYZX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.getEulerAnglesYZX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.getEulerAnglesYZX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -393,13 +397,13 @@ public final class Float4x4Ops {
 
     /** {@link #getEulerAnglesZXY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer getEulerAnglesZXY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.getEulerAnglesZXY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.getEulerAnglesZXY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.getEulerAnglesZXY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #getEulerAnglesZXY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer getEulerAnglesZXY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.getEulerAnglesZXY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.getEulerAnglesZXY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.getEulerAnglesZXY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -456,13 +460,13 @@ public final class Float4x4Ops {
 
     /** {@link #getEulerAnglesZYX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer getEulerAnglesZYX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.getEulerAnglesZYX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.getEulerAnglesZYX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.getEulerAnglesZYX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #getEulerAnglesZYX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer getEulerAnglesZYX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.getEulerAnglesZYX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.getEulerAnglesZYX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.getEulerAnglesZYX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -480,8 +484,9 @@ public final class Float4x4Ops {
     }
 
     /**
-     * Extract the rotation of this matrix as a unit quaternion, column-normalizing the linear block
-     * first to strip scale (skew is not removed) and store the result in {@code dest}.
+     * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
+     * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
+     * unit length) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -496,13 +501,13 @@ public final class Float4x4Ops {
 
     /** {@link #getNormalizedRotation(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer getNormalizedRotation(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.getNormalizedRotation_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.getNormalizedRotation_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.getNormalizedRotation_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #getNormalizedRotation(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer getNormalizedRotation(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.getNormalizedRotation_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.getNormalizedRotation_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.getNormalizedRotation_api(dest, destOffset, src, srcOffset);
     }
 
@@ -567,13 +572,13 @@ public final class Float4x4Ops {
 
     /** {@link #getRow(float[], int, float[], int, int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer getRow(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int row) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.getRow_unsafe(dest, destOffset, src, srcOffset, row);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.getRow_unsafe(dest, destOffset, src, srcOffset, row);
         return Float4x4OpsKernelsTypedBuffer.getRow_api(dest, destOffset, src, srcOffset, row);
     }
 
     /** {@link #getRow(float[], int, float[], int, int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer getRow(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int row) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.getRow_unsafe(dest, destOffset, src, srcOffset, row);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.getRow_unsafe(dest, destOffset, src, srcOffset, row);
         return Float4x4OpsKernelsByteBuffer.getRow_api(dest, destOffset, src, srcOffset, row);
     }
 
@@ -618,13 +623,13 @@ public final class Float4x4Ops {
 
     /** {@link #getScale(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer getScale(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.getScale_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.getScale_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.getScale_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #getScale(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer getScale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.getScale_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.getScale_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.getScale_api(dest, destOffset, src, srcOffset);
     }
 
@@ -662,13 +667,13 @@ public final class Float4x4Ops {
 
     /** {@link #getTranslation(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer getTranslation(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.getTranslation_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.getTranslation_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.getTranslation_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #getTranslation(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer getTranslation(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.getTranslation_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.getTranslation_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.getTranslation_api(dest, destOffset, src, srcOffset);
     }
 
@@ -702,13 +707,13 @@ public final class Float4x4Ops {
 
     /** {@link #getUnnormalizedRotation(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer getUnnormalizedRotation(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.getUnnormalizedRotation_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.getUnnormalizedRotation_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.getUnnormalizedRotation_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #getUnnormalizedRotation(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer getUnnormalizedRotation(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.getUnnormalizedRotation_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.getUnnormalizedRotation_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.getUnnormalizedRotation_api(dest, destOffset, src, srcOffset);
     }
 
@@ -762,13 +767,13 @@ public final class Float4x4Ops {
 
     /** {@link #invNegativeX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer invNegativeX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.invNegativeX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.invNegativeX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.invNegativeX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #invNegativeX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer invNegativeX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.invNegativeX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.invNegativeX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.invNegativeX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -821,13 +826,13 @@ public final class Float4x4Ops {
 
     /** {@link #invNegativeY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer invNegativeY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.invNegativeY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.invNegativeY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.invNegativeY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #invNegativeY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer invNegativeY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.invNegativeY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.invNegativeY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.invNegativeY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -880,13 +885,13 @@ public final class Float4x4Ops {
 
     /** {@link #invNegativeZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer invNegativeZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.invNegativeZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.invNegativeZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.invNegativeZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #invNegativeZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer invNegativeZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.invNegativeZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.invNegativeZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.invNegativeZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -928,13 +933,13 @@ public final class Float4x4Ops {
 
     /** {@link #invNormalizedNegativeX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer invNormalizedNegativeX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.invNormalizedNegativeX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.invNormalizedNegativeX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.invNormalizedNegativeX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #invNormalizedNegativeX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer invNormalizedNegativeX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.invNormalizedNegativeX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.invNormalizedNegativeX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.invNormalizedNegativeX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -976,13 +981,13 @@ public final class Float4x4Ops {
 
     /** {@link #invNormalizedNegativeY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer invNormalizedNegativeY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.invNormalizedNegativeY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.invNormalizedNegativeY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.invNormalizedNegativeY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #invNormalizedNegativeY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer invNormalizedNegativeY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.invNormalizedNegativeY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.invNormalizedNegativeY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.invNormalizedNegativeY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1024,13 +1029,13 @@ public final class Float4x4Ops {
 
     /** {@link #invNormalizedNegativeZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer invNormalizedNegativeZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.invNormalizedNegativeZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.invNormalizedNegativeZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.invNormalizedNegativeZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #invNormalizedNegativeZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer invNormalizedNegativeZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.invNormalizedNegativeZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.invNormalizedNegativeZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.invNormalizedNegativeZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1072,13 +1077,13 @@ public final class Float4x4Ops {
 
     /** {@link #invNormalizedPositiveX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer invNormalizedPositiveX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.invNormalizedPositiveX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.invNormalizedPositiveX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.invNormalizedPositiveX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #invNormalizedPositiveX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer invNormalizedPositiveX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.invNormalizedPositiveX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.invNormalizedPositiveX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.invNormalizedPositiveX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1120,13 +1125,13 @@ public final class Float4x4Ops {
 
     /** {@link #invNormalizedPositiveY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer invNormalizedPositiveY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.invNormalizedPositiveY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.invNormalizedPositiveY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.invNormalizedPositiveY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #invNormalizedPositiveY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer invNormalizedPositiveY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.invNormalizedPositiveY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.invNormalizedPositiveY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.invNormalizedPositiveY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1168,13 +1173,13 @@ public final class Float4x4Ops {
 
     /** {@link #invNormalizedPositiveZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer invNormalizedPositiveZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.invNormalizedPositiveZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.invNormalizedPositiveZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.invNormalizedPositiveZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #invNormalizedPositiveZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer invNormalizedPositiveZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.invNormalizedPositiveZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.invNormalizedPositiveZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.invNormalizedPositiveZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1227,13 +1232,13 @@ public final class Float4x4Ops {
 
     /** {@link #invPositiveX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer invPositiveX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.invPositiveX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.invPositiveX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.invPositiveX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #invPositiveX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer invPositiveX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.invPositiveX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.invPositiveX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.invPositiveX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1286,13 +1291,13 @@ public final class Float4x4Ops {
 
     /** {@link #invPositiveY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer invPositiveY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.invPositiveY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.invPositiveY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.invPositiveY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #invPositiveY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer invPositiveY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.invPositiveY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.invPositiveY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.invPositiveY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1345,13 +1350,13 @@ public final class Float4x4Ops {
 
     /** {@link #invPositiveZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer invPositiveZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.invPositiveZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.invPositiveZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.invPositiveZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #invPositiveZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer invPositiveZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.invPositiveZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.invPositiveZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.invPositiveZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1398,13 +1403,13 @@ public final class Float4x4Ops {
 
     /** {@link #negativeX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer negativeX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.negativeX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.negativeX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.negativeX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #negativeX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer negativeX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.negativeX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.negativeX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.negativeX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1451,13 +1456,13 @@ public final class Float4x4Ops {
 
     /** {@link #negativeY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer negativeY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.negativeY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.negativeY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.negativeY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #negativeY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer negativeY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.negativeY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.negativeY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.negativeY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1504,13 +1509,13 @@ public final class Float4x4Ops {
 
     /** {@link #negativeZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer negativeZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.negativeZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.negativeZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.negativeZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #negativeZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer negativeZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.negativeZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.negativeZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.negativeZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1552,13 +1557,13 @@ public final class Float4x4Ops {
 
     /** {@link #normalizedNegativeX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer normalizedNegativeX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.normalizedNegativeX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.normalizedNegativeX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.normalizedNegativeX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #normalizedNegativeX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer normalizedNegativeX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.normalizedNegativeX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.normalizedNegativeX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.normalizedNegativeX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1600,13 +1605,13 @@ public final class Float4x4Ops {
 
     /** {@link #normalizedNegativeY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer normalizedNegativeY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.normalizedNegativeY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.normalizedNegativeY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.normalizedNegativeY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #normalizedNegativeY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer normalizedNegativeY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.normalizedNegativeY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.normalizedNegativeY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.normalizedNegativeY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1648,13 +1653,13 @@ public final class Float4x4Ops {
 
     /** {@link #normalizedNegativeZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer normalizedNegativeZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.normalizedNegativeZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.normalizedNegativeZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.normalizedNegativeZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #normalizedNegativeZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer normalizedNegativeZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.normalizedNegativeZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.normalizedNegativeZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.normalizedNegativeZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1696,13 +1701,13 @@ public final class Float4x4Ops {
 
     /** {@link #normalizedPositiveX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer normalizedPositiveX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.normalizedPositiveX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.normalizedPositiveX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.normalizedPositiveX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #normalizedPositiveX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer normalizedPositiveX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.normalizedPositiveX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.normalizedPositiveX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.normalizedPositiveX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1744,13 +1749,13 @@ public final class Float4x4Ops {
 
     /** {@link #normalizedPositiveY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer normalizedPositiveY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.normalizedPositiveY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.normalizedPositiveY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.normalizedPositiveY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #normalizedPositiveY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer normalizedPositiveY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.normalizedPositiveY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.normalizedPositiveY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.normalizedPositiveY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1792,13 +1797,13 @@ public final class Float4x4Ops {
 
     /** {@link #normalizedPositiveZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer normalizedPositiveZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.normalizedPositiveZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.normalizedPositiveZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.normalizedPositiveZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #normalizedPositiveZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer normalizedPositiveZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.normalizedPositiveZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.normalizedPositiveZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.normalizedPositiveZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1847,13 +1852,13 @@ public final class Float4x4Ops {
 
     /** {@link #origin(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer origin(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.origin_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.origin_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.origin_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #origin(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer origin(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.origin_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.origin_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.origin_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1914,13 +1919,13 @@ public final class Float4x4Ops {
 
     /** {@link #originAffine(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer originAffine(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.originAffine_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.originAffine_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.originAffine_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #originAffine(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer originAffine(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.originAffine_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.originAffine_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.originAffine_api(dest, destOffset, src, srcOffset);
     }
 
@@ -1967,13 +1972,13 @@ public final class Float4x4Ops {
 
     /** {@link #positiveX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer positiveX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.positiveX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.positiveX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.positiveX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #positiveX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer positiveX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.positiveX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.positiveX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.positiveX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -2020,13 +2025,13 @@ public final class Float4x4Ops {
 
     /** {@link #positiveY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer positiveY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.positiveY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.positiveY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.positiveY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #positiveY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer positiveY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.positiveY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.positiveY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.positiveY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -2073,13 +2078,13 @@ public final class Float4x4Ops {
 
     /** {@link #positiveZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer positiveZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.positiveZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.positiveZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.positiveZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #positiveZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer positiveZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.positiveZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.positiveZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.positiveZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -2161,13 +2166,13 @@ public final class Float4x4Ops {
 
     /** {@link #cofactor(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer cofactor(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.cofactor_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.cofactor_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.cofactor_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #cofactor(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer cofactor(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.cofactor_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.cofactor_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.cofactor_api(dest, destOffset, src, srcOffset);
     }
 
@@ -2219,13 +2224,13 @@ public final class Float4x4Ops {
 
     /** {@link #determinant(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static float determinant(java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.determinant_unsafe(src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.determinant_unsafe(src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.determinant_api(src, srcOffset);
     }
 
     /** {@link #determinant(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static float determinant(java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect()) return Float4x4OpsKernelsByteBuffer.determinant_unsafe(src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.determinant_unsafe(src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.determinant_api(src, srcOffset);
     }
 
@@ -2270,13 +2275,13 @@ public final class Float4x4Ops {
 
     /** {@link #frobeniusNorm(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static float frobeniusNorm(java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.frobeniusNorm_unsafe(src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.frobeniusNorm_unsafe(src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.frobeniusNorm_api(src, srcOffset);
     }
 
     /** {@link #frobeniusNorm(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static float frobeniusNorm(java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect()) return Float4x4OpsKernelsByteBuffer.frobeniusNorm_unsafe(src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.frobeniusNorm_unsafe(src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.frobeniusNorm_api(src, srcOffset);
     }
 
@@ -2363,13 +2368,13 @@ public final class Float4x4Ops {
 
     /** {@link #invert(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer invert(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.invert_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.invert_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.invert_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #invert(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer invert(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.invert_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.invert_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.invert_api(dest, destOffset, src, srcOffset);
     }
 
@@ -2492,13 +2497,13 @@ public final class Float4x4Ops {
 
     /** {@link #invertProduct(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer invertProduct(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && other.isDirect()) return Float4x4OpsKernelsTypedBuffer.invertProduct_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.invertProduct_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4x4OpsKernelsTypedBuffer.invertProduct_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
     /** {@link #invertProduct(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer invertProduct(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && other.isDirect()) return Float4x4OpsKernelsByteBuffer.invertProduct_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.invertProduct_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4x4OpsKernelsByteBuffer.invertProduct_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
@@ -2587,13 +2592,13 @@ public final class Float4x4Ops {
 
     /** {@link #normal(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer normal(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.normal_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.normal_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.normal_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #normal(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer normal(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.normal_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.normal_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.normal_api(dest, destOffset, src, srcOffset);
     }
 
@@ -2627,13 +2632,13 @@ public final class Float4x4Ops {
 
     /** {@link #trace(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static float trace(java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.trace_unsafe(src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.trace_unsafe(src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.trace_api(src, srcOffset);
     }
 
     /** {@link #trace(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static float trace(java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect()) return Float4x4OpsKernelsByteBuffer.trace_unsafe(src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.trace_unsafe(src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.trace_api(src, srcOffset);
     }
 
@@ -2696,13 +2701,13 @@ public final class Float4x4Ops {
 
     /** {@link #transpose(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer transpose(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.transpose_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.transpose_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.transpose_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #transpose(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer transpose(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.transpose_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.transpose_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.transpose_api(dest, destOffset, src, srcOffset);
     }
 
@@ -2737,13 +2742,13 @@ public final class Float4x4Ops {
 
     /** {@link #add(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer add(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && other.isDirect()) return Float4x4OpsKernelsTypedBuffer.add_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.add_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4x4OpsKernelsTypedBuffer.add_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
     /** {@link #add(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer add(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && other.isDirect()) return Float4x4OpsKernelsByteBuffer.add_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.add_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4x4OpsKernelsByteBuffer.add_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
@@ -2777,13 +2782,13 @@ public final class Float4x4Ops {
 
     /** {@link #negate(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer negate(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.negate_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.negate_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.negate_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #negate(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer negate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.negate_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.negate_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.negate_api(dest, destOffset, src, srcOffset);
     }
 
@@ -2819,13 +2824,13 @@ public final class Float4x4Ops {
 
     /** {@link #sub(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer sub(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && other.isDirect()) return Float4x4OpsKernelsTypedBuffer.sub_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.sub_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4x4OpsKernelsTypedBuffer.sub_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
     /** {@link #sub(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer sub(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && other.isDirect()) return Float4x4OpsKernelsByteBuffer.sub_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.sub_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4x4OpsKernelsByteBuffer.sub_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
@@ -2859,13 +2864,13 @@ public final class Float4x4Ops {
 
     /** {@link #set(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer set(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && v.isDirect()) return Float4x4OpsKernelsTypedBuffer.set_unsafe(dest, destOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.set_unsafe(dest, destOffset, v, vOffset);
         return Float4x4OpsKernelsTypedBuffer.set_api(dest, destOffset, v, vOffset);
     }
 
     /** {@link #set(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer set(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && v.isDirect()) return Float4x4OpsKernelsByteBuffer.set_unsafe(dest, destOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.set_unsafe(dest, destOffset, v, vOffset);
         return Float4x4OpsKernelsByteBuffer.set_api(dest, destOffset, v, vOffset);
     }
 
@@ -2924,13 +2929,13 @@ public final class Float4x4Ops {
 
     /** {@link #setMat3x3(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer setMat3x3(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer m, int mOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && m.isDirect()) return Float4x4OpsKernelsTypedBuffer.setMat3x3_unsafe(dest, destOffset, m, mOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && m.isDirect() && m.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.setMat3x3_unsafe(dest, destOffset, m, mOffset);
         return Float4x4OpsKernelsTypedBuffer.setMat3x3_api(dest, destOffset, m, mOffset);
     }
 
     /** {@link #setMat3x3(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer setMat3x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer m, int mOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && m.isDirect()) return Float4x4OpsKernelsByteBuffer.setMat3x3_unsafe(dest, destOffset, m, mOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && m.isDirect() && m.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.setMat3x3_unsafe(dest, destOffset, m, mOffset);
         return Float4x4OpsKernelsByteBuffer.setMat3x3_api(dest, destOffset, m, mOffset);
     }
 
@@ -2991,13 +2996,13 @@ public final class Float4x4Ops {
 
     /** {@link #setMat3x4(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer setMat3x4(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer m, int mOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && m.isDirect()) return Float4x4OpsKernelsTypedBuffer.setMat3x4_unsafe(dest, destOffset, m, mOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && m.isDirect() && m.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.setMat3x4_unsafe(dest, destOffset, m, mOffset);
         return Float4x4OpsKernelsTypedBuffer.setMat3x4_api(dest, destOffset, m, mOffset);
     }
 
     /** {@link #setMat3x4(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer setMat3x4(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer m, int mOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && m.isDirect()) return Float4x4OpsKernelsByteBuffer.setMat3x4_unsafe(dest, destOffset, m, mOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && m.isDirect() && m.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.setMat3x4_unsafe(dest, destOffset, m, mOffset);
         return Float4x4OpsKernelsByteBuffer.setMat3x4_api(dest, destOffset, m, mOffset);
     }
 
@@ -3067,13 +3072,13 @@ public final class Float4x4Ops {
 
     /** {@link #withTranslation(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer withTranslation(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float tX, float tY, float tZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.withTranslation_unsafe(dest, destOffset, src, srcOffset, tX, tY, tZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.withTranslation_unsafe(dest, destOffset, src, srcOffset, tX, tY, tZ);
         return Float4x4OpsKernelsTypedBuffer.withTranslation_api(dest, destOffset, src, srcOffset, tX, tY, tZ);
     }
 
     /** {@link #withTranslation(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer withTranslation(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float tX, float tY, float tZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.withTranslation_unsafe(dest, destOffset, src, srcOffset, tX, tY, tZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.withTranslation_unsafe(dest, destOffset, src, srcOffset, tX, tY, tZ);
         return Float4x4OpsKernelsByteBuffer.withTranslation_api(dest, destOffset, src, srcOffset, tX, tY, tZ);
     }
 
@@ -3145,13 +3150,13 @@ public final class Float4x4Ops {
 
     /** {@link #withTranslation(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer withTranslation(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer t, int tOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && t.isDirect()) return Float4x4OpsKernelsTypedBuffer.withTranslation_unsafe(dest, destOffset, src, srcOffset, t, tOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && t.isDirect() && t.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.withTranslation_unsafe(dest, destOffset, src, srcOffset, t, tOffset);
         return Float4x4OpsKernelsTypedBuffer.withTranslation_api(dest, destOffset, src, srcOffset, t, tOffset);
     }
 
     /** {@link #withTranslation(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer withTranslation(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer t, int tOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && t.isDirect()) return Float4x4OpsKernelsByteBuffer.withTranslation_unsafe(dest, destOffset, src, srcOffset, t, tOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && t.isDirect() && t.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.withTranslation_unsafe(dest, destOffset, src, srcOffset, t, tOffset);
         return Float4x4OpsKernelsByteBuffer.withTranslation_api(dest, destOffset, src, srcOffset, t, tOffset);
     }
 
@@ -3174,19 +3179,23 @@ public final class Float4x4Ops {
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param rTX the {@code tX} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)}
      * @param rTY the {@code tY} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)}
      * @param rTZ the {@code tZ} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)}
      * @param rRX the {@code rX} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the rotation quaternion must have unit
+     *        length)
      * @param rRY the {@code rY} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the rotation quaternion must have unit
+     *        length)
      * @param rRZ the {@code rZ} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the rotation quaternion must have unit
+     *        length)
      * @param rRW the {@code rW} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the rotation quaternion must have unit
+     *        length)
      * @return {@code dest}
      */
     public static float[] makeFromRigid(float[] dest, int destOffset, float rTX, float rTY, float rTZ, float rRX, float rRY, float rRZ, float rRW) {
@@ -3214,13 +3223,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeFromRigid(float[], int, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeFromRigid(java.nio.FloatBuffer dest, int destOffset, float rTX, float rTY, float rTZ, float rRX, float rRY, float rRZ, float rRW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeFromRigid_unsafe(dest, destOffset, rTX, rTY, rTZ, rRX, rRY, rRZ, rRW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeFromRigid_unsafe(dest, destOffset, rTX, rTY, rTZ, rRX, rRY, rRZ, rRW);
         return Float4x4OpsKernelsTypedBuffer.makeFromRigid_api(dest, destOffset, rTX, rTY, rTZ, rRX, rRY, rRZ, rRW);
     }
 
     /** {@link #makeFromRigid(float[], int, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeFromRigid(java.nio.ByteBuffer dest, int destOffset, float rTX, float rTY, float rTZ, float rRX, float rRY, float rRZ, float rRW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeFromRigid_unsafe(dest, destOffset, rTX, rTY, rTZ, rRX, rRY, rRZ, rRW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeFromRigid_unsafe(dest, destOffset, rTX, rTY, rTZ, rRX, rRY, rRZ, rRW);
         return Float4x4OpsKernelsByteBuffer.makeFromRigid_api(dest, destOffset, rTX, rTY, rTZ, rRX, rRY, rRZ, rRW);
     }
 
@@ -3271,13 +3280,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeFromTransform(float[], int, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeFromTransform(java.nio.FloatBuffer dest, int destOffset, float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeFromTransform_unsafe(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeFromTransform_unsafe(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
         return Float4x4OpsKernelsTypedBuffer.makeFromTransform_api(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
     }
 
     /** {@link #makeFromTransform(float[], int, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeFromTransform(java.nio.ByteBuffer dest, int destOffset, float tTX, float tTY, float tTZ, float tRX, float tRY, float tRZ, float tRW, float tSX, float tSY, float tSZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeFromTransform_unsafe(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeFromTransform_unsafe(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
         return Float4x4OpsKernelsByteBuffer.makeFromTransform_api(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
     }
 
@@ -3321,13 +3330,13 @@ public final class Float4x4Ops {
 
     /** {@link #to3x3(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer to3x3(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.to3x3_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.to3x3_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.to3x3_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #to3x3(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer to3x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.to3x3_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.to3x3_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.to3x3_api(dest, destOffset, src, srcOffset);
     }
 
@@ -3384,13 +3393,13 @@ public final class Float4x4Ops {
 
     /** {@link #to3x4(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer to3x4(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.to3x4_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.to3x4_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.to3x4_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #to3x4(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer to3x4(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.to3x4_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.to3x4_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.to3x4_api(dest, destOffset, src, srcOffset);
     }
 
@@ -3487,13 +3496,13 @@ public final class Float4x4Ops {
 
     /** {@link #toDualQuat(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer toDualQuat(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.toDualQuat_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.toDualQuat_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.toDualQuat_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #toDualQuat(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer toDualQuat(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.toDualQuat_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.toDualQuat_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.toDualQuat_api(dest, destOffset, src, srcOffset);
     }
 
@@ -3512,8 +3521,9 @@ public final class Float4x4Ops {
 
     /**
      * Decompose this matrix into a rigid transform: translation from the last column, rotation from
-     * the orthonormalized upper-left 3x3 block (any scale or shear projects onto the nearest
-     * rotation) and store the result in {@code dest}.
+     * the column-normalized upper-left 3x3 block (scale is removed by normalizing the columns, but
+     * shear is not removed: a sheared block yields a rotation quaternion that is not unit length)
+     * and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the rigid transform starts
@@ -3608,13 +3618,13 @@ public final class Float4x4Ops {
 
     /** {@link #toRigid(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer toRigid(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.toRigid_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.toRigid_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.toRigid_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #toRigid(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer toRigid(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.toRigid_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.toRigid_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.toRigid_api(dest, destOffset, src, srcOffset);
     }
 
@@ -3633,8 +3643,9 @@ public final class Float4x4Ops {
 
     /**
      * Decompose this matrix into a TRS transform: translation from the last column, scale from the
-     * column lengths of the upper-left 3x3 block, rotation from the orthonormalized block (a
-     * sheared matrix projects onto the nearest rotation) and store the result in {@code dest}.
+     * column lengths of the upper-left 3x3 block, rotation from the column-normalized block (scale
+     * is removed by normalizing the columns, but shear is not removed: a sheared block yields a
+     * rotation quaternion that is not unit length) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the transform starts
@@ -3715,13 +3726,13 @@ public final class Float4x4Ops {
 
     /** {@link #toTransform(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer toTransform(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.toTransform_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.toTransform_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.toTransform_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #toTransform(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer toTransform(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.toTransform_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.toTransform_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.toTransform_api(dest, destOffset, src, srcOffset);
     }
 
@@ -3754,13 +3765,13 @@ public final class Float4x4Ops {
 
     /** {@link #decomposeRotation(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer decomposeRotation(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.decomposeRotation_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.decomposeRotation_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.decomposeRotation_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #decomposeRotation(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer decomposeRotation(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.decomposeRotation_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.decomposeRotation_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.decomposeRotation_api(dest, destOffset, src, srcOffset);
     }
 
@@ -3853,13 +3864,13 @@ public final class Float4x4Ops {
 
     /** {@link #decomposeScale(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer decomposeScale(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.decomposeScale_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.decomposeScale_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.decomposeScale_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #decomposeScale(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer decomposeScale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.decomposeScale_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.decomposeScale_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.decomposeScale_api(dest, destOffset, src, srcOffset);
     }
 
@@ -3961,13 +3972,13 @@ public final class Float4x4Ops {
 
     /** {@link #decomposeSkew(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer decomposeSkew(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.decomposeSkew_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.decomposeSkew_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.decomposeSkew_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #decomposeSkew(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer decomposeSkew(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.decomposeSkew_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.decomposeSkew_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.decomposeSkew_api(dest, destOffset, src, srcOffset);
     }
 
@@ -4121,13 +4132,13 @@ public final class Float4x4Ops {
 
     /** {@link #decomposeTRS(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer decomposeTRS(java.nio.FloatBuffer translation, int translationOffset, java.nio.FloatBuffer rotation, int rotationOffset, java.nio.FloatBuffer scale, int scaleOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && translation.isDirect() && !translation.isReadOnly() && rotation.isDirect() && !rotation.isReadOnly() && scale.isDirect() && !scale.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.decomposeTRS_unsafe(translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && translation.isDirect() && !translation.isReadOnly() && translation.order() == java.nio.ByteOrder.nativeOrder() && rotation.isDirect() && !rotation.isReadOnly() && rotation.order() == java.nio.ByteOrder.nativeOrder() && scale.isDirect() && !scale.isReadOnly() && scale.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.decomposeTRS_unsafe(translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.decomposeTRS_api(translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, src, srcOffset);
     }
 
     /** {@link #decomposeTRS(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer decomposeTRS(java.nio.ByteBuffer translation, int translationOffset, java.nio.ByteBuffer rotation, int rotationOffset, java.nio.ByteBuffer scale, int scaleOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && translation.isDirect() && !translation.isReadOnly() && rotation.isDirect() && !rotation.isReadOnly() && scale.isDirect() && !scale.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.decomposeTRS_unsafe(translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && translation.isDirect() && !translation.isReadOnly() && translation.order() == java.nio.ByteOrder.nativeOrder() && rotation.isDirect() && !rotation.isReadOnly() && rotation.order() == java.nio.ByteOrder.nativeOrder() && scale.isDirect() && !scale.isReadOnly() && scale.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.decomposeTRS_unsafe(translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.decomposeTRS_api(translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, src, srcOffset);
     }
 
@@ -5023,13 +5034,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeIdentity(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeIdentity(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeIdentity_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeIdentity_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeIdentity_api(dest, destOffset);
     }
 
     /** {@link #makeIdentity(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeIdentity(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeIdentity_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeIdentity_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeIdentity_api(dest, destOffset);
     }
 
@@ -5066,13 +5077,13 @@ public final class Float4x4Ops {
 
     /** {@link #lerp(float[], int, float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer lerp(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset, float t) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && other.isDirect()) return Float4x4OpsKernelsTypedBuffer.lerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.lerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
         return Float4x4OpsKernelsTypedBuffer.lerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
     }
 
     /** {@link #lerp(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer lerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, float t) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && other.isDirect()) return Float4x4OpsKernelsByteBuffer.lerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.lerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
         return Float4x4OpsKernelsByteBuffer.lerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
     }
 
@@ -5112,13 +5123,13 @@ public final class Float4x4Ops {
 
     /** {@link #mul(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mul(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer right, int rightOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && right.isDirect()) return Float4x4OpsKernelsTypedBuffer.mul_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && right.isDirect() && right.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mul_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
         return Float4x4OpsKernelsTypedBuffer.mul_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
     /** {@link #mul(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer right, int rightOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && right.isDirect()) return Float4x4OpsKernelsByteBuffer.mul_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && right.isDirect() && right.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mul_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
         return Float4x4OpsKernelsByteBuffer.mul_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
@@ -5161,13 +5172,13 @@ public final class Float4x4Ops {
 
     /** {@link #mulMat2x2(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mulMat2x2(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer right, int rightOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && right.isDirect()) return Float4x4OpsKernelsTypedBuffer.mulMat2x2_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && right.isDirect() && right.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mulMat2x2_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
         return Float4x4OpsKernelsTypedBuffer.mulMat2x2_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
     /** {@link #mulMat2x2(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mulMat2x2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer right, int rightOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && right.isDirect()) return Float4x4OpsKernelsByteBuffer.mulMat2x2_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && right.isDirect() && right.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mulMat2x2_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
         return Float4x4OpsKernelsByteBuffer.mulMat2x2_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
@@ -5210,13 +5221,13 @@ public final class Float4x4Ops {
 
     /** {@link #mulMat2x3(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mulMat2x3(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer right, int rightOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && right.isDirect()) return Float4x4OpsKernelsTypedBuffer.mulMat2x3_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && right.isDirect() && right.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mulMat2x3_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
         return Float4x4OpsKernelsTypedBuffer.mulMat2x3_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
     /** {@link #mulMat2x3(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mulMat2x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer right, int rightOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && right.isDirect()) return Float4x4OpsKernelsByteBuffer.mulMat2x3_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && right.isDirect() && right.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mulMat2x3_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
         return Float4x4OpsKernelsByteBuffer.mulMat2x3_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
@@ -5259,13 +5270,13 @@ public final class Float4x4Ops {
 
     /** {@link #mulMat3x3(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mulMat3x3(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer right, int rightOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && right.isDirect()) return Float4x4OpsKernelsTypedBuffer.mulMat3x3_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && right.isDirect() && right.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mulMat3x3_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
         return Float4x4OpsKernelsTypedBuffer.mulMat3x3_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
     /** {@link #mulMat3x3(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mulMat3x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer right, int rightOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && right.isDirect()) return Float4x4OpsKernelsByteBuffer.mulMat3x3_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && right.isDirect() && right.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mulMat3x3_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
         return Float4x4OpsKernelsByteBuffer.mulMat3x3_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
@@ -5308,13 +5319,13 @@ public final class Float4x4Ops {
 
     /** {@link #mulMat3x4(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mulMat3x4(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer right, int rightOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && right.isDirect()) return Float4x4OpsKernelsTypedBuffer.mulMat3x4_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && right.isDirect() && right.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mulMat3x4_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
         return Float4x4OpsKernelsTypedBuffer.mulMat3x4_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
     /** {@link #mulMat3x4(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mulMat3x4(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer right, int rightOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && right.isDirect()) return Float4x4OpsKernelsByteBuffer.mulMat3x4_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && right.isDirect() && right.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mulMat3x4_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
         return Float4x4OpsKernelsByteBuffer.mulMat3x4_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
@@ -5355,13 +5366,13 @@ public final class Float4x4Ops {
 
     /** {@link #preMul(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preMul(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && other.isDirect()) return Float4x4OpsKernelsTypedBuffer.preMul_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preMul_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4x4OpsKernelsTypedBuffer.preMul_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
     /** {@link #preMul(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preMul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && other.isDirect()) return Float4x4OpsKernelsByteBuffer.preMul_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preMul_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4x4OpsKernelsByteBuffer.preMul_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
@@ -5418,13 +5429,13 @@ public final class Float4x4Ops {
 
     /** {@link #preMulMat2x2(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preMulMat2x2(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && other.isDirect()) return Float4x4OpsKernelsTypedBuffer.preMulMat2x2_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preMulMat2x2_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4x4OpsKernelsTypedBuffer.preMulMat2x2_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
     /** {@link #preMulMat2x2(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preMulMat2x2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && other.isDirect()) return Float4x4OpsKernelsByteBuffer.preMulMat2x2_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preMulMat2x2_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4x4OpsKernelsByteBuffer.preMulMat2x2_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
@@ -5482,13 +5493,13 @@ public final class Float4x4Ops {
 
     /** {@link #preMulMat2x3(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preMulMat2x3(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && other.isDirect()) return Float4x4OpsKernelsTypedBuffer.preMulMat2x3_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preMulMat2x3_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4x4OpsKernelsTypedBuffer.preMulMat2x3_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
     /** {@link #preMulMat2x3(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preMulMat2x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && other.isDirect()) return Float4x4OpsKernelsByteBuffer.preMulMat2x3_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preMulMat2x3_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4x4OpsKernelsByteBuffer.preMulMat2x3_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
@@ -5549,13 +5560,13 @@ public final class Float4x4Ops {
 
     /** {@link #preMulMat3x3(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preMulMat3x3(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && other.isDirect()) return Float4x4OpsKernelsTypedBuffer.preMulMat3x3_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preMulMat3x3_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4x4OpsKernelsTypedBuffer.preMulMat3x3_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
     /** {@link #preMulMat3x3(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preMulMat3x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && other.isDirect()) return Float4x4OpsKernelsByteBuffer.preMulMat3x3_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preMulMat3x3_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4x4OpsKernelsByteBuffer.preMulMat3x3_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
@@ -5619,13 +5630,13 @@ public final class Float4x4Ops {
 
     /** {@link #preMulMat3x4(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preMulMat3x4(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && other.isDirect()) return Float4x4OpsKernelsTypedBuffer.preMulMat3x4_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preMulMat3x4_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4x4OpsKernelsTypedBuffer.preMulMat3x4_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
     /** {@link #preMulMat3x4(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preMulMat3x4(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && other.isDirect()) return Float4x4OpsKernelsByteBuffer.preMulMat3x4_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preMulMat3x4_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4x4OpsKernelsByteBuffer.preMulMat3x4_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
@@ -5679,13 +5690,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeOuterProduct(float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeOuterProduct(java.nio.FloatBuffer dest, int destOffset, float colX, float colY, float colZ, float colW, float rowX, float rowY, float rowZ, float rowW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeOuterProduct_unsafe(dest, destOffset, colX, colY, colZ, colW, rowX, rowY, rowZ, rowW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeOuterProduct_unsafe(dest, destOffset, colX, colY, colZ, colW, rowX, rowY, rowZ, rowW);
         return Float4x4OpsKernelsTypedBuffer.makeOuterProduct_api(dest, destOffset, colX, colY, colZ, colW, rowX, rowY, rowZ, rowW);
     }
 
     /** {@link #makeOuterProduct(float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeOuterProduct(java.nio.ByteBuffer dest, int destOffset, float colX, float colY, float colZ, float colW, float rowX, float rowY, float rowZ, float rowW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeOuterProduct_unsafe(dest, destOffset, colX, colY, colZ, colW, rowX, rowY, rowZ, rowW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeOuterProduct_unsafe(dest, destOffset, colX, colY, colZ, colW, rowX, rowY, rowZ, rowW);
         return Float4x4OpsKernelsByteBuffer.makeOuterProduct_api(dest, destOffset, colX, colY, colZ, colW, rowX, rowY, rowZ, rowW);
     }
 
@@ -5720,13 +5731,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeOuterProduct(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeOuterProduct(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer col, int colOffset, java.nio.FloatBuffer row, int rowOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && col.isDirect() && row.isDirect()) return Float4x4OpsKernelsTypedBuffer.makeOuterProduct_unsafe(dest, destOffset, col, colOffset, row, rowOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && col.isDirect() && col.order() == java.nio.ByteOrder.nativeOrder() && row.isDirect() && row.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeOuterProduct_unsafe(dest, destOffset, col, colOffset, row, rowOffset);
         return Float4x4OpsKernelsTypedBuffer.makeOuterProduct_api(dest, destOffset, col, colOffset, row, rowOffset);
     }
 
     /** {@link #makeOuterProduct(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeOuterProduct(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer col, int colOffset, java.nio.ByteBuffer row, int rowOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && col.isDirect() && row.isDirect()) return Float4x4OpsKernelsByteBuffer.makeOuterProduct_unsafe(dest, destOffset, col, colOffset, row, rowOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && col.isDirect() && col.order() == java.nio.ByteOrder.nativeOrder() && row.isDirect() && row.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeOuterProduct_unsafe(dest, destOffset, col, colOffset, row, rowOffset);
         return Float4x4OpsKernelsByteBuffer.makeOuterProduct_api(dest, destOffset, col, colOffset, row, rowOffset);
     }
 
@@ -5771,13 +5782,13 @@ public final class Float4x4Ops {
 
     /** {@link #arcball(float[], int, float[], int, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer arcball(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float radius, float centerX, float centerY, float centerZ, float angleX, float angleY) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.arcball_unsafe(dest, destOffset, src, srcOffset, radius, centerX, centerY, centerZ, angleX, angleY);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.arcball_unsafe(dest, destOffset, src, srcOffset, radius, centerX, centerY, centerZ, angleX, angleY);
         return Float4x4OpsKernelsTypedBuffer.arcball_api(dest, destOffset, src, srcOffset, radius, centerX, centerY, centerZ, angleX, angleY);
     }
 
     /** {@link #arcball(float[], int, float[], int, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer arcball(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float radius, float centerX, float centerY, float centerZ, float angleX, float angleY) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.arcball_unsafe(dest, destOffset, src, srcOffset, radius, centerX, centerY, centerZ, angleX, angleY);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.arcball_unsafe(dest, destOffset, src, srcOffset, radius, centerX, centerY, centerZ, angleX, angleY);
         return Float4x4OpsKernelsByteBuffer.arcball_api(dest, destOffset, src, srcOffset, radius, centerX, centerY, centerZ, angleX, angleY);
     }
 
@@ -5821,13 +5832,13 @@ public final class Float4x4Ops {
 
     /** {@link #arcball(float[], int, float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer arcball(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer center, int centerOffset, float radius, float angleX, float angleY) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && center.isDirect()) return Float4x4OpsKernelsTypedBuffer.arcball_unsafe(dest, destOffset, src, srcOffset, center, centerOffset, radius, angleX, angleY);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && center.isDirect() && center.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.arcball_unsafe(dest, destOffset, src, srcOffset, center, centerOffset, radius, angleX, angleY);
         return Float4x4OpsKernelsTypedBuffer.arcball_api(dest, destOffset, src, srcOffset, center, centerOffset, radius, angleX, angleY);
     }
 
     /** {@link #arcball(float[], int, float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer arcball(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer center, int centerOffset, float radius, float angleX, float angleY) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && center.isDirect()) return Float4x4OpsKernelsByteBuffer.arcball_unsafe(dest, destOffset, src, srcOffset, center, centerOffset, radius, angleX, angleY);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && center.isDirect() && center.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.arcball_unsafe(dest, destOffset, src, srcOffset, center, centerOffset, radius, angleX, angleY);
         return Float4x4OpsKernelsByteBuffer.arcball_api(dest, destOffset, src, srcOffset, center, centerOffset, radius, angleX, angleY);
     }
 
@@ -5868,13 +5879,13 @@ public final class Float4x4Ops {
 
     /** {@link #axonometricDimetric(float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer axonometricDimetric(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float alpha) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.axonometricDimetric_unsafe(dest, destOffset, src, srcOffset, alpha);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.axonometricDimetric_unsafe(dest, destOffset, src, srcOffset, alpha);
         return Float4x4OpsKernelsTypedBuffer.axonometricDimetric_api(dest, destOffset, src, srcOffset, alpha);
     }
 
     /** {@link #axonometricDimetric(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer axonometricDimetric(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float alpha) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.axonometricDimetric_unsafe(dest, destOffset, src, srcOffset, alpha);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.axonometricDimetric_unsafe(dest, destOffset, src, srcOffset, alpha);
         return Float4x4OpsKernelsByteBuffer.axonometricDimetric_api(dest, destOffset, src, srcOffset, alpha);
     }
 
@@ -5959,13 +5970,13 @@ public final class Float4x4Ops {
 
     /** {@link #axonometricIsometric(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer axonometricIsometric(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.axonometricIsometric_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.axonometricIsometric_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.axonometricIsometric_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #axonometricIsometric(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer axonometricIsometric(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.axonometricIsometric_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.axonometricIsometric_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.axonometricIsometric_api(dest, destOffset, src, srcOffset);
     }
 
@@ -6005,13 +6016,13 @@ public final class Float4x4Ops {
 
     /** {@link #axonometricTrimetric(float[], int, float[], int, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer axonometricTrimetric(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float alphaX, float alphaY) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.axonometricTrimetric_unsafe(dest, destOffset, src, srcOffset, alphaX, alphaY);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.axonometricTrimetric_unsafe(dest, destOffset, src, srcOffset, alphaX, alphaY);
         return Float4x4OpsKernelsTypedBuffer.axonometricTrimetric_api(dest, destOffset, src, srcOffset, alphaX, alphaY);
     }
 
     /** {@link #axonometricTrimetric(float[], int, float[], int, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer axonometricTrimetric(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float alphaX, float alphaY) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.axonometricTrimetric_unsafe(dest, destOffset, src, srcOffset, alphaX, alphaY);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.axonometricTrimetric_unsafe(dest, destOffset, src, srcOffset, alphaX, alphaY);
         return Float4x4OpsKernelsByteBuffer.axonometricTrimetric_api(dest, destOffset, src, srcOffset, alphaX, alphaY);
     }
 
@@ -6065,13 +6076,13 @@ public final class Float4x4Ops {
 
     /** {@link #composeTRS(float[], int, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer composeTRS(java.nio.FloatBuffer dest, int destOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.composeTRS_unsafe(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.composeTRS_unsafe(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
         return Float4x4OpsKernelsTypedBuffer.composeTRS_api(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
     }
 
     /** {@link #composeTRS(float[], int, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer composeTRS(java.nio.ByteBuffer dest, int destOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.composeTRS_unsafe(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.composeTRS_unsafe(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
         return Float4x4OpsKernelsByteBuffer.composeTRS_api(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
     }
 
@@ -6110,13 +6121,13 @@ public final class Float4x4Ops {
 
     /** {@link #composeTRS(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer composeTRS(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer translation, int translationOffset, java.nio.FloatBuffer rotation, int rotationOffset, java.nio.FloatBuffer scale, int scaleOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && translation.isDirect() && rotation.isDirect() && scale.isDirect()) return Float4x4OpsKernelsTypedBuffer.composeTRS_unsafe(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && translation.isDirect() && translation.order() == java.nio.ByteOrder.nativeOrder() && rotation.isDirect() && rotation.order() == java.nio.ByteOrder.nativeOrder() && scale.isDirect() && scale.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.composeTRS_unsafe(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
         return Float4x4OpsKernelsTypedBuffer.composeTRS_api(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
     }
 
     /** {@link #composeTRS(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer composeTRS(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer translation, int translationOffset, java.nio.ByteBuffer rotation, int rotationOffset, java.nio.ByteBuffer scale, int scaleOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && translation.isDirect() && rotation.isDirect() && scale.isDirect()) return Float4x4OpsKernelsByteBuffer.composeTRS_unsafe(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && translation.isDirect() && translation.order() == java.nio.ByteOrder.nativeOrder() && rotation.isDirect() && rotation.order() == java.nio.ByteOrder.nativeOrder() && scale.isDirect() && scale.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.composeTRS_unsafe(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
         return Float4x4OpsKernelsByteBuffer.composeTRS_api(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
     }
 
@@ -6215,13 +6226,13 @@ public final class Float4x4Ops {
 
     /** {@link #composeTRSMul(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer composeTRSMul(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer m, int mOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && m.isDirect()) return Float4x4OpsKernelsTypedBuffer.composeTRSMul_unsafe(dest, destOffset, m, mOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && m.isDirect() && m.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.composeTRSMul_unsafe(dest, destOffset, m, mOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
         return Float4x4OpsKernelsTypedBuffer.composeTRSMul_api(dest, destOffset, m, mOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
     }
 
     /** {@link #composeTRSMul(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer composeTRSMul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer m, int mOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && m.isDirect()) return Float4x4OpsKernelsByteBuffer.composeTRSMul_unsafe(dest, destOffset, m, mOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && m.isDirect() && m.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.composeTRSMul_unsafe(dest, destOffset, m, mOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
         return Float4x4OpsKernelsByteBuffer.composeTRSMul_api(dest, destOffset, m, mOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
     }
 
@@ -6314,13 +6325,13 @@ public final class Float4x4Ops {
 
     /** {@link #composeTRSMul(float[], int, float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer composeTRSMul(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer translation, int translationOffset, java.nio.FloatBuffer rotation, int rotationOffset, java.nio.FloatBuffer scale, int scaleOffset, java.nio.FloatBuffer m, int mOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && translation.isDirect() && rotation.isDirect() && scale.isDirect() && m.isDirect()) return Float4x4OpsKernelsTypedBuffer.composeTRSMul_unsafe(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, m, mOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && translation.isDirect() && translation.order() == java.nio.ByteOrder.nativeOrder() && rotation.isDirect() && rotation.order() == java.nio.ByteOrder.nativeOrder() && scale.isDirect() && scale.order() == java.nio.ByteOrder.nativeOrder() && m.isDirect() && m.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.composeTRSMul_unsafe(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, m, mOffset);
         return Float4x4OpsKernelsTypedBuffer.composeTRSMul_api(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, m, mOffset);
     }
 
     /** {@link #composeTRSMul(float[], int, float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer composeTRSMul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer translation, int translationOffset, java.nio.ByteBuffer rotation, int rotationOffset, java.nio.ByteBuffer scale, int scaleOffset, java.nio.ByteBuffer m, int mOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && translation.isDirect() && rotation.isDirect() && scale.isDirect() && m.isDirect()) return Float4x4OpsKernelsByteBuffer.composeTRSMul_unsafe(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, m, mOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && translation.isDirect() && translation.order() == java.nio.ByteOrder.nativeOrder() && rotation.isDirect() && rotation.order() == java.nio.ByteOrder.nativeOrder() && scale.isDirect() && scale.order() == java.nio.ByteOrder.nativeOrder() && m.isDirect() && m.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.composeTRSMul_unsafe(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, m, mOffset);
         return Float4x4OpsKernelsByteBuffer.composeTRSMul_api(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, m, mOffset);
     }
 
@@ -6344,6 +6355,10 @@ public final class Float4x4Ops {
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -6378,6 +6393,10 @@ public final class Float4x4Ops {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -6406,6 +6425,10 @@ public final class Float4x4Ops {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -6435,6 +6458,10 @@ public final class Float4x4Ops {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -6548,13 +6575,13 @@ public final class Float4x4Ops {
 
     /** {@link #lookAlong(float[], int, float[], int, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer lookAlong(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.lookAlong_unsafe(dest, destOffset, src, srcOffset, dirX, dirY, dirZ, upX, upY, upZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.lookAlong_unsafe(dest, destOffset, src, srcOffset, dirX, dirY, dirZ, upX, upY, upZ);
         return Float4x4OpsKernelsTypedBuffer.lookAlong_api(dest, destOffset, src, srcOffset, dirX, dirY, dirZ, upX, upY, upZ);
     }
 
     /** {@link #lookAlong(float[], int, float[], int, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer lookAlong(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.lookAlong_unsafe(dest, destOffset, src, srcOffset, dirX, dirY, dirZ, upX, upY, upZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.lookAlong_unsafe(dest, destOffset, src, srcOffset, dirX, dirY, dirZ, upX, upY, upZ);
         return Float4x4OpsKernelsByteBuffer.lookAlong_api(dest, destOffset, src, srcOffset, dirX, dirY, dirZ, upX, upY, upZ);
     }
 
@@ -6597,13 +6624,13 @@ public final class Float4x4Ops {
 
     /** {@link #lookAlong(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer lookAlong(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer dir, int dirOffset, java.nio.FloatBuffer up, int upOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && dir.isDirect() && up.isDirect()) return Float4x4OpsKernelsTypedBuffer.lookAlong_unsafe(dest, destOffset, src, srcOffset, dir, dirOffset, up, upOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && dir.isDirect() && dir.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.lookAlong_unsafe(dest, destOffset, src, srcOffset, dir, dirOffset, up, upOffset);
         return Float4x4OpsKernelsTypedBuffer.lookAlong_api(dest, destOffset, src, srcOffset, dir, dirOffset, up, upOffset);
     }
 
     /** {@link #lookAlong(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer lookAlong(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer dir, int dirOffset, java.nio.ByteBuffer up, int upOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && dir.isDirect() && up.isDirect()) return Float4x4OpsKernelsByteBuffer.lookAlong_unsafe(dest, destOffset, src, srcOffset, dir, dirOffset, up, upOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && dir.isDirect() && dir.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.lookAlong_unsafe(dest, destOffset, src, srcOffset, dir, dirOffset, up, upOffset);
         return Float4x4OpsKernelsByteBuffer.lookAlong_api(dest, destOffset, src, srcOffset, dir, dirOffset, up, upOffset);
     }
 
@@ -6864,13 +6891,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeArcball(float[], int, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeArcball(java.nio.FloatBuffer dest, int destOffset, float radius, float centerX, float centerY, float centerZ, float angleX, float angleY) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeArcball_unsafe(dest, destOffset, radius, centerX, centerY, centerZ, angleX, angleY);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeArcball_unsafe(dest, destOffset, radius, centerX, centerY, centerZ, angleX, angleY);
         return Float4x4OpsKernelsTypedBuffer.makeArcball_api(dest, destOffset, radius, centerX, centerY, centerZ, angleX, angleY);
     }
 
     /** {@link #makeArcball(float[], int, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeArcball(java.nio.ByteBuffer dest, int destOffset, float radius, float centerX, float centerY, float centerZ, float angleX, float angleY) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeArcball_unsafe(dest, destOffset, radius, centerX, centerY, centerZ, angleX, angleY);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeArcball_unsafe(dest, destOffset, radius, centerX, centerY, centerZ, angleX, angleY);
         return Float4x4OpsKernelsByteBuffer.makeArcball_api(dest, destOffset, radius, centerX, centerY, centerZ, angleX, angleY);
     }
 
@@ -6934,13 +6961,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeArcball(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeArcball(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer center, int centerOffset, float radius, float angleX, float angleY) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && center.isDirect()) return Float4x4OpsKernelsTypedBuffer.makeArcball_unsafe(dest, destOffset, center, centerOffset, radius, angleX, angleY);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && center.isDirect() && center.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeArcball_unsafe(dest, destOffset, center, centerOffset, radius, angleX, angleY);
         return Float4x4OpsKernelsTypedBuffer.makeArcball_api(dest, destOffset, center, centerOffset, radius, angleX, angleY);
     }
 
     /** {@link #makeArcball(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeArcball(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer center, int centerOffset, float radius, float angleX, float angleY) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && center.isDirect()) return Float4x4OpsKernelsByteBuffer.makeArcball_unsafe(dest, destOffset, center, centerOffset, radius, angleX, angleY);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && center.isDirect() && center.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeArcball_unsafe(dest, destOffset, center, centerOffset, radius, angleX, angleY);
         return Float4x4OpsKernelsByteBuffer.makeArcball_api(dest, destOffset, center, centerOffset, radius, angleX, angleY);
     }
 
@@ -6995,13 +7022,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeAxonometricDimetric(float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeAxonometricDimetric(java.nio.FloatBuffer dest, int destOffset, float alpha) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeAxonometricDimetric_unsafe(dest, destOffset, alpha);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeAxonometricDimetric_unsafe(dest, destOffset, alpha);
         return Float4x4OpsKernelsTypedBuffer.makeAxonometricDimetric_api(dest, destOffset, alpha);
     }
 
     /** {@link #makeAxonometricDimetric(float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeAxonometricDimetric(java.nio.ByteBuffer dest, int destOffset, float alpha) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeAxonometricDimetric_unsafe(dest, destOffset, alpha);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeAxonometricDimetric_unsafe(dest, destOffset, alpha);
         return Float4x4OpsKernelsByteBuffer.makeAxonometricDimetric_api(dest, destOffset, alpha);
     }
 
@@ -7052,13 +7079,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeAxonometricIsometric(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeAxonometricIsometric(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeAxonometricIsometric_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeAxonometricIsometric_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeAxonometricIsometric_api(dest, destOffset);
     }
 
     /** {@link #makeAxonometricIsometric(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeAxonometricIsometric(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeAxonometricIsometric_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeAxonometricIsometric_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeAxonometricIsometric_api(dest, destOffset);
     }
 
@@ -7111,13 +7138,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeAxonometricTrimetric(float[], int, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeAxonometricTrimetric(java.nio.FloatBuffer dest, int destOffset, float alphaX, float alphaY) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeAxonometricTrimetric_unsafe(dest, destOffset, alphaX, alphaY);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeAxonometricTrimetric_unsafe(dest, destOffset, alphaX, alphaY);
         return Float4x4OpsKernelsTypedBuffer.makeAxonometricTrimetric_api(dest, destOffset, alphaX, alphaY);
     }
 
     /** {@link #makeAxonometricTrimetric(float[], int, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeAxonometricTrimetric(java.nio.ByteBuffer dest, int destOffset, float alphaX, float alphaY) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeAxonometricTrimetric_unsafe(dest, destOffset, alphaX, alphaY);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeAxonometricTrimetric_unsafe(dest, destOffset, alphaX, alphaY);
         return Float4x4OpsKernelsByteBuffer.makeAxonometricTrimetric_api(dest, destOffset, alphaX, alphaY);
     }
 
@@ -7208,13 +7235,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeBillboardCylindrical(float[], int, float, float, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeBillboardCylindrical(java.nio.FloatBuffer dest, int destOffset, float objPosX, float objPosY, float objPosZ, float targetPosX, float targetPosY, float targetPosZ, float upX, float upY, float upZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeBillboardCylindrical_unsafe(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeBillboardCylindrical_unsafe(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
         return Float4x4OpsKernelsTypedBuffer.makeBillboardCylindrical_api(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
     }
 
     /** {@link #makeBillboardCylindrical(float[], int, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeBillboardCylindrical(java.nio.ByteBuffer dest, int destOffset, float objPosX, float objPosY, float objPosZ, float targetPosX, float targetPosY, float targetPosZ, float upX, float upY, float upZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeBillboardCylindrical_unsafe(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeBillboardCylindrical_unsafe(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
         return Float4x4OpsKernelsByteBuffer.makeBillboardCylindrical_api(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
     }
 
@@ -7305,13 +7332,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeBillboardCylindrical(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeBillboardCylindrical(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer objPos, int objPosOffset, java.nio.FloatBuffer targetPos, int targetPosOffset, java.nio.FloatBuffer up, int upOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && objPos.isDirect() && targetPos.isDirect() && up.isDirect()) return Float4x4OpsKernelsTypedBuffer.makeBillboardCylindrical_unsafe(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset, up, upOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && objPos.isDirect() && objPos.order() == java.nio.ByteOrder.nativeOrder() && targetPos.isDirect() && targetPos.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeBillboardCylindrical_unsafe(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset, up, upOffset);
         return Float4x4OpsKernelsTypedBuffer.makeBillboardCylindrical_api(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset, up, upOffset);
     }
 
     /** {@link #makeBillboardCylindrical(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeBillboardCylindrical(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer objPos, int objPosOffset, java.nio.ByteBuffer targetPos, int targetPosOffset, java.nio.ByteBuffer up, int upOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && objPos.isDirect() && targetPos.isDirect() && up.isDirect()) return Float4x4OpsKernelsByteBuffer.makeBillboardCylindrical_unsafe(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset, up, upOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && objPos.isDirect() && objPos.order() == java.nio.ByteOrder.nativeOrder() && targetPos.isDirect() && targetPos.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeBillboardCylindrical_unsafe(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset, up, upOffset);
         return Float4x4OpsKernelsByteBuffer.makeBillboardCylindrical_api(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset, up, upOffset);
     }
 
@@ -7399,13 +7426,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeBillboardSpherical(float[], int, float, float, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeBillboardSpherical(java.nio.FloatBuffer dest, int destOffset, float objPosX, float objPosY, float objPosZ, float targetPosX, float targetPosY, float targetPosZ, float upX, float upY, float upZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeBillboardSpherical_unsafe(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeBillboardSpherical_unsafe(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
         return Float4x4OpsKernelsTypedBuffer.makeBillboardSpherical_api(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
     }
 
     /** {@link #makeBillboardSpherical(float[], int, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeBillboardSpherical(java.nio.ByteBuffer dest, int destOffset, float objPosX, float objPosY, float objPosZ, float targetPosX, float targetPosY, float targetPosZ, float upX, float upY, float upZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeBillboardSpherical_unsafe(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeBillboardSpherical_unsafe(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
         return Float4x4OpsKernelsByteBuffer.makeBillboardSpherical_api(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
     }
 
@@ -7496,13 +7523,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeBillboardSpherical(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeBillboardSpherical(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer objPos, int objPosOffset, java.nio.FloatBuffer targetPos, int targetPosOffset, java.nio.FloatBuffer up, int upOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && objPos.isDirect() && targetPos.isDirect() && up.isDirect()) return Float4x4OpsKernelsTypedBuffer.makeBillboardSpherical_unsafe(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset, up, upOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && objPos.isDirect() && objPos.order() == java.nio.ByteOrder.nativeOrder() && targetPos.isDirect() && targetPos.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeBillboardSpherical_unsafe(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset, up, upOffset);
         return Float4x4OpsKernelsTypedBuffer.makeBillboardSpherical_api(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset, up, upOffset);
     }
 
     /** {@link #makeBillboardSpherical(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeBillboardSpherical(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer objPos, int objPosOffset, java.nio.ByteBuffer targetPos, int targetPosOffset, java.nio.ByteBuffer up, int upOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && objPos.isDirect() && targetPos.isDirect() && up.isDirect()) return Float4x4OpsKernelsByteBuffer.makeBillboardSpherical_unsafe(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset, up, upOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && objPos.isDirect() && objPos.order() == java.nio.ByteOrder.nativeOrder() && targetPos.isDirect() && targetPos.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeBillboardSpherical_unsafe(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset, up, upOffset);
         return Float4x4OpsKernelsByteBuffer.makeBillboardSpherical_api(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset, up, upOffset);
     }
 
@@ -7574,13 +7601,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeBillboardSphericalShortest(float[], int, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeBillboardSphericalShortest(java.nio.FloatBuffer dest, int destOffset, float objPosX, float objPosY, float objPosZ, float targetPosX, float targetPosY, float targetPosZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeBillboardSphericalShortest_unsafe(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeBillboardSphericalShortest_unsafe(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ);
         return Float4x4OpsKernelsTypedBuffer.makeBillboardSphericalShortest_api(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ);
     }
 
     /** {@link #makeBillboardSphericalShortest(float[], int, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeBillboardSphericalShortest(java.nio.ByteBuffer dest, int destOffset, float objPosX, float objPosY, float objPosZ, float targetPosX, float targetPosY, float targetPosZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeBillboardSphericalShortest_unsafe(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeBillboardSphericalShortest_unsafe(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ);
         return Float4x4OpsKernelsByteBuffer.makeBillboardSphericalShortest_api(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ);
     }
 
@@ -7653,13 +7680,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeBillboardSphericalShortest(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeBillboardSphericalShortest(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer objPos, int objPosOffset, java.nio.FloatBuffer targetPos, int targetPosOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && objPos.isDirect() && targetPos.isDirect()) return Float4x4OpsKernelsTypedBuffer.makeBillboardSphericalShortest_unsafe(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && objPos.isDirect() && objPos.order() == java.nio.ByteOrder.nativeOrder() && targetPos.isDirect() && targetPos.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeBillboardSphericalShortest_unsafe(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset);
         return Float4x4OpsKernelsTypedBuffer.makeBillboardSphericalShortest_api(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset);
     }
 
     /** {@link #makeBillboardSphericalShortest(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeBillboardSphericalShortest(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer objPos, int objPosOffset, java.nio.ByteBuffer targetPos, int targetPosOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && objPos.isDirect() && targetPos.isDirect()) return Float4x4OpsKernelsByteBuffer.makeBillboardSphericalShortest_unsafe(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && objPos.isDirect() && objPos.order() == java.nio.ByteOrder.nativeOrder() && targetPos.isDirect() && targetPos.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeBillboardSphericalShortest_unsafe(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset);
         return Float4x4OpsKernelsByteBuffer.makeBillboardSphericalShortest_api(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset);
     }
 
@@ -7683,29 +7710,25 @@ public final class Float4x4Ops {
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param dqRX the {@code rX} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the real part must have unit
+     *        length)
      * @param dqRY the {@code rY} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the real part must have unit
+     *        length)
      * @param dqRZ the {@code rZ} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the real part must have unit
+     *        length)
      * @param dqRW the {@code rW} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the real part must have unit
+     *        length)
      * @param dqDX the {@code dX} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)}
      * @param dqDY the {@code dY} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)}
      * @param dqDZ the {@code dZ} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)}
      * @param dqDW the {@code dW} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)}
      * @return {@code dest}
      */
     public static float[] makeFromDualQuat(float[] dest, int destOffset, float dqRX, float dqRY, float dqRZ, float dqRW, float dqDX, float dqDY, float dqDZ, float dqDW) {
@@ -7736,13 +7759,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeFromDualQuat(float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeFromDualQuat(java.nio.FloatBuffer dest, int destOffset, float dqRX, float dqRY, float dqRZ, float dqRW, float dqDX, float dqDY, float dqDZ, float dqDW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeFromDualQuat_unsafe(dest, destOffset, dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeFromDualQuat_unsafe(dest, destOffset, dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW);
         return Float4x4OpsKernelsTypedBuffer.makeFromDualQuat_api(dest, destOffset, dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW);
     }
 
     /** {@link #makeFromDualQuat(float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeFromDualQuat(java.nio.ByteBuffer dest, int destOffset, float dqRX, float dqRY, float dqRZ, float dqRW, float dqDX, float dqDY, float dqDZ, float dqDW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeFromDualQuat_unsafe(dest, destOffset, dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeFromDualQuat_unsafe(dest, destOffset, dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW);
         return Float4x4OpsKernelsByteBuffer.makeFromDualQuat_api(dest, destOffset, dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW);
     }
 
@@ -7761,6 +7784,10 @@ public final class Float4x4Ops {
 
     /**
      * Set this matrix to an arbitrary perspective projection frustum transformation.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -7788,6 +7815,10 @@ public final class Float4x4Ops {
      * Set this matrix to an arbitrary perspective projection frustum transformation.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -7809,6 +7840,10 @@ public final class Float4x4Ops {
      * Set this matrix to an arbitrary perspective projection frustum transformation.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -7831,6 +7866,10 @@ public final class Float4x4Ops {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -8151,13 +8190,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingXYnZ(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingXYnZ(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingXYnZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingXYnZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingXYnZ_api(dest, destOffset);
     }
 
     /** {@link #makeMappingXYnZ(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingXYnZ(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingXYnZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingXYnZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingXYnZ_api(dest, destOffset);
     }
 
@@ -8204,13 +8243,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingXZY(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingXZY(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingXZY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingXZY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingXZY_api(dest, destOffset);
     }
 
     /** {@link #makeMappingXZY(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingXZY(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingXZY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingXZY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingXZY_api(dest, destOffset);
     }
 
@@ -8257,13 +8296,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingXZnY(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingXZnY(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingXZnY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingXZnY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingXZnY_api(dest, destOffset);
     }
 
     /** {@link #makeMappingXZnY(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingXZnY(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingXZnY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingXZnY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingXZnY_api(dest, destOffset);
     }
 
@@ -8310,13 +8349,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingXnYZ(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingXnYZ(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingXnYZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingXnYZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingXnYZ_api(dest, destOffset);
     }
 
     /** {@link #makeMappingXnYZ(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingXnYZ(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingXnYZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingXnYZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingXnYZ_api(dest, destOffset);
     }
 
@@ -8363,13 +8402,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingXnYnZ(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingXnYnZ(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingXnYnZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingXnYnZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingXnYnZ_api(dest, destOffset);
     }
 
     /** {@link #makeMappingXnYnZ(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingXnYnZ(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingXnYnZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingXnYnZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingXnYnZ_api(dest, destOffset);
     }
 
@@ -8416,13 +8455,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingXnZY(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingXnZY(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingXnZY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingXnZY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingXnZY_api(dest, destOffset);
     }
 
     /** {@link #makeMappingXnZY(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingXnZY(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingXnZY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingXnZY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingXnZY_api(dest, destOffset);
     }
 
@@ -8469,13 +8508,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingXnZnY(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingXnZnY(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingXnZnY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingXnZnY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingXnZnY_api(dest, destOffset);
     }
 
     /** {@link #makeMappingXnZnY(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingXnZnY(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingXnZnY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingXnZnY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingXnZnY_api(dest, destOffset);
     }
 
@@ -8522,13 +8561,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingYXZ(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingYXZ(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingYXZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingYXZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingYXZ_api(dest, destOffset);
     }
 
     /** {@link #makeMappingYXZ(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingYXZ(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingYXZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingYXZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingYXZ_api(dest, destOffset);
     }
 
@@ -8575,13 +8614,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingYXnZ(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingYXnZ(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingYXnZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingYXnZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingYXnZ_api(dest, destOffset);
     }
 
     /** {@link #makeMappingYXnZ(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingYXnZ(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingYXnZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingYXnZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingYXnZ_api(dest, destOffset);
     }
 
@@ -8628,13 +8667,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingYZX(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingYZX(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingYZX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingYZX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingYZX_api(dest, destOffset);
     }
 
     /** {@link #makeMappingYZX(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingYZX(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingYZX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingYZX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingYZX_api(dest, destOffset);
     }
 
@@ -8681,13 +8720,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingYZnX(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingYZnX(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingYZnX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingYZnX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingYZnX_api(dest, destOffset);
     }
 
     /** {@link #makeMappingYZnX(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingYZnX(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingYZnX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingYZnX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingYZnX_api(dest, destOffset);
     }
 
@@ -8734,13 +8773,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingYnXZ(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingYnXZ(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingYnXZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingYnXZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingYnXZ_api(dest, destOffset);
     }
 
     /** {@link #makeMappingYnXZ(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingYnXZ(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingYnXZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingYnXZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingYnXZ_api(dest, destOffset);
     }
 
@@ -8787,13 +8826,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingYnXnZ(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingYnXnZ(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingYnXnZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingYnXnZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingYnXnZ_api(dest, destOffset);
     }
 
     /** {@link #makeMappingYnXnZ(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingYnXnZ(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingYnXnZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingYnXnZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingYnXnZ_api(dest, destOffset);
     }
 
@@ -8840,13 +8879,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingYnZX(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingYnZX(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingYnZX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingYnZX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingYnZX_api(dest, destOffset);
     }
 
     /** {@link #makeMappingYnZX(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingYnZX(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingYnZX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingYnZX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingYnZX_api(dest, destOffset);
     }
 
@@ -8893,13 +8932,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingYnZnX(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingYnZnX(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingYnZnX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingYnZnX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingYnZnX_api(dest, destOffset);
     }
 
     /** {@link #makeMappingYnZnX(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingYnZnX(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingYnZnX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingYnZnX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingYnZnX_api(dest, destOffset);
     }
 
@@ -8946,13 +8985,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingZXY(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingZXY(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingZXY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingZXY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingZXY_api(dest, destOffset);
     }
 
     /** {@link #makeMappingZXY(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingZXY(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingZXY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingZXY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingZXY_api(dest, destOffset);
     }
 
@@ -8999,13 +9038,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingZXnY(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingZXnY(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingZXnY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingZXnY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingZXnY_api(dest, destOffset);
     }
 
     /** {@link #makeMappingZXnY(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingZXnY(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingZXnY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingZXnY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingZXnY_api(dest, destOffset);
     }
 
@@ -9052,13 +9091,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingZYX(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingZYX(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingZYX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingZYX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingZYX_api(dest, destOffset);
     }
 
     /** {@link #makeMappingZYX(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingZYX(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingZYX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingZYX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingZYX_api(dest, destOffset);
     }
 
@@ -9105,13 +9144,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingZYnX(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingZYnX(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingZYnX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingZYnX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingZYnX_api(dest, destOffset);
     }
 
     /** {@link #makeMappingZYnX(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingZYnX(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingZYnX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingZYnX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingZYnX_api(dest, destOffset);
     }
 
@@ -9158,13 +9197,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingZnXY(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingZnXY(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingZnXY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingZnXY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingZnXY_api(dest, destOffset);
     }
 
     /** {@link #makeMappingZnXY(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingZnXY(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingZnXY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingZnXY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingZnXY_api(dest, destOffset);
     }
 
@@ -9211,13 +9250,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingZnXnY(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingZnXnY(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingZnXnY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingZnXnY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingZnXnY_api(dest, destOffset);
     }
 
     /** {@link #makeMappingZnXnY(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingZnXnY(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingZnXnY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingZnXnY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingZnXnY_api(dest, destOffset);
     }
 
@@ -9264,13 +9303,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingZnYX(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingZnYX(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingZnYX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingZnYX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingZnYX_api(dest, destOffset);
     }
 
     /** {@link #makeMappingZnYX(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingZnYX(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingZnYX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingZnYX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingZnYX_api(dest, destOffset);
     }
 
@@ -9317,13 +9356,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingZnYnX(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingZnYnX(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingZnYnX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingZnYnX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingZnYnX_api(dest, destOffset);
     }
 
     /** {@link #makeMappingZnYnX(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingZnYnX(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingZnYnX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingZnYnX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingZnYnX_api(dest, destOffset);
     }
 
@@ -9370,13 +9409,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnXYZ(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnXYZ(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnXYZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnXYZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnXYZ_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnXYZ(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnXYZ(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnXYZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnXYZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnXYZ_api(dest, destOffset);
     }
 
@@ -9423,13 +9462,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnXYnZ(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnXYnZ(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnXYnZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnXYnZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnXYnZ_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnXYnZ(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnXYnZ(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnXYnZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnXYnZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnXYnZ_api(dest, destOffset);
     }
 
@@ -9476,13 +9515,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnXZY(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnXZY(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnXZY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnXZY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnXZY_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnXZY(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnXZY(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnXZY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnXZY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnXZY_api(dest, destOffset);
     }
 
@@ -9529,13 +9568,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnXZnY(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnXZnY(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnXZnY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnXZnY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnXZnY_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnXZnY(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnXZnY(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnXZnY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnXZnY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnXZnY_api(dest, destOffset);
     }
 
@@ -9582,13 +9621,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnXnYZ(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnXnYZ(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnXnYZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnXnYZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnXnYZ_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnXnYZ(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnXnYZ(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnXnYZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnXnYZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnXnYZ_api(dest, destOffset);
     }
 
@@ -9635,13 +9674,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnXnYnZ(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnXnYnZ(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnXnYnZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnXnYnZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnXnYnZ_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnXnYnZ(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnXnYnZ(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnXnYnZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnXnYnZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnXnYnZ_api(dest, destOffset);
     }
 
@@ -9688,13 +9727,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnXnZY(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnXnZY(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnXnZY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnXnZY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnXnZY_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnXnZY(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnXnZY(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnXnZY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnXnZY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnXnZY_api(dest, destOffset);
     }
 
@@ -9741,13 +9780,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnXnZnY(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnXnZnY(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnXnZnY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnXnZnY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnXnZnY_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnXnZnY(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnXnZnY(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnXnZnY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnXnZnY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnXnZnY_api(dest, destOffset);
     }
 
@@ -9794,13 +9833,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnYXZ(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnYXZ(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnYXZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnYXZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnYXZ_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnYXZ(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnYXZ(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnYXZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnYXZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnYXZ_api(dest, destOffset);
     }
 
@@ -9847,13 +9886,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnYXnZ(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnYXnZ(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnYXnZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnYXnZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnYXnZ_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnYXnZ(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnYXnZ(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnYXnZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnYXnZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnYXnZ_api(dest, destOffset);
     }
 
@@ -9900,13 +9939,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnYZX(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnYZX(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnYZX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnYZX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnYZX_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnYZX(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnYZX(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnYZX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnYZX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnYZX_api(dest, destOffset);
     }
 
@@ -9953,13 +9992,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnYZnX(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnYZnX(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnYZnX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnYZnX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnYZnX_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnYZnX(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnYZnX(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnYZnX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnYZnX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnYZnX_api(dest, destOffset);
     }
 
@@ -10006,13 +10045,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnYnXZ(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnYnXZ(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnYnXZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnYnXZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnYnXZ_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnYnXZ(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnYnXZ(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnYnXZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnYnXZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnYnXZ_api(dest, destOffset);
     }
 
@@ -10059,13 +10098,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnYnXnZ(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnYnXnZ(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnYnXnZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnYnXnZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnYnXnZ_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnYnXnZ(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnYnXnZ(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnYnXnZ_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnYnXnZ_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnYnXnZ_api(dest, destOffset);
     }
 
@@ -10112,13 +10151,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnYnZX(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnYnZX(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnYnZX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnYnZX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnYnZX_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnYnZX(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnYnZX(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnYnZX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnYnZX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnYnZX_api(dest, destOffset);
     }
 
@@ -10165,13 +10204,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnYnZnX(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnYnZnX(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnYnZnX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnYnZnX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnYnZnX_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnYnZnX(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnYnZnX(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnYnZnX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnYnZnX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnYnZnX_api(dest, destOffset);
     }
 
@@ -10218,13 +10257,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnZXY(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnZXY(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnZXY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnZXY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnZXY_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnZXY(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnZXY(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnZXY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnZXY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnZXY_api(dest, destOffset);
     }
 
@@ -10271,13 +10310,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnZXnY(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnZXnY(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnZXnY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnZXnY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnZXnY_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnZXnY(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnZXnY(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnZXnY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnZXnY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnZXnY_api(dest, destOffset);
     }
 
@@ -10324,13 +10363,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnZYX(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnZYX(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnZYX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnZYX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnZYX_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnZYX(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnZYX(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnZYX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnZYX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnZYX_api(dest, destOffset);
     }
 
@@ -10377,13 +10416,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnZYnX(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnZYnX(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnZYnX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnZYnX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnZYnX_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnZYnX(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnZYnX(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnZYnX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnZYnX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnZYnX_api(dest, destOffset);
     }
 
@@ -10430,13 +10469,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnZnXY(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnZnXY(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnZnXY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnZnXY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnZnXY_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnZnXY(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnZnXY(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnZnXY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnZnXY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnZnXY_api(dest, destOffset);
     }
 
@@ -10483,13 +10522,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnZnXnY(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnZnXnY(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnZnXnY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnZnXnY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnZnXnY_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnZnXnY(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnZnXnY(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnZnXnY_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnZnXnY_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnZnXnY_api(dest, destOffset);
     }
 
@@ -10536,13 +10575,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnZnYX(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnZnYX(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnZnYX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnZnYX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnZnYX_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnZnYX(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnZnYX(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnZnYX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnZnYX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnZnYX_api(dest, destOffset);
     }
 
@@ -10589,13 +10628,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeMappingnZnYnX(float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeMappingnZnYnX(java.nio.FloatBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeMappingnZnYnX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeMappingnZnYnX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsTypedBuffer.makeMappingnZnYnX_api(dest, destOffset);
     }
 
     /** {@link #makeMappingnZnYnX(float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeMappingnZnYnX(java.nio.ByteBuffer dest, int destOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeMappingnZnYnX_unsafe(dest, destOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeMappingnZnYnX_unsafe(dest, destOffset);
         return Float4x4OpsKernelsByteBuffer.makeMappingnZnYnX_api(dest, destOffset);
     }
 
@@ -10643,13 +10682,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeObliqueCabinet(float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeObliqueCabinet(java.nio.FloatBuffer dest, int destOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeObliqueCabinet_unsafe(dest, destOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeObliqueCabinet_unsafe(dest, destOffset, angle);
         return Float4x4OpsKernelsTypedBuffer.makeObliqueCabinet_api(dest, destOffset, angle);
     }
 
     /** {@link #makeObliqueCabinet(float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeObliqueCabinet(java.nio.ByteBuffer dest, int destOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeObliqueCabinet_unsafe(dest, destOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeObliqueCabinet_unsafe(dest, destOffset, angle);
         return Float4x4OpsKernelsByteBuffer.makeObliqueCabinet_api(dest, destOffset, angle);
     }
 
@@ -10697,13 +10736,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeObliqueCavalier(float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeObliqueCavalier(java.nio.FloatBuffer dest, int destOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeObliqueCavalier_unsafe(dest, destOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeObliqueCavalier_unsafe(dest, destOffset, angle);
         return Float4x4OpsKernelsTypedBuffer.makeObliqueCavalier_api(dest, destOffset, angle);
     }
 
     /** {@link #makeObliqueCavalier(float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeObliqueCavalier(java.nio.ByteBuffer dest, int destOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeObliqueCavalier_unsafe(dest, destOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeObliqueCavalier_unsafe(dest, destOffset, angle);
         return Float4x4OpsKernelsByteBuffer.makeObliqueCavalier_api(dest, destOffset, angle);
     }
 
@@ -10751,13 +10790,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeObliqueMilitary(float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeObliqueMilitary(java.nio.FloatBuffer dest, int destOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeObliqueMilitary_unsafe(dest, destOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeObliqueMilitary_unsafe(dest, destOffset, angle);
         return Float4x4OpsKernelsTypedBuffer.makeObliqueMilitary_api(dest, destOffset, angle);
     }
 
     /** {@link #makeObliqueMilitary(float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeObliqueMilitary(java.nio.ByteBuffer dest, int destOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeObliqueMilitary_unsafe(dest, destOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeObliqueMilitary_unsafe(dest, destOffset, angle);
         return Float4x4OpsKernelsByteBuffer.makeObliqueMilitary_api(dest, destOffset, angle);
     }
 
@@ -10776,6 +10815,10 @@ public final class Float4x4Ops {
 
     /**
      * Set this matrix to an orthographic projection transformation.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -10800,6 +10843,10 @@ public final class Float4x4Ops {
      * Set this matrix to an orthographic projection transformation.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -10818,6 +10865,10 @@ public final class Float4x4Ops {
      * Set this matrix to an orthographic projection transformation.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -10837,6 +10888,10 @@ public final class Float4x4Ops {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -10920,6 +10975,10 @@ public final class Float4x4Ops {
 
     /**
      * Set this matrix to a 2D orthographic projection transformation.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -10942,6 +11001,10 @@ public final class Float4x4Ops {
      * Set this matrix to a 2D orthographic projection transformation.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -10958,6 +11021,10 @@ public final class Float4x4Ops {
      * Set this matrix to a 2D orthographic projection transformation.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -10975,6 +11042,10 @@ public final class Float4x4Ops {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -11056,6 +11127,10 @@ public final class Float4x4Ops {
 
     /**
      * Set this matrix to a symmetric perspective projection frustum transformation.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -11082,6 +11157,10 @@ public final class Float4x4Ops {
      * Set this matrix to a symmetric perspective projection frustum transformation.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -11102,6 +11181,10 @@ public final class Float4x4Ops {
      * Set this matrix to a symmetric perspective projection frustum transformation.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -11123,6 +11206,10 @@ public final class Float4x4Ops {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -11209,6 +11296,10 @@ public final class Float4x4Ops {
     /**
      * Set this matrix to a perspective projection frustum transformation for the given vertical
      * field-of-view range.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -11236,6 +11327,10 @@ public final class Float4x4Ops {
      * field-of-view range.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -11257,6 +11352,10 @@ public final class Float4x4Ops {
      * field-of-view range.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -11279,6 +11378,10 @@ public final class Float4x4Ops {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -11365,6 +11468,10 @@ public final class Float4x4Ops {
     /**
      * Set this matrix to an asymmetric perspective projection frustum transformation with the
      * frustum sides given as view-axis angles.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -11395,6 +11502,10 @@ public final class Float4x4Ops {
      * frustum sides given as view-axis angles.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -11419,6 +11530,10 @@ public final class Float4x4Ops {
      * frustum sides given as view-axis angles.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -11444,6 +11559,10 @@ public final class Float4x4Ops {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -12139,13 +12258,13 @@ public final class Float4x4Ops {
 
     /** {@link #makePickMatrix(float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makePickMatrix(java.nio.FloatBuffer dest, int destOffset, float centerX, float centerY, float deltaX, float deltaY, float vpX, float vpY, float vpW, float vpH) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makePickMatrix_unsafe(dest, destOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makePickMatrix_unsafe(dest, destOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
         return Float4x4OpsKernelsTypedBuffer.makePickMatrix_api(dest, destOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
     }
 
     /** {@link #makePickMatrix(float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makePickMatrix(java.nio.ByteBuffer dest, int destOffset, float centerX, float centerY, float deltaX, float deltaY, float vpX, float vpY, float vpW, float vpH) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makePickMatrix_unsafe(dest, destOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makePickMatrix_unsafe(dest, destOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
         return Float4x4OpsKernelsByteBuffer.makePickMatrix_api(dest, destOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
     }
 
@@ -12201,13 +12320,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeReflection(float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeReflection(java.nio.FloatBuffer dest, int destOffset, float normalX, float normalY, float normalZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeReflection_unsafe(dest, destOffset, normalX, normalY, normalZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeReflection_unsafe(dest, destOffset, normalX, normalY, normalZ);
         return Float4x4OpsKernelsTypedBuffer.makeReflection_api(dest, destOffset, normalX, normalY, normalZ);
     }
 
     /** {@link #makeReflection(float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeReflection(java.nio.ByteBuffer dest, int destOffset, float normalX, float normalY, float normalZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeReflection_unsafe(dest, destOffset, normalX, normalY, normalZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeReflection_unsafe(dest, destOffset, normalX, normalY, normalZ);
         return Float4x4OpsKernelsByteBuffer.makeReflection_api(dest, destOffset, normalX, normalY, normalZ);
     }
 
@@ -12262,13 +12381,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeReflection(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeReflection(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer normal, int normalOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && normal.isDirect()) return Float4x4OpsKernelsTypedBuffer.makeReflection_unsafe(dest, destOffset, normal, normalOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && normal.isDirect() && normal.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeReflection_unsafe(dest, destOffset, normal, normalOffset);
         return Float4x4OpsKernelsTypedBuffer.makeReflection_api(dest, destOffset, normal, normalOffset);
     }
 
     /** {@link #makeReflection(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeReflection(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer normal, int normalOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && normal.isDirect()) return Float4x4OpsKernelsByteBuffer.makeReflection_unsafe(dest, destOffset, normal, normalOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && normal.isDirect() && normal.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeReflection_unsafe(dest, destOffset, normal, normalOffset);
         return Float4x4OpsKernelsByteBuffer.makeReflection_api(dest, destOffset, normal, normalOffset);
     }
 
@@ -12327,13 +12446,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeRotationAxis(float[], int, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeRotationAxis(java.nio.FloatBuffer dest, int destOffset, float angle, float axisX, float axisY, float axisZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeRotationAxis_unsafe(dest, destOffset, angle, axisX, axisY, axisZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeRotationAxis_unsafe(dest, destOffset, angle, axisX, axisY, axisZ);
         return Float4x4OpsKernelsTypedBuffer.makeRotationAxis_api(dest, destOffset, angle, axisX, axisY, axisZ);
     }
 
     /** {@link #makeRotationAxis(float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeRotationAxis(java.nio.ByteBuffer dest, int destOffset, float angle, float axisX, float axisY, float axisZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeRotationAxis_unsafe(dest, destOffset, angle, axisX, axisY, axisZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeRotationAxis_unsafe(dest, destOffset, angle, axisX, axisY, axisZ);
         return Float4x4OpsKernelsByteBuffer.makeRotationAxis_api(dest, destOffset, angle, axisX, axisY, axisZ);
     }
 
@@ -12391,13 +12510,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeRotationAxis(float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeRotationAxis(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer axis, int axisOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && axis.isDirect()) return Float4x4OpsKernelsTypedBuffer.makeRotationAxis_unsafe(dest, destOffset, axis, axisOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && axis.isDirect() && axis.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeRotationAxis_unsafe(dest, destOffset, axis, axisOffset, angle);
         return Float4x4OpsKernelsTypedBuffer.makeRotationAxis_api(dest, destOffset, axis, axisOffset, angle);
     }
 
     /** {@link #makeRotationAxis(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeRotationAxis(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer axis, int axisOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && axis.isDirect()) return Float4x4OpsKernelsByteBuffer.makeRotationAxis_unsafe(dest, destOffset, axis, axisOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && axis.isDirect() && axis.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeRotationAxis_unsafe(dest, destOffset, axis, axisOffset, angle);
         return Float4x4OpsKernelsByteBuffer.makeRotationAxis_api(dest, destOffset, axis, axisOffset, angle);
     }
 
@@ -12476,13 +12595,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeRotationLookAlong(float[], int, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeRotationLookAlong(java.nio.FloatBuffer dest, int destOffset, float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeRotationLookAlong_unsafe(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeRotationLookAlong_unsafe(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
         return Float4x4OpsKernelsTypedBuffer.makeRotationLookAlong_api(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
     }
 
     /** {@link #makeRotationLookAlong(float[], int, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeRotationLookAlong(java.nio.ByteBuffer dest, int destOffset, float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeRotationLookAlong_unsafe(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeRotationLookAlong_unsafe(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
         return Float4x4OpsKernelsByteBuffer.makeRotationLookAlong_api(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
     }
 
@@ -12565,13 +12684,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeRotationLookAlong(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeRotationLookAlong(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer dir, int dirOffset, java.nio.FloatBuffer up, int upOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dir.isDirect() && up.isDirect()) return Float4x4OpsKernelsTypedBuffer.makeRotationLookAlong_unsafe(dest, destOffset, dir, dirOffset, up, upOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && dir.isDirect() && dir.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeRotationLookAlong_unsafe(dest, destOffset, dir, dirOffset, up, upOffset);
         return Float4x4OpsKernelsTypedBuffer.makeRotationLookAlong_api(dest, destOffset, dir, dirOffset, up, upOffset);
     }
 
     /** {@link #makeRotationLookAlong(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeRotationLookAlong(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer dir, int dirOffset, java.nio.ByteBuffer up, int upOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dir.isDirect() && up.isDirect()) return Float4x4OpsKernelsByteBuffer.makeRotationLookAlong_unsafe(dest, destOffset, dir, dirOffset, up, upOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && dir.isDirect() && dir.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeRotationLookAlong_unsafe(dest, destOffset, dir, dirOffset, up, upOffset);
         return Float4x4OpsKernelsByteBuffer.makeRotationLookAlong_api(dest, destOffset, dir, dirOffset, up, upOffset);
     }
 
@@ -12628,13 +12747,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeRotationQuat(float[], int, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeRotationQuat(java.nio.FloatBuffer dest, int destOffset, float qX, float qY, float qZ, float qW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeRotationQuat_unsafe(dest, destOffset, qX, qY, qZ, qW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeRotationQuat_unsafe(dest, destOffset, qX, qY, qZ, qW);
         return Float4x4OpsKernelsTypedBuffer.makeRotationQuat_api(dest, destOffset, qX, qY, qZ, qW);
     }
 
     /** {@link #makeRotationQuat(float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeRotationQuat(java.nio.ByteBuffer dest, int destOffset, float qX, float qY, float qZ, float qW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeRotationQuat_unsafe(dest, destOffset, qX, qY, qZ, qW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeRotationQuat_unsafe(dest, destOffset, qX, qY, qZ, qW);
         return Float4x4OpsKernelsByteBuffer.makeRotationQuat_api(dest, destOffset, qX, qY, qZ, qW);
     }
 
@@ -12689,13 +12808,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeRotationQuat(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeRotationQuat(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer q, int qOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && q.isDirect()) return Float4x4OpsKernelsTypedBuffer.makeRotationQuat_unsafe(dest, destOffset, q, qOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && q.isDirect() && q.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeRotationQuat_unsafe(dest, destOffset, q, qOffset);
         return Float4x4OpsKernelsTypedBuffer.makeRotationQuat_api(dest, destOffset, q, qOffset);
     }
 
     /** {@link #makeRotationQuat(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeRotationQuat(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer q, int qOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && q.isDirect()) return Float4x4OpsKernelsByteBuffer.makeRotationQuat_unsafe(dest, destOffset, q, qOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && q.isDirect() && q.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeRotationQuat_unsafe(dest, destOffset, q, qOffset);
         return Float4x4OpsKernelsByteBuffer.makeRotationQuat_api(dest, destOffset, q, qOffset);
     }
 
@@ -12744,13 +12863,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeRotationX(float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeRotationX(java.nio.FloatBuffer dest, int destOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeRotationX_unsafe(dest, destOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeRotationX_unsafe(dest, destOffset, angle);
         return Float4x4OpsKernelsTypedBuffer.makeRotationX_api(dest, destOffset, angle);
     }
 
     /** {@link #makeRotationX(float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeRotationX(java.nio.ByteBuffer dest, int destOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeRotationX_unsafe(dest, destOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeRotationX_unsafe(dest, destOffset, angle);
         return Float4x4OpsKernelsByteBuffer.makeRotationX_api(dest, destOffset, angle);
     }
 
@@ -12769,7 +12888,8 @@ public final class Float4x4Ops {
 
     /**
      * Set this matrix to a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians
-     * about the X, Y and Z axes, in that order.
+     * about the X, Y and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a
+     * vector is rotated about the Z axis first, then Y, then X).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -12808,13 +12928,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeRotationXYZ(float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeRotationXYZ(java.nio.FloatBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeRotationXYZ_unsafe(dest, destOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeRotationXYZ_unsafe(dest, destOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsTypedBuffer.makeRotationXYZ_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
     /** {@link #makeRotationXYZ(float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeRotationXYZ(java.nio.ByteBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeRotationXYZ_unsafe(dest, destOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeRotationXYZ_unsafe(dest, destOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsByteBuffer.makeRotationXYZ_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
@@ -12833,7 +12953,8 @@ public final class Float4x4Ops {
 
     /**
      * Set this matrix to a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians
-     * about the X, Z and Y axes, in that order.
+     * about the X, Z and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a
+     * vector is rotated about the Y axis first, then Z, then X).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -12872,13 +12993,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeRotationXZY(float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeRotationXZY(java.nio.FloatBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeRotationXZY_unsafe(dest, destOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeRotationXZY_unsafe(dest, destOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsTypedBuffer.makeRotationXZY_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
     /** {@link #makeRotationXZY(float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeRotationXZY(java.nio.ByteBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeRotationXZY_unsafe(dest, destOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeRotationXZY_unsafe(dest, destOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsByteBuffer.makeRotationXZY_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
@@ -12927,13 +13048,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeRotationY(float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeRotationY(java.nio.FloatBuffer dest, int destOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeRotationY_unsafe(dest, destOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeRotationY_unsafe(dest, destOffset, angle);
         return Float4x4OpsKernelsTypedBuffer.makeRotationY_api(dest, destOffset, angle);
     }
 
     /** {@link #makeRotationY(float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeRotationY(java.nio.ByteBuffer dest, int destOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeRotationY_unsafe(dest, destOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeRotationY_unsafe(dest, destOffset, angle);
         return Float4x4OpsKernelsByteBuffer.makeRotationY_api(dest, destOffset, angle);
     }
 
@@ -12952,7 +13073,8 @@ public final class Float4x4Ops {
 
     /**
      * Set this matrix to a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians
-     * about the Y, X and Z axes, in that order.
+     * about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a
+     * vector is rotated about the Z axis first, then X, then Y).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -12991,13 +13113,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeRotationYXZ(float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeRotationYXZ(java.nio.FloatBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeRotationYXZ_unsafe(dest, destOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeRotationYXZ_unsafe(dest, destOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsTypedBuffer.makeRotationYXZ_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
     /** {@link #makeRotationYXZ(float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeRotationYXZ(java.nio.ByteBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeRotationYXZ_unsafe(dest, destOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeRotationYXZ_unsafe(dest, destOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsByteBuffer.makeRotationYXZ_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
@@ -13016,7 +13138,8 @@ public final class Float4x4Ops {
 
     /**
      * Set this matrix to a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians
-     * about the Y, Z and X axes, in that order.
+     * about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a
+     * vector is rotated about the X axis first, then Z, then Y).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -13055,13 +13178,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeRotationYZX(float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeRotationYZX(java.nio.FloatBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeRotationYZX_unsafe(dest, destOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeRotationYZX_unsafe(dest, destOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsTypedBuffer.makeRotationYZX_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
     /** {@link #makeRotationYZX(float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeRotationYZX(java.nio.ByteBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeRotationYZX_unsafe(dest, destOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeRotationYZX_unsafe(dest, destOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsByteBuffer.makeRotationYZX_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
@@ -13110,13 +13233,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeRotationZ(float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeRotationZ(java.nio.FloatBuffer dest, int destOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeRotationZ_unsafe(dest, destOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeRotationZ_unsafe(dest, destOffset, angle);
         return Float4x4OpsKernelsTypedBuffer.makeRotationZ_api(dest, destOffset, angle);
     }
 
     /** {@link #makeRotationZ(float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeRotationZ(java.nio.ByteBuffer dest, int destOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeRotationZ_unsafe(dest, destOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeRotationZ_unsafe(dest, destOffset, angle);
         return Float4x4OpsKernelsByteBuffer.makeRotationZ_api(dest, destOffset, angle);
     }
 
@@ -13135,7 +13258,8 @@ public final class Float4x4Ops {
 
     /**
      * Set this matrix to a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians
-     * about the Z, X and Y axes, in that order.
+     * about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a
+     * vector is rotated about the Y axis first, then X, then Z).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -13174,13 +13298,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeRotationZXY(float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeRotationZXY(java.nio.FloatBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeRotationZXY_unsafe(dest, destOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeRotationZXY_unsafe(dest, destOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsTypedBuffer.makeRotationZXY_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
     /** {@link #makeRotationZXY(float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeRotationZXY(java.nio.ByteBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeRotationZXY_unsafe(dest, destOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeRotationZXY_unsafe(dest, destOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsByteBuffer.makeRotationZXY_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
@@ -13199,7 +13323,8 @@ public final class Float4x4Ops {
 
     /**
      * Set this matrix to a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians
-     * about the Z, Y and X axes, in that order.
+     * about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a
+     * vector is rotated about the X axis first, then Y, then Z).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -13238,13 +13363,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeRotationZYX(float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeRotationZYX(java.nio.FloatBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeRotationZYX_unsafe(dest, destOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeRotationZYX_unsafe(dest, destOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsTypedBuffer.makeRotationZYX_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
     /** {@link #makeRotationZYX(float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeRotationZYX(java.nio.ByteBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeRotationZYX_unsafe(dest, destOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeRotationZYX_unsafe(dest, destOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsByteBuffer.makeRotationZYX_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
@@ -13293,13 +13418,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeScaling(float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeScaling(java.nio.FloatBuffer dest, int destOffset, float vX, float vY, float vZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeScaling_unsafe(dest, destOffset, vX, vY, vZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeScaling_unsafe(dest, destOffset, vX, vY, vZ);
         return Float4x4OpsKernelsTypedBuffer.makeScaling_api(dest, destOffset, vX, vY, vZ);
     }
 
     /** {@link #makeScaling(float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeScaling(java.nio.ByteBuffer dest, int destOffset, float vX, float vY, float vZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeScaling_unsafe(dest, destOffset, vX, vY, vZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeScaling_unsafe(dest, destOffset, vX, vY, vZ);
         return Float4x4OpsKernelsByteBuffer.makeScaling_api(dest, destOffset, vX, vY, vZ);
     }
 
@@ -13350,13 +13475,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeScaling(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeScaling(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && v.isDirect()) return Float4x4OpsKernelsTypedBuffer.makeScaling_unsafe(dest, destOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeScaling_unsafe(dest, destOffset, v, vOffset);
         return Float4x4OpsKernelsTypedBuffer.makeScaling_api(dest, destOffset, v, vOffset);
     }
 
     /** {@link #makeScaling(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeScaling(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && v.isDirect()) return Float4x4OpsKernelsByteBuffer.makeScaling_unsafe(dest, destOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeScaling_unsafe(dest, destOffset, v, vOffset);
         return Float4x4OpsKernelsByteBuffer.makeScaling_api(dest, destOffset, v, vOffset);
     }
 
@@ -13403,13 +13528,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeScaling(float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeScaling(java.nio.FloatBuffer dest, int destOffset, float s) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeScaling_unsafe(dest, destOffset, s);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeScaling_unsafe(dest, destOffset, s);
         return Float4x4OpsKernelsTypedBuffer.makeScaling_api(dest, destOffset, s);
     }
 
     /** {@link #makeScaling(float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeScaling(java.nio.ByteBuffer dest, int destOffset, float s) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeScaling_unsafe(dest, destOffset, s);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeScaling_unsafe(dest, destOffset, s);
         return Float4x4OpsKernelsByteBuffer.makeScaling_api(dest, destOffset, s);
     }
 
@@ -13466,13 +13591,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeShadow(float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeShadow(java.nio.FloatBuffer dest, int destOffset, float lightX, float lightY, float lightZ, float lightW, float planeX, float planeY, float planeZ, float planeW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeShadow_unsafe(dest, destOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeShadow_unsafe(dest, destOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
         return Float4x4OpsKernelsTypedBuffer.makeShadow_api(dest, destOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
     }
 
     /** {@link #makeShadow(float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeShadow(java.nio.ByteBuffer dest, int destOffset, float lightX, float lightY, float lightZ, float lightW, float planeX, float planeY, float planeZ, float planeW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeShadow_unsafe(dest, destOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeShadow_unsafe(dest, destOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
         return Float4x4OpsKernelsByteBuffer.makeShadow_api(dest, destOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
     }
 
@@ -13535,13 +13660,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeShadow(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeShadow(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer light, int lightOffset, java.nio.FloatBuffer plane, int planeOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && light.isDirect() && plane.isDirect()) return Float4x4OpsKernelsTypedBuffer.makeShadow_unsafe(dest, destOffset, light, lightOffset, plane, planeOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && light.isDirect() && light.order() == java.nio.ByteOrder.nativeOrder() && plane.isDirect() && plane.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeShadow_unsafe(dest, destOffset, light, lightOffset, plane, planeOffset);
         return Float4x4OpsKernelsTypedBuffer.makeShadow_api(dest, destOffset, light, lightOffset, plane, planeOffset);
     }
 
     /** {@link #makeShadow(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeShadow(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer light, int lightOffset, java.nio.ByteBuffer plane, int planeOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && light.isDirect() && plane.isDirect()) return Float4x4OpsKernelsByteBuffer.makeShadow_unsafe(dest, destOffset, light, lightOffset, plane, planeOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && light.isDirect() && light.order() == java.nio.ByteOrder.nativeOrder() && plane.isDirect() && plane.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeShadow_unsafe(dest, destOffset, light, lightOffset, plane, planeOffset);
         return Float4x4OpsKernelsByteBuffer.makeShadow_api(dest, destOffset, light, lightOffset, plane, planeOffset);
     }
 
@@ -13593,13 +13718,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeShear(float[], int, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeShear(java.nio.FloatBuffer dest, int destOffset, float xy, float xz, float yx, float yz, float zx, float zy) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeShear_unsafe(dest, destOffset, xy, xz, yx, yz, zx, zy);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeShear_unsafe(dest, destOffset, xy, xz, yx, yz, zx, zy);
         return Float4x4OpsKernelsTypedBuffer.makeShear_api(dest, destOffset, xy, xz, yx, yz, zx, zy);
     }
 
     /** {@link #makeShear(float[], int, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeShear(java.nio.ByteBuffer dest, int destOffset, float xy, float xz, float yx, float yz, float zx, float zy) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeShear_unsafe(dest, destOffset, xy, xz, yx, yz, zx, zy);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeShear_unsafe(dest, destOffset, xy, xz, yx, yz, zx, zy);
         return Float4x4OpsKernelsByteBuffer.makeShear_api(dest, destOffset, xy, xz, yx, yz, zx, zy);
     }
 
@@ -13649,13 +13774,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeTile(float[], int, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeTile(java.nio.FloatBuffer dest, int destOffset, float x, float y, float w, float h) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeTile_unsafe(dest, destOffset, x, y, w, h);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeTile_unsafe(dest, destOffset, x, y, w, h);
         return Float4x4OpsKernelsTypedBuffer.makeTile_api(dest, destOffset, x, y, w, h);
     }
 
     /** {@link #makeTile(float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeTile(java.nio.ByteBuffer dest, int destOffset, float x, float y, float w, float h) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeTile_unsafe(dest, destOffset, x, y, w, h);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeTile_unsafe(dest, destOffset, x, y, w, h);
         return Float4x4OpsKernelsByteBuffer.makeTile_api(dest, destOffset, x, y, w, h);
     }
 
@@ -13704,13 +13829,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeTranslation(float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeTranslation(java.nio.FloatBuffer dest, int destOffset, float vX, float vY, float vZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeTranslation_unsafe(dest, destOffset, vX, vY, vZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeTranslation_unsafe(dest, destOffset, vX, vY, vZ);
         return Float4x4OpsKernelsTypedBuffer.makeTranslation_api(dest, destOffset, vX, vY, vZ);
     }
 
     /** {@link #makeTranslation(float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeTranslation(java.nio.ByteBuffer dest, int destOffset, float vX, float vY, float vZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeTranslation_unsafe(dest, destOffset, vX, vY, vZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeTranslation_unsafe(dest, destOffset, vX, vY, vZ);
         return Float4x4OpsKernelsByteBuffer.makeTranslation_api(dest, destOffset, vX, vY, vZ);
     }
 
@@ -13761,13 +13886,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeTranslation(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeTranslation(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && v.isDirect()) return Float4x4OpsKernelsTypedBuffer.makeTranslation_unsafe(dest, destOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeTranslation_unsafe(dest, destOffset, v, vOffset);
         return Float4x4OpsKernelsTypedBuffer.makeTranslation_api(dest, destOffset, v, vOffset);
     }
 
     /** {@link #makeTranslation(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeTranslation(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && v.isDirect()) return Float4x4OpsKernelsByteBuffer.makeTranslation_unsafe(dest, destOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeTranslation_unsafe(dest, destOffset, v, vOffset);
         return Float4x4OpsKernelsByteBuffer.makeTranslation_api(dest, destOffset, v, vOffset);
     }
 
@@ -13847,13 +13972,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeTrapezoidCrop(float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeTrapezoidCrop(java.nio.FloatBuffer dest, int destOffset, float p0X, float p0Y, float p1X, float p1Y, float p2X, float p2Y, float p3X, float p3Y) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsTypedBuffer.makeTrapezoidCrop_unsafe(dest, destOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeTrapezoidCrop_unsafe(dest, destOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
         return Float4x4OpsKernelsTypedBuffer.makeTrapezoidCrop_api(dest, destOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
     }
 
     /** {@link #makeTrapezoidCrop(float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeTrapezoidCrop(java.nio.ByteBuffer dest, int destOffset, float p0X, float p0Y, float p1X, float p1Y, float p2X, float p2Y, float p3X, float p3Y) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float4x4OpsKernelsByteBuffer.makeTrapezoidCrop_unsafe(dest, destOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeTrapezoidCrop_unsafe(dest, destOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
         return Float4x4OpsKernelsByteBuffer.makeTrapezoidCrop_api(dest, destOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
     }
 
@@ -13941,13 +14066,13 @@ public final class Float4x4Ops {
 
     /** {@link #makeTrapezoidCrop(float[], int, float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer makeTrapezoidCrop(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer p0, int p0Offset, java.nio.FloatBuffer p1, int p1Offset, java.nio.FloatBuffer p2, int p2Offset, java.nio.FloatBuffer p3, int p3Offset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && p0.isDirect() && p1.isDirect() && p2.isDirect() && p3.isDirect()) return Float4x4OpsKernelsTypedBuffer.makeTrapezoidCrop_unsafe(dest, destOffset, p0, p0Offset, p1, p1Offset, p2, p2Offset, p3, p3Offset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && p0.isDirect() && p0.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder() && p3.isDirect() && p3.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeTrapezoidCrop_unsafe(dest, destOffset, p0, p0Offset, p1, p1Offset, p2, p2Offset, p3, p3Offset);
         return Float4x4OpsKernelsTypedBuffer.makeTrapezoidCrop_api(dest, destOffset, p0, p0Offset, p1, p1Offset, p2, p2Offset, p3, p3Offset);
     }
 
     /** {@link #makeTrapezoidCrop(float[], int, float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer makeTrapezoidCrop(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer p0, int p0Offset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset, java.nio.ByteBuffer p3, int p3Offset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && p0.isDirect() && p1.isDirect() && p2.isDirect() && p3.isDirect()) return Float4x4OpsKernelsByteBuffer.makeTrapezoidCrop_unsafe(dest, destOffset, p0, p0Offset, p1, p1Offset, p2, p2Offset, p3, p3Offset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && p0.isDirect() && p0.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder() && p3.isDirect() && p3.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeTrapezoidCrop_unsafe(dest, destOffset, p0, p0Offset, p1, p1Offset, p2, p2Offset, p3, p3Offset);
         return Float4x4OpsKernelsByteBuffer.makeTrapezoidCrop_api(dest, destOffset, p0, p0Offset, p1, p1Offset, p2, p2Offset, p3, p3Offset);
     }
 
@@ -13985,13 +14110,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapXYZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapXYZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapXYZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapXYZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapXYZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapXYZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapXYZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapXYZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapXYZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapXYZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14030,13 +14155,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapXYnZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapXYnZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapXYnZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapXYnZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapXYnZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapXYnZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapXYnZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapXYnZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapXYnZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapXYnZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14075,13 +14200,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapXZY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapXZY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapXZY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapXZY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapXZY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapXZY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapXZY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapXZY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapXZY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapXZY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14120,13 +14245,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapXZnY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapXZnY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapXZnY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapXZnY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapXZnY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapXZnY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapXZnY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapXZnY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapXZnY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapXZnY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14165,13 +14290,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapXnYZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapXnYZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapXnYZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapXnYZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapXnYZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapXnYZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapXnYZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapXnYZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapXnYZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapXnYZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14210,13 +14335,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapXnYnZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapXnYnZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapXnYnZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapXnYnZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapXnYnZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapXnYnZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapXnYnZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapXnYnZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapXnYnZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapXnYnZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14255,13 +14380,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapXnZY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapXnZY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapXnZY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapXnZY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapXnZY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapXnZY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapXnZY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapXnZY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapXnZY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapXnZY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14300,13 +14425,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapXnZnY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapXnZnY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapXnZnY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapXnZnY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapXnZnY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapXnZnY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapXnZnY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapXnZnY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapXnZnY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapXnZnY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14345,13 +14470,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapYXZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapYXZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapYXZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapYXZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapYXZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapYXZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapYXZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapYXZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapYXZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapYXZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14390,13 +14515,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapYXnZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapYXnZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapYXnZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapYXnZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapYXnZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapYXnZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapYXnZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapYXnZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapYXnZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapYXnZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14435,13 +14560,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapYZX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapYZX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapYZX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapYZX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapYZX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapYZX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapYZX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapYZX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapYZX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapYZX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14480,13 +14605,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapYZnX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapYZnX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapYZnX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapYZnX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapYZnX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapYZnX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapYZnX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapYZnX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapYZnX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapYZnX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14525,13 +14650,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapYnXZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapYnXZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapYnXZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapYnXZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapYnXZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapYnXZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapYnXZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapYnXZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapYnXZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapYnXZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14570,13 +14695,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapYnXnZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapYnXnZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapYnXnZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapYnXnZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapYnXnZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapYnXnZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapYnXnZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapYnXnZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapYnXnZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapYnXnZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14615,13 +14740,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapYnZX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapYnZX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapYnZX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapYnZX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapYnZX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapYnZX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapYnZX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapYnZX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapYnZX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapYnZX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14660,13 +14785,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapYnZnX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapYnZnX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapYnZnX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapYnZnX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapYnZnX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapYnZnX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapYnZnX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapYnZnX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapYnZnX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapYnZnX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14705,13 +14830,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapZXY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapZXY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapZXY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapZXY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapZXY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapZXY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapZXY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapZXY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapZXY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapZXY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14750,13 +14875,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapZXnY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapZXnY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapZXnY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapZXnY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapZXnY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapZXnY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapZXnY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapZXnY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapZXnY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapZXnY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14795,13 +14920,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapZYX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapZYX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapZYX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapZYX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapZYX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapZYX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapZYX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapZYX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapZYX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapZYX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14840,13 +14965,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapZYnX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapZYnX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapZYnX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapZYnX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapZYnX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapZYnX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapZYnX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapZYnX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapZYnX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapZYnX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14885,13 +15010,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapZnXY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapZnXY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapZnXY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapZnXY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapZnXY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapZnXY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapZnXY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapZnXY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapZnXY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapZnXY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14930,13 +15055,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapZnXnY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapZnXnY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapZnXnY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapZnXnY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapZnXnY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapZnXnY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapZnXnY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapZnXnY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapZnXnY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapZnXnY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -14975,13 +15100,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapZnYX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapZnYX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapZnYX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapZnYX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapZnYX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapZnYX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapZnYX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapZnYX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapZnYX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapZnYX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15020,13 +15145,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapZnYnX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapZnYnX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapZnYnX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapZnYnX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapZnYnX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapZnYnX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapZnYnX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapZnYnX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapZnYnX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapZnYnX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15065,13 +15190,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnXYZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnXYZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnXYZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnXYZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnXYZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnXYZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnXYZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnXYZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnXYZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnXYZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15110,13 +15235,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnXYnZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnXYnZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnXYnZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnXYnZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnXYnZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnXYnZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnXYnZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnXYnZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnXYnZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnXYnZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15155,13 +15280,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnXZY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnXZY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnXZY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnXZY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnXZY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnXZY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnXZY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnXZY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnXZY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnXZY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15200,13 +15325,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnXZnY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnXZnY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnXZnY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnXZnY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnXZnY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnXZnY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnXZnY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnXZnY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnXZnY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnXZnY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15245,13 +15370,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnXnYZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnXnYZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnXnYZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnXnYZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnXnYZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnXnYZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnXnYZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnXnYZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnXnYZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnXnYZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15290,13 +15415,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnXnYnZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnXnYnZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnXnYnZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnXnYnZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnXnYnZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnXnYnZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnXnYnZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnXnYnZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnXnYnZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnXnYnZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15335,13 +15460,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnXnZY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnXnZY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnXnZY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnXnZY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnXnZY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnXnZY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnXnZY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnXnZY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnXnZY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnXnZY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15380,13 +15505,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnXnZnY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnXnZnY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnXnZnY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnXnZnY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnXnZnY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnXnZnY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnXnZnY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnXnZnY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnXnZnY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnXnZnY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15425,13 +15550,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnYXZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnYXZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnYXZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnYXZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnYXZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnYXZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnYXZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnYXZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnYXZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnYXZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15470,13 +15595,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnYXnZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnYXnZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnYXnZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnYXnZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnYXnZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnYXnZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnYXnZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnYXnZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnYXnZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnYXnZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15515,13 +15640,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnYZX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnYZX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnYZX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnYZX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnYZX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnYZX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnYZX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnYZX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnYZX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnYZX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15560,13 +15685,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnYZnX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnYZnX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnYZnX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnYZnX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnYZnX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnYZnX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnYZnX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnYZnX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnYZnX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnYZnX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15605,13 +15730,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnYnXZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnYnXZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnYnXZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnYnXZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnYnXZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnYnXZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnYnXZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnYnXZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnYnXZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnYnXZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15650,13 +15775,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnYnXnZ(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnYnXnZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnYnXnZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnYnXnZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnYnXnZ_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnYnXnZ(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnYnXnZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnYnXnZ_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnYnXnZ_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnYnXnZ_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15695,13 +15820,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnYnZX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnYnZX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnYnZX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnYnZX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnYnZX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnYnZX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnYnZX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnYnZX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnYnZX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnYnZX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15740,13 +15865,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnYnZnX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnYnZnX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnYnZnX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnYnZnX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnYnZnX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnYnZnX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnYnZnX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnYnZnX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnYnZnX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnYnZnX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15785,13 +15910,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnZXY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnZXY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnZXY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnZXY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnZXY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnZXY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnZXY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnZXY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnZXY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnZXY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15830,13 +15955,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnZXnY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnZXnY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnZXnY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnZXnY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnZXnY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnZXnY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnZXnY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnZXnY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnZXnY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnZXnY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15875,13 +16000,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnZYX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnZYX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnZYX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnZYX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnZYX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnZYX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnZYX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnZYX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnZYX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnZYX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15920,13 +16045,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnZYnX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnZYnX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnZYnX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnZYnX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnZYnX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnZYnX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnZYnX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnZYnX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnZYnX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnZYnX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -15965,13 +16090,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnZnXY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnZnXY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnZnXY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnZnXY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnZnXY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnZnXY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnZnXY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnZnXY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnZnXY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnZnXY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -16010,13 +16135,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnZnXnY(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnZnXnY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnZnXnY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnZnXnY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnZnXnY_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnZnXnY(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnZnXnY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnZnXnY_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnZnXnY_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnZnXnY_api(dest, destOffset, src, srcOffset);
     }
 
@@ -16055,13 +16180,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnZnYX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnZnYX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnZnYX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnZnYX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnZnYX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnZnYX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnZnYX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnZnYX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnZnYX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnZnYX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -16100,13 +16225,13 @@ public final class Float4x4Ops {
 
     /** {@link #mapnZnYnX(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mapnZnYnX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mapnZnYnX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mapnZnYnX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsTypedBuffer.mapnZnYnX_api(dest, destOffset, src, srcOffset);
     }
 
     /** {@link #mapnZnYnX(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mapnZnYnX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mapnZnYnX_unsafe(dest, destOffset, src, srcOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mapnZnYnX_unsafe(dest, destOffset, src, srcOffset);
         return Float4x4OpsKernelsByteBuffer.mapnZnYnX_api(dest, destOffset, src, srcOffset);
     }
 
@@ -16146,13 +16271,13 @@ public final class Float4x4Ops {
 
     /** {@link #obliqueCabinet(float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer obliqueCabinet(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.obliqueCabinet_unsafe(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.obliqueCabinet_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4x4OpsKernelsTypedBuffer.obliqueCabinet_api(dest, destOffset, src, srcOffset, angle);
     }
 
     /** {@link #obliqueCabinet(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer obliqueCabinet(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.obliqueCabinet_unsafe(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.obliqueCabinet_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4x4OpsKernelsByteBuffer.obliqueCabinet_api(dest, destOffset, src, srcOffset, angle);
     }
 
@@ -16192,13 +16317,13 @@ public final class Float4x4Ops {
 
     /** {@link #obliqueCavalier(float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer obliqueCavalier(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.obliqueCavalier_unsafe(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.obliqueCavalier_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4x4OpsKernelsTypedBuffer.obliqueCavalier_api(dest, destOffset, src, srcOffset, angle);
     }
 
     /** {@link #obliqueCavalier(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer obliqueCavalier(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.obliqueCavalier_unsafe(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.obliqueCavalier_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4x4OpsKernelsByteBuffer.obliqueCavalier_api(dest, destOffset, src, srcOffset, angle);
     }
 
@@ -16238,13 +16363,13 @@ public final class Float4x4Ops {
 
     /** {@link #obliqueMilitary(float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer obliqueMilitary(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.obliqueMilitary_unsafe(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.obliqueMilitary_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4x4OpsKernelsTypedBuffer.obliqueMilitary_api(dest, destOffset, src, srcOffset, angle);
     }
 
     /** {@link #obliqueMilitary(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer obliqueMilitary(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.obliqueMilitary_unsafe(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.obliqueMilitary_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4x4OpsKernelsByteBuffer.obliqueMilitary_api(dest, destOffset, src, srcOffset, angle);
     }
 
@@ -16279,16 +16404,12 @@ public final class Float4x4Ops {
      * @param srcOffset the element index in {@code src} at which the matrix starts
      * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeY the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeZ the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
      * @return {@code dest}
@@ -16319,16 +16440,12 @@ public final class Float4x4Ops {
      * @param srcOffset the element index in {@code src} at which the matrix starts
      * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeY the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeZ the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param depthRange the clip-space depth range the projection maps onto
      * @return {@code dest}
      */
@@ -16353,16 +16470,12 @@ public final class Float4x4Ops {
      * @param srcOffset the element index in {@code src} at which the matrix starts
      * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeY the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeZ the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param handedness the handedness of the coordinate system to map into
      * @return {@code dest}
      */
@@ -16388,16 +16501,12 @@ public final class Float4x4Ops {
      * @param srcOffset the element index in {@code src} at which the matrix starts
      * @param planeX the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeY the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeZ the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     *        {@code (planeX, planeY, planeZ, planeW)}
      * @return {@code dest}
      */
     public static float[] obliqueZ(float[] dest, int destOffset, float[] src, int srcOffset, float planeX, float planeY, float planeZ, float planeW) { return obliqueZ(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
@@ -16649,6 +16758,10 @@ public final class Float4x4Ops {
      * If {@code M} is {@code this} matrix and {@code O} the orthographic projection matrix, then
      * the new matrix will be {@code M * O}. So when transforming a vector {@code v} with the new
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -16680,6 +16793,10 @@ public final class Float4x4Ops {
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -16705,6 +16822,10 @@ public final class Float4x4Ops {
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -16731,6 +16852,10 @@ public final class Float4x4Ops {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -16821,6 +16946,10 @@ public final class Float4x4Ops {
      * If {@code M} is {@code this} matrix and {@code O} the orthographic projection matrix, then
      * the new matrix will be {@code M * O}. So when transforming a vector {@code v} with the new
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -16850,6 +16979,10 @@ public final class Float4x4Ops {
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -16873,6 +17006,10 @@ public final class Float4x4Ops {
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -16897,6 +17034,10 @@ public final class Float4x4Ops {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -17361,6 +17502,10 @@ public final class Float4x4Ops {
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -17394,6 +17539,10 @@ public final class Float4x4Ops {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -17421,6 +17570,10 @@ public final class Float4x4Ops {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -17449,6 +17602,10 @@ public final class Float4x4Ops {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -17541,6 +17698,10 @@ public final class Float4x4Ops {
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -17574,6 +17735,10 @@ public final class Float4x4Ops {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -17601,6 +17766,10 @@ public final class Float4x4Ops {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -17629,6 +17798,10 @@ public final class Float4x4Ops {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -17901,6 +18074,10 @@ public final class Float4x4Ops {
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -17937,6 +18114,10 @@ public final class Float4x4Ops {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -17967,6 +18148,10 @@ public final class Float4x4Ops {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -17998,6 +18183,10 @@ public final class Float4x4Ops {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -18115,13 +18304,13 @@ public final class Float4x4Ops {
 
     /** {@link #pickMatrix(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer pickMatrix(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float centerX, float centerY, float deltaX, float deltaY, float vpX, float vpY, float vpW, float vpH) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.pickMatrix_unsafe(dest, destOffset, src, srcOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.pickMatrix_unsafe(dest, destOffset, src, srcOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
         return Float4x4OpsKernelsTypedBuffer.pickMatrix_api(dest, destOffset, src, srcOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
     }
 
     /** {@link #pickMatrix(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer pickMatrix(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float centerX, float centerY, float deltaX, float deltaY, float vpX, float vpY, float vpW, float vpH) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.pickMatrix_unsafe(dest, destOffset, src, srcOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.pickMatrix_unsafe(dest, destOffset, src, srcOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
         return Float4x4OpsKernelsByteBuffer.pickMatrix_api(dest, destOffset, src, srcOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
     }
 
@@ -18220,13 +18409,13 @@ public final class Float4x4Ops {
 
     /** {@link #preRotateAround(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preRotateAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.preRotateAround_unsafe(dest, destOffset, src, srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preRotateAround_unsafe(dest, destOffset, src, srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
         return Float4x4OpsKernelsTypedBuffer.preRotateAround_api(dest, destOffset, src, srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
     }
 
     /** {@link #preRotateAround(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preRotateAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.preRotateAround_unsafe(dest, destOffset, src, srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preRotateAround_unsafe(dest, destOffset, src, srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
         return Float4x4OpsKernelsByteBuffer.preRotateAround_api(dest, destOffset, src, srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
     }
 
@@ -18324,13 +18513,13 @@ public final class Float4x4Ops {
 
     /** {@link #preRotateAround(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preRotateAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer rot, int rotOffset, java.nio.FloatBuffer pivot, int pivotOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && rot.isDirect() && pivot.isDirect()) return Float4x4OpsKernelsTypedBuffer.preRotateAround_unsafe(dest, destOffset, src, srcOffset, rot, rotOffset, pivot, pivotOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && rot.isDirect() && rot.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preRotateAround_unsafe(dest, destOffset, src, srcOffset, rot, rotOffset, pivot, pivotOffset);
         return Float4x4OpsKernelsTypedBuffer.preRotateAround_api(dest, destOffset, src, srcOffset, rot, rotOffset, pivot, pivotOffset);
     }
 
     /** {@link #preRotateAround(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preRotateAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer rot, int rotOffset, java.nio.ByteBuffer pivot, int pivotOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && rot.isDirect() && pivot.isDirect()) return Float4x4OpsKernelsByteBuffer.preRotateAround_unsafe(dest, destOffset, src, srcOffset, rot, rotOffset, pivot, pivotOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && rot.isDirect() && rot.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preRotateAround_unsafe(dest, destOffset, src, srcOffset, rot, rotOffset, pivot, pivotOffset);
         return Float4x4OpsKernelsByteBuffer.preRotateAround_api(dest, destOffset, src, srcOffset, rot, rotOffset, pivot, pivotOffset);
     }
 
@@ -18421,13 +18610,13 @@ public final class Float4x4Ops {
 
     /** {@link #preRotateAxis(float[], int, float[], int, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preRotateAxis(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle, float axisX, float axisY, float axisZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.preRotateAxis_unsafe(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preRotateAxis_unsafe(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
         return Float4x4OpsKernelsTypedBuffer.preRotateAxis_api(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
     }
 
     /** {@link #preRotateAxis(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preRotateAxis(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle, float axisX, float axisY, float axisZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.preRotateAxis_unsafe(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preRotateAxis_unsafe(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
         return Float4x4OpsKernelsByteBuffer.preRotateAxis_api(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
     }
 
@@ -18517,13 +18706,13 @@ public final class Float4x4Ops {
 
     /** {@link #preRotateAxis(float[], int, float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preRotateAxis(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer axis, int axisOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && axis.isDirect()) return Float4x4OpsKernelsTypedBuffer.preRotateAxis_unsafe(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && axis.isDirect() && axis.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preRotateAxis_unsafe(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
         return Float4x4OpsKernelsTypedBuffer.preRotateAxis_api(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
     }
 
     /** {@link #preRotateAxis(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preRotateAxis(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer axis, int axisOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && axis.isDirect()) return Float4x4OpsKernelsByteBuffer.preRotateAxis_unsafe(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && axis.isDirect() && axis.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preRotateAxis_unsafe(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
         return Float4x4OpsKernelsByteBuffer.preRotateAxis_api(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
     }
 
@@ -18612,13 +18801,13 @@ public final class Float4x4Ops {
 
     /** {@link #preRotateQuat(float[], int, float[], int, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preRotateQuat(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float qX, float qY, float qZ, float qW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.preRotateQuat_unsafe(dest, destOffset, src, srcOffset, qX, qY, qZ, qW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preRotateQuat_unsafe(dest, destOffset, src, srcOffset, qX, qY, qZ, qW);
         return Float4x4OpsKernelsTypedBuffer.preRotateQuat_api(dest, destOffset, src, srcOffset, qX, qY, qZ, qW);
     }
 
     /** {@link #preRotateQuat(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preRotateQuat(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float qX, float qY, float qZ, float qW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.preRotateQuat_unsafe(dest, destOffset, src, srcOffset, qX, qY, qZ, qW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preRotateQuat_unsafe(dest, destOffset, src, srcOffset, qX, qY, qZ, qW);
         return Float4x4OpsKernelsByteBuffer.preRotateQuat_api(dest, destOffset, src, srcOffset, qX, qY, qZ, qW);
     }
 
@@ -18705,13 +18894,13 @@ public final class Float4x4Ops {
 
     /** {@link #preRotateQuat(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preRotateQuat(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer q, int qOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && q.isDirect()) return Float4x4OpsKernelsTypedBuffer.preRotateQuat_unsafe(dest, destOffset, src, srcOffset, q, qOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && q.isDirect() && q.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preRotateQuat_unsafe(dest, destOffset, src, srcOffset, q, qOffset);
         return Float4x4OpsKernelsTypedBuffer.preRotateQuat_api(dest, destOffset, src, srcOffset, q, qOffset);
     }
 
     /** {@link #preRotateQuat(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preRotateQuat(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer q, int qOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && q.isDirect()) return Float4x4OpsKernelsByteBuffer.preRotateQuat_unsafe(dest, destOffset, src, srcOffset, q, qOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && q.isDirect() && q.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preRotateQuat_unsafe(dest, destOffset, src, srcOffset, q, qOffset);
         return Float4x4OpsKernelsByteBuffer.preRotateQuat_api(dest, destOffset, src, srcOffset, q, qOffset);
     }
 
@@ -18783,13 +18972,13 @@ public final class Float4x4Ops {
 
     /** {@link #preRotateX(float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preRotateX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.preRotateX_unsafe(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preRotateX_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4x4OpsKernelsTypedBuffer.preRotateX_api(dest, destOffset, src, srcOffset, angle);
     }
 
     /** {@link #preRotateX(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preRotateX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.preRotateX_unsafe(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preRotateX_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4x4OpsKernelsByteBuffer.preRotateX_api(dest, destOffset, src, srcOffset, angle);
     }
 
@@ -18861,13 +19050,13 @@ public final class Float4x4Ops {
 
     /** {@link #preRotateY(float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preRotateY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.preRotateY_unsafe(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preRotateY_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4x4OpsKernelsTypedBuffer.preRotateY_api(dest, destOffset, src, srcOffset, angle);
     }
 
     /** {@link #preRotateY(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preRotateY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.preRotateY_unsafe(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preRotateY_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4x4OpsKernelsByteBuffer.preRotateY_api(dest, destOffset, src, srcOffset, angle);
     }
 
@@ -18939,13 +19128,13 @@ public final class Float4x4Ops {
 
     /** {@link #preRotateZ(float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preRotateZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.preRotateZ_unsafe(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preRotateZ_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4x4OpsKernelsTypedBuffer.preRotateZ_api(dest, destOffset, src, srcOffset, angle);
     }
 
     /** {@link #preRotateZ(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preRotateZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.preRotateZ_unsafe(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preRotateZ_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4x4OpsKernelsByteBuffer.preRotateZ_api(dest, destOffset, src, srcOffset, angle);
     }
 
@@ -18985,13 +19174,13 @@ public final class Float4x4Ops {
 
     /** {@link #preScale(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preScale(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float vX, float vY, float vZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.preScale_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preScale_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Float4x4OpsKernelsTypedBuffer.preScale_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
     /** {@link #preScale(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preScale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float vX, float vY, float vZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.preScale_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preScale_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Float4x4OpsKernelsByteBuffer.preScale_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
@@ -19031,13 +19220,13 @@ public final class Float4x4Ops {
 
     /** {@link #preScale(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preScale(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && v.isDirect()) return Float4x4OpsKernelsTypedBuffer.preScale_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preScale_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Float4x4OpsKernelsTypedBuffer.preScale_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
     /** {@link #preScale(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preScale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && v.isDirect()) return Float4x4OpsKernelsByteBuffer.preScale_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preScale_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Float4x4OpsKernelsByteBuffer.preScale_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
@@ -19076,13 +19265,13 @@ public final class Float4x4Ops {
 
     /** {@link #preScale(float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preScale(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float s) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.preScale_unsafe(dest, destOffset, src, srcOffset, s);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preScale_unsafe(dest, destOffset, src, srcOffset, s);
         return Float4x4OpsKernelsTypedBuffer.preScale_api(dest, destOffset, src, srcOffset, s);
     }
 
     /** {@link #preScale(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preScale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float s) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.preScale_unsafe(dest, destOffset, src, srcOffset, s);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preScale_unsafe(dest, destOffset, src, srcOffset, s);
         return Float4x4OpsKernelsByteBuffer.preScale_api(dest, destOffset, src, srcOffset, s);
     }
 
@@ -19125,13 +19314,13 @@ public final class Float4x4Ops {
 
     /** {@link #preScaleAround(float[], int, float[], int, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preScaleAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float s, float pivotX, float pivotY, float pivotZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, s, pivotX, pivotY, pivotZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, s, pivotX, pivotY, pivotZ);
         return Float4x4OpsKernelsTypedBuffer.preScaleAround_api(dest, destOffset, src, srcOffset, s, pivotX, pivotY, pivotZ);
     }
 
     /** {@link #preScaleAround(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preScaleAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float s, float pivotX, float pivotY, float pivotZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, s, pivotX, pivotY, pivotZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, s, pivotX, pivotY, pivotZ);
         return Float4x4OpsKernelsByteBuffer.preScaleAround_api(dest, destOffset, src, srcOffset, s, pivotX, pivotY, pivotZ);
     }
 
@@ -19173,13 +19362,13 @@ public final class Float4x4Ops {
 
     /** {@link #preScaleAround(float[], int, float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preScaleAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer pivot, int pivotOffset, float s) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && pivot.isDirect()) return Float4x4OpsKernelsTypedBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, s);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, s);
         return Float4x4OpsKernelsTypedBuffer.preScaleAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, s);
     }
 
     /** {@link #preScaleAround(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preScaleAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer pivot, int pivotOffset, float s) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && pivot.isDirect()) return Float4x4OpsKernelsByteBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, s);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, s);
         return Float4x4OpsKernelsByteBuffer.preScaleAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, s);
     }
 
@@ -19258,13 +19447,13 @@ public final class Float4x4Ops {
 
     /** {@link #preScaleAround(float[], int, float[], int, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preScaleAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float sX, float sY, float sZ, float pivotX, float pivotY, float pivotZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
         return Float4x4OpsKernelsTypedBuffer.preScaleAround_api(dest, destOffset, src, srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
     }
 
     /** {@link #preScaleAround(float[], int, float[], int, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preScaleAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float sX, float sY, float sZ, float pivotX, float pivotY, float pivotZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
         return Float4x4OpsKernelsByteBuffer.preScaleAround_api(dest, destOffset, src, srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
     }
 
@@ -19293,7 +19482,7 @@ public final class Float4x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param s the storage holding the uniform scale factor
+     * @param s the storage holding the scale factors
      * @param sOffset the element index in {@code s} at which the vector starts
      * @param pivot the storage holding the pivot point
      * @param pivotOffset the element index in {@code pivot} at which the vector starts
@@ -19346,13 +19535,13 @@ public final class Float4x4Ops {
 
     /** {@link #preScaleAround(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preScaleAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer s, int sOffset, java.nio.FloatBuffer pivot, int pivotOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && s.isDirect() && pivot.isDirect()) return Float4x4OpsKernelsTypedBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, s, sOffset, pivot, pivotOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && s.isDirect() && s.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, s, sOffset, pivot, pivotOffset);
         return Float4x4OpsKernelsTypedBuffer.preScaleAround_api(dest, destOffset, src, srcOffset, s, sOffset, pivot, pivotOffset);
     }
 
     /** {@link #preScaleAround(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preScaleAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer s, int sOffset, java.nio.ByteBuffer pivot, int pivotOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && s.isDirect() && pivot.isDirect()) return Float4x4OpsKernelsByteBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, s, sOffset, pivot, pivotOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && s.isDirect() && s.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, s, sOffset, pivot, pivotOffset);
         return Float4x4OpsKernelsByteBuffer.preScaleAround_api(dest, destOffset, src, srcOffset, s, sOffset, pivot, pivotOffset);
     }
 
@@ -19393,13 +19582,13 @@ public final class Float4x4Ops {
 
     /** {@link #preTranslate(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preTranslate(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float vX, float vY, float vZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.preTranslate_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preTranslate_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Float4x4OpsKernelsTypedBuffer.preTranslate_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
     /** {@link #preTranslate(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preTranslate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float vX, float vY, float vZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.preTranslate_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preTranslate_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Float4x4OpsKernelsByteBuffer.preTranslate_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
@@ -19440,13 +19629,13 @@ public final class Float4x4Ops {
 
     /** {@link #preTranslate(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer preTranslate(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && v.isDirect()) return Float4x4OpsKernelsTypedBuffer.preTranslate_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.preTranslate_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Float4x4OpsKernelsTypedBuffer.preTranslate_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
     /** {@link #preTranslate(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer preTranslate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && v.isDirect()) return Float4x4OpsKernelsByteBuffer.preTranslate_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.preTranslate_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Float4x4OpsKernelsByteBuffer.preTranslate_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
@@ -19679,13 +19868,13 @@ public final class Float4x4Ops {
 
     /** {@link #reflect(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer reflect(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float normalX, float normalY, float normalZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.reflect_unsafe(dest, destOffset, src, srcOffset, normalX, normalY, normalZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.reflect_unsafe(dest, destOffset, src, srcOffset, normalX, normalY, normalZ);
         return Float4x4OpsKernelsTypedBuffer.reflect_api(dest, destOffset, src, srcOffset, normalX, normalY, normalZ);
     }
 
     /** {@link #reflect(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer reflect(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float normalX, float normalY, float normalZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.reflect_unsafe(dest, destOffset, src, srcOffset, normalX, normalY, normalZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.reflect_unsafe(dest, destOffset, src, srcOffset, normalX, normalY, normalZ);
         return Float4x4OpsKernelsByteBuffer.reflect_api(dest, destOffset, src, srcOffset, normalX, normalY, normalZ);
     }
 
@@ -19726,13 +19915,13 @@ public final class Float4x4Ops {
 
     /** {@link #reflect(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer reflect(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer normal, int normalOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && normal.isDirect()) return Float4x4OpsKernelsTypedBuffer.reflect_unsafe(dest, destOffset, src, srcOffset, normal, normalOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && normal.isDirect() && normal.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.reflect_unsafe(dest, destOffset, src, srcOffset, normal, normalOffset);
         return Float4x4OpsKernelsTypedBuffer.reflect_api(dest, destOffset, src, srcOffset, normal, normalOffset);
     }
 
     /** {@link #reflect(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer reflect(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer normal, int normalOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && normal.isDirect()) return Float4x4OpsKernelsByteBuffer.reflect_unsafe(dest, destOffset, src, srcOffset, normal, normalOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && normal.isDirect() && normal.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.reflect_unsafe(dest, destOffset, src, srcOffset, normal, normalOffset);
         return Float4x4OpsKernelsByteBuffer.reflect_api(dest, destOffset, src, srcOffset, normal, normalOffset);
     }
 
@@ -19782,13 +19971,13 @@ public final class Float4x4Ops {
 
     /** {@link #rotateAround(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer rotateAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.rotateAround_unsafe(dest, destOffset, src, srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.rotateAround_unsafe(dest, destOffset, src, srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
         return Float4x4OpsKernelsTypedBuffer.rotateAround_api(dest, destOffset, src, srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
     }
 
     /** {@link #rotateAround(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer rotateAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.rotateAround_unsafe(dest, destOffset, src, srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.rotateAround_unsafe(dest, destOffset, src, srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
         return Float4x4OpsKernelsByteBuffer.rotateAround_api(dest, destOffset, src, srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
     }
 
@@ -19831,13 +20020,13 @@ public final class Float4x4Ops {
 
     /** {@link #rotateAround(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer rotateAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer rot, int rotOffset, java.nio.FloatBuffer pivot, int pivotOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && rot.isDirect() && pivot.isDirect()) return Float4x4OpsKernelsTypedBuffer.rotateAround_unsafe(dest, destOffset, src, srcOffset, rot, rotOffset, pivot, pivotOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && rot.isDirect() && rot.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.rotateAround_unsafe(dest, destOffset, src, srcOffset, rot, rotOffset, pivot, pivotOffset);
         return Float4x4OpsKernelsTypedBuffer.rotateAround_api(dest, destOffset, src, srcOffset, rot, rotOffset, pivot, pivotOffset);
     }
 
     /** {@link #rotateAround(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer rotateAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer rot, int rotOffset, java.nio.ByteBuffer pivot, int pivotOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && rot.isDirect() && pivot.isDirect()) return Float4x4OpsKernelsByteBuffer.rotateAround_unsafe(dest, destOffset, src, srcOffset, rot, rotOffset, pivot, pivotOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && rot.isDirect() && rot.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.rotateAround_unsafe(dest, destOffset, src, srcOffset, rot, rotOffset, pivot, pivotOffset);
         return Float4x4OpsKernelsByteBuffer.rotateAround_api(dest, destOffset, src, srcOffset, rot, rotOffset, pivot, pivotOffset);
     }
 
@@ -19883,13 +20072,13 @@ public final class Float4x4Ops {
 
     /** {@link #rotateAxis(float[], int, float[], int, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer rotateAxis(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle, float axisX, float axisY, float axisZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.rotateAxis_unsafe(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.rotateAxis_unsafe(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
         return Float4x4OpsKernelsTypedBuffer.rotateAxis_api(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
     }
 
     /** {@link #rotateAxis(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer rotateAxis(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle, float axisX, float axisY, float axisZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.rotateAxis_unsafe(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.rotateAxis_unsafe(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
         return Float4x4OpsKernelsByteBuffer.rotateAxis_api(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
     }
 
@@ -19931,13 +20120,13 @@ public final class Float4x4Ops {
 
     /** {@link #rotateAxis(float[], int, float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer rotateAxis(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer axis, int axisOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && axis.isDirect()) return Float4x4OpsKernelsTypedBuffer.rotateAxis_unsafe(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && axis.isDirect() && axis.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.rotateAxis_unsafe(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
         return Float4x4OpsKernelsTypedBuffer.rotateAxis_api(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
     }
 
     /** {@link #rotateAxis(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer rotateAxis(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer axis, int axisOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && axis.isDirect()) return Float4x4OpsKernelsByteBuffer.rotateAxis_unsafe(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && axis.isDirect() && axis.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.rotateAxis_unsafe(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
         return Float4x4OpsKernelsByteBuffer.rotateAxis_api(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
     }
 
@@ -19984,13 +20173,13 @@ public final class Float4x4Ops {
 
     /** {@link #rotateQuat(float[], int, float[], int, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer rotateQuat(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float qX, float qY, float qZ, float qW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.rotateQuat_unsafe(dest, destOffset, src, srcOffset, qX, qY, qZ, qW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.rotateQuat_unsafe(dest, destOffset, src, srcOffset, qX, qY, qZ, qW);
         return Float4x4OpsKernelsTypedBuffer.rotateQuat_api(dest, destOffset, src, srcOffset, qX, qY, qZ, qW);
     }
 
     /** {@link #rotateQuat(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer rotateQuat(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float qX, float qY, float qZ, float qW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.rotateQuat_unsafe(dest, destOffset, src, srcOffset, qX, qY, qZ, qW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.rotateQuat_unsafe(dest, destOffset, src, srcOffset, qX, qY, qZ, qW);
         return Float4x4OpsKernelsByteBuffer.rotateQuat_api(dest, destOffset, src, srcOffset, qX, qY, qZ, qW);
     }
 
@@ -20031,13 +20220,13 @@ public final class Float4x4Ops {
 
     /** {@link #rotateQuat(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer rotateQuat(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer q, int qOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && q.isDirect()) return Float4x4OpsKernelsTypedBuffer.rotateQuat_unsafe(dest, destOffset, src, srcOffset, q, qOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && q.isDirect() && q.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.rotateQuat_unsafe(dest, destOffset, src, srcOffset, q, qOffset);
         return Float4x4OpsKernelsTypedBuffer.rotateQuat_api(dest, destOffset, src, srcOffset, q, qOffset);
     }
 
     /** {@link #rotateQuat(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer rotateQuat(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer q, int qOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && q.isDirect()) return Float4x4OpsKernelsByteBuffer.rotateQuat_unsafe(dest, destOffset, src, srcOffset, q, qOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && q.isDirect() && q.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.rotateQuat_unsafe(dest, destOffset, src, srcOffset, q, qOffset);
         return Float4x4OpsKernelsByteBuffer.rotateQuat_api(dest, destOffset, src, srcOffset, q, qOffset);
     }
 
@@ -20077,13 +20266,13 @@ public final class Float4x4Ops {
 
     /** {@link #rotateX(float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer rotateX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.rotateX_unsafe(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.rotateX_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4x4OpsKernelsTypedBuffer.rotateX_api(dest, destOffset, src, srcOffset, angle);
     }
 
     /** {@link #rotateX(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer rotateX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.rotateX_unsafe(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.rotateX_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4x4OpsKernelsByteBuffer.rotateX_api(dest, destOffset, src, srcOffset, angle);
     }
 
@@ -20217,7 +20406,8 @@ public final class Float4x4Ops {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -20239,13 +20429,13 @@ public final class Float4x4Ops {
 
     /** {@link #rotateXYZ(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer rotateXYZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.rotateXYZ_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.rotateXYZ_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsTypedBuffer.rotateXYZ_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
     /** {@link #rotateXYZ(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer rotateXYZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.rotateXYZ_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.rotateXYZ_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsByteBuffer.rotateXYZ_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
@@ -20265,7 +20455,8 @@ public final class Float4x4Ops {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -20287,13 +20478,13 @@ public final class Float4x4Ops {
 
     /** {@link #rotateXZY(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer rotateXZY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.rotateXZY_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.rotateXZY_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsTypedBuffer.rotateXZY_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
     /** {@link #rotateXZY(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer rotateXZY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.rotateXZY_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.rotateXZY_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsByteBuffer.rotateXZY_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
@@ -20447,13 +20638,13 @@ public final class Float4x4Ops {
 
     /** {@link #rotateY(float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer rotateY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.rotateY_unsafe(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.rotateY_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4x4OpsKernelsTypedBuffer.rotateY_api(dest, destOffset, src, srcOffset, angle);
     }
 
     /** {@link #rotateY(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer rotateY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.rotateY_unsafe(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.rotateY_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4x4OpsKernelsByteBuffer.rotateY_api(dest, destOffset, src, srcOffset, angle);
     }
 
@@ -20587,7 +20778,8 @@ public final class Float4x4Ops {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -20609,13 +20801,13 @@ public final class Float4x4Ops {
 
     /** {@link #rotateYXZ(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer rotateYXZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.rotateYXZ_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.rotateYXZ_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsTypedBuffer.rotateYXZ_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
     /** {@link #rotateYXZ(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer rotateYXZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.rotateYXZ_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.rotateYXZ_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsByteBuffer.rotateYXZ_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
@@ -20635,7 +20827,8 @@ public final class Float4x4Ops {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this matrix and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -20657,13 +20850,13 @@ public final class Float4x4Ops {
 
     /** {@link #rotateYZX(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer rotateYZX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.rotateYZX_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.rotateYZX_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsTypedBuffer.rotateYZX_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
     /** {@link #rotateYZX(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer rotateYZX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.rotateYZX_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.rotateYZX_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsByteBuffer.rotateYZX_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
@@ -20817,13 +21010,13 @@ public final class Float4x4Ops {
 
     /** {@link #rotateZ(float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer rotateZ(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.rotateZ_unsafe(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.rotateZ_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4x4OpsKernelsTypedBuffer.rotateZ_api(dest, destOffset, src, srcOffset, angle);
     }
 
     /** {@link #rotateZ(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer rotateZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.rotateZ_unsafe(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.rotateZ_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4x4OpsKernelsByteBuffer.rotateZ_api(dest, destOffset, src, srcOffset, angle);
     }
 
@@ -20957,7 +21150,8 @@ public final class Float4x4Ops {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -20979,13 +21173,13 @@ public final class Float4x4Ops {
 
     /** {@link #rotateZXY(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer rotateZXY(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.rotateZXY_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.rotateZXY_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsTypedBuffer.rotateZXY_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
     /** {@link #rotateZXY(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer rotateZXY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.rotateZXY_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.rotateZXY_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsByteBuffer.rotateZXY_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
@@ -21005,7 +21199,8 @@ public final class Float4x4Ops {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this matrix and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -21027,13 +21222,13 @@ public final class Float4x4Ops {
 
     /** {@link #rotateZYX(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer rotateZYX(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.rotateZYX_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.rotateZYX_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsTypedBuffer.rotateZYX_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
     /** {@link #rotateZYX(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer rotateZYX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.rotateZYX_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.rotateZYX_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
         return Float4x4OpsKernelsByteBuffer.rotateZYX_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
@@ -21188,13 +21383,13 @@ public final class Float4x4Ops {
 
     /** {@link #scale(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer scale(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float vX, float vY, float vZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.scale_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.scale_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Float4x4OpsKernelsTypedBuffer.scale_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
     /** {@link #scale(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer scale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float vX, float vY, float vZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.scale_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.scale_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Float4x4OpsKernelsByteBuffer.scale_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
@@ -21234,13 +21429,13 @@ public final class Float4x4Ops {
 
     /** {@link #scale(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer scale(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && v.isDirect()) return Float4x4OpsKernelsTypedBuffer.scale_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.scale_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Float4x4OpsKernelsTypedBuffer.scale_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
     /** {@link #scale(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer scale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && v.isDirect()) return Float4x4OpsKernelsByteBuffer.scale_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.scale_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Float4x4OpsKernelsByteBuffer.scale_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
@@ -21279,13 +21474,13 @@ public final class Float4x4Ops {
 
     /** {@link #scale(float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer scale(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float s) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.scale_unsafe(dest, destOffset, src, srcOffset, s);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.scale_unsafe(dest, destOffset, src, srcOffset, s);
         return Float4x4OpsKernelsTypedBuffer.scale_api(dest, destOffset, src, srcOffset, s);
     }
 
     /** {@link #scale(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer scale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float s) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.scale_unsafe(dest, destOffset, src, srcOffset, s);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.scale_unsafe(dest, destOffset, src, srcOffset, s);
         return Float4x4OpsKernelsByteBuffer.scale_api(dest, destOffset, src, srcOffset, s);
     }
 
@@ -21328,13 +21523,13 @@ public final class Float4x4Ops {
 
     /** {@link #scaleAround(float[], int, float[], int, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer scaleAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float s, float pivotX, float pivotY, float pivotZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, s, pivotX, pivotY, pivotZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, s, pivotX, pivotY, pivotZ);
         return Float4x4OpsKernelsTypedBuffer.scaleAround_api(dest, destOffset, src, srcOffset, s, pivotX, pivotY, pivotZ);
     }
 
     /** {@link #scaleAround(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer scaleAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float s, float pivotX, float pivotY, float pivotZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, s, pivotX, pivotY, pivotZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, s, pivotX, pivotY, pivotZ);
         return Float4x4OpsKernelsByteBuffer.scaleAround_api(dest, destOffset, src, srcOffset, s, pivotX, pivotY, pivotZ);
     }
 
@@ -21376,13 +21571,13 @@ public final class Float4x4Ops {
 
     /** {@link #scaleAround(float[], int, float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer scaleAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer pivot, int pivotOffset, float s) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && pivot.isDirect()) return Float4x4OpsKernelsTypedBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, s);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, s);
         return Float4x4OpsKernelsTypedBuffer.scaleAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, s);
     }
 
     /** {@link #scaleAround(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer scaleAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer pivot, int pivotOffset, float s) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && pivot.isDirect()) return Float4x4OpsKernelsByteBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, s);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, s);
         return Float4x4OpsKernelsByteBuffer.scaleAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, s);
     }
 
@@ -21427,13 +21622,13 @@ public final class Float4x4Ops {
 
     /** {@link #scaleAround(float[], int, float[], int, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer scaleAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float sX, float sY, float sZ, float pivotX, float pivotY, float pivotZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
         return Float4x4OpsKernelsTypedBuffer.scaleAround_api(dest, destOffset, src, srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
     }
 
     /** {@link #scaleAround(float[], int, float[], int, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer scaleAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float sX, float sY, float sZ, float pivotX, float pivotY, float pivotZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
         return Float4x4OpsKernelsByteBuffer.scaleAround_api(dest, destOffset, src, srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
     }
 
@@ -21463,7 +21658,7 @@ public final class Float4x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param s the storage holding the uniform scale factor
+     * @param s the storage holding the scale factors
      * @param sOffset the element index in {@code s} at which the vector starts
      * @param pivot the storage holding the pivot point
      * @param pivotOffset the element index in {@code pivot} at which the vector starts
@@ -21476,13 +21671,13 @@ public final class Float4x4Ops {
 
     /** {@link #scaleAround(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer scaleAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer s, int sOffset, java.nio.FloatBuffer pivot, int pivotOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && s.isDirect() && pivot.isDirect()) return Float4x4OpsKernelsTypedBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, s, sOffset, pivot, pivotOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && s.isDirect() && s.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, s, sOffset, pivot, pivotOffset);
         return Float4x4OpsKernelsTypedBuffer.scaleAround_api(dest, destOffset, src, srcOffset, s, sOffset, pivot, pivotOffset);
     }
 
     /** {@link #scaleAround(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer scaleAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer s, int sOffset, java.nio.ByteBuffer pivot, int pivotOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && s.isDirect() && pivot.isDirect()) return Float4x4OpsKernelsByteBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, s, sOffset, pivot, pivotOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && s.isDirect() && s.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, s, sOffset, pivot, pivotOffset);
         return Float4x4OpsKernelsByteBuffer.scaleAround_api(dest, destOffset, src, srcOffset, s, sOffset, pivot, pivotOffset);
     }
 
@@ -21530,13 +21725,13 @@ public final class Float4x4Ops {
 
     /** {@link #shadow(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer shadow(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float lightX, float lightY, float lightZ, float lightW, float planeX, float planeY, float planeZ, float planeW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.shadow_unsafe(dest, destOffset, src, srcOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.shadow_unsafe(dest, destOffset, src, srcOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
         return Float4x4OpsKernelsTypedBuffer.shadow_api(dest, destOffset, src, srcOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
     }
 
     /** {@link #shadow(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer shadow(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float lightX, float lightY, float lightZ, float lightW, float planeX, float planeY, float planeZ, float planeW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.shadow_unsafe(dest, destOffset, src, srcOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.shadow_unsafe(dest, destOffset, src, srcOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
         return Float4x4OpsKernelsByteBuffer.shadow_api(dest, destOffset, src, srcOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
     }
 
@@ -21582,13 +21777,13 @@ public final class Float4x4Ops {
 
     /** {@link #shadow(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer shadow(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer light, int lightOffset, java.nio.FloatBuffer plane, int planeOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && light.isDirect() && plane.isDirect()) return Float4x4OpsKernelsTypedBuffer.shadow_unsafe(dest, destOffset, src, srcOffset, light, lightOffset, plane, planeOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && light.isDirect() && light.order() == java.nio.ByteOrder.nativeOrder() && plane.isDirect() && plane.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.shadow_unsafe(dest, destOffset, src, srcOffset, light, lightOffset, plane, planeOffset);
         return Float4x4OpsKernelsTypedBuffer.shadow_api(dest, destOffset, src, srcOffset, light, lightOffset, plane, planeOffset);
     }
 
     /** {@link #shadow(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer shadow(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer light, int lightOffset, java.nio.ByteBuffer plane, int planeOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && light.isDirect() && plane.isDirect()) return Float4x4OpsKernelsByteBuffer.shadow_unsafe(dest, destOffset, src, srcOffset, light, lightOffset, plane, planeOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && light.isDirect() && light.order() == java.nio.ByteOrder.nativeOrder() && plane.isDirect() && plane.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.shadow_unsafe(dest, destOffset, src, srcOffset, light, lightOffset, plane, planeOffset);
         return Float4x4OpsKernelsByteBuffer.shadow_api(dest, destOffset, src, srcOffset, light, lightOffset, plane, planeOffset);
     }
 
@@ -21632,13 +21827,13 @@ public final class Float4x4Ops {
 
     /** {@link #shear(float[], int, float[], int, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer shear(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float xy, float xz, float yx, float yz, float zx, float zy) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.shear_unsafe(dest, destOffset, src, srcOffset, xy, xz, yx, yz, zx, zy);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.shear_unsafe(dest, destOffset, src, srcOffset, xy, xz, yx, yz, zx, zy);
         return Float4x4OpsKernelsTypedBuffer.shear_api(dest, destOffset, src, srcOffset, xy, xz, yx, yz, zx, zy);
     }
 
     /** {@link #shear(float[], int, float[], int, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer shear(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float xy, float xz, float yx, float yz, float zx, float zy) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.shear_unsafe(dest, destOffset, src, srcOffset, xy, xz, yx, yz, zx, zy);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.shear_unsafe(dest, destOffset, src, srcOffset, xy, xz, yx, yz, zx, zy);
         return Float4x4OpsKernelsByteBuffer.shear_api(dest, destOffset, src, srcOffset, xy, xz, yx, yz, zx, zy);
     }
 
@@ -21681,13 +21876,13 @@ public final class Float4x4Ops {
 
     /** {@link #tile(float[], int, float[], int, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer tile(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float x, float y, float w, float h) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.tile_unsafe(dest, destOffset, src, srcOffset, x, y, w, h);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.tile_unsafe(dest, destOffset, src, srcOffset, x, y, w, h);
         return Float4x4OpsKernelsTypedBuffer.tile_api(dest, destOffset, src, srcOffset, x, y, w, h);
     }
 
     /** {@link #tile(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer tile(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float x, float y, float w, float h) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.tile_unsafe(dest, destOffset, src, srcOffset, x, y, w, h);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.tile_unsafe(dest, destOffset, src, srcOffset, x, y, w, h);
         return Float4x4OpsKernelsByteBuffer.tile_api(dest, destOffset, src, srcOffset, x, y, w, h);
     }
 
@@ -21728,13 +21923,13 @@ public final class Float4x4Ops {
 
     /** {@link #translate(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer translate(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float vX, float vY, float vZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.translate_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.translate_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Float4x4OpsKernelsTypedBuffer.translate_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
     /** {@link #translate(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer translate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float vX, float vY, float vZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.translate_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.translate_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Float4x4OpsKernelsByteBuffer.translate_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
@@ -21774,13 +21969,13 @@ public final class Float4x4Ops {
 
     /** {@link #translate(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer translate(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && v.isDirect()) return Float4x4OpsKernelsTypedBuffer.translate_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.translate_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Float4x4OpsKernelsTypedBuffer.translate_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
     /** {@link #translate(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer translate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && v.isDirect()) return Float4x4OpsKernelsByteBuffer.translate_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.translate_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Float4x4OpsKernelsByteBuffer.translate_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
@@ -21886,13 +22081,13 @@ public final class Float4x4Ops {
 
     /** {@link #trapezoidCrop(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer trapezoidCrop(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float p0X, float p0Y, float p1X, float p1Y, float p2X, float p2Y, float p3X, float p3Y) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.trapezoidCrop_unsafe(dest, destOffset, src, srcOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.trapezoidCrop_unsafe(dest, destOffset, src, srcOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
         return Float4x4OpsKernelsTypedBuffer.trapezoidCrop_api(dest, destOffset, src, srcOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
     }
 
     /** {@link #trapezoidCrop(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer trapezoidCrop(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float p0X, float p0Y, float p1X, float p1Y, float p2X, float p2Y, float p3X, float p3Y) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.trapezoidCrop_unsafe(dest, destOffset, src, srcOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.trapezoidCrop_unsafe(dest, destOffset, src, srcOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
         return Float4x4OpsKernelsByteBuffer.trapezoidCrop_api(dest, destOffset, src, srcOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
     }
 
@@ -22005,13 +22200,13 @@ public final class Float4x4Ops {
 
     /** {@link #trapezoidCrop(float[], int, float[], int, float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer trapezoidCrop(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer p0, int p0Offset, java.nio.FloatBuffer p1, int p1Offset, java.nio.FloatBuffer p2, int p2Offset, java.nio.FloatBuffer p3, int p3Offset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && p0.isDirect() && p1.isDirect() && p2.isDirect() && p3.isDirect()) return Float4x4OpsKernelsTypedBuffer.trapezoidCrop_unsafe(dest, destOffset, src, srcOffset, p0, p0Offset, p1, p1Offset, p2, p2Offset, p3, p3Offset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && p0.isDirect() && p0.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder() && p3.isDirect() && p3.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.trapezoidCrop_unsafe(dest, destOffset, src, srcOffset, p0, p0Offset, p1, p1Offset, p2, p2Offset, p3, p3Offset);
         return Float4x4OpsKernelsTypedBuffer.trapezoidCrop_api(dest, destOffset, src, srcOffset, p0, p0Offset, p1, p1Offset, p2, p2Offset, p3, p3Offset);
     }
 
     /** {@link #trapezoidCrop(float[], int, float[], int, float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer trapezoidCrop(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer p0, int p0Offset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset, java.nio.ByteBuffer p3, int p3Offset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && p0.isDirect() && p1.isDirect() && p2.isDirect() && p3.isDirect()) return Float4x4OpsKernelsByteBuffer.trapezoidCrop_unsafe(dest, destOffset, src, srcOffset, p0, p0Offset, p1, p1Offset, p2, p2Offset, p3, p3Offset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && p0.isDirect() && p0.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder() && p3.isDirect() && p3.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.trapezoidCrop_unsafe(dest, destOffset, src, srcOffset, p0, p0Offset, p1, p1Offset, p2, p2Offset, p3, p3Offset);
         return Float4x4OpsKernelsByteBuffer.trapezoidCrop_api(dest, destOffset, src, srcOffset, p0, p0Offset, p1, p1Offset, p2, p2Offset, p3, p3Offset);
     }
 
@@ -22037,11 +22232,11 @@ public final class Float4x4Ops {
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -22071,11 +22266,11 @@ public final class Float4x4Ops {
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -22228,11 +22423,11 @@ public final class Float4x4Ops {
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -22263,11 +22458,11 @@ public final class Float4x4Ops {
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param winCoordsZ the {@code z} component of the window coordinates {@code (x, y, depth)} to
-     *        unproject {@code (winCoordsX, winCoordsY, winCoordsZ)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -22424,9 +22619,9 @@ public final class Float4x4Ops {
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -22459,9 +22654,9 @@ public final class Float4x4Ops {
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -22620,9 +22815,9 @@ public final class Float4x4Ops {
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -22655,9 +22850,9 @@ public final class Float4x4Ops {
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param winCoordsY the {@code y} component of the window coordinates {@code (x, y)} to
-     *        unproject {@code (winCoordsX, winCoordsY)}
+     *        unproject
      * @param viewportX the {@code x} component of the vector
      *        {@code (viewportX, viewportY, viewportZ, viewportW)}
      * @param viewportY the {@code y} component of the vector
@@ -22824,13 +23019,13 @@ public final class Float4x4Ops {
 
     /** {@link #mulVec4(float[], int, float[], int, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mulVec4(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float vX, float vY, float vZ, float vW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.mulVec4_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ, vW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mulVec4_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ, vW);
         return Float4x4OpsKernelsTypedBuffer.mulVec4_api(dest, destOffset, src, srcOffset, vX, vY, vZ, vW);
     }
 
     /** {@link #mulVec4(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mulVec4(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float vX, float vY, float vZ, float vW) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.mulVec4_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ, vW);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mulVec4_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ, vW);
         return Float4x4OpsKernelsByteBuffer.mulVec4_api(dest, destOffset, src, srcOffset, vX, vY, vZ, vW);
     }
 
@@ -22866,13 +23061,13 @@ public final class Float4x4Ops {
 
     /** {@link #mulVec4(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer mulVec4(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && v.isDirect()) return Float4x4OpsKernelsTypedBuffer.mulVec4_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.mulVec4_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Float4x4OpsKernelsTypedBuffer.mulVec4_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
     /** {@link #mulVec4(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer mulVec4(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && v.isDirect()) return Float4x4OpsKernelsByteBuffer.mulVec4_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.mulVec4_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Float4x4OpsKernelsByteBuffer.mulVec4_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
@@ -22958,13 +23153,13 @@ public final class Float4x4Ops {
 
     /** {@link #transformAabb(float[], int, float[], int, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer transformAabb(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.transformAabb_unsafe(dest, destOffset, src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.transformAabb_unsafe(dest, destOffset, src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
         return Float4x4OpsKernelsTypedBuffer.transformAabb_api(dest, destOffset, src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
     }
 
     /** {@link #transformAabb(float[], int, float[], int, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer transformAabb(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.transformAabb_unsafe(dest, destOffset, src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.transformAabb_unsafe(dest, destOffset, src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
         return Float4x4OpsKernelsByteBuffer.transformAabb_api(dest, destOffset, src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
     }
 
@@ -23015,13 +23210,13 @@ public final class Float4x4Ops {
 
     /** {@link #transformDirection(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer transformDirection(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float vX, float vY, float vZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.transformDirection_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.transformDirection_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Float4x4OpsKernelsTypedBuffer.transformDirection_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
     /** {@link #transformDirection(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer transformDirection(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float vX, float vY, float vZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.transformDirection_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.transformDirection_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Float4x4OpsKernelsByteBuffer.transformDirection_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
@@ -23074,13 +23269,13 @@ public final class Float4x4Ops {
 
     /** {@link #transformDirection(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer transformDirection(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && v.isDirect()) return Float4x4OpsKernelsTypedBuffer.transformDirection_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.transformDirection_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Float4x4OpsKernelsTypedBuffer.transformDirection_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
     /** {@link #transformDirection(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer transformDirection(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && v.isDirect()) return Float4x4OpsKernelsByteBuffer.transformDirection_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.transformDirection_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Float4x4OpsKernelsByteBuffer.transformDirection_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
@@ -23134,13 +23329,13 @@ public final class Float4x4Ops {
 
     /** {@link #transformPosition(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer transformPosition(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float vX, float vY, float vZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.transformPosition_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.transformPosition_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Float4x4OpsKernelsTypedBuffer.transformPosition_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
     /** {@link #transformPosition(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer transformPosition(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float vX, float vY, float vZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.transformPosition_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.transformPosition_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Float4x4OpsKernelsByteBuffer.transformPosition_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
@@ -23196,13 +23391,13 @@ public final class Float4x4Ops {
 
     /** {@link #transformPosition(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer transformPosition(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && v.isDirect()) return Float4x4OpsKernelsTypedBuffer.transformPosition_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.transformPosition_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Float4x4OpsKernelsTypedBuffer.transformPosition_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
     /** {@link #transformPosition(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer transformPosition(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && v.isDirect()) return Float4x4OpsKernelsByteBuffer.transformPosition_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.transformPosition_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Float4x4OpsKernelsByteBuffer.transformPosition_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
@@ -23259,13 +23454,13 @@ public final class Float4x4Ops {
 
     /** {@link #transformProject(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer transformProject(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float vX, float vY, float vZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsTypedBuffer.transformProject_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.transformProject_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Float4x4OpsKernelsTypedBuffer.transformProject_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
     /** {@link #transformProject(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer transformProject(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float vX, float vY, float vZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float4x4OpsKernelsByteBuffer.transformProject_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.transformProject_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Float4x4OpsKernelsByteBuffer.transformProject_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
@@ -23324,13 +23519,13 @@ public final class Float4x4Ops {
 
     /** {@link #transformProject(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
     public static java.nio.FloatBuffer transformProject(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && v.isDirect()) return Float4x4OpsKernelsTypedBuffer.transformProject_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.transformProject_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Float4x4OpsKernelsTypedBuffer.transformProject_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
     /** {@link #transformProject(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
     public static java.nio.ByteBuffer transformProject(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && v.isDirect()) return Float4x4OpsKernelsByteBuffer.transformProject_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.transformProject_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Float4x4OpsKernelsByteBuffer.transformProject_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
@@ -23377,14 +23572,14 @@ public final class Float4x4Ops {
     /** Bulk: transform {@code count} consecutive 3D points in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
      *  Reads the matrix ONCE (hoisted); distinct from the single-point overload of the same name. */
     public static java.nio.FloatBuffer transformPosition(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer matrix, int matrixOffset, java.nio.FloatBuffer points, int pointsOffset, int count) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && matrix.isDirect() && points.isDirect()) return Float4x4OpsKernelsTypedBuffer.transformPosition_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.transformPosition_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
         return Float4x4OpsKernelsTypedBuffer.transformPosition_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
     }
 
     /** Bulk: transform {@code count} consecutive 3D points in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
      *  Reads the matrix ONCE (hoisted); distinct from the single-point overload of the same name. */
     public static java.nio.ByteBuffer transformPosition(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer matrix, int matrixOffset, java.nio.ByteBuffer points, int pointsOffset, int count) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && matrix.isDirect() && points.isDirect()) return Float4x4OpsKernelsByteBuffer.transformPosition_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.transformPosition_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
         return Float4x4OpsKernelsByteBuffer.transformPosition_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
     }
 
@@ -23426,14 +23621,14 @@ public final class Float4x4Ops {
     /** Bulk: transform {@code count} consecutive 3D direction vectors in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
      *  Reads the matrix ONCE (hoisted); distinct from the single-direction vector overload of the same name. */
     public static java.nio.FloatBuffer transformDirection(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer matrix, int matrixOffset, java.nio.FloatBuffer points, int pointsOffset, int count) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && matrix.isDirect() && points.isDirect()) return Float4x4OpsKernelsTypedBuffer.transformDirection_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.transformDirection_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
         return Float4x4OpsKernelsTypedBuffer.transformDirection_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
     }
 
     /** Bulk: transform {@code count} consecutive 3D direction vectors in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
      *  Reads the matrix ONCE (hoisted); distinct from the single-direction vector overload of the same name. */
     public static java.nio.ByteBuffer transformDirection(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer matrix, int matrixOffset, java.nio.ByteBuffer points, int pointsOffset, int count) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && matrix.isDirect() && points.isDirect()) return Float4x4OpsKernelsByteBuffer.transformDirection_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.transformDirection_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
         return Float4x4OpsKernelsByteBuffer.transformDirection_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
     }
 
@@ -23484,14 +23679,14 @@ public final class Float4x4Ops {
     /** Bulk: transform {@code count} consecutive 3D projected points in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
      *  Reads the matrix ONCE (hoisted); distinct from the single-projected point overload of the same name. */
     public static java.nio.FloatBuffer transformProject(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer matrix, int matrixOffset, java.nio.FloatBuffer points, int pointsOffset, int count) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && matrix.isDirect() && points.isDirect()) return Float4x4OpsKernelsTypedBuffer.transformProject_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.transformProject_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
         return Float4x4OpsKernelsTypedBuffer.transformProject_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
     }
 
     /** Bulk: transform {@code count} consecutive 3D projected points in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
      *  Reads the matrix ONCE (hoisted); distinct from the single-projected point overload of the same name. */
     public static java.nio.ByteBuffer transformProject(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer matrix, int matrixOffset, java.nio.ByteBuffer points, int pointsOffset, int count) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && matrix.isDirect() && points.isDirect()) return Float4x4OpsKernelsByteBuffer.transformProject_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.transformProject_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
         return Float4x4OpsKernelsByteBuffer.transformProject_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
     }
 
@@ -23540,7 +23735,7 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static float[] copy(float[] dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
+        if (SimdSupport.VECTOR_API && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
         return copy(dest, destOffset, src, srcOffset, 1);
     }
 
@@ -23550,8 +23745,8 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static float[] copy(float[] dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect()) {
+        if (SimdSupport.VECTOR_API && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L, dest, UnsafeCopy.FLOAT_ARRAY_BASE + (long) destOffset * 4L, (long) count * 64L);
             return dest;
         }
@@ -23567,7 +23762,7 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static float[] copy(float[] dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
+        if (SimdSupport.VECTOR_API && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
         return copy(dest, destOffset, src, srcOffset, 1);
     }
 
@@ -23577,8 +23772,8 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static float[] copy(float[] dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect()) {
+        if (SimdSupport.VECTOR_API && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, dest, UnsafeCopy.FLOAT_ARRAY_BASE + (long) destOffset * 4L, (long) count * 64L);
             return dest;
         }
@@ -23643,7 +23838,7 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, float[] src, int srcOffset) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
+        if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
         return copy(dest, destOffset, src, srcOffset, 1);
     }
 
@@ -23653,8 +23848,8 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, float[] src, int srcOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) {
+        if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.FLOAT_ARRAY_BASE + (long) srcOffset * 4L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L, (long) count * 64L);
             return dest;
         }
@@ -23670,7 +23865,7 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
+        if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
         return copy(dest, destOffset, src, srcOffset, 1);
     }
 
@@ -23680,8 +23875,8 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) {
+        if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L, (long) count * 64L);
             return dest;
         }
@@ -23697,7 +23892,7 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
+        if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
         return copy(dest, destOffset, src, srcOffset, 1);
     }
 
@@ -23707,8 +23902,8 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) {
+        if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L, (long) count * 64L);
             return dest;
         }
@@ -23724,7 +23919,7 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
+        if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
         return copy(dest, destOffset, src, srcOffset, 1);
     }
 
@@ -23734,8 +23929,8 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isNative()) {
+        if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isNative()) {
             UnsafeOpsHolder.U.copyMemory(null, src.address() + srcOffset, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L, (long) count * 64L);
             return dest;
         }
@@ -23760,7 +23955,7 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, long src, int count) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, src, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L, (long) count * 64L);
             return dest;
         }
@@ -23773,7 +23968,7 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, float[] src, int srcOffset) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
+        if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
         return copy(dest, destOffset, src, srcOffset, 1);
     }
 
@@ -23783,8 +23978,8 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, float[] src, int srcOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) {
+        if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.FLOAT_ARRAY_BASE + (long) srcOffset * 4L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 64L);
             return dest;
         }
@@ -23800,7 +23995,7 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
+        if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
         return copy(dest, destOffset, src, srcOffset, 1);
     }
 
@@ -23810,8 +24005,8 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) {
+        if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 64L);
             return dest;
         }
@@ -23827,7 +24022,7 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
+        if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
         return copy(dest, destOffset, src, srcOffset, 1);
     }
 
@@ -23837,8 +24032,8 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) {
+        if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 64L);
             return dest;
         }
@@ -23854,7 +24049,7 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
+        if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
         return copy(dest, destOffset, src, srcOffset, 1);
     }
 
@@ -23864,8 +24059,8 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isNative()) {
+        if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isNative()) {
             UnsafeOpsHolder.U.copyMemory(null, src.address() + srcOffset, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 64L);
             return dest;
         }
@@ -23890,7 +24085,7 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, long src, int count) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, src, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 64L);
             return dest;
         }
@@ -23930,7 +24125,7 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
+        if (SimdSupport.VECTOR_API && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
         return copy(dest, destOffset, src, srcOffset, 1);
     }
 
@@ -23940,8 +24135,8 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isDirect()) {
+        if (SimdSupport.VECTOR_API && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L, null, dest.address() + destOffset, (long) count * 64L);
             return dest;
         }
@@ -23957,7 +24152,7 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
+        if (SimdSupport.VECTOR_API && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset);
         return copy(dest, destOffset, src, srcOffset, 1);
     }
 
@@ -23967,8 +24162,8 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
-        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isDirect()) {
+        if (SimdSupport.VECTOR_API && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, dest.address() + destOffset, (long) count * 64L);
             return dest;
         }
@@ -24067,7 +24262,7 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static long copy(long dest, java.nio.FloatBuffer src, int srcOffset, int count) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L, null, dest, (long) count * 64L);
             return dest;
         }
@@ -24091,7 +24286,7 @@ public final class Float4x4Ops {
      * The source and destination ranges must not overlap unless they are identical.
      */
     public static long copy(long dest, java.nio.ByteBuffer src, int srcOffset, int count) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, dest, (long) count * 64L);
             return dest;
         }

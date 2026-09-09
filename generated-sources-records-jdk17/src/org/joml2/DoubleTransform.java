@@ -263,7 +263,7 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Set the scale of this transform to {@code s}, returning the result as a value.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @return the resulting transform
      */
     public DoubleTransform setScale(Double3 s) {
@@ -363,7 +363,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
     /**
      * Create the decomposition of the given matrix's linear {@code R * S} block, with zero
-     * translation (a sheared matrix projects onto the nearest rotation).
+     * translation (scale is removed by normalizing the columns, but shear is not removed: a sheared
+     * block yields a rotation quaternion that is not unit length).
      *
      * @param m the matrix
      * @return the resulting transform
@@ -420,8 +421,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
     /**
      * Create the TRS decomposition of the given affine matrix: translation from the last column,
-     * scale from the column lengths of the upper-left 3x3 block, rotation from the orthonormalized
-     * block (a sheared matrix projects onto the nearest rotation).
+     * scale from the column lengths of the upper-left 3x3 block, rotation from the
+     * column-normalized block (scale is removed by normalizing the columns, but shear is not
+     * removed: a sheared block yields a rotation quaternion that is not unit length).
      *
      * @param m the matrix
      * @return the resulting transform
@@ -478,8 +480,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
     /**
      * Create the TRS decomposition of the given affine matrix: translation from the last column,
-     * scale from the column lengths of the upper-left 3x3 block, rotation from the orthonormalized
-     * block (a sheared matrix projects onto the nearest rotation).
+     * scale from the column lengths of the upper-left 3x3 block, rotation from the
+     * column-normalized block (scale is removed by normalizing the columns, but shear is not
+     * removed: a sheared block yields a rotation quaternion that is not unit length).
      *
      * @param m the matrix
      * @return the resulting transform
@@ -590,7 +593,7 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t0 = this.rZ * this.rZ;
         double _t1 = this.rZ * this.rW;
         double _t2 = this.rY * this.rW;
-        return new Double4x4(this.sX * Math.fma(-2.0, Math.fma(this.rY, this.rY, _t0), 1.0), this.sY * 2.0 * Math.fma(this.rX, this.rY, -_t1), this.sZ * 2.0 * Math.fma(this.rX, this.rZ, _t2), this.tX, this.sX * 2.0 * Math.fma(this.rX, this.rY, _t1), this.sY * Math.fma(-2.0, Math.fma(this.rX, this.rX, _t0), 1.0), this.sZ * 2.0 * Math.fma(this.rY, this.rZ, -(this.rX * this.rW)), this.tY, this.sX * 2.0 * Math.fma(this.rX, this.rZ, -_t2), this.sY * 2.0 * Math.fma(this.rX, this.rW, this.rY * this.rZ), this.sZ * Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0), this.tZ, 0.0, 0.0, 0.0, 1.0, 0);
+        return new Double4x4(this.sX * Math.fma(-2.0, Math.fma(this.rY, this.rY, _t0), 1.0), this.sY * 2.0 * Math.fma(this.rX, this.rY, -_t1), this.sZ * 2.0 * Math.fma(this.rX, this.rZ, _t2), this.tX, this.sX * 2.0 * Math.fma(this.rX, this.rY, _t1), this.sY * Math.fma(-2.0, Math.fma(this.rX, this.rX, _t0), 1.0), this.sZ * 2.0 * Math.fma(this.rY, this.rZ, -(this.rX * this.rW)), this.tY, this.sX * 2.0 * Math.fma(this.rX, this.rZ, -_t2), this.sY * 2.0 * Math.fma(this.rX, this.rW, this.rY * this.rZ), this.sZ * Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0), this.tZ, 0.0, 0.0, 0.0, 1.0, Joml.BIT_AFFINE);
     }
 
 
@@ -618,7 +621,7 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t0 = this.rZ * this.rZ;
         double _t1 = this.rZ * this.rW;
         double _t2 = this.rY * this.rW;
-        return new Double3x4(this.sX * Math.fma(-2.0, Math.fma(this.rY, this.rY, _t0), 1.0), this.sY * 2.0 * Math.fma(this.rX, this.rY, -_t1), this.sZ * 2.0 * Math.fma(this.rX, this.rZ, _t2), this.tX, this.sX * 2.0 * Math.fma(this.rX, this.rY, _t1), this.sY * Math.fma(-2.0, Math.fma(this.rX, this.rX, _t0), 1.0), this.sZ * 2.0 * Math.fma(this.rY, this.rZ, -(this.rX * this.rW)), this.tY, this.sX * 2.0 * Math.fma(this.rX, this.rZ, -_t2), this.sY * 2.0 * Math.fma(this.rX, this.rW, this.rY * this.rZ), this.sZ * Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0), this.tZ, 0);
+        return new Double3x4(this.sX * Math.fma(-2.0, Math.fma(this.rY, this.rY, _t0), 1.0), this.sY * 2.0 * Math.fma(this.rX, this.rY, -_t1), this.sZ * 2.0 * Math.fma(this.rX, this.rZ, _t2), this.tX, this.sX * 2.0 * Math.fma(this.rX, this.rY, _t1), this.sY * Math.fma(-2.0, Math.fma(this.rX, this.rX, _t0), 1.0), this.sZ * 2.0 * Math.fma(this.rY, this.rZ, -(this.rX * this.rW)), this.tY, this.sX * 2.0 * Math.fma(this.rX, this.rZ, -_t2), this.sY * 2.0 * Math.fma(this.rX, this.rW, this.rY * this.rZ), this.sZ * Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0), this.tZ, Joml.BIT_AFFINE);
     }
 
 
@@ -656,7 +659,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
 
     /**
-     * Create a new transform from the given values.
+     * Create a new transform representing a pure rotation by {@code rotation} (zero translation,
+     * unit scale).
      *
      * @param rotation the quaternion
      * @return the resulting transform
@@ -667,7 +671,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
 
     /**
-     * Create a new transform from the given values.
+     * Create a new transform representing a pure rotation by ({@code rotationX}, {@code rotationY},
+     * {@code rotationZ}, {@code rotationW}) (zero translation, unit scale).
      *
      * @param rotationX the {@code x} component of the quaternion
      *        {@code (rotationX, rotationY, rotationZ, rotationW)}
@@ -685,7 +690,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
 
     /**
-     * Create a new transform from the given values.
+     * Create a new transform representing a pure rotation by {@code rotation} (zero translation,
+     * unit scale).
      * <p>
      * Alias for {@code set}.
      *
@@ -698,7 +704,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
 
     /**
-     * Create a new transform from the given values.
+     * Create a new transform representing a pure rotation by ({@code rotationX}, {@code rotationY},
+     * {@code rotationZ}, {@code rotationW}) (zero translation, unit scale).
      * <p>
      * Alias for {@code set}.
      *
@@ -718,7 +725,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
 
     /**
-     * Create a new transform from the given values.
+     * Create a new transform representing a pure translation by {@code translation} (identity
+     * rotation, unit scale).
      *
      * @param translation the vector
      * @return the resulting transform
@@ -729,7 +737,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
 
     /**
-     * Create a new transform from the given values.
+     * Create a new transform representing a pure translation by ({@code translationX},
+     * {@code translationY}, {@code translationZ}) (identity rotation, unit scale).
      *
      * @param translationX the {@code x} component of the vector
      *        {@code (translationX, translationY, translationZ)}
@@ -745,7 +754,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
 
     /**
-     * Create a new transform from the given values.
+     * Create a new transform representing a pure translation by {@code translation} (identity
+     * rotation, unit scale).
      * <p>
      * Alias for {@code set}.
      *
@@ -758,7 +768,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
 
     /**
-     * Create a new transform from the given values.
+     * Create a new transform representing a pure translation by ({@code translationX},
+     * {@code translationY}, {@code translationZ}) (identity rotation, unit scale).
      * <p>
      * Alias for {@code set}.
      *
@@ -892,6 +903,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
      * be {@code M * R}. So when transforming a vector {@code v} with the new transform by using
      * {@code M * R * v}, the transformation of the operand will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param other the other transform
      * @return the resulting transform
@@ -915,6 +932,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
      * be {@code M * R}. So when transforming a vector {@code v} with the new transform by using
      * {@code M * R * v}, the transformation of the operand will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param otherTX the {@code tX} component of the transform
      *        {@code (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW, otherSX, otherSY, otherSZ)}
@@ -954,6 +977,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
      * be {@code R * M}. So when transforming a vector {@code v} with the new transform by using
      * {@code R * M * v}, the transformation of the operand will be applied last.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param other the other transform
      * @return the resulting transform
@@ -977,6 +1006,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
      * be {@code R * M}. So when transforming a vector {@code v} with the new transform by using
      * {@code R * M * v}, the transformation of the operand will be applied last.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param otherTX the {@code tX} component of the transform
      *        {@code (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW, otherSX, otherSY, otherSZ)}
@@ -1014,8 +1049,14 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
     /**
      * Compute the difference between this transform and {@code other}, i.e. the
-     * translation-rotation-scale transformation that, applied after {@code this}, results in
-     * {@code other}, returning the result as a value.
+     * translation-rotation-scale transformation {@code D} with {@code this * D = other}, that is
+     * {@code D = this^-1 * other}, returning the result as a value.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param other the other transform
      * @return the resulting transform
@@ -1049,10 +1090,17 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * Compute the difference between this transform and ({@code otherTX}, {@code otherTY},
      * {@code otherTZ}, {@code otherRX}, {@code otherRY}, {@code otherRZ}, {@code otherRW},
      * {@code otherSX}, {@code otherSY}, {@code otherSZ}), i.e. the translation-rotation-scale
-     * transformation that, applied after {@code this}, results in ({@code otherTX},
-     * {@code otherTY}, {@code otherTZ}, {@code otherRX}, {@code otherRY}, {@code otherRZ},
-     * {@code otherRW}, {@code otherSX}, {@code otherSY}, {@code otherSZ}), returning the result as
-     * a value.
+     * transformation {@code D} with
+     * {@code this * D = (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW, otherSX, otherSY, otherSZ)},
+     * that is
+     * {@code D = this^-1 * (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW, otherSX, otherSY, otherSZ)},
+     * returning the result as a value.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param otherTX the {@code tX} component of the transform
      *        {@code (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW, otherSX, otherSY, otherSZ)}
@@ -1350,7 +1398,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
     /**
      * Create a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1377,7 +1426,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
     /**
      * Create a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1416,7 +1466,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
     /**
      * Create a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1443,7 +1494,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
     /**
      * Create a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1482,7 +1534,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
     /**
      * Create a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1509,7 +1562,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
     /**
      * Create a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1577,6 +1631,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param rotation the quaternion (must be a unit quaternion)
      * @return the resulting transform
@@ -1593,6 +1653,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param rotationX the {@code x} component of the quaternion
      *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
@@ -1620,6 +1686,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
@@ -1637,6 +1709,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angle the angle in radians
      * @param axisX the {@code x} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
@@ -1665,6 +1743,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angle the angle in radians
      * @return the resulting transform
@@ -1685,11 +1769,18 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this transform, returning the result as a value.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this transform, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1725,11 +1816,18 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this transform, returning the result as a value.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this transform, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1764,6 +1862,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angle the angle in radians
      * @return the resulting transform
@@ -1784,11 +1888,18 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this transform, returning the result as a value.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this transform, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1824,11 +1935,18 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this transform, returning the result as a value.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this transform, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1863,6 +1981,12 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angle the angle in radians
      * @return the resulting transform
@@ -1883,11 +2007,18 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this transform, returning the result as a value.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this transform, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1923,11 +2054,18 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this transform, returning the result as a value.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this transform, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2473,6 +2611,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2484,6 +2625,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -2496,6 +2640,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2510,6 +2657,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleTransform} holding the loaded elements
@@ -2521,6 +2671,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -2533,6 +2686,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleTransform} holding the loaded elements
@@ -2547,6 +2703,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2558,6 +2717,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Store the elements into the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -2570,6 +2732,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Store the elements into the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2584,6 +2749,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleTransform} holding the loaded elements
@@ -2595,6 +2763,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -2607,6 +2778,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleTransform} holding the loaded elements
@@ -2704,6 +2878,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Store the elements into the given buffer, converting each element to {@code float}, starting
      * at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2715,6 +2892,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Store the elements into the given buffer, converting each element to {@code float}, starting
      * at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -2727,6 +2907,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Store the elements into the given buffer, converting each element to {@code float}, starting
      * at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2741,6 +2924,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Load the elements from the given buffer, converting each element from {@code float}, starting
      * at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleTransform} holding the loaded elements
@@ -2752,6 +2938,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Load the elements from the given buffer, converting each element from {@code float}, starting
      * at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -2764,6 +2953,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Load the elements from the given buffer, converting each element from {@code float}, starting
      * at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleTransform} holding the loaded elements
@@ -2778,6 +2970,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2789,6 +2984,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -2801,6 +2999,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2815,6 +3016,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleTransform} holding the loaded elements
@@ -2826,6 +3030,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -2838,6 +3045,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleTransform} holding the loaded elements

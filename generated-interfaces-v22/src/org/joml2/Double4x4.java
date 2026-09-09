@@ -239,7 +239,7 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Set this matrix to the given rigid transform's {@code T * R} composition.
      *
-     * @param r the rigid transform (must be a unit vector)
+     * @param r the rigid transform (whose rotation must be a unit quaternion)
      * @return this
      */
     @Mutated Double4x4 makeFromRigid(DoubleRigidR r);
@@ -248,19 +248,19 @@ public interface Double4x4 extends Double4x4R {
      * Set this matrix to the given rigid transform's {@code T * R} composition.
      *
      * @param tX the {@code tX} component of the rigid transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the vector must have unit length)
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
      * @param tY the {@code tY} component of the rigid transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the vector must have unit length)
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
      * @param tZ the {@code tZ} component of the rigid transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the vector must have unit length)
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
      * @param rX the {@code rX} component of the rigid transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the vector must have unit length)
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the rotation quaternion must have unit length)
      * @param rY the {@code rY} component of the rigid transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the vector must have unit length)
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the rotation quaternion must have unit length)
      * @param rZ the {@code rZ} component of the rigid transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the vector must have unit length)
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the rotation quaternion must have unit length)
      * @param rW the {@code rW} component of the rigid transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the vector must have unit length)
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW)} (the rotation quaternion must have unit length)
      * @return this
      */
     @Mutated Double4x4 makeFromRigid(double tX, double tY, double tZ, double rX, double rY, double rZ, double rW);
@@ -731,6 +731,10 @@ public interface Double4x4 extends Double4x4R {
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -755,6 +759,10 @@ public interface Double4x4 extends Double4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -778,6 +786,10 @@ public interface Double4x4 extends Double4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -802,6 +814,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -1115,27 +1131,31 @@ public interface Double4x4 extends Double4x4R {
      * {@code dW}).
      *
      * @param rX the {@code rX} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the real part must have unit length)
      * @param rY the {@code rY} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the real part must have unit length)
      * @param rZ the {@code rZ} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the real part must have unit length)
      * @param rW the {@code rW} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the real part must have unit length)
      * @param dX the {@code dX} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dY the {@code dY} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dZ the {@code dZ} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dW the {@code dW} component of the dual quaternion
-     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)} (the dual quaternion must have unit length)
+     *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @return this
      */
     @Mutated Double4x4 makeFromDualQuat(double rX, double rY, double rZ, double rW, double dX, double dY, double dZ, double dW);
 
     /**
      * Set this matrix to an arbitrary perspective projection frustum transformation.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -1156,6 +1176,10 @@ public interface Double4x4 extends Double4x4R {
      * Set this matrix to an arbitrary perspective projection frustum transformation.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -1175,6 +1199,10 @@ public interface Double4x4 extends Double4x4R {
      * Set this matrix to an arbitrary perspective projection frustum transformation.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -1195,6 +1223,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -1684,6 +1716,10 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Set this matrix to an orthographic projection transformation.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -1701,6 +1737,10 @@ public interface Double4x4 extends Double4x4R {
      * Set this matrix to an orthographic projection transformation.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -1717,6 +1757,10 @@ public interface Double4x4 extends Double4x4R {
      * Set this matrix to an orthographic projection transformation.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -1734,6 +1778,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -1747,6 +1795,10 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Set this matrix to a 2D orthographic projection transformation.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -1762,6 +1814,10 @@ public interface Double4x4 extends Double4x4R {
      * Set this matrix to a 2D orthographic projection transformation.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -1776,6 +1832,10 @@ public interface Double4x4 extends Double4x4R {
      * Set this matrix to a 2D orthographic projection transformation.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -1791,6 +1851,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -1802,6 +1866,10 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Set this matrix to a symmetric perspective projection frustum transformation.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -1821,6 +1889,10 @@ public interface Double4x4 extends Double4x4R {
      * Set this matrix to a symmetric perspective projection frustum transformation.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -1839,6 +1911,10 @@ public interface Double4x4 extends Double4x4R {
      * Set this matrix to a symmetric perspective projection frustum transformation.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -1858,6 +1934,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -1874,6 +1954,10 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Set this matrix to a perspective projection frustum transformation for the given vertical
      * field-of-view range.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -1894,6 +1978,10 @@ public interface Double4x4 extends Double4x4R {
      * field-of-view range.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -1913,6 +2001,10 @@ public interface Double4x4 extends Double4x4R {
      * field-of-view range.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -1933,6 +2025,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -1949,6 +2045,10 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Set this matrix to an asymmetric perspective projection frustum transformation with the
      * frustum sides given as view-axis angles.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -1972,6 +2072,10 @@ public interface Double4x4 extends Double4x4R {
      * frustum sides given as view-axis angles.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -1994,6 +2098,10 @@ public interface Double4x4 extends Double4x4R {
      * frustum sides given as view-axis angles.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -2017,6 +2125,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -2430,7 +2542,8 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Set this matrix to a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians
-     * about the X, Y and Z axes, in that order.
+     * about the X, Y and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a
+     * vector is rotated about the Z axis first, then Y, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2441,7 +2554,8 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Set this matrix to a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians
-     * about the X, Z and Y axes, in that order.
+     * about the X, Z and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a
+     * vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2460,7 +2574,8 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Set this matrix to a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians
-     * about the Y, X and Z axes, in that order.
+     * about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a
+     * vector is rotated about the Z axis first, then X, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2471,7 +2586,8 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Set this matrix to a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians
-     * about the Y, Z and X axes, in that order.
+     * about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a
+     * vector is rotated about the X axis first, then Z, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2490,7 +2606,8 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Set this matrix to a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians
-     * about the Z, X and Y axes, in that order.
+     * about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a
+     * vector is rotated about the Y axis first, then X, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2501,7 +2618,8 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Set this matrix to a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians
-     * about the Z, Y and X axes, in that order.
+     * about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a
+     * vector is rotated about the X axis first, then Y, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -3278,13 +3396,13 @@ public interface Double4x4 extends Double4x4R {
      * row points, which the closed-form solution depends on.
      *
      * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param y the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param z the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
      * @return this
@@ -3300,7 +3418,8 @@ public interface Double4x4 extends Double4x4R {
      * they decide where the near and far clip planes sit in clip space and which way the projective
      * row points, which the closed-form solution depends on.
      *
-     * @param plane the plane
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
      * @return this
@@ -3337,13 +3456,13 @@ public interface Double4x4 extends Double4x4R {
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
      * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param y the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param z the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
      * @return this
      */
@@ -3379,13 +3498,13 @@ public interface Double4x4 extends Double4x4R {
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param y the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param z the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @return this
      */
@@ -3422,13 +3541,13 @@ public interface Double4x4 extends Double4x4R {
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param x the {@code x} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param y the {@code y} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param z the {@code z} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
-     *        the normal pointing into the visible half-space {@code (x, y, z, w)}
+     *        the normal pointing into the visible half-space
      * @return this
      */
     @Mutated default Double4x4 obliqueZ(double x, double y, double z, double w) { return obliqueZ(x, y, z, w, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
@@ -3444,7 +3563,8 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
-     * @param plane the plane
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
      * @return this
      */
@@ -3461,7 +3581,8 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param plane the plane
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @return this
      */
@@ -3479,7 +3600,8 @@ public interface Double4x4 extends Double4x4R {
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
-     * @param plane the plane
+     * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
+     *        into the visible half-space
      * @return this
      */
     @Mutated default Double4x4 obliqueZ(DoublePlaneR plane) { return obliqueZ(plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
@@ -3490,6 +3612,10 @@ public interface Double4x4 extends Double4x4R {
      * If {@code M} is {@code this} matrix and {@code O} the orthographic projection matrix, then
      * the new matrix will be {@code M * O}. So when transforming a vector {@code v} with the new
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -3511,6 +3637,10 @@ public interface Double4x4 extends Double4x4R {
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -3531,6 +3661,10 @@ public interface Double4x4 extends Double4x4R {
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -3552,6 +3686,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -3569,6 +3707,10 @@ public interface Double4x4 extends Double4x4R {
      * If {@code M} is {@code this} matrix and {@code O} the orthographic projection matrix, then
      * the new matrix will be {@code M * O}. So when transforming a vector {@code v} with the new
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -3588,6 +3730,10 @@ public interface Double4x4 extends Double4x4R {
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -3606,6 +3752,10 @@ public interface Double4x4 extends Double4x4R {
      * matrix by using {@code M * O * v}, the orthographic projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -3625,6 +3775,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param left the distance to the left frustum edge
      * @param right the distance to the right frustum edge
@@ -3814,6 +3968,10 @@ public interface Double4x4 extends Double4x4R {
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -3837,6 +3995,10 @@ public interface Double4x4 extends Double4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -3859,6 +4021,10 @@ public interface Double4x4 extends Double4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -3882,6 +4048,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param fovy the vertical field of view in radians (must be greater than zero and less than
      *        {@code PI})
@@ -3902,6 +4072,10 @@ public interface Double4x4 extends Double4x4R {
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -3926,6 +4100,10 @@ public interface Double4x4 extends Double4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -3949,6 +4127,10 @@ public interface Double4x4 extends Double4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -3973,6 +4155,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleMin the minimum vertical field-of-view angle in radians
      * @param angleMax the maximum vertical field-of-view angle in radians
@@ -4076,6 +4262,10 @@ public interface Double4x4 extends Double4x4R {
      * If {@code M} is {@code this} matrix and {@code P} the perspective projection matrix, then the
      * new matrix will be {@code M * P}. So when transforming a vector {@code v} with the new matrix
      * by using {@code M * P * v}, the perspective projection will be applied first.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -4103,6 +4293,10 @@ public interface Double4x4 extends Double4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -4129,6 +4323,10 @@ public interface Double4x4 extends Double4x4R {
      * by using {@code M * P * v}, the perspective projection will be applied first.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -4156,6 +4354,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness} and
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
+     * <p>
+     * Degenerate parameters - coincident clip planes such as {@code near == far},
+     * {@code left == right} or {@code bottom == top}, or a zero field of view - leave the result
+     * undefined, and it may differ between the library variants.
      *
      * @param angleLeft the angle in radians from the view axis to the left frustum edge (negative
      *        for a frustum extending to the left)
@@ -4403,7 +4605,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code S * M * v}, the scaling will be applied last.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @return this
      */
@@ -4631,7 +4833,8 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this matrix.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -4646,7 +4849,8 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this matrix.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -4739,7 +4943,8 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this matrix.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -4754,7 +4959,8 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this matrix.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -4847,7 +5053,8 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this matrix.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -4862,7 +5069,8 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this matrix.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -4982,7 +5190,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * S * v}, the scaling will be applied first.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @return this
      */
@@ -5157,6 +5365,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -5166,6 +5377,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -5175,6 +5389,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -5185,6 +5402,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -5199,6 +5419,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -5208,6 +5431,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -5217,6 +5443,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -5227,6 +5456,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -5285,6 +5517,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -5294,6 +5529,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -5303,6 +5541,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -5313,6 +5554,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -5327,6 +5571,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code float}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -5336,6 +5583,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code float}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -5346,6 +5596,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code float}, starting at the given absolute index (the position is not used or
      * modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -5356,6 +5609,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code float}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -5415,6 +5671,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -5424,6 +5683,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -5433,6 +5695,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -5443,6 +5708,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -5457,6 +5725,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given byte buffer in row-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -5466,6 +5737,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given byte buffer in row-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -5475,6 +5749,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given byte buffer in row-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -5485,6 +5762,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given byte buffer in row-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -5543,6 +5823,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -5552,6 +5835,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -5561,6 +5847,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -5571,6 +5860,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -5585,6 +5877,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code float}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -5594,6 +5889,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code float}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -5603,6 +5901,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code float}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -5613,6 +5914,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code float}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -5667,6 +5971,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5678,6 +5985,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -5690,6 +6000,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5706,6 +6019,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5717,6 +6033,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -5729,6 +6048,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5788,6 +6110,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5799,6 +6124,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -5811,6 +6139,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5827,6 +6158,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code float}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5838,6 +6172,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code float}, starting at the given absolute index (the position is not used or
      * modified), with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -5850,6 +6187,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code float}, starting at its current position and advancing the position accordingly,
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5911,6 +6251,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given buffer in row-major order, starting at its current position
      * (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5922,6 +6265,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -5934,6 +6280,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly, with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5950,6 +6299,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given byte buffer in row-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5961,6 +6313,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given byte buffer in row-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -5973,6 +6328,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given byte buffer in row-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6032,6 +6390,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given buffer in row-major order, starting at its current position
      * (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6043,6 +6404,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6055,6 +6419,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly, with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6071,6 +6438,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code float}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6082,6 +6452,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code float}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -6094,6 +6467,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code float}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6160,6 +6536,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -6169,6 +6548,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6179,6 +6561,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -6207,6 +6592,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code float}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -6216,6 +6604,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code float}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6226,6 +6617,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code float}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -6235,6 +6629,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -6244,6 +6641,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -6254,6 +6654,9 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -6314,6 +6717,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6326,6 +6732,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6337,6 +6746,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code float}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6349,6 +6761,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code float}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6360,6 +6775,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -6372,6 +6790,9 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows

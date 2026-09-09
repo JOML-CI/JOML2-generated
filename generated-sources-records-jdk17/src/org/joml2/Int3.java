@@ -618,7 +618,7 @@ public record Int3(int x, int y, int z) {
     /**
      * Set this vector to {@code s}, returning the result as a value.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @return the resulting vector
      */
     public Int3 set(int s) {
@@ -719,8 +719,8 @@ public record Int3(int x, int y, int z) {
      * Clamp each component of this vector between {@code min} and {@code max}, returning the result
      * as a value.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @return the resulting vector
      */
     public Int3 clamp(Int3 min, Int3 max) {
@@ -1822,6 +1822,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -1833,6 +1836,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -1845,6 +1851,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -1859,6 +1868,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Int3} holding the loaded elements
@@ -1870,6 +1882,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -1882,6 +1897,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Int3} holding the loaded elements
@@ -1896,6 +1914,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -1907,6 +1928,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Store the elements into the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -1919,6 +1943,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Store the elements into the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -1933,6 +1960,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Int3} holding the loaded elements
@@ -1944,6 +1974,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -1956,6 +1989,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Int3} holding the loaded elements
@@ -2039,6 +2075,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Store the elements into the given buffer, converting each element to {@code long}, starting
      * at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2050,6 +2089,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Store the elements into the given buffer, converting each element to {@code long}, starting
      * at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -2062,6 +2104,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Store the elements into the given buffer, converting each element to {@code long}, starting
      * at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2076,6 +2121,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Load the elements from the given buffer, converting each element from {@code long}, starting
      * at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Int3} holding the loaded elements
@@ -2087,6 +2135,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Load the elements from the given buffer, converting each element from {@code long}, starting
      * at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -2099,6 +2150,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Load the elements from the given buffer, converting each element from {@code long}, starting
      * at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Int3} holding the loaded elements
@@ -2113,6 +2167,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code long},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2124,6 +2181,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code long},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -2136,6 +2196,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code long},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2150,6 +2213,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code long},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Int3} holding the loaded elements
@@ -2161,6 +2227,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code long},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -2173,6 +2242,9 @@ public record Int3(int x, int y, int z) {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code long},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Int3} holding the loaded elements

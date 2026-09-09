@@ -165,7 +165,7 @@ public class Float3x2Impl implements Float3x2 {
         d.m12 = this.m21;
         d.m10 = _buf0;
         d.m11 = _buf1;
-        d.properties = 0;
+        d.properties = Joml.BIT_AFFINE;
         return d;
     }
 
@@ -189,7 +189,7 @@ public class Float3x2Impl implements Float3x2 {
         d.m12 = this.m21;
         d.m10 = _buf0;
         d.m11 = _buf1;
-        d.properties = 0;
+        d.properties = Joml.BIT_AFFINE;
         return d;
     }
 

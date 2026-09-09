@@ -59,7 +59,7 @@ public class Float3x4Impl implements Float3x4 {
     @Override public boolean isIdentity() { return (this.properties & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY; }
     /** {@return whether this matrix is known to be a pure translation} O(1) read of the cached property bits; conservative. */
     @Override public boolean isTranslation() { return (this.properties & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION; }
-    /** {@return whether this matrix is known to be orthogonal} O(1) read of the cached property bits; conservative. */
+    /** {@return whether this matrix is known to be orthogonal, i.e. its upper-left block is orthonormal with positive determinant (a proper rotation; a reflection is affine, not orthogonal)} O(1) read of the cached property bits; conservative. */
     @Override public boolean isOrthogonal() { return (this.properties & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL; }
     /** {@return whether this matrix is affine} Always {@code true} for this shape. */
     @Override public boolean isAffine() { return true; }
@@ -831,8 +831,9 @@ public class Float3x4Impl implements Float3x4 {
 
 
     /**
-     * Extract the rotation of this matrix as a unit quaternion, column-normalizing the linear block
-     * first to strip scale (skew is not removed) and store the result in {@code dest}.
+     * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
+     * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
+     * unit length) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -845,8 +846,9 @@ public class Float3x4Impl implements Float3x4 {
 
 
     /**
-     * Extract the rotation of this matrix as a unit quaternion, column-normalizing the linear block
-     * first to strip scale (skew is not removed) and store the result in {@code dest}.
+     * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
+     * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
+     * unit length) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -5437,6 +5439,7 @@ public class Float3x4Impl implements Float3x4 {
         dd[9] = sd[9];
         dd[10] = sd[10];
         dd[11] = sd[11];
+        ((Double3x4Impl) dest).properties = this.properties;
         return dest;
     }
 
@@ -5444,7 +5447,7 @@ public class Float3x4Impl implements Float3x4 {
     /**
      * Set this matrix to the given rigid transform's {@code T * R} composition.
      *
-     * @param r the rigid transform (must be a unit vector)
+     * @param r the rigid transform (whose rotation must be a unit quaternion)
      * @return this
      */
     public @Mutated Float3x4 makeFromRigid(FloatRigidR r) {
@@ -5456,19 +5459,23 @@ public class Float3x4Impl implements Float3x4 {
      * Set this matrix to the given rigid transform's {@code T * R} composition.
      *
      * @param rTX the {@code tX} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)}
      * @param rTY the {@code tY} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)}
      * @param rTZ the {@code tZ} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)}
      * @param rRX the {@code rX} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the rotation quaternion must have unit
+     *        length)
      * @param rRY the {@code rY} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the rotation quaternion must have unit
+     *        length)
      * @param rRZ the {@code rZ} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the rotation quaternion must have unit
+     *        length)
      * @param rRW the {@code rW} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the rotation quaternion must have unit
+     *        length)
      * @return this
      */
     @Mutated public Float3x4 makeFromRigid(float rTX, float rTY, float rTZ, float rRX, float rRY, float rRZ, float rRW) {
@@ -6082,8 +6089,9 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Decompose this matrix into a rigid transform: translation from the last column, rotation from
-     * the orthonormalized upper-left 3x3 block (any scale or shear projects onto the nearest
-     * rotation) and store the result in {@code dest}.
+     * the column-normalized upper-left 3x3 block (scale is removed by normalizing the columns, but
+     * shear is not removed: a sheared block yields a rotation quaternion that is not unit length)
+     * and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -6098,8 +6106,9 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Decompose this matrix into a rigid transform: translation from the last column, rotation from
-     * the orthonormalized upper-left 3x3 block (any scale or shear projects onto the nearest
-     * rotation) and store the result in {@code dest}.
+     * the column-normalized upper-left 3x3 block (scale is removed by normalizing the columns, but
+     * shear is not removed: a sheared block yields a rotation quaternion that is not unit length)
+     * and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6284,8 +6293,9 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Decompose this matrix into a TRS transform: translation from the last column, scale from the
-     * column lengths of the upper-left 3x3 block, rotation from the orthonormalized block (a
-     * sheared matrix projects onto the nearest rotation) and store the result in {@code dest}.
+     * column lengths of the upper-left 3x3 block, rotation from the column-normalized block (scale
+     * is removed by normalizing the columns, but shear is not removed: a sheared block yields a
+     * rotation quaternion that is not unit length) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -6300,8 +6310,9 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Decompose this matrix into a TRS transform: translation from the last column, scale from the
-     * column lengths of the upper-left 3x3 block, rotation from the orthonormalized block (a
-     * sheared matrix projects onto the nearest rotation) and store the result in {@code dest}.
+     * column lengths of the upper-left 3x3 block, rotation from the column-normalized block (scale
+     * is removed by normalizing the columns, but shear is not removed: a sheared block yields a
+     * rotation quaternion that is not unit length) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -11730,29 +11741,25 @@ public class Float3x4Impl implements Float3x4 {
      * {@code dqDZ}, {@code dqDW}).
      *
      * @param dqRX the {@code rX} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the real part must have unit
+     *        length)
      * @param dqRY the {@code rY} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the real part must have unit
+     *        length)
      * @param dqRZ the {@code rZ} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the real part must have unit
+     *        length)
      * @param dqRW the {@code rW} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the real part must have unit
+     *        length)
      * @param dqDX the {@code dX} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)}
      * @param dqDY the {@code dY} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)}
      * @param dqDZ the {@code dZ} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)}
      * @param dqDW the {@code dW} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)}
      * @return this
      */
     @Mutated public Float3x4 makeFromDualQuat(float dqRX, float dqRY, float dqRZ, float dqRW, float dqDX, float dqDY, float dqDZ, float dqDW) {
@@ -12996,7 +13003,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Set this matrix to a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians
-     * about the X, Y and Z axes, in that order.
+     * about the X, Y and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a
+     * vector is rotated about the Z axis first, then Y, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -13032,7 +13040,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Set this matrix to a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians
-     * about the X, Z and Y axes, in that order.
+     * about the X, Z and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a
+     * vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -13095,7 +13104,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Set this matrix to a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians
-     * about the Y, X and Z axes, in that order.
+     * about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a
+     * vector is rotated about the Z axis first, then X, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -13131,7 +13141,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Set this matrix to a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians
-     * about the Y, Z and X axes, in that order.
+     * about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a
+     * vector is rotated about the X axis first, then Z, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -13194,7 +13205,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Set this matrix to a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians
-     * about the Z, X and Y axes, in that order.
+     * about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a
+     * vector is rotated about the Y axis first, then X, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -13230,7 +13242,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Set this matrix to a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians
-     * about the Z, Y and X axes, in that order.
+     * about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a
+     * vector is rotated about the X axis first, then Y, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -22913,7 +22926,7 @@ public class Float3x4Impl implements Float3x4 {
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code S * M * v}, the scaling will be applied last.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -22934,7 +22947,7 @@ public class Float3x4Impl implements Float3x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -22951,7 +22964,7 @@ public class Float3x4Impl implements Float3x4 {
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code S * M * v}, the scaling will be applied last.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @return this
      */
@@ -24975,7 +24988,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -24997,7 +25011,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this matrix.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -25019,7 +25034,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -25217,7 +25233,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -25239,7 +25256,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this matrix.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -25261,7 +25279,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -25976,7 +25995,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -25998,7 +26018,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this matrix.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -26020,7 +26041,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -26242,7 +26264,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this matrix and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -26264,7 +26287,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this matrix.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -26286,7 +26310,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this matrix and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -26977,7 +27002,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -26999,7 +27025,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this matrix.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -27021,7 +27048,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -27219,7 +27247,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this matrix and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -27241,7 +27270,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this matrix.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -27263,7 +27293,8 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this matrix and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -28022,7 +28053,7 @@ public class Float3x4Impl implements Float3x4 {
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * S * v}, the scaling will be applied first.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -28043,7 +28074,7 @@ public class Float3x4Impl implements Float3x4 {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -28060,7 +28091,7 @@ public class Float3x4Impl implements Float3x4 {
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * S * v}, the scaling will be applied first.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @return this
      */
@@ -29114,6 +29145,10 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     public float[] storeCM(@Mutated float[] dest, int offset) {
+        if (dest == this.data) return storeCM_aliased(dest, offset);
+        return storeCM_distinct(dest, offset);
+    }
+    private float[] storeCM_distinct(float[] dest, int offset) {
         dest[offset + 0] = this.data[0];
         dest[offset + 1] = this.data[4];
         dest[offset + 2] = this.data[8];
@@ -29128,7 +29163,39 @@ public class Float3x4Impl implements Float3x4 {
         dest[offset + 11] = this.data[11];
         return dest;
     }
-    public @Mutated Float3x4 loadCM(float[] src, int offset) {
+    private float[] storeCM_aliased(float[] dest, int offset) {
+        float[] d = this.data;
+        float t0 = d[0];
+        float t1 = d[1];
+        float t2 = d[2];
+        float t3 = d[3];
+        float t4 = d[4];
+        float t5 = d[5];
+        float t6 = d[6];
+        float t7 = d[7];
+        float t8 = d[8];
+        float t9 = d[9];
+        float t10 = d[10];
+        float t11 = d[11];
+        dest[offset + 0] = t0;
+        dest[offset + 1] = t4;
+        dest[offset + 2] = t8;
+        dest[offset + 3] = t1;
+        dest[offset + 4] = t5;
+        dest[offset + 5] = t9;
+        dest[offset + 6] = t2;
+        dest[offset + 7] = t6;
+        dest[offset + 8] = t10;
+        dest[offset + 9] = t3;
+        dest[offset + 10] = t7;
+        dest[offset + 11] = t11;
+        return dest;
+    }
+    @Mutated public Float3x4 loadCM(float[] src, int offset) {
+        if (src == this.data) return loadCM_aliased(src, offset);
+        return loadCM_distinct(src, offset);
+    }
+    private Float3x4 loadCM_distinct(float[] src, int offset) {
         this.data[0] = src[offset + 0];
         this.data[4] = src[offset + 1];
         this.data[8] = src[offset + 2];
@@ -29141,6 +29208,35 @@ public class Float3x4Impl implements Float3x4 {
         this.data[3] = src[offset + 9];
         this.data[7] = src[offset + 10];
         this.data[11] = src[offset + 11];
+        this.properties = determineProperties();
+        return this;
+    }
+    private Float3x4 loadCM_aliased(float[] src, int offset) {
+        float t0 = src[offset + 0];
+        float t1 = src[offset + 1];
+        float t2 = src[offset + 2];
+        float t3 = src[offset + 3];
+        float t4 = src[offset + 4];
+        float t5 = src[offset + 5];
+        float t6 = src[offset + 6];
+        float t7 = src[offset + 7];
+        float t8 = src[offset + 8];
+        float t9 = src[offset + 9];
+        float t10 = src[offset + 10];
+        float t11 = src[offset + 11];
+        float[] d = this.data;
+        d[0] = t0;
+        d[4] = t1;
+        d[8] = t2;
+        d[1] = t3;
+        d[5] = t4;
+        d[9] = t5;
+        d[2] = t6;
+        d[6] = t7;
+        d[10] = t8;
+        d[3] = t9;
+        d[7] = t10;
+        d[11] = t11;
         this.properties = determineProperties();
         return this;
     }
@@ -29226,10 +29322,6 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     public float[] storeRM(@Mutated float[] dest, int offset) {
-        if (dest == this.data) return storeRM_aliased(dest, offset);
-        return storeRM_distinct(dest, offset);
-    }
-    private float[] storeRM_distinct(float[] dest, int offset) {
         dest[offset + 0] = this.data[0];
         dest[offset + 1] = this.data[1];
         dest[offset + 2] = this.data[2];
@@ -29244,39 +29336,7 @@ public class Float3x4Impl implements Float3x4 {
         dest[offset + 11] = this.data[11];
         return dest;
     }
-    private float[] storeRM_aliased(float[] dest, int offset) {
-        float[] d = this.data;
-        float t0 = d[0];
-        float t1 = d[1];
-        float t2 = d[2];
-        float t3 = d[3];
-        float t4 = d[4];
-        float t5 = d[5];
-        float t6 = d[6];
-        float t7 = d[7];
-        float t8 = d[8];
-        float t9 = d[9];
-        float t10 = d[10];
-        float t11 = d[11];
-        dest[offset + 0] = t0;
-        dest[offset + 1] = t1;
-        dest[offset + 2] = t2;
-        dest[offset + 3] = t3;
-        dest[offset + 4] = t4;
-        dest[offset + 5] = t5;
-        dest[offset + 6] = t6;
-        dest[offset + 7] = t7;
-        dest[offset + 8] = t8;
-        dest[offset + 9] = t9;
-        dest[offset + 10] = t10;
-        dest[offset + 11] = t11;
-        return dest;
-    }
-    @Mutated public Float3x4 loadRM(float[] src, int offset) {
-        if (src == this.data) return loadRM_aliased(src, offset);
-        return loadRM_distinct(src, offset);
-    }
-    private Float3x4 loadRM_distinct(float[] src, int offset) {
+    public @Mutated Float3x4 loadRM(float[] src, int offset) {
         this.data[0] = src[offset + 0];
         this.data[1] = src[offset + 1];
         this.data[2] = src[offset + 2];
@@ -29289,35 +29349,6 @@ public class Float3x4Impl implements Float3x4 {
         this.data[9] = src[offset + 9];
         this.data[10] = src[offset + 10];
         this.data[11] = src[offset + 11];
-        this.properties = determineProperties();
-        return this;
-    }
-    private Float3x4 loadRM_aliased(float[] src, int offset) {
-        float t0 = src[offset + 0];
-        float t1 = src[offset + 1];
-        float t2 = src[offset + 2];
-        float t3 = src[offset + 3];
-        float t4 = src[offset + 4];
-        float t5 = src[offset + 5];
-        float t6 = src[offset + 6];
-        float t7 = src[offset + 7];
-        float t8 = src[offset + 8];
-        float t9 = src[offset + 9];
-        float t10 = src[offset + 10];
-        float t11 = src[offset + 11];
-        float[] d = this.data;
-        d[0] = t0;
-        d[1] = t1;
-        d[2] = t2;
-        d[3] = t3;
-        d[4] = t4;
-        d[5] = t5;
-        d[6] = t6;
-        d[7] = t7;
-        d[8] = t8;
-        d[9] = t9;
-        d[10] = t10;
-        d[11] = t11;
         this.properties = determineProperties();
         return this;
     }
@@ -29403,6 +29434,10 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     public float[] storeCM(@Mutated float[] dest, int offset, int stride) {
+        if (dest == this.data) return storeCM_aliased(dest, offset, stride);
+        return storeCM_distinct(dest, offset, stride);
+    }
+    private float[] storeCM_distinct(float[] dest, int offset, int stride) {
         int _p1 = offset + stride;
         int _p2 = _p1 + stride;
         int _p3 = _p2 + stride;
@@ -29420,7 +29455,42 @@ public class Float3x4Impl implements Float3x4 {
         dest[_p3 + 2] = this.data[11];
         return dest;
     }
-    public @Mutated Float3x4 loadCM(float[] src, int offset, int stride) {
+    private float[] storeCM_aliased(float[] dest, int offset, int stride) {
+        float[] d = this.data;
+        float t0 = d[0];
+        float t1 = d[1];
+        float t2 = d[2];
+        float t3 = d[3];
+        float t4 = d[4];
+        float t5 = d[5];
+        float t6 = d[6];
+        float t7 = d[7];
+        float t8 = d[8];
+        float t9 = d[9];
+        float t10 = d[10];
+        float t11 = d[11];
+        int _p1 = offset + stride;
+        int _p2 = _p1 + stride;
+        int _p3 = _p2 + stride;
+        dest[offset] = t0;
+        dest[offset + 1] = t4;
+        dest[offset + 2] = t8;
+        dest[_p1] = t1;
+        dest[_p1 + 1] = t5;
+        dest[_p1 + 2] = t9;
+        dest[_p2] = t2;
+        dest[_p2 + 1] = t6;
+        dest[_p2 + 2] = t10;
+        dest[_p3] = t3;
+        dest[_p3 + 1] = t7;
+        dest[_p3 + 2] = t11;
+        return dest;
+    }
+    @Mutated public Float3x4 loadCM(float[] src, int offset, int stride) {
+        if (src == this.data) return loadCM_aliased(src, offset, stride);
+        return loadCM_distinct(src, offset, stride);
+    }
+    private Float3x4 loadCM_distinct(float[] src, int offset, int stride) {
         int _p1 = offset + stride;
         int _p2 = _p1 + stride;
         int _p3 = _p2 + stride;
@@ -29436,6 +29506,38 @@ public class Float3x4Impl implements Float3x4 {
         this.data[3] = src[_p3];
         this.data[7] = src[_p3 + 1];
         this.data[11] = src[_p3 + 2];
+        this.properties = determineProperties();
+        return this;
+    }
+    private Float3x4 loadCM_aliased(float[] src, int offset, int stride) {
+        int _p1 = offset + stride;
+        int _p2 = _p1 + stride;
+        int _p3 = _p2 + stride;
+        float t0 = src[offset];
+        float t1 = src[offset + 1];
+        float t2 = src[offset + 2];
+        float t3 = src[_p1];
+        float t4 = src[_p1 + 1];
+        float t5 = src[_p1 + 2];
+        float t6 = src[_p2];
+        float t7 = src[_p2 + 1];
+        float t8 = src[_p2 + 2];
+        float t9 = src[_p3];
+        float t10 = src[_p3 + 1];
+        float t11 = src[_p3 + 2];
+        float[] d = this.data;
+        d[0] = t0;
+        d[4] = t1;
+        d[8] = t2;
+        d[1] = t3;
+        d[5] = t4;
+        d[9] = t5;
+        d[2] = t6;
+        d[6] = t7;
+        d[10] = t8;
+        d[3] = t9;
+        d[7] = t10;
+        d[11] = t11;
         this.properties = determineProperties();
         return this;
     }
@@ -29527,10 +29629,6 @@ public class Float3x4Impl implements Float3x4 {
     }
 
     public float[] storeRM(@Mutated float[] dest, int offset, int stride) {
-        if (dest == this.data) return storeRM_aliased(dest, offset, stride);
-        return storeRM_distinct(dest, offset, stride);
-    }
-    private float[] storeRM_distinct(float[] dest, int offset, int stride) {
         int _p1 = offset + stride;
         int _p2 = _p1 + stride;
         dest[offset] = this.data[0];
@@ -29547,41 +29645,7 @@ public class Float3x4Impl implements Float3x4 {
         dest[_p2 + 3] = this.data[11];
         return dest;
     }
-    private float[] storeRM_aliased(float[] dest, int offset, int stride) {
-        float[] d = this.data;
-        float t0 = d[0];
-        float t1 = d[1];
-        float t2 = d[2];
-        float t3 = d[3];
-        float t4 = d[4];
-        float t5 = d[5];
-        float t6 = d[6];
-        float t7 = d[7];
-        float t8 = d[8];
-        float t9 = d[9];
-        float t10 = d[10];
-        float t11 = d[11];
-        int _p1 = offset + stride;
-        int _p2 = _p1 + stride;
-        dest[offset] = t0;
-        dest[offset + 1] = t1;
-        dest[offset + 2] = t2;
-        dest[offset + 3] = t3;
-        dest[_p1] = t4;
-        dest[_p1 + 1] = t5;
-        dest[_p1 + 2] = t6;
-        dest[_p1 + 3] = t7;
-        dest[_p2] = t8;
-        dest[_p2 + 1] = t9;
-        dest[_p2 + 2] = t10;
-        dest[_p2 + 3] = t11;
-        return dest;
-    }
-    @Mutated public Float3x4 loadRM(float[] src, int offset, int stride) {
-        if (src == this.data) return loadRM_aliased(src, offset, stride);
-        return loadRM_distinct(src, offset, stride);
-    }
-    private Float3x4 loadRM_distinct(float[] src, int offset, int stride) {
+    public @Mutated Float3x4 loadRM(float[] src, int offset, int stride) {
         int _p1 = offset + stride;
         int _p2 = _p1 + stride;
         this.data[0] = src[offset];
@@ -29596,37 +29660,6 @@ public class Float3x4Impl implements Float3x4 {
         this.data[9] = src[_p2 + 1];
         this.data[10] = src[_p2 + 2];
         this.data[11] = src[_p2 + 3];
-        this.properties = determineProperties();
-        return this;
-    }
-    private Float3x4 loadRM_aliased(float[] src, int offset, int stride) {
-        int _p1 = offset + stride;
-        int _p2 = _p1 + stride;
-        float t0 = src[offset];
-        float t1 = src[offset + 1];
-        float t2 = src[offset + 2];
-        float t3 = src[offset + 3];
-        float t4 = src[_p1];
-        float t5 = src[_p1 + 1];
-        float t6 = src[_p1 + 2];
-        float t7 = src[_p1 + 3];
-        float t8 = src[_p2];
-        float t9 = src[_p2 + 1];
-        float t10 = src[_p2 + 2];
-        float t11 = src[_p2 + 3];
-        float[] d = this.data;
-        d[0] = t0;
-        d[1] = t1;
-        d[2] = t2;
-        d[3] = t3;
-        d[4] = t4;
-        d[5] = t5;
-        d[6] = t6;
-        d[7] = t7;
-        d[8] = t8;
-        d[9] = t9;
-        d[10] = t10;
-        d[11] = t11;
         this.properties = determineProperties();
         return this;
     }

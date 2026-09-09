@@ -355,6 +355,8 @@ public final class FloatPlaneImpl implements FloatPlane {
             float[] arr = buf.array();
             int off = buf.arrayOffset() + index;
             FloatVector.fromArray(COL_SPECIES, d, 0).intoArray(arr, off);
+        } else if (buf.order() != ByteOrder.nativeOrder()) {
+            return BB_OPS.storeAbsolute(this, index, buf);
         } else {
             MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
             long baseOff = (long) index * 4;
@@ -368,6 +370,8 @@ public final class FloatPlaneImpl implements FloatPlane {
             float[] arr = buf.array();
             int off = buf.arrayOffset() + index;
             FloatVector.fromArray(COL_SPECIES, arr, off).intoArray(d, 0);
+        } else if (buf.order() != ByteOrder.nativeOrder()) {
+            return BB_OPS.loadAbsolute(this, index, buf);
         } else {
             MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
             long baseOff = (long) index * 4;
@@ -376,12 +380,14 @@ public final class FloatPlaneImpl implements FloatPlane {
         return this;
     }
     public ByteBuffer storeAbsolute(int index, ByteBuffer buf) {
+        if (buf.order() != ByteOrder.nativeOrder()) return BB_OPS.storeAbsolute(this, index, buf);
         float[] d = this.data;
         MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
         FloatVector.fromArray(COL_SPECIES, d, 0).intoMemorySegment(seg, index, ByteOrder.nativeOrder());
         return buf;
     }
     public FloatPlane loadAbsolute(int index, ByteBuffer buf) {
+        if (buf.order() != ByteOrder.nativeOrder()) return BB_OPS.loadAbsolute(this, index, buf);
         float[] d = this.data;
         MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
         FloatVector.fromMemorySegment(COL_SPECIES, seg, index, ByteOrder.nativeOrder()).intoArray(d, 0);

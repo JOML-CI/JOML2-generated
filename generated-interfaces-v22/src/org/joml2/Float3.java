@@ -73,7 +73,7 @@ public interface Float3 extends Float3R {
 
     /**
      * Multiply this vector component-wise by {@code b} and add ({@code x}, {@code y}, {@code z}),
-     * i.e. compute {@code this * b + c} per component.
+     * i.e. compute {@code this * b + (x, y, z)} per component.
      *
      * @param b the factor to multiply this vector by
      * @param x the {@code x} component of the vector {@code (x, y, z)}
@@ -95,7 +95,8 @@ public interface Float3 extends Float3R {
 
     /**
      * Multiply this vector component-wise by ({@code bX}, {@code bY}, {@code bZ}) and add
-     * ({@code cX}, {@code cY}, {@code cZ}), i.e. compute {@code this * b + c} per component.
+     * ({@code cX}, {@code cY}, {@code cZ}), i.e. compute {@code this * (bX, bY, bZ) + (cX, cY, cZ)}
+     * per component.
      *
      * @param bX the {@code x} component of the vector {@code (bX, bY, bZ)}
      * @param bY the {@code y} component of the vector {@code (bX, bY, bZ)}
@@ -179,7 +180,7 @@ public interface Float3 extends Float3R {
     /**
      * Set this vector to {@code s}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @return this
      */
     @Mutated default Float3 set(float s) { return set(s, Joml.RETURN_NEW ? Joml.float3() : this); }
@@ -618,7 +619,8 @@ public interface Float3 extends Float3R {
     @Mutated default Float3 atan() { return atan(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} {@code x} (the denominator).
      *
      * @param x the value to take the arc tangent over (the denominator)
      * @return this
@@ -626,18 +628,21 @@ public interface Float3 extends Float3R {
     @Mutated default Float3 atan2(float x) { return atan2(x, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of {@code x} (the
+     * denominator).
      *
-     * @param x the value to take the arc tangent over (the denominator)
+     * @param x the vector of denominators, one per component
      * @return this
      */
     @Mutated default Float3 atan2(Float3R x) { return atan2(x, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
-     * Compute the component-wise arc tangent of this vector over ({@code x}, {@code y}, {@code z}).
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of ({@code x},
+     * {@code y}, {@code z}) (the denominator).
      *
-     * @param x the {@code x} component of the value to take the arc tangent over (the denominator)
-     *        {@code (x, y, z)}
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @return this
@@ -670,8 +675,8 @@ public interface Float3 extends Float3R {
     /**
      * Clamp each component of this vector between {@code min} and {@code max}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @return this
      */
     @Mutated default Float3 clamp(Float3R min, Float3R max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.float3() : this); }
@@ -691,8 +696,8 @@ public interface Float3 extends Float3R {
     @Mutated default Float3 clamp(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) { return clamp(minX, minY, minZ, maxX, maxY, maxZ, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
-     * Set this vector to the point closest to it on the line segment between {@code lineStart} and
-     * {@code lineEnd}.
+     * Compute the point on the line segment between {@code lineStart} and {@code lineEnd} that is
+     * closest to this vector.
      *
      * @param lineStart the vector
      * @param lineEnd the vector
@@ -701,9 +706,9 @@ public interface Float3 extends Float3R {
     @Mutated default Float3 closestPointOnLine(Float3R lineStart, Float3R lineEnd) { return closestPointOnLine(lineStart, lineEnd, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
-     * Set this vector to the point closest to it on the line segment between ({@code lineStartX},
-     * {@code lineStartY}, {@code lineStartZ}) and ({@code lineEndX}, {@code lineEndY},
-     * {@code lineEndZ}).
+     * Compute the point on the line segment between ({@code lineStartX}, {@code lineStartY},
+     * {@code lineStartZ}) and ({@code lineEndX}, {@code lineEndY}, {@code lineEndZ}) that is
+     * closest to this vector.
      *
      * @param lineStartX the {@code x} component of the vector
      *        {@code (lineStartX, lineStartY, lineStartZ)}
@@ -848,8 +853,8 @@ public interface Float3 extends Float3R {
     @Mutated default Float3 fract() { return fract(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} {@code y}.
      *
      * @param y the other operand
      * @return this
@@ -857,20 +862,21 @@ public interface Float3 extends Float3R {
     @Mutated default Float3 hypot(float y) { return hypot(y, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of {@code y}.
      *
-     * @param y the other operand
+     * @param y the vector of other operands, one per component
      * @return this
      */
     @Mutated default Float3 hypot(Float3R y) { return hypot(y, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * ({@code x}, {@code y}, {@code z}).
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of ({@code x}, {@code y},
+     * {@code z}).
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
-     * @param y the {@code y} component of the other operand {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @return this
      */
@@ -993,7 +999,7 @@ public interface Float3 extends Float3R {
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
      *
-     * @param y the divisor
+     * @param y the vector of divisors, one per component
      * @return this
      */
     @Mutated default Float3 mod(Float3R y) { return mod(y, Joml.RETURN_NEW ? Joml.float3() : this); }
@@ -1006,7 +1012,7 @@ public interface Float3 extends Float3R {
      * dividend.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
-     * @param y the {@code y} component of the divisor {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @return this
      */
@@ -1029,10 +1035,11 @@ public interface Float3 extends Float3R {
     @Mutated default Float3 nextUp() { return nextUp(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
-     * Normalize this vector to unit length (the zero vector yields the zero vector). <p> The
-     * squared length is formed at the component precision, so components whose squares overflow or
-     * underflow that precision are out of domain: the result is the zero vector rather than a unit
-     * vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
+     * Normalize this vector to unit length (the zero vector yields the zero vector).
+     * <p>
+     * The squared length is formed at the component precision, so components whose squares overflow
+     * or underflow that precision are out of domain: the result is the zero vector rather than a
+     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
      * {@code float} and 1.3e154 for {@code double}).
      *
      * @return this
@@ -1049,7 +1056,7 @@ public interface Float3 extends Float3R {
     @Mutated default Float3 normalizeMul(float length) { return normalizeMul(length, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
-     * Set this vector to one of its perpendicular vectors.
+     * Compute a vector perpendicular to this vector.
      *
      * @return this
      */
@@ -1178,7 +1185,8 @@ public interface Float3 extends Float3R {
     @Mutated default Float3 refract(float x, float y, float z, float eta) { return refract(x, y, z, eta, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
-     * Compute the rounded value of each component of this vector.
+     * Compute the value rounded to the nearest integer, ties to even ({@code Math.rint}) of each
+     * component of this vector.
      *
      * @return this
      */
@@ -1294,16 +1302,23 @@ public interface Float3 extends Float3R {
     @Mutated default Float3 tanh() { return tanh(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
-     * Compute the normal of the triangle spanned by this vector and the two given points.
+     * Compute the unit normal of the triangle spanned by this vector and the two given points, i.e.
+     * {@code normalize((p1 - this) x (p2 - this))} - it points to the side from which the vertices
+     * {@code this}, {@code p1}, {@code p2} appear counter-clockwise (a degenerate triangle yields
+     * the zero vector).
      *
-     * @param p1 the vector
-     * @param p2 the vector
+     * @param p1 the second vertex of the triangle (this vector is the first)
+     * @param p2 the third vertex of the triangle
      * @return this
      */
     @Mutated default Float3 triangleNormal(Float3R p1, Float3R p2) { return triangleNormal(p1, p2, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
-     * Compute the normal of the triangle spanned by this vector and the two given points.
+     * Compute the unit normal of the triangle spanned by this vector and the two given points, i.e.
+     * {@code normalize(((p1X, p1Y, p1Z) - this) x ((p2X, p2Y, p2Z) - this))} - it points to the
+     * side from which the vertices {@code this}, ({@code p1X}, {@code p1Y}, {@code p1Z}),
+     * ({@code p2X}, {@code p2Y}, {@code p2Z}) appear counter-clockwise (a degenerate triangle
+     * yields the zero vector).
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
@@ -1330,7 +1345,7 @@ public interface Float3 extends Float3R {
     @Mutated default Float3 ulp() { return ulp(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
-     * Pre-multiply {@code mat} onto this vector.
+     * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this}.
      *
      * @param mat the matrix
      * @return this
@@ -1690,6 +1705,9 @@ public interface Float3 extends Float3R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1699,6 +1717,9 @@ public interface Float3 extends Float3R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1708,6 +1729,9 @@ public interface Float3 extends Float3R {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1718,6 +1742,9 @@ public interface Float3 extends Float3R {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1732,6 +1759,9 @@ public interface Float3 extends Float3R {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1741,6 +1771,9 @@ public interface Float3 extends Float3R {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1750,6 +1783,9 @@ public interface Float3 extends Float3R {
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1760,6 +1796,9 @@ public interface Float3 extends Float3R {
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1817,6 +1856,9 @@ public interface Float3 extends Float3R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1826,6 +1868,9 @@ public interface Float3 extends Float3R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1835,6 +1880,9 @@ public interface Float3 extends Float3R {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1845,6 +1893,9 @@ public interface Float3 extends Float3R {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1859,6 +1910,9 @@ public interface Float3 extends Float3R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1868,6 +1922,9 @@ public interface Float3 extends Float3R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1877,6 +1934,9 @@ public interface Float3 extends Float3R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1887,6 +1947,9 @@ public interface Float3 extends Float3R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this

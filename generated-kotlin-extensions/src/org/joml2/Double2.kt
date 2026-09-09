@@ -26,6 +26,10 @@ inline infix fun Double2.angleBetween(other: Double2): Double = angleBetween(oth
 inline infix fun Double2.distance(other: Double2): Double = distance(other)
 /** [Double2.dot] as an infix function, so `a dot b` parses. */
 inline infix fun Double2.dot(other: Double2): Double = dot(other)
+/** [Double2.mod] as the `mod` infix function, matching the name Kotlin uses for that operation. */
+inline infix fun Double2.mod(y: Double): Double2 = mod(y)
+/** [Double2.mod] as the `mod` infix function, matching the name Kotlin uses for that operation. */
+inline infix fun Double2.mod(y: Double2): Double2 = mod(y)
 /** [Double2.rotate] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Double2.rotate(angle: Angle): Double2 = rotate(angle.radians)
 /** Component 1 of this Double2 (`x()`), for destructuring declarations. */
@@ -38,7 +42,7 @@ inline fun Double2.copy(x: Double = x(), y: Double = y()): Double2 = Double2(x, 
 inline fun Double2.toDoubleArray(): DoubleArray = store(DoubleArray(2))
 /** A Double2 read from this array in storage order, starting at index 0. */
 inline fun DoubleArray.toDouble2(): Double2 = Double2.load(this)
-/** The component of this Double2 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. */
+/** The component of this Double2 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT `v[i] = x` (or `v[i] += x`) resolves to the Java 2-argument value factory `Double2.set(a, b)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Double2.get(index: Int): Double = when (index) {
     0 -> x()
     1 -> y()

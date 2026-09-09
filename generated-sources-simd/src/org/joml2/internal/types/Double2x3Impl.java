@@ -58,7 +58,7 @@ public class Double2x3Impl implements Double2x3 {
     @Override public boolean isIdentity() { return (this.properties & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY; }
     /** {@return whether this matrix is known to be a pure translation} O(1) read of the cached property bits; conservative. */
     @Override public boolean isTranslation() { return (this.properties & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION; }
-    /** {@return whether this matrix is known to be orthogonal} O(1) read of the cached property bits; conservative. */
+    /** {@return whether this matrix is known to be orthogonal, i.e. its upper-left block is orthonormal with positive determinant (a proper rotation; a reflection is affine, not orthogonal)} O(1) read of the cached property bits; conservative. */
     @Override public boolean isOrthogonal() { return (this.properties & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL; }
     /** {@return whether this matrix is affine} Always {@code true} for this shape. */
     @Override public boolean isAffine() { return true; }
@@ -1707,6 +1707,7 @@ public class Double2x3Impl implements Double2x3 {
         dd[3] = (float) (sd[3]);
         dd[4] = (float) (sd[4]);
         dd[5] = (float) (sd[5]);
+        ((Float2x3Impl) dest).properties = this.properties;
         return dest;
     }
 
@@ -4021,7 +4022,7 @@ public class Double2x3Impl implements Double2x3 {
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code S * M * v}, the scaling will be applied last.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -4038,7 +4039,7 @@ public class Double2x3Impl implements Double2x3 {
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code S * M * v}, the scaling will be applied last.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @return this
      */
@@ -5003,7 +5004,7 @@ public class Double2x3Impl implements Double2x3 {
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * S * v}, the scaling will be applied first.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -5020,7 +5021,7 @@ public class Double2x3Impl implements Double2x3 {
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * S * v}, the scaling will be applied first.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @return this
      */

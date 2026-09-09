@@ -2,6 +2,8 @@
 @file:JvmSynthetic
 
 // Kotlin operator/infix/destructuring/indexing extensions for Short2.
+// Note: the record's Java `not()` doubles as Kotlin's unary `!` operator on this
+// type, and it is the BITWISE complement (`!v` == `v.not()`), not a logical negation.
 package org.joml2
 
 /** [Short2.add] as the `+` operator. */
@@ -40,7 +42,7 @@ inline fun Short2.copy(x: Short = x(), y: Short = y()): Short2 = Short2(x, y)
 inline fun Short2.toShortArray(): ShortArray = store(ShortArray(2))
 /** A Short2 read from this array in storage order, starting at index 0. */
 inline fun ShortArray.toShort2(): Short2 = Short2.load(this)
-/** The component of this Short2 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. */
+/** The component of this Short2 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT `v[i] = x` (or `v[i] += x`) resolves to the Java 2-argument value factory `Short2.set(a, b)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Short2.get(index: Int): Short = when (index) {
     0 -> x()
     1 -> y()

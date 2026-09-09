@@ -2,6 +2,8 @@
 @file:JvmSynthetic
 
 // Kotlin operator/infix/destructuring/indexing extensions for Short3.
+// Note: the record's Java `not()` doubles as Kotlin's unary `!` operator on this
+// type, and it is the BITWISE complement (`!v` == `v.not()`), not a logical negation.
 package org.joml2
 
 /** [Short3.add] as the `+` operator. */

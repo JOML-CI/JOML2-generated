@@ -362,7 +362,9 @@ public interface Short4 extends Short4R {
     @Mutated default Short4 rotateRight(short distance) { return rotateRight(distance, Joml.RETURN_NEW ? Joml.short4() : this); }
 
     /**
-     * Shift each component of this vector left by {@code shift} bits.
+     * Shift each component of this vector left by {@code shift} bits (the shift count is taken
+     * modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to {@code int}
+     * and takes it modulo 32).
      *
      * @param shift the number of bit positions to shift by
      * @return this
@@ -370,7 +372,9 @@ public interface Short4 extends Short4R {
     @Mutated default Short4 shl(short shift) { return shl(shift, Joml.RETURN_NEW ? Joml.short4() : this); }
 
     /**
-     * Arithmetically shift each component of this vector right by {@code shift} bits.
+     * Arithmetically shift each component of this vector right by {@code shift} bits (the shift
+     * count is taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes
+     * to {@code int} and takes it modulo 32).
      *
      * @param shift the number of bit positions to shift by
      * @return this
@@ -378,7 +382,9 @@ public interface Short4 extends Short4R {
     @Mutated default Short4 shr(short shift) { return shr(shift, Joml.RETURN_NEW ? Joml.short4() : this); }
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits.
+     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
+     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
+     * {@code int} and takes it modulo 32).
      *
      * @param shift the number of bit positions to shift by
      * @return this
@@ -427,7 +433,7 @@ public interface Short4 extends Short4R {
     /**
      * Set this vector to {@code s}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @return this
      */
     @Mutated default Short4 set(short s) { return set(s, Joml.RETURN_NEW ? Joml.short4() : this); }
@@ -495,8 +501,8 @@ public interface Short4 extends Short4R {
     /**
      * Clamp each component of this vector between {@code min} and {@code max}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @return this
      */
     @Mutated default Short4 clamp(Short4R min, Short4R max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.short4() : this); }
@@ -2461,6 +2467,9 @@ public interface Short4 extends Short4R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -2470,6 +2479,9 @@ public interface Short4 extends Short4R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -2479,6 +2491,9 @@ public interface Short4 extends Short4R {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2489,6 +2504,9 @@ public interface Short4 extends Short4R {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -2503,6 +2521,9 @@ public interface Short4 extends Short4R {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -2512,6 +2533,9 @@ public interface Short4 extends Short4R {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -2521,6 +2545,9 @@ public interface Short4 extends Short4R {
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2531,6 +2558,9 @@ public interface Short4 extends Short4R {
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -2571,6 +2601,9 @@ public interface Short4 extends Short4R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code byte},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -2580,6 +2613,9 @@ public interface Short4 extends Short4R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code byte},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -2589,6 +2625,9 @@ public interface Short4 extends Short4R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code byte},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2599,6 +2638,9 @@ public interface Short4 extends Short4R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code byte},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this

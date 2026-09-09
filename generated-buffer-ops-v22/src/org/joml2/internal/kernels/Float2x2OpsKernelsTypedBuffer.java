@@ -26,7 +26,23 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.getColumn(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, col);
             return dest;
         }
-        Float2x2OpsKernelsSegment.getColumn_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, col);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.getColumn_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, col);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        float _idxSw0;
+        float _idxSw1;
+        switch (col) {
+            case 0: _idxSw0 = _self00; _idxSw1 = _self10; break;
+            case 1: _idxSw0 = _self01; _idxSw1 = _self11; break;
+            default: throw new IndexOutOfBoundsException("Index out of range: " + col);
+        }
+        dest.put(destOffset + 0, _idxSw0);
+        dest.put(destOffset + 1, _idxSw1);
         return dest;
     }
 
@@ -39,7 +55,12 @@ public final class Float2x2OpsKernelsTypedBuffer {
         if (src.hasArray()) {
             return Float2x2Ops.getRotationAngle(src.array(), src.arrayOffset() + srcOffset);
         }
-        return Float2x2OpsKernelsSegment.getRotationAngle_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+        if (src.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Float2x2OpsKernelsSegment.getRotationAngle_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        return (float) Math.atan2(_self10, _self00);
     }
 
     public static java.nio.FloatBuffer getRow_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int row) {
@@ -54,7 +75,23 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.getRow(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, row);
             return dest;
         }
-        Float2x2OpsKernelsSegment.getRow_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, row);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.getRow_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, row);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        float _idxSw0;
+        float _idxSw1;
+        switch (row) {
+            case 0: _idxSw0 = _self00; _idxSw1 = _self01; break;
+            case 1: _idxSw0 = _self10; _idxSw1 = _self11; break;
+            default: throw new IndexOutOfBoundsException("Index out of range: " + row);
+        }
+        dest.put(destOffset + 0, _idxSw0);
+        dest.put(destOffset + 1, _idxSw1);
         return dest;
     }
 
@@ -70,7 +107,18 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.cofactor(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.cofactor_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.cofactor_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        dest.put(destOffset + 0, _self11);
+        dest.put(destOffset + 1, -_self01);
+        dest.put(destOffset + 2, -_self10);
+        dest.put(destOffset + 3, _self00);
         return dest;
     }
 
@@ -83,7 +131,14 @@ public final class Float2x2OpsKernelsTypedBuffer {
         if (src.hasArray()) {
             return Float2x2Ops.determinant(src.array(), src.arrayOffset() + srcOffset);
         }
-        return Float2x2OpsKernelsSegment.determinant_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+        if (src.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Float2x2OpsKernelsSegment.determinant_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        return Math.fma(_self00, _self11, -(_self01 * _self10));
     }
 
     public static float frobeniusNorm_unsafe(java.nio.FloatBuffer src, int srcOffset) {
@@ -95,7 +150,14 @@ public final class Float2x2OpsKernelsTypedBuffer {
         if (src.hasArray()) {
             return Float2x2Ops.frobeniusNorm(src.array(), src.arrayOffset() + srcOffset);
         }
-        return Float2x2OpsKernelsSegment.frobeniusNorm_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+        if (src.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Float2x2OpsKernelsSegment.frobeniusNorm_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        return (float) Math.sqrt(Math.fma(_self11, _self11, Math.fma(_self10, _self10, Math.fma(_self00, _self00, _self01 * _self01))));
     }
 
     public static java.nio.FloatBuffer invert_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
@@ -110,7 +172,20 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.invert(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.invert_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.invert_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        float _t2 = Math.fma(_self00, _self11, -(_self01 * _self10));
+        float _t2_inv = 1.0f / _t2;
+        dest.put(destOffset + 0, _self11 * _t2_inv);
+        dest.put(destOffset + 1, -(_self10 * _t2_inv));
+        dest.put(destOffset + 2, -(_self01 * _t2_inv));
+        dest.put(destOffset + 3, _self00 * _t2_inv);
         return dest;
     }
 
@@ -127,7 +202,28 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.invertProduct(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.invertProduct_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.invertProduct_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 4L);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        float _other00 = other.get(otherOffset + 0);
+        float _other10 = other.get(otherOffset + 1);
+        float _other01 = other.get(otherOffset + 2);
+        float _other11 = other.get(otherOffset + 3);
+        float _t4 = Math.fma(_other01, _self10, _other11 * _self11);
+        float _t5 = Math.fma(_other00, _self00, _other10 * _self01);
+        float _t6 = Math.fma(_other00, _self10, _other10 * _self11);
+        float _t7 = Math.fma(_other01, _self00, _other11 * _self01);
+        float _t10 = Math.fma(_t5, _t4, -(_t6 * _t7));
+        float _t10_inv = 1.0f / _t10;
+        dest.put(destOffset + 0, _t4 * _t10_inv);
+        dest.put(destOffset + 1, -(_t6 * _t10_inv));
+        dest.put(destOffset + 2, -(_t7 * _t10_inv));
+        dest.put(destOffset + 3, _t5 * _t10_inv);
         return dest;
     }
 
@@ -143,7 +239,20 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.normal(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.normal_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.normal_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        float _t2 = Math.fma(_self00, _self11, -(_self01 * _self10));
+        float _t2_inv = 1.0f / _t2;
+        dest.put(destOffset + 0, _self11 * _t2_inv);
+        dest.put(destOffset + 1, -(_self01 * _t2_inv));
+        dest.put(destOffset + 2, -(_self10 * _t2_inv));
+        dest.put(destOffset + 3, _self00 * _t2_inv);
         return dest;
     }
 
@@ -156,7 +265,12 @@ public final class Float2x2OpsKernelsTypedBuffer {
         if (src.hasArray()) {
             return Float2x2Ops.trace(src.array(), src.arrayOffset() + srcOffset);
         }
-        return Float2x2OpsKernelsSegment.trace_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+        if (src.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Float2x2OpsKernelsSegment.trace_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self11 = src.get(srcOffset + 3);
+        return _self00 + _self11;
     }
 
     public static java.nio.FloatBuffer transpose_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
@@ -171,7 +285,18 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.transpose(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.transpose_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.transpose_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        dest.put(destOffset + 0, _self00);
+        dest.put(destOffset + 1, _self01);
+        dest.put(destOffset + 2, _self10);
+        dest.put(destOffset + 3, _self11);
         return dest;
     }
 
@@ -188,7 +313,22 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.add(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.add_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.add_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 4L);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        float _other00 = other.get(otherOffset + 0);
+        float _other10 = other.get(otherOffset + 1);
+        float _other01 = other.get(otherOffset + 2);
+        float _other11 = other.get(otherOffset + 3);
+        dest.put(destOffset + 0, _other00 + _self00);
+        dest.put(destOffset + 1, _other10 + _self10);
+        dest.put(destOffset + 2, _other01 + _self01);
+        dest.put(destOffset + 3, _other11 + _self11);
         return dest;
     }
 
@@ -204,7 +344,18 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.negate(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.negate_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.negate_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        dest.put(destOffset + 0, -_self00);
+        dest.put(destOffset + 1, -_self10);
+        dest.put(destOffset + 2, -_self01);
+        dest.put(destOffset + 3, -_self11);
         return dest;
     }
 
@@ -221,7 +372,22 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.sub(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.sub_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.sub_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 4L);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        float _other00 = other.get(otherOffset + 0);
+        float _other10 = other.get(otherOffset + 1);
+        float _other01 = other.get(otherOffset + 2);
+        float _other11 = other.get(otherOffset + 3);
+        dest.put(destOffset + 0, _self00 - _other00);
+        dest.put(destOffset + 1, _self10 - _other10);
+        dest.put(destOffset + 2, _self01 - _other01);
+        dest.put(destOffset + 3, _self11 - _other11);
         return dest;
     }
 
@@ -237,7 +403,18 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.set(dest.array(), dest.arrayOffset() + destOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.set_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && v.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.set_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 4L);
+            return dest;
+        }
+        float _v00 = v.get(vOffset + 0);
+        float _v10 = v.get(vOffset + 1);
+        float _v01 = v.get(vOffset + 2);
+        float _v11 = v.get(vOffset + 3);
+        dest.put(destOffset + 0, _v00);
+        dest.put(destOffset + 1, _v10);
+        dest.put(destOffset + 2, _v01);
+        dest.put(destOffset + 3, _v11);
         return dest;
     }
 
@@ -253,7 +430,18 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.setMat2x3(dest.array(), dest.arrayOffset() + destOffset, m.array(), m.arrayOffset() + mOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.setMat2x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(m.duplicate().position(0)), (long) mOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && m.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.setMat2x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(m.duplicate().position(0)), (long) mOffset * 4L);
+            return dest;
+        }
+        float _m00 = m.get(mOffset + 0);
+        float _m10 = m.get(mOffset + 1);
+        float _m01 = m.get(mOffset + 2);
+        float _m11 = m.get(mOffset + 3);
+        dest.put(destOffset + 0, _m00);
+        dest.put(destOffset + 1, _m10);
+        dest.put(destOffset + 2, _m01);
+        dest.put(destOffset + 3, _m11);
         return dest;
     }
 
@@ -269,7 +457,18 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.setMat3x3(dest.array(), dest.arrayOffset() + destOffset, m.array(), m.arrayOffset() + mOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.setMat3x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(m.duplicate().position(0)), (long) mOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && m.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.setMat3x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(m.duplicate().position(0)), (long) mOffset * 4L);
+            return dest;
+        }
+        float _m00 = m.get(mOffset + 0);
+        float _m10 = m.get(mOffset + 1);
+        float _m01 = m.get(mOffset + 3);
+        float _m11 = m.get(mOffset + 4);
+        dest.put(destOffset + 0, _m00);
+        dest.put(destOffset + 1, _m10);
+        dest.put(destOffset + 2, _m01);
+        dest.put(destOffset + 3, _m11);
         return dest;
     }
 
@@ -285,7 +484,20 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.to2x3(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.to2x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.to2x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        dest.put(destOffset + 0, _self00);
+        dest.put(destOffset + 1, _self10);
+        dest.put(destOffset + 2, _self01);
+        dest.put(destOffset + 3, _self11);
+        dest.put(destOffset + 4, 0.0f);
+        dest.put(destOffset + 5, 0.0f);
         return dest;
     }
 
@@ -301,7 +513,23 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.to3x3(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.to3x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.to3x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        dest.put(destOffset + 0, _self00);
+        dest.put(destOffset + 1, _self10);
+        dest.put(destOffset + 2, 0.0f);
+        dest.put(destOffset + 3, _self01);
+        dest.put(destOffset + 4, _self11);
+        dest.put(destOffset + 5, 0.0f);
+        dest.put(destOffset + 6, 0.0f);
+        dest.put(destOffset + 7, 0.0f);
+        dest.put(destOffset + 8, 1.0f);
         return dest;
     }
 
@@ -316,7 +544,14 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.makeIdentity(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.makeIdentity_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.makeIdentity_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L);
+            return dest;
+        }
+        dest.put(destOffset + 0, 1.0f);
+        dest.put(destOffset + 1, 0.0f);
+        dest.put(destOffset + 2, 0.0f);
+        dest.put(destOffset + 3, 1.0f);
         return dest;
     }
 
@@ -333,7 +568,22 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.lerp(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset, t);
             return dest;
         }
-        Float2x2OpsKernelsSegment.lerp_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 4L, t);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.lerp_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 4L, t);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        float _other00 = other.get(otherOffset + 0);
+        float _other10 = other.get(otherOffset + 1);
+        float _other01 = other.get(otherOffset + 2);
+        float _other11 = other.get(otherOffset + 3);
+        dest.put(destOffset + 0, Math.fma(t, _other00 - _self00, _self00));
+        dest.put(destOffset + 1, Math.fma(t, _other10 - _self10, _self10));
+        dest.put(destOffset + 2, Math.fma(t, _other01 - _self01, _self01));
+        dest.put(destOffset + 3, Math.fma(t, _other11 - _self11, _self11));
         return dest;
     }
 
@@ -350,7 +600,22 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.mul(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, right.array(), right.arrayOffset() + rightOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.mul_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(right.duplicate().position(0)), (long) rightOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && right.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.mul_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(right.duplicate().position(0)), (long) rightOffset * 4L);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        float _right00 = right.get(rightOffset + 0);
+        float _right10 = right.get(rightOffset + 1);
+        float _right01 = right.get(rightOffset + 2);
+        float _right11 = right.get(rightOffset + 3);
+        dest.put(destOffset + 0, Math.fma(_right00, _self00, _right10 * _self01));
+        dest.put(destOffset + 1, Math.fma(_right00, _self10, _right10 * _self11));
+        dest.put(destOffset + 2, Math.fma(_right01, _self00, _right11 * _self01));
+        dest.put(destOffset + 3, Math.fma(_right01, _self10, _right11 * _self11));
         return dest;
     }
 
@@ -367,7 +632,22 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.preMul(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.preMul_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.preMul_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 4L);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        float _other00 = other.get(otherOffset + 0);
+        float _other10 = other.get(otherOffset + 1);
+        float _other01 = other.get(otherOffset + 2);
+        float _other11 = other.get(otherOffset + 3);
+        dest.put(destOffset + 0, Math.fma(_other00, _self00, _other01 * _self10));
+        dest.put(destOffset + 1, Math.fma(_other10, _self00, _other11 * _self10));
+        dest.put(destOffset + 2, Math.fma(_other00, _self01, _other01 * _self11));
+        dest.put(destOffset + 3, Math.fma(_other10, _self01, _other11 * _self11));
         return dest;
     }
 
@@ -382,7 +662,14 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.makeOuterProduct(dest.array(), dest.arrayOffset() + destOffset, colX, colY, rowX, rowY);
             return dest;
         }
-        Float2x2OpsKernelsSegment.makeOuterProduct_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, colX, colY, rowX, rowY);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.makeOuterProduct_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, colX, colY, rowX, rowY);
+            return dest;
+        }
+        dest.put(destOffset + 0, colX * rowX);
+        dest.put(destOffset + 1, colY * rowX);
+        dest.put(destOffset + 2, colX * rowY);
+        dest.put(destOffset + 3, colY * rowY);
         return dest;
     }
 
@@ -399,7 +686,18 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.makeOuterProduct(dest.array(), dest.arrayOffset() + destOffset, col.array(), col.arrayOffset() + colOffset, row.array(), row.arrayOffset() + rowOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.makeOuterProduct_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(col.duplicate().position(0)), (long) colOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(row.duplicate().position(0)), (long) rowOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && col.order() == java.nio.ByteOrder.nativeOrder() && row.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.makeOuterProduct_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(col.duplicate().position(0)), (long) colOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(row.duplicate().position(0)), (long) rowOffset * 4L);
+            return dest;
+        }
+        float _colx = col.get(colOffset + 0);
+        float _coly = col.get(colOffset + 1);
+        float _rowx = row.get(rowOffset + 0);
+        float _rowy = row.get(rowOffset + 1);
+        dest.put(destOffset + 0, _colx * _rowx);
+        dest.put(destOffset + 1, _coly * _rowx);
+        dest.put(destOffset + 2, _colx * _rowy);
+        dest.put(destOffset + 3, _coly * _rowy);
         return dest;
     }
 
@@ -414,7 +712,16 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.makeRotation(dest.array(), dest.arrayOffset() + destOffset, angle);
             return dest;
         }
-        Float2x2OpsKernelsSegment.makeRotation_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, angle);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.makeRotation_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, angle);
+            return dest;
+        }
+        float _t0 = (float) Math.cos(angle);
+        float _t1 = (float) Math.sin(angle);
+        dest.put(destOffset + 0, _t0);
+        dest.put(destOffset + 1, _t1);
+        dest.put(destOffset + 2, -_t1);
+        dest.put(destOffset + 3, _t0);
         return dest;
     }
 
@@ -429,7 +736,14 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.makeScaling(dest.array(), dest.arrayOffset() + destOffset, vX, vY);
             return dest;
         }
-        Float2x2OpsKernelsSegment.makeScaling_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, vX, vY);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.makeScaling_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, vX, vY);
+            return dest;
+        }
+        dest.put(destOffset + 0, vX);
+        dest.put(destOffset + 1, 0.0f);
+        dest.put(destOffset + 2, 0.0f);
+        dest.put(destOffset + 3, vY);
         return dest;
     }
 
@@ -445,7 +759,16 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.makeScaling(dest.array(), dest.arrayOffset() + destOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.makeScaling_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && v.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.makeScaling_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 4L);
+            return dest;
+        }
+        float _vx = v.get(vOffset + 0);
+        float _vy = v.get(vOffset + 1);
+        dest.put(destOffset + 0, _vx);
+        dest.put(destOffset + 1, 0.0f);
+        dest.put(destOffset + 2, 0.0f);
+        dest.put(destOffset + 3, _vy);
         return dest;
     }
 
@@ -460,7 +783,14 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.makeScaling(dest.array(), dest.arrayOffset() + destOffset, s);
             return dest;
         }
-        Float2x2OpsKernelsSegment.makeScaling_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, s);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.makeScaling_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, s);
+            return dest;
+        }
+        dest.put(destOffset + 0, s);
+        dest.put(destOffset + 1, 0.0f);
+        dest.put(destOffset + 2, 0.0f);
+        dest.put(destOffset + 3, s);
         return dest;
     }
 
@@ -476,7 +806,20 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.preRotate(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
-        Float2x2OpsKernelsSegment.preRotate_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, angle);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.preRotate_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, angle);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        float _t0 = (float) Math.cos(angle);
+        float _t1 = (float) Math.sin(angle);
+        dest.put(destOffset + 0, Math.fma(_self00, _t0, -(_self10 * _t1)));
+        dest.put(destOffset + 1, Math.fma(_self00, _t1, _self10 * _t0));
+        dest.put(destOffset + 2, Math.fma(_self01, _t0, -(_self11 * _t1)));
+        dest.put(destOffset + 3, Math.fma(_self01, _t1, _self11 * _t0));
         return dest;
     }
 
@@ -492,7 +835,18 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.preScale(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, vX, vY);
             return dest;
         }
-        Float2x2OpsKernelsSegment.preScale_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, vX, vY);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.preScale_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, vX, vY);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        dest.put(destOffset + 0, _self00 * vX);
+        dest.put(destOffset + 1, _self10 * vY);
+        dest.put(destOffset + 2, _self01 * vX);
+        dest.put(destOffset + 3, _self11 * vY);
         return dest;
     }
 
@@ -509,7 +863,20 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.preScale(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.preScale_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && v.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.preScale_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 4L);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        float _vx = v.get(vOffset + 0);
+        float _vy = v.get(vOffset + 1);
+        dest.put(destOffset + 0, _self00 * _vx);
+        dest.put(destOffset + 1, _self10 * _vy);
+        dest.put(destOffset + 2, _self01 * _vx);
+        dest.put(destOffset + 3, _self11 * _vy);
         return dest;
     }
 
@@ -525,7 +892,18 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.preScale(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, s);
             return dest;
         }
-        Float2x2OpsKernelsSegment.preScale_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, s);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.preScale_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, s);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        dest.put(destOffset + 0, s * _self00);
+        dest.put(destOffset + 1, s * _self10);
+        dest.put(destOffset + 2, s * _self01);
+        dest.put(destOffset + 3, s * _self11);
         return dest;
     }
 
@@ -541,7 +919,20 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.rotate(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
-        Float2x2OpsKernelsSegment.rotate_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, angle);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.rotate_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, angle);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        float _t0 = (float) Math.cos(angle);
+        float _t1 = (float) Math.sin(angle);
+        dest.put(destOffset + 0, Math.fma(_self00, _t0, _self01 * _t1));
+        dest.put(destOffset + 1, Math.fma(_self10, _t0, _self11 * _t1));
+        dest.put(destOffset + 2, Math.fma(_self01, _t0, -(_self00 * _t1)));
+        dest.put(destOffset + 3, Math.fma(_self11, _t0, -(_self10 * _t1)));
         return dest;
     }
 
@@ -557,7 +948,18 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.scale(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, vX, vY);
             return dest;
         }
-        Float2x2OpsKernelsSegment.scale_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, vX, vY);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.scale_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, vX, vY);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        dest.put(destOffset + 0, _self00 * vX);
+        dest.put(destOffset + 1, _self10 * vX);
+        dest.put(destOffset + 2, _self01 * vY);
+        dest.put(destOffset + 3, _self11 * vY);
         return dest;
     }
 
@@ -574,7 +976,20 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.scale(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.scale_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && v.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.scale_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 4L);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        float _vx = v.get(vOffset + 0);
+        float _vy = v.get(vOffset + 1);
+        dest.put(destOffset + 0, _self00 * _vx);
+        dest.put(destOffset + 1, _self10 * _vx);
+        dest.put(destOffset + 2, _self01 * _vy);
+        dest.put(destOffset + 3, _self11 * _vy);
         return dest;
     }
 
@@ -590,7 +1005,16 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.mulVec2(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, vX, vY);
             return dest;
         }
-        Float2x2OpsKernelsSegment.mulVec2_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, vX, vY);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.mulVec2_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, vX, vY);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        dest.put(destOffset + 0, Math.fma(_self00, vX, _self01 * vY));
+        dest.put(destOffset + 1, Math.fma(_self10, vX, _self11 * vY));
         return dest;
     }
 
@@ -607,7 +1031,18 @@ public final class Float2x2OpsKernelsTypedBuffer {
             Float2x2Ops.mulVec2(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
-        Float2x2OpsKernelsSegment.mulVec2_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 4L);
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && v.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.mulVec2_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(v.duplicate().position(0)), (long) vOffset * 4L);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        float _vx = v.get(vOffset + 0);
+        float _vy = v.get(vOffset + 1);
+        dest.put(destOffset + 0, Math.fma(_self00, _vx, _self01 * _vy));
+        dest.put(destOffset + 1, Math.fma(_self10, _vx, _self11 * _vy));
         return dest;
     }
 

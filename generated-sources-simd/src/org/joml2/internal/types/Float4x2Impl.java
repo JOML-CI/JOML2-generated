@@ -1004,6 +1004,8 @@ public class Float4x2Impl implements Float4x2 {
                 FloatVector.fromArray(COL_SPECIES, d, 0).intoArray(arr, off);
                 FloatVector.fromArray(COL_SPECIES, d, 4).intoArray(arr, off + 4);
             }
+        } else if (buf.order() != ByteOrder.nativeOrder()) {
+            return BB_OPS.storeCMAbsolute(this, index, buf);
         } else {
             MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
             long baseOff = (long) index * 4;
@@ -1027,6 +1029,8 @@ public class Float4x2Impl implements Float4x2 {
                 FloatVector.fromArray(COL_SPECIES, arr, off).intoArray(d, 0);
                 FloatVector.fromArray(COL_SPECIES, arr, off + 4).intoArray(d, 4);
             }
+        } else if (buf.order() != ByteOrder.nativeOrder()) {
+            return BB_OPS.loadCMAbsolute(this, index, buf);
         } else {
             MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
             long baseOff = (long) index * 4;
@@ -1040,6 +1044,7 @@ public class Float4x2Impl implements Float4x2 {
         return this;
     }
     public ByteBuffer storeCMAbsolute(int index, ByteBuffer buf) {
+        if (buf.order() != ByteOrder.nativeOrder()) return BB_OPS.storeCMAbsolute(this, index, buf);
         float[] d = this.data;
         MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
         if (FloatVector.SPECIES_PREFERRED.length() >= 8) {
@@ -1051,6 +1056,7 @@ public class Float4x2Impl implements Float4x2 {
         return buf;
     }
     public Float4x2 loadCMAbsolute(int index, ByteBuffer buf) {
+        if (buf.order() != ByteOrder.nativeOrder()) return BB_OPS.loadCMAbsolute(this, index, buf);
         float[] d = this.data;
         MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
         if (FloatVector.SPECIES_PREFERRED.length() >= 8) {

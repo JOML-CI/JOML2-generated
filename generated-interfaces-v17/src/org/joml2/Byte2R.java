@@ -2382,8 +2382,9 @@ public interface Byte2R {
     Double2 rotateRight(byte distance, @Mutated Double2 dest);
 
     /**
-     * Shift each component of this vector left by {@code shift} bits and store the result in
-     * {@code dest}.
+     * Shift each component of this vector left by {@code shift} bits (the shift count is taken
+     * modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to {@code int}
+     * and takes it modulo 32) and store the result in {@code dest}.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2392,11 +2393,13 @@ public interface Byte2R {
     Byte2 shl(byte shift, @Mutated Byte2 dest);
 
     /**
-     * Shift each component of this vector left by {@code shift} bits and store the result in
-     * {@code dest}.
+     * Shift each component of this vector left by {@code shift} bits (the shift count is taken
+     * modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to {@code int}
+     * and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}.
+     * before evaluating - and each result component is then stored as {@code short}. The shift
+     * count is still taken modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2405,11 +2408,13 @@ public interface Byte2R {
     Short2 shl(byte shift, @Mutated Short2 dest);
 
     /**
-     * Shift each component of this vector left by {@code shift} bits and store the result in
-     * {@code dest}.
+     * Shift each component of this vector left by {@code shift} bits (the shift count is taken
+     * modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to {@code int}
+     * and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * before evaluating - and each result component is then stored as {@code int}. The shift count
+     * is still taken modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2418,11 +2423,13 @@ public interface Byte2R {
     Int2 shl(byte shift, @Mutated Int2 dest);
 
     /**
-     * Shift each component of this vector left by {@code shift} bits and store the result in
-     * {@code dest}.
+     * Shift each component of this vector left by {@code shift} bits (the shift count is taken
+     * modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to {@code int}
+     * and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * before evaluating - and each result component is then stored as {@code long}. The shift count
+     * is still taken modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2431,11 +2438,13 @@ public interface Byte2R {
     Long2 shl(byte shift, @Mutated Long2 dest);
 
     /**
-     * Shift each component of this vector left by {@code shift} bits and store the result in
-     * {@code dest}.
+     * Shift each component of this vector left by {@code shift} bits (the shift count is taken
+     * modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to {@code int}
+     * and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * before evaluating - and each result component is then stored as {@code double}. The shift
+     * count is still taken modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2444,8 +2453,9 @@ public interface Byte2R {
     Double2 shl(byte shift, @Mutated Double2 dest);
 
     /**
-     * Arithmetically shift each component of this vector right by {@code shift} bits and store the
-     * result in {@code dest}.
+     * Arithmetically shift each component of this vector right by {@code shift} bits (the shift
+     * count is taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes
+     * to {@code int} and takes it modulo 32) and store the result in {@code dest}.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2454,11 +2464,13 @@ public interface Byte2R {
     Byte2 shr(byte shift, @Mutated Byte2 dest);
 
     /**
-     * Arithmetically shift each component of this vector right by {@code shift} bits and store the
-     * result in {@code dest}.
+     * Arithmetically shift each component of this vector right by {@code shift} bits (the shift
+     * count is taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes
+     * to {@code int} and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}.
+     * before evaluating - and each result component is then stored as {@code short}. The shift
+     * count is still taken modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2467,11 +2479,13 @@ public interface Byte2R {
     Short2 shr(byte shift, @Mutated Short2 dest);
 
     /**
-     * Arithmetically shift each component of this vector right by {@code shift} bits and store the
-     * result in {@code dest}.
+     * Arithmetically shift each component of this vector right by {@code shift} bits (the shift
+     * count is taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes
+     * to {@code int} and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * before evaluating - and each result component is then stored as {@code int}. The shift count
+     * is still taken modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2480,11 +2494,13 @@ public interface Byte2R {
     Int2 shr(byte shift, @Mutated Int2 dest);
 
     /**
-     * Arithmetically shift each component of this vector right by {@code shift} bits and store the
-     * result in {@code dest}.
+     * Arithmetically shift each component of this vector right by {@code shift} bits (the shift
+     * count is taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes
+     * to {@code int} and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * before evaluating - and each result component is then stored as {@code long}. The shift count
+     * is still taken modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2493,11 +2509,13 @@ public interface Byte2R {
     Long2 shr(byte shift, @Mutated Long2 dest);
 
     /**
-     * Arithmetically shift each component of this vector right by {@code shift} bits and store the
-     * result in {@code dest}.
+     * Arithmetically shift each component of this vector right by {@code shift} bits (the shift
+     * count is taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes
+     * to {@code int} and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * before evaluating - and each result component is then stored as {@code double}. The shift
+     * count is still taken modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2506,8 +2524,9 @@ public interface Byte2R {
     Double2 shr(byte shift, @Mutated Double2 dest);
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits and store the
-     * result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
+     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
+     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2516,11 +2535,13 @@ public interface Byte2R {
     Byte2 ushr(byte shift, @Mutated Byte2 dest);
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits and store the
-     * result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
+     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
+     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}.
+     * before evaluating - and each result component is then stored as {@code short}. The shift
+     * count is still taken modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2529,11 +2550,13 @@ public interface Byte2R {
     Short2 ushr(byte shift, @Mutated Short2 dest);
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits and store the
-     * result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
+     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
+     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * before evaluating - and each result component is then stored as {@code int}. The shift count
+     * is still taken modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2542,11 +2565,13 @@ public interface Byte2R {
     Int2 ushr(byte shift, @Mutated Int2 dest);
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits and store the
-     * result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
+     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
+     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * before evaluating - and each result component is then stored as {@code long}. The shift count
+     * is still taken modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2555,11 +2580,13 @@ public interface Byte2R {
     Long2 ushr(byte shift, @Mutated Long2 dest);
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits and store the
-     * result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
+     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
+     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * before evaluating - and each result component is then stored as {@code double}. The shift
+     * count is still taken modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2699,7 +2726,7 @@ public interface Byte2R {
     /**
      * Set this vector to {@code s} and store the result in {@code dest}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -2711,7 +2738,7 @@ public interface Byte2R {
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
      * before evaluating - and each result component is then stored as {@code short}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -2723,7 +2750,7 @@ public interface Byte2R {
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -2735,7 +2762,7 @@ public interface Byte2R {
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -2747,7 +2774,7 @@ public interface Byte2R {
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -2921,8 +2948,8 @@ public interface Byte2R {
      * Clamp each component of this vector between {@code min} and {@code max} and store the result
      * in {@code dest}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -2935,8 +2962,8 @@ public interface Byte2R {
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
      * before evaluating - and each result component is then stored as {@code short}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -2949,8 +2976,8 @@ public interface Byte2R {
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -2963,8 +2990,8 @@ public interface Byte2R {
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -2977,8 +3004,8 @@ public interface Byte2R {
      * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -3063,6 +3090,9 @@ public interface Byte2R {
 
     /**
      * Compute the sum of all components of this vector.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
+     * result outside the {@code byte} range wraps.
      *
      * @return the sum of all components of this vector
      */
@@ -3070,6 +3100,9 @@ public interface Byte2R {
 
     /**
      * Compute the largest component of this vector.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
+     * result outside the {@code byte} range wraps.
      *
      * @return the largest component of this vector
      */
@@ -3077,6 +3110,9 @@ public interface Byte2R {
 
     /**
      * Compute the smallest component of this vector.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
+     * result outside the {@code byte} range wraps.
      *
      * @return the smallest component of this vector
      */
@@ -3084,6 +3120,9 @@ public interface Byte2R {
 
     /**
      * Compute the product of all components of this vector.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
+     * result outside the {@code byte} range wraps.
      *
      * @return the product of all components of this vector
      */
@@ -3091,6 +3130,9 @@ public interface Byte2R {
 
     /**
      * Compute the squared distance between this vector and {@code other}.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
+     * result outside the {@code byte} range wraps.
      *
      * @param other the other vector
      * @return the squared distance between this vector and {@code other}
@@ -3099,6 +3141,9 @@ public interface Byte2R {
 
     /**
      * Compute the squared distance between this vector and ({@code x}, {@code y}).
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
+     * result outside the {@code byte} range wraps.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
@@ -3108,6 +3153,9 @@ public interface Byte2R {
 
     /**
      * Compute the dot product of this vector and {@code other}.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
+     * result outside the {@code byte} range wraps.
      *
      * @param other the other vector
      * @return the dot product of this vector and {@code other}
@@ -3116,6 +3164,9 @@ public interface Byte2R {
 
     /**
      * Compute the dot product of this vector and ({@code x}, {@code y}).
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
+     * result outside the {@code byte} range wraps.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
@@ -3125,6 +3176,9 @@ public interface Byte2R {
 
     /**
      * Compute the squared length of this vector.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
+     * result outside the {@code byte} range wraps.
      *
      * @return the squared length of this vector
      */
@@ -3132,6 +3186,9 @@ public interface Byte2R {
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
+     * result outside the {@code byte} range wraps.
      *
      * @param other the other vector
      * @return the Manhattan distance between this vector and {@code other}
@@ -3140,6 +3197,9 @@ public interface Byte2R {
 
     /**
      * Compute the Manhattan distance between this vector and ({@code x}, {@code y}).
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
+     * result outside the {@code byte} range wraps.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
@@ -3149,6 +3209,9 @@ public interface Byte2R {
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
+     * result outside the {@code byte} range wraps.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */
@@ -4280,6 +4343,9 @@ public interface Byte2R {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4289,6 +4355,9 @@ public interface Byte2R {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4298,6 +4367,9 @@ public interface Byte2R {
     /**
      * Store the elements into the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -4308,6 +4380,9 @@ public interface Byte2R {
     /**
      * Store the elements into the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4348,6 +4423,9 @@ public interface Byte2R {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4357,6 +4435,9 @@ public interface Byte2R {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4366,6 +4447,9 @@ public interface Byte2R {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -4376,6 +4460,9 @@ public interface Byte2R {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4390,6 +4477,9 @@ public interface Byte2R {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code short},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4399,6 +4489,9 @@ public interface Byte2R {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code short},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4408,6 +4501,9 @@ public interface Byte2R {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code short},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -4418,6 +4514,9 @@ public interface Byte2R {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code short},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest

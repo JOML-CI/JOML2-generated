@@ -636,6 +636,8 @@ public class Double4x2Impl implements Double4x2 {
                 DoubleVector.fromArray(COL_SPECIES, d, 0).intoArray(arr, off);
                 DoubleVector.fromArray(COL_SPECIES, d, 4).intoArray(arr, off + 4);
             }
+        } else if (buf.order() != ByteOrder.nativeOrder()) {
+            return BB_OPS.storeCMAbsolute(this, index, buf);
         } else {
             MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
             long baseOff = (long) index * 8;
@@ -659,6 +661,8 @@ public class Double4x2Impl implements Double4x2 {
                 DoubleVector.fromArray(COL_SPECIES, arr, off).intoArray(d, 0);
                 DoubleVector.fromArray(COL_SPECIES, arr, off + 4).intoArray(d, 4);
             }
+        } else if (buf.order() != ByteOrder.nativeOrder()) {
+            return BB_OPS.loadCMAbsolute(this, index, buf);
         } else {
             MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
             long baseOff = (long) index * 8;
@@ -672,6 +676,7 @@ public class Double4x2Impl implements Double4x2 {
         return this;
     }
     public ByteBuffer storeCMAbsolute(int index, ByteBuffer buf) {
+        if (buf.order() != ByteOrder.nativeOrder()) return BB_OPS.storeCMAbsolute(this, index, buf);
         double[] d = this.data;
         MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
         if (DoubleVector.SPECIES_PREFERRED.length() >= 8) {
@@ -683,6 +688,7 @@ public class Double4x2Impl implements Double4x2 {
         return buf;
     }
     public Double4x2 loadCMAbsolute(int index, ByteBuffer buf) {
+        if (buf.order() != ByteOrder.nativeOrder()) return BB_OPS.loadCMAbsolute(this, index, buf);
         double[] d = this.data;
         MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
         if (DoubleVector.SPECIES_PREFERRED.length() >= 8) {

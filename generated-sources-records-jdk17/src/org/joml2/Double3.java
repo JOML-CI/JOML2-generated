@@ -137,8 +137,8 @@ public record Double3(double x, double y, double z) {
 
     /**
      * Multiply this vector component-wise by {@code b} and add ({@code cX}, {@code cY},
-     * {@code cZ}), i.e. compute {@code this * b + c} per component, returning the result as a
-     * value.
+     * {@code cZ}), i.e. compute {@code this * b + (cX, cY, cZ)} per component, returning the result
+     * as a value.
      *
      * @param b the factor to multiply this vector by
      * @param cX the {@code x} component of the vector {@code (cX, cY, cZ)}
@@ -166,8 +166,8 @@ public record Double3(double x, double y, double z) {
 
     /**
      * Multiply this vector component-wise by ({@code bX}, {@code bY}, {@code bZ}) and add
-     * ({@code cX}, {@code cY}, {@code cZ}), i.e. compute {@code this * b + c} per component,
-     * returning the result as a value.
+     * ({@code cX}, {@code cY}, {@code cZ}), i.e. compute {@code this * (bX, bY, bZ) + (cX, cY, cZ)}
+     * per component, returning the result as a value.
      *
      * @param bX the {@code x} component of the vector {@code (bX, bY, bZ)}
      * @param bY the {@code y} component of the vector {@code (bX, bY, bZ)}
@@ -280,7 +280,7 @@ public record Double3(double x, double y, double z) {
     /**
      * Set this vector to {@code s}, returning the result as a value.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @return the resulting vector
      */
     public Double3 set(double s) {
@@ -939,8 +939,9 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x}, returning the result as
-     * a value.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} {@code x} (the denominator), returning the result
+     * as a value.
      *
      * @param x the value to take the arc tangent over (the denominator)
      * @return the resulting vector
@@ -951,10 +952,11 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x}, returning the result as
-     * a value.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of {@code x} (the
+     * denominator), returning the result as a value.
      *
-     * @param x the value to take the arc tangent over (the denominator)
+     * @param x the vector of denominators, one per component
      * @return the resulting vector
      */
     public Double3 atan2(Double3 x) {
@@ -963,8 +965,9 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Compute the component-wise arc tangent of this vector over ({@code xX}, {@code xY},
-     * {@code xZ}), returning the result as a value.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of ({@code xX},
+     * {@code xY}, {@code xZ}) (the denominator), returning the result as a value.
      *
      * @param xX the {@code x} component of the vector {@code (xX, xY, xZ)}
      * @param xY the {@code y} component of the vector {@code (xX, xY, xZ)}
@@ -1013,8 +1016,8 @@ public record Double3(double x, double y, double z) {
      * Clamp each component of this vector between {@code min} and {@code max}, returning the result
      * as a value.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @return the resulting vector
      */
     public Double3 clamp(Double3 min, Double3 max) {
@@ -1040,8 +1043,8 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Set this vector to the point closest to it on the line segment between {@code lineStart} and
-     * {@code lineEnd}, returning the result as a value.
+     * Compute the point on the line segment between {@code lineStart} and {@code lineEnd} that is
+     * closest to this vector, returning the result as a value.
      *
      * @param lineStart the vector
      * @param lineEnd the vector
@@ -1053,9 +1056,9 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Set this vector to the point closest to it on the line segment between ({@code lineStartX},
-     * {@code lineStartY}, {@code lineStartZ}) and ({@code lineEndX}, {@code lineEndY},
-     * {@code lineEndZ}), returning the result as a value.
+     * Compute the point on the line segment between ({@code lineStartX}, {@code lineStartY},
+     * {@code lineStartZ}) and ({@code lineEndX}, {@code lineEndY}, {@code lineEndZ}) that is
+     * closest to this vector, returning the result as a value.
      *
      * @param lineStartX the {@code x} component of the vector
      *        {@code (lineStartX, lineStartY, lineStartZ)}
@@ -1391,8 +1394,8 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y}, returning the result as a value.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} {@code y}, returning the result as a value.
      *
      * @param y the other operand
      * @return the resulting vector
@@ -1403,10 +1406,11 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y}, returning the result as a value.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of {@code y}, returning the result
+     * as a value.
      *
-     * @param y the other operand
+     * @param y the vector of other operands, one per component
      * @return the resulting vector
      */
     public Double3 hypot(Double3 y) {
@@ -1415,8 +1419,9 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * ({@code yX}, {@code yY}, {@code yZ}), returning the result as a value.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of ({@code yX}, {@code yY},
+     * {@code yZ}), returning the result as a value.
      *
      * @param yX the {@code x} component of the vector {@code (yX, yY, yZ)}
      * @param yY the {@code y} component of the vector {@code (yX, yY, yZ)}
@@ -1650,7 +1655,7 @@ public record Double3(double x, double y, double z) {
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
      *
-     * @param y the divisor
+     * @param y the vector of divisors, one per component
      * @return the resulting vector
      */
     public Double3 mod(Double3 y) {
@@ -1698,11 +1703,13 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Normalize this vector to unit length (the zero vector yields the zero vector). <p> The
-     * squared length is formed at the component precision, so components whose squares overflow or
-     * underflow that precision are out of domain: the result is the zero vector rather than a unit
-     * vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}), returning the result as a value.
+     * Normalize this vector to unit length (the zero vector yields the zero vector), returning the
+     * result as a value.
+     * <p>
+     * The squared length is formed at the component precision, so components whose squares overflow
+     * or underflow that precision are out of domain: the result is the zero vector rather than a
+     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
+     * {@code float} and 1.3e154 for {@code double}).
      *
      * @return the resulting vector
      */
@@ -1802,7 +1809,7 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Set this vector to one of its perpendicular vectors, returning the result as a value.
+     * Compute a vector perpendicular to this vector, returning the result as a value.
      *
      * @return the resulting vector
      */
@@ -1995,7 +2002,8 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Compute the rounded value of each component of this vector, returning the result as a value.
+     * Compute the value rounded to the nearest integer, ties to even ({@code Math.rint}) of each
+     * component of this vector, returning the result as a value.
      *
      * @return the resulting vector
      */
@@ -2160,11 +2168,13 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Compute the normal of the triangle spanned by this vector and the two given points, returning
-     * the result as a value.
+     * Compute the unit normal of the triangle spanned by this vector and the two given points, i.e.
+     * {@code normalize((p1 - this) x (p2 - this))} - it points to the side from which the vertices
+     * {@code this}, {@code p1}, {@code p2} appear counter-clockwise (a degenerate triangle yields
+     * the zero vector), returning the result as a value.
      *
-     * @param p1 the vector
-     * @param p2 the vector
+     * @param p1 the second vertex of the triangle (this vector is the first)
+     * @param p2 the third vertex of the triangle
      * @return the resulting vector
      */
     public Double3 triangleNormal(Double3 p1, Double3 p2) {
@@ -2173,8 +2183,11 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Compute the normal of the triangle spanned by this vector and the two given points, returning
-     * the result as a value.
+     * Compute the unit normal of the triangle spanned by this vector and the two given points, i.e.
+     * {@code normalize(((p1X, p1Y, p1Z) - this) x ((p2X, p2Y, p2Z) - this))} - it points to the
+     * side from which the vertices {@code this}, ({@code p1X}, {@code p1Y}, {@code p1Z}),
+     * ({@code p2X}, {@code p2Y}, {@code p2Z}) appear counter-clockwise (a degenerate triangle
+     * yields the zero vector), returning the result as a value.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
@@ -2249,7 +2262,8 @@ public record Double3(double x, double y, double z) {
 
 
     /**
-     * Pre-multiply {@code mat} onto this vector, returning the result as a value.
+     * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this}, returning the
+     * result as a value.
      *
      * @param mat the matrix
      * @return the resulting vector
@@ -3187,6 +3201,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3198,6 +3215,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -3210,6 +3230,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3224,6 +3247,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Double3} holding the loaded elements
@@ -3235,6 +3261,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -3247,6 +3276,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Double3} holding the loaded elements
@@ -3261,6 +3293,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3272,6 +3307,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Store the elements into the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -3284,6 +3322,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Store the elements into the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3298,6 +3339,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double3} holding the loaded elements
@@ -3309,6 +3353,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -3321,6 +3368,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double3} holding the loaded elements
@@ -3404,6 +3454,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Store the elements into the given buffer, converting each element to {@code float}, starting
      * at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3415,6 +3468,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Store the elements into the given buffer, converting each element to {@code float}, starting
      * at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -3427,6 +3483,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Store the elements into the given buffer, converting each element to {@code float}, starting
      * at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3441,6 +3500,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Load the elements from the given buffer, converting each element from {@code float}, starting
      * at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Double3} holding the loaded elements
@@ -3452,6 +3514,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Load the elements from the given buffer, converting each element from {@code float}, starting
      * at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -3464,6 +3529,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Load the elements from the given buffer, converting each element from {@code float}, starting
      * at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Double3} holding the loaded elements
@@ -3478,6 +3546,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3489,6 +3560,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -3501,6 +3575,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3515,6 +3592,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double3} holding the loaded elements
@@ -3526,6 +3606,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -3538,6 +3621,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double3} holding the loaded elements

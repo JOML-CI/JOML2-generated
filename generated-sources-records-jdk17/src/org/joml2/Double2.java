@@ -120,7 +120,7 @@ public record Double2(double x, double y) {
 
     /**
      * Multiply this vector component-wise by {@code b} and add ({@code cX}, {@code cY}), i.e.
-     * compute {@code this * b + c} per component, returning the result as a value.
+     * compute {@code this * b + (cX, cY)} per component, returning the result as a value.
      *
      * @param b the factor to multiply this vector by
      * @param cX the {@code x} component of the vector {@code (cX, cY)}
@@ -147,8 +147,8 @@ public record Double2(double x, double y) {
 
     /**
      * Multiply this vector component-wise by ({@code bX}, {@code bY}) and add ({@code cX},
-     * {@code cY}), i.e. compute {@code this * b + c} per component, returning the result as a
-     * value.
+     * {@code cY}), i.e. compute {@code this * (bX, bY) + (cX, cY)} per component, returning the
+     * result as a value.
      *
      * @param bX the {@code x} component of the vector {@code (bX, bY)}
      * @param bY the {@code y} component of the vector {@code (bX, bY)}
@@ -255,7 +255,7 @@ public record Double2(double x, double y) {
     /**
      * Set this vector to {@code s}, returning the result as a value.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @return the resulting vector
      */
     public Double2 set(double s) {
@@ -882,8 +882,9 @@ public record Double2(double x, double y) {
 
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x}, returning the result as
-     * a value.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} {@code x} (the denominator), returning the result
+     * as a value.
      *
      * @param x the value to take the arc tangent over (the denominator)
      * @return the resulting vector
@@ -894,10 +895,11 @@ public record Double2(double x, double y) {
 
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x}, returning the result as
-     * a value.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of {@code x} (the
+     * denominator), returning the result as a value.
      *
-     * @param x the value to take the arc tangent over (the denominator)
+     * @param x the vector of denominators, one per component
      * @return the resulting vector
      */
     public Double2 atan2(Double2 x) {
@@ -906,8 +908,9 @@ public record Double2(double x, double y) {
 
 
     /**
-     * Compute the component-wise arc tangent of this vector over ({@code xX}, {@code xY}),
-     * returning the result as a value.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of ({@code xX},
+     * {@code xY}) (the denominator), returning the result as a value.
      *
      * @param xX the {@code x} component of the vector {@code (xX, xY)}
      * @param xY the {@code y} component of the vector {@code (xX, xY)}
@@ -955,8 +958,8 @@ public record Double2(double x, double y) {
      * Clamp each component of this vector between {@code min} and {@code max}, returning the result
      * as a value.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @return the resulting vector
      */
     public Double2 clamp(Double2 min, Double2 max) {
@@ -1252,8 +1255,8 @@ public record Double2(double x, double y) {
 
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y}, returning the result as a value.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} {@code y}, returning the result as a value.
      *
      * @param y the other operand
      * @return the resulting vector
@@ -1264,10 +1267,11 @@ public record Double2(double x, double y) {
 
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y}, returning the result as a value.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of {@code y}, returning the result
+     * as a value.
      *
-     * @param y the other operand
+     * @param y the vector of other operands, one per component
      * @return the resulting vector
      */
     public Double2 hypot(Double2 y) {
@@ -1276,8 +1280,9 @@ public record Double2(double x, double y) {
 
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * ({@code yX}, {@code yY}), returning the result as a value.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of ({@code yX}, {@code yY}),
+     * returning the result as a value.
      *
      * @param yX the {@code x} component of the vector {@code (yX, yY)}
      * @param yY the {@code y} component of the vector {@code (yX, yY)}
@@ -1505,7 +1510,7 @@ public record Double2(double x, double y) {
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
      *
-     * @param y the divisor
+     * @param y the vector of divisors, one per component
      * @return the resulting vector
      */
     public Double2 mod(Double2 y) {
@@ -1552,11 +1557,13 @@ public record Double2(double x, double y) {
 
 
     /**
-     * Normalize this vector to unit length (the zero vector yields the zero vector). <p> The
-     * squared length is formed at the component precision, so components whose squares overflow or
-     * underflow that precision are out of domain: the result is the zero vector rather than a unit
-     * vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}), returning the result as a value.
+     * Normalize this vector to unit length (the zero vector yields the zero vector), returning the
+     * result as a value.
+     * <p>
+     * The squared length is formed at the component precision, so components whose squares overflow
+     * or underflow that precision are out of domain: the result is the zero vector rather than a
+     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
+     * {@code float} and 1.3e154 for {@code double}).
      *
      * @return the resulting vector
      */
@@ -1803,7 +1810,8 @@ public record Double2(double x, double y) {
 
 
     /**
-     * Compute the rounded value of each component of this vector, returning the result as a value.
+     * Compute the value rounded to the nearest integer, ties to even ({@code Math.rint}) of each
+     * component of this vector, returning the result as a value.
      *
      * @return the resulting vector
      */
@@ -1985,7 +1993,8 @@ public record Double2(double x, double y) {
 
 
     /**
-     * Pre-multiply {@code mat} onto this vector, returning the result as a value.
+     * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this}, returning the
+     * result as a value.
      *
      * @param mat the matrix
      * @return the resulting vector
@@ -2282,6 +2291,9 @@ public record Double2(double x, double y) {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2293,6 +2305,9 @@ public record Double2(double x, double y) {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -2305,6 +2320,9 @@ public record Double2(double x, double y) {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2319,6 +2337,9 @@ public record Double2(double x, double y) {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Double2} holding the loaded elements
@@ -2330,6 +2351,9 @@ public record Double2(double x, double y) {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -2342,6 +2366,9 @@ public record Double2(double x, double y) {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Double2} holding the loaded elements
@@ -2356,6 +2383,9 @@ public record Double2(double x, double y) {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2367,6 +2397,9 @@ public record Double2(double x, double y) {
     /**
      * Store the elements into the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -2379,6 +2412,9 @@ public record Double2(double x, double y) {
     /**
      * Store the elements into the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2393,6 +2429,9 @@ public record Double2(double x, double y) {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double2} holding the loaded elements
@@ -2404,6 +2443,9 @@ public record Double2(double x, double y) {
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -2416,6 +2458,9 @@ public record Double2(double x, double y) {
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double2} holding the loaded elements
@@ -2497,6 +2542,9 @@ public record Double2(double x, double y) {
     /**
      * Store the elements into the given buffer, converting each element to {@code float}, starting
      * at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2508,6 +2556,9 @@ public record Double2(double x, double y) {
     /**
      * Store the elements into the given buffer, converting each element to {@code float}, starting
      * at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -2520,6 +2571,9 @@ public record Double2(double x, double y) {
     /**
      * Store the elements into the given buffer, converting each element to {@code float}, starting
      * at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2534,6 +2588,9 @@ public record Double2(double x, double y) {
     /**
      * Load the elements from the given buffer, converting each element from {@code float}, starting
      * at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Double2} holding the loaded elements
@@ -2545,6 +2602,9 @@ public record Double2(double x, double y) {
     /**
      * Load the elements from the given buffer, converting each element from {@code float}, starting
      * at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -2557,6 +2617,9 @@ public record Double2(double x, double y) {
     /**
      * Load the elements from the given buffer, converting each element from {@code float}, starting
      * at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Double2} holding the loaded elements
@@ -2571,6 +2634,9 @@ public record Double2(double x, double y) {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2582,6 +2648,9 @@ public record Double2(double x, double y) {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -2594,6 +2663,9 @@ public record Double2(double x, double y) {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2608,6 +2680,9 @@ public record Double2(double x, double y) {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double2} holding the loaded elements
@@ -2619,6 +2694,9 @@ public record Double2(double x, double y) {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -2631,6 +2709,9 @@ public record Double2(double x, double y) {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double2} holding the loaded elements

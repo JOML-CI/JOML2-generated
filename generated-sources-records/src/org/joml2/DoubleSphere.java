@@ -665,10 +665,11 @@ public record DoubleSphere(double x, double y, double z, double r) {
     }
 
     /**
-     * Determine whether this sphere intersects the given ray. Delegates to the shared
-     * {@code Intersectiond} kernels.
+     * Determine whether this sphere intersects the given ray, whose direction must be normalized
+     * (unlike the axis-aligned box's ray tests, the sphere test is not invariant to the direction's
+     * length). Delegates to the shared {@code Intersectiond} kernels.
      *
-     * @param ray the ray
+     * @param ray the ray (its direction must have unit length)
      * @return {@code true} if this sphere and the given ray intersect, {@code false} otherwise
      */
     public boolean intersectsRay(DoubleRay ray) {
@@ -804,6 +805,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -815,6 +819,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -827,6 +834,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -841,6 +851,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleSphere} holding the loaded elements
@@ -852,6 +865,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -864,6 +880,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleSphere} holding the loaded elements
@@ -878,6 +897,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -889,6 +911,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Store the elements into the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -901,6 +926,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Store the elements into the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -915,6 +943,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleSphere} holding the loaded elements
@@ -926,6 +957,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -938,6 +972,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleSphere} holding the loaded elements
@@ -1061,6 +1098,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Store the elements into the given buffer, converting each element to {@code float}, starting
      * at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -1072,6 +1112,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Store the elements into the given buffer, converting each element to {@code float}, starting
      * at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -1084,6 +1127,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Store the elements into the given buffer, converting each element to {@code float}, starting
      * at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -1098,6 +1144,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Load the elements from the given buffer, converting each element from {@code float}, starting
      * at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleSphere} holding the loaded elements
@@ -1109,6 +1158,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Load the elements from the given buffer, converting each element from {@code float}, starting
      * at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -1121,6 +1173,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Load the elements from the given buffer, converting each element from {@code float}, starting
      * at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleSphere} holding the loaded elements
@@ -1135,6 +1190,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -1146,6 +1204,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -1158,6 +1219,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code float},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -1172,6 +1236,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleSphere} holding the loaded elements
@@ -1183,6 +1250,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -1195,6 +1265,9 @@ public record DoubleSphere(double x, double y, double z, double r) {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleSphere} holding the loaded elements

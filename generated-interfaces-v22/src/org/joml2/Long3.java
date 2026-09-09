@@ -415,7 +415,7 @@ public interface Long3 extends Long3R {
     /**
      * Set this vector to {@code s}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @return this
      */
     @Mutated default Long3 set(long s) { return set(s, Joml.RETURN_NEW ? Joml.long3() : this); }
@@ -491,8 +491,8 @@ public interface Long3 extends Long3R {
     /**
      * Clamp each component of this vector between {@code min} and {@code max}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @return this
      */
     @Mutated default Long3 clamp(Long3R min, Long3R max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.long3() : this); }
@@ -865,6 +865,9 @@ public interface Long3 extends Long3R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -874,6 +877,9 @@ public interface Long3 extends Long3R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -883,6 +889,9 @@ public interface Long3 extends Long3R {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -893,6 +902,9 @@ public interface Long3 extends Long3R {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -907,6 +919,9 @@ public interface Long3 extends Long3R {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -916,6 +931,9 @@ public interface Long3 extends Long3R {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -925,6 +943,9 @@ public interface Long3 extends Long3R {
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -935,6 +956,9 @@ public interface Long3 extends Long3R {
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -992,6 +1016,9 @@ public interface Long3 extends Long3R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1001,6 +1028,9 @@ public interface Long3 extends Long3R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1010,6 +1040,9 @@ public interface Long3 extends Long3R {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1020,6 +1053,9 @@ public interface Long3 extends Long3R {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -1034,6 +1070,9 @@ public interface Long3 extends Long3R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code int},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1043,6 +1082,9 @@ public interface Long3 extends Long3R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code int},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -1052,6 +1094,9 @@ public interface Long3 extends Long3R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code int},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1062,6 +1107,9 @@ public interface Long3 extends Long3R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code int},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this

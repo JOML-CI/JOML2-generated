@@ -28,6 +28,10 @@ inline infix fun Float3.cross(other: Float3): Float3 = cross(other)
 inline infix fun Float3.distance(other: Float3): Float = distance(other)
 /** [Float3.dot] as an infix function, so `a dot b` parses. */
 inline infix fun Float3.dot(other: Float3): Float = dot(other)
+/** [Float3.mod] as the `mod` infix function, matching the name Kotlin uses for that operation. */
+inline infix fun Float3.mod(y: Float): Float3 = mod(y)
+/** [Float3.mod] as the `mod` infix function, matching the name Kotlin uses for that operation. */
+inline infix fun Float3.mod(y: Float3): Float3 = mod(y)
 /** [Float3.rotateAxis] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Float3.rotateAxis(angle: Angle, axis: Float3): Float3 = rotateAxis(angle.radians.toFloat(), axis)
 /** [Float3.rotateX] taking a type-safe [Angle] in place of the angle in radians. */

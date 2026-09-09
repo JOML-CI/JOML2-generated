@@ -2,6 +2,8 @@
 @file:JvmSynthetic
 
 // Kotlin operator/infix/destructuring/indexing extensions for Long2.
+// Note: the record's Java `not()` doubles as Kotlin's unary `!` operator on this
+// type, and it is the BITWISE complement (`!v` == `v.not()`), not a logical negation.
 package org.joml2
 
 /** [Long2.add] as the `+` operator. */
@@ -40,7 +42,7 @@ inline fun Long2.copy(x: Long = x(), y: Long = y()): Long2 = Long2(x, y)
 inline fun Long2.toLongArray(): LongArray = store(LongArray(2))
 /** A Long2 read from this array in storage order, starting at index 0. */
 inline fun LongArray.toLong2(): Long2 = Long2.load(this)
-/** The component of this Long2 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. */
+/** The component of this Long2 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT `v[i] = x` (or `v[i] += x`) resolves to the Java 2-argument value factory `Long2.set(a, b)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Long2.get(index: Int): Long = when (index) {
     0 -> x()
     1 -> y()

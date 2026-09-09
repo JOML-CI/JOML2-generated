@@ -292,7 +292,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
     /**
      * Set the scale of this transform to {@code s} and store the result in {@code dest}.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param dest will hold the result
      * @return dest
      */
@@ -440,7 +440,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
     /**
      * Set this transform to the decomposition of the given matrix's linear {@code R * S} block,
-     * with zero translation (a sheared matrix projects onto the nearest rotation).
+     * with zero translation (scale is removed by normalizing the columns, but shear is not removed:
+     * a sheared block yields a rotation quaternion that is not unit length).
      *
      * @param m the matrix
      * @return this
@@ -508,7 +509,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
     /**
      * Set this transform to the TRS decomposition of the given affine matrix: translation from the
      * last column, scale from the column lengths of the upper-left 3x3 block, rotation from the
-     * orthonormalized block (a sheared matrix projects onto the nearest rotation).
+     * column-normalized block (scale is removed by normalizing the columns, but shear is not
+     * removed: a sheared block yields a rotation quaternion that is not unit length).
      *
      * @param m the matrix
      * @return this
@@ -576,7 +578,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
     /**
      * Set this transform to the TRS decomposition of the given affine matrix: translation from the
      * last column, scale from the column lengths of the upper-left 3x3 block, rotation from the
-     * orthonormalized block (a sheared matrix projects onto the nearest rotation).
+     * column-normalized block (scale is removed by normalizing the columns, but shear is not
+     * removed: a sheared block yields a rotation quaternion that is not unit length).
      *
      * @param m the matrix
      * @return this
@@ -751,7 +754,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
         d.m11 = _buf4;
         d.m21 = _buf5;
         d.m02 = _buf6;
-        d.properties = 0;
+        d.properties = Joml.BIT_AFFINE;
         return d;
     }
 
@@ -819,7 +822,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
         d.m13 = _buf7;
         d.m20 = _buf8;
         d.m21 = _buf9;
-        d.properties = 0;
+        d.properties = Joml.BIT_AFFINE;
         return d;
     }
 
@@ -889,7 +892,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
 
     /**
-     * Set this transform to the given values.
+     * Set this transform to a pure rotation by {@code rotation} (zero translation, unit scale).
      *
      * @param rotation the quaternion
      * @return this
@@ -900,7 +903,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
 
     /**
-     * Set this transform to the given values.
+     * Set this transform to a pure rotation by ({@code rotationX}, {@code rotationY},
+     * {@code rotationZ}, {@code rotationW}) (zero translation, unit scale).
      *
      * @param rotationX the {@code x} component of the quaternion
      *        {@code (rotationX, rotationY, rotationZ, rotationW)}
@@ -928,7 +932,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
 
     /**
-     * Set this transform to the given values.
+     * Set this transform to a pure translation by {@code translation} (identity rotation, unit
+     * scale).
      *
      * @param translation the vector
      * @return this
@@ -939,7 +944,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
 
     /**
-     * Set this transform to the given values.
+     * Set this transform to a pure translation by ({@code translationX}, {@code translationY},
+     * {@code translationZ}) (identity rotation, unit scale).
      *
      * @param translationX the {@code x} component of the vector
      *        {@code (translationX, translationY, translationZ)}
@@ -1073,6 +1079,12 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
      * be {@code M * R}. So when transforming a vector {@code v} with the new transform by using
      * {@code M * R * v}, the transformation of the operand will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param other the other transform
      * @param dest will hold the result
@@ -1091,6 +1103,12 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
      * be {@code M * R}. So when transforming a vector {@code v} with the new transform by using
      * {@code M * R * v}, the transformation of the operand will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param otherTX the {@code tX} component of the transform
      *        {@code (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW, otherSX, otherSY, otherSZ)}
@@ -1146,6 +1164,12 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
      * be {@code R * M}. So when transforming a vector {@code v} with the new transform by using
      * {@code R * M * v}, the transformation of the operand will be applied last.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param other the other transform
      * @param dest will hold the result
@@ -1164,6 +1188,12 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * If {@code M} is {@code this} transform and {@code R} the operand, then the new transform will
      * be {@code R * M}. So when transforming a vector {@code v} with the new transform by using
      * {@code R * M * v}, the transformation of the operand will be applied last.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param otherTX the {@code tX} component of the transform
      *        {@code (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW, otherSX, otherSY, otherSZ)}
@@ -1217,8 +1247,14 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
     /**
      * Compute the difference between this transform and {@code other}, i.e. the
-     * translation-rotation-scale transformation that, applied after {@code this}, results in
-     * {@code other} and store the result in {@code dest}.
+     * translation-rotation-scale transformation {@code D} with {@code this * D = other}, that is
+     * {@code D = this^-1 * other} and store the result in {@code dest}.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param other the other transform
      * @param dest will hold the result
@@ -1233,10 +1269,17 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * Compute the difference between this transform and ({@code otherTX}, {@code otherTY},
      * {@code otherTZ}, {@code otherRX}, {@code otherRY}, {@code otherRZ}, {@code otherRW},
      * {@code otherSX}, {@code otherSY}, {@code otherSZ}), i.e. the translation-rotation-scale
-     * transformation that, applied after {@code this}, results in ({@code otherTX},
-     * {@code otherTY}, {@code otherTZ}, {@code otherRX}, {@code otherRY}, {@code otherRZ},
-     * {@code otherRW}, {@code otherSX}, {@code otherSY}, {@code otherSZ}) and store the result in
-     * {@code dest}.
+     * transformation {@code D} with
+     * {@code this * D = (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW, otherSX, otherSY, otherSZ)},
+     * that is
+     * {@code D = this^-1 * (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW, otherSX, otherSY, otherSZ)}
+     * and store the result in {@code dest}.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param otherTX the {@code tX} component of the transform
      *        {@code (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW, otherSX, otherSY, otherSZ)}
@@ -1648,7 +1691,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
     /**
      * Set this transform to a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians
-     * about the X, Y and Z axes, in that order.
+     * about the X, Y and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a
+     * vector is rotated about the Z axis first, then Y, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1685,7 +1729,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
     /**
      * Set this transform to a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians
-     * about the X, Z and Y axes, in that order.
+     * about the X, Z and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a
+     * vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1744,7 +1789,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
     /**
      * Set this transform to a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians
-     * about the Y, X and Z axes, in that order.
+     * about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a
+     * vector is rotated about the Z axis first, then X, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1781,7 +1827,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
     /**
      * Set this transform to a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians
-     * about the Y, Z and X axes, in that order.
+     * about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a
+     * vector is rotated about the X axis first, then Z, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1840,7 +1887,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
     /**
      * Set this transform to a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians
-     * about the Z, X and Y axes, in that order.
+     * about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a
+     * vector is rotated about the Y axis first, then X, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1877,7 +1925,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
     /**
      * Set this transform to a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians
-     * about the Z, Y and X axes, in that order.
+     * about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a
+     * vector is rotated about the X axis first, then Y, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1975,6 +2024,12 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param rotation the quaternion (must be a unit quaternion)
      * @param dest will hold the result
@@ -1992,6 +2047,12 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param rotationX the {@code x} component of the quaternion
      *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
@@ -2034,6 +2095,12 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
@@ -2052,6 +2119,12 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angle the angle in radians
      * @param axisX the {@code x} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
@@ -2095,6 +2168,12 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angle the angle in radians
      * @param dest will hold the result
@@ -2123,11 +2202,19 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this transform and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2173,11 +2260,19 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this transform and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2228,6 +2323,12 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angle the angle in radians
      * @param dest will hold the result
@@ -2256,11 +2357,19 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this transform and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2306,11 +2415,19 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this transform and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2361,6 +2478,12 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angle the angle in radians
      * @param dest will hold the result
@@ -2389,11 +2512,19 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this transform and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2439,11 +2570,19 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this transform and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} transform and {@code R} the rotation transform, then the new
      * transform will be {@code M * R}. So when transforming a vector {@code v} with the new
      * transform by using {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * A transform carries no shear, so this composition is exact only for a uniform scale: under a
+     * non-uniform scale the shear the product would have is dropped, and applying the result to a
+     * point is then not the same as applying the operands one after the other (likewise
+     * {@code invert()} composes with {@code this} to the identity but is not the pointwise inverse;
+     * {@code transformPositionInverse} is).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis

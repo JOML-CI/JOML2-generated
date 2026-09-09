@@ -270,8 +270,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
 
     /**
-     * Create the rotation extracted from the given matrix, with zero translation (any scale or
-     * shear projects onto the nearest rotation).
+     * Create the rotation extracted from the given matrix, with zero translation (scale is removed
+     * by normalizing the columns, but shear is not removed: a sheared block yields a rotation
+     * quaternion that is not unit length).
      *
      * @param m the matrix
      * @return the resulting rigid transform
@@ -336,7 +337,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
     /**
      * Create the rigid decomposition of the given affine matrix: translation from the last column,
-     * rotation from the orthonormalized upper-left 3x3 block (any scale or shear is discarded).
+     * rotation from the column-normalized upper-left 3x3 block (scale is removed by normalizing the
+     * columns, but shear is not removed: a sheared block yields a rotation quaternion that is not
+     * unit length).
      *
      * @param m the matrix
      * @return the resulting rigid transform
@@ -401,7 +404,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
     /**
      * Create the rigid decomposition of the given affine matrix: translation from the last column,
-     * rotation from the orthonormalized upper-left 3x3 block (any scale or shear is discarded).
+     * rotation from the column-normalized upper-left 3x3 block (scale is removed by normalizing the
+     * columns, but shear is not removed: a sheared block yields a rotation quaternion that is not
+     * unit length).
      *
      * @param m the matrix
      * @return the resulting rigid transform
@@ -531,7 +536,8 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
 
     /**
-     * Compute the matrix representation of this rigid transform, returning the result as a value.
+     * Compute the matrix representation of this rigid transform (whose rotation must be a unit
+     * quaternion), returning the result as a value.
      *
      * @return the resulting matrix
      */
@@ -539,13 +545,13 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _t0 = this.rZ * this.rZ;
         float _t1 = this.rZ * this.rW;
         float _t2 = this.rY * this.rW;
-        return new Float4x4(Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t0), 1.0f), 2.0f * Math.fma(this.rX, this.rY, -_t1), 2.0f * Math.fma(this.rX, this.rZ, _t2), this.tX, 2.0f * Math.fma(this.rX, this.rY, _t1), Math.fma(-2.0f, Math.fma(this.rX, this.rX, _t0), 1.0f), 2.0f * Math.fma(this.rY, this.rZ, -(this.rX * this.rW)), this.tY, 2.0f * Math.fma(this.rX, this.rZ, -_t2), 2.0f * Math.fma(this.rX, this.rW, this.rY * this.rZ), Math.fma(-2.0f, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0f), this.tZ, 0.0f, 0.0f, 0.0f, 1.0f, 0);
+        return new Float4x4(Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t0), 1.0f), 2.0f * Math.fma(this.rX, this.rY, -_t1), 2.0f * Math.fma(this.rX, this.rZ, _t2), this.tX, 2.0f * Math.fma(this.rX, this.rY, _t1), Math.fma(-2.0f, Math.fma(this.rX, this.rX, _t0), 1.0f), 2.0f * Math.fma(this.rY, this.rZ, -(this.rX * this.rW)), this.tY, 2.0f * Math.fma(this.rX, this.rZ, -_t2), 2.0f * Math.fma(this.rX, this.rW, this.rY * this.rZ), Math.fma(-2.0f, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0f), this.tZ, 0.0f, 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
     /**
-     * Compute the 3x3 matrix representation of this rigid transform's rotation (the translation is
-     * dropped), returning the result as a value.
+     * Compute the 3x3 matrix representation of the rotation of this rigid transform (whose rotation
+     * must be a unit quaternion; the translation is dropped), returning the result as a value.
      *
      * @return the resulting matrix
      */
@@ -558,8 +564,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
 
     /**
-     * Compute the 3x4 matrix representation of this rigid transform (the omitted last row is
-     * implicitly {@code 0, 0, 0, 1}), returning the result as a value.
+     * Compute the 3x4 matrix representation of this rigid transform (whose rotation must be a unit
+     * quaternion; the omitted last row is implicitly {@code 0, 0, 0, 1}), returning the result as a
+     * value.
      *
      * @return the resulting matrix
      */
@@ -567,7 +574,7 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
         float _t0 = this.rZ * this.rZ;
         float _t1 = this.rZ * this.rW;
         float _t2 = this.rY * this.rW;
-        return new Float3x4(Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t0), 1.0f), 2.0f * Math.fma(this.rX, this.rY, -_t1), 2.0f * Math.fma(this.rX, this.rZ, _t2), this.tX, 2.0f * Math.fma(this.rX, this.rY, _t1), Math.fma(-2.0f, Math.fma(this.rX, this.rX, _t0), 1.0f), 2.0f * Math.fma(this.rY, this.rZ, -(this.rX * this.rW)), this.tY, 2.0f * Math.fma(this.rX, this.rZ, -_t2), 2.0f * Math.fma(this.rX, this.rW, this.rY * this.rZ), Math.fma(-2.0f, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0f), this.tZ, 0);
+        return new Float3x4(Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t0), 1.0f), 2.0f * Math.fma(this.rX, this.rY, -_t1), 2.0f * Math.fma(this.rX, this.rZ, _t2), this.tX, 2.0f * Math.fma(this.rX, this.rY, _t1), Math.fma(-2.0f, Math.fma(this.rX, this.rX, _t0), 1.0f), 2.0f * Math.fma(this.rY, this.rZ, -(this.rX * this.rW)), this.tY, 2.0f * Math.fma(this.rX, this.rZ, -_t2), 2.0f * Math.fma(this.rX, this.rW, this.rY * this.rZ), Math.fma(-2.0f, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0f), this.tZ, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -593,7 +600,8 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
 
     /**
-     * Create a new rigid transform from the given values.
+     * Create a new rigid transform representing a pure rotation by {@code rotation} (zero
+     * translation).
      *
      * @param rotation the quaternion
      * @return the resulting rigid transform
@@ -604,7 +612,8 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
 
     /**
-     * Create a new rigid transform from the given values.
+     * Create a new rigid transform representing a pure rotation by ({@code rotationX},
+     * {@code rotationY}, {@code rotationZ}, {@code rotationW}) (zero translation).
      *
      * @param rotationX the {@code x} component of the quaternion
      *        {@code (rotationX, rotationY, rotationZ, rotationW)}
@@ -622,7 +631,8 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
 
     /**
-     * Create a new rigid transform from the given values.
+     * Create a new rigid transform representing a pure rotation by {@code rotation} (zero
+     * translation).
      * <p>
      * Alias for {@code set}.
      *
@@ -635,7 +645,8 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
 
     /**
-     * Create a new rigid transform from the given values.
+     * Create a new rigid transform representing a pure rotation by ({@code rotationX},
+     * {@code rotationY}, {@code rotationZ}, {@code rotationW}) (zero translation).
      * <p>
      * Alias for {@code set}.
      *
@@ -655,7 +666,8 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
 
     /**
-     * Create a new rigid transform from the given values.
+     * Create a new rigid transform representing a pure translation by {@code translation} (identity
+     * rotation).
      *
      * @param translation the vector
      * @return the resulting rigid transform
@@ -666,7 +678,8 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
 
     /**
-     * Create a new rigid transform from the given values.
+     * Create a new rigid transform representing a pure translation by ({@code translationX},
+     * {@code translationY}, {@code translationZ}) (identity rotation).
      *
      * @param translationX the {@code x} component of the vector
      *        {@code (translationX, translationY, translationZ)}
@@ -682,7 +695,8 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
 
     /**
-     * Create a new rigid transform from the given values.
+     * Create a new rigid transform representing a pure translation by {@code translation} (identity
+     * rotation).
      * <p>
      * Alias for {@code set}.
      *
@@ -695,7 +709,8 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
 
     /**
-     * Create a new rigid transform from the given values.
+     * Create a new rigid transform representing a pure translation by ({@code translationX},
+     * {@code translationY}, {@code translationZ}) (identity rotation).
      * <p>
      * Alias for {@code set}.
      *
@@ -920,8 +935,8 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
     /**
      * Compute the difference between this rigid transform and {@code other}, i.e. the rigid
-     * transformation that, applied after {@code this}, results in {@code other}, returning the
-     * result as a value.
+     * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other},
+     * returning the result as a value.
      *
      * @param other the other rigid transform
      * @return the resulting rigid transform
@@ -945,9 +960,10 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Compute the difference between this rigid transform and ({@code otherTX}, {@code otherTY},
      * {@code otherTZ}, {@code otherRX}, {@code otherRY}, {@code otherRZ}, {@code otherRW}), i.e.
-     * the rigid transformation that, applied after {@code this}, results in ({@code otherTX},
-     * {@code otherTY}, {@code otherTZ}, {@code otherRX}, {@code otherRY}, {@code otherRZ},
-     * {@code otherRW}), returning the result as a value.
+     * the rigid transformation {@code D} with
+     * {@code this * D = (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW)}, that is
+     * {@code D = this^-1 * (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW)},
+     * returning the result as a value.
      *
      * @param otherTX the {@code tX} component of the rigid transform
      *        {@code (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW)}
@@ -1224,7 +1240,8 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
     /**
      * Create a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1251,7 +1268,8 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
     /**
      * Create a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1290,7 +1308,8 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
     /**
      * Create a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1317,7 +1336,8 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
     /**
      * Create a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1356,7 +1376,8 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
     /**
      * Create a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1383,7 +1404,8 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
     /**
      * Create a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -1524,7 +1546,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this rigid transform, returning the result as a value.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this rigid transform, returning the result as a
+     * value.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -1564,7 +1588,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this rigid transform, returning the result as a value.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this rigid transform, returning the result as a
+     * value.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -1623,7 +1649,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this rigid transform, returning the result as a value.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this rigid transform, returning the result as a
+     * value.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -1663,7 +1691,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this rigid transform, returning the result as a value.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this rigid transform, returning the result as a
+     * value.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -1722,7 +1752,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this rigid transform, returning the result as a value.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this rigid transform, returning the result as a
+     * value.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -1762,7 +1794,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this rigid transform, returning the result as a value.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this rigid transform, returning the result as a
+     * value.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -2168,6 +2202,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2179,6 +2216,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -2191,6 +2231,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2205,6 +2248,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code FloatRigid} holding the loaded elements
@@ -2216,6 +2262,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -2228,6 +2277,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code FloatRigid} holding the loaded elements
@@ -2242,6 +2294,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2253,6 +2308,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Store the elements into the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -2265,6 +2323,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Store the elements into the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2279,6 +2340,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatRigid} holding the loaded elements
@@ -2290,6 +2354,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -2302,6 +2369,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatRigid} holding the loaded elements
@@ -2431,6 +2501,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Store the elements into the given buffer, converting each element to {@code double}, starting
      * at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2442,6 +2515,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Store the elements into the given buffer, converting each element to {@code double}, starting
      * at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -2454,6 +2530,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Store the elements into the given buffer, converting each element to {@code double}, starting
      * at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2468,6 +2547,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Load the elements from the given buffer, converting each element from {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code FloatRigid} holding the loaded elements
@@ -2479,6 +2561,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Load the elements from the given buffer, converting each element from {@code double},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -2491,6 +2576,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Load the elements from the given buffer, converting each element from {@code double},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code FloatRigid} holding the loaded elements
@@ -2505,6 +2593,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2516,6 +2607,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -2528,6 +2622,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2542,6 +2639,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatRigid} holding the loaded elements
@@ -2553,6 +2653,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -2565,6 +2668,9 @@ public value record FloatRigid(float tX, float tY, float tZ, float rX, float rY,
     /**
      * Load the elements from the given byte buffer, converting each element from {@code double},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatRigid} holding the loaded elements

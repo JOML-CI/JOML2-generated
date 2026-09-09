@@ -776,7 +776,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
 
     /**
-     * Set this dual quaternion to the given values.
+     * Set this dual quaternion to a pure rotation by {@code rotation} (zero translation).
      *
      * @param rotation the quaternion
      * @return this
@@ -787,7 +787,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
 
     /**
-     * Set this dual quaternion to the given values.
+     * Set this dual quaternion to a pure rotation by ({@code rotationX}, {@code rotationY},
+     * {@code rotationZ}, {@code rotationW}) (zero translation).
      *
      * @param rotationX the {@code x} component of the quaternion
      *        {@code (rotationX, rotationY, rotationZ, rotationW)}
@@ -860,7 +861,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
 
     /**
-     * Set this dual quaternion to the given values.
+     * Set this dual quaternion to a pure translation by {@code translation} (identity rotation).
      *
      * @param translation the vector
      * @return this
@@ -871,7 +872,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
 
     /**
-     * Set this dual quaternion to the given values.
+     * Set this dual quaternion to a pure translation by ({@code translationX},
+     * {@code translationY}, {@code translationZ}) (identity rotation).
      *
      * @param translationX the {@code x} component of the vector
      *        {@code (translationX, translationY, translationZ)}
@@ -1178,28 +1180,24 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      *
      * @param otherRX the {@code rX} component of the dual quaternion
      *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)} (the
-     *        dual quaternion must have unit length)
+     *        real part must have unit length)
      * @param otherRY the {@code rY} component of the dual quaternion
      *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)} (the
-     *        dual quaternion must have unit length)
+     *        real part must have unit length)
      * @param otherRZ the {@code rZ} component of the dual quaternion
      *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)} (the
-     *        dual quaternion must have unit length)
+     *        real part must have unit length)
      * @param otherRW the {@code rW} component of the dual quaternion
      *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)} (the
-     *        dual quaternion must have unit length)
+     *        real part must have unit length)
      * @param otherDX the {@code dX} component of the dual quaternion
-     *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)} (the
-     *        dual quaternion must have unit length)
+     *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)}
      * @param otherDY the {@code dY} component of the dual quaternion
-     *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)} (the
-     *        dual quaternion must have unit length)
+     *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)}
      * @param otherDZ the {@code dZ} component of the dual quaternion
-     *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)} (the
-     *        dual quaternion must have unit length)
+     *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)}
      * @param otherDW the {@code dW} component of the dual quaternion
-     *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)} (the
-     *        dual quaternion must have unit length)
+     *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1305,28 +1303,24 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      *
      * @param otherRX the {@code rX} component of the dual quaternion
      *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)} (the
-     *        dual quaternion must have unit length)
+     *        real part must have unit length)
      * @param otherRY the {@code rY} component of the dual quaternion
      *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)} (the
-     *        dual quaternion must have unit length)
+     *        real part must have unit length)
      * @param otherRZ the {@code rZ} component of the dual quaternion
      *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)} (the
-     *        dual quaternion must have unit length)
+     *        real part must have unit length)
      * @param otherRW the {@code rW} component of the dual quaternion
      *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)} (the
-     *        dual quaternion must have unit length)
+     *        real part must have unit length)
      * @param otherDX the {@code dX} component of the dual quaternion
-     *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)} (the
-     *        dual quaternion must have unit length)
+     *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)}
      * @param otherDY the {@code dY} component of the dual quaternion
-     *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)} (the
-     *        dual quaternion must have unit length)
+     *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)}
      * @param otherDZ the {@code dZ} component of the dual quaternion
-     *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)} (the
-     *        dual quaternion must have unit length)
+     *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)}
      * @param otherDW the {@code dW} component of the dual quaternion
-     *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)} (the
-     *        dual quaternion must have unit length)
+     *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
      * @param dest will hold the result
      * @return dest
@@ -1878,8 +1872,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Compute the difference between this dual quaternion and {@code other}, i.e. the rigid
-     * transformation that, applied after {@code this}, results in {@code other} and store the
-     * result in {@code dest}.
+     * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}
+     * and store the result in {@code dest}.
      *
      * @param other the other dual quaternion
      * @param dest will hold the result
@@ -1892,8 +1886,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Compute the difference between this dual quaternion and {@code other}, i.e. the rigid
-     * transformation that, applied after {@code this}, results in {@code other} and store the
-     * result in {@code dest}.
+     * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}
+     * and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1910,9 +1904,11 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
     /**
      * Compute the difference between this dual quaternion and ({@code otherRX}, {@code otherRY},
      * {@code otherRZ}, {@code otherRW}, {@code otherDX}, {@code otherDY}, {@code otherDZ},
-     * {@code otherDW}), i.e. the rigid transformation that, applied after {@code this}, results in
-     * ({@code otherRX}, {@code otherRY}, {@code otherRZ}, {@code otherRW}, {@code otherDX},
-     * {@code otherDY}, {@code otherDZ}, {@code otherDW}) and store the result in {@code dest}.
+     * {@code otherDW}), i.e. the rigid transformation {@code D} with
+     * {@code this * D = (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)},
+     * that is
+     * {@code D = this^-1 * (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)}
+     * and store the result in {@code dest}.
      *
      * @param otherRX the {@code rX} component of the dual quaternion
      *        {@code (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)}
@@ -1959,9 +1955,11 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
     /**
      * Compute the difference between this dual quaternion and ({@code otherRX}, {@code otherRY},
      * {@code otherRZ}, {@code otherRW}, {@code otherDX}, {@code otherDY}, {@code otherDZ},
-     * {@code otherDW}), i.e. the rigid transformation that, applied after {@code this}, results in
-     * ({@code otherRX}, {@code otherRY}, {@code otherRZ}, {@code otherRW}, {@code otherDX},
-     * {@code otherDY}, {@code otherDZ}, {@code otherDW}) and store the result in {@code dest}.
+     * {@code otherDW}), i.e. the rigid transformation {@code D} with
+     * {@code this * D = (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)},
+     * that is
+     * {@code D = this^-1 * (otherRX, otherRY, otherRZ, otherRW, otherDX, otherDY, otherDZ, otherDW)}
+     * and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3501,8 +3499,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
 
     /**
-     * Compute the matrix representation of this dual quaternion and store the result in
-     * {@code dest}.
+     * Compute the matrix representation of this dual quaternion (which must be a unit dual
+     * quaternion) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -3540,14 +3538,14 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         dd[9] = _buf5;
         dd[12] = _buf6;
         dd[13] = _buf7;
-        ((Float4x4Impl) dest).properties = 0;
+        ((Float4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
 
 
     /**
-     * Compute the matrix representation of this dual quaternion and store the result in
-     * {@code dest}.
+     * Compute the matrix representation of this dual quaternion (which must be a unit dual
+     * quaternion) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3588,14 +3586,15 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         dd[9] = _buf5;
         dd[12] = _buf6;
         dd[13] = _buf7;
-        ((Double4x4Impl) dest).properties = 0;
+        ((Double4x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
 
 
     /**
-     * Compute the 3x3 matrix representation of this dual quaternion's rotation part (the encoded
-     * translation is dropped) and store the result in {@code dest}.
+     * Compute the 3x3 matrix representation of the rotation part of this dual quaternion (which
+     * must be a unit dual quaternion; the encoded translation is dropped) and store the result in
+     * {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -3626,8 +3625,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
 
     /**
-     * Compute the 3x3 matrix representation of this dual quaternion's rotation part (the encoded
-     * translation is dropped) and store the result in {@code dest}.
+     * Compute the 3x3 matrix representation of the rotation part of this dual quaternion (which
+     * must be a unit dual quaternion; the encoded translation is dropped) and store the result in
+     * {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3661,8 +3661,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
 
     /**
-     * Compute the 3x4 matrix representation of this dual quaternion (the omitted last row is
-     * implicitly {@code 0, 0, 0, 1}) and store the result in {@code dest}.
+     * Compute the 3x4 matrix representation of this dual quaternion (which must be a unit dual
+     * quaternion; the omitted last row is implicitly {@code 0, 0, 0, 1}) and store the result in
+     * {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -3696,14 +3697,15 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         dd[5] = _buf5;
         dd[6] = _buf6;
         dd[7] = _buf7;
-        ((Float3x4Impl) dest).properties = 0;
+        ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
 
 
     /**
-     * Compute the 3x4 matrix representation of this dual quaternion (the omitted last row is
-     * implicitly {@code 0, 0, 0, 1}) and store the result in {@code dest}.
+     * Compute the 3x4 matrix representation of this dual quaternion (which must be a unit dual
+     * quaternion; the omitted last row is implicitly {@code 0, 0, 0, 1}) and store the result in
+     * {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3740,7 +3742,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         dd[5] = _buf5;
         dd[6] = _buf6;
         dd[7] = _buf7;
-        ((Double3x4Impl) dest).properties = 0;
+        ((Double3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
 
@@ -4186,7 +4188,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Set this dual quaternion to a rotation of {@code angleX}, {@code angleY} and {@code angleZ}
-     * radians about the X, Y and Z axes, in that order.
+     * radians about the X, Y and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so
+     * a vector is rotated about the Z axis first, then Y, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -4222,7 +4225,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Set this dual quaternion to a rotation of {@code angleX}, {@code angleZ} and {@code angleY}
-     * radians about the X, Z and Y axes, in that order.
+     * radians about the X, Z and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so
+     * a vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -4279,7 +4283,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Set this dual quaternion to a rotation of {@code angleY}, {@code angleX} and {@code angleZ}
-     * radians about the Y, X and Z axes, in that order.
+     * radians about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so
+     * a vector is rotated about the Z axis first, then X, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -4315,7 +4320,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Set this dual quaternion to a rotation of {@code angleY}, {@code angleZ} and {@code angleX}
-     * radians about the Y, Z and X axes, in that order.
+     * radians about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so
+     * a vector is rotated about the X axis first, then Z, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -4372,7 +4378,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Set this dual quaternion to a rotation of {@code angleZ}, {@code angleX} and {@code angleY}
-     * radians about the Z, X and Y axes, in that order.
+     * radians about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so
+     * a vector is rotated about the Y axis first, then X, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -4408,7 +4415,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Set this dual quaternion to a rotation of {@code angleZ}, {@code angleY} and {@code angleX}
-     * radians about the Z, Y and X axes, in that order.
+     * radians about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so
+     * a vector is rotated about the X axis first, then Y, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -4781,7 +4789,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this dual quaternion and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this dual quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -4833,7 +4843,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this dual quaternion and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this dual quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -4888,7 +4900,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this dual quaternion and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this dual quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -4940,7 +4954,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this dual quaternion and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this dual quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -5066,7 +5082,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this dual quaternion and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this dual quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -5118,7 +5136,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this dual quaternion and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this dual quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -5173,7 +5193,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this dual quaternion and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this dual quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -5225,7 +5247,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this dual quaternion and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this dual quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -5351,7 +5375,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this dual quaternion and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this dual quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -5403,7 +5429,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this dual quaternion and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this dual quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -5458,7 +5486,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this dual quaternion and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this dual quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -5510,7 +5540,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this dual quaternion and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this dual quaternion and store the result in
+     * {@code dest}.
      * <p>
      * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
      * the new dual quaternion will be {@code Q * R}. So when transforming a vector {@code v} with
@@ -5855,8 +5887,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Transform the given direction by the inverse of this dual quaternion's rotation (world to
-     * local), ignoring the translation, without materializing {@code invert()} and store the result
-     * in {@code dest}.
+     * local), ignoring the translation, without materializing {@code invert()} (assumes a unit,
+     * rigid dual quaternion) and store the result in {@code dest}.
      *
      * @param v the vector
      * @param dest will hold the result
@@ -5869,8 +5901,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Transform the given direction by the inverse of this dual quaternion's rotation (world to
-     * local), ignoring the translation, without materializing {@code invert()} and store the result
-     * in {@code dest}.
+     * local), ignoring the translation, without materializing {@code invert()} (assumes a unit,
+     * rigid dual quaternion) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -5886,8 +5918,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Transform the given direction by the inverse of this dual quaternion's rotation (world to
-     * local), ignoring the translation, without materializing {@code invert()} and store the result
-     * in {@code dest}.
+     * local), ignoring the translation, without materializing {@code invert()} (assumes a unit,
+     * rigid dual quaternion) and store the result in {@code dest}.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -5912,8 +5944,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Transform the given direction by the inverse of this dual quaternion's rotation (world to
-     * local), ignoring the translation, without materializing {@code invert()} and store the result
-     * in {@code dest}.
+     * local), ignoring the translation, without materializing {@code invert()} (assumes a unit,
+     * rigid dual quaternion) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6091,7 +6123,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Transform the given position by the inverse of this dual quaternion (world to local), without
-     * materializing {@code invert()} and store the result in {@code dest}.
+     * materializing {@code invert()} (assumes a unit, rigid dual quaternion) and store the result
+     * in {@code dest}.
      *
      * @param p the vector
      * @param dest will hold the result
@@ -6104,7 +6137,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Transform the given position by the inverse of this dual quaternion (world to local), without
-     * materializing {@code invert()} and store the result in {@code dest}.
+     * materializing {@code invert()} (assumes a unit, rigid dual quaternion) and store the result
+     * in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6120,7 +6154,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Transform the given position by the inverse of this dual quaternion (world to local), without
-     * materializing {@code invert()} and store the result in {@code dest}.
+     * materializing {@code invert()} (assumes a unit, rigid dual quaternion) and store the result
+     * in {@code dest}.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -6135,7 +6170,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Transform the given position by the inverse of this dual quaternion (world to local), without
-     * materializing {@code invert()} and store the result in {@code dest}.
+     * materializing {@code invert()} (assumes a unit, rigid dual quaternion) and store the result
+     * in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.

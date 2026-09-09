@@ -2886,7 +2886,7 @@ public final class Float3x4OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer lookAt_lh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float3x4OpsKernelsByteBuffer.lookAt_lh_unsafe(dest, destOffset, src, srcOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x4OpsKernelsByteBuffer.lookAt_lh_unsafe(dest, destOffset, src, srcOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
         return Float3x4OpsKernelsByteBuffer.lookAt_lh_api(dest, destOffset, src, srcOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
     }
 
@@ -2962,7 +2962,7 @@ public final class Float3x4OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer lookAt_rh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect()) return Float3x4OpsKernelsByteBuffer.lookAt_rh_unsafe(dest, destOffset, src, srcOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x4OpsKernelsByteBuffer.lookAt_rh_unsafe(dest, destOffset, src, srcOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
         return Float3x4OpsKernelsByteBuffer.lookAt_rh_api(dest, destOffset, src, srcOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
     }
 
@@ -3041,7 +3041,7 @@ public final class Float3x4OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer lookAt_lh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer eye, int eyeOffset, java.nio.ByteBuffer center, int centerOffset, java.nio.ByteBuffer up, int upOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && eye.isDirect() && center.isDirect() && up.isDirect()) return Float3x4OpsKernelsByteBuffer.lookAt_lh_unsafe(dest, destOffset, src, srcOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && eye.isDirect() && eye.order() == java.nio.ByteOrder.nativeOrder() && center.isDirect() && center.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Float3x4OpsKernelsByteBuffer.lookAt_lh_unsafe(dest, destOffset, src, srcOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
         return Float3x4OpsKernelsByteBuffer.lookAt_lh_api(dest, destOffset, src, srcOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
     }
 
@@ -3129,7 +3129,7 @@ public final class Float3x4OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer lookAt_rh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer eye, int eyeOffset, java.nio.ByteBuffer center, int centerOffset, java.nio.ByteBuffer up, int upOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && src.isDirect() && eye.isDirect() && center.isDirect() && up.isDirect()) return Float3x4OpsKernelsByteBuffer.lookAt_rh_unsafe(dest, destOffset, src, srcOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && eye.isDirect() && eye.order() == java.nio.ByteOrder.nativeOrder() && center.isDirect() && center.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Float3x4OpsKernelsByteBuffer.lookAt_rh_unsafe(dest, destOffset, src, srcOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
         return Float3x4OpsKernelsByteBuffer.lookAt_rh_api(dest, destOffset, src, srcOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
     }
 
@@ -3562,7 +3562,7 @@ public final class Float3x4OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer makeLookAt_lh(java.nio.ByteBuffer dest, int destOffset, float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float3x4OpsKernelsByteBuffer.makeLookAt_lh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x4OpsKernelsByteBuffer.makeLookAt_lh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
         return Float3x4OpsKernelsByteBuffer.makeLookAt_lh_api(dest, destOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
     }
 
@@ -3622,7 +3622,7 @@ public final class Float3x4OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer makeLookAt_rh(java.nio.ByteBuffer dest, int destOffset, float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly()) return Float3x4OpsKernelsByteBuffer.makeLookAt_rh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x4OpsKernelsByteBuffer.makeLookAt_rh_unsafe(dest, destOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
         return Float3x4OpsKernelsByteBuffer.makeLookAt_rh_api(dest, destOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
     }
 
@@ -3682,7 +3682,7 @@ public final class Float3x4OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer makeLookAt_lh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer eye, int eyeOffset, java.nio.ByteBuffer center, int centerOffset, java.nio.ByteBuffer up, int upOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && eye.isDirect() && center.isDirect() && up.isDirect()) return Float3x4OpsKernelsByteBuffer.makeLookAt_lh_unsafe(dest, destOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && eye.isDirect() && eye.order() == java.nio.ByteOrder.nativeOrder() && center.isDirect() && center.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Float3x4OpsKernelsByteBuffer.makeLookAt_lh_unsafe(dest, destOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
         return Float3x4OpsKernelsByteBuffer.makeLookAt_lh_api(dest, destOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
     }
 
@@ -3754,7 +3754,7 @@ public final class Float3x4OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer makeLookAt_rh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer eye, int eyeOffset, java.nio.ByteBuffer center, int centerOffset, java.nio.ByteBuffer up, int upOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && eye.isDirect() && center.isDirect() && up.isDirect()) return Float3x4OpsKernelsByteBuffer.makeLookAt_rh_unsafe(dest, destOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && eye.isDirect() && eye.order() == java.nio.ByteOrder.nativeOrder() && center.isDirect() && center.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Float3x4OpsKernelsByteBuffer.makeLookAt_rh_unsafe(dest, destOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
         return Float3x4OpsKernelsByteBuffer.makeLookAt_rh_api(dest, destOffset, eye, eyeOffset, center, centerOffset, up, upOffset);
     }
 
@@ -8786,21 +8786,21 @@ public final class Float3x4OpsKernelsByteBuffer {
             int _mo = mOffset + _i * 48;
             int _do = destOffset + _i * 48;
             float _ax = t1.getFloat(_t1o + 0), _ay = t1.getFloat(_t1o + 4), _az = t1.getFloat(_t1o + 8);
-            float _tx = alpha * (t2.getFloat(_t2o + 0)) - _ax + (_ax);
-            float _ty = alpha * (t2.getFloat(_t2o + 4)) - _ay + (_ay);
-            float _tz = alpha * (t2.getFloat(_t2o + 8)) - _az + (_az);
+            float _tx = (alpha) * ((t2.getFloat(_t2o + 0)) - _ax) + (_ax);
+            float _ty = (alpha) * ((t2.getFloat(_t2o + 4)) - _ay) + (_ay);
+            float _tz = (alpha) * ((t2.getFloat(_t2o + 8)) - _az) + (_az);
             float _bx = s1.getFloat(_s1o + 0), _by = s1.getFloat(_s1o + 4), _bz = s1.getFloat(_s1o + 8);
-            float _sx = alpha * (s2.getFloat(_s2o + 0)) - _bx + (_bx);
-            float _sy = alpha * (s2.getFloat(_s2o + 4)) - _by + (_by);
-            float _sz = alpha * (s2.getFloat(_s2o + 8)) - _bz + (_bz);
+            float _sx = (alpha) * ((s2.getFloat(_s2o + 0)) - _bx) + (_bx);
+            float _sy = (alpha) * ((s2.getFloat(_s2o + 4)) - _by) + (_by);
+            float _sz = (alpha) * ((s2.getFloat(_s2o + 8)) - _bz) + (_bz);
             float _ux = q1.getFloat(_q1o + 0), _uy = q1.getFloat(_q1o + 4), _uz = q1.getFloat(_q1o + 8), _uw = q1.getFloat(_q1o + 12);
             float _vx = q2.getFloat(_q2o + 0), _vy = q2.getFloat(_q2o + 4), _vz = q2.getFloat(_q2o + 8), _vw = q2.getFloat(_q2o + 12);
-            float _dot = _uw * _vw + (_uz * _vz + (_ux * _vx + (_uy * _vy)));
+            float _dot = (_uw) * (_vw) + ((_uz) * (_vz) + ((_ux) * (_vx) + (_uy * _vy)));
             if (_dot < 0.0f) { _vx = -_vx; _vy = -_vy; _vz = -_vz; _vw = -_vw; }
-            float _qx = alpha * _vx - _ux + (_ux);
-            float _qy = alpha * _vy - _uy + (_uy);
-            float _qz = alpha * _vz - _uz + (_uz);
-            float _qw = alpha * _vw - _uw + (_uw);
+            float _qx = (alpha) * (_vx - _ux) + (_ux);
+            float _qy = (alpha) * (_vy - _uy) + (_uy);
+            float _qz = (alpha) * (_vz - _uz) + (_uz);
+            float _qw = (alpha) * (_vw - _uw) + (_uw);
             float _len2 = (_qx * _qx + _qy * _qy) + (_qz * _qz + _qw * _qw);
             float _ninv = _len2 > 0.0f ? 1.0f / (float) Math.sqrt(_len2) : 0.0f;
             _qx *= _ninv; _qy *= _ninv; _qz *= _ninv; _qw *= _ninv;
@@ -8812,9 +8812,9 @@ public final class Float3x4OpsKernelsByteBuffer {
             float _m00 = m.getFloat(_mo + 0), _m01 = m.getFloat(_mo + 4), _m02 = m.getFloat(_mo + 8), _m03 = m.getFloat(_mo + 12);
             float _m10 = m.getFloat(_mo + 16), _m11 = m.getFloat(_mo + 20), _m12 = m.getFloat(_mo + 24), _m13 = m.getFloat(_mo + 28);
             float _m20 = m.getFloat(_mo + 32), _m21 = m.getFloat(_mo + 36), _m22 = m.getFloat(_mo + 40), _m23 = m.getFloat(_mo + 44);
-            float _e00 = _t02 * _m20 + (_t01 * _m10 + (_t00 * _m00)), _e01 = _t02 * _m21 + (_t01 * _m11 + (_t00 * _m01)), _e02 = _t02 * _m22 + (_t01 * _m12 + (_t00 * _m02)), _e03 = (_t02 * _m23 + (_t01 * _m13 + (_t00 * _m03))) + _tx;
-            float _e10 = _t12 * _m20 + (_t11 * _m10 + (_t10 * _m00)), _e11 = _t12 * _m21 + (_t11 * _m11 + (_t10 * _m01)), _e12 = _t12 * _m22 + (_t11 * _m12 + (_t10 * _m02)), _e13 = (_t12 * _m23 + (_t11 * _m13 + (_t10 * _m03))) + _ty;
-            float _e20 = _t22 * _m20 + (_t21 * _m10 + (_t20 * _m00)), _e21 = _t22 * _m21 + (_t21 * _m11 + (_t20 * _m01)), _e22 = _t22 * _m22 + (_t21 * _m12 + (_t20 * _m02)), _e23 = (_t22 * _m23 + (_t21 * _m13 + (_t20 * _m03))) + _tz;
+            float _e00 = (_t02) * (_m20) + ((_t01) * (_m10) + (_t00 * _m00)), _e01 = (_t02) * (_m21) + ((_t01) * (_m11) + (_t00 * _m01)), _e02 = (_t02) * (_m22) + ((_t01) * (_m12) + (_t00 * _m02)), _e03 = ((_t02) * (_m23) + ((_t01) * (_m13) + (_t00 * _m03))) + _tx;
+            float _e10 = (_t12) * (_m20) + ((_t11) * (_m10) + (_t10 * _m00)), _e11 = (_t12) * (_m21) + ((_t11) * (_m11) + (_t10 * _m01)), _e12 = (_t12) * (_m22) + ((_t11) * (_m12) + (_t10 * _m02)), _e13 = ((_t12) * (_m23) + ((_t11) * (_m13) + (_t10 * _m03))) + _ty;
+            float _e20 = (_t22) * (_m20) + ((_t21) * (_m10) + (_t20 * _m00)), _e21 = (_t22) * (_m21) + ((_t21) * (_m11) + (_t20 * _m01)), _e22 = (_t22) * (_m22) + ((_t21) * (_m12) + (_t20 * _m02)), _e23 = ((_t22) * (_m23) + ((_t21) * (_m13) + (_t20 * _m03))) + _tz;
             dest.putFloat(_do + 0, _e00);
             dest.putFloat(_do + 4, _e01);
             dest.putFloat(_do + 8, _e02);
@@ -8906,9 +8906,9 @@ public final class Float3x4OpsKernelsByteBuffer {
             float _m00 = m.getFloat(_mo + 0), _m01 = m.getFloat(_mo + 4), _m02 = m.getFloat(_mo + 8), _m03 = m.getFloat(_mo + 12);
             float _m10 = m.getFloat(_mo + 16), _m11 = m.getFloat(_mo + 20), _m12 = m.getFloat(_mo + 24), _m13 = m.getFloat(_mo + 28);
             float _m20 = m.getFloat(_mo + 32), _m21 = m.getFloat(_mo + 36), _m22 = m.getFloat(_mo + 40), _m23 = m.getFloat(_mo + 44);
-            float _e00 = _t02 * _m20 + (_t01 * _m10 + (_t00 * _m00)), _e01 = _t02 * _m21 + (_t01 * _m11 + (_t00 * _m01)), _e02 = _t02 * _m22 + (_t01 * _m12 + (_t00 * _m02)), _e03 = (_t02 * _m23 + (_t01 * _m13 + (_t00 * _m03))) + _tx;
-            float _e10 = _t12 * _m20 + (_t11 * _m10 + (_t10 * _m00)), _e11 = _t12 * _m21 + (_t11 * _m11 + (_t10 * _m01)), _e12 = _t12 * _m22 + (_t11 * _m12 + (_t10 * _m02)), _e13 = (_t12 * _m23 + (_t11 * _m13 + (_t10 * _m03))) + _ty;
-            float _e20 = _t22 * _m20 + (_t21 * _m10 + (_t20 * _m00)), _e21 = _t22 * _m21 + (_t21 * _m11 + (_t20 * _m01)), _e22 = _t22 * _m22 + (_t21 * _m12 + (_t20 * _m02)), _e23 = (_t22 * _m23 + (_t21 * _m13 + (_t20 * _m03))) + _tz;
+            float _e00 = (_t02) * (_m20) + ((_t01) * (_m10) + (_t00 * _m00)), _e01 = (_t02) * (_m21) + ((_t01) * (_m11) + (_t00 * _m01)), _e02 = (_t02) * (_m22) + ((_t01) * (_m12) + (_t00 * _m02)), _e03 = ((_t02) * (_m23) + ((_t01) * (_m13) + (_t00 * _m03))) + _tx;
+            float _e10 = (_t12) * (_m20) + ((_t11) * (_m10) + (_t10 * _m00)), _e11 = (_t12) * (_m21) + ((_t11) * (_m11) + (_t10 * _m01)), _e12 = (_t12) * (_m22) + ((_t11) * (_m12) + (_t10 * _m02)), _e13 = ((_t12) * (_m23) + ((_t11) * (_m13) + (_t10 * _m03))) + _ty;
+            float _e20 = (_t22) * (_m20) + ((_t21) * (_m10) + (_t20 * _m00)), _e21 = (_t22) * (_m21) + ((_t21) * (_m11) + (_t20 * _m01)), _e22 = (_t22) * (_m22) + ((_t21) * (_m12) + (_t20 * _m02)), _e23 = ((_t22) * (_m23) + ((_t21) * (_m13) + (_t20 * _m03))) + _tz;
             dest.putFloat(_do + 0, _e00);
             dest.putFloat(_do + 4, _e01);
             dest.putFloat(_do + 8, _e02);
@@ -8987,9 +8987,9 @@ public final class Float3x4OpsKernelsByteBuffer {
         float _t00 = (1 - 2 * (_yy + _zz)) * _sx, _t01 = (2 * (_xy - _zw)) * _sy, _t02 = (2 * (_xz + _yw)) * _sz;
         float _t10 = (2 * (_xy + _zw)) * _sx, _t11 = (1 - 2 * (_xx + _zz)) * _sy, _t12 = (2 * (_yz - _xw)) * _sz;
         float _t20 = (2 * (_xz - _yw)) * _sx, _t21 = (2 * (_yz + _xw)) * _sy, _t22 = (1 - 2 * (_xx + _yy)) * _sz;
-        float _e00 = _t02 * _m20 + (_t01 * _m10 + (_t00 * _m00)), _e01 = _t02 * _m21 + (_t01 * _m11 + (_t00 * _m01)), _e02 = _t02 * _m22 + (_t01 * _m12 + (_t00 * _m02)), _e03 = (_t02 * _m23 + (_t01 * _m13 + (_t00 * _m03))) + _tx;
-        float _e10 = _t12 * _m20 + (_t11 * _m10 + (_t10 * _m00)), _e11 = _t12 * _m21 + (_t11 * _m11 + (_t10 * _m01)), _e12 = _t12 * _m22 + (_t11 * _m12 + (_t10 * _m02)), _e13 = (_t12 * _m23 + (_t11 * _m13 + (_t10 * _m03))) + _ty;
-        float _e20 = _t22 * _m20 + (_t21 * _m10 + (_t20 * _m00)), _e21 = _t22 * _m21 + (_t21 * _m11 + (_t20 * _m01)), _e22 = _t22 * _m22 + (_t21 * _m12 + (_t20 * _m02)), _e23 = (_t22 * _m23 + (_t21 * _m13 + (_t20 * _m03))) + _tz;
+        float _e00 = (_t02) * (_m20) + ((_t01) * (_m10) + (_t00 * _m00)), _e01 = (_t02) * (_m21) + ((_t01) * (_m11) + (_t00 * _m01)), _e02 = (_t02) * (_m22) + ((_t01) * (_m12) + (_t00 * _m02)), _e03 = ((_t02) * (_m23) + ((_t01) * (_m13) + (_t00 * _m03))) + _tx;
+        float _e10 = (_t12) * (_m20) + ((_t11) * (_m10) + (_t10 * _m00)), _e11 = (_t12) * (_m21) + ((_t11) * (_m11) + (_t10 * _m01)), _e12 = (_t12) * (_m22) + ((_t11) * (_m12) + (_t10 * _m02)), _e13 = ((_t12) * (_m23) + ((_t11) * (_m13) + (_t10 * _m03))) + _ty;
+        float _e20 = (_t22) * (_m20) + ((_t21) * (_m10) + (_t20 * _m00)), _e21 = (_t22) * (_m21) + ((_t21) * (_m11) + (_t20 * _m01)), _e22 = (_t22) * (_m22) + ((_t21) * (_m12) + (_t20 * _m02)), _e23 = ((_t22) * (_m23) + ((_t21) * (_m13) + (_t20 * _m03))) + _tz;
         dest.putFloat(destOffset + 0, _e00);
         dest.putFloat(destOffset + 4, _e01);
         dest.putFloat(destOffset + 8, _e02);

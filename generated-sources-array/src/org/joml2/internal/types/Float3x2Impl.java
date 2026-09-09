@@ -173,7 +173,7 @@ public class Float3x2Impl implements Float3x2 {
         dd[5] = sd[5];
         dd[1] = _buf0;
         dd[3] = _buf1;
-        ((Float2x3Impl) dest).properties = 0;
+        ((Float2x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
 
@@ -198,7 +198,7 @@ public class Float3x2Impl implements Float3x2 {
         dd[5] = sd[5];
         dd[1] = _buf0;
         dd[3] = _buf1;
-        ((Double2x3Impl) dest).properties = 0;
+        ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
 

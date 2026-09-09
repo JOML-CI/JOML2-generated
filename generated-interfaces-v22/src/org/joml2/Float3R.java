@@ -163,7 +163,7 @@ public interface Float3R {
 
     /**
      * Multiply this vector component-wise by {@code b} and add ({@code x}, {@code y}, {@code z}),
-     * i.e. compute {@code this * b + c} per component and store the result in {@code dest}.
+     * i.e. compute {@code this * b + (x, y, z)} per component and store the result in {@code dest}.
      *
      * @param b the factor to multiply this vector by
      * @param x the {@code x} component of the vector {@code (x, y, z)}
@@ -176,7 +176,7 @@ public interface Float3R {
 
     /**
      * Multiply this vector component-wise by {@code b} and add ({@code x}, {@code y}, {@code z}),
-     * i.e. compute {@code this * b + c} per component and store the result in {@code dest}.
+     * i.e. compute {@code this * b + (x, y, z)} per component and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -217,8 +217,8 @@ public interface Float3R {
 
     /**
      * Multiply this vector component-wise by ({@code bX}, {@code bY}, {@code bZ}) and add
-     * ({@code cX}, {@code cY}, {@code cZ}), i.e. compute {@code this * b + c} per component and
-     * store the result in {@code dest}.
+     * ({@code cX}, {@code cY}, {@code cZ}), i.e. compute {@code this * (bX, bY, bZ) + (cX, cY, cZ)}
+     * per component and store the result in {@code dest}.
      *
      * @param bX the {@code x} component of the vector {@code (bX, bY, bZ)}
      * @param bY the {@code y} component of the vector {@code (bX, bY, bZ)}
@@ -233,8 +233,8 @@ public interface Float3R {
 
     /**
      * Multiply this vector component-wise by ({@code bX}, {@code bY}, {@code bZ}) and add
-     * ({@code cX}, {@code cY}, {@code cZ}), i.e. compute {@code this * b + c} per component and
-     * store the result in {@code dest}.
+     * ({@code cX}, {@code cY}, {@code cZ}), i.e. compute {@code this * (bX, bY, bZ) + (cX, cY, cZ)}
+     * per component and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -391,7 +391,7 @@ public interface Float3R {
     /**
      * Set this vector to {@code s} and store the result in {@code dest}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -403,7 +403,7 @@ public interface Float3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -1382,7 +1382,8 @@ public interface Float3R {
     Double3 atan(@Mutated Double3 dest);
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} {@code x} (the denominator) and store the result in
      * {@code dest}.
      *
      * @param x the value to take the arc tangent over (the denominator)
@@ -1392,7 +1393,8 @@ public interface Float3R {
     Float3 atan2(float x, @Mutated Float3 dest);
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} {@code x} (the denominator) and store the result in
      * {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
@@ -1405,34 +1407,36 @@ public interface Float3R {
     Double3 atan2(float x, @Mutated Double3 dest);
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
-     * {@code dest}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of {@code x} (the
+     * denominator) and store the result in {@code dest}.
      *
-     * @param x the value to take the arc tangent over (the denominator)
+     * @param x the vector of denominators, one per component
      * @param dest will hold the result
      * @return dest
      */
     Float3 atan2(Float3R x, @Mutated Float3 dest);
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
-     * {@code dest}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of {@code x} (the
+     * denominator) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param x the value to take the arc tangent over (the denominator)
+     * @param x the vector of denominators, one per component
      * @param dest will hold the result
      * @return dest
      */
     Double3 atan2(Float3R x, @Mutated Double3 dest);
 
     /**
-     * Compute the component-wise arc tangent of this vector over ({@code x}, {@code y}, {@code z})
-     * and store the result in {@code dest}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of ({@code x},
+     * {@code y}, {@code z}) (the denominator) and store the result in {@code dest}.
      *
-     * @param x the {@code x} component of the value to take the arc tangent over (the denominator)
-     *        {@code (x, y, z)}
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @param dest will hold the result
@@ -1441,14 +1445,14 @@ public interface Float3R {
     Float3 atan2(float x, float y, float z, @Mutated Float3 dest);
 
     /**
-     * Compute the component-wise arc tangent of this vector over ({@code x}, {@code y}, {@code z})
-     * and store the result in {@code dest}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of ({@code x},
+     * {@code y}, {@code z}) (the denominator) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param x the {@code x} component of the value to take the arc tangent over (the denominator)
-     *        {@code (x, y, z)}
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @param dest will hold the result
@@ -1523,8 +1527,8 @@ public interface Float3R {
      * Clamp each component of this vector between {@code min} and {@code max} and store the result
      * in {@code dest}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -1537,8 +1541,8 @@ public interface Float3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -1578,8 +1582,8 @@ public interface Float3R {
     Double3 clamp(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, @Mutated Double3 dest);
 
     /**
-     * Set this vector to the point closest to it on the line segment between {@code lineStart} and
-     * {@code lineEnd} and store the result in {@code dest}.
+     * Compute the point on the line segment between {@code lineStart} and {@code lineEnd} that is
+     * closest to this vector and store the result in {@code dest}.
      *
      * @param lineStart the vector
      * @param lineEnd the vector
@@ -1589,8 +1593,8 @@ public interface Float3R {
     Float3 closestPointOnLine(Float3R lineStart, Float3R lineEnd, @Mutated Float3 dest);
 
     /**
-     * Set this vector to the point closest to it on the line segment between {@code lineStart} and
-     * {@code lineEnd} and store the result in {@code dest}.
+     * Compute the point on the line segment between {@code lineStart} and {@code lineEnd} that is
+     * closest to this vector and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1603,9 +1607,9 @@ public interface Float3R {
     Double3 closestPointOnLine(Float3R lineStart, Float3R lineEnd, @Mutated Double3 dest);
 
     /**
-     * Set this vector to the point closest to it on the line segment between ({@code lineStartX},
-     * {@code lineStartY}, {@code lineStartZ}) and ({@code lineEndX}, {@code lineEndY},
-     * {@code lineEndZ}) and store the result in {@code dest}.
+     * Compute the point on the line segment between ({@code lineStartX}, {@code lineStartY},
+     * {@code lineStartZ}) and ({@code lineEndX}, {@code lineEndY}, {@code lineEndZ}) that is
+     * closest to this vector and store the result in {@code dest}.
      *
      * @param lineStartX the {@code x} component of the vector
      *        {@code (lineStartX, lineStartY, lineStartZ)}
@@ -1622,9 +1626,9 @@ public interface Float3R {
     Float3 closestPointOnLine(float lineStartX, float lineStartY, float lineStartZ, float lineEndX, float lineEndY, float lineEndZ, @Mutated Float3 dest);
 
     /**
-     * Set this vector to the point closest to it on the line segment between ({@code lineStartX},
-     * {@code lineStartY}, {@code lineStartZ}) and ({@code lineEndX}, {@code lineEndY},
-     * {@code lineEndZ}) and store the result in {@code dest}.
+     * Compute the point on the line segment between ({@code lineStartX}, {@code lineStartY},
+     * {@code lineStartZ}) and ({@code lineEndX}, {@code lineEndY}, {@code lineEndZ}) that is
+     * closest to this vector and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2077,8 +2081,8 @@ public interface Float3R {
     Double3 fract(@Mutated Double3 dest);
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y} and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} {@code y} and store the result in {@code dest}.
      *
      * @param y the other operand
      * @param dest will hold the result
@@ -2087,8 +2091,8 @@ public interface Float3R {
     Float3 hypot(float y, @Mutated Float3 dest);
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y} and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} {@code y} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2100,34 +2104,37 @@ public interface Float3R {
     Double3 hypot(float y, @Mutated Double3 dest);
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y} and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of {@code y} and store the result in
+     * {@code dest}.
      *
-     * @param y the other operand
+     * @param y the vector of other operands, one per component
      * @param dest will hold the result
      * @return dest
      */
     Float3 hypot(Float3R y, @Mutated Float3 dest);
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y} and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of {@code y} and store the result in
+     * {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param y the other operand
+     * @param y the vector of other operands, one per component
      * @param dest will hold the result
      * @return dest
      */
     Double3 hypot(Float3R y, @Mutated Double3 dest);
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * ({@code x}, {@code y}, {@code z}) and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of ({@code x}, {@code y}, {@code z})
+     * and store the result in {@code dest}.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
-     * @param y the {@code y} component of the other operand {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @param dest will hold the result
      * @return dest
@@ -2135,14 +2142,15 @@ public interface Float3R {
     Float3 hypot(float x, float y, float z, @Mutated Float3 dest);
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * ({@code x}, {@code y}, {@code z}) and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of ({@code x}, {@code y}, {@code z})
+     * and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
-     * @param y the {@code y} component of the other operand {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @param dest will hold the result
      * @return dest
@@ -2496,7 +2504,7 @@ public interface Float3R {
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
      *
-     * @param y the divisor
+     * @param y the vector of divisors, one per component
      * @param dest will hold the result
      * @return dest
      */
@@ -2512,7 +2520,7 @@ public interface Float3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param y the divisor
+     * @param y the vector of divisors, one per component
      * @param dest will hold the result
      * @return dest
      */
@@ -2527,7 +2535,7 @@ public interface Float3R {
      * dividend.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
-     * @param y the {@code y} component of the divisor {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @param dest will hold the result
      * @return dest
@@ -2546,7 +2554,7 @@ public interface Float3R {
      * {@code double} only when stored.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
-     * @param y the {@code y} component of the divisor {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @param dest will hold the result
      * @return dest
@@ -2596,11 +2604,13 @@ public interface Float3R {
     Double3 nextUp(@Mutated Double3 dest);
 
     /**
-     * Normalize this vector to unit length (the zero vector yields the zero vector). <p> The
-     * squared length is formed at the component precision, so components whose squares overflow or
-     * underflow that precision are out of domain: the result is the zero vector rather than a unit
-     * vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}) and store the result in {@code dest}.
+     * Normalize this vector to unit length (the zero vector yields the zero vector) and store the
+     * result in {@code dest}.
+     * <p>
+     * The squared length is formed at the component precision, so components whose squares overflow
+     * or underflow that precision are out of domain: the result is the zero vector rather than a
+     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
+     * {@code float} and 1.3e154 for {@code double}).
      *
      * @param dest will hold the result
      * @return dest
@@ -2608,11 +2618,13 @@ public interface Float3R {
     Float3 normalize(@Mutated Float3 dest);
 
     /**
-     * Normalize this vector to unit length (the zero vector yields the zero vector). <p> The
-     * squared length is formed at the component precision, so components whose squares overflow or
-     * underflow that precision are out of domain: the result is the zero vector rather than a unit
-     * vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}) and store the result in {@code dest}.
+     * Normalize this vector to unit length (the zero vector yields the zero vector) and store the
+     * result in {@code dest}.
+     * <p>
+     * The squared length is formed at the component precision, so components whose squares overflow
+     * or underflow that precision are out of domain: the result is the zero vector rather than a
+     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
+     * {@code float} and 1.3e154 for {@code double}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2728,7 +2740,7 @@ public interface Float3R {
     Double3x3 outerProduct(float x, float y, float z, @Mutated Double3x3 dest);
 
     /**
-     * Set this vector to one of its perpendicular vectors and store the result in {@code dest}.
+     * Compute a vector perpendicular to this vector and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2736,7 +2748,7 @@ public interface Float3R {
     Float3 perpendicular(@Mutated Float3 dest);
 
     /**
-     * Set this vector to one of its perpendicular vectors and store the result in {@code dest}.
+     * Compute a vector perpendicular to this vector and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3065,8 +3077,8 @@ public interface Float3R {
     Double3 refract(float x, float y, float z, float eta, @Mutated Double3 dest);
 
     /**
-     * Compute the rounded value of each component of this vector and store the result in
-     * {@code dest}.
+     * Compute the value rounded to the nearest integer, ties to even ({@code Math.rint}) of each
+     * component of this vector and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -3074,8 +3086,8 @@ public interface Float3R {
     Float3 round(@Mutated Float3 dest);
 
     /**
-     * Compute the rounded value of each component of this vector and store the result in
-     * {@code dest}.
+     * Compute the value rounded to the nearest integer, ties to even ({@code Math.rint}) of each
+     * component of this vector and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3370,33 +3382,40 @@ public interface Float3R {
     Double3 tanh(@Mutated Double3 dest);
 
     /**
-     * Compute the normal of the triangle spanned by this vector and the two given points and store
-     * the result in {@code dest}.
+     * Compute the unit normal of the triangle spanned by this vector and the two given points, i.e.
+     * {@code normalize((p1 - this) x (p2 - this))} - it points to the side from which the vertices
+     * {@code this}, {@code p1}, {@code p2} appear counter-clockwise (a degenerate triangle yields
+     * the zero vector) and store the result in {@code dest}.
      *
-     * @param p1 the vector
-     * @param p2 the vector
+     * @param p1 the second vertex of the triangle (this vector is the first)
+     * @param p2 the third vertex of the triangle
      * @param dest will hold the result
      * @return dest
      */
     Float3 triangleNormal(Float3R p1, Float3R p2, @Mutated Float3 dest);
 
     /**
-     * Compute the normal of the triangle spanned by this vector and the two given points and store
-     * the result in {@code dest}.
+     * Compute the unit normal of the triangle spanned by this vector and the two given points, i.e.
+     * {@code normalize((p1 - this) x (p2 - this))} - it points to the side from which the vertices
+     * {@code this}, {@code p1}, {@code p2} appear counter-clockwise (a degenerate triangle yields
+     * the zero vector) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param p1 the vector
-     * @param p2 the vector
+     * @param p1 the second vertex of the triangle (this vector is the first)
+     * @param p2 the third vertex of the triangle
      * @param dest will hold the result
      * @return dest
      */
     Double3 triangleNormal(Float3R p1, Float3R p2, @Mutated Double3 dest);
 
     /**
-     * Compute the normal of the triangle spanned by this vector and the two given points and store
-     * the result in {@code dest}.
+     * Compute the unit normal of the triangle spanned by this vector and the two given points, i.e.
+     * {@code normalize(((p1X, p1Y, p1Z) - this) x ((p2X, p2Y, p2Z) - this))} - it points to the
+     * side from which the vertices {@code this}, ({@code p1X}, {@code p1Y}, {@code p1Z}),
+     * ({@code p2X}, {@code p2Y}, {@code p2Z}) appear counter-clockwise (a degenerate triangle
+     * yields the zero vector) and store the result in {@code dest}.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
@@ -3410,8 +3429,11 @@ public interface Float3R {
     Float3 triangleNormal(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, @Mutated Float3 dest);
 
     /**
-     * Compute the normal of the triangle spanned by this vector and the two given points and store
-     * the result in {@code dest}.
+     * Compute the unit normal of the triangle spanned by this vector and the two given points, i.e.
+     * {@code normalize(((p1X, p1Y, p1Z) - this) x ((p2X, p2Y, p2Z) - this))} - it points to the
+     * side from which the vertices {@code this}, ({@code p1X}, {@code p1Y}, {@code p1Z}),
+     * ({@code p2X}, {@code p2Y}, {@code p2Z}) appear counter-clockwise (a degenerate triangle
+     * yields the zero vector) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3512,7 +3534,8 @@ public interface Float3R {
     Double4 xyz1(@Mutated Double4 dest);
 
     /**
-     * Pre-multiply {@code mat} onto this vector and store the result in {@code dest}.
+     * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this} and store the
+     * result in {@code dest}.
      *
      * @param mat the matrix
      * @param dest will hold the result
@@ -3521,7 +3544,8 @@ public interface Float3R {
     Float3 preMul(Float3x3R mat, @Mutated Float3 dest);
 
     /**
-     * Pre-multiply {@code mat} onto this vector and store the result in {@code dest}.
+     * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this} and store the
+     * result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4864,6 +4888,9 @@ public interface Float3R {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4873,6 +4900,9 @@ public interface Float3R {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4882,6 +4912,9 @@ public interface Float3R {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -4892,6 +4925,9 @@ public interface Float3R {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4906,6 +4942,9 @@ public interface Float3R {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4915,6 +4954,9 @@ public interface Float3R {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4924,6 +4966,9 @@ public interface Float3R {
     /**
      * Store the elements into the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -4934,6 +4979,9 @@ public interface Float3R {
     /**
      * Store the elements into the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4991,6 +5039,9 @@ public interface Float3R {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -5000,6 +5051,9 @@ public interface Float3R {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -5009,6 +5063,9 @@ public interface Float3R {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -5019,6 +5076,9 @@ public interface Float3R {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -5033,6 +5093,9 @@ public interface Float3R {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -5042,6 +5105,9 @@ public interface Float3R {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -5051,6 +5117,9 @@ public interface Float3R {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -5061,6 +5130,9 @@ public interface Float3R {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest

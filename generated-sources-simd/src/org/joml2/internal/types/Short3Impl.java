@@ -2814,8 +2814,9 @@ public final class Short3Impl implements Short3 {
 
 
     /**
-     * Shift each component of this vector left by {@code shift} bits and store the result in
-     * {@code dest}.
+     * Shift each component of this vector left by {@code shift} bits (the shift count is taken
+     * modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to {@code int}
+     * and takes it modulo 32) and store the result in {@code dest}.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2824,19 +2825,21 @@ public final class Short3Impl implements Short3 {
     public Short3 shl(short shift, @Mutated Short3 dest) {
         short[] sd = this.data;
         short[] dd = ((Short3Impl) dest).data;
-        dd[0] = (short) (sd[0] << shift);
-        dd[1] = (short) (sd[1] << shift);
-        dd[2] = (short) (sd[2] << shift);
+        dd[0] = (short) (sd[0] << (shift & 15));
+        dd[1] = (short) (sd[1] << (shift & 15));
+        dd[2] = (short) (sd[2] << (shift & 15));
         return dest;
     }
 
 
     /**
-     * Shift each component of this vector left by {@code shift} bits and store the result in
-     * {@code dest}.
+     * Shift each component of this vector left by {@code shift} bits (the shift count is taken
+     * modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to {@code int}
+     * and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * before evaluating - and each result component is then stored as {@code int}. The shift count
+     * is still taken modulo this vector's lane width of 16, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2845,19 +2848,21 @@ public final class Short3Impl implements Short3 {
     public Int3 shl(short shift, @Mutated Int3 dest) {
         short[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = sd[0] << shift;
-        dd[1] = sd[1] << shift;
-        dd[2] = sd[2] << shift;
+        dd[0] = sd[0] << (shift & 15);
+        dd[1] = sd[1] << (shift & 15);
+        dd[2] = sd[2] << (shift & 15);
         return dest;
     }
 
 
     /**
-     * Shift each component of this vector left by {@code shift} bits and store the result in
-     * {@code dest}.
+     * Shift each component of this vector left by {@code shift} bits (the shift count is taken
+     * modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to {@code int}
+     * and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * before evaluating - and each result component is then stored as {@code long}. The shift count
+     * is still taken modulo this vector's lane width of 16, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2866,19 +2871,21 @@ public final class Short3Impl implements Short3 {
     public Long3 shl(short shift, @Mutated Long3 dest) {
         short[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = sd[0] << shift;
-        dd[1] = sd[1] << shift;
-        dd[2] = sd[2] << shift;
+        dd[0] = sd[0] << (shift & 15);
+        dd[1] = sd[1] << (shift & 15);
+        dd[2] = sd[2] << (shift & 15);
         return dest;
     }
 
 
     /**
-     * Shift each component of this vector left by {@code shift} bits and store the result in
-     * {@code dest}.
+     * Shift each component of this vector left by {@code shift} bits (the shift count is taken
+     * modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to {@code int}
+     * and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * before evaluating - and each result component is then stored as {@code double}. The shift
+     * count is still taken modulo this vector's lane width of 16, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2887,16 +2894,17 @@ public final class Short3Impl implements Short3 {
     public Double3 shl(short shift, @Mutated Double3 dest) {
         short[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = sd[0] << shift;
-        dd[1] = sd[1] << shift;
-        dd[2] = sd[2] << shift;
+        dd[0] = sd[0] << (shift & 15);
+        dd[1] = sd[1] << (shift & 15);
+        dd[2] = sd[2] << (shift & 15);
         return dest;
     }
 
 
     /**
-     * Arithmetically shift each component of this vector right by {@code shift} bits and store the
-     * result in {@code dest}.
+     * Arithmetically shift each component of this vector right by {@code shift} bits (the shift
+     * count is taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes
+     * to {@code int} and takes it modulo 32) and store the result in {@code dest}.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2905,19 +2913,21 @@ public final class Short3Impl implements Short3 {
     public Short3 shr(short shift, @Mutated Short3 dest) {
         short[] sd = this.data;
         short[] dd = ((Short3Impl) dest).data;
-        dd[0] = (short) (sd[0] >> shift);
-        dd[1] = (short) (sd[1] >> shift);
-        dd[2] = (short) (sd[2] >> shift);
+        dd[0] = (short) (sd[0] >> (shift & 15));
+        dd[1] = (short) (sd[1] >> (shift & 15));
+        dd[2] = (short) (sd[2] >> (shift & 15));
         return dest;
     }
 
 
     /**
-     * Arithmetically shift each component of this vector right by {@code shift} bits and store the
-     * result in {@code dest}.
+     * Arithmetically shift each component of this vector right by {@code shift} bits (the shift
+     * count is taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes
+     * to {@code int} and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * before evaluating - and each result component is then stored as {@code int}. The shift count
+     * is still taken modulo this vector's lane width of 16, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2926,19 +2936,21 @@ public final class Short3Impl implements Short3 {
     public Int3 shr(short shift, @Mutated Int3 dest) {
         short[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = sd[0] >> shift;
-        dd[1] = sd[1] >> shift;
-        dd[2] = sd[2] >> shift;
+        dd[0] = sd[0] >> (shift & 15);
+        dd[1] = sd[1] >> (shift & 15);
+        dd[2] = sd[2] >> (shift & 15);
         return dest;
     }
 
 
     /**
-     * Arithmetically shift each component of this vector right by {@code shift} bits and store the
-     * result in {@code dest}.
+     * Arithmetically shift each component of this vector right by {@code shift} bits (the shift
+     * count is taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes
+     * to {@code int} and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * before evaluating - and each result component is then stored as {@code long}. The shift count
+     * is still taken modulo this vector's lane width of 16, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2947,19 +2959,21 @@ public final class Short3Impl implements Short3 {
     public Long3 shr(short shift, @Mutated Long3 dest) {
         short[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = sd[0] >> shift;
-        dd[1] = sd[1] >> shift;
-        dd[2] = sd[2] >> shift;
+        dd[0] = sd[0] >> (shift & 15);
+        dd[1] = sd[1] >> (shift & 15);
+        dd[2] = sd[2] >> (shift & 15);
         return dest;
     }
 
 
     /**
-     * Arithmetically shift each component of this vector right by {@code shift} bits and store the
-     * result in {@code dest}.
+     * Arithmetically shift each component of this vector right by {@code shift} bits (the shift
+     * count is taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes
+     * to {@code int} and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * before evaluating - and each result component is then stored as {@code double}. The shift
+     * count is still taken modulo this vector's lane width of 16, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2968,16 +2982,17 @@ public final class Short3Impl implements Short3 {
     public Double3 shr(short shift, @Mutated Double3 dest) {
         short[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = sd[0] >> shift;
-        dd[1] = sd[1] >> shift;
-        dd[2] = sd[2] >> shift;
+        dd[0] = sd[0] >> (shift & 15);
+        dd[1] = sd[1] >> (shift & 15);
+        dd[2] = sd[2] >> (shift & 15);
         return dest;
     }
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits and store the
-     * result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
+     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
+     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2986,19 +3001,21 @@ public final class Short3Impl implements Short3 {
     public Short3 ushr(short shift, @Mutated Short3 dest) {
         short[] sd = this.data;
         short[] dd = ((Short3Impl) dest).data;
-        dd[0] = (short) ((sd[0] & 0xFFFF) >>> shift);
-        dd[1] = (short) ((sd[1] & 0xFFFF) >>> shift);
-        dd[2] = (short) ((sd[2] & 0xFFFF) >>> shift);
+        dd[0] = (short) ((sd[0] & 0xFFFF) >>> (shift & 15));
+        dd[1] = (short) ((sd[1] & 0xFFFF) >>> (shift & 15));
+        dd[2] = (short) ((sd[2] & 0xFFFF) >>> (shift & 15));
         return dest;
     }
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits and store the
-     * result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
+     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
+     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * before evaluating - and each result component is then stored as {@code int}. The shift count
+     * is still taken modulo this vector's lane width of 16, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -3007,19 +3024,21 @@ public final class Short3Impl implements Short3 {
     public Int3 ushr(short shift, @Mutated Int3 dest) {
         short[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = (sd[0] & 0xFFFF) >>> shift;
-        dd[1] = (sd[1] & 0xFFFF) >>> shift;
-        dd[2] = (sd[2] & 0xFFFF) >>> shift;
+        dd[0] = (sd[0] & 0xFFFF) >>> (shift & 15);
+        dd[1] = (sd[1] & 0xFFFF) >>> (shift & 15);
+        dd[2] = (sd[2] & 0xFFFF) >>> (shift & 15);
         return dest;
     }
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits and store the
-     * result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
+     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
+     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * before evaluating - and each result component is then stored as {@code long}. The shift count
+     * is still taken modulo this vector's lane width of 16, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -3028,19 +3047,21 @@ public final class Short3Impl implements Short3 {
     public Long3 ushr(short shift, @Mutated Long3 dest) {
         short[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = (sd[0] & 0xFFFF) >>> shift;
-        dd[1] = (sd[1] & 0xFFFF) >>> shift;
-        dd[2] = (sd[2] & 0xFFFF) >>> shift;
+        dd[0] = (sd[0] & 0xFFFF) >>> (shift & 15);
+        dd[1] = (sd[1] & 0xFFFF) >>> (shift & 15);
+        dd[2] = (sd[2] & 0xFFFF) >>> (shift & 15);
         return dest;
     }
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits and store the
-     * result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
+     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
+     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * before evaluating - and each result component is then stored as {@code double}. The shift
+     * count is still taken modulo this vector's lane width of 16, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -3049,9 +3070,9 @@ public final class Short3Impl implements Short3 {
     public Double3 ushr(short shift, @Mutated Double3 dest) {
         short[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = (sd[0] & 0xFFFF) >>> shift;
-        dd[1] = (sd[1] & 0xFFFF) >>> shift;
-        dd[2] = (sd[2] & 0xFFFF) >>> shift;
+        dd[0] = (sd[0] & 0xFFFF) >>> (shift & 15);
+        dd[1] = (sd[1] & 0xFFFF) >>> (shift & 15);
+        dd[2] = (sd[2] & 0xFFFF) >>> (shift & 15);
         return dest;
     }
 
@@ -3237,7 +3258,7 @@ public final class Short3Impl implements Short3 {
     /**
      * Set this vector to {@code s} and store the result in {@code dest}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -3257,7 +3278,7 @@ public final class Short3Impl implements Short3 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -3277,7 +3298,7 @@ public final class Short3Impl implements Short3 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -3297,7 +3318,7 @@ public final class Short3Impl implements Short3 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -3573,8 +3594,8 @@ public final class Short3Impl implements Short3 {
      * Clamp each component of this vector between {@code min} and {@code max} and store the result
      * in {@code dest}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -3590,8 +3611,8 @@ public final class Short3Impl implements Short3 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code int}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -3607,8 +3628,8 @@ public final class Short3Impl implements Short3 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code long}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -3624,8 +3645,8 @@ public final class Short3Impl implements Short3 {
      * The computation is performed at {@code int} precision - Java promotes {@code short} operands
      * before evaluating - and each result component is then stored as {@code double}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -3737,6 +3758,9 @@ public final class Short3Impl implements Short3 {
 
     /**
      * Compute the sum of all components of this vector.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @return the sum of all components of this vector
      */
@@ -3748,6 +3772,9 @@ public final class Short3Impl implements Short3 {
 
     /**
      * Compute the largest component of this vector.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @return the largest component of this vector
      */
@@ -3759,6 +3786,9 @@ public final class Short3Impl implements Short3 {
 
     /**
      * Compute the smallest component of this vector.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @return the smallest component of this vector
      */
@@ -3770,6 +3800,9 @@ public final class Short3Impl implements Short3 {
 
     /**
      * Compute the product of all components of this vector.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @return the product of all components of this vector
      */
@@ -3939,6 +3972,9 @@ public final class Short3Impl implements Short3 {
 
     /**
      * Compute the squared distance between this vector and {@code other}.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @param other the other vector
      * @return the squared distance between this vector and {@code other}
@@ -3951,6 +3987,9 @@ public final class Short3Impl implements Short3 {
     /**
      * Compute the squared distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}).
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -3969,6 +4008,9 @@ public final class Short3Impl implements Short3 {
 
     /**
      * Compute the dot product of this vector and {@code other}.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @param other the other vector
      * @return the dot product of this vector and {@code other}
@@ -3980,6 +4022,9 @@ public final class Short3Impl implements Short3 {
 
     /**
      * Compute the dot product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ}).
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -3994,6 +4039,9 @@ public final class Short3Impl implements Short3 {
 
     /**
      * Compute the squared length of this vector.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @return the squared length of this vector
      */
@@ -4005,6 +4053,9 @@ public final class Short3Impl implements Short3 {
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @param other the other vector
      * @return the Manhattan distance between this vector and {@code other}
@@ -4017,6 +4068,9 @@ public final class Short3Impl implements Short3 {
     /**
      * Compute the Manhattan distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}).
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -4032,6 +4086,9 @@ public final class Short3Impl implements Short3 {
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
+     * <p>
+     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
+     * result outside the {@code short} range wraps.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */

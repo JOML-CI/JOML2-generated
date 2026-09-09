@@ -140,7 +140,7 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     public boolean isIdentity() { return (this.properties & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY; }
     /** {@return whether this matrix is known to be a pure translation} O(1) read of the cached property bits; conservative. */
     public boolean isTranslation() { return (this.properties & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION; }
-    /** {@return whether this matrix is known to be orthogonal} O(1) read of the cached property bits; conservative. */
+    /** {@return whether this matrix is known to be orthogonal, i.e. its upper-left block is orthonormal with positive determinant (a proper rotation; a reflection is affine, not orthogonal)} O(1) read of the cached property bits; conservative. */
     public boolean isOrthogonal() { return (this.properties & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL; }
     /** {@return whether this matrix is known to be affine} O(1) read of the cached property bits; conservative. */
     public boolean isAffine() { return (this.properties & Joml.BIT_AFFINE) == Joml.BIT_AFFINE; }
@@ -696,8 +696,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
 
     /**
-     * Extract the rotation of this matrix as a unit quaternion, column-normalizing the linear block
-     * first to strip scale (skew is not removed), returning the result as a value.
+     * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
+     * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
+     * unit length), returning the result as a value.
      *
      * @return the resulting quaternion
      */
@@ -781,6 +782,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Get the scaling factors of this matrix, as the lengths of its basis columns (always
      * non-negative; skew is ignored), returning the result as a value.
+     * <p>
+     * For a 2D homogeneous 3x3 matrix the third factor is simply the length of the third column -
+     * {@code sqrt(m02² + m12² + 1)} for a 2D affine transform, not a scale of anything.
      *
      * @return the resulting vector
      */
@@ -811,7 +815,8 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
 
     /**
-     * Get the translation of this matrix, returning the result as a value.
+     * Get the translation of this matrix, read from its last column as {@code (m02, m12)} (the 2D
+     * homogeneous convention), returning the result as a value.
      *
      * @return the resulting vector
      */
@@ -2168,7 +2173,7 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Create the given rigid transform's rotation block (the translation is dropped).
      *
-     * @param r the rigid transform (must be a unit vector)
+     * @param r the rigid transform (whose rotation must be a unit quaternion)
      * @return the resulting matrix
      */
     public static Float3x3 makeFromRigid(FloatRigid r) {
@@ -2180,19 +2185,23 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Create the given rigid transform's rotation block (the translation is dropped).
      *
      * @param rTX the {@code tX} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)}
      * @param rTY the {@code tY} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)}
      * @param rTZ the {@code tZ} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)}
      * @param rRX the {@code rX} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the rotation quaternion must have unit
+     *        length)
      * @param rRY the {@code rY} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the rotation quaternion must have unit
+     *        length)
      * @param rRZ the {@code rZ} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the rotation quaternion must have unit
+     *        length)
      * @param rRW the {@code rW} component of the rigid transform
-     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the vector must have unit length)
+     *        {@code (rTX, rTY, rTZ, rRX, rRY, rRZ, rRW)} (the rotation quaternion must have unit
+     *        length)
      * @return the resulting matrix
      */
     public static Float3x3 makeFromRigid(float rTX, float rTY, float rTZ, float rRX, float rRY, float rRZ, float rRW) {
@@ -2649,8 +2658,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
 
     /**
-     * Extract this matrix's rotation into a rigid transform with zero translation (any scale or
-     * shear projects onto the nearest rotation), returning the result as a value.
+     * Extract this matrix's rotation into a rigid transform with zero translation (scale is removed
+     * by normalizing the columns, but shear is not removed: a sheared block yields a rotation
+     * quaternion that is not unit length), returning the result as a value.
      *
      * @return the resulting rigid transform
      */
@@ -2769,7 +2779,8 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
     /**
      * Decompose this matrix's linear {@code R * S} block into a TRS transform with zero translation
-     * (a sheared matrix projects onto the nearest rotation), returning the result as a value.
+     * (scale is removed by normalizing the columns, but shear is not removed: a sheared block
+     * yields a rotation quaternion that is not unit length), returning the result as a value.
      *
      * @return the resulting transform
      */
@@ -4135,29 +4146,25 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * encoded translation is dropped).
      *
      * @param dqRX the {@code rX} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the real part must have unit
+     *        length)
      * @param dqRY the {@code rY} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the real part must have unit
+     *        length)
      * @param dqRZ the {@code rZ} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the real part must have unit
+     *        length)
      * @param dqRW the {@code rW} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the real part must have unit
+     *        length)
      * @param dqDX the {@code dX} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)}
      * @param dqDY the {@code dY} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)}
      * @param dqDZ the {@code dZ} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)}
      * @param dqDW the {@code dW} component of the dual quaternion
-     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)} (the dual quaternion must
-     *        have unit length)
+     *        {@code (dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW)}
      * @return the resulting matrix
      */
     public static Float3x3 makeFromDualQuat(float dqRX, float dqRY, float dqRZ, float dqRW, float dqDX, float dqDY, float dqDZ, float dqDW) {
@@ -4324,7 +4331,8 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
     /**
      * Create a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -4346,7 +4354,8 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
     /**
      * Create a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -4381,7 +4390,8 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
     /**
      * Create a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -4403,7 +4413,8 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
     /**
      * Create a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -4438,7 +4449,8 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
     /**
      * Create a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -4460,7 +4472,8 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
     /**
      * Create a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -4504,7 +4517,8 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
 
     /**
-     * Create a scaling transformation that scales by {@code s}.
+     * Create a scaling transformation that scales by {@code s} of the x and y axes only (the 2D
+     * homogeneous {@code diag(s, s, 1)}: the third row and column are left unscaled).
      *
      * @param s the uniform scale factor
      * @return the resulting matrix
@@ -5152,7 +5166,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
 
     /**
-     * Pre-multiply a scaling by {@code s} onto this matrix, returning the result as a value.
+     * Pre-multiply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) onto this matrix,
+     * returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
@@ -5171,8 +5187,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
 
     /**
-     * Pre-multiply a scaling by {@code s} about the pivot point {@code pivot} onto this matrix,
-     * returning the result as a value.
+     * Pre-multiply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) about the pivot point
+     * {@code pivot} onto this matrix, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
@@ -5226,8 +5243,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
 
     /**
-     * Pre-multiply a scaling by {@code s} about the pivot point ({@code pivotX}, {@code pivotY})
-     * onto this matrix, returning the result as a value.
+     * Pre-multiply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) about the pivot point
+     * ({@code pivotX}, {@code pivotY}) onto this matrix, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
@@ -5255,7 +5273,7 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code S * M * v}, the scaling will be applied last.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @return the resulting matrix
      */
@@ -6094,7 +6112,8 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this matrix, returning the result as a value.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this matrix, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -6218,7 +6237,8 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this matrix, returning the result as a value.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this matrix, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -6614,7 +6634,8 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this matrix, returning the result as a value.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this matrix, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -6738,7 +6759,8 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this matrix, returning the result as a value.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this matrix, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -7118,7 +7140,8 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this matrix, returning the result as a value.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this matrix, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -7241,7 +7264,8 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this matrix, returning the result as a value.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this matrix, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -7414,7 +7438,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
 
     /**
-     * Apply a scaling by {@code s} to this matrix, returning the result as a value.
+     * Apply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) to this matrix, returning
+     * the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
@@ -7433,8 +7459,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
 
     /**
-     * Apply a scaling by {@code s} about the pivot point {@code pivot} to this matrix, returning
-     * the result as a value.
+     * Apply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) about the pivot point
+     * {@code pivot} to this matrix, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
@@ -7490,8 +7517,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
 
 
     /**
-     * Apply a scaling by {@code s} about the pivot point ({@code pivotX}, {@code pivotY}) to this
-     * matrix, returning the result as a value.
+     * Apply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) about the pivot point
+     * ({@code pivotX}, {@code pivotY}) to this matrix, returning the result as a value.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
@@ -7519,7 +7547,7 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * S * v}, the scaling will be applied first.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @return the resulting matrix
      */
@@ -8006,6 +8034,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -8017,6 +8048,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -8029,6 +8063,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -8043,6 +8080,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8054,6 +8094,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -8066,6 +8109,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8080,6 +8126,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -8091,6 +8140,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -8103,6 +8155,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -8117,6 +8172,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8128,6 +8186,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -8140,6 +8201,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8237,6 +8301,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -8248,6 +8315,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -8260,6 +8330,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -8274,6 +8347,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8285,6 +8361,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code double}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -8297,6 +8376,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8311,6 +8393,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -8323,6 +8408,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at the given absolute index (the position is not used or
      * modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -8335,6 +8423,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -8349,6 +8440,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8361,6 +8455,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code double}, starting at the given absolute index (the position is not used or
      * modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -8373,6 +8470,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8466,6 +8566,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -8477,6 +8580,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -8489,6 +8595,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -8503,6 +8612,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8514,6 +8626,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -8526,6 +8641,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8540,6 +8658,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -8551,6 +8672,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in row-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -8563,6 +8687,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -8577,6 +8704,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given byte buffer in row-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8588,6 +8718,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given byte buffer in row-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -8600,6 +8733,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given byte buffer in row-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8697,6 +8833,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in row-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -8708,6 +8847,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in row-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -8720,6 +8862,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in row-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -8734,6 +8879,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given buffer in row-major order, converting each element from
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8745,6 +8893,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given buffer in row-major order, converting each element from
      * {@code double}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -8757,6 +8908,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given buffer in row-major order, converting each element from
      * {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8771,6 +8925,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -8782,6 +8939,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -8794,6 +8954,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -8808,6 +8971,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8819,6 +8985,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code double}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -8831,6 +9000,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8917,6 +9089,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -8930,6 +9105,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -8944,6 +9122,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -8960,6 +9141,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -8973,6 +9157,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -8987,6 +9174,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9003,6 +9193,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9016,6 +9209,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -9030,6 +9226,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9046,6 +9245,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9059,6 +9261,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -9073,6 +9278,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9166,6 +9374,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9179,6 +9390,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -9193,6 +9407,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9209,6 +9426,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code double}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9222,6 +9442,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code double}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -9236,6 +9459,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code double}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9252,6 +9478,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9265,6 +9494,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at the given absolute index (the position is not used or
      * modified), with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -9279,6 +9511,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position and advancing the position accordingly,
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9295,6 +9530,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code double}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9308,6 +9546,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code double}, starting at the given absolute index (the position is not used or
      * modified), with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -9322,6 +9563,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given byte buffer in column-major order, converting each element
      * from {@code double}, starting at its current position and advancing the position accordingly,
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9413,6 +9657,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9426,6 +9673,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -9440,6 +9690,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly, with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9456,6 +9709,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given buffer in row-major order, starting at its current position
      * (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9469,6 +9725,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -9483,6 +9742,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly, with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9499,6 +9761,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9512,6 +9777,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in row-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -9526,6 +9794,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9542,6 +9813,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given byte buffer in row-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9555,6 +9829,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given byte buffer in row-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -9569,6 +9846,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given byte buffer in row-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9662,6 +9942,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in row-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9675,6 +9958,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in row-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -9689,6 +9975,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in row-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9705,6 +9994,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given buffer in row-major order, converting each element from
      * {@code double}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9718,6 +10010,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given buffer in row-major order, converting each element from
      * {@code double}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -9732,6 +10027,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given buffer in row-major order, converting each element from
      * {@code double}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9748,6 +10046,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9761,6 +10062,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -9775,6 +10079,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9791,6 +10098,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code double}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9804,6 +10114,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code double}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -9818,6 +10131,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given byte buffer in row-major order, converting each element from
      * {@code double}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9897,6 +10213,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -9908,6 +10227,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -9920,6 +10242,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -9934,6 +10259,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -9945,6 +10273,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -9957,6 +10288,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -10021,6 +10355,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at its current position (the
      * position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -10033,6 +10370,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -10046,6 +10386,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at its current position and
      * advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -10061,6 +10404,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, converting each element to {@code double}, starting at its current position (the
      * position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -10073,6 +10419,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, converting each element to {@code double}, starting at the given absolute index
      * (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -10086,6 +10435,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, converting each element to {@code double}, starting at its current position and
      * advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -10150,6 +10502,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in row-major order, identity-extended to a 4x4
      * matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -10161,6 +10516,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in row-major order, identity-extended to a 4x4
      * matrix, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -10173,6 +10531,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in row-major order, identity-extended to a 4x4
      * matrix, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -10187,6 +10548,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in row-major order, identity-extended to a 4x4
      * matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -10198,6 +10562,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in row-major order, identity-extended to a 4x4
      * matrix, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -10210,6 +10577,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in row-major order, identity-extended to a 4x4
      * matrix, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -10274,6 +10644,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in row-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at its current position (the
      * position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -10286,6 +10659,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in row-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -10299,6 +10675,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in row-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at its current position and
      * advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination buffer
      * @return buf
@@ -10314,6 +10693,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in row-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at its current position (the
      * position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -10326,6 +10708,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in row-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -10339,6 +10724,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in row-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at its current position and
      * advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -10383,6 +10771,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10392,6 +10783,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -10402,6 +10796,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10430,6 +10827,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10439,6 +10839,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -10449,6 +10852,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10458,6 +10864,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -10467,6 +10876,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -10477,6 +10889,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -10519,6 +10934,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -10531,6 +10949,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10542,6 +10963,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -10554,6 +10978,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10565,6 +10992,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -10577,6 +11007,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10615,6 +11048,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -10624,6 +11060,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -10634,6 +11073,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -10662,6 +11104,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -10671,6 +11116,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code double}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -10681,6 +11129,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -10690,6 +11141,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -10699,6 +11153,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -10709,6 +11166,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -10751,6 +11211,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given buffer in column-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -10763,6 +11226,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10774,6 +11240,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code double}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -10786,6 +11255,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given buffer in column-major order, converting each element from
      * {@code double}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10797,6 +11269,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -10809,6 +11284,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Load the elements from the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10849,6 +11327,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10858,6 +11339,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -10868,6 +11352,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10897,6 +11384,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at its current position (the
      * position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10907,6 +11397,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -10918,6 +11411,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at its current position and
      * advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -10927,6 +11423,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -10936,6 +11435,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -10946,6 +11448,9 @@ public record Float3x3(float m00, float m01, float m02, float m10, float m11, fl
     /**
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest

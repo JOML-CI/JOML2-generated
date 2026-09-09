@@ -125,7 +125,7 @@ public class Double4x3Impl implements Double4x3 {
         _col0.intoArray(dd, 0);
         _col1.intoArray(dd, 4);
         _col2.intoArray(dd, 8);
-        ((Double3x4Impl) dest).properties = 0;
+        ((Double3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
 
@@ -705,6 +705,8 @@ public class Double4x3Impl implements Double4x3 {
             DoubleVector.fromArray(COL_SPECIES, d, 0).intoArray(arr, off);
             DoubleVector.fromArray(COL_SPECIES, d, 4).intoArray(arr, off + 4);
             DoubleVector.fromArray(COL_SPECIES, d, 8).intoArray(arr, off + 8);
+        } else if (buf.order() != ByteOrder.nativeOrder()) {
+            return BB_OPS.storeCMAbsolute(this, index, buf);
         } else {
             MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
             long baseOff = (long) index * 8;
@@ -722,6 +724,8 @@ public class Double4x3Impl implements Double4x3 {
             DoubleVector.fromArray(COL_SPECIES, arr, off).intoArray(d, 0);
             DoubleVector.fromArray(COL_SPECIES, arr, off + 4).intoArray(d, 4);
             DoubleVector.fromArray(COL_SPECIES, arr, off + 8).intoArray(d, 8);
+        } else if (buf.order() != ByteOrder.nativeOrder()) {
+            return BB_OPS.loadCMAbsolute(this, index, buf);
         } else {
             MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
             long baseOff = (long) index * 8;
@@ -732,6 +736,7 @@ public class Double4x3Impl implements Double4x3 {
         return this;
     }
     public ByteBuffer storeCMAbsolute(int index, ByteBuffer buf) {
+        if (buf.order() != ByteOrder.nativeOrder()) return BB_OPS.storeCMAbsolute(this, index, buf);
         double[] d = this.data;
         MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
         DoubleVector.fromArray(COL_SPECIES, d, 0).intoMemorySegment(seg, index, ByteOrder.nativeOrder());
@@ -740,6 +745,7 @@ public class Double4x3Impl implements Double4x3 {
         return buf;
     }
     public Double4x3 loadCMAbsolute(int index, ByteBuffer buf) {
+        if (buf.order() != ByteOrder.nativeOrder()) return BB_OPS.loadCMAbsolute(this, index, buf);
         double[] d = this.data;
         MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
         DoubleVector.fromMemorySegment(COL_SPECIES, seg, index, ByteOrder.nativeOrder()).intoArray(d, 0);

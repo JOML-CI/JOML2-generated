@@ -382,7 +382,8 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Set this rigid transform to the rotation extracted from the given matrix, with zero
-     * translation (any scale or shear projects onto the nearest rotation).
+     * translation (scale is removed by normalizing the columns, but shear is not removed: a sheared
+     * block yields a rotation quaternion that is not unit length).
      *
      * @param m the matrix
      * @return this
@@ -463,8 +464,9 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Set this rigid transform to the rigid decomposition of the given affine matrix: translation
-     * from the last column, rotation from the orthonormalized upper-left 3x3 block (any scale or
-     * shear is discarded).
+     * from the last column, rotation from the column-normalized upper-left 3x3 block (scale is
+     * removed by normalizing the columns, but shear is not removed: a sheared block yields a
+     * rotation quaternion that is not unit length).
      *
      * @param m the matrix
      * @return this
@@ -545,8 +547,9 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Set this rigid transform to the rigid decomposition of the given affine matrix: translation
-     * from the last column, rotation from the orthonormalized upper-left 3x3 block (any scale or
-     * shear is discarded).
+     * from the last column, rotation from the column-normalized upper-left 3x3 block (scale is
+     * removed by normalizing the columns, but shear is not removed: a sheared block yields a
+     * rotation quaternion that is not unit length).
      *
      * @param m the matrix
      * @return this
@@ -755,8 +758,8 @@ public final class FloatRigidImpl implements FloatRigid {
 
 
     /**
-     * Compute the matrix representation of this rigid transform and store the result in
-     * {@code dest}.
+     * Compute the matrix representation of this rigid transform (whose rotation must be a unit
+     * quaternion) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -787,14 +790,14 @@ public final class FloatRigidImpl implements FloatRigid {
         d.m01 = _buf2;
         d.m11 = _buf3;
         d.m02 = _buf4;
-        d.properties = 0;
+        d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
 
 
     /**
-     * Compute the matrix representation of this rigid transform and store the result in
-     * {@code dest}.
+     * Compute the matrix representation of this rigid transform (whose rotation must be a unit
+     * quaternion) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -828,14 +831,14 @@ public final class FloatRigidImpl implements FloatRigid {
         d.m01 = _buf2;
         d.m11 = _buf3;
         d.m02 = _buf4;
-        d.properties = 0;
+        d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
 
 
     /**
-     * Compute the 3x3 matrix representation of this rigid transform's rotation (the translation is
-     * dropped) and store the result in {@code dest}.
+     * Compute the 3x3 matrix representation of the rotation of this rigid transform (whose rotation
+     * must be a unit quaternion; the translation is dropped) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -863,8 +866,8 @@ public final class FloatRigidImpl implements FloatRigid {
 
 
     /**
-     * Compute the 3x3 matrix representation of this rigid transform's rotation (the translation is
-     * dropped) and store the result in {@code dest}.
+     * Compute the 3x3 matrix representation of the rotation of this rigid transform (whose rotation
+     * must be a unit quaternion; the translation is dropped) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -895,8 +898,9 @@ public final class FloatRigidImpl implements FloatRigid {
 
 
     /**
-     * Compute the 3x4 matrix representation of this rigid transform (the omitted last row is
-     * implicitly {@code 0, 0, 0, 1}) and store the result in {@code dest}.
+     * Compute the 3x4 matrix representation of this rigid transform (whose rotation must be a unit
+     * quaternion; the omitted last row is implicitly {@code 0, 0, 0, 1}) and store the result in
+     * {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -925,14 +929,15 @@ public final class FloatRigidImpl implements FloatRigid {
         d.m10 = _buf4;
         d.m11 = _buf5;
         d.m12 = _buf6;
-        d.properties = 0;
+        d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
 
 
     /**
-     * Compute the 3x4 matrix representation of this rigid transform (the omitted last row is
-     * implicitly {@code 0, 0, 0, 1}) and store the result in {@code dest}.
+     * Compute the 3x4 matrix representation of this rigid transform (whose rotation must be a unit
+     * quaternion; the omitted last row is implicitly {@code 0, 0, 0, 1}) and store the result in
+     * {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -964,7 +969,7 @@ public final class FloatRigidImpl implements FloatRigid {
         d.m10 = _buf4;
         d.m11 = _buf5;
         d.m12 = _buf6;
-        d.properties = 0;
+        d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
 
@@ -1036,7 +1041,7 @@ public final class FloatRigidImpl implements FloatRigid {
 
 
     /**
-     * Set this rigid transform to the given values.
+     * Set this rigid transform to a pure rotation by {@code rotation} (zero translation).
      *
      * @param rotation the quaternion
      * @return this
@@ -1047,7 +1052,8 @@ public final class FloatRigidImpl implements FloatRigid {
 
 
     /**
-     * Set this rigid transform to the given values.
+     * Set this rigid transform to a pure rotation by ({@code rotationX}, {@code rotationY},
+     * {@code rotationZ}, {@code rotationW}) (zero translation).
      *
      * @param rotationX the {@code x} component of the quaternion
      *        {@code (rotationX, rotationY, rotationZ, rotationW)}
@@ -1072,7 +1078,7 @@ public final class FloatRigidImpl implements FloatRigid {
 
 
     /**
-     * Set this rigid transform to the given values.
+     * Set this rigid transform to a pure translation by {@code translation} (identity rotation).
      *
      * @param translation the vector
      * @return this
@@ -1083,7 +1089,8 @@ public final class FloatRigidImpl implements FloatRigid {
 
 
     /**
-     * Set this rigid transform to the given values.
+     * Set this rigid transform to a pure translation by ({@code translationX},
+     * {@code translationY}, {@code translationZ}) (identity rotation).
      *
      * @param translationX the {@code x} component of the vector
      *        {@code (translationX, translationY, translationZ)}
@@ -1563,8 +1570,8 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Compute the difference between this rigid transform and {@code other}, i.e. the rigid
-     * transformation that, applied after {@code this}, results in {@code other} and store the
-     * result in {@code dest}.
+     * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}
+     * and store the result in {@code dest}.
      *
      * @param other the other rigid transform
      * @param dest will hold the result
@@ -1577,8 +1584,8 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Compute the difference between this rigid transform and {@code other}, i.e. the rigid
-     * transformation that, applied after {@code this}, results in {@code other} and store the
-     * result in {@code dest}.
+     * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}
+     * and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1595,9 +1602,10 @@ public final class FloatRigidImpl implements FloatRigid {
     /**
      * Compute the difference between this rigid transform and ({@code otherTX}, {@code otherTY},
      * {@code otherTZ}, {@code otherRX}, {@code otherRY}, {@code otherRZ}, {@code otherRW}), i.e.
-     * the rigid transformation that, applied after {@code this}, results in ({@code otherTX},
-     * {@code otherTY}, {@code otherTZ}, {@code otherRX}, {@code otherRY}, {@code otherRZ},
-     * {@code otherRW}) and store the result in {@code dest}.
+     * the rigid transformation {@code D} with
+     * {@code this * D = (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW)}, that is
+     * {@code D = this^-1 * (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW)} and
+     * store the result in {@code dest}.
      *
      * @param otherTX the {@code tX} component of the rigid transform
      *        {@code (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW)}
@@ -1641,9 +1649,10 @@ public final class FloatRigidImpl implements FloatRigid {
     /**
      * Compute the difference between this rigid transform and ({@code otherTX}, {@code otherTY},
      * {@code otherTZ}, {@code otherRX}, {@code otherRY}, {@code otherRZ}, {@code otherRW}), i.e.
-     * the rigid transformation that, applied after {@code this}, results in ({@code otherTX},
-     * {@code otherTY}, {@code otherTZ}, {@code otherRX}, {@code otherRY}, {@code otherRZ},
-     * {@code otherRW}) and store the result in {@code dest}.
+     * the rigid transformation {@code D} with
+     * {@code this * D = (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW)}, that is
+     * {@code D = this^-1 * (otherTX, otherTY, otherTZ, otherRX, otherRY, otherRZ, otherRW)} and
+     * store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2315,7 +2324,8 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Set this rigid transform to a rotation of {@code angleX}, {@code angleY} and {@code angleZ}
-     * radians about the X, Y and Z axes, in that order.
+     * radians about the X, Y and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so
+     * a vector is rotated about the Z axis first, then Y, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2349,7 +2359,8 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Set this rigid transform to a rotation of {@code angleX}, {@code angleZ} and {@code angleY}
-     * radians about the X, Z and Y axes, in that order.
+     * radians about the X, Z and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so
+     * a vector is rotated about the Y axis first, then Z, then X).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2402,7 +2413,8 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Set this rigid transform to a rotation of {@code angleY}, {@code angleX} and {@code angleZ}
-     * radians about the Y, X and Z axes, in that order.
+     * radians about the Y, X and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so
+     * a vector is rotated about the Z axis first, then X, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2436,7 +2448,8 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Set this rigid transform to a rotation of {@code angleY}, {@code angleZ} and {@code angleX}
-     * radians about the Y, Z and X axes, in that order.
+     * radians about the Y, Z and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so
+     * a vector is rotated about the X axis first, then Z, then Y).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2489,7 +2502,8 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Set this rigid transform to a rotation of {@code angleZ}, {@code angleX} and {@code angleY}
-     * radians about the Z, X and Y axes, in that order.
+     * radians about the Z, X and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so
+     * a vector is rotated about the Y axis first, then X, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2523,7 +2537,8 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Set this rigid transform to a rotation of {@code angleZ}, {@code angleY} and {@code angleX}
-     * radians about the Z, Y and X axes, in that order.
+     * radians about the Z, Y and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so
+     * a vector is rotated about the X axis first, then Y, then Z).
      *
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
@@ -2862,7 +2877,9 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this rigid transform and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this rigid transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -2909,7 +2926,9 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this rigid transform and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this rigid transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -2959,7 +2978,9 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this rigid transform and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this rigid transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -3006,7 +3027,9 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this rigid transform and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this rigid transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -3119,7 +3142,9 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this rigid transform and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this rigid transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -3166,7 +3191,9 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this rigid transform and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this rigid transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -3216,7 +3243,9 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this rigid transform and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this rigid transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -3263,7 +3292,9 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this rigid transform and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this rigid transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -3376,7 +3407,9 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this rigid transform and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this rigid transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -3423,7 +3456,9 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this rigid transform and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this rigid transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -3473,7 +3508,9 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this rigid transform and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this rigid transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with
@@ -3520,7 +3557,9 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this rigid transform and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this rigid transform and store the result in
+     * {@code dest}.
      * <p>
      * If {@code M} is {@code this} rigid transform and {@code R} the rotation rigid transform, then
      * the new rigid transform will be {@code M * R}. So when transforming a vector {@code v} with

@@ -1043,6 +1043,10 @@ public class Float2x4Impl implements Float2x4 {
     }
 
     public float[] storeCM(@Mutated float[] dest, int offset) {
+        if (dest == this.data) return storeCM_aliased(dest, offset);
+        return storeCM_distinct(dest, offset);
+    }
+    private float[] storeCM_distinct(float[] dest, int offset) {
         dest[offset + 0] = this.data[0];
         dest[offset + 1] = this.data[4];
         dest[offset + 2] = this.data[1];
@@ -1053,7 +1057,31 @@ public class Float2x4Impl implements Float2x4 {
         dest[offset + 7] = this.data[7];
         return dest;
     }
-    public @Mutated Float2x4 loadCM(float[] src, int offset) {
+    private float[] storeCM_aliased(float[] dest, int offset) {
+        float[] d = this.data;
+        float t0 = d[0];
+        float t1 = d[1];
+        float t2 = d[2];
+        float t3 = d[3];
+        float t4 = d[4];
+        float t5 = d[5];
+        float t6 = d[6];
+        float t7 = d[7];
+        dest[offset + 0] = t0;
+        dest[offset + 1] = t4;
+        dest[offset + 2] = t1;
+        dest[offset + 3] = t5;
+        dest[offset + 4] = t2;
+        dest[offset + 5] = t6;
+        dest[offset + 6] = t3;
+        dest[offset + 7] = t7;
+        return dest;
+    }
+    @Mutated public Float2x4 loadCM(float[] src, int offset) {
+        if (src == this.data) return loadCM_aliased(src, offset);
+        return loadCM_distinct(src, offset);
+    }
+    private Float2x4 loadCM_distinct(float[] src, int offset) {
         this.data[0] = src[offset + 0];
         this.data[4] = src[offset + 1];
         this.data[1] = src[offset + 2];
@@ -1062,6 +1090,26 @@ public class Float2x4Impl implements Float2x4 {
         this.data[6] = src[offset + 5];
         this.data[3] = src[offset + 6];
         this.data[7] = src[offset + 7];
+        return this;
+    }
+    private Float2x4 loadCM_aliased(float[] src, int offset) {
+        float t0 = src[offset + 0];
+        float t1 = src[offset + 1];
+        float t2 = src[offset + 2];
+        float t3 = src[offset + 3];
+        float t4 = src[offset + 4];
+        float t5 = src[offset + 5];
+        float t6 = src[offset + 6];
+        float t7 = src[offset + 7];
+        float[] d = this.data;
+        d[0] = t0;
+        d[4] = t1;
+        d[1] = t2;
+        d[5] = t3;
+        d[2] = t4;
+        d[6] = t5;
+        d[3] = t6;
+        d[7] = t7;
         return this;
     }
     public FloatBuffer storeCMAbsolute(int index, @Mutated FloatBuffer buf) {
@@ -1125,10 +1173,6 @@ public class Float2x4Impl implements Float2x4 {
     }
 
     public float[] storeRM(@Mutated float[] dest, int offset) {
-        if (dest == this.data) return storeRM_aliased(dest, offset);
-        return storeRM_distinct(dest, offset);
-    }
-    private float[] storeRM_distinct(float[] dest, int offset) {
         dest[offset + 0] = this.data[0];
         dest[offset + 1] = this.data[1];
         dest[offset + 2] = this.data[2];
@@ -1139,31 +1183,7 @@ public class Float2x4Impl implements Float2x4 {
         dest[offset + 7] = this.data[7];
         return dest;
     }
-    private float[] storeRM_aliased(float[] dest, int offset) {
-        float[] d = this.data;
-        float t0 = d[0];
-        float t1 = d[1];
-        float t2 = d[2];
-        float t3 = d[3];
-        float t4 = d[4];
-        float t5 = d[5];
-        float t6 = d[6];
-        float t7 = d[7];
-        dest[offset + 0] = t0;
-        dest[offset + 1] = t1;
-        dest[offset + 2] = t2;
-        dest[offset + 3] = t3;
-        dest[offset + 4] = t4;
-        dest[offset + 5] = t5;
-        dest[offset + 6] = t6;
-        dest[offset + 7] = t7;
-        return dest;
-    }
-    @Mutated public Float2x4 loadRM(float[] src, int offset) {
-        if (src == this.data) return loadRM_aliased(src, offset);
-        return loadRM_distinct(src, offset);
-    }
-    private Float2x4 loadRM_distinct(float[] src, int offset) {
+    public @Mutated Float2x4 loadRM(float[] src, int offset) {
         this.data[0] = src[offset + 0];
         this.data[1] = src[offset + 1];
         this.data[2] = src[offset + 2];
@@ -1172,26 +1192,6 @@ public class Float2x4Impl implements Float2x4 {
         this.data[5] = src[offset + 5];
         this.data[6] = src[offset + 6];
         this.data[7] = src[offset + 7];
-        return this;
-    }
-    private Float2x4 loadRM_aliased(float[] src, int offset) {
-        float t0 = src[offset + 0];
-        float t1 = src[offset + 1];
-        float t2 = src[offset + 2];
-        float t3 = src[offset + 3];
-        float t4 = src[offset + 4];
-        float t5 = src[offset + 5];
-        float t6 = src[offset + 6];
-        float t7 = src[offset + 7];
-        float[] d = this.data;
-        d[0] = t0;
-        d[1] = t1;
-        d[2] = t2;
-        d[3] = t3;
-        d[4] = t4;
-        d[5] = t5;
-        d[6] = t6;
-        d[7] = t7;
         return this;
     }
     public FloatBuffer storeRMAbsolute(int index, @Mutated FloatBuffer buf) {
@@ -1255,6 +1255,10 @@ public class Float2x4Impl implements Float2x4 {
     }
 
     public float[] storeCM(@Mutated float[] dest, int offset, int stride) {
+        if (dest == this.data) return storeCM_aliased(dest, offset, stride);
+        return storeCM_distinct(dest, offset, stride);
+    }
+    private float[] storeCM_distinct(float[] dest, int offset, int stride) {
         int _p1 = offset + stride;
         int _p2 = _p1 + stride;
         int _p3 = _p2 + stride;
@@ -1268,7 +1272,34 @@ public class Float2x4Impl implements Float2x4 {
         dest[_p3 + 1] = this.data[7];
         return dest;
     }
-    public @Mutated Float2x4 loadCM(float[] src, int offset, int stride) {
+    private float[] storeCM_aliased(float[] dest, int offset, int stride) {
+        float[] d = this.data;
+        float t0 = d[0];
+        float t1 = d[1];
+        float t2 = d[2];
+        float t3 = d[3];
+        float t4 = d[4];
+        float t5 = d[5];
+        float t6 = d[6];
+        float t7 = d[7];
+        int _p1 = offset + stride;
+        int _p2 = _p1 + stride;
+        int _p3 = _p2 + stride;
+        dest[offset] = t0;
+        dest[offset + 1] = t4;
+        dest[_p1] = t1;
+        dest[_p1 + 1] = t5;
+        dest[_p2] = t2;
+        dest[_p2 + 1] = t6;
+        dest[_p3] = t3;
+        dest[_p3 + 1] = t7;
+        return dest;
+    }
+    @Mutated public Float2x4 loadCM(float[] src, int offset, int stride) {
+        if (src == this.data) return loadCM_aliased(src, offset, stride);
+        return loadCM_distinct(src, offset, stride);
+    }
+    private Float2x4 loadCM_distinct(float[] src, int offset, int stride) {
         int _p1 = offset + stride;
         int _p2 = _p1 + stride;
         int _p3 = _p2 + stride;
@@ -1280,6 +1311,29 @@ public class Float2x4Impl implements Float2x4 {
         this.data[6] = src[_p2 + 1];
         this.data[3] = src[_p3];
         this.data[7] = src[_p3 + 1];
+        return this;
+    }
+    private Float2x4 loadCM_aliased(float[] src, int offset, int stride) {
+        int _p1 = offset + stride;
+        int _p2 = _p1 + stride;
+        int _p3 = _p2 + stride;
+        float t0 = src[offset];
+        float t1 = src[offset + 1];
+        float t2 = src[_p1];
+        float t3 = src[_p1 + 1];
+        float t4 = src[_p2];
+        float t5 = src[_p2 + 1];
+        float t6 = src[_p3];
+        float t7 = src[_p3 + 1];
+        float[] d = this.data;
+        d[0] = t0;
+        d[4] = t1;
+        d[1] = t2;
+        d[5] = t3;
+        d[2] = t4;
+        d[6] = t5;
+        d[3] = t6;
+        d[7] = t7;
         return this;
     }
     public FloatBuffer storeCMAbsolute(int index, @Mutated FloatBuffer buf, int stride) {
@@ -1349,10 +1403,6 @@ public class Float2x4Impl implements Float2x4 {
     }
 
     public float[] storeRM(@Mutated float[] dest, int offset, int stride) {
-        if (dest == this.data) return storeRM_aliased(dest, offset, stride);
-        return storeRM_distinct(dest, offset, stride);
-    }
-    private float[] storeRM_distinct(float[] dest, int offset, int stride) {
         int _p1 = offset + stride;
         dest[offset] = this.data[0];
         dest[offset + 1] = this.data[1];
@@ -1364,32 +1414,7 @@ public class Float2x4Impl implements Float2x4 {
         dest[_p1 + 3] = this.data[7];
         return dest;
     }
-    private float[] storeRM_aliased(float[] dest, int offset, int stride) {
-        float[] d = this.data;
-        float t0 = d[0];
-        float t1 = d[1];
-        float t2 = d[2];
-        float t3 = d[3];
-        float t4 = d[4];
-        float t5 = d[5];
-        float t6 = d[6];
-        float t7 = d[7];
-        int _p1 = offset + stride;
-        dest[offset] = t0;
-        dest[offset + 1] = t1;
-        dest[offset + 2] = t2;
-        dest[offset + 3] = t3;
-        dest[_p1] = t4;
-        dest[_p1 + 1] = t5;
-        dest[_p1 + 2] = t6;
-        dest[_p1 + 3] = t7;
-        return dest;
-    }
-    @Mutated public Float2x4 loadRM(float[] src, int offset, int stride) {
-        if (src == this.data) return loadRM_aliased(src, offset, stride);
-        return loadRM_distinct(src, offset, stride);
-    }
-    private Float2x4 loadRM_distinct(float[] src, int offset, int stride) {
+    public @Mutated Float2x4 loadRM(float[] src, int offset, int stride) {
         int _p1 = offset + stride;
         this.data[0] = src[offset];
         this.data[1] = src[offset + 1];
@@ -1399,27 +1424,6 @@ public class Float2x4Impl implements Float2x4 {
         this.data[5] = src[_p1 + 1];
         this.data[6] = src[_p1 + 2];
         this.data[7] = src[_p1 + 3];
-        return this;
-    }
-    private Float2x4 loadRM_aliased(float[] src, int offset, int stride) {
-        int _p1 = offset + stride;
-        float t0 = src[offset];
-        float t1 = src[offset + 1];
-        float t2 = src[offset + 2];
-        float t3 = src[offset + 3];
-        float t4 = src[_p1];
-        float t5 = src[_p1 + 1];
-        float t6 = src[_p1 + 2];
-        float t7 = src[_p1 + 3];
-        float[] d = this.data;
-        d[0] = t0;
-        d[1] = t1;
-        d[2] = t2;
-        d[3] = t3;
-        d[4] = t4;
-        d[5] = t5;
-        d[6] = t6;
-        d[7] = t7;
         return this;
     }
     public FloatBuffer storeRMAbsolute(int index, @Mutated FloatBuffer buf, int stride) {

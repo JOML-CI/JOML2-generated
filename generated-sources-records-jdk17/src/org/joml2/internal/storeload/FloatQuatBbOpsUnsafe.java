@@ -4,6 +4,7 @@ import org.joml2.*;
 import org.joml2.Math;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import static org.joml2.internal.unsafe.UnsafeOpsHolder.U;
@@ -23,39 +24,39 @@ public final class FloatQuatBbOpsUnsafe implements FloatQuatBbOps {
     }
 
     public FloatBuffer storeAbsolute(FloatQuat self, int index, FloatBuffer buf) {
-        if (!buf.isDirect() || buf.isReadOnly()) return API.storeAbsolute(self, index, buf);
+        if (!buf.isDirect() || buf.isReadOnly() || buf.order() != ByteOrder.nativeOrder()) return API.storeAbsolute(self, index, buf);
         RAW.storeUnsafe(self, U.getLong(buf, BB_ADDRESS_OFFSET) + (long) index * 4);
         return buf;
     }
     public FloatQuat loadAbsolute(int index, FloatBuffer buf) {
-        if (!buf.isDirect()) return API.loadAbsolute(index, buf);
+        if (!buf.isDirect() || buf.order() != ByteOrder.nativeOrder()) return API.loadAbsolute(index, buf);
         return RAW.loadUnsafe(U.getLong(buf, BB_ADDRESS_OFFSET) + (long) index * 4);
     }
     public ByteBuffer storeAbsolute(FloatQuat self, int index, ByteBuffer buf) {
-        if (!buf.isDirect() || buf.isReadOnly()) return API.storeAbsolute(self, index, buf);
+        if (!buf.isDirect() || buf.isReadOnly() || buf.order() != ByteOrder.nativeOrder()) return API.storeAbsolute(self, index, buf);
         RAW.storeUnsafe(self, U.getLong(buf, BB_ADDRESS_OFFSET) + index);
         return buf;
     }
     public FloatQuat loadAbsolute(int index, ByteBuffer buf) {
-        if (!buf.isDirect()) return API.loadAbsolute(index, buf);
+        if (!buf.isDirect() || buf.order() != ByteOrder.nativeOrder()) return API.loadAbsolute(index, buf);
         return RAW.loadUnsafe(U.getLong(buf, BB_ADDRESS_OFFSET) + index);
     }
     public DoubleBuffer storeAbsolute(FloatQuat self, int index, DoubleBuffer buf) {
-        if (!buf.isDirect() || buf.isReadOnly()) return API.storeAbsolute(self, index, buf);
+        if (!buf.isDirect() || buf.isReadOnly() || buf.order() != ByteOrder.nativeOrder()) return API.storeAbsolute(self, index, buf);
         RAW.storeDoubleUnsafe(self, U.getLong(buf, BB_ADDRESS_OFFSET) + (long) index * 8);
         return buf;
     }
     public FloatQuat loadAbsolute(int index, DoubleBuffer buf) {
-        if (!buf.isDirect()) return API.loadAbsolute(index, buf);
+        if (!buf.isDirect() || buf.order() != ByteOrder.nativeOrder()) return API.loadAbsolute(index, buf);
         return RAW.loadDoubleUnsafe(U.getLong(buf, BB_ADDRESS_OFFSET) + (long) index * 8);
     }
     public ByteBuffer storeDoubleAbsolute(FloatQuat self, int index, ByteBuffer buf) {
-        if (!buf.isDirect() || buf.isReadOnly()) return API.storeDoubleAbsolute(self, index, buf);
+        if (!buf.isDirect() || buf.isReadOnly() || buf.order() != ByteOrder.nativeOrder()) return API.storeDoubleAbsolute(self, index, buf);
         RAW.storeDoubleUnsafe(self, U.getLong(buf, BB_ADDRESS_OFFSET) + index);
         return buf;
     }
     public FloatQuat loadDoubleAbsolute(int index, ByteBuffer buf) {
-        if (!buf.isDirect()) return API.loadDoubleAbsolute(index, buf);
+        if (!buf.isDirect() || buf.order() != ByteOrder.nativeOrder()) return API.loadDoubleAbsolute(index, buf);
         return RAW.loadDoubleUnsafe(U.getLong(buf, BB_ADDRESS_OFFSET) + index);
     }
 }

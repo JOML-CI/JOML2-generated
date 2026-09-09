@@ -880,7 +880,7 @@ public final class Long4Impl implements Long4 {
     /**
      * Set this vector to {@code s} and store the result in {@code dest}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -1039,8 +1039,8 @@ public final class Long4Impl implements Long4 {
      * Clamp each component of this vector between {@code min} and {@code max} and store the result
      * in {@code dest}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -5690,6 +5690,8 @@ public final class Long4Impl implements Long4 {
             long[] arr = buf.array();
             int off = buf.arrayOffset() + index;
             LongVector.fromArray(COL_SPECIES, d, 0).intoArray(arr, off);
+        } else if (buf.order() != ByteOrder.nativeOrder()) {
+            return BB_OPS.storeAbsolute(this, index, buf);
         } else {
             MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
             long baseOff = (long) index * 8;
@@ -5703,6 +5705,8 @@ public final class Long4Impl implements Long4 {
             long[] arr = buf.array();
             int off = buf.arrayOffset() + index;
             LongVector.fromArray(COL_SPECIES, arr, off).intoArray(d, 0);
+        } else if (buf.order() != ByteOrder.nativeOrder()) {
+            return BB_OPS.loadAbsolute(this, index, buf);
         } else {
             MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
             long baseOff = (long) index * 8;
@@ -5711,12 +5715,14 @@ public final class Long4Impl implements Long4 {
         return this;
     }
     public ByteBuffer storeAbsolute(int index, ByteBuffer buf) {
+        if (buf.order() != ByteOrder.nativeOrder()) return BB_OPS.storeAbsolute(this, index, buf);
         long[] d = this.data;
         MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
         LongVector.fromArray(COL_SPECIES, d, 0).intoMemorySegment(seg, index, ByteOrder.nativeOrder());
         return buf;
     }
     public Long4 loadAbsolute(int index, ByteBuffer buf) {
+        if (buf.order() != ByteOrder.nativeOrder()) return BB_OPS.loadAbsolute(this, index, buf);
         long[] d = this.data;
         MemorySegment seg = MemorySegment.ofBuffer(buf.duplicate().position(0));
         LongVector.fromMemorySegment(COL_SPECIES, seg, index, ByteOrder.nativeOrder()).intoArray(d, 0);

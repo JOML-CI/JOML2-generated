@@ -26,6 +26,10 @@ inline infix fun Float4.angleBetween(other: Float4): Float = angleBetween(other)
 inline infix fun Float4.distance(other: Float4): Float = distance(other)
 /** [Float4.dot] as an infix function, so `a dot b` parses. */
 inline infix fun Float4.dot(other: Float4): Float = dot(other)
+/** [Float4.mod] as the `mod` infix function, matching the name Kotlin uses for that operation. */
+inline infix fun Float4.mod(y: Float): Float4 = mod(y)
+/** [Float4.mod] as the `mod` infix function, matching the name Kotlin uses for that operation. */
+inline infix fun Float4.mod(y: Float4): Float4 = mod(y)
 /** [Float4.rotateAxis] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Float4.rotateAxis(angle: Angle, axis: Float3): Float4 = rotateAxis(angle.radians.toFloat(), axis)
 /** [Float4.rotateX] taking a type-safe [Angle] in place of the angle in radians. */

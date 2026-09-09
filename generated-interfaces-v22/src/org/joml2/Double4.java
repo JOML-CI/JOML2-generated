@@ -75,7 +75,7 @@ public interface Double4 extends Double4R {
 
     /**
      * Multiply this vector component-wise by {@code b} and add ({@code x}, {@code y}, {@code z},
-     * {@code w}), i.e. compute {@code this * b + c} per component.
+     * {@code w}), i.e. compute {@code this * b + (x, y, z, w)} per component.
      *
      * @param b the factor to multiply this vector by
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
@@ -98,8 +98,8 @@ public interface Double4 extends Double4R {
 
     /**
      * Multiply this vector component-wise by ({@code bX}, {@code bY}, {@code bZ}, {@code bW}) and
-     * add ({@code cX}, {@code cY}, {@code cZ}, {@code cW}), i.e. compute {@code this * b + c} per
-     * component.
+     * add ({@code cX}, {@code cY}, {@code cZ}, {@code cW}), i.e. compute
+     * {@code this * (bX, bY, bZ, bW) + (cX, cY, cZ, cW)} per component.
      *
      * @param bX the {@code x} component of the vector {@code (bX, bY, bZ, bW)}
      * @param bY the {@code y} component of the vector {@code (bX, bY, bZ, bW)}
@@ -188,7 +188,7 @@ public interface Double4 extends Double4R {
     /**
      * Set this vector to {@code s}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @return this
      */
     @Mutated default Double4 set(double s) { return set(s, Joml.RETURN_NEW ? Joml.double4() : this); }
@@ -658,7 +658,8 @@ public interface Double4 extends Double4R {
     @Mutated default Double4 atan() { return atan(Joml.RETURN_NEW ? Joml.double4() : this); }
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} {@code x} (the denominator).
      *
      * @param x the value to take the arc tangent over (the denominator)
      * @return this
@@ -666,19 +667,21 @@ public interface Double4 extends Double4R {
     @Mutated default Double4 atan2(double x) { return atan2(x, Joml.RETURN_NEW ? Joml.double4() : this); }
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of {@code x} (the
+     * denominator).
      *
-     * @param x the value to take the arc tangent over (the denominator)
+     * @param x the vector of denominators, one per component
      * @return this
      */
     @Mutated default Double4 atan2(Double4R x) { return atan2(x, Joml.RETURN_NEW ? Joml.double4() : this); }
 
     /**
-     * Compute the component-wise arc tangent of this vector over ({@code x}, {@code y}, {@code z},
-     * {@code w}).
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of ({@code x},
+     * {@code y}, {@code z}, {@code w}) (the denominator).
      *
-     * @param x the {@code x} component of the value to take the arc tangent over (the denominator)
-     *        {@code (x, y, z, w)}
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
@@ -712,8 +715,8 @@ public interface Double4 extends Double4R {
     /**
      * Clamp each component of this vector between {@code min} and {@code max}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @return this
      */
     @Mutated default Double4 clamp(Double4R min, Double4R max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.double4() : this); }
@@ -849,8 +852,8 @@ public interface Double4 extends Double4R {
     @Mutated default Double4 fract() { return fract(Joml.RETURN_NEW ? Joml.double4() : this); }
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} {@code y}.
      *
      * @param y the other operand
      * @return this
@@ -858,20 +861,21 @@ public interface Double4 extends Double4R {
     @Mutated default Double4 hypot(double y) { return hypot(y, Joml.RETURN_NEW ? Joml.double4() : this); }
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of {@code y}.
      *
-     * @param y the other operand
+     * @param y the vector of other operands, one per component
      * @return this
      */
     @Mutated default Double4 hypot(Double4R y) { return hypot(y, Joml.RETURN_NEW ? Joml.double4() : this); }
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * ({@code x}, {@code y}, {@code z}, {@code w}).
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of ({@code x}, {@code y}, {@code z},
+     * {@code w}).
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
-     * @param y the {@code y} component of the other operand {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
      * @return this
@@ -997,7 +1001,7 @@ public interface Double4 extends Double4R {
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
      *
-     * @param y the divisor
+     * @param y the vector of divisors, one per component
      * @return this
      */
     @Mutated default Double4 mod(Double4R y) { return mod(y, Joml.RETURN_NEW ? Joml.double4() : this); }
@@ -1010,7 +1014,7 @@ public interface Double4 extends Double4R {
      * dividend.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
-     * @param y the {@code y} component of the divisor {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
      * @return this
@@ -1034,10 +1038,11 @@ public interface Double4 extends Double4R {
     @Mutated default Double4 nextUp() { return nextUp(Joml.RETURN_NEW ? Joml.double4() : this); }
 
     /**
-     * Normalize this vector to unit length (the zero vector yields the zero vector). <p> The
-     * squared length is formed at the component precision, so components whose squares overflow or
-     * underflow that precision are out of domain: the result is the zero vector rather than a unit
-     * vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
+     * Normalize this vector to unit length (the zero vector yields the zero vector).
+     * <p>
+     * The squared length is formed at the component precision, so components whose squares overflow
+     * or underflow that precision are out of domain: the result is the zero vector rather than a
+     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
      * {@code float} and 1.3e154 for {@code double}).
      *
      * @return this
@@ -1185,7 +1190,8 @@ public interface Double4 extends Double4R {
     @Mutated default Double4 refract(double x, double y, double z, double w, double eta) { return refract(x, y, z, w, eta, Joml.RETURN_NEW ? Joml.double4() : this); }
 
     /**
-     * Compute the rounded value of each component of this vector.
+     * Compute the value rounded to the nearest integer, ties to even ({@code Math.rint}) of each
+     * component of this vector.
      *
      * @return this
      */
@@ -1318,7 +1324,7 @@ public interface Double4 extends Double4R {
     @Mutated default Double4 ulp() { return ulp(Joml.RETURN_NEW ? Joml.double4() : this); }
 
     /**
-     * Pre-multiply {@code mat} onto this vector.
+     * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this}.
      *
      * @param mat the matrix
      * @return this
@@ -1402,7 +1408,8 @@ public interface Double4 extends Double4R {
     @Mutated default Double4 rotateInverse(double x, double y, double z, double w) { return rotateInverse(x, y, z, w, Joml.RETURN_NEW ? Joml.double4() : this); }
 
     /**
-     * Rotate this vector by {@code angle} radians about the X axis.
+     * Rotate the {@code (x, y, z)} components of this vector by {@code angle} radians about the X
+     * axis, leaving {@code w} unchanged.
      *
      * @param angle the angle in radians
      * @return this
@@ -1410,7 +1417,8 @@ public interface Double4 extends Double4R {
     @Mutated default Double4 rotateX(double angle) { return rotateX(angle, Joml.RETURN_NEW ? Joml.double4() : this); }
 
     /**
-     * Rotate this vector by {@code angle} radians about the Y axis.
+     * Rotate the {@code (x, y, z)} components of this vector by {@code angle} radians about the Y
+     * axis, leaving {@code w} unchanged.
      *
      * @param angle the angle in radians
      * @return this
@@ -1418,7 +1426,8 @@ public interface Double4 extends Double4R {
     @Mutated default Double4 rotateY(double angle) { return rotateY(angle, Joml.RETURN_NEW ? Joml.double4() : this); }
 
     /**
-     * Rotate this vector by {@code angle} radians about the Z axis.
+     * Rotate the {@code (x, y, z)} components of this vector by {@code angle} radians about the Z
+     * axis, leaving {@code w} unchanged.
      *
      * @param angle the angle in radians
      * @return this
@@ -3237,6 +3246,9 @@ public interface Double4 extends Double4R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -3246,6 +3258,9 @@ public interface Double4 extends Double4R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -3255,6 +3270,9 @@ public interface Double4 extends Double4R {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -3265,6 +3283,9 @@ public interface Double4 extends Double4R {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -3279,6 +3300,9 @@ public interface Double4 extends Double4R {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -3288,6 +3312,9 @@ public interface Double4 extends Double4R {
     /**
      * Load the elements from the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -3297,6 +3324,9 @@ public interface Double4 extends Double4R {
     /**
      * Load the elements from the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -3307,6 +3337,9 @@ public interface Double4 extends Double4R {
     /**
      * Load the elements from the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -3364,6 +3397,9 @@ public interface Double4 extends Double4R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -3373,6 +3409,9 @@ public interface Double4 extends Double4R {
     /**
      * Load the elements from the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -3382,6 +3421,9 @@ public interface Double4 extends Double4R {
     /**
      * Load the elements from the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -3392,6 +3434,9 @@ public interface Double4 extends Double4R {
     /**
      * Load the elements from the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source buffer
      * @return this
@@ -3406,6 +3451,9 @@ public interface Double4 extends Double4R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -3415,6 +3463,9 @@ public interface Double4 extends Double4R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this
@@ -3424,6 +3475,9 @@ public interface Double4 extends Double4R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -3434,6 +3488,9 @@ public interface Double4 extends Double4R {
     /**
      * Load the elements from the given byte buffer, converting each element from {@code float},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param src the source byte buffer
      * @return this

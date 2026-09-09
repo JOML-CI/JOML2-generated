@@ -159,7 +159,7 @@ public interface Float2R {
 
     /**
      * Multiply this vector component-wise by {@code b} and add ({@code x}, {@code y}), i.e. compute
-     * {@code this * b + c} per component and store the result in {@code dest}.
+     * {@code this * b + (x, y)} per component and store the result in {@code dest}.
      *
      * @param b the factor to multiply this vector by
      * @param x the {@code x} component of the vector {@code (x, y)}
@@ -171,7 +171,7 @@ public interface Float2R {
 
     /**
      * Multiply this vector component-wise by {@code b} and add ({@code x}, {@code y}), i.e. compute
-     * {@code this * b + c} per component and store the result in {@code dest}.
+     * {@code this * b + (x, y)} per component and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -211,8 +211,8 @@ public interface Float2R {
 
     /**
      * Multiply this vector component-wise by ({@code bX}, {@code bY}) and add ({@code cX},
-     * {@code cY}), i.e. compute {@code this * b + c} per component and store the result in
-     * {@code dest}.
+     * {@code cY}), i.e. compute {@code this * (bX, bY) + (cX, cY)} per component and store the
+     * result in {@code dest}.
      *
      * @param bX the {@code x} component of the vector {@code (bX, bY)}
      * @param bY the {@code y} component of the vector {@code (bX, bY)}
@@ -225,8 +225,8 @@ public interface Float2R {
 
     /**
      * Multiply this vector component-wise by ({@code bX}, {@code bY}) and add ({@code cX},
-     * {@code cY}), i.e. compute {@code this * b + c} per component and store the result in
-     * {@code dest}.
+     * {@code cY}), i.e. compute {@code this * (bX, bY) + (cX, cY)} per component and store the
+     * result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -375,7 +375,7 @@ public interface Float2R {
     /**
      * Set this vector to {@code s} and store the result in {@code dest}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -387,7 +387,7 @@ public interface Float2R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -1307,7 +1307,8 @@ public interface Float2R {
     Double2 atan(@Mutated Double2 dest);
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} {@code x} (the denominator) and store the result in
      * {@code dest}.
      *
      * @param x the value to take the arc tangent over (the denominator)
@@ -1317,7 +1318,8 @@ public interface Float2R {
     Float2 atan2(float x, @Mutated Float2 dest);
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} {@code x} (the denominator) and store the result in
      * {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
@@ -1330,34 +1332,36 @@ public interface Float2R {
     Double2 atan2(float x, @Mutated Double2 dest);
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
-     * {@code dest}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of {@code x} (the
+     * denominator) and store the result in {@code dest}.
      *
-     * @param x the value to take the arc tangent over (the denominator)
+     * @param x the vector of denominators, one per component
      * @param dest will hold the result
      * @return dest
      */
     Float2 atan2(Float2R x, @Mutated Float2 dest);
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
-     * {@code dest}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of {@code x} (the
+     * denominator) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param x the value to take the arc tangent over (the denominator)
+     * @param x the vector of denominators, one per component
      * @param dest will hold the result
      * @return dest
      */
     Double2 atan2(Float2R x, @Mutated Double2 dest);
 
     /**
-     * Compute the component-wise arc tangent of this vector over ({@code x}, {@code y}) and store
-     * the result in {@code dest}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of ({@code x},
+     * {@code y}) (the denominator) and store the result in {@code dest}.
      *
-     * @param x the {@code x} component of the value to take the arc tangent over (the denominator)
-     *        {@code (x, y)}
+     * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
      * @param dest will hold the result
      * @return dest
@@ -1365,14 +1369,14 @@ public interface Float2R {
     Float2 atan2(float x, float y, @Mutated Float2 dest);
 
     /**
-     * Compute the component-wise arc tangent of this vector over ({@code x}, {@code y}) and store
-     * the result in {@code dest}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of ({@code x},
+     * {@code y}) (the denominator) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param x the {@code x} component of the value to take the arc tangent over (the denominator)
-     *        {@code (x, y)}
+     * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
      * @param dest will hold the result
      * @return dest
@@ -1446,8 +1450,8 @@ public interface Float2R {
      * Clamp each component of this vector between {@code min} and {@code max} and store the result
      * in {@code dest}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -1460,8 +1464,8 @@ public interface Float2R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -1871,8 +1875,8 @@ public interface Float2R {
     Double2 fract(@Mutated Double2 dest);
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y} and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} {@code y} and store the result in {@code dest}.
      *
      * @param y the other operand
      * @param dest will hold the result
@@ -1881,8 +1885,8 @@ public interface Float2R {
     Float2 hypot(float y, @Mutated Float2 dest);
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y} and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} {@code y} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1894,48 +1898,52 @@ public interface Float2R {
     Double2 hypot(float y, @Mutated Double2 dest);
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y} and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of {@code y} and store the result in
+     * {@code dest}.
      *
-     * @param y the other operand
+     * @param y the vector of other operands, one per component
      * @param dest will hold the result
      * @return dest
      */
     Float2 hypot(Float2R y, @Mutated Float2 dest);
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y} and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of {@code y} and store the result in
+     * {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param y the other operand
+     * @param y the vector of other operands, one per component
      * @param dest will hold the result
      * @return dest
      */
     Double2 hypot(Float2R y, @Mutated Double2 dest);
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * ({@code x}, {@code y}) and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of ({@code x}, {@code y}) and store
+     * the result in {@code dest}.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
-     * @param y the {@code y} component of the other operand {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
      * @param dest will hold the result
      * @return dest
      */
     Float2 hypot(float x, float y, @Mutated Float2 dest);
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * ({@code x}, {@code y}) and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of ({@code x}, {@code y}) and store
+     * the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
-     * @param y the {@code y} component of the other operand {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
      * @param dest will hold the result
      * @return dest
      */
@@ -2283,7 +2291,7 @@ public interface Float2R {
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
      *
-     * @param y the divisor
+     * @param y the vector of divisors, one per component
      * @param dest will hold the result
      * @return dest
      */
@@ -2299,7 +2307,7 @@ public interface Float2R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param y the divisor
+     * @param y the vector of divisors, one per component
      * @param dest will hold the result
      * @return dest
      */
@@ -2313,7 +2321,7 @@ public interface Float2R {
      * dividend.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
-     * @param y the {@code y} component of the divisor {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
      * @param dest will hold the result
      * @return dest
      */
@@ -2330,7 +2338,7 @@ public interface Float2R {
      * {@code double} only when stored.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
-     * @param y the {@code y} component of the divisor {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
      * @param dest will hold the result
      * @return dest
      */
@@ -2379,11 +2387,13 @@ public interface Float2R {
     Double2 nextUp(@Mutated Double2 dest);
 
     /**
-     * Normalize this vector to unit length (the zero vector yields the zero vector). <p> The
-     * squared length is formed at the component precision, so components whose squares overflow or
-     * underflow that precision are out of domain: the result is the zero vector rather than a unit
-     * vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}) and store the result in {@code dest}.
+     * Normalize this vector to unit length (the zero vector yields the zero vector) and store the
+     * result in {@code dest}.
+     * <p>
+     * The squared length is formed at the component precision, so components whose squares overflow
+     * or underflow that precision are out of domain: the result is the zero vector rather than a
+     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
+     * {@code float} and 1.3e154 for {@code double}).
      *
      * @param dest will hold the result
      * @return dest
@@ -2391,11 +2401,13 @@ public interface Float2R {
     Float2 normalize(@Mutated Float2 dest);
 
     /**
-     * Normalize this vector to unit length (the zero vector yields the zero vector). <p> The
-     * squared length is formed at the component precision, so components whose squares overflow or
-     * underflow that precision are out of domain: the result is the zero vector rather than a unit
-     * vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}) and store the result in {@code dest}.
+     * Normalize this vector to unit length (the zero vector yields the zero vector) and store the
+     * result in {@code dest}.
+     * <p>
+     * The squared length is formed at the component precision, so components whose squares overflow
+     * or underflow that precision are out of domain: the result is the zero vector rather than a
+     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
+     * {@code float} and 1.3e154 for {@code double}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2794,8 +2806,8 @@ public interface Float2R {
     Double2 refract(float x, float y, float eta, @Mutated Double2 dest);
 
     /**
-     * Compute the rounded value of each component of this vector and store the result in
-     * {@code dest}.
+     * Compute the value rounded to the nearest integer, ties to even ({@code Math.rint}) of each
+     * component of this vector and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2803,8 +2815,8 @@ public interface Float2R {
     Float2 round(@Mutated Float2 dest);
 
     /**
-     * Compute the rounded value of each component of this vector and store the result in
-     * {@code dest}.
+     * Compute the value rounded to the nearest integer, ties to even ({@code Math.rint}) of each
+     * component of this vector and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3135,7 +3147,8 @@ public interface Float2R {
     Double2 ulp(@Mutated Double2 dest);
 
     /**
-     * Pre-multiply {@code mat} onto this vector and store the result in {@code dest}.
+     * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this} and store the
+     * result in {@code dest}.
      *
      * @param mat the matrix
      * @param dest will hold the result
@@ -3144,7 +3157,8 @@ public interface Float2R {
     Float2 preMul(Float2x2R mat, @Mutated Float2 dest);
 
     /**
-     * Pre-multiply {@code mat} onto this vector and store the result in {@code dest}.
+     * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this} and store the
+     * result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3476,6 +3490,9 @@ public interface Float2R {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3485,6 +3502,9 @@ public interface Float2R {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3494,6 +3514,9 @@ public interface Float2R {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -3504,6 +3527,9 @@ public interface Float2R {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3518,6 +3544,9 @@ public interface Float2R {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3527,6 +3556,9 @@ public interface Float2R {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3536,6 +3568,9 @@ public interface Float2R {
     /**
      * Store the elements into the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -3546,6 +3581,9 @@ public interface Float2R {
     /**
      * Store the elements into the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3603,6 +3641,9 @@ public interface Float2R {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3612,6 +3653,9 @@ public interface Float2R {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3621,6 +3665,9 @@ public interface Float2R {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -3631,6 +3678,9 @@ public interface Float2R {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3645,6 +3695,9 @@ public interface Float2R {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3654,6 +3707,9 @@ public interface Float2R {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3663,6 +3719,9 @@ public interface Float2R {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -3673,6 +3732,9 @@ public interface Float2R {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest

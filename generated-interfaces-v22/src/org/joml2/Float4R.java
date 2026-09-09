@@ -169,8 +169,8 @@ public interface Float4R {
 
     /**
      * Multiply this vector component-wise by {@code b} and add ({@code x}, {@code y}, {@code z},
-     * {@code w}), i.e. compute {@code this * b + c} per component and store the result in
-     * {@code dest}.
+     * {@code w}), i.e. compute {@code this * b + (x, y, z, w)} per component and store the result
+     * in {@code dest}.
      *
      * @param b the factor to multiply this vector by
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
@@ -184,8 +184,8 @@ public interface Float4R {
 
     /**
      * Multiply this vector component-wise by {@code b} and add ({@code x}, {@code y}, {@code z},
-     * {@code w}), i.e. compute {@code this * b + c} per component and store the result in
-     * {@code dest}.
+     * {@code w}), i.e. compute {@code this * b + (x, y, z, w)} per component and store the result
+     * in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -227,8 +227,9 @@ public interface Float4R {
 
     /**
      * Multiply this vector component-wise by ({@code bX}, {@code bY}, {@code bZ}, {@code bW}) and
-     * add ({@code cX}, {@code cY}, {@code cZ}, {@code cW}), i.e. compute {@code this * b + c} per
-     * component and store the result in {@code dest}.
+     * add ({@code cX}, {@code cY}, {@code cZ}, {@code cW}), i.e. compute
+     * {@code this * (bX, bY, bZ, bW) + (cX, cY, cZ, cW)} per component and store the result in
+     * {@code dest}.
      *
      * @param bX the {@code x} component of the vector {@code (bX, bY, bZ, bW)}
      * @param bY the {@code y} component of the vector {@code (bX, bY, bZ, bW)}
@@ -245,8 +246,9 @@ public interface Float4R {
 
     /**
      * Multiply this vector component-wise by ({@code bX}, {@code bY}, {@code bZ}, {@code bW}) and
-     * add ({@code cX}, {@code cY}, {@code cZ}, {@code cW}), i.e. compute {@code this * b + c} per
-     * component and store the result in {@code dest}.
+     * add ({@code cX}, {@code cY}, {@code cZ}, {@code cW}), i.e. compute
+     * {@code this * (bX, bY, bZ, bW) + (cX, cY, cZ, cW)} per component and store the result in
+     * {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -409,7 +411,7 @@ public interface Float4R {
     /**
      * Set this vector to {@code s} and store the result in {@code dest}.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -421,7 +423,7 @@ public interface Float4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param s the uniform scale factor
+     * @param s the value assigned to every component
      * @param dest will hold the result
      * @return dest
      */
@@ -1459,7 +1461,8 @@ public interface Float4R {
     Double4 atan(@Mutated Double4 dest);
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} {@code x} (the denominator) and store the result in
      * {@code dest}.
      *
      * @param x the value to take the arc tangent over (the denominator)
@@ -1469,7 +1472,8 @@ public interface Float4R {
     Float4 atan2(float x, @Mutated Float4 dest);
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} {@code x} (the denominator) and store the result in
      * {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
@@ -1482,34 +1486,36 @@ public interface Float4R {
     Double4 atan2(float x, @Mutated Double4 dest);
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
-     * {@code dest}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of {@code x} (the
+     * denominator) and store the result in {@code dest}.
      *
-     * @param x the value to take the arc tangent over (the denominator)
+     * @param x the vector of denominators, one per component
      * @param dest will hold the result
      * @return dest
      */
     Float4 atan2(Float4R x, @Mutated Float4 dest);
 
     /**
-     * Compute the component-wise arc tangent of this vector over {@code x} and store the result in
-     * {@code dest}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of {@code x} (the
+     * denominator) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param x the value to take the arc tangent over (the denominator)
+     * @param x the vector of denominators, one per component
      * @param dest will hold the result
      * @return dest
      */
     Double4 atan2(Float4R x, @Mutated Double4 dest);
 
     /**
-     * Compute the component-wise arc tangent of this vector over ({@code x}, {@code y}, {@code z},
-     * {@code w}) and store the result in {@code dest}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of ({@code x},
+     * {@code y}, {@code z}, {@code w}) (the denominator) and store the result in {@code dest}.
      *
-     * @param x the {@code x} component of the value to take the arc tangent over (the denominator)
-     *        {@code (x, y, z, w)}
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
@@ -1519,14 +1525,14 @@ public interface Float4R {
     Float4 atan2(float x, float y, float z, float w, @Mutated Float4 dest);
 
     /**
-     * Compute the component-wise arc tangent of this vector over ({@code x}, {@code y}, {@code z},
-     * {@code w}) and store the result in {@code dest}.
+     * Compute the component-wise arc tangent {@code atan2(a, b)} with {@code a} each component of
+     * this vector (the numerator) and {@code b} the corresponding component of ({@code x},
+     * {@code y}, {@code z}, {@code w}) (the denominator) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param x the {@code x} component of the value to take the arc tangent over (the denominator)
-     *        {@code (x, y, z, w)}
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
@@ -1602,8 +1608,8 @@ public interface Float4R {
      * Clamp each component of this vector between {@code min} and {@code max} and store the result
      * in {@code dest}.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -1616,8 +1622,8 @@ public interface Float4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param min the minimum corner
-     * @param max the maximum corner
+     * @param min the per-component lower bounds
+     * @param max the per-component upper bounds
      * @param dest will hold the result
      * @return dest
      */
@@ -2057,8 +2063,8 @@ public interface Float4R {
     Double4 fract(@Mutated Double4 dest);
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y} and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} {@code y} and store the result in {@code dest}.
      *
      * @param y the other operand
      * @param dest will hold the result
@@ -2067,8 +2073,8 @@ public interface Float4R {
     Float4 hypot(float y, @Mutated Float4 dest);
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y} and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} {@code y} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2080,34 +2086,37 @@ public interface Float4R {
     Double4 hypot(float y, @Mutated Double4 dest);
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y} and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of {@code y} and store the result in
+     * {@code dest}.
      *
-     * @param y the other operand
+     * @param y the vector of other operands, one per component
      * @param dest will hold the result
      * @return dest
      */
     Float4 hypot(Float4R y, @Mutated Float4 dest);
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * {@code y} and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of {@code y} and store the result in
+     * {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param y the other operand
+     * @param y the vector of other operands, one per component
      * @param dest will hold the result
      * @return dest
      */
     Double4 hypot(Float4R y, @Mutated Double4 dest);
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * ({@code x}, {@code y}, {@code z}, {@code w}) and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of ({@code x}, {@code y}, {@code z},
+     * {@code w}) and store the result in {@code dest}.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
-     * @param y the {@code y} component of the other operand {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
      * @param dest will hold the result
@@ -2116,14 +2125,15 @@ public interface Float4R {
     Float4 hypot(float x, float y, float z, float w, @Mutated Float4 dest);
 
     /**
-     * Compute the component-wise Euclidean norm {@code sqrt(this² + other²)} of this vector and
-     * ({@code x}, {@code y}, {@code z}, {@code w}) and store the result in {@code dest}.
+     * Compute the component-wise Euclidean norm {@code sqrt(a² + b²)} with {@code a} each component
+     * of this vector and {@code b} the corresponding component of ({@code x}, {@code y}, {@code z},
+     * {@code w}) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
-     * @param y the {@code y} component of the other operand {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
      * @param dest will hold the result
@@ -2485,7 +2495,7 @@ public interface Float4R {
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
      *
-     * @param y the divisor
+     * @param y the vector of divisors, one per component
      * @param dest will hold the result
      * @return dest
      */
@@ -2501,7 +2511,7 @@ public interface Float4R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param y the divisor
+     * @param y the vector of divisors, one per component
      * @param dest will hold the result
      * @return dest
      */
@@ -2516,7 +2526,7 @@ public interface Float4R {
      * dividend.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
-     * @param y the {@code y} component of the divisor {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
      * @param dest will hold the result
@@ -2536,7 +2546,7 @@ public interface Float4R {
      * {@code double} only when stored.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
-     * @param y the {@code y} component of the divisor {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
      * @param dest will hold the result
@@ -2587,11 +2597,13 @@ public interface Float4R {
     Double4 nextUp(@Mutated Double4 dest);
 
     /**
-     * Normalize this vector to unit length (the zero vector yields the zero vector). <p> The
-     * squared length is formed at the component precision, so components whose squares overflow or
-     * underflow that precision are out of domain: the result is the zero vector rather than a unit
-     * vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}) and store the result in {@code dest}.
+     * Normalize this vector to unit length (the zero vector yields the zero vector) and store the
+     * result in {@code dest}.
+     * <p>
+     * The squared length is formed at the component precision, so components whose squares overflow
+     * or underflow that precision are out of domain: the result is the zero vector rather than a
+     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
+     * {@code float} and 1.3e154 for {@code double}).
      *
      * @param dest will hold the result
      * @return dest
@@ -2599,11 +2611,13 @@ public interface Float4R {
     Float4 normalize(@Mutated Float4 dest);
 
     /**
-     * Normalize this vector to unit length (the zero vector yields the zero vector). <p> The
-     * squared length is formed at the component precision, so components whose squares overflow or
-     * underflow that precision are out of domain: the result is the zero vector rather than a unit
-     * vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}) and store the result in {@code dest}.
+     * Normalize this vector to unit length (the zero vector yields the zero vector) and store the
+     * result in {@code dest}.
+     * <p>
+     * The squared length is formed at the component precision, so components whose squares overflow
+     * or underflow that precision are out of domain: the result is the zero vector rather than a
+     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
+     * {@code float} and 1.3e154 for {@code double}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3023,8 +3037,8 @@ public interface Float4R {
     Double4 refract(float x, float y, float z, float w, float eta, @Mutated Double4 dest);
 
     /**
-     * Compute the rounded value of each component of this vector and store the result in
-     * {@code dest}.
+     * Compute the value rounded to the nearest integer, ties to even ({@code Math.rint}) of each
+     * component of this vector and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -3032,8 +3046,8 @@ public interface Float4R {
     Float4 round(@Mutated Float4 dest);
 
     /**
-     * Compute the rounded value of each component of this vector and store the result in
-     * {@code dest}.
+     * Compute the value rounded to the nearest integer, ties to even ({@code Math.rint}) of each
+     * component of this vector and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3376,7 +3390,8 @@ public interface Float4R {
     Double4 ulp(@Mutated Double4 dest);
 
     /**
-     * Pre-multiply {@code mat} onto this vector and store the result in {@code dest}.
+     * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this} and store the
+     * result in {@code dest}.
      *
      * @param mat the matrix
      * @param dest will hold the result
@@ -3385,7 +3400,8 @@ public interface Float4R {
     Float4 preMul(Float4x4R mat, @Mutated Float4 dest);
 
     /**
-     * Pre-multiply {@code mat} onto this vector and store the result in {@code dest}.
+     * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this} and store the
+     * result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3583,8 +3599,8 @@ public interface Float4R {
     Double4 rotateInverse(float x, float y, float z, float w, @Mutated Double4 dest);
 
     /**
-     * Rotate this vector by {@code angle} radians about the X axis and store the result in
-     * {@code dest}.
+     * Rotate the {@code (x, y, z)} components of this vector by {@code angle} radians about the X
+     * axis, leaving {@code w} unchanged, and store the result in {@code dest}.
      *
      * @param angle the angle in radians
      * @param dest will hold the result
@@ -3593,8 +3609,8 @@ public interface Float4R {
     Float4 rotateX(float angle, @Mutated Float4 dest);
 
     /**
-     * Rotate this vector by {@code angle} radians about the X axis and store the result in
-     * {@code dest}.
+     * Rotate the {@code (x, y, z)} components of this vector by {@code angle} radians about the X
+     * axis, leaving {@code w} unchanged, and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3606,8 +3622,8 @@ public interface Float4R {
     Double4 rotateX(float angle, @Mutated Double4 dest);
 
     /**
-     * Rotate this vector by {@code angle} radians about the Y axis and store the result in
-     * {@code dest}.
+     * Rotate the {@code (x, y, z)} components of this vector by {@code angle} radians about the Y
+     * axis, leaving {@code w} unchanged, and store the result in {@code dest}.
      *
      * @param angle the angle in radians
      * @param dest will hold the result
@@ -3616,8 +3632,8 @@ public interface Float4R {
     Float4 rotateY(float angle, @Mutated Float4 dest);
 
     /**
-     * Rotate this vector by {@code angle} radians about the Y axis and store the result in
-     * {@code dest}.
+     * Rotate the {@code (x, y, z)} components of this vector by {@code angle} radians about the Y
+     * axis, leaving {@code w} unchanged, and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3629,8 +3645,8 @@ public interface Float4R {
     Double4 rotateY(float angle, @Mutated Double4 dest);
 
     /**
-     * Rotate this vector by {@code angle} radians about the Z axis and store the result in
-     * {@code dest}.
+     * Rotate the {@code (x, y, z)} components of this vector by {@code angle} radians about the Z
+     * axis, leaving {@code w} unchanged, and store the result in {@code dest}.
      *
      * @param angle the angle in radians
      * @param dest will hold the result
@@ -3639,8 +3655,8 @@ public interface Float4R {
     Float4 rotateZ(float angle, @Mutated Float4 dest);
 
     /**
-     * Rotate this vector by {@code angle} radians about the Z axis and store the result in
-     * {@code dest}.
+     * Rotate the {@code (x, y, z)} components of this vector by {@code angle} radians about the Z
+     * axis, leaving {@code w} unchanged, and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6367,6 +6383,9 @@ public interface Float4R {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -6376,6 +6395,9 @@ public interface Float4R {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -6385,6 +6407,9 @@ public interface Float4R {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -6395,6 +6420,9 @@ public interface Float4R {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -6409,6 +6437,9 @@ public interface Float4R {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -6418,6 +6449,9 @@ public interface Float4R {
     /**
      * Store the elements into the given byte buffer, starting at its current position (the position
      * is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -6427,6 +6461,9 @@ public interface Float4R {
     /**
      * Store the elements into the given byte buffer, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -6437,6 +6474,9 @@ public interface Float4R {
     /**
      * Store the elements into the given byte buffer, starting at its current position and advancing
      * the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -6494,6 +6534,9 @@ public interface Float4R {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -6503,6 +6546,9 @@ public interface Float4R {
     /**
      * Store the elements into the given buffer, starting at its current position (the position is
      * not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -6512,6 +6558,9 @@ public interface Float4R {
     /**
      * Store the elements into the given buffer, starting at the given absolute index (the position
      * is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -6522,6 +6571,9 @@ public interface Float4R {
     /**
      * Store the elements into the given buffer, starting at its current position and advancing the
      * position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -6536,6 +6588,9 @@ public interface Float4R {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -6545,6 +6600,9 @@ public interface Float4R {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -6554,6 +6612,9 @@ public interface Float4R {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -6564,6 +6625,9 @@ public interface Float4R {
     /**
      * Store the elements into the given byte buffer, converting each element to {@code double},
      * starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest

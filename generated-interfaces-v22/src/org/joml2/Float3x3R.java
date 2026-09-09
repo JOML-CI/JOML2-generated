@@ -262,8 +262,9 @@ public interface Float3x3R {
     Double3 getEulerAnglesZYX(@Mutated Double3 dest);
 
     /**
-     * Extract the rotation of this matrix as a unit quaternion, column-normalizing the linear block
-     * first to strip scale (skew is not removed) and store the result in {@code dest}.
+     * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
+     * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
+     * unit length) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -271,8 +272,9 @@ public interface Float3x3R {
     FloatQuat getNormalizedRotation(@Mutated FloatQuat dest);
 
     /**
-     * Extract the rotation of this matrix as a unit quaternion, column-normalizing the linear block
-     * first to strip scale (skew is not removed) and store the result in {@code dest}.
+     * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
+     * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
+     * unit length) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -308,6 +310,9 @@ public interface Float3x3R {
     /**
      * Get the scaling factors of this matrix, as the lengths of its basis columns (always
      * non-negative; skew is ignored) and store the result in {@code dest}.
+     * <p>
+     * For a 2D homogeneous 3x3 matrix the third factor is simply the length of the third column -
+     * {@code sqrt(m02² + m12² + 1)} for a 2D affine transform, not a scale of anything.
      *
      * @param dest will hold the result
      * @return dest
@@ -318,6 +323,9 @@ public interface Float3x3R {
      * Get the scaling factors of this matrix, as the lengths of its basis columns (always
      * non-negative; skew is ignored) and store the result in {@code dest}.
      * <p>
+     * For a 2D homogeneous 3x3 matrix the third factor is simply the length of the third column -
+     * {@code sqrt(m02² + m12² + 1)} for a 2D affine transform, not a scale of anything.
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
@@ -327,7 +335,8 @@ public interface Float3x3R {
     Double3 getScale(@Mutated Double3 dest);
 
     /**
-     * Get the translation of this matrix and store the result in {@code dest}.
+     * Get the translation of this matrix, read from its last column as {@code (m02, m12)} (the 2D
+     * homogeneous convention) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -335,7 +344,8 @@ public interface Float3x3R {
     Float2 getTranslation(@Mutated Float2 dest);
 
     /**
-     * Get the translation of this matrix and store the result in {@code dest}.
+     * Get the translation of this matrix, read from its last column as {@code (m02, m12)} (the 2D
+     * homogeneous convention) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -850,8 +860,9 @@ public interface Float3x3R {
     DoubleDualQuat toDualQuat(@Mutated DoubleDualQuat dest);
 
     /**
-     * Extract this matrix's rotation into a rigid transform with zero translation (any scale or
-     * shear projects onto the nearest rotation) and store the result in {@code dest}.
+     * Extract this matrix's rotation into a rigid transform with zero translation (scale is removed
+     * by normalizing the columns, but shear is not removed: a sheared block yields a rotation
+     * quaternion that is not unit length) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -859,8 +870,9 @@ public interface Float3x3R {
     FloatRigid toRigid(@Mutated FloatRigid dest);
 
     /**
-     * Extract this matrix's rotation into a rigid transform with zero translation (any scale or
-     * shear projects onto the nearest rotation) and store the result in {@code dest}.
+     * Extract this matrix's rotation into a rigid transform with zero translation (scale is removed
+     * by normalizing the columns, but shear is not removed: a sheared block yields a rotation
+     * quaternion that is not unit length) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -872,7 +884,8 @@ public interface Float3x3R {
 
     /**
      * Decompose this matrix's linear {@code R * S} block into a TRS transform with zero translation
-     * (a sheared matrix projects onto the nearest rotation) and store the result in {@code dest}.
+     * (scale is removed by normalizing the columns, but shear is not removed: a sheared block
+     * yields a rotation quaternion that is not unit length) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -881,7 +894,8 @@ public interface Float3x3R {
 
     /**
      * Decompose this matrix's linear {@code R * S} block into a TRS transform with zero translation
-     * (a sheared matrix projects onto the nearest rotation) and store the result in {@code dest}.
+     * (scale is removed by normalizing the columns, but shear is not removed: a sheared block
+     * yields a rotation quaternion that is not unit length) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1725,7 +1739,9 @@ public interface Float3x3R {
     Double3x3 preScale(float x, float y, @Mutated Double3x3 dest);
 
     /**
-     * Pre-multiply a scaling by {@code s} onto this matrix and store the result in {@code dest}.
+     * Pre-multiply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) onto this matrix and store
+     * the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
@@ -1738,7 +1754,9 @@ public interface Float3x3R {
     Float3x3 preScale(float s, @Mutated Float3x3 dest);
 
     /**
-     * Pre-multiply a scaling by {@code s} onto this matrix and store the result in {@code dest}.
+     * Pre-multiply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) onto this matrix and store
+     * the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
@@ -1754,8 +1772,9 @@ public interface Float3x3R {
     Double3x3 preScale(float s, @Mutated Double3x3 dest);
 
     /**
-     * Pre-multiply a scaling by {@code s} about the pivot point {@code pivot} onto this matrix and
-     * store the result in {@code dest}.
+     * Pre-multiply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) about the pivot point
+     * {@code pivot} onto this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
@@ -1769,8 +1788,9 @@ public interface Float3x3R {
     Float3x3 preScaleAround(float s, Float2R pivot, @Mutated Float3x3 dest);
 
     /**
-     * Pre-multiply a scaling by {@code s} about the pivot point {@code pivot} onto this matrix and
-     * store the result in {@code dest}.
+     * Pre-multiply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) about the pivot point
+     * {@code pivot} onto this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
@@ -1787,8 +1807,9 @@ public interface Float3x3R {
     Double3x3 preScaleAround(float s, Float2R pivot, @Mutated Double3x3 dest);
 
     /**
-     * Pre-multiply a scaling by {@code s} about the pivot point ({@code x}, {@code y}) onto this
-     * matrix and store the result in {@code dest}.
+     * Pre-multiply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) about the pivot point
+     * ({@code x}, {@code y}) onto this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
@@ -1803,8 +1824,9 @@ public interface Float3x3R {
     Float3x3 preScaleAround(float s, float x, float y, @Mutated Float3x3 dest);
 
     /**
-     * Pre-multiply a scaling by {@code s} about the pivot point ({@code x}, {@code y}) onto this
-     * matrix and store the result in {@code dest}.
+     * Pre-multiply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) about the pivot point
+     * ({@code x}, {@code y}) onto this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
@@ -1829,7 +1851,7 @@ public interface Float3x3R {
      * will be {@code S * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code S * M * v}, the scaling will be applied last.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -1847,7 +1869,7 @@ public interface Float3x3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -2248,7 +2270,8 @@ public interface Float3x3R {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -2264,7 +2287,8 @@ public interface Float3x3R {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
-     * and Z axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Rx * Ry * Rz}, so a vector is rotated
+     * about the Z axis first, then Y, then X), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -2283,7 +2307,8 @@ public interface Float3x3R {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -2299,7 +2324,8 @@ public interface Float3x3R {
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleZ} and {@code angleY} radians about the X, Z
-     * and Y axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rx * Rz * Ry}, so a vector is rotated
+     * about the Y axis first, then Z, then X), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -2523,7 +2549,8 @@ public interface Float3x3R {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -2539,7 +2566,8 @@ public interface Float3x3R {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
-     * and Z axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Z axes, in that order (the matrix product {@code Ry * Rx * Rz}, so a vector is rotated
+     * about the Z axis first, then X, then Y), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -2558,7 +2586,8 @@ public interface Float3x3R {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this matrix and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -2574,7 +2603,8 @@ public interface Float3x3R {
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleZ} and {@code angleX} radians about the Y, Z
-     * and X axes, in that order, to this matrix and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Ry * Rz * Rx}, so a vector is rotated
+     * about the X axis first, then Z, then Y), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -2798,7 +2828,8 @@ public interface Float3x3R {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -2814,7 +2845,8 @@ public interface Float3x3R {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
-     * and Y axes, in that order, to this matrix and store the result in {@code dest}.
+     * and Y axes, in that order (the matrix product {@code Rz * Rx * Ry}, so a vector is rotated
+     * about the Y axis first, then X, then Z), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -2833,7 +2865,8 @@ public interface Float3x3R {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this matrix and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -2849,7 +2882,8 @@ public interface Float3x3R {
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleY} and {@code angleX} radians about the Z, Y
-     * and X axes, in that order, to this matrix and store the result in {@code dest}.
+     * and X axes, in that order (the matrix product {@code Rz * Ry * Rx}, so a vector is rotated
+     * about the X axis first, then Y, then Z), to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
@@ -3016,7 +3050,9 @@ public interface Float3x3R {
     Double3x3 scale(float x, float y, @Mutated Double3x3 dest);
 
     /**
-     * Apply a scaling by {@code s} to this matrix and store the result in {@code dest}.
+     * Apply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) to this matrix and store
+     * the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
@@ -3029,7 +3065,9 @@ public interface Float3x3R {
     Float3x3 scale(float s, @Mutated Float3x3 dest);
 
     /**
-     * Apply a scaling by {@code s} to this matrix and store the result in {@code dest}.
+     * Apply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) to this matrix and store
+     * the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
@@ -3045,8 +3083,9 @@ public interface Float3x3R {
     Double3x3 scale(float s, @Mutated Double3x3 dest);
 
     /**
-     * Apply a scaling by {@code s} about the pivot point {@code pivot} to this matrix and store the
-     * result in {@code dest}.
+     * Apply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) about the pivot point
+     * {@code pivot} to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
@@ -3060,8 +3099,9 @@ public interface Float3x3R {
     Float3x3 scaleAround(float s, Float2R pivot, @Mutated Float3x3 dest);
 
     /**
-     * Apply a scaling by {@code s} about the pivot point {@code pivot} to this matrix and store the
-     * result in {@code dest}.
+     * Apply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) about the pivot point
+     * {@code pivot} to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
@@ -3078,8 +3118,9 @@ public interface Float3x3R {
     Double3x3 scaleAround(float s, Float2R pivot, @Mutated Double3x3 dest);
 
     /**
-     * Apply a scaling by {@code s} about the pivot point ({@code x}, {@code y}) to this matrix and
-     * store the result in {@code dest}.
+     * Apply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) about the pivot point
+     * ({@code x}, {@code y}) to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
@@ -3094,8 +3135,9 @@ public interface Float3x3R {
     Float3x3 scaleAround(float s, float x, float y, @Mutated Float3x3 dest);
 
     /**
-     * Apply a scaling by {@code s} about the pivot point ({@code x}, {@code y}) to this matrix and
-     * store the result in {@code dest}.
+     * Apply a scaling by {@code s} of the x and y axes only (the 2D homogeneous
+     * {@code diag(s, s, 1)}: the third row and column are left unscaled) about the pivot point
+     * ({@code x}, {@code y}) to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code S} the scaling matrix, then the new matrix
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
@@ -3120,7 +3162,7 @@ public interface Float3x3R {
      * will be {@code M * S}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * S * v}, the scaling will be applied first.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -3138,7 +3180,7 @@ public interface Float3x3R {
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
-     * @param s the uniform scale factor
+     * @param s the scale factors
      * @param pivot the pivot point
      * @param dest will hold the result
      * @return dest
@@ -3373,6 +3415,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3382,6 +3427,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3391,6 +3439,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -3401,6 +3452,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3415,6 +3469,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3424,6 +3481,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3433,6 +3493,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -3443,6 +3506,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3501,6 +3567,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3510,6 +3579,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3519,6 +3591,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -3529,6 +3604,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3543,6 +3621,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3552,6 +3633,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3562,6 +3646,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at the given absolute index (the position is not used or
      * modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -3572,6 +3659,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3631,6 +3721,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3640,6 +3733,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3649,6 +3745,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -3659,6 +3758,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3673,6 +3775,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3682,6 +3787,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3691,6 +3799,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -3701,6 +3812,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3759,6 +3873,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3768,6 +3885,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3777,6 +3897,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -3787,6 +3910,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3801,6 +3927,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3810,6 +3939,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3819,6 +3951,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -3829,6 +3964,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3883,6 +4021,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3894,6 +4035,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -3906,6 +4050,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3922,6 +4069,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3933,6 +4083,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -3945,6 +4098,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4004,6 +4160,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4015,6 +4174,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -4027,6 +4189,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4043,6 +4208,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4054,6 +4222,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at the given absolute index (the position is not used or
      * modified), with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -4066,6 +4237,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in column-major order, converting each element
      * to {@code double}, starting at its current position and advancing the position accordingly,
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4127,6 +4301,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4138,6 +4315,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -4150,6 +4330,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly, with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4166,6 +4349,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4177,6 +4363,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in row-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -4189,6 +4378,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in row-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4248,6 +4440,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in row-major order, starting at its current position
      * (the position is not modified), with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4259,6 +4454,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in row-major order, starting at the given absolute
      * index (the position is not used or modified), with {@code stride} elements between the starts
      * of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -4271,6 +4469,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in row-major order, starting at its current position
      * and advancing the position accordingly, with {@code stride} elements between the starts of
      * consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4287,6 +4488,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified), with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4298,6 +4502,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -4310,6 +4517,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in row-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4378,6 +4588,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4387,6 +4600,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4396,6 +4612,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -4406,6 +4625,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4420,6 +4642,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4429,6 +4654,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4438,6 +4666,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -4448,6 +4679,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4509,6 +4743,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4518,6 +4755,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4527,6 +4767,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -4537,6 +4780,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4552,6 +4798,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, converting each element to {@code double}, starting at its current position (the
      * position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4562,6 +4811,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, converting each element to {@code double}, starting at its current position (the
      * position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4572,6 +4824,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, converting each element to {@code double}, starting at the given absolute index
      * (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -4583,6 +4838,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, converting each element to {@code double}, starting at its current position and
      * advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4645,6 +4903,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in row-major order, identity-extended to a 4x4
      * matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4654,6 +4915,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in row-major order, identity-extended to a 4x4
      * matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4663,6 +4927,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in row-major order, identity-extended to a 4x4
      * matrix, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -4673,6 +4940,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in row-major order, identity-extended to a 4x4
      * matrix, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4687,6 +4957,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, identity-extended to a 4x4
      * matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4696,6 +4969,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, identity-extended to a 4x4
      * matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4705,6 +4981,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, identity-extended to a 4x4
      * matrix, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -4715,6 +4994,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in row-major order, identity-extended to a 4x4
      * matrix, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4776,6 +5058,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in row-major order, identity-extended to a 4x4
      * matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4785,6 +5070,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in row-major order, identity-extended to a 4x4
      * matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4794,6 +5082,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in row-major order, identity-extended to a 4x4
      * matrix, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -4804,6 +5095,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in row-major order, identity-extended to a 4x4
      * matrix, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4819,6 +5113,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in row-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at its current position (the
      * position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4829,6 +5126,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in row-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at its current position (the
      * position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4839,6 +5139,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in row-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -4850,6 +5153,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in row-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at its current position and
      * advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4917,7 +5223,7 @@ public interface Float3x3R {
     boolean isIdentity();
     /** {@return whether this matrix is known to be a pure translation} O(1) read of the cached property bits; conservative. */
     boolean isTranslation();
-    /** {@return whether this matrix is known to be orthogonal} O(1) read of the cached property bits; conservative. */
+    /** {@return whether this matrix is known to be orthogonal, i.e. its upper-left block is orthonormal with positive determinant (a proper rotation; a reflection is affine, not orthogonal)} O(1) read of the cached property bits; conservative. */
     boolean isOrthogonal();
     /** {@return whether this matrix is known to be affine} O(1) read of the cached property bits; conservative. */
     boolean isAffine();
@@ -4942,6 +5248,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4951,6 +5260,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -4961,6 +5273,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4989,6 +5304,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4998,6 +5316,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -5008,6 +5329,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -5017,6 +5341,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -5026,6 +5353,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -5036,6 +5366,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -5096,6 +5429,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -5108,6 +5444,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5119,6 +5458,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at the given absolute index (the position is not used or modified),
      * with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -5131,6 +5473,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in column-major order, converting each element to
      * {@code double}, starting at its current position and advancing the position accordingly, with
      * {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5142,6 +5487,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in column-major order, starting at the given
      * absolute index (the position is not used or modified), with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -5154,6 +5502,9 @@ public interface Float3x3R {
      * Store the elements into the given byte buffer in column-major order, starting at its current
      * position and advancing the position accordingly, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5205,6 +5556,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -5214,6 +5568,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -5224,6 +5581,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -5253,6 +5613,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at its current position (the
      * position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -5263,6 +5626,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at the given absolute index (the
      * position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -5274,6 +5640,9 @@ public interface Float3x3R {
      * Store the elements into the given buffer in column-major order, identity-extended to a 4x4
      * matrix, converting each element to {@code double}, starting at its current position and
      * advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination buffer
      * @return dest
@@ -5283,6 +5652,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, starting at its current position (the position is not modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -5292,6 +5664,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, starting at the given absolute index (the position is not used or modified).
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -5302,6 +5677,9 @@ public interface Float3x3R {
     /**
      * Store the elements into the given byte buffer in column-major order, identity-extended to a
      * 4x4 matrix, starting at its current position and advancing the position accordingly.
+     * <p>
+     * A buffer in native byte order takes the fast path; any other byte order is honoured through
+     * the slower API path.
      *
      * @param dest the destination byte buffer
      * @return dest
