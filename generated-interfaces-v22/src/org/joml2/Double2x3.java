@@ -14,13 +14,25 @@ import java.lang.foreign.MemorySegment;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN; the cached structural property bits are ignored, so two matrix objects holding the same
+ * elements are equal whatever either one has determined about itself. {@code hashCode} is
+ * consistent with it (derived from the same bit patterns). Only instances of this library's
+ * implementation compare equal to each other; the {@code equals} of a matrix never returns
+ * {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface Double2x3 extends Double2x3R {
 
     /**
      * Invert this affine matrix, i.e. compute the inverse of the implied square homogeneous matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 invert() { return invert(Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -29,7 +41,7 @@ public interface Double2x3 extends Double2x3R {
      * {@code (this * other)^-1}.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 invertProduct(Double2x3R other) { return invertProduct(other, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -43,7 +55,7 @@ public interface Double2x3 extends Double2x3R {
      * @param m10 the element in row 1, column 0 of the matrix
      * @param m11 the element in row 1, column 1 of the matrix
      * @param m12 the element in row 1, column 2 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 invertProduct(double m00, double m01, double m02, double m10, double m11, double m12) { return invertProduct(m00, m01, m02, m10, m11, m12, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -51,7 +63,7 @@ public interface Double2x3 extends Double2x3R {
      * Add {@code other} to this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 add(Double2x3R other) { return add(other, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -65,14 +77,14 @@ public interface Double2x3 extends Double2x3R {
      * @param m10 the element in row 1, column 0 of the matrix
      * @param m11 the element in row 1, column 1 of the matrix
      * @param m12 the element in row 1, column 2 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 add(double m00, double m01, double m02, double m10, double m11, double m12) { return add(m00, m01, m02, m10, m11, m12, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
     /**
      * Negate this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 negate() { return negate(Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -80,7 +92,7 @@ public interface Double2x3 extends Double2x3R {
      * Subtract {@code other} from this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 sub(Double2x3R other) { return sub(other, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -94,7 +106,7 @@ public interface Double2x3 extends Double2x3R {
      * @param m10 the element in row 1, column 0 of the matrix
      * @param m11 the element in row 1, column 1 of the matrix
      * @param m12 the element in row 1, column 2 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 sub(double m00, double m01, double m02, double m10, double m11, double m12) { return sub(m00, m01, m02, m10, m11, m12, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -144,7 +156,7 @@ public interface Double2x3 extends Double2x3R {
      * translation instead of composing a translation onto the existing transformation.
      *
      * @param t the translation offsets
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 withTranslation(Double2R t) { return withTranslation(t, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -157,7 +169,7 @@ public interface Double2x3 extends Double2x3R {
      *
      * @param x the {@code x} component of the translation offsets {@code (x, y)}
      * @param y the {@code y} component of the translation offsets {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 withTranslation(double x, double y) { return withTranslation(x, y, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -183,7 +195,7 @@ public interface Double2x3 extends Double2x3R {
      *
      * @param other the other matrix
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 lerp(Double2x3R other, double t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -198,7 +210,7 @@ public interface Double2x3 extends Double2x3R {
      * @param m11 the element in row 1, column 1 of the matrix
      * @param m12 the element in row 1, column 2 of the matrix
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 lerp(double m00, double m01, double m02, double m10, double m11, double m12, double t) { return lerp(m00, m01, m02, m10, m11, m12, t, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -213,7 +225,7 @@ public interface Double2x3 extends Double2x3R {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 mul(Double2x3R right) { return mul(right, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -234,7 +246,7 @@ public interface Double2x3 extends Double2x3R {
      * @param m10 the element in row 1, column 0 of the matrix
      * @param m11 the element in row 1, column 1 of the matrix
      * @param m12 the element in row 1, column 2 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 mul(double m00, double m01, double m02, double m10, double m11, double m12) { return mul(m00, m01, m02, m10, m11, m12, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -249,7 +261,7 @@ public interface Double2x3 extends Double2x3R {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 mul(Double2x2R right) { return mul(right, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -261,7 +273,7 @@ public interface Double2x3 extends Double2x3R {
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 preMul(Double2x3R other) { return preMul(other, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -279,7 +291,7 @@ public interface Double2x3 extends Double2x3R {
      * @param m10 the element in row 1, column 0 of the matrix
      * @param m11 the element in row 1, column 1 of the matrix
      * @param m12 the element in row 1, column 2 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 preMul(double m00, double m01, double m02, double m10, double m11, double m12) { return preMul(m00, m01, m02, m10, m11, m12, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -294,7 +306,7 @@ public interface Double2x3 extends Double2x3R {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 preMul(Double2x2R other) { return preMul(other, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -368,7 +380,7 @@ public interface Double2x3 extends Double2x3R {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 preRotate(double angle) { return preRotate(angle, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -378,10 +390,14 @@ public interface Double2x3 extends Double2x3R {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 preRotateAround(double angle, Double2R pivot) { return preRotateAround(angle, pivot, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -392,11 +408,15 @@ public interface Double2x3 extends Double2x3R {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 preRotateAround(double angle, double x, double y) { return preRotateAround(angle, x, y, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -408,7 +428,7 @@ public interface Double2x3 extends Double2x3R {
      * {@code S * M * p}, the scaling will be applied last.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 preScale(Double2R v) { return preScale(v, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -421,7 +441,7 @@ public interface Double2x3 extends Double2x3R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 preScale(double x, double y) { return preScale(x, y, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -433,7 +453,7 @@ public interface Double2x3 extends Double2x3R {
      * {@code S * M * v}, the scaling will be applied last.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 preScale(double s) { return preScale(s, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -446,7 +466,7 @@ public interface Double2x3 extends Double2x3R {
      *
      * @param s the uniform scale factor
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 preScaleAround(double s, Double2R pivot) { return preScaleAround(s, pivot, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -461,7 +481,7 @@ public interface Double2x3 extends Double2x3R {
      * @param s the uniform scale factor
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 preScaleAround(double s, double x, double y) { return preScaleAround(s, x, y, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -474,7 +494,7 @@ public interface Double2x3 extends Double2x3R {
      *
      * @param s the scale factors
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 preScaleAround(Double2R s, Double2R pivot) { return preScaleAround(s, pivot, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -490,7 +510,7 @@ public interface Double2x3 extends Double2x3R {
      * @param sY the {@code y} component of the vector {@code (sX, sY)}
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 preScaleAround(double sX, double sY, double pivotX, double pivotY) { return preScaleAround(sX, sY, pivotX, pivotY, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -502,7 +522,7 @@ public interface Double2x3 extends Double2x3R {
      * {@code T * M * p}, the translation will be applied last.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 preTranslate(Double2R v) { return preTranslate(v, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -515,7 +535,7 @@ public interface Double2x3 extends Double2x3R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 preTranslate(double x, double y) { return preTranslate(x, y, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -527,7 +547,7 @@ public interface Double2x3 extends Double2x3R {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 rotate(double angle) { return rotate(angle, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -537,10 +557,14 @@ public interface Double2x3 extends Double2x3R {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 rotateAround(double angle, Double2R pivot) { return rotateAround(angle, pivot, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -550,11 +574,15 @@ public interface Double2x3 extends Double2x3R {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 rotateAround(double angle, double x, double y) { return rotateAround(angle, x, y, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -566,7 +594,7 @@ public interface Double2x3 extends Double2x3R {
      * {@code M * S * p}, the scaling will be applied first.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 scale(Double2R v) { return scale(v, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -579,7 +607,7 @@ public interface Double2x3 extends Double2x3R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 scale(double x, double y) { return scale(x, y, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -591,7 +619,7 @@ public interface Double2x3 extends Double2x3R {
      * {@code M * S * v}, the scaling will be applied first.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 scale(double s) { return scale(s, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -604,7 +632,7 @@ public interface Double2x3 extends Double2x3R {
      *
      * @param s the uniform scale factor
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 scaleAround(double s, Double2R pivot) { return scaleAround(s, pivot, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -618,7 +646,7 @@ public interface Double2x3 extends Double2x3R {
      * @param s the uniform scale factor
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 scaleAround(double s, double x, double y) { return scaleAround(s, x, y, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -631,7 +659,7 @@ public interface Double2x3 extends Double2x3R {
      *
      * @param s the scale factors
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 scaleAround(Double2R s, Double2R pivot) { return scaleAround(s, pivot, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -647,7 +675,7 @@ public interface Double2x3 extends Double2x3R {
      * @param sY the {@code y} component of the vector {@code (sX, sY)}
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 scaleAround(double sX, double sY, double pivotX, double pivotY) { return scaleAround(sX, sY, pivotX, pivotY, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -659,7 +687,7 @@ public interface Double2x3 extends Double2x3R {
      * {@code M * T * p}, the translation will be applied first.
      *
      * @param v the translation offsets
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 translate(Double2R v) { return translate(v, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -672,7 +700,7 @@ public interface Double2x3 extends Double2x3R {
      *
      * @param x the {@code x} component of the translation offsets {@code (x, y)}
      * @param y the {@code y} component of the translation offsets {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 translate(double x, double y) { return translate(x, y, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -688,7 +716,7 @@ public interface Double2x3 extends Double2x3R {
      * @param right the distance to the right edge of the view rectangle
      * @param bottom the distance to the bottom edge of the view rectangle
      * @param top the distance to the top edge of the view rectangle
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double2x3 view(double left, double right, double bottom, double top) { return view(left, right, bottom, top, Joml.RETURN_NEW ? Joml.double2x3() : this); }
 
@@ -715,6 +743,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -727,6 +759,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -739,6 +775,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -752,6 +792,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -769,6 +813,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -781,6 +829,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -793,6 +845,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -806,6 +862,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -819,6 +879,10 @@ public interface Double2x3 extends Double2x3R {
 
     /**
      * Load the elements from the given memory segment in column-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -828,6 +892,10 @@ public interface Double2x3 extends Double2x3R {
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -867,6 +935,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -879,6 +951,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -891,6 +967,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -904,6 +984,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -921,6 +1005,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -933,6 +1021,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -946,6 +1038,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -959,6 +1055,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -973,6 +1073,10 @@ public interface Double2x3 extends Double2x3R {
     /**
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -982,6 +1086,10 @@ public interface Double2x3 extends Double2x3R {
     /**
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code float}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -1021,6 +1129,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1033,6 +1145,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1045,6 +1161,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1058,6 +1178,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1075,6 +1199,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1087,6 +1215,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1099,6 +1231,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1112,6 +1248,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1125,6 +1265,10 @@ public interface Double2x3 extends Double2x3R {
 
     /**
      * Load the elements from the given memory segment in row-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -1134,6 +1278,10 @@ public interface Double2x3 extends Double2x3R {
     /**
      * Load the elements from the given memory segment in row-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -1173,6 +1321,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1185,6 +1337,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1197,6 +1353,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1210,6 +1370,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1227,6 +1391,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1239,6 +1407,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1251,6 +1423,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1264,6 +1440,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1278,6 +1458,10 @@ public interface Double2x3 extends Double2x3R {
     /**
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -1287,6 +1471,10 @@ public interface Double2x3 extends Double2x3R {
     /**
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code float}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -1321,6 +1509,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1335,6 +1527,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1350,6 +1546,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1369,6 +1569,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1383,6 +1587,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1398,6 +1606,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1413,6 +1625,10 @@ public interface Double2x3 extends Double2x3R {
     /**
      * Load the elements from the given memory segment in column-major order, with {@code stride}
      * elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1423,6 +1639,10 @@ public interface Double2x3 extends Double2x3R {
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -1460,6 +1680,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1474,6 +1698,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1489,6 +1717,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1508,6 +1740,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1522,6 +1758,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1537,6 +1777,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1553,6 +1797,10 @@ public interface Double2x3 extends Double2x3R {
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code float}, with {@code stride} elements between the starts of consecutive
      * columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1564,6 +1812,10 @@ public interface Double2x3 extends Double2x3R {
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code float}, starting at the given offset, with {@code stride} elements
      * between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -1601,6 +1853,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1615,6 +1871,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1630,6 +1890,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1649,6 +1913,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1663,6 +1931,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1678,6 +1950,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1693,6 +1969,10 @@ public interface Double2x3 extends Double2x3R {
     /**
      * Load the elements from the given memory segment in row-major order, with {@code stride}
      * elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1703,6 +1983,10 @@ public interface Double2x3 extends Double2x3R {
     /**
      * Load the elements from the given memory segment in row-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -1740,6 +2024,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1754,6 +2042,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1769,6 +2061,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1788,6 +2084,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1802,6 +2102,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1817,6 +2121,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1833,6 +2141,10 @@ public interface Double2x3 extends Double2x3R {
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code float}, with {@code stride} elements between the starts of consecutive
      * columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1844,6 +2156,10 @@ public interface Double2x3 extends Double2x3R {
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code float}, starting at the given offset, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -1886,6 +2202,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1898,6 +2218,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1911,6 +2235,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1942,6 +2270,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1954,6 +2286,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1967,6 +2303,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1979,6 +2319,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1991,6 +2335,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2004,6 +2352,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -2012,6 +2364,10 @@ public interface Double2x3 extends Double2x3R {
 
     /**
      * Load the elements from the given memory segment in column-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -2021,6 +2377,10 @@ public interface Double2x3 extends Double2x3R {
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -2067,6 +2427,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2082,6 +2446,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2096,6 +2464,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2111,6 +2483,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2125,6 +2501,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2140,6 +2520,10 @@ public interface Double2x3 extends Double2x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2150,6 +2534,10 @@ public interface Double2x3 extends Double2x3R {
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

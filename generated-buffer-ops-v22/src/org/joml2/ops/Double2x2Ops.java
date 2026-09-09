@@ -20,6 +20,26 @@ import org.joml2.internal.unsafe.*;
  * (the {@code ByteBuffer} default is big-endian) is honoured through the slower
  * API path.</p>
  *
+ * <p>With the UNSAFE backend, offsets into direct buffers and native segments are not
+ * bounds-checked and segment liveness / thread confinement is not verified; the API
+ * backend performs the standard checks. Heap arrays are bounds-checked on every backend
+ * ({@link IndexOutOfBoundsException}). The UNSAFE backend uses {@code sun.misc.Unsafe}; on
+ * JDK 23+ (JEP 471) run with {@code --sun-misc-unsafe-memory-access=allow} or select
+ * {@code -Djoml.storeLoadBackend=api}.</p>
+ *
+ * <p>Edge cases, per backend: a read-only {@code dest} buffer or segment never takes the
+ * Unsafe path and is rejected by the API path ({@link IllegalArgumentException} from the
+ * read-only segment view, or {@link java.nio.ReadOnlyBufferException} from a buffer
+ * {@code put}). Buffer offsets are absolute indices counted from index 0, regardless of
+ * the buffer's position; the API path addresses a buffer through a segment view that ends at
+ * its {@code limit}, so an access beyond the limit throws {@link IndexOutOfBoundsException},
+ * whereas the UNSAFE path addresses a direct buffer by its base address and ignores position,
+ * limit and capacity. A negative {@code count} performs no reads or writes on the API and
+ * SIMD paths, except through the raw {@code long}-address {@code copy} overloads, whose API path
+ * slices {@code count} elements off the address first and throws {@link IllegalArgumentException}
+ * for a negative length; the UNSAFE {@code copy} fast path rejects it ({@link IndexOutOfBoundsException}
+ * for an array end, {@link IllegalArgumentException} from {@code Unsafe.copyMemory} otherwise).</p>
+ *
  * <p>All buffer parameters in a single call must use the same storage backing,
  * except the {@code copy} methods, which translate between any two backings.
  * Element layout is column-major (the canonical Double2x2 storage order).</p>
@@ -67,13 +87,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.getColumn_api(dest, destOffset, src, srcOffset, col);
     }
 
-    /** {@link #getColumn(double[], int, double[], int, int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #getColumn(double[], int, double[], int, int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer getColumn(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int col) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.getColumn_unsafe(dest, destOffset, src, srcOffset, col);
         return Double2x2OpsKernelsByteBuffer.getColumn_api(dest, destOffset, src, srcOffset, col);
     }
 
-    /** {@link #getColumn(double[], int, double[], int, int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #getColumn(double[], int, double[], int, int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment getColumn(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int col) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x2OpsKernelsSegment.getColumn_unsafe(dest, destOffset, src, srcOffset, col);
         return Double2x2OpsKernelsSegment.getColumn_api(dest, destOffset, src, srcOffset, col);
@@ -108,13 +128,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.getRotationAngle_api(src, srcOffset);
     }
 
-    /** {@link #getRotationAngle(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #getRotationAngle(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double getRotationAngle(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.getRotationAngle_unsafe(src, srcOffset);
         return Double2x2OpsKernelsByteBuffer.getRotationAngle_api(src, srcOffset);
     }
 
-    /** {@link #getRotationAngle(double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #getRotationAngle(double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double getRotationAngle(java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return Double2x2OpsKernelsSegment.getRotationAngle_unsafe(src, srcOffset);
         return Double2x2OpsKernelsSegment.getRotationAngle_api(src, srcOffset);
@@ -159,13 +179,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.getRow_api(dest, destOffset, src, srcOffset, row);
     }
 
-    /** {@link #getRow(double[], int, double[], int, int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #getRow(double[], int, double[], int, int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer getRow(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int row) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.getRow_unsafe(dest, destOffset, src, srcOffset, row);
         return Double2x2OpsKernelsByteBuffer.getRow_api(dest, destOffset, src, srcOffset, row);
     }
 
-    /** {@link #getRow(double[], int, double[], int, int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #getRow(double[], int, double[], int, int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment getRow(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int row) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x2OpsKernelsSegment.getRow_unsafe(dest, destOffset, src, srcOffset, row);
         return Double2x2OpsKernelsSegment.getRow_api(dest, destOffset, src, srcOffset, row);
@@ -205,13 +225,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.cofactor_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #cofactor(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #cofactor(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer cofactor(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.cofactor_unsafe(dest, destOffset, src, srcOffset);
         return Double2x2OpsKernelsByteBuffer.cofactor_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #cofactor(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #cofactor(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment cofactor(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x2OpsKernelsSegment.cofactor_unsafe(dest, destOffset, src, srcOffset);
         return Double2x2OpsKernelsSegment.cofactor_api(dest, destOffset, src, srcOffset);
@@ -245,13 +265,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.determinant_api(src, srcOffset);
     }
 
-    /** {@link #determinant(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #determinant(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double determinant(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.determinant_unsafe(src, srcOffset);
         return Double2x2OpsKernelsByteBuffer.determinant_api(src, srcOffset);
     }
 
-    /** {@link #determinant(double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #determinant(double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double determinant(java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return Double2x2OpsKernelsSegment.determinant_unsafe(src, srcOffset);
         return Double2x2OpsKernelsSegment.determinant_api(src, srcOffset);
@@ -284,13 +304,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.frobeniusNorm_api(src, srcOffset);
     }
 
-    /** {@link #frobeniusNorm(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #frobeniusNorm(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double frobeniusNorm(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.frobeniusNorm_unsafe(src, srcOffset);
         return Double2x2OpsKernelsByteBuffer.frobeniusNorm_api(src, srcOffset);
     }
 
-    /** {@link #frobeniusNorm(double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #frobeniusNorm(double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double frobeniusNorm(java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return Double2x2OpsKernelsSegment.frobeniusNorm_unsafe(src, srcOffset);
         return Double2x2OpsKernelsSegment.frobeniusNorm_api(src, srcOffset);
@@ -331,13 +351,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.invert_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invert(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #invert(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer invert(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.invert_unsafe(dest, destOffset, src, srcOffset);
         return Double2x2OpsKernelsByteBuffer.invert_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invert(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #invert(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment invert(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x2OpsKernelsSegment.invert_unsafe(dest, destOffset, src, srcOffset);
         return Double2x2OpsKernelsSegment.invert_api(dest, destOffset, src, srcOffset);
@@ -390,13 +410,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.invertProduct_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #invertProduct(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #invertProduct(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer invertProduct(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.invertProduct_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double2x2OpsKernelsByteBuffer.invertProduct_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #invertProduct(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #invertProduct(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment invertProduct(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && other.isNative()) return Double2x2OpsKernelsSegment.invertProduct_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double2x2OpsKernelsSegment.invertProduct_api(dest, destOffset, src, srcOffset, other, otherOffset);
@@ -439,13 +459,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.normal_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normal(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #normal(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer normal(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.normal_unsafe(dest, destOffset, src, srcOffset);
         return Double2x2OpsKernelsByteBuffer.normal_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normal(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #normal(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment normal(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x2OpsKernelsSegment.normal_unsafe(dest, destOffset, src, srcOffset);
         return Double2x2OpsKernelsSegment.normal_api(dest, destOffset, src, srcOffset);
@@ -477,13 +497,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.trace_api(src, srcOffset);
     }
 
-    /** {@link #trace(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #trace(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double trace(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.trace_unsafe(src, srcOffset);
         return Double2x2OpsKernelsByteBuffer.trace_api(src, srcOffset);
     }
 
-    /** {@link #trace(double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #trace(double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double trace(java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return Double2x2OpsKernelsSegment.trace_unsafe(src, srcOffset);
         return Double2x2OpsKernelsSegment.trace_api(src, srcOffset);
@@ -522,13 +542,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.transpose_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #transpose(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #transpose(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer transpose(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.transpose_unsafe(dest, destOffset, src, srcOffset);
         return Double2x2OpsKernelsByteBuffer.transpose_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #transpose(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #transpose(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment transpose(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x2OpsKernelsSegment.transpose_unsafe(dest, destOffset, src, srcOffset);
         return Double2x2OpsKernelsSegment.transpose_api(dest, destOffset, src, srcOffset);
@@ -574,13 +594,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.add_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #add(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #add(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer add(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.add_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double2x2OpsKernelsByteBuffer.add_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #add(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #add(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment add(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && other.isNative()) return Double2x2OpsKernelsSegment.add_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double2x2OpsKernelsSegment.add_api(dest, destOffset, src, srcOffset, other, otherOffset);
@@ -620,13 +640,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.negate_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #negate(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #negate(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer negate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.negate_unsafe(dest, destOffset, src, srcOffset);
         return Double2x2OpsKernelsByteBuffer.negate_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #negate(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #negate(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment negate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x2OpsKernelsSegment.negate_unsafe(dest, destOffset, src, srcOffset);
         return Double2x2OpsKernelsSegment.negate_api(dest, destOffset, src, srcOffset);
@@ -672,13 +692,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.sub_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #sub(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #sub(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer sub(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.sub_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double2x2OpsKernelsByteBuffer.sub_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #sub(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #sub(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment sub(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && other.isNative()) return Double2x2OpsKernelsSegment.sub_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double2x2OpsKernelsSegment.sub_api(dest, destOffset, src, srcOffset, other, otherOffset);
@@ -718,13 +738,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.set_api(dest, destOffset, v, vOffset);
     }
 
-    /** {@link #set(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #set(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer set(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer v, int vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.set_unsafe(dest, destOffset, v, vOffset);
         return Double2x2OpsKernelsByteBuffer.set_api(dest, destOffset, v, vOffset);
     }
 
-    /** {@link #set(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #set(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment set(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment v, long vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && v.isNative()) return Double2x2OpsKernelsSegment.set_unsafe(dest, destOffset, v, vOffset);
         return Double2x2OpsKernelsSegment.set_api(dest, destOffset, v, vOffset);
@@ -764,13 +784,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.setMat2x3_api(dest, destOffset, m, mOffset);
     }
 
-    /** {@link #setMat2x3(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #setMat2x3(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer setMat2x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer m, int mOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && m.isDirect() && m.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.setMat2x3_unsafe(dest, destOffset, m, mOffset);
         return Double2x2OpsKernelsByteBuffer.setMat2x3_api(dest, destOffset, m, mOffset);
     }
 
-    /** {@link #setMat2x3(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #setMat2x3(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment setMat2x3(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment m, long mOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && m.isNative()) return Double2x2OpsKernelsSegment.setMat2x3_unsafe(dest, destOffset, m, mOffset);
         return Double2x2OpsKernelsSegment.setMat2x3_api(dest, destOffset, m, mOffset);
@@ -810,13 +830,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.setMat3x3_api(dest, destOffset, m, mOffset);
     }
 
-    /** {@link #setMat3x3(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #setMat3x3(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer setMat3x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer m, int mOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && m.isDirect() && m.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.setMat3x3_unsafe(dest, destOffset, m, mOffset);
         return Double2x2OpsKernelsByteBuffer.setMat3x3_api(dest, destOffset, m, mOffset);
     }
 
-    /** {@link #setMat3x3(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #setMat3x3(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment setMat3x3(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment m, long mOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && m.isNative()) return Double2x2OpsKernelsSegment.setMat3x3_unsafe(dest, destOffset, m, mOffset);
         return Double2x2OpsKernelsSegment.setMat3x3_api(dest, destOffset, m, mOffset);
@@ -859,13 +879,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.to2x3_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #to2x3(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #to2x3(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer to2x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.to2x3_unsafe(dest, destOffset, src, srcOffset);
         return Double2x2OpsKernelsByteBuffer.to2x3_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #to2x3(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #to2x3(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment to2x3(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x2OpsKernelsSegment.to2x3_unsafe(dest, destOffset, src, srcOffset);
         return Double2x2OpsKernelsSegment.to2x3_api(dest, destOffset, src, srcOffset);
@@ -911,13 +931,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.to3x3_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #to3x3(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #to3x3(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer to3x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.to3x3_unsafe(dest, destOffset, src, srcOffset);
         return Double2x2OpsKernelsByteBuffer.to3x3_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #to3x3(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #to3x3(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment to3x3(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x2OpsKernelsSegment.to3x3_unsafe(dest, destOffset, src, srcOffset);
         return Double2x2OpsKernelsSegment.to3x3_api(dest, destOffset, src, srcOffset);
@@ -951,13 +971,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.makeIdentity_api(dest, destOffset);
     }
 
-    /** {@link #makeIdentity(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeIdentity(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeIdentity(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.makeIdentity_unsafe(dest, destOffset);
         return Double2x2OpsKernelsByteBuffer.makeIdentity_api(dest, destOffset);
     }
 
-    /** {@link #makeIdentity(double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #makeIdentity(double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeIdentity(java.lang.foreign.MemorySegment dest, long destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Double2x2OpsKernelsSegment.makeIdentity_unsafe(dest, destOffset);
         return Double2x2OpsKernelsSegment.makeIdentity_api(dest, destOffset);
@@ -1005,13 +1025,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.lerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
     }
 
-    /** {@link #lerp(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #lerp(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer lerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.lerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
         return Double2x2OpsKernelsByteBuffer.lerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
     }
 
-    /** {@link #lerp(double[], int, double[], int, double[], int, double)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #lerp(double[], int, double[], int, double[], int, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment lerp(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && other.isNative()) return Double2x2OpsKernelsSegment.lerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
         return Double2x2OpsKernelsSegment.lerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
@@ -1061,13 +1081,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.mul_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
-    /** {@link #mul(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mul(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer right, int rightOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && right.isDirect() && right.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.mul_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
         return Double2x2OpsKernelsByteBuffer.mul_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
-    /** {@link #mul(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #mul(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment mul(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment right, long rightOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && right.isNative()) return Double2x2OpsKernelsSegment.mul_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
         return Double2x2OpsKernelsSegment.mul_api(dest, destOffset, src, srcOffset, right, rightOffset);
@@ -1118,13 +1138,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.preMul_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #preMul(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preMul(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preMul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.preMul_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double2x2OpsKernelsByteBuffer.preMul_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #preMul(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #preMul(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment preMul(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && other.isNative()) return Double2x2OpsKernelsSegment.preMul_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double2x2OpsKernelsSegment.preMul_api(dest, destOffset, src, srcOffset, other, otherOffset);
@@ -1162,13 +1182,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.makeOuterProduct_api(dest, destOffset, colX, colY, rowX, rowY);
     }
 
-    /** {@link #makeOuterProduct(double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeOuterProduct(double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeOuterProduct(java.nio.ByteBuffer dest, int destOffset, double colX, double colY, double rowX, double rowY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.makeOuterProduct_unsafe(dest, destOffset, colX, colY, rowX, rowY);
         return Double2x2OpsKernelsByteBuffer.makeOuterProduct_api(dest, destOffset, colX, colY, rowX, rowY);
     }
 
-    /** {@link #makeOuterProduct(double[], int, double, double, double, double)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #makeOuterProduct(double[], int, double, double, double, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeOuterProduct(java.lang.foreign.MemorySegment dest, long destOffset, double colX, double colY, double rowX, double rowY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Double2x2OpsKernelsSegment.makeOuterProduct_unsafe(dest, destOffset, colX, colY, rowX, rowY);
         return Double2x2OpsKernelsSegment.makeOuterProduct_api(dest, destOffset, colX, colY, rowX, rowY);
@@ -1210,13 +1230,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.makeOuterProduct_api(dest, destOffset, col, colOffset, row, rowOffset);
     }
 
-    /** {@link #makeOuterProduct(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeOuterProduct(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeOuterProduct(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer col, int colOffset, java.nio.ByteBuffer row, int rowOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && col.isDirect() && col.order() == java.nio.ByteOrder.nativeOrder() && row.isDirect() && row.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.makeOuterProduct_unsafe(dest, destOffset, col, colOffset, row, rowOffset);
         return Double2x2OpsKernelsByteBuffer.makeOuterProduct_api(dest, destOffset, col, colOffset, row, rowOffset);
     }
 
-    /** {@link #makeOuterProduct(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #makeOuterProduct(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeOuterProduct(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment col, long colOffset, java.lang.foreign.MemorySegment row, long rowOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && col.isNative() && row.isNative()) return Double2x2OpsKernelsSegment.makeOuterProduct_unsafe(dest, destOffset, col, colOffset, row, rowOffset);
         return Double2x2OpsKernelsSegment.makeOuterProduct_api(dest, destOffset, col, colOffset, row, rowOffset);
@@ -1253,13 +1273,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.makeRotation_api(dest, destOffset, angle);
     }
 
-    /** {@link #makeRotation(double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeRotation(double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeRotation(java.nio.ByteBuffer dest, int destOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.makeRotation_unsafe(dest, destOffset, angle);
         return Double2x2OpsKernelsByteBuffer.makeRotation_api(dest, destOffset, angle);
     }
 
-    /** {@link #makeRotation(double[], int, double)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #makeRotation(double[], int, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeRotation(java.lang.foreign.MemorySegment dest, long destOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Double2x2OpsKernelsSegment.makeRotation_unsafe(dest, destOffset, angle);
         return Double2x2OpsKernelsSegment.makeRotation_api(dest, destOffset, angle);
@@ -1295,13 +1315,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.makeScaling_api(dest, destOffset, vX, vY);
     }
 
-    /** {@link #makeScaling(double[], int, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeScaling(double[], int, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeScaling(java.nio.ByteBuffer dest, int destOffset, double vX, double vY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.makeScaling_unsafe(dest, destOffset, vX, vY);
         return Double2x2OpsKernelsByteBuffer.makeScaling_api(dest, destOffset, vX, vY);
     }
 
-    /** {@link #makeScaling(double[], int, double, double)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #makeScaling(double[], int, double, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeScaling(java.lang.foreign.MemorySegment dest, long destOffset, double vX, double vY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Double2x2OpsKernelsSegment.makeScaling_unsafe(dest, destOffset, vX, vY);
         return Double2x2OpsKernelsSegment.makeScaling_api(dest, destOffset, vX, vY);
@@ -1339,13 +1359,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.makeScaling_api(dest, destOffset, v, vOffset);
     }
 
-    /** {@link #makeScaling(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeScaling(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeScaling(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer v, int vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.makeScaling_unsafe(dest, destOffset, v, vOffset);
         return Double2x2OpsKernelsByteBuffer.makeScaling_api(dest, destOffset, v, vOffset);
     }
 
-    /** {@link #makeScaling(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #makeScaling(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeScaling(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment v, long vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && v.isNative()) return Double2x2OpsKernelsSegment.makeScaling_unsafe(dest, destOffset, v, vOffset);
         return Double2x2OpsKernelsSegment.makeScaling_api(dest, destOffset, v, vOffset);
@@ -1380,13 +1400,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.makeScaling_api(dest, destOffset, s);
     }
 
-    /** {@link #makeScaling(double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeScaling(double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeScaling(java.nio.ByteBuffer dest, int destOffset, double s) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.makeScaling_unsafe(dest, destOffset, s);
         return Double2x2OpsKernelsByteBuffer.makeScaling_api(dest, destOffset, s);
     }
 
-    /** {@link #makeScaling(double[], int, double)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #makeScaling(double[], int, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeScaling(java.lang.foreign.MemorySegment dest, long destOffset, double s) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Double2x2OpsKernelsSegment.makeScaling_unsafe(dest, destOffset, s);
         return Double2x2OpsKernelsSegment.makeScaling_api(dest, destOffset, s);
@@ -1434,13 +1454,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.preRotate_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #preRotate(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preRotate(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preRotate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.preRotate_unsafe(dest, destOffset, src, srcOffset, angle);
         return Double2x2OpsKernelsByteBuffer.preRotate_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #preRotate(double[], int, double[], int, double)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #preRotate(double[], int, double[], int, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment preRotate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x2OpsKernelsSegment.preRotate_unsafe(dest, destOffset, src, srcOffset, angle);
         return Double2x2OpsKernelsSegment.preRotate_api(dest, destOffset, src, srcOffset, angle);
@@ -1486,13 +1506,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.preScale_api(dest, destOffset, src, srcOffset, vX, vY);
     }
 
-    /** {@link #preScale(double[], int, double[], int, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preScale(double[], int, double[], int, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preScale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double vX, double vY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.preScale_unsafe(dest, destOffset, src, srcOffset, vX, vY);
         return Double2x2OpsKernelsByteBuffer.preScale_api(dest, destOffset, src, srcOffset, vX, vY);
     }
 
-    /** {@link #preScale(double[], int, double[], int, double, double)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #preScale(double[], int, double[], int, double, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment preScale(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double vX, double vY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x2OpsKernelsSegment.preScale_unsafe(dest, destOffset, src, srcOffset, vX, vY);
         return Double2x2OpsKernelsSegment.preScale_api(dest, destOffset, src, srcOffset, vX, vY);
@@ -1540,13 +1560,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.preScale_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #preScale(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preScale(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preScale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.preScale_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Double2x2OpsKernelsByteBuffer.preScale_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #preScale(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #preScale(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment preScale(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment v, long vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && v.isNative()) return Double2x2OpsKernelsSegment.preScale_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Double2x2OpsKernelsSegment.preScale_api(dest, destOffset, src, srcOffset, v, vOffset);
@@ -1591,13 +1611,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.preScale_api(dest, destOffset, src, srcOffset, s);
     }
 
-    /** {@link #preScale(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preScale(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preScale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double s) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.preScale_unsafe(dest, destOffset, src, srcOffset, s);
         return Double2x2OpsKernelsByteBuffer.preScale_api(dest, destOffset, src, srcOffset, s);
     }
 
-    /** {@link #preScale(double[], int, double[], int, double)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #preScale(double[], int, double[], int, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment preScale(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double s) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x2OpsKernelsSegment.preScale_unsafe(dest, destOffset, src, srcOffset, s);
         return Double2x2OpsKernelsSegment.preScale_api(dest, destOffset, src, srcOffset, s);
@@ -1644,13 +1664,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.rotate_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotate(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotate(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.rotate_unsafe(dest, destOffset, src, srcOffset, angle);
         return Double2x2OpsKernelsByteBuffer.rotate_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotate(double[], int, double[], int, double)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #rotate(double[], int, double[], int, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment rotate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x2OpsKernelsSegment.rotate_unsafe(dest, destOffset, src, srcOffset, angle);
         return Double2x2OpsKernelsSegment.rotate_api(dest, destOffset, src, srcOffset, angle);
@@ -1696,13 +1716,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.scale_api(dest, destOffset, src, srcOffset, vX, vY);
     }
 
-    /** {@link #scale(double[], int, double[], int, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #scale(double[], int, double[], int, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer scale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double vX, double vY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.scale_unsafe(dest, destOffset, src, srcOffset, vX, vY);
         return Double2x2OpsKernelsByteBuffer.scale_api(dest, destOffset, src, srcOffset, vX, vY);
     }
 
-    /** {@link #scale(double[], int, double[], int, double, double)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #scale(double[], int, double[], int, double, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment scale(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double vX, double vY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x2OpsKernelsSegment.scale_unsafe(dest, destOffset, src, srcOffset, vX, vY);
         return Double2x2OpsKernelsSegment.scale_api(dest, destOffset, src, srcOffset, vX, vY);
@@ -1750,13 +1770,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.scale_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #scale(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #scale(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer scale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.scale_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Double2x2OpsKernelsByteBuffer.scale_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #scale(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #scale(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment scale(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment v, long vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && v.isNative()) return Double2x2OpsKernelsSegment.scale_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Double2x2OpsKernelsSegment.scale_api(dest, destOffset, src, srcOffset, v, vOffset);
@@ -1792,12 +1812,12 @@ public final class Double2x2Ops {
         return Double2x2Ops.preScale(dest, destOffset, src, srcOffset, s);
     }
 
-    /** {@link #scale(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #scale(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer scale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double s) {
         return Double2x2Ops.preScale(dest, destOffset, src, srcOffset, s);
     }
 
-    /** {@link #scale(double[], int, double[], int, double)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #scale(double[], int, double[], int, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment scale(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double s) {
         return Double2x2Ops.preScale(dest, destOffset, src, srcOffset, s);
     }
@@ -1834,13 +1854,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.mulVec2_api(dest, destOffset, src, srcOffset, vX, vY);
     }
 
-    /** {@link #mulVec2(double[], int, double[], int, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mulVec2(double[], int, double[], int, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mulVec2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double vX, double vY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.mulVec2_unsafe(dest, destOffset, src, srcOffset, vX, vY);
         return Double2x2OpsKernelsByteBuffer.mulVec2_api(dest, destOffset, src, srcOffset, vX, vY);
     }
 
-    /** {@link #mulVec2(double[], int, double[], int, double, double)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #mulVec2(double[], int, double[], int, double, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment mulVec2(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double vX, double vY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x2OpsKernelsSegment.mulVec2_unsafe(dest, destOffset, src, srcOffset, vX, vY);
         return Double2x2OpsKernelsSegment.mulVec2_api(dest, destOffset, src, srcOffset, vX, vY);
@@ -1882,13 +1902,13 @@ public final class Double2x2Ops {
         return Double2x2OpsKernelsTypedBuffer.mulVec2_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #mulVec2(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mulVec2(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mulVec2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.mulVec2_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Double2x2OpsKernelsByteBuffer.mulVec2_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #mulVec2(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #mulVec2(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment mulVec2(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment v, long vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && v.isNative()) return Double2x2OpsKernelsSegment.mulVec2_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Double2x2OpsKernelsSegment.mulVec2_api(dest, destOffset, src, srcOffset, v, vOffset);
@@ -1918,9 +1938,12 @@ public final class Double2x2Ops {
      */
     public static double[] copy(double[] dest, int destOffset, double[] src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
+            java.util.Objects.checkFromIndexSize(srcOffset, (count > 536870911 ? -1 : count * 4), src.length);
+            java.util.Objects.checkFromIndexSize(destOffset, (count > 536870911 ? -1 : count * 4), dest.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) srcOffset * 8L, dest, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) destOffset * 8L, (long) count * 32L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest[destOffset + _i] = src[srcOffset + _i];
@@ -1943,9 +1966,11 @@ public final class Double2x2Ops {
      */
     public static double[] copy(double[] dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(destOffset, (count > 536870911 ? -1 : count * 4), dest.length);
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L, dest, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) destOffset * 8L, (long) count * 32L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest[destOffset + _i] = src.get(srcOffset + _i);
@@ -1956,6 +1981,7 @@ public final class Double2x2Ops {
      * Copy one Double2x2 (4 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static double[] copy(double[] dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -1965,12 +1991,15 @@ public final class Double2x2Ops {
      * Bulk-copy {@code count} consecutive Double2x2 values ({@code count * 4} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static double[] copy(double[] dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(destOffset, (count > 536870911 ? -1 : count * 4), dest.length);
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, dest, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) destOffset * 8L, (long) count * 32L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest[destOffset + _i] = src.getDouble(srcOffset + _i * 8);
@@ -1981,6 +2010,7 @@ public final class Double2x2Ops {
      * Copy one Double2x2 (4 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static double[] copy(double[] dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -1990,12 +2020,15 @@ public final class Double2x2Ops {
      * Bulk-copy {@code count} consecutive Double2x2 values ({@code count * 4} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static double[] copy(double[] dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) {
+            java.util.Objects.checkFromIndexSize(destOffset, (count > 536870911 ? -1 : count * 4), dest.length);
             UnsafeOpsHolder.U.copyMemory(null, src.address() + srcOffset, dest, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) destOffset * 8L, (long) count * 32L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest[destOffset + _i] = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + (long) _i * 8L);
@@ -2009,6 +2042,7 @@ public final class Double2x2Ops {
      */
     public static double[] copy(double[] dest, int destOffset, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
+            java.util.Objects.checkFromIndexSize(destOffset, 4, dest.length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) destOffset * 8L, 32L);
             return dest;
         }
@@ -2022,6 +2056,7 @@ public final class Double2x2Ops {
      */
     public static double[] copy(double[] dest, int destOffset, long src, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
+            java.util.Objects.checkFromIndexSize(destOffset, (count > 536870911 ? -1 : count * 4), dest.length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) destOffset * 8L, (long) count * 32L);
             return dest;
         }
@@ -2044,9 +2079,11 @@ public final class Double2x2Ops {
      */
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, double[] src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(srcOffset, (count > 536870911 ? -1 : count * 4), src.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) srcOffset * 8L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L, (long) count * 32L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.put(destOffset + _i, src[srcOffset + _i]);
@@ -2072,6 +2109,7 @@ public final class Double2x2Ops {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L, (long) count * 32L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.put(destOffset + _i, src.get(srcOffset + _i));
@@ -2082,6 +2120,7 @@ public final class Double2x2Ops {
      * Copy one Double2x2 (4 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -2091,12 +2130,14 @@ public final class Double2x2Ops {
      * Bulk-copy {@code count} consecutive Double2x2 values ({@code count * 4} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L, (long) count * 32L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.put(destOffset + _i, src.getDouble(srcOffset + _i * 8));
@@ -2107,6 +2148,7 @@ public final class Double2x2Ops {
      * Copy one Double2x2 (4 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -2116,12 +2158,14 @@ public final class Double2x2Ops {
      * Bulk-copy {@code count} consecutive Double2x2 values ({@code count * 4} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isNative()) {
             UnsafeOpsHolder.U.copyMemory(null, src.address() + srcOffset, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L, (long) count * 32L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.put(destOffset + _i, src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + (long) _i * 8L));
@@ -2158,6 +2202,7 @@ public final class Double2x2Ops {
      * Copy one Double2x2 (4 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, double[] src, int srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -2167,12 +2212,15 @@ public final class Double2x2Ops {
      * Bulk-copy {@code count} consecutive Double2x2 values ({@code count * 4} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, double[] src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(srcOffset, (count > 536870911 ? -1 : count * 4), src.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) srcOffset * 8L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 32L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.putDouble(destOffset + _i * 8, src[srcOffset + _i]);
@@ -2183,6 +2231,7 @@ public final class Double2x2Ops {
      * Copy one Double2x2 (4 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -2192,12 +2241,14 @@ public final class Double2x2Ops {
      * Bulk-copy {@code count} consecutive Double2x2 values ({@code count * 4} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 32L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.putDouble(destOffset + _i * 8, src.get(srcOffset + _i));
@@ -2208,6 +2259,7 @@ public final class Double2x2Ops {
      * Copy one Double2x2 (4 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -2217,12 +2269,14 @@ public final class Double2x2Ops {
      * Bulk-copy {@code count} consecutive Double2x2 values ({@code count * 4} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 32L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.putDouble(destOffset + _i * 8, src.getDouble(srcOffset + _i * 8));
@@ -2233,6 +2287,7 @@ public final class Double2x2Ops {
      * Copy one Double2x2 (4 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -2242,12 +2297,14 @@ public final class Double2x2Ops {
      * Bulk-copy {@code count} consecutive Double2x2 values ({@code count * 4} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isNative()) {
             UnsafeOpsHolder.U.copyMemory(null, src.address() + srcOffset, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 32L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.putDouble(destOffset + _i * 8, src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + (long) _i * 8L));
@@ -2258,6 +2315,7 @@ public final class Double2x2Ops {
      * Copy one Double2x2 (4 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -2271,6 +2329,7 @@ public final class Double2x2Ops {
      * Bulk-copy {@code count} consecutive Double2x2 values ({@code count * 4} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, long src, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -2284,6 +2343,7 @@ public final class Double2x2Ops {
      * Copy one Double2x2 (4 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, double[] src, int srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -2293,12 +2353,15 @@ public final class Double2x2Ops {
      * Bulk-copy {@code count} consecutive Double2x2 values ({@code count * 4} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, double[] src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) {
+            java.util.Objects.checkFromIndexSize(srcOffset, (count > 536870911 ? -1 : count * 4), src.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) srcOffset * 8L, null, dest.address() + destOffset, (long) count * 32L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + (long) _i * 8L, src[srcOffset + _i]);
@@ -2309,6 +2372,7 @@ public final class Double2x2Ops {
      * Copy one Double2x2 (4 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.nio.DoubleBuffer src, int srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -2318,12 +2382,14 @@ public final class Double2x2Ops {
      * Bulk-copy {@code count} consecutive Double2x2 values ({@code count * 4} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.nio.DoubleBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L, null, dest.address() + destOffset, (long) count * 32L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + (long) _i * 8L, src.get(srcOffset + _i));
@@ -2334,6 +2400,7 @@ public final class Double2x2Ops {
      * Copy one Double2x2 (4 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -2343,12 +2410,14 @@ public final class Double2x2Ops {
      * Bulk-copy {@code count} consecutive Double2x2 values ({@code count * 4} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, dest.address() + destOffset, (long) count * 32L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + (long) _i * 8L, src.getDouble(srcOffset + _i * 8));
@@ -2359,6 +2428,7 @@ public final class Double2x2Ops {
      * Copy one Double2x2 (4 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -2368,12 +2438,14 @@ public final class Double2x2Ops {
      * Bulk-copy {@code count} consecutive Double2x2 values ({@code count * 4} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) {
             UnsafeOpsHolder.U.copyMemory(null, src.address() + srcOffset, null, dest.address() + destOffset, (long) count * 32L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + (long) _i * 8L, src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + (long) _i * 8L));
@@ -2384,6 +2456,7 @@ public final class Double2x2Ops {
      * Copy one Double2x2 (4 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) {
@@ -2397,6 +2470,7 @@ public final class Double2x2Ops {
      * Bulk-copy {@code count} consecutive Double2x2 values ({@code count * 4} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, long src, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) {
@@ -2413,6 +2487,7 @@ public final class Double2x2Ops {
      */
     public static long copy(long dest, double[] src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
+            java.util.Objects.checkFromIndexSize(srcOffset, 4, src.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) srcOffset * 8L, null, dest, 32L);
             return dest;
         }
@@ -2427,6 +2502,7 @@ public final class Double2x2Ops {
      */
     public static long copy(long dest, double[] src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
+            java.util.Objects.checkFromIndexSize(srcOffset, (count > 536870911 ? -1 : count * 4), src.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) srcOffset * 8L, null, dest, (long) count * 32L);
             return dest;
         }
@@ -2466,6 +2542,7 @@ public final class Double2x2Ops {
      * Copy one Double2x2 (4 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static long copy(long dest, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -2480,6 +2557,7 @@ public final class Double2x2Ops {
      * Bulk-copy {@code count} consecutive Double2x2 values ({@code count * 4} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static long copy(long dest, java.nio.ByteBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -2494,6 +2572,7 @@ public final class Double2x2Ops {
      * Copy one Double2x2 (4 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static long copy(long dest, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) {
@@ -2508,6 +2587,7 @@ public final class Double2x2Ops {
      * Bulk-copy {@code count} consecutive Double2x2 values ({@code count * 4} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static long copy(long dest, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) {

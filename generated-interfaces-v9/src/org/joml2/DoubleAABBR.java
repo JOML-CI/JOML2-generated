@@ -11,6 +11,21 @@ import java.nio.ByteBuffer;
  * mutate the receiver; the mutable counterpart is {@link DoubleAABB}. APIs that only read an
  * axis-aligned bounding box should accept {@code DoubleAABBR}, so callers can pass mutable
  * instances without exposing them to modification.
+ * <p>
+ * Arguments of type {@code DoubleAABBR} must be instances created by the library ({@link Joml}
+ * factories / the library's own types); the implementations read cached state through the library's
+ * own classes, so foreign implementations of the {@code *R} interfaces are not supported as
+ * arguments.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of an
+ * axis-aligned bounding box never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface DoubleAABBR {
     /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
@@ -546,6 +561,10 @@ public interface DoubleAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -558,6 +577,10 @@ public interface DoubleAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -570,6 +593,10 @@ public interface DoubleAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -583,6 +610,10 @@ public interface DoubleAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -600,6 +631,10 @@ public interface DoubleAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -612,6 +647,10 @@ public interface DoubleAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -624,6 +663,10 @@ public interface DoubleAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -637,6 +680,10 @@ public interface DoubleAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -654,6 +701,8 @@ public interface DoubleAABBR {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     DoubleAABB storeUnsafe(long address);
 
@@ -680,6 +729,10 @@ public interface DoubleAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -692,6 +745,10 @@ public interface DoubleAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -704,6 +761,10 @@ public interface DoubleAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -717,6 +778,10 @@ public interface DoubleAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -734,6 +799,10 @@ public interface DoubleAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -746,6 +815,10 @@ public interface DoubleAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -758,6 +831,10 @@ public interface DoubleAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -771,6 +848,10 @@ public interface DoubleAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -788,6 +869,8 @@ public interface DoubleAABBR {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     DoubleAABB storeFloatUnsafe(long address);
 
@@ -797,12 +880,40 @@ public interface DoubleAABBR {
     /**
      * Compare this axis-aligned bounding box component-wise against {@code other}, allowing a difference
      * of at most {@code epsilon} per component.
+     * <p>
+     * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+     * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and
+     * a NaN component never compares equal to anything.
      *
      * @param other the axis-aligned bounding box to compare against
      * @param epsilon the maximum allowed difference per component
      * @return {@code true} if all components differ by at most {@code epsilon}, {@code false} otherwise
      */
     boolean equalsEpsilon(DoubleAABBR other, double epsilon);
+
+    /**
+     * Compare this axis-aligned bounding box with the given object for element-wise equality.
+     * <p>
+     * Each component is compared bitwise, as by {@code Double.doubleToLongBits}: {@code 0.0} and
+     * {@code -0.0} are not equal, and NaN is equal to NaN. Use {@link #equalsEpsilon} for a
+     * tolerant comparison.
+     * <p>
+     * Only instances of this library's implementation compare equal to each other; any other object
+     * yields {@code false}.
+     *
+     * @param obj the object to compare with
+     * @return {@code true} if {@code obj} is an axis-aligned bounding box of this library with
+     *        element-wise equal components, {@code false} otherwise
+     */
+    boolean equals(@org.jspecify.annotations.Nullable Object obj);
+
+    /**
+     * Compute a hash code consistent with {@link #equals}: it is derived from the components via
+     * {@code Double.doubleToLongBits} alone.
+     *
+     * @return the hash code of this axis-aligned bounding box
+     */
+    int hashCode();
 
     /**
      * Determine whether this axis-aligned bounding box contains the given point (boundary

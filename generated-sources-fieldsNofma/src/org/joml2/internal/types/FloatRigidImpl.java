@@ -1761,6 +1761,10 @@ public final class FloatRigidImpl implements FloatRigid {
      * Normalize this rigid transform so that its rotation part has unit length, leaving its
      * translation unchanged (a zero-length rotation yields the zero quaternion) and store the
      * result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the rotation quaternion must lie
+     * roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1791,6 +1795,10 @@ public final class FloatRigidImpl implements FloatRigid {
      * Normalize this rigid transform so that its rotation part has unit length, leaving its
      * translation unchanged (a zero-length rotation yields the zero quaternion) and store the
      * result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the rotation quaternion must lie
+     * roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1826,6 +1834,9 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1849,7 +1860,7 @@ public final class FloatRigidImpl implements FloatRigid {
             d.x = (float) Math.atan2(_t11, _t13);
             d.z = (float) Math.atan2(2.0f * (this.rZ * this.rW - this.rX * this.rY), 1.0f - 2.0f * (_t1 + _t6));
         }
-        d.y = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t12)));
+        d.y = (float) Math.atan2(_t12, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -1860,6 +1871,9 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1886,7 +1900,7 @@ public final class FloatRigidImpl implements FloatRigid {
             d.x = (float) Math.atan2(_t11, _t13);
             d.z = (float) Math.atan2(2.0f * (this.rZ * this.rW - this.rX * this.rY), 1.0f - 2.0f * (_t1 + _t6));
         }
-        d.y = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t12)));
+        d.y = (float) Math.atan2(_t12, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -1897,6 +1911,9 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1920,7 +1937,7 @@ public final class FloatRigidImpl implements FloatRigid {
             d.x = (float) Math.atan2(_t11, _t13);
             d.y = (float) Math.atan2(2.0f * (this.rX * this.rZ + this.rY * this.rW), 1.0f - 2.0f * (_t6 + _t1));
         }
-        d.z = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t12)));
+        d.z = (float) Math.atan2(_t12, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -1931,6 +1948,9 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1957,7 +1977,7 @@ public final class FloatRigidImpl implements FloatRigid {
             d.x = (float) Math.atan2(_t11, _t13);
             d.y = (float) Math.atan2(2.0f * (this.rX * this.rZ + this.rY * this.rW), 1.0f - 2.0f * (_t6 + _t1));
         }
-        d.z = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t12)));
+        d.z = (float) Math.atan2(_t12, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -1968,6 +1988,9 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1991,7 +2014,7 @@ public final class FloatRigidImpl implements FloatRigid {
             d.y = (float) Math.atan2(_t12, _t13);
             d.z = (float) Math.atan2(2.0f * (this.rX * this.rY + this.rZ * this.rW), 1.0f - 2.0f * (_t2 + _t6));
         }
-        d.x = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t10)));
+        d.x = (float) Math.atan2(_t10, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -2002,6 +2025,9 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2028,7 +2054,7 @@ public final class FloatRigidImpl implements FloatRigid {
             d.y = (float) Math.atan2(_t12, _t13);
             d.z = (float) Math.atan2(2.0f * (this.rX * this.rY + this.rZ * this.rW), 1.0f - 2.0f * (_t2 + _t6));
         }
-        d.x = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t10)));
+        d.x = (float) Math.atan2(_t10, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -2039,6 +2065,9 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -2062,7 +2091,7 @@ public final class FloatRigidImpl implements FloatRigid {
             d.x = (float) Math.atan2(2.0f * (this.rX * this.rW - this.rY * this.rZ), 1.0f - 2.0f * (_t6 + _t1));
             d.y = (float) Math.atan2(_t11, _t13);
         }
-        d.z = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t12)));
+        d.z = (float) Math.atan2(_t12, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -2073,6 +2102,9 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2099,7 +2131,7 @@ public final class FloatRigidImpl implements FloatRigid {
             d.x = (float) Math.atan2(2.0f * (this.rX * this.rW - this.rY * this.rZ), 1.0f - 2.0f * (_t6 + _t1));
             d.y = (float) Math.atan2(_t11, _t13);
         }
-        d.z = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t12)));
+        d.z = (float) Math.atan2(_t12, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -2110,6 +2142,9 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -2133,7 +2168,7 @@ public final class FloatRigidImpl implements FloatRigid {
             d.y = (float) Math.atan2(2.0f * (this.rY * this.rW - this.rX * this.rZ), 1.0f - 2.0f * (_t2 + _t6));
             d.z = (float) Math.atan2(_t12, _t13);
         }
-        d.x = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t10)));
+        d.x = (float) Math.atan2(_t10, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -2144,6 +2179,9 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2170,7 +2208,7 @@ public final class FloatRigidImpl implements FloatRigid {
             d.y = (float) Math.atan2(2.0f * (this.rY * this.rW - this.rX * this.rZ), 1.0f - 2.0f * (_t2 + _t6));
             d.z = (float) Math.atan2(_t12, _t13);
         }
-        d.x = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t10)));
+        d.x = (float) Math.atan2(_t10, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -2181,6 +2219,9 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -2204,7 +2245,7 @@ public final class FloatRigidImpl implements FloatRigid {
             d.x = (float) Math.atan2(2.0f * (this.rX * this.rW + this.rY * this.rZ), 1.0f - 2.0f * (_t6 + _t0));
             d.z = (float) Math.atan2(_t11, _t13);
         }
-        d.y = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t12)));
+        d.y = (float) Math.atan2(_t12, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -2215,6 +2256,9 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2241,7 +2285,7 @@ public final class FloatRigidImpl implements FloatRigid {
             d.x = (float) Math.atan2(2.0f * (this.rX * this.rW + this.rY * this.rZ), 1.0f - 2.0f * (_t6 + _t0));
             d.z = (float) Math.atan2(_t11, _t13);
         }
-        d.y = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t12)));
+        d.y = (float) Math.atan2(_t12, (float) Math.sqrt(_t17));
         return d;
     }
 

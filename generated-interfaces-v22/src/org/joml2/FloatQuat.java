@@ -14,13 +14,23 @@ import java.lang.foreign.MemorySegment;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of a quaternion
+ * never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface FloatQuat extends FloatQuatR {
 
     /**
      * Invert this quaternion.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat invert() { return invert(Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -29,7 +39,7 @@ public interface FloatQuat extends FloatQuatR {
      * {@code (this * other)^-1}.
      *
      * @param other the other quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat invertProduct(FloatQuatR other) { return invertProduct(other, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -41,7 +51,7 @@ public interface FloatQuat extends FloatQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat invertProduct(float x, float y, float z, float w) { return invertProduct(x, y, z, w, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -49,7 +59,7 @@ public interface FloatQuat extends FloatQuatR {
      * Add {@code other} to this quaternion.
      *
      * @param other the other quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat add(FloatQuatR other) { return add(other, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -60,14 +70,14 @@ public interface FloatQuat extends FloatQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat add(float x, float y, float z, float w) { return add(x, y, z, w, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
     /**
      * Negate this quaternion.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat negate() { return negate(Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -75,7 +85,7 @@ public interface FloatQuat extends FloatQuatR {
      * Subtract {@code other} from this quaternion.
      *
      * @param other the other quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat sub(FloatQuatR other) { return sub(other, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -86,7 +96,7 @@ public interface FloatQuat extends FloatQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat sub(float x, float y, float z, float w) { return sub(x, y, z, w, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -192,7 +202,7 @@ public interface FloatQuat extends FloatQuatR {
      *
      * @param other the other quaternion
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat lerp(FloatQuatR other, float t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -205,53 +215,69 @@ public interface FloatQuat extends FloatQuatR {
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat lerp(float x, float y, float z, float w, float t) { return lerp(x, y, z, w, t, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
     /**
      * Interpolate between this quaternion and {@code target} using the interpolation factor
      * {@code alpha} and normalize the result.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat nlerp(FloatQuatR target, float alpha) { return nlerp(target, alpha, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
     /**
      * Interpolate between this quaternion and ({@code x}, {@code y}, {@code z}, {@code w}) using
      * the interpolation factor {@code alpha} and normalize the result.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat nlerp(float x, float y, float z, float w, float alpha) { return nlerp(x, y, z, w, alpha, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
     /**
      * Interpolate along the shortest path between this quaternion and {@code target} using the
      * interpolation factor {@code alpha} and normalize the result.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat nlerpShortest(FloatQuatR target, float alpha) { return nlerpShortest(target, alpha, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
     /**
      * Interpolate along the shortest path between this quaternion and ({@code x}, {@code y},
      * {@code z}, {@code w}) using the interpolation factor {@code alpha} and normalize the result.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat nlerpShortest(float x, float y, float z, float w, float alpha) { return nlerpShortest(x, y, z, w, alpha, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -265,7 +291,7 @@ public interface FloatQuat extends FloatQuatR {
      *
      * @param target the target rotation (must be a unit quaternion)
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat slerp(FloatQuatR target, float alpha) { return slerp(target, alpha, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -286,7 +312,7 @@ public interface FloatQuat extends FloatQuatR {
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat slerp(float x, float y, float z, float w, float alpha) { return slerp(x, y, z, w, alpha, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -296,7 +322,7 @@ public interface FloatQuat extends FloatQuatR {
      *
      * @param target the target rotation (must be a unit quaternion)
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat slerpShortest(FloatQuatR target, float alpha) { return slerpShortest(target, alpha, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -314,7 +340,7 @@ public interface FloatQuat extends FloatQuatR {
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat slerpShortest(float x, float y, float z, float w, float alpha) { return slerpShortest(x, y, z, w, alpha, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -326,7 +352,7 @@ public interface FloatQuat extends FloatQuatR {
      * @param control1 the inner control quaternion associated with the end rotation
      * @param target the target rotation
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat squad(FloatQuatR control0, FloatQuatR control1, FloatQuatR target, float t) { return squad(control0, control1, target, t, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -359,7 +385,7 @@ public interface FloatQuat extends FloatQuatR {
      * @param targetW the {@code w} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat squad(float control0X, float control0Y, float control0Z, float control0W, float control1X, float control1Y, float control1Z, float control1W, float targetX, float targetY, float targetZ, float targetW, float t) { return squad(control0X, control0Y, control0Z, control0W, control1X, control1Y, control1Z, control1W, targetX, targetY, targetZ, targetW, t, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -371,7 +397,7 @@ public interface FloatQuat extends FloatQuatR {
      * using {@code Q * R * v}, the transformation of the operand will be applied first.
      *
      * @param other the other quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat mul(FloatQuatR other) { return mul(other, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -386,7 +412,7 @@ public interface FloatQuat extends FloatQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat mul(float x, float y, float z, float w) { return mul(x, y, z, w, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -398,7 +424,7 @@ public interface FloatQuat extends FloatQuatR {
      * the new quaternion by using {@code T * Q * v}, the given transformation will be applied last.
      *
      * @param other the other quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat preMul(FloatQuatR other) { return preMul(other, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -414,7 +440,7 @@ public interface FloatQuat extends FloatQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat preMul(float x, float y, float z, float w) { return preMul(x, y, z, w, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -422,14 +448,14 @@ public interface FloatQuat extends FloatQuatR {
      * Recompute the {@code w} component of this quaternion from {@code x}, {@code y} and {@code z},
      * assuming unit length (the positive square root is chosen).
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat calculateW() { return calculateW(Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
     /**
      * Conjugate this quaternion.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat conjugate() { return conjugate(Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -438,7 +464,7 @@ public interface FloatQuat extends FloatQuatR {
      * {@code q} is the given quaternion (equal to {@code q * this * q^-1} when it has unit length).
      *
      * @param q the quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat conjugateBy(FloatQuatR q) { return conjugateBy(q, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -451,7 +477,7 @@ public interface FloatQuat extends FloatQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat conjugateBy(float x, float y, float z, float w) { return conjugateBy(x, y, z, w, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -460,7 +486,7 @@ public interface FloatQuat extends FloatQuatR {
      * with {@code this * D = other}, that is {@code D = this^-1 * other}.
      *
      * @param other the other quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat difference(FloatQuatR other) { return difference(other, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -473,14 +499,14 @@ public interface FloatQuat extends FloatQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat difference(float x, float y, float z, float w) { return difference(x, y, z, w, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
     /**
      * Compute the exponential of this quaternion.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat exp() { return exp(Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -490,7 +516,7 @@ public interface FloatQuat extends FloatQuatR {
      *
      * @param angularVel the angular velocity, in radians per second, applied in the reference frame
      * @param dt the time step
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat integrate(Float3R angularVel, float dt) { return integrate(angularVel, dt, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -502,29 +528,39 @@ public interface FloatQuat extends FloatQuatR {
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @param dt the time step
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat integrate(float x, float y, float z, float dt) { return integrate(x, y, z, dt, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
     /**
      * Compute the natural logarithm of this quaternion.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat log() { return log(Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
     /**
      * Normalize this quaternion to unit length.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat normalize() { return normalize(Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
     /**
      * Raise this quaternion to the power of {@code t}, i.e. compute {@code exp(t * log(this))}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      *
      * @param t the exponent
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat pow(float t) { return pow(t, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -539,7 +575,7 @@ public interface FloatQuat extends FloatQuatR {
      * compatibility.
      *
      * @param other the other quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat premul(FloatQuatR other) { return premul(other, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -557,29 +593,35 @@ public interface FloatQuat extends FloatQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat premul(float x, float y, float z, float w) { return premul(x, y, z, w, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
     /**
      * Rotate this quaternion towards {@code target}, by at most the given maximum angle.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      *
      * @param target the target rotation
      * @param step the maximum rotation angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat rotateTowards(FloatQuatR target, float step) { return rotateTowards(target, step, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
     /**
      * Rotate this quaternion towards ({@code x}, {@code y}, {@code z}, {@code w}), by at most the
      * given maximum angle.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
      * @param step the maximum rotation angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat rotateTowards(float x, float y, float z, float w, float step) { return rotateTowards(x, y, z, w, step, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -593,7 +635,7 @@ public interface FloatQuat extends FloatQuatR {
      *
      * @param dir the direction
      * @param up the direction of "up"
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat lookAlong(Float3R dir, Float3R up) { return lookAlong(dir, up, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -611,7 +653,7 @@ public interface FloatQuat extends FloatQuatR {
      * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
      * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
      * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) { return lookAlong(dirX, dirY, dirZ, upX, upY, upZ, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -666,6 +708,11 @@ public interface FloatQuat extends FloatQuatR {
      * Set this quaternion to the rotation that rotates {@code fromDir} onto {@code toDir} (both
      * must be unit vectors; for opposite vectors an arbitrary perpendicular rotation axis is
      * chosen).
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDir the vector
      * @param toDir the vector
@@ -677,6 +724,11 @@ public interface FloatQuat extends FloatQuatR {
      * Set this quaternion to the rotation that rotates ({@code fromDirX}, {@code fromDirY},
      * {@code fromDirZ}) onto ({@code toDirX}, {@code toDirY}, {@code toDirZ}) (both must be unit
      * vectors; for opposite vectors an arbitrary perpendicular rotation axis is chosen).
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDirX the {@code x} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
      * @param fromDirY the {@code y} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
@@ -792,7 +844,7 @@ public interface FloatQuat extends FloatQuatR {
      * quaternion by using {@code R * Q * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat preRotateX(float angle) { return preRotateX(angle, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -804,7 +856,7 @@ public interface FloatQuat extends FloatQuatR {
      * quaternion by using {@code R * Q * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat preRotateY(float angle) { return preRotateY(angle, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -816,7 +868,7 @@ public interface FloatQuat extends FloatQuatR {
      * quaternion by using {@code R * Q * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat preRotateZ(float angle) { return preRotateZ(angle, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -829,7 +881,7 @@ public interface FloatQuat extends FloatQuatR {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat rotateAxis(float angle, Float3R axis) { return rotateAxis(angle, axis, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -848,7 +900,7 @@ public interface FloatQuat extends FloatQuatR {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat rotateAxis(float angle, float x, float y, float z) { return rotateAxis(angle, x, y, z, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -860,10 +912,15 @@ public interface FloatQuat extends FloatQuatR {
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDir the vector
      * @param toDir the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat rotateTo(Float3R fromDir, Float3R toDir) { return rotateTo(fromDir, toDir, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -875,6 +932,11 @@ public interface FloatQuat extends FloatQuatR {
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDirX the {@code x} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
      * @param fromDirY the {@code y} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
@@ -882,7 +944,7 @@ public interface FloatQuat extends FloatQuatR {
      * @param toDirX the {@code x} component of the vector {@code (toDirX, toDirY, toDirZ)}
      * @param toDirY the {@code y} component of the vector {@code (toDirX, toDirY, toDirZ)}
      * @param toDirZ the {@code z} component of the vector {@code (toDirX, toDirY, toDirZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat rotateTo(float fromDirX, float fromDirY, float fromDirZ, float toDirX, float toDirY, float toDirZ) { return rotateTo(fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -890,7 +952,7 @@ public interface FloatQuat extends FloatQuatR {
      * Rotate this quaternion by {@code angle} radians about the local X axis.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat rotateX(float angle) { return rotateX(angle, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -906,7 +968,7 @@ public interface FloatQuat extends FloatQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat rotateXYZ(float angleX, float angleY, float angleZ) { return rotateXYZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -922,7 +984,7 @@ public interface FloatQuat extends FloatQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat rotateXZY(float angleX, float angleY, float angleZ) { return rotateXZY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -930,7 +992,7 @@ public interface FloatQuat extends FloatQuatR {
      * Rotate this quaternion by {@code angle} radians about the local Y axis.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat rotateY(float angle) { return rotateY(angle, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -946,7 +1008,7 @@ public interface FloatQuat extends FloatQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat rotateYXZ(float angleX, float angleY, float angleZ) { return rotateYXZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -962,7 +1024,7 @@ public interface FloatQuat extends FloatQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat rotateYZX(float angleX, float angleY, float angleZ) { return rotateYZX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -970,7 +1032,7 @@ public interface FloatQuat extends FloatQuatR {
      * Rotate this quaternion by {@code angle} radians about the local Z axis.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat rotateZ(float angle) { return rotateZ(angle, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -986,7 +1048,7 @@ public interface FloatQuat extends FloatQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat rotateZXY(float angleX, float angleY, float angleZ) { return rotateZXY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -1002,7 +1064,7 @@ public interface FloatQuat extends FloatQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat rotateZYX(float angleX, float angleY, float angleZ) { return rotateZYX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
@@ -1029,6 +1091,10 @@ public interface FloatQuat extends FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1041,6 +1107,10 @@ public interface FloatQuat extends FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1053,6 +1123,10 @@ public interface FloatQuat extends FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1066,6 +1140,10 @@ public interface FloatQuat extends FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1083,6 +1161,10 @@ public interface FloatQuat extends FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1095,6 +1177,10 @@ public interface FloatQuat extends FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1107,6 +1193,10 @@ public interface FloatQuat extends FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1120,6 +1210,10 @@ public interface FloatQuat extends FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1133,6 +1227,10 @@ public interface FloatQuat extends FloatQuatR {
 
     /**
      * Load the elements from the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -1141,6 +1239,10 @@ public interface FloatQuat extends FloatQuatR {
 
     /**
      * Load the elements from the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -1180,6 +1282,10 @@ public interface FloatQuat extends FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1192,6 +1298,10 @@ public interface FloatQuat extends FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1204,6 +1314,10 @@ public interface FloatQuat extends FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1217,6 +1331,10 @@ public interface FloatQuat extends FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1234,6 +1352,10 @@ public interface FloatQuat extends FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1246,6 +1368,10 @@ public interface FloatQuat extends FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1258,6 +1384,10 @@ public interface FloatQuat extends FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1271,6 +1401,10 @@ public interface FloatQuat extends FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1284,6 +1418,10 @@ public interface FloatQuat extends FloatQuatR {
 
     /**
      * Load the elements from the given memory segment, converting each element from {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -1293,6 +1431,10 @@ public interface FloatQuat extends FloatQuatR {
     /**
      * Load the elements from the given memory segment, converting each element from {@code double},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

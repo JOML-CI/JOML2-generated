@@ -12,6 +12,21 @@ import java.lang.foreign.MemorySegment;
  * mutate the receiver; the mutable counterpart is {@link DoubleSphere}. APIs that only read a
  * sphere should accept {@code DoubleSphereR}, so callers can pass mutable instances without
  * exposing them to modification.
+ * <p>
+ * Arguments of type {@code DoubleSphereR} must be instances created by the library ({@link Joml}
+ * factories / the library's own types); the implementations read cached state through the library's
+ * own classes, so foreign implementations of the {@code *R} interfaces are not supported as
+ * arguments.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of a sphere
+ * never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface DoubleSphereR {
     /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
@@ -453,6 +468,10 @@ public interface DoubleSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -465,6 +484,10 @@ public interface DoubleSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -477,6 +500,10 @@ public interface DoubleSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -490,6 +517,10 @@ public interface DoubleSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -507,6 +538,10 @@ public interface DoubleSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -519,6 +554,10 @@ public interface DoubleSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -531,6 +570,10 @@ public interface DoubleSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -544,6 +587,10 @@ public interface DoubleSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -557,6 +604,10 @@ public interface DoubleSphereR {
 
     /**
      * Store the elements into the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -565,6 +616,10 @@ public interface DoubleSphereR {
 
     /**
      * Store the elements into the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -604,6 +659,10 @@ public interface DoubleSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -616,6 +675,10 @@ public interface DoubleSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -628,6 +691,10 @@ public interface DoubleSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -641,6 +708,10 @@ public interface DoubleSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -658,6 +729,10 @@ public interface DoubleSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -670,6 +745,10 @@ public interface DoubleSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -682,6 +761,10 @@ public interface DoubleSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -695,6 +778,10 @@ public interface DoubleSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -708,6 +795,10 @@ public interface DoubleSphereR {
 
     /**
      * Store the elements into the given memory segment, converting each element to {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -717,6 +808,10 @@ public interface DoubleSphereR {
     /**
      * Store the elements into the given memory segment, converting each element to {@code float},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -739,12 +834,40 @@ public interface DoubleSphereR {
     /**
      * Compare this sphere component-wise against {@code other}, allowing a difference
      * of at most {@code epsilon} per component.
+     * <p>
+     * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+     * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and
+     * a NaN component never compares equal to anything.
      *
      * @param other the sphere to compare against
      * @param epsilon the maximum allowed difference per component
      * @return {@code true} if all components differ by at most {@code epsilon}, {@code false} otherwise
      */
     boolean equalsEpsilon(DoubleSphereR other, double epsilon);
+
+    /**
+     * Compare this sphere with the given object for element-wise equality.
+     * <p>
+     * Each component is compared bitwise, as by {@code Double.doubleToLongBits}: {@code 0.0} and
+     * {@code -0.0} are not equal, and NaN is equal to NaN. Use {@link #equalsEpsilon} for a
+     * tolerant comparison.
+     * <p>
+     * Only instances of this library's implementation compare equal to each other; any other object
+     * yields {@code false}.
+     *
+     * @param obj the object to compare with
+     * @return {@code true} if {@code obj} is a sphere of this library with element-wise equal
+     *        components, {@code false} otherwise
+     */
+    boolean equals(@org.jspecify.annotations.Nullable Object obj);
+
+    /**
+     * Compute a hash code consistent with {@link #equals}: it is derived from the components via
+     * {@code Double.doubleToLongBits} alone.
+     *
+     * @return the hash code of this sphere
+     */
+    int hashCode();
 
     /**
      * Determine whether this sphere contains the given point (boundary inclusive). Delegates to the
@@ -799,7 +922,10 @@ public interface DoubleSphereR {
     /**
      * Determine whether this sphere intersects the given ray, whose direction must be normalized
      * (unlike the axis-aligned box's ray tests, the sphere test is not invariant to the direction's
-     * length). Delegates to the shared {@code Intersectiond} kernels.
+     * length). The squared perpendicular distance from the center to the ray is formed directly,
+     * from the component of the origin-to-center vector orthogonal to the direction, rather than as
+     * the difference of two squared lengths, so a distant center does not lose the decision to
+     * cancellation. Delegates to the shared {@code Intersectiond} kernels.
      *
      * @param ray the ray (its direction must have unit length)
      * @return {@code true} if this sphere and the given ray intersect, {@code false} otherwise

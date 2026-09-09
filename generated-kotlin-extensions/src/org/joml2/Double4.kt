@@ -52,7 +52,7 @@ inline fun Double4.copy(x: Double = x(), y: Double = y(), z: Double = z(), w: Do
 inline fun Double4.toDoubleArray(): DoubleArray = store(DoubleArray(4))
 /** A Double4 read from this array in storage order, starting at index 0. */
 inline fun DoubleArray.toDouble4(): Double4 = Double4.load(this)
-/** The component of this Double4 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. */
+/** The component of this Double4 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT with 3 indices (`v[a, b, ...] = x`) resolves to the Java 4-argument value factory `Double4.set(...)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Double4.get(index: Int): Double = when (index) {
     0 -> x()
     1 -> y()

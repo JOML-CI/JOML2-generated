@@ -52,7 +52,7 @@ inline fun Float3.copy(x: Float = x(), y: Float = y(), z: Float = z()): Float3 =
 inline fun Float3.toFloatArray(): FloatArray = store(FloatArray(3))
 /** A Float3 read from this array in storage order, starting at index 0. */
 inline fun FloatArray.toFloat3(): Float3 = Float3.load(this)
-/** The component of this Float3 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. */
+/** The component of this Float3 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT with 2 indices (`v[a, b] = c`) resolves to the Java 3-argument value factory `Float3.set(...)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Float3.get(index: Int): Float = when (index) {
     0 -> x()
     1 -> y()

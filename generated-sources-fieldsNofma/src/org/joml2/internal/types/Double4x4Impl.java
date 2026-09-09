@@ -198,7 +198,7 @@ public class Double4x4Impl implements Double4x4 {
             d.z = Math.atan2(-this.m01, this.m00);
             d.x = _buf0;
         }
-        d.y = Math.asin(Math.min(1.0, Math.max(-1.0, this.m02)));
+        d.y = Math.atan2(this.m02, Math.sqrt(_t3));
         return d;
     }
 
@@ -209,6 +209,9 @@ public class Double4x4Impl implements Double4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -252,7 +255,7 @@ public class Double4x4Impl implements Double4x4 {
             d.x = _buf0;
             d.y = _buf1;
         }
-        d.z = Math.asin(Math.min(1.0, Math.max(-1.0, -this.m01)));
+        d.z = Math.atan2(-this.m01, Math.sqrt(_t3));
         return d;
     }
 
@@ -263,6 +266,9 @@ public class Double4x4Impl implements Double4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -302,7 +308,7 @@ public class Double4x4Impl implements Double4x4 {
             d.y = Math.atan2(this.m02, this.m22);
             d.z = Math.atan2(this.m10, this.m11);
         }
-        d.x = Math.asin(Math.min(1.0, Math.max(-1.0, -this.m12)));
+        d.x = Math.atan2(-this.m12, Math.sqrt(_t3));
         return d;
     }
 
@@ -313,6 +319,9 @@ public class Double4x4Impl implements Double4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -354,7 +363,7 @@ public class Double4x4Impl implements Double4x4 {
             d.y = Math.atan2(-this.m20, this.m00);
             d.x = _buf0;
         }
-        d.z = Math.asin(Math.min(1.0, Math.max(-1.0, this.m10)));
+        d.z = Math.atan2(this.m10, Math.sqrt(_t3));
         return d;
     }
 
@@ -365,6 +374,9 @@ public class Double4x4Impl implements Double4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -406,7 +418,7 @@ public class Double4x4Impl implements Double4x4 {
             d.z = Math.atan2(-this.m01, this.m11);
             d.y = _buf0;
         }
-        d.x = Math.asin(Math.min(1.0, Math.max(-1.0, this.m21)));
+        d.x = Math.atan2(this.m21, Math.sqrt(_t3));
         return d;
     }
 
@@ -417,6 +429,9 @@ public class Double4x4Impl implements Double4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -458,7 +473,7 @@ public class Double4x4Impl implements Double4x4 {
             d.z = Math.atan2(this.m10, this.m00);
             d.x = _buf0;
         }
-        d.y = Math.asin(Math.min(1.0, Math.max(-1.0, -this.m20)));
+        d.y = Math.atan2(-this.m20, Math.sqrt(_t3));
         return d;
     }
 
@@ -469,6 +484,9 @@ public class Double4x4Impl implements Double4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -601,6 +619,10 @@ public class Double4x4Impl implements Double4x4 {
      * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
      * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
      * unit length) and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of each column must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -732,6 +754,10 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Get the scaling factors of this matrix, as the lengths of its basis columns (always
      * non-negative; skew is ignored) and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of each column must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -907,6 +933,11 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Obtain the direction of {@code -X} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -958,6 +989,11 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Obtain the direction of {@code -Y} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1009,6 +1045,11 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Obtain the direction of {@code -Z} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1302,6 +1343,11 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Obtain the direction of {@code +X} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1349,6 +1395,11 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Obtain the direction of {@code +Y} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1396,6 +1447,11 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Obtain the direction of {@code +Z} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1440,6 +1496,11 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Obtain the direction of {@code -X} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1484,6 +1545,11 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Obtain the direction of {@code -Y} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1528,6 +1594,11 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Obtain the direction of {@code -Z} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1942,6 +2013,11 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Obtain the direction of {@code +X} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1986,6 +2062,11 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Obtain the direction of {@code +Y} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2030,6 +2111,11 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Obtain the direction of {@code +Z} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2306,7 +2392,7 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Compute the cofactor matrix of this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 cofactor() {
         if (Joml.RETURN_NEW) return cofactor(Joml.double4x4());
@@ -2634,7 +2720,7 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Invert this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 invert() {
         if (Joml.RETURN_NEW) return invert(Joml.double4x4());
@@ -3535,7 +3621,7 @@ public class Double4x4Impl implements Double4x4 {
      * {@code (this * other)^-1}.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 invertProduct(Double4x4R other) {
         if (Joml.RETURN_NEW) return invertProduct(other, Joml.double4x4());
@@ -3873,7 +3959,7 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Compute the normal matrix of this matrix, i.e. the transpose of its inverse.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 normal() {
         if (Joml.RETURN_NEW) return normal(Joml.double4x4());
@@ -4068,7 +4154,7 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Transpose this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 transpose() {
         if (Joml.RETURN_NEW) return transpose(Joml.double4x4());
@@ -4445,7 +4531,7 @@ public class Double4x4Impl implements Double4x4 {
      * Add {@code other} to this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 add(Double4x4R other) {
         if (Joml.RETURN_NEW) return add(other, Joml.double4x4());
@@ -4708,7 +4794,7 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Negate this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 negate() {
         if (Joml.RETURN_NEW) return negate(Joml.double4x4());
@@ -5167,7 +5253,7 @@ public class Double4x4Impl implements Double4x4 {
      * Subtract {@code other} from this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 sub(Double4x4R other) {
         if (Joml.RETURN_NEW) return sub(other, Joml.double4x4());
@@ -5403,7 +5489,7 @@ public class Double4x4Impl implements Double4x4 {
      * translation instead of composing a translation onto the existing transformation.
      *
      * @param t the translation offsets
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 withTranslation(Double3R t) {
         return withTranslation(t.x(), t.y(), t.z());
@@ -5561,7 +5647,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param tX the {@code x} component of the translation offsets {@code (tX, tY, tZ)}
      * @param tY the {@code y} component of the translation offsets {@code (tX, tY, tZ)}
      * @param tZ the {@code z} component of the translation offsets {@code (tX, tY, tZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 withTranslation(double tX, double tY, double tZ) {
         if (Joml.RETURN_NEW) return withTranslation(tX, tY, tZ, Joml.double4x4());
@@ -6372,6 +6458,10 @@ public class Double4x4Impl implements Double4x4 {
 
     /**
      * Extract the rotation part of this matrix and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of each column must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -6458,6 +6548,10 @@ public class Double4x4Impl implements Double4x4 {
      * Extract the scaling factors of this matrix via Gram-Schmidt orthogonalization (skew-aware;
      * the x factor carries the sign of a reflection when the determinant is negative) and store the
      * result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of each column must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -6551,6 +6645,10 @@ public class Double4x4Impl implements Double4x4 {
      * Extract the shear (skew) factors of this matrix via Gram-Schmidt orthogonalization, as
      * {@code (skewYZ, skewXZ, skewXY)} (all zero for a shear-free matrix) and store the result in
      * {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of each column must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -6565,6 +6663,10 @@ public class Double4x4Impl implements Double4x4 {
     /**
      * Decompose this matrix into its translation, rotation and scale components, storing them in
      * {@code translation}, {@code rotation} and {@code scale} respectively.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of each column must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param translation will hold the translation
      * @param rotation will hold the rotation
@@ -8594,6 +8696,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t59 = this.m02 * _t41;
         double _t60 = this.m03 * _t42;
         double _t67 = this.m01 * _t46;
+        double _t68 = this.m02 * _t47;
+        double _t69 = this.m03 * _t48;
         double _t70 = this.m00 * _t48;
         double _t71 = this.m01 * _t49;
         double _t72 = this.m02 * _t50;
@@ -8610,23 +8714,24 @@ public class Double4x4Impl implements Double4x4 {
         double _t95 = this.m01 * _t57;
         double _t96 = this.m03 * _t54;
         double _t103 = this.m00 * _t47;
-        double _t108 = this.m02 * _t47 - this.m03 * _t48;
-        double _t119 = this.m01 * _t55 - this.m03 * _t50;
-        double _t128 = (this.m11 * _t43 - this.m12 * _t44 + this.m13 * _t45) * _t14;
-        double _t129 = (this.m01 * _t43 - this.m02 * _t44 + this.m03 * _t45) * _t15;
-        double _t130 = (this.m00 * _t45 - this.m01 * _t51 + this.m02 * _t52) * _t15;
-        double _t131 = (this.m10 * _t45 - this.m11 * _t51 + this.m12 * _t52) * _t14;
-        double _t132 = (this.m00 * _t43 - this.m02 * _t56 + this.m03 * _t51) * _t15;
-        double _t133 = (this.m10 * _t43 - this.m12 * _t56 + this.m13 * _t51) * _t14;
-        double _t134 = (this.m10 * _t44 - this.m11 * _t56 + this.m13 * _t52) * _t14;
-        double _t135 = (this.m00 * _t44 - this.m01 * _t56 + this.m03 * _t52) * _t15;
-        double _t145 = _t79 - _t80 + (_t81 + _t130) + (_t70 - _t131 + (_t72 - _t71));
-        double _t145_inv = 1.0 / _t145;
-        double _t146 = _t70 - _t71 + (_t72 + _t130) + (-_t131 - _t79 + (_t80 - _t81));
-        double _t146_inv = 1.0 / _t146;
-        d.x = (_t58 - _t59 + (_t60 + _t128) + (-_t129 - _t67 + _t108)) * _t146_inv - (_t128 - _t129 + (_t59 - _t58) + (-_t60 - _t67 + _t108)) * _t145_inv;
-        d.y = (_t82 - _t83 + (_t84 + _t132) + (-_t133 - _t91 + (_t92 - _t93))) * _t146_inv - (_t91 - _t92 + (_t93 + _t132) + (_t82 - _t133 + (_t84 - _t83))) * _t145_inv;
-        d.z = (_t94 - _t95 + (_t96 + _t134) + (-_t135 - _t103 + _t119)) * _t146_inv - (_t134 - _t135 + (_t95 - _t94) + (-_t96 - _t103 + _t119)) * _t145_inv;
+        double _t104 = this.m01 * _t55;
+        double _t105 = this.m03 * _t50;
+        double _t126 = (this.m11 * _t43 - this.m12 * _t44 + this.m13 * _t45) * _t14;
+        double _t127 = (this.m01 * _t43 - this.m02 * _t44 + this.m03 * _t45) * _t15;
+        double _t128 = (this.m00 * _t45 - this.m01 * _t51 + this.m02 * _t52) * _t15;
+        double _t129 = (this.m10 * _t45 - this.m11 * _t51 + this.m12 * _t52) * _t14;
+        double _t130 = (this.m00 * _t43 - this.m02 * _t56 + this.m03 * _t51) * _t15;
+        double _t131 = (this.m10 * _t43 - this.m12 * _t56 + this.m13 * _t51) * _t14;
+        double _t132 = (this.m10 * _t44 - this.m11 * _t56 + this.m13 * _t52) * _t14;
+        double _t133 = (this.m00 * _t44 - this.m01 * _t56 + this.m03 * _t52) * _t15;
+        double _t143 = _t79 - _t80 + (_t81 + _t128) + (_t70 - _t129 + (_t72 - _t71));
+        double _t143_inv = 1.0 / _t143;
+        double _t144 = _t70 - _t71 + (_t72 + _t128) + (-_t129 - _t79 + (_t80 - _t81));
+        double _t148 = Math.abs(_t144) <= Math.abs(_t143) * 9.094947017729282E-13 ? _t143 : _t144;
+        double _t148_inv = 1.0 / _t148;
+        d.x = (_t58 - _t59 + (_t60 + _t126) + (-_t127 - _t67 + (_t68 + (-_t69 - _t144 * (_t126 - _t127 + (_t59 - _t58) + (-_t60 - _t67 + (_t68 - _t69))) * _t143_inv)))) * _t148_inv;
+        d.y = (_t82 - _t83 + (_t84 + _t130) + (-_t131 - _t91 + (_t92 + (-_t93 - (_t91 - _t92 + (_t93 + _t130) + (_t82 - _t131 + (_t84 - _t83))) * _t144 * _t143_inv)))) * _t148_inv;
+        d.z = (_t94 - _t95 + (_t96 + _t132) + (-_t133 - _t103 + (_t104 + (-_t105 - _t144 * (_t132 - _t133 + (_t95 - _t94) + (-_t96 - _t103 + (_t104 - _t105))) * _t143_inv)))) * _t148_inv;
         return d;
     }
 
@@ -8772,11 +8877,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t124 = (this.m00 * _t44 - this.m01 * _t56 + this.m03 * _t52) * _t15;
         double _t131 = _t99 + _t69 + (_t119 - _t120);
         double _t131_inv = 1.0 / _t131;
-        double _t132 = _t99 + (_t69 + _t119) + (-_t120 - this.m00 * _t42 + (this.m01 * _t53 - this.m02 * _t54));
-        double _t132_inv = 1.0 / _t132;
-        double _buf0 = (this.m01 * _t40 - this.m02 * _t41 + (this.m03 * _t42 + _t117) + (-_t118 - _t64 + (_t65 - _t66))) * _t132_inv - (_t117 - _t118 - (_t64 - _t65 + _t66)) * _t131_inv;
-        double _buf1 = (_t103 + (_t81 + _t121) + (-_t122 - this.m00 * _t40 + (this.m02 * _t57 - this.m03 * _t53))) * _t132_inv - (_t103 + _t81 + (_t121 - _t122)) * _t131_inv;
-        d.z = (this.m00 * _t41 - this.m01 * _t57 + (this.m03 * _t54 + _t123) + (-_t124 - _t94 + (_t95 - _t96))) * _t132_inv - (_t123 - _t124 - (_t94 - _t95 + _t96)) * _t131_inv;
+        double _t134 = _t99 + (_t69 + _t119) + (-_t120 - this.m00 * _t42 + (this.m01 * _t53 - this.m02 * _t54));
+        double _t136 = Math.abs(_t134) <= Math.abs(_t131) * 9.094947017729282E-13 ? _t131 : _t134;
+        double _t136_inv = 1.0 / _t136;
+        double _buf0 = (this.m01 * _t40 - this.m02 * _t41 + (this.m03 * _t42 + _t117) + (-_t118 - _t64 + (_t65 + (-_t66 - _t134 * (_t117 - _t118 - (_t64 - _t65 + _t66)) * _t131_inv)))) * _t136_inv;
+        double _buf1 = (_t103 + (_t81 + _t121) + (-_t122 - this.m00 * _t40 + (this.m02 * _t57 + (-(this.m03 * _t53) - _t134 * (_t103 + _t81 + (_t121 - _t122)) * _t131_inv)))) * _t136_inv;
+        d.z = (this.m00 * _t41 - this.m01 * _t57 + (this.m03 * _t54 + _t123) + (-_t124 - _t94 + (_t95 + (-_t96 - _t134 * (_t123 - _t124 - (_t94 - _t95 + _t96)) * _t131_inv)))) * _t136_inv;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -8798,14 +8904,17 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Compute the direction of the view ray through the frustum of this matrix, interpreted as a
-     * projection or combined view-projection matrix, at the given normalized position on the near
-     * face and store the result in {@code dest}.
+     * Compute the direction of the view ray through the frustum of this matrix at the given
+     * horizontal and vertical interpolation factors.
      * <p>
      * {@code (0, 0)} is the bottom-left and {@code (1, 1)} the top-right frustum corner. The result
-     * is not normalized: it is the near-to-far corner difference, so its length is the frustum's
-     * depth extent along that ray - and it is not finite for a projection whose far plane is at
-     * infinity.
+     * is not normalized: it is the difference between the far and the near frustum corner along
+     * that ray, so the near corner plus the result lies on the far plane. For a projection whose
+     * far plane is at infinity the result is a finite direction along the ray of unspecified
+     * length. A far plane whose homogeneous w is at most {@code 2^-20} ({@code float}) /
+     * {@code 2^-40} ({@code double}) times the near plane's is treated as being at infinity.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
      *
      * @param x the horizontal frustum interpolation factor in {@code [0, 1]}
      * @param y the vertical frustum interpolation factor in {@code [0, 1]}
@@ -8822,14 +8931,17 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
-     * Compute the direction of the view ray through the frustum of this matrix, interpreted as a
-     * projection or combined view-projection matrix, at the given normalized position on the near
-     * face and store the result in {@code dest}.
+     * Compute the direction of the view ray through the frustum of this matrix at the given
+     * horizontal and vertical interpolation factors.
      * <p>
      * {@code (0, 0)} is the bottom-left and {@code (1, 1)} the top-right frustum corner. The result
-     * is not normalized: it is the near-to-far corner difference, so its length is the frustum's
-     * depth extent along that ray - and it is not finite for a projection whose far plane is at
-     * infinity.
+     * is not normalized: it is the difference between the far and the near frustum corner along
+     * that ray, so the near corner plus the result lies on the far plane. For a projection whose
+     * far plane is at infinity the result is a finite direction along the ray of unspecified
+     * length. A far plane whose homogeneous w is at most {@code 2^-20} ({@code float}) /
+     * {@code 2^-40} ({@code double}) times the near plane's is treated as being at infinity.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -9801,7 +9913,7 @@ public class Double4x4Impl implements Double4x4 {
      *
      * @param other the other matrix
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 lerp(Double4x4R other, double t) {
         if (Joml.RETURN_NEW) return lerp(other, t, Joml.double4x4());
@@ -10244,7 +10356,7 @@ public class Double4x4Impl implements Double4x4 {
      * {@code M * R * v}, the transformation of the operand will be applied first.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mul(Double4x4R right) {
         if (Joml.RETURN_NEW) return mul(right, Joml.double4x4());
@@ -10596,7 +10708,7 @@ public class Double4x4Impl implements Double4x4 {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mul(Double2x2R right) {
         if (Joml.RETURN_NEW) return mul(right, Joml.double4x4());
@@ -10894,7 +11006,7 @@ public class Double4x4Impl implements Double4x4 {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mul(Double2x3R right) {
         if (Joml.RETURN_NEW) return mul(right, Joml.double4x4());
@@ -11198,7 +11310,7 @@ public class Double4x4Impl implements Double4x4 {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mul(Double3x3R right) {
         if (Joml.RETURN_NEW) return mul(right, Joml.double4x4());
@@ -11515,7 +11627,7 @@ public class Double4x4Impl implements Double4x4 {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mul(Double3x4R right) {
         if (Joml.RETURN_NEW) return mul(right, Joml.double4x4());
@@ -11901,7 +12013,7 @@ public class Double4x4Impl implements Double4x4 {
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 preMul(Double4x4R other) {
         if (Joml.RETURN_NEW) return preMul(other, Joml.double4x4());
@@ -12260,7 +12372,7 @@ public class Double4x4Impl implements Double4x4 {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 preMul(Double2x2R other) {
         if (Joml.RETURN_NEW) return preMul(other, Joml.double4x4());
@@ -12548,7 +12660,7 @@ public class Double4x4Impl implements Double4x4 {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 preMul(Double2x3R other) {
         if (Joml.RETURN_NEW) return preMul(other, Joml.double4x4());
@@ -12864,7 +12976,7 @@ public class Double4x4Impl implements Double4x4 {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 preMul(Double3x3R other) {
         if (Joml.RETURN_NEW) return preMul(other, Joml.double4x4());
@@ -13157,7 +13269,7 @@ public class Double4x4Impl implements Double4x4 {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 preMul(Double3x4R other) {
         if (Joml.RETURN_NEW) return preMul(other, Joml.double4x4());
@@ -13260,7 +13372,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param center the center point
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 arcball(double radius, Double3R center, double angleX, double angleY) {
         return arcball(radius, center.x(), center.y(), center.z(), angleX, angleY);
@@ -13576,7 +13688,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param centerZ the {@code z} component of the vector {@code (centerX, centerY, centerZ)}
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 arcball(double radius, double centerX, double centerY, double centerZ, double angleX, double angleY) {
         if (Joml.RETURN_NEW) return arcball(radius, centerX, centerY, centerZ, angleX, angleY, Joml.double4x4());
@@ -13936,7 +14048,7 @@ public class Double4x4Impl implements Double4x4 {
      *
      * @param alpha the tilt angle in radians about the X axis (at {@code atan(1/sqrt(2))} the
      *        result is isometric)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 axonometricDimetric(double alpha) {
         if (Joml.RETURN_NEW) return axonometricDimetric(alpha, Joml.double4x4());
@@ -14299,7 +14411,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 axonometricIsometric() {
         if (Joml.RETURN_NEW) return axonometricIsometric(Joml.double4x4());
@@ -14647,7 +14759,7 @@ public class Double4x4Impl implements Double4x4 {
      *
      * @param alphaX the rotation angle in radians about the X axis
      * @param alphaY the rotation angle in radians about the Y axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 axonometricTrimetric(double alphaX, double alphaY) {
         if (Joml.RETURN_NEW) return axonometricTrimetric(alphaX, alphaY, Joml.double4x4());
@@ -16487,7 +16599,7 @@ public class Double4x4Impl implements Double4x4 {
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 frustum(double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -16550,7 +16662,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param zFar the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 frustum(double left, double right, double bottom, double top, double zNear, double zFar, DepthRange depthRange) { return frustum(left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -16608,7 +16720,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param zFar the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 frustum(double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness) { return frustum(left, right, bottom, top, zNear, zFar, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -16666,7 +16778,7 @@ public class Double4x4Impl implements Double4x4 {
      *        the angle-based builders for an infinite near)
      * @param zFar the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 frustum(double left, double right, double bottom, double top, double zNear, double zFar) { return frustum(left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -16698,7 +16810,7 @@ public class Double4x4Impl implements Double4x4 {
      *
      * @param dir the direction
      * @param up the direction of "up"
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 lookAlong(Double3R dir, Double3R up) {
         return lookAlong(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
@@ -17137,7 +17249,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
      * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
      * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 lookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
         if (Joml.RETURN_NEW) return lookAlong(dirX, dirY, dirZ, upX, upY, upZ, Joml.double4x4());
@@ -18174,7 +18286,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param center the point in space to look at
      * @param up the direction of "up"
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 lookAt(Double3R eye, Double3R center, Double3R up, Handedness handedness) {
         switch (handedness) {
@@ -18232,7 +18344,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
      * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 lookAt(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, Handedness handedness) {
         switch (handedness) {
@@ -18274,7 +18386,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param eye the position of the camera
      * @param center the point in space to look at
      * @param up the direction of "up"
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 lookAt(Double3R eye, Double3R center, Double3R up) { return lookAt(eye, center, up, Handedness.RIGHT_HANDED); }
 
@@ -18324,7 +18436,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
      * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
      * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 lookAt(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) { return lookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, Handedness.RIGHT_HANDED); }
 
@@ -23960,7 +24072,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapXYZ() {
         if (Joml.RETURN_NEW) return mapXYZ(Joml.double4x4());
@@ -24158,7 +24270,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapXYnZ() {
         if (Joml.RETURN_NEW) return mapXYnZ(Joml.double4x4());
@@ -24372,7 +24484,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapXZY() {
         if (Joml.RETURN_NEW) return mapXZY(Joml.double4x4());
@@ -24586,7 +24698,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapXZnY() {
         if (Joml.RETURN_NEW) return mapXZnY(Joml.double4x4());
@@ -24784,7 +24896,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapXnYZ() {
         if (Joml.RETURN_NEW) return mapXnYZ(Joml.double4x4());
@@ -24984,7 +25096,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapXnYnZ() {
         if (Joml.RETURN_NEW) return mapXnYnZ(Joml.double4x4());
@@ -25198,7 +25310,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapXnZY() {
         if (Joml.RETURN_NEW) return mapXnZY(Joml.double4x4());
@@ -25412,7 +25524,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapXnZnY() {
         if (Joml.RETURN_NEW) return mapXnZnY(Joml.double4x4());
@@ -25626,7 +25738,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapYXZ() {
         if (Joml.RETURN_NEW) return mapYXZ(Joml.double4x4());
@@ -25842,7 +25954,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapYXnZ() {
         if (Joml.RETURN_NEW) return mapYXnZ(Joml.double4x4());
@@ -26060,7 +26172,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapYZX() {
         if (Joml.RETURN_NEW) return mapYZX(Joml.double4x4());
@@ -26278,7 +26390,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapYZnX() {
         if (Joml.RETURN_NEW) return mapYZnX(Joml.double4x4());
@@ -26492,7 +26604,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapYnXZ() {
         if (Joml.RETURN_NEW) return mapYnXZ(Joml.double4x4());
@@ -26708,7 +26820,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapYnXnZ() {
         if (Joml.RETURN_NEW) return mapYnXnZ(Joml.double4x4());
@@ -26926,7 +27038,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapYnZX() {
         if (Joml.RETURN_NEW) return mapYnZX(Joml.double4x4());
@@ -27144,7 +27256,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapYnZnX() {
         if (Joml.RETURN_NEW) return mapYnZnX(Joml.double4x4());
@@ -27372,7 +27484,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapZXY() {
         if (Joml.RETURN_NEW) return mapZXY(Joml.double4x4());
@@ -27600,7 +27712,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapZXnY() {
         if (Joml.RETURN_NEW) return mapZXnY(Joml.double4x4());
@@ -27814,7 +27926,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapZYX() {
         if (Joml.RETURN_NEW) return mapZYX(Joml.double4x4());
@@ -28028,7 +28140,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapZYnX() {
         if (Joml.RETURN_NEW) return mapZYnX(Joml.double4x4());
@@ -28256,7 +28368,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapZnXY() {
         if (Joml.RETURN_NEW) return mapZnXY(Joml.double4x4());
@@ -28484,7 +28596,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapZnXnY() {
         if (Joml.RETURN_NEW) return mapZnXnY(Joml.double4x4());
@@ -28700,7 +28812,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapZnYX() {
         if (Joml.RETURN_NEW) return mapZnYX(Joml.double4x4());
@@ -28916,7 +29028,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapZnYnX() {
         if (Joml.RETURN_NEW) return mapZnYnX(Joml.double4x4());
@@ -29114,7 +29226,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnXYZ() {
         if (Joml.RETURN_NEW) return mapnXYZ(Joml.double4x4());
@@ -29314,7 +29426,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnXYnZ() {
         if (Joml.RETURN_NEW) return mapnXYnZ(Joml.double4x4());
@@ -29530,7 +29642,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnXZY() {
         if (Joml.RETURN_NEW) return mapnXZY(Joml.double4x4());
@@ -29746,7 +29858,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnXZnY() {
         if (Joml.RETURN_NEW) return mapnXZnY(Joml.double4x4());
@@ -29946,7 +30058,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnXnYZ() {
         if (Joml.RETURN_NEW) return mapnXnYZ(Joml.double4x4());
@@ -30148,7 +30260,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnXnYnZ() {
         if (Joml.RETURN_NEW) return mapnXnYnZ(Joml.double4x4());
@@ -30364,7 +30476,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnXnZY() {
         if (Joml.RETURN_NEW) return mapnXnZY(Joml.double4x4());
@@ -30580,7 +30692,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnXnZnY() {
         if (Joml.RETURN_NEW) return mapnXnZnY(Joml.double4x4());
@@ -30794,7 +30906,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnYXZ() {
         if (Joml.RETURN_NEW) return mapnYXZ(Joml.double4x4());
@@ -31010,7 +31122,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnYXnZ() {
         if (Joml.RETURN_NEW) return mapnYXnZ(Joml.double4x4());
@@ -31228,7 +31340,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnYZX() {
         if (Joml.RETURN_NEW) return mapnYZX(Joml.double4x4());
@@ -31446,7 +31558,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnYZnX() {
         if (Joml.RETURN_NEW) return mapnYZnX(Joml.double4x4());
@@ -31660,7 +31772,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnYnXZ() {
         if (Joml.RETURN_NEW) return mapnYnXZ(Joml.double4x4());
@@ -31876,7 +31988,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnYnXnZ() {
         if (Joml.RETURN_NEW) return mapnYnXnZ(Joml.double4x4());
@@ -32094,7 +32206,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnYnZX() {
         if (Joml.RETURN_NEW) return mapnYnZX(Joml.double4x4());
@@ -32312,7 +32424,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnYnZnX() {
         if (Joml.RETURN_NEW) return mapnYnZnX(Joml.double4x4());
@@ -32540,7 +32652,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnZXY() {
         if (Joml.RETURN_NEW) return mapnZXY(Joml.double4x4());
@@ -32768,7 +32880,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnZXnY() {
         if (Joml.RETURN_NEW) return mapnZXnY(Joml.double4x4());
@@ -32982,7 +33094,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnZYX() {
         if (Joml.RETURN_NEW) return mapnZYX(Joml.double4x4());
@@ -33196,7 +33308,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnZYnX() {
         if (Joml.RETURN_NEW) return mapnZYnX(Joml.double4x4());
@@ -33424,7 +33536,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnZnXY() {
         if (Joml.RETURN_NEW) return mapnZnXY(Joml.double4x4());
@@ -33652,7 +33764,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnZnXnY() {
         if (Joml.RETURN_NEW) return mapnZnXnY(Joml.double4x4());
@@ -33868,7 +33980,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnZnYX() {
         if (Joml.RETURN_NEW) return mapnZnYX(Joml.double4x4());
@@ -34084,7 +34196,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 mapnZnYnX() {
         if (Joml.RETURN_NEW) return mapnZnYnX(Joml.double4x4());
@@ -34379,7 +34491,7 @@ public class Double4x4Impl implements Double4x4 {
      * using {@code M * O * v}, the oblique shear will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 obliqueCabinet(double angle) {
         if (Joml.RETURN_NEW) return obliqueCabinet(angle, Joml.double4x4());
@@ -34608,7 +34720,7 @@ public class Double4x4Impl implements Double4x4 {
      * using {@code M * O * v}, the oblique shear will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 obliqueCavalier(double angle) {
         if (Joml.RETURN_NEW) return obliqueCavalier(angle, Joml.double4x4());
@@ -34842,7 +34954,7 @@ public class Double4x4Impl implements Double4x4 {
      * using {@code M * O * v}, the oblique shear will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 obliqueMilitary(double angle) {
         if (Joml.RETURN_NEW) return obliqueMilitary(angle, Joml.double4x4());
@@ -36132,7 +36244,7 @@ public class Double4x4Impl implements Double4x4 {
      *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 obliqueZ(Double4R plane, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -36193,7 +36305,7 @@ public class Double4x4Impl implements Double4x4 {
      *        with the normal pointing into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 obliqueZ(double planeX, double planeY, double planeZ, double planeW, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -36242,7 +36354,7 @@ public class Double4x4Impl implements Double4x4 {
      *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 obliqueZ(DoublePlaneR plane, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -36288,7 +36400,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 obliqueZ(Double4R plane, DepthRange depthRange) { return obliqueZ(plane, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -36329,7 +36441,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 obliqueZ(Double4R plane, Handedness handedness) { return obliqueZ(plane, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -36370,7 +36482,7 @@ public class Double4x4Impl implements Double4x4 {
      *
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 obliqueZ(Double4R plane) { return obliqueZ(plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -36423,7 +36535,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 obliqueZ(double planeX, double planeY, double planeZ, double planeW, DepthRange depthRange) { return obliqueZ(planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -36476,7 +36588,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 obliqueZ(double planeX, double planeY, double planeZ, double planeW, Handedness handedness) { return obliqueZ(planeX, planeY, planeZ, planeW, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -36529,7 +36641,7 @@ public class Double4x4Impl implements Double4x4 {
      *        with the normal pointing into the visible half-space
      * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 obliqueZ(double planeX, double planeY, double planeZ, double planeW) { return obliqueZ(planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -36570,7 +36682,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 obliqueZ(DoublePlaneR plane, DepthRange depthRange) { return obliqueZ(plane, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -36611,7 +36723,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 obliqueZ(DoublePlaneR plane, Handedness handedness) { return obliqueZ(plane, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -36652,7 +36764,7 @@ public class Double4x4Impl implements Double4x4 {
      *
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 obliqueZ(DoublePlaneR plane) { return obliqueZ(plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -38225,7 +38337,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param zFar the distance to the far clip plane
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 ortho(double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -38282,7 +38394,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param zNear the distance to the near clip plane
      * @param zFar the distance to the far clip plane
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 ortho(double left, double right, double bottom, double top, double zNear, double zFar, DepthRange depthRange) { return ortho(left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -38334,7 +38446,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param zNear the distance to the near clip plane
      * @param zFar the distance to the far clip plane
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 ortho(double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness) { return ortho(left, right, bottom, top, zNear, zFar, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -38386,7 +38498,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param top the distance to the top frustum edge
      * @param zNear the distance to the near clip plane
      * @param zFar the distance to the far clip plane
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 ortho(double left, double right, double bottom, double top, double zNear, double zFar) { return ortho(left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -39669,7 +39781,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param top the distance to the top frustum edge
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 ortho2D(double left, double right, double bottom, double top, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -39722,7 +39834,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param bottom the distance to the bottom frustum edge
      * @param top the distance to the top frustum edge
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 ortho2D(double left, double right, double bottom, double top, DepthRange depthRange) { return ortho2D(left, right, bottom, top, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -39770,7 +39882,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param bottom the distance to the bottom frustum edge
      * @param top the distance to the top frustum edge
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 ortho2D(double left, double right, double bottom, double top, Handedness handedness) { return ortho2D(left, right, bottom, top, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -39818,7 +39930,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param right the distance to the right frustum edge
      * @param bottom the distance to the bottom frustum edge
      * @param top the distance to the top frustum edge
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 ortho2D(double left, double right, double bottom, double top) { return ortho2D(left, right, bottom, top, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -43780,7 +43892,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param view the light view transformation (must be affine)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 orthoCrop(Double4x4R view, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -43838,7 +43950,7 @@ public class Double4x4Impl implements Double4x4 {
      *
      * @param view the light view transformation (must be affine)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 orthoCrop(Double4x4R view, DepthRange depthRange) { return orthoCrop(view, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -43891,7 +44003,7 @@ public class Double4x4Impl implements Double4x4 {
      *
      * @param view the light view transformation (must be affine)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 orthoCrop(Double4x4R view, Handedness handedness) { return orthoCrop(view, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -43944,7 +44056,7 @@ public class Double4x4Impl implements Double4x4 {
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param view the light view transformation (must be affine)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 orthoCrop(Double4x4R view) { return orthoCrop(view, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -48236,7 +48348,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param maxZ the far depth bound of the slice, in source-projection NDC z
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 orthoCrop(Double4x4R view, double minZ, double maxZ, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -48286,7 +48398,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param minZ the near depth bound of the slice, in source-projection NDC z
      * @param maxZ the far depth bound of the slice, in source-projection NDC z
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 orthoCrop(Double4x4R view, double minZ, double maxZ, DepthRange depthRange) { return orthoCrop(view, minZ, maxZ, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -48331,7 +48443,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param minZ the near depth bound of the slice, in source-projection NDC z
      * @param maxZ the far depth bound of the slice, in source-projection NDC z
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 orthoCrop(Double4x4R view, double minZ, double maxZ, Handedness handedness) { return orthoCrop(view, minZ, maxZ, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -48376,7 +48488,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param view the light view transformation (must be affine)
      * @param minZ the near depth bound of the slice, in source-projection NDC z
      * @param maxZ the far depth bound of the slice, in source-projection NDC z
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 orthoCrop(Double4x4R view, double minZ, double maxZ) { return orthoCrop(view, minZ, maxZ, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -49627,7 +49739,7 @@ public class Double4x4Impl implements Double4x4 {
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 perspective(double fovy, double aspect, double near, double far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -49688,7 +49800,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 perspective(double fovy, double aspect, double near, double far, DepthRange depthRange) { return perspective(fovy, aspect, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -49744,7 +49856,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 perspective(double fovy, double aspect, double near, double far, Handedness handedness) { return perspective(fovy, aspect, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -49800,7 +49912,7 @@ public class Double4x4Impl implements Double4x4 {
      *        reversed)
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 perspective(double fovy, double aspect, double near, double far) { return perspective(fovy, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -51186,7 +51298,7 @@ public class Double4x4Impl implements Double4x4 {
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 perspectiveFovRange(double angleMin, double angleMax, double aspect, double near, double far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -51248,7 +51360,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 perspectiveFovRange(double angleMin, double angleMax, double aspect, double near, double far, DepthRange depthRange) { return perspectiveFovRange(angleMin, angleMax, aspect, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -51305,7 +51417,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 perspectiveFovRange(double angleMin, double angleMax, double aspect, double near, double far, Handedness handedness) { return perspectiveFovRange(angleMin, angleMax, aspect, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -51362,7 +51474,7 @@ public class Double4x4Impl implements Double4x4 {
      *        reversed)
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 perspectiveFovRange(double angleMin, double angleMax, double aspect, double near, double far) { return perspectiveFovRange(angleMin, angleMax, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -52305,7 +52417,7 @@ public class Double4x4Impl implements Double4x4 {
      *        infinite far plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 perspectiveFrustumSlice(double near, double far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -52357,7 +52469,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param far the new distance to the far clip plane (pass positive infinity to re-slice to an
      *        infinite far plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 perspectiveFrustumSlice(double near, double far, DepthRange depthRange) { return perspectiveFrustumSlice(near, far, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -52404,7 +52516,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param far the new distance to the far clip plane (pass positive infinity to re-slice to an
      *        infinite far plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 perspectiveFrustumSlice(double near, double far, Handedness handedness) { return perspectiveFrustumSlice(near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -52451,7 +52563,7 @@ public class Double4x4Impl implements Double4x4 {
      *        reversed)
      * @param far the new distance to the far clip plane (pass positive infinity to re-slice to an
      *        infinite far plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 perspectiveFrustumSlice(double near, double far) { return perspectiveFrustumSlice(near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -54240,7 +54352,7 @@ public class Double4x4Impl implements Double4x4 {
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 perspectiveOffCenterFov(double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -54308,7 +54420,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 perspectiveOffCenterFov(double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far, DepthRange depthRange) { return perspectiveOffCenterFov(angleLeft, angleRight, angleDown, angleUp, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -54371,7 +54483,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 perspectiveOffCenterFov(double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far, Handedness handedness) { return perspectiveOffCenterFov(angleLeft, angleRight, angleDown, angleUp, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -54434,7 +54546,7 @@ public class Double4x4Impl implements Double4x4 {
      *        reversed)
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 perspectiveOffCenterFov(double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) { return perspectiveOffCenterFov(angleLeft, angleRight, angleDown, angleUp, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -54756,7 +54868,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param vpY the y coordinate of the viewport origin
      * @param vpW the width of the viewport
      * @param vpH the height of the viewport
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 pickMatrix(double centerX, double centerY, double deltaX, double deltaY, double vpX, double vpY, double vpW, double vpH) {
         if (Joml.RETURN_NEW) return pickMatrix(centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH, Joml.double4x4());
@@ -54776,6 +54888,10 @@ public class Double4x4Impl implements Double4x4 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rot the quaternion (must be a unit quaternion)
      * @param pivot the pivot point
@@ -54793,10 +54909,14 @@ public class Double4x4Impl implements Double4x4 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rot the quaternion (must be a unit quaternion)
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 preRotateAround(DoubleQuatR rot, Double3R pivot) {
         return preRotateAround(rot.x(), rot.y(), rot.z(), rot.w(), pivot.x(), pivot.y(), pivot.z());
@@ -54818,15 +54938,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t6 = rotX * rotX;
         double _t7 = rotY * rotZ;
         double _t8 = rotX * rotW;
+        double _t18 = 2.0 * (_t0 + _t1);
         double _t19 = 2.0 * (_t2 - _t3);
         double _t20 = 2.0 * (_t4 + _t5);
         double _t21 = 2.0 * (_t2 + _t3);
+        double _t22 = 2.0 * (_t6 + _t1);
         double _t23 = 2.0 * (_t7 - _t8);
         double _t24 = 2.0 * (_t4 - _t5);
         double _t25 = 2.0 * (_t8 + _t7);
-        double _t27 = 1.0 - 2.0 * (_t0 + _t1);
-        double _t28 = 1.0 - 2.0 * (_t6 + _t1);
-        double _t29 = 1.0 - 2.0 * (_t6 + _t0);
+        double _t26 = 2.0 * (_t6 + _t0);
+        double _t27 = 1.0 - _t18;
+        double _t28 = 1.0 - _t22;
+        double _t29 = 1.0 - _t26;
         double _buf0 = this.m00 * _t27 + this.m10 * _t19 + this.m20 * _t20;
         double _buf1 = this.m00 * _t21 + this.m10 * _t28 + this.m20 * _t23;
         d.m20 = this.m00 * _t24 + this.m10 * _t25 + this.m20 * _t29;
@@ -54839,9 +54962,9 @@ public class Double4x4Impl implements Double4x4 {
         double _buf5 = this.m02 * _t21 + this.m12 * _t28 + this.m22 * _t23;
         d.m22 = this.m02 * _t24 + this.m12 * _t25 + this.m22 * _t29;
         d.m32 = 0.0;
-        double _buf6 = this.m03 * _t27 + (this.m13 * _t19 + (this.m23 * _t20 + pivotX)) - pivotZ * _t20 - pivotY * _t19 - pivotX * _t27;
-        double _buf7 = this.m03 * _t21 + (this.m13 * _t28 + (this.m23 * _t23 + pivotY)) - pivotZ * _t23 - pivotY * _t28 - pivotX * _t21;
-        d.m23 = this.m03 * _t24 + (this.m13 * _t25 + (this.m23 * _t29 + pivotZ)) - pivotZ * _t29 - pivotY * _t25 - pivotX * _t24;
+        double _buf6 = this.m03 * _t27 + this.m13 * _t19 + this.m23 * _t20 + (pivotX * _t18 - pivotY * _t19 - pivotZ * _t20);
+        double _buf7 = this.m03 * _t21 + this.m13 * _t28 + this.m23 * _t23 + (pivotY * _t22 - pivotX * _t21 - pivotZ * _t23);
+        d.m23 = this.m03 * _t24 + this.m13 * _t25 + this.m23 * _t29 + (pivotZ * _t26 - pivotX * _t24 - pivotY * _t25);
         d.m33 = 1.0;
         d.m00 = _buf0;
         d.m10 = _buf1;
@@ -54871,15 +54994,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t6 = rotX * rotX;
         double _t7 = rotY * rotZ;
         double _t8 = rotX * rotW;
+        double _t18 = 2.0 * (_t0 + _t1);
         double _t19 = 2.0 * (_t2 - _t3);
         double _t20 = 2.0 * (_t4 + _t5);
         double _t21 = 2.0 * (_t2 + _t3);
+        double _t22 = 2.0 * (_t6 + _t1);
         double _t23 = 2.0 * (_t7 - _t8);
         double _t24 = 2.0 * (_t4 - _t5);
         double _t25 = 2.0 * (_t8 + _t7);
-        double _t27 = 1.0 - 2.0 * (_t0 + _t1);
-        double _t28 = 1.0 - 2.0 * (_t6 + _t1);
-        double _t29 = 1.0 - 2.0 * (_t6 + _t0);
+        double _t26 = 2.0 * (_t6 + _t0);
+        double _t27 = 1.0 - _t18;
+        double _t28 = 1.0 - _t22;
+        double _t29 = 1.0 - _t26;
         double _buf0 = this.m00 * _t27 + this.m10 * _t19 + this.m20 * _t20;
         double _buf1 = this.m00 * _t21 + this.m10 * _t28 + this.m20 * _t23;
         d.m20 = this.m00 * _t24 + this.m10 * _t25 + this.m20 * _t29;
@@ -54889,9 +55015,9 @@ public class Double4x4Impl implements Double4x4 {
         double _buf4 = this.m02 * _t27 + this.m12 * _t19 + this.m22 * _t20;
         double _buf5 = this.m02 * _t21 + this.m12 * _t28 + this.m22 * _t23;
         d.m22 = this.m02 * _t24 + this.m12 * _t25 + this.m22 * _t29;
-        double _buf6 = this.m03 * _t27 + (this.m13 * _t19 + (this.m23 * _t20 + pivotX)) - pivotZ * _t20 - pivotY * _t19 - pivotX * _t27;
-        double _buf7 = this.m03 * _t21 + (this.m13 * _t28 + (this.m23 * _t23 + pivotY)) - pivotZ * _t23 - pivotY * _t28 - pivotX * _t21;
-        d.m23 = this.m03 * _t24 + (this.m13 * _t25 + (this.m23 * _t29 + pivotZ)) - pivotZ * _t29 - pivotY * _t25 - pivotX * _t24;
+        double _buf6 = this.m03 * _t27 + this.m13 * _t19 + this.m23 * _t20 + (pivotX * _t18 - pivotY * _t19 - pivotZ * _t20);
+        double _buf7 = this.m03 * _t21 + this.m13 * _t28 + this.m23 * _t23 + (pivotY * _t22 - pivotX * _t21 - pivotZ * _t23);
+        d.m23 = this.m03 * _t24 + this.m13 * _t25 + this.m23 * _t29 + (pivotZ * _t26 - pivotX * _t24 - pivotY * _t25);
         d.m00 = _buf0;
         d.m10 = _buf1;
         d.m01 = _buf2;
@@ -54920,30 +55046,30 @@ public class Double4x4Impl implements Double4x4 {
         double _t6 = rotX * rotX;
         double _t7 = rotY * rotZ;
         double _t8 = rotX * rotW;
+        double _t18 = 2.0 * (_t0 + _t1);
         double _t19 = 2.0 * (_t2 - _t3);
         double _t20 = 2.0 * (_t4 + _t5);
         double _t21 = 2.0 * (_t2 + _t3);
+        double _t22 = 2.0 * (_t6 + _t1);
         double _t23 = 2.0 * (_t7 - _t8);
         double _t24 = 2.0 * (_t4 - _t5);
         double _t25 = 2.0 * (_t8 + _t7);
-        double _t27 = 1.0 - 2.0 * (_t0 + _t1);
-        double _t28 = 1.0 - 2.0 * (_t6 + _t1);
-        double _t29 = 1.0 - 2.0 * (_t6 + _t0);
-        d.m00 = _t27;
+        double _t26 = 2.0 * (_t6 + _t0);
+        d.m00 = 1.0 - _t18;
         d.m10 = _t21;
         d.m20 = _t24;
         d.m30 = 0.0;
         d.m01 = _t19;
-        d.m11 = _t28;
+        d.m11 = 1.0 - _t22;
         d.m21 = _t25;
         d.m31 = 0.0;
         d.m02 = _t20;
         d.m12 = _t23;
-        d.m22 = _t29;
+        d.m22 = 1.0 - _t26;
         d.m32 = 0.0;
-        d.m03 = pivotX - pivotZ * _t20 - pivotY * _t19 - pivotX * _t27;
-        d.m13 = pivotY - pivotZ * _t23 - pivotY * _t28 - pivotX * _t21;
-        d.m23 = pivotZ - pivotZ * _t29 - pivotY * _t25 - pivotX * _t24;
+        d.m03 = pivotX * _t18 - pivotY * _t19 - pivotZ * _t20;
+        d.m13 = pivotY * _t22 - pivotX * _t21 - pivotZ * _t23;
+        d.m23 = pivotZ * _t26 - pivotX * _t24 - pivotY * _t25;
         d.m33 = 1.0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -54965,27 +55091,27 @@ public class Double4x4Impl implements Double4x4 {
         double _t6 = rotX * rotX;
         double _t7 = rotY * rotZ;
         double _t8 = rotX * rotW;
+        double _t18 = 2.0 * (_t0 + _t1);
         double _t19 = 2.0 * (_t2 - _t3);
         double _t20 = 2.0 * (_t4 + _t5);
         double _t21 = 2.0 * (_t2 + _t3);
+        double _t22 = 2.0 * (_t6 + _t1);
         double _t23 = 2.0 * (_t7 - _t8);
         double _t24 = 2.0 * (_t4 - _t5);
         double _t25 = 2.0 * (_t8 + _t7);
-        double _t27 = 1.0 - 2.0 * (_t0 + _t1);
-        double _t28 = 1.0 - 2.0 * (_t6 + _t1);
-        double _t29 = 1.0 - 2.0 * (_t6 + _t0);
-        d.m00 = _t27;
+        double _t26 = 2.0 * (_t6 + _t0);
+        d.m00 = 1.0 - _t18;
         d.m10 = _t21;
         d.m20 = _t24;
         d.m01 = _t19;
-        d.m11 = _t28;
+        d.m11 = 1.0 - _t22;
         d.m21 = _t25;
         d.m02 = _t20;
         d.m12 = _t23;
-        d.m22 = _t29;
-        d.m03 = pivotX - pivotZ * _t20 - pivotY * _t19 - pivotX * _t27;
-        d.m13 = pivotY - pivotZ * _t23 - pivotY * _t28 - pivotX * _t21;
-        d.m23 = pivotZ - pivotZ * _t29 - pivotY * _t25 - pivotX * _t24;
+        d.m22 = 1.0 - _t26;
+        d.m03 = pivotX * _t18 - pivotY * _t19 - pivotZ * _t20;
+        d.m13 = pivotY * _t22 - pivotX * _t21 - pivotZ * _t23;
+        d.m23 = pivotZ * _t26 - pivotX * _t24 - pivotY * _t25;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -55006,15 +55132,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t6 = rotX * rotX;
         double _t7 = rotY * rotZ;
         double _t8 = rotX * rotW;
+        double _t18 = 2.0 * (_t0 + _t1);
         double _t19 = 2.0 * (_t2 - _t3);
         double _t20 = 2.0 * (_t4 + _t5);
         double _t21 = 2.0 * (_t2 + _t3);
+        double _t22 = 2.0 * (_t6 + _t1);
         double _t23 = 2.0 * (_t7 - _t8);
         double _t24 = 2.0 * (_t4 - _t5);
         double _t25 = 2.0 * (_t8 + _t7);
-        double _t27 = 1.0 - 2.0 * (_t0 + _t1);
-        double _t28 = 1.0 - 2.0 * (_t6 + _t1);
-        double _t29 = 1.0 - 2.0 * (_t6 + _t0);
+        double _t26 = 2.0 * (_t6 + _t0);
+        double _t27 = 1.0 - _t18;
+        double _t28 = 1.0 - _t22;
+        double _t29 = 1.0 - _t26;
         d.m00 = _t27;
         d.m10 = _t21;
         d.m20 = _t24;
@@ -55027,9 +55156,9 @@ public class Double4x4Impl implements Double4x4 {
         d.m12 = _t23;
         d.m22 = _t29;
         d.m32 = 0.0;
-        double _buf0 = this.m03 * _t27 + (this.m13 * _t19 + (this.m23 * _t20 + pivotX)) - pivotZ * _t20 - pivotY * _t19 - pivotX * _t27;
-        double _buf1 = this.m03 * _t21 + (this.m13 * _t28 + (this.m23 * _t23 + pivotY)) - pivotZ * _t23 - pivotY * _t28 - pivotX * _t21;
-        d.m23 = this.m03 * _t24 + (this.m13 * _t25 + (this.m23 * _t29 + pivotZ)) - pivotZ * _t29 - pivotY * _t25 - pivotX * _t24;
+        double _buf0 = this.m03 * _t27 + this.m13 * _t19 + this.m23 * _t20 + (pivotX * _t18 - pivotY * _t19 - pivotZ * _t20);
+        double _buf1 = this.m03 * _t21 + this.m13 * _t28 + this.m23 * _t23 + (pivotY * _t22 - pivotX * _t21 - pivotZ * _t23);
+        d.m23 = this.m03 * _t24 + this.m13 * _t25 + this.m23 * _t29 + (pivotZ * _t26 - pivotX * _t24 - pivotY * _t25);
         d.m33 = 1.0;
         d.m03 = _buf0;
         d.m13 = _buf1;
@@ -55053,15 +55182,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t6 = rotX * rotX;
         double _t7 = rotY * rotZ;
         double _t8 = rotX * rotW;
+        double _t18 = 2.0 * (_t0 + _t1);
         double _t19 = 2.0 * (_t2 - _t3);
         double _t20 = 2.0 * (_t4 + _t5);
         double _t21 = 2.0 * (_t2 + _t3);
+        double _t22 = 2.0 * (_t6 + _t1);
         double _t23 = 2.0 * (_t7 - _t8);
         double _t24 = 2.0 * (_t4 - _t5);
         double _t25 = 2.0 * (_t8 + _t7);
-        double _t27 = 1.0 - 2.0 * (_t0 + _t1);
-        double _t28 = 1.0 - 2.0 * (_t6 + _t1);
-        double _t29 = 1.0 - 2.0 * (_t6 + _t0);
+        double _t26 = 2.0 * (_t6 + _t0);
+        double _t27 = 1.0 - _t18;
+        double _t28 = 1.0 - _t22;
+        double _t29 = 1.0 - _t26;
         d.m00 = _t27;
         d.m10 = _t21;
         d.m20 = _t24;
@@ -55071,9 +55203,9 @@ public class Double4x4Impl implements Double4x4 {
         d.m02 = _t20;
         d.m12 = _t23;
         d.m22 = _t29;
-        double _buf0 = this.m03 * _t27 + (this.m13 * _t19 + (this.m23 * _t20 + pivotX)) - pivotZ * _t20 - pivotY * _t19 - pivotX * _t27;
-        double _buf1 = this.m03 * _t21 + (this.m13 * _t28 + (this.m23 * _t23 + pivotY)) - pivotZ * _t23 - pivotY * _t28 - pivotX * _t21;
-        d.m23 = this.m03 * _t24 + (this.m13 * _t25 + (this.m23 * _t29 + pivotZ)) - pivotZ * _t29 - pivotY * _t25 - pivotX * _t24;
+        double _buf0 = this.m03 * _t27 + this.m13 * _t19 + this.m23 * _t20 + (pivotX * _t18 - pivotY * _t19 - pivotZ * _t20);
+        double _buf1 = this.m03 * _t21 + this.m13 * _t28 + this.m23 * _t23 + (pivotY * _t22 - pivotX * _t21 - pivotZ * _t23);
+        d.m23 = this.m03 * _t24 + this.m13 * _t25 + this.m23 * _t29 + (pivotZ * _t26 - pivotX * _t24 - pivotY * _t25);
         d.m03 = _buf0;
         d.m13 = _buf1;
         d.properties = Joml.BIT_ORTHOGONAL;
@@ -55096,33 +55228,36 @@ public class Double4x4Impl implements Double4x4 {
         double _t6 = rotX * rotX;
         double _t7 = rotY * rotZ;
         double _t8 = rotX * rotW;
+        double _t18 = 2.0 * (_t0 + _t1);
         double _t19 = 2.0 * (_t2 - _t3);
         double _t20 = 2.0 * (_t4 + _t5);
         double _t21 = 2.0 * (_t2 + _t3);
+        double _t22 = 2.0 * (_t6 + _t1);
         double _t23 = 2.0 * (_t7 - _t8);
         double _t24 = 2.0 * (_t4 - _t5);
         double _t25 = 2.0 * (_t8 + _t7);
-        double _t27 = 1.0 - 2.0 * (_t0 + _t1);
-        double _t28 = 1.0 - 2.0 * (_t6 + _t1);
-        double _t29 = 1.0 - 2.0 * (_t6 + _t0);
-        double _t45 = pivotX - pivotZ * _t20 - pivotY * _t19 - pivotX * _t27;
-        double _t46 = pivotY - pivotZ * _t23 - pivotY * _t28 - pivotX * _t21;
-        double _t47 = pivotZ - pivotZ * _t29 - pivotY * _t25 - pivotX * _t24;
-        double _buf0 = this.m00 * _t27 + this.m10 * _t19 + this.m20 * _t20 + this.m30 * _t45;
-        double _buf1 = this.m00 * _t21 + this.m10 * _t28 + this.m20 * _t23 + this.m30 * _t46;
-        d.m20 = this.m00 * _t24 + this.m10 * _t25 + this.m20 * _t29 + this.m30 * _t47;
+        double _t26 = 2.0 * (_t6 + _t0);
+        double _t27 = 1.0 - _t18;
+        double _t28 = 1.0 - _t22;
+        double _t29 = 1.0 - _t26;
+        double _t42 = pivotX * _t18 - pivotY * _t19 - pivotZ * _t20;
+        double _t43 = pivotY * _t22 - pivotX * _t21 - pivotZ * _t23;
+        double _t44 = pivotZ * _t26 - pivotX * _t24 - pivotY * _t25;
+        double _buf0 = this.m00 * _t27 + this.m10 * _t19 + this.m20 * _t20 + this.m30 * _t42;
+        double _buf1 = this.m00 * _t21 + this.m10 * _t28 + this.m20 * _t23 + this.m30 * _t43;
+        d.m20 = this.m00 * _t24 + this.m10 * _t25 + this.m20 * _t29 + this.m30 * _t44;
         d.m30 = this.m30;
-        double _buf2 = this.m01 * _t27 + this.m11 * _t19 + this.m21 * _t20 + this.m31 * _t45;
-        double _buf3 = this.m01 * _t21 + this.m11 * _t28 + this.m21 * _t23 + this.m31 * _t46;
-        d.m21 = this.m01 * _t24 + this.m11 * _t25 + this.m21 * _t29 + this.m31 * _t47;
+        double _buf2 = this.m01 * _t27 + this.m11 * _t19 + this.m21 * _t20 + this.m31 * _t42;
+        double _buf3 = this.m01 * _t21 + this.m11 * _t28 + this.m21 * _t23 + this.m31 * _t43;
+        d.m21 = this.m01 * _t24 + this.m11 * _t25 + this.m21 * _t29 + this.m31 * _t44;
         d.m31 = this.m31;
-        double _buf4 = this.m02 * _t27 + this.m12 * _t19 + this.m22 * _t20 + this.m32 * _t45;
-        double _buf5 = this.m02 * _t21 + this.m12 * _t28 + this.m22 * _t23 + this.m32 * _t46;
-        d.m22 = this.m02 * _t24 + this.m12 * _t25 + this.m22 * _t29 + this.m32 * _t47;
+        double _buf4 = this.m02 * _t27 + this.m12 * _t19 + this.m22 * _t20 + this.m32 * _t42;
+        double _buf5 = this.m02 * _t21 + this.m12 * _t28 + this.m22 * _t23 + this.m32 * _t43;
+        d.m22 = this.m02 * _t24 + this.m12 * _t25 + this.m22 * _t29 + this.m32 * _t44;
         d.m32 = this.m32;
-        double _buf6 = this.m03 * _t27 + this.m13 * _t19 + this.m23 * _t20 + this.m33 * _t45;
-        double _buf7 = this.m03 * _t21 + this.m13 * _t28 + this.m23 * _t23 + this.m33 * _t46;
-        d.m23 = this.m03 * _t24 + this.m13 * _t25 + this.m23 * _t29 + this.m33 * _t47;
+        double _buf6 = this.m03 * _t27 + this.m13 * _t19 + this.m23 * _t20 + this.m33 * _t42;
+        double _buf7 = this.m03 * _t21 + this.m13 * _t28 + this.m23 * _t23 + this.m33 * _t43;
+        d.m23 = this.m03 * _t24 + this.m13 * _t25 + this.m23 * _t29 + this.m33 * _t44;
         d.m33 = this.m33;
         d.m00 = _buf0;
         d.m10 = _buf1;
@@ -55145,6 +55280,10 @@ public class Double4x4Impl implements Double4x4 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rotX the {@code x} component of the quaternion {@code (rotX, rotY, rotZ, rotW)} (the
      *        quaternion must have unit length)
@@ -55176,6 +55315,10 @@ public class Double4x4Impl implements Double4x4 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rotX the {@code x} component of the quaternion {@code (rotX, rotY, rotZ, rotW)} (the
      *        quaternion must have unit length)
@@ -55188,7 +55331,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 preRotateAround(double rotX, double rotY, double rotZ, double rotW, double pivotX, double pivotY, double pivotZ) {
         if (Joml.RETURN_NEW) return preRotateAround(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, Joml.double4x4());
@@ -55228,7 +55371,7 @@ public class Double4x4Impl implements Double4x4 {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 preRotateAxis(double angle, Double3R axis) {
         return preRotateAxis(angle, axis.x(), axis.y(), axis.z());
@@ -55587,7 +55730,7 @@ public class Double4x4Impl implements Double4x4 {
      *        vector must have unit length)
      * @param axisZ the {@code z} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
      *        vector must have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 preRotateAxis(double angle, double axisX, double axisY, double axisZ) {
         if (Joml.RETURN_NEW) return preRotateAxis(angle, axisX, axisY, axisZ, Joml.double4x4());
@@ -55624,7 +55767,7 @@ public class Double4x4Impl implements Double4x4 {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param q the quaternion (must be a unit quaternion)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 preRotateQuat(DoubleQuatR q) {
         return preRotateQuat(q.x(), q.y(), q.z(), q.w());
@@ -55985,7 +56128,7 @@ public class Double4x4Impl implements Double4x4 {
      *        must have unit length)
      * @param qW the {@code w} component of the quaternion {@code (qX, qY, qZ, qW)} (the quaternion
      *        must have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 preRotateQuat(double qX, double qY, double qZ, double qW) {
         if (Joml.RETURN_NEW) return preRotateQuat(qX, qY, qZ, qW, Joml.double4x4());
@@ -56218,7 +56361,7 @@ public class Double4x4Impl implements Double4x4 {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 preRotateX(double angle) {
         if (Joml.RETURN_NEW) return preRotateX(angle, Joml.double4x4());
@@ -56451,7 +56594,7 @@ public class Double4x4Impl implements Double4x4 {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 preRotateY(double angle) {
         if (Joml.RETURN_NEW) return preRotateY(angle, Joml.double4x4());
@@ -56684,7 +56827,7 @@ public class Double4x4Impl implements Double4x4 {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 preRotateZ(double angle) {
         if (Joml.RETURN_NEW) return preRotateZ(angle, Joml.double4x4());
@@ -56720,7 +56863,7 @@ public class Double4x4Impl implements Double4x4 {
      * {@code S * M * p}, the scaling will be applied last.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 preScale(Double3R v) {
         return preScale(v.x(), v.y(), v.z());
@@ -56922,7 +57065,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
      * @param vZ the {@code z} component of the vector {@code (vX, vY, vZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 preScale(double vX, double vY, double vZ) {
         if (Joml.RETURN_NEW) return preScale(vX, vY, vZ, Joml.double4x4());
@@ -57124,7 +57267,7 @@ public class Double4x4Impl implements Double4x4 {
      * {@code S * M * v}, the scaling will be applied last.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 preScale(double s) {
         if (Joml.RETURN_NEW) return preScale(s, Joml.double4x4());
@@ -57163,7 +57306,7 @@ public class Double4x4Impl implements Double4x4 {
      *
      * @param s the uniform scale factor
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 preScaleAround(double s, Double3R pivot) {
         return preScaleAround(s, pivot.x(), pivot.y(), pivot.z());
@@ -57374,7 +57517,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 preScaleAround(double s, double pivotX, double pivotY, double pivotZ) {
         if (Joml.RETURN_NEW) return preScaleAround(s, pivotX, pivotY, pivotZ, Joml.double4x4());
@@ -57413,7 +57556,7 @@ public class Double4x4Impl implements Double4x4 {
      *
      * @param s the scale factors
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 preScaleAround(Double3R s, Double3R pivot) {
         return preScaleAround(s.x(), s.y(), s.z(), pivot.x(), pivot.y(), pivot.z());
@@ -57629,7 +57772,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 preScaleAround(double sX, double sY, double sZ, double pivotX, double pivotY, double pivotZ) {
         if (Joml.RETURN_NEW) return preScaleAround(sX, sY, sZ, pivotX, pivotY, pivotZ, Joml.double4x4());
@@ -57666,7 +57809,7 @@ public class Double4x4Impl implements Double4x4 {
      * {@code T * M * p}, the translation will be applied last.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 preTranslate(Double3R v) {
         return preTranslate(v.x(), v.y(), v.z());
@@ -57865,7 +58008,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
      * @param vZ the {@code z} component of the vector {@code (vX, vY, vZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 preTranslate(double vX, double vY, double vZ) {
         if (Joml.RETURN_NEW) return preTranslate(vX, vY, vZ, Joml.double4x4());
@@ -58143,7 +58286,7 @@ public class Double4x4Impl implements Double4x4 {
      * {@code M * R * v}, the reflection will be applied first.
      *
      * @param normal the normal (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 reflect(Double3R normal) {
         return reflect(normal.x(), normal.y(), normal.z());
@@ -58414,7 +58557,7 @@ public class Double4x4Impl implements Double4x4 {
      *        vector must have unit length)
      * @param normalZ the {@code z} component of the vector {@code (normalX, normalY, normalZ)} (the
      *        vector must have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 reflect(double normalX, double normalY, double normalZ) {
         if (Joml.RETURN_NEW) return reflect(normalX, normalY, normalZ, Joml.double4x4());
@@ -58433,6 +58576,10 @@ public class Double4x4Impl implements Double4x4 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rot the quaternion (must be a unit quaternion)
      * @param pivot the pivot point
@@ -58450,10 +58597,14 @@ public class Double4x4Impl implements Double4x4 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rot the quaternion (must be a unit quaternion)
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 rotateAround(DoubleQuatR rot, Double3R pivot) {
         return rotateAround(rot.x(), rot.y(), rot.z(), rot.w(), pivot.x(), pivot.y(), pivot.z());
@@ -58475,18 +58626,21 @@ public class Double4x4Impl implements Double4x4 {
         double _t6 = rotX * rotX;
         double _t7 = rotX * rotW;
         double _t8 = rotY * rotZ;
+        double _t18 = 2.0 * (_t0 + _t1);
         double _t19 = 2.0 * (_t2 + _t3);
         double _t20 = 2.0 * (_t4 - _t5);
         double _t21 = 2.0 * (_t2 - _t3);
+        double _t22 = 2.0 * (_t6 + _t1);
         double _t23 = 2.0 * (_t7 + _t8);
         double _t24 = 2.0 * (_t4 + _t5);
         double _t25 = 2.0 * (_t8 - _t7);
-        double _t27 = 1.0 - 2.0 * (_t0 + _t1);
-        double _t28 = 1.0 - 2.0 * (_t6 + _t1);
-        double _t29 = 1.0 - 2.0 * (_t6 + _t0);
-        double _t45 = pivotX - pivotZ * _t24 - pivotY * _t21 - pivotX * _t27;
-        double _t46 = pivotY - pivotZ * _t25 - pivotY * _t28 - pivotX * _t19;
-        double _t47 = pivotZ - pivotZ * _t29 - pivotY * _t23 - pivotX * _t20;
+        double _t26 = 2.0 * (_t6 + _t0);
+        double _t27 = 1.0 - _t18;
+        double _t28 = 1.0 - _t22;
+        double _t29 = 1.0 - _t26;
+        double _t42 = pivotX * _t18 - pivotY * _t21 - pivotZ * _t24;
+        double _t43 = pivotY * _t22 - pivotX * _t19 - pivotZ * _t25;
+        double _t44 = pivotZ * _t26 - pivotX * _t20 - pivotY * _t23;
         double _buf0 = this.m00 * _t27 + this.m01 * _t19 + this.m02 * _t20;
         double _buf1 = this.m10 * _t27 + this.m11 * _t19 + this.m12 * _t20;
         double _buf2 = this.m20 * _t27 + this.m21 * _t19 + this.m22 * _t20;
@@ -58499,9 +58653,9 @@ public class Double4x4Impl implements Double4x4 {
         double _buf7 = this.m10 * _t24 + this.m11 * _t25 + this.m12 * _t29;
         double _buf8 = this.m20 * _t24 + this.m21 * _t25 + this.m22 * _t29;
         d.m32 = 0.0;
-        d.m03 = this.m00 * _t45 + (this.m01 * _t46 + (this.m02 * _t47 + this.m03));
-        d.m13 = this.m10 * _t45 + (this.m11 * _t46 + (this.m12 * _t47 + this.m13));
-        d.m23 = this.m20 * _t45 + (this.m21 * _t46 + (this.m22 * _t47 + this.m23));
+        d.m03 = this.m00 * _t42 + (this.m01 * _t43 + (this.m02 * _t44 + this.m03));
+        d.m13 = this.m10 * _t42 + (this.m11 * _t43 + (this.m12 * _t44 + this.m13));
+        d.m23 = this.m20 * _t42 + (this.m21 * _t43 + (this.m22 * _t44 + this.m23));
         d.m33 = 1.0;
         d.m00 = _buf0;
         d.m10 = _buf1;
@@ -58532,18 +58686,21 @@ public class Double4x4Impl implements Double4x4 {
         double _t6 = rotX * rotX;
         double _t7 = rotX * rotW;
         double _t8 = rotY * rotZ;
+        double _t18 = 2.0 * (_t0 + _t1);
         double _t19 = 2.0 * (_t2 + _t3);
         double _t20 = 2.0 * (_t4 - _t5);
         double _t21 = 2.0 * (_t2 - _t3);
+        double _t22 = 2.0 * (_t6 + _t1);
         double _t23 = 2.0 * (_t7 + _t8);
         double _t24 = 2.0 * (_t4 + _t5);
         double _t25 = 2.0 * (_t8 - _t7);
-        double _t27 = 1.0 - 2.0 * (_t0 + _t1);
-        double _t28 = 1.0 - 2.0 * (_t6 + _t1);
-        double _t29 = 1.0 - 2.0 * (_t6 + _t0);
-        double _t45 = pivotX - pivotZ * _t24 - pivotY * _t21 - pivotX * _t27;
-        double _t46 = pivotY - pivotZ * _t25 - pivotY * _t28 - pivotX * _t19;
-        double _t47 = pivotZ - pivotZ * _t29 - pivotY * _t23 - pivotX * _t20;
+        double _t26 = 2.0 * (_t6 + _t0);
+        double _t27 = 1.0 - _t18;
+        double _t28 = 1.0 - _t22;
+        double _t29 = 1.0 - _t26;
+        double _t42 = pivotX * _t18 - pivotY * _t21 - pivotZ * _t24;
+        double _t43 = pivotY * _t22 - pivotX * _t19 - pivotZ * _t25;
+        double _t44 = pivotZ * _t26 - pivotX * _t20 - pivotY * _t23;
         double _buf0 = this.m00 * _t27 + this.m01 * _t19 + this.m02 * _t20;
         double _buf1 = this.m10 * _t27 + this.m11 * _t19 + this.m12 * _t20;
         double _buf2 = this.m20 * _t27 + this.m21 * _t19 + this.m22 * _t20;
@@ -58553,9 +58710,9 @@ public class Double4x4Impl implements Double4x4 {
         double _buf6 = this.m00 * _t24 + this.m01 * _t25 + this.m02 * _t29;
         double _buf7 = this.m10 * _t24 + this.m11 * _t25 + this.m12 * _t29;
         double _buf8 = this.m20 * _t24 + this.m21 * _t25 + this.m22 * _t29;
-        d.m03 = this.m00 * _t45 + (this.m01 * _t46 + (this.m02 * _t47 + this.m03));
-        d.m13 = this.m10 * _t45 + (this.m11 * _t46 + (this.m12 * _t47 + this.m13));
-        d.m23 = this.m20 * _t45 + (this.m21 * _t46 + (this.m22 * _t47 + this.m23));
+        d.m03 = this.m00 * _t42 + (this.m01 * _t43 + (this.m02 * _t44 + this.m03));
+        d.m13 = this.m10 * _t42 + (this.m11 * _t43 + (this.m12 * _t44 + this.m13));
+        d.m23 = this.m20 * _t42 + (this.m21 * _t43 + (this.m22 * _t44 + this.m23));
         d.m00 = _buf0;
         d.m10 = _buf1;
         d.m20 = _buf2;
@@ -58603,30 +58760,30 @@ public class Double4x4Impl implements Double4x4 {
         double _t6 = rotX * rotX;
         double _t7 = rotY * rotZ;
         double _t8 = rotX * rotW;
+        double _t18 = 2.0 * (_t0 + _t1);
         double _t19 = 2.0 * (_t2 - _t3);
         double _t20 = 2.0 * (_t4 + _t5);
         double _t21 = 2.0 * (_t2 + _t3);
+        double _t22 = 2.0 * (_t6 + _t1);
         double _t23 = 2.0 * (_t7 - _t8);
         double _t24 = 2.0 * (_t4 - _t5);
         double _t25 = 2.0 * (_t8 + _t7);
-        double _t27 = 1.0 - 2.0 * (_t0 + _t1);
-        double _t28 = 1.0 - 2.0 * (_t6 + _t1);
-        double _t29 = 1.0 - 2.0 * (_t6 + _t0);
-        d.m00 = _t27;
+        double _t26 = 2.0 * (_t6 + _t0);
+        d.m00 = 1.0 - _t18;
         d.m10 = _t21;
         d.m20 = _t24;
         d.m30 = 0.0;
         d.m01 = _t19;
-        d.m11 = _t28;
+        d.m11 = 1.0 - _t22;
         d.m21 = _t25;
         d.m31 = 0.0;
         d.m02 = _t20;
         d.m12 = _t23;
-        d.m22 = _t29;
+        d.m22 = 1.0 - _t26;
         d.m32 = 0.0;
-        d.m03 = this.m03 + pivotX - pivotZ * _t20 - pivotY * _t19 - pivotX * _t27;
-        d.m13 = this.m13 + pivotY - pivotZ * _t23 - pivotY * _t28 - pivotX * _t21;
-        d.m23 = this.m23 + pivotZ - pivotZ * _t29 - pivotY * _t25 - pivotX * _t24;
+        d.m03 = pivotX * _t18 + (this.m03 - pivotZ * _t20 - pivotY * _t19);
+        d.m13 = pivotY * _t22 + (this.m13 - pivotZ * _t23 - pivotX * _t21);
+        d.m23 = pivotZ * _t26 + (this.m23 - pivotY * _t25 - pivotX * _t24);
         d.m33 = 1.0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -58648,27 +58805,27 @@ public class Double4x4Impl implements Double4x4 {
         double _t6 = rotX * rotX;
         double _t7 = rotY * rotZ;
         double _t8 = rotX * rotW;
+        double _t18 = 2.0 * (_t0 + _t1);
         double _t19 = 2.0 * (_t2 - _t3);
         double _t20 = 2.0 * (_t4 + _t5);
         double _t21 = 2.0 * (_t2 + _t3);
+        double _t22 = 2.0 * (_t6 + _t1);
         double _t23 = 2.0 * (_t7 - _t8);
         double _t24 = 2.0 * (_t4 - _t5);
         double _t25 = 2.0 * (_t8 + _t7);
-        double _t27 = 1.0 - 2.0 * (_t0 + _t1);
-        double _t28 = 1.0 - 2.0 * (_t6 + _t1);
-        double _t29 = 1.0 - 2.0 * (_t6 + _t0);
-        d.m00 = _t27;
+        double _t26 = 2.0 * (_t6 + _t0);
+        d.m00 = 1.0 - _t18;
         d.m10 = _t21;
         d.m20 = _t24;
         d.m01 = _t19;
-        d.m11 = _t28;
+        d.m11 = 1.0 - _t22;
         d.m21 = _t25;
         d.m02 = _t20;
         d.m12 = _t23;
-        d.m22 = _t29;
-        d.m03 = this.m03 + pivotX - pivotZ * _t20 - pivotY * _t19 - pivotX * _t27;
-        d.m13 = this.m13 + pivotY - pivotZ * _t23 - pivotY * _t28 - pivotX * _t21;
-        d.m23 = this.m23 + pivotZ - pivotZ * _t29 - pivotY * _t25 - pivotX * _t24;
+        d.m22 = 1.0 - _t26;
+        d.m03 = pivotX * _t18 + (this.m03 - pivotZ * _t20 - pivotY * _t19);
+        d.m13 = pivotY * _t22 + (this.m13 - pivotZ * _t23 - pivotX * _t21);
+        d.m23 = pivotZ * _t26 + (this.m23 - pivotY * _t25 - pivotX * _t24);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -58689,18 +58846,21 @@ public class Double4x4Impl implements Double4x4 {
         double _t6 = rotX * rotX;
         double _t7 = rotX * rotW;
         double _t8 = rotY * rotZ;
+        double _t18 = 2.0 * (_t0 + _t1);
         double _t19 = 2.0 * (_t2 + _t3);
         double _t20 = 2.0 * (_t4 - _t5);
         double _t21 = 2.0 * (_t2 - _t3);
+        double _t22 = 2.0 * (_t6 + _t1);
         double _t23 = 2.0 * (_t7 + _t8);
         double _t24 = 2.0 * (_t4 + _t5);
         double _t25 = 2.0 * (_t8 - _t7);
-        double _t27 = 1.0 - 2.0 * (_t0 + _t1);
-        double _t28 = 1.0 - 2.0 * (_t6 + _t1);
-        double _t29 = 1.0 - 2.0 * (_t6 + _t0);
-        double _t45 = pivotX - pivotZ * _t24 - pivotY * _t21 - pivotX * _t27;
-        double _t46 = pivotY - pivotZ * _t25 - pivotY * _t28 - pivotX * _t19;
-        double _t47 = pivotZ - pivotZ * _t29 - pivotY * _t23 - pivotX * _t20;
+        double _t26 = 2.0 * (_t6 + _t0);
+        double _t27 = 1.0 - _t18;
+        double _t28 = 1.0 - _t22;
+        double _t29 = 1.0 - _t26;
+        double _t42 = pivotX * _t18 - pivotY * _t21 - pivotZ * _t24;
+        double _t43 = pivotY * _t22 - pivotX * _t19 - pivotZ * _t25;
+        double _t44 = pivotZ * _t26 - pivotX * _t20 - pivotY * _t23;
         double _buf0 = this.m00 * _t27 + this.m01 * _t19 + this.m02 * _t20;
         double _buf1 = this.m10 * _t27 + this.m11 * _t19 + this.m12 * _t20;
         double _buf2 = this.m20 * _t27 + this.m21 * _t19 + this.m22 * _t20;
@@ -58713,10 +58873,10 @@ public class Double4x4Impl implements Double4x4 {
         double _buf9 = this.m10 * _t24 + this.m11 * _t25 + this.m12 * _t29;
         double _buf10 = this.m20 * _t24 + this.m21 * _t25 + this.m22 * _t29;
         double _buf11 = this.m30 * _t24 + this.m31 * _t25 + this.m32 * _t29;
-        d.m03 = this.m00 * _t45 + (this.m01 * _t46 + (this.m02 * _t47 + this.m03));
-        d.m13 = this.m10 * _t45 + (this.m11 * _t46 + (this.m12 * _t47 + this.m13));
-        d.m23 = this.m20 * _t45 + (this.m21 * _t46 + (this.m22 * _t47 + this.m23));
-        d.m33 = this.m30 * _t45 + (this.m31 * _t46 + (this.m32 * _t47 + this.m33));
+        d.m03 = this.m00 * _t42 + (this.m01 * _t43 + (this.m02 * _t44 + this.m03));
+        d.m13 = this.m10 * _t42 + (this.m11 * _t43 + (this.m12 * _t44 + this.m13));
+        d.m23 = this.m20 * _t42 + (this.m21 * _t43 + (this.m22 * _t44 + this.m23));
+        d.m33 = this.m30 * _t42 + (this.m31 * _t43 + (this.m32 * _t44 + this.m33));
         d.m00 = _buf0;
         d.m10 = _buf1;
         d.m20 = _buf2;
@@ -58742,6 +58902,10 @@ public class Double4x4Impl implements Double4x4 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rotX the {@code x} component of the quaternion {@code (rotX, rotY, rotZ, rotW)} (the
      *        quaternion must have unit length)
@@ -58773,6 +58937,10 @@ public class Double4x4Impl implements Double4x4 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rotX the {@code x} component of the quaternion {@code (rotX, rotY, rotZ, rotW)} (the
      *        quaternion must have unit length)
@@ -58785,7 +58953,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateAround(double rotX, double rotY, double rotZ, double rotW, double pivotX, double pivotY, double pivotZ) {
         if (Joml.RETURN_NEW) return rotateAround(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, Joml.double4x4());
@@ -58824,7 +58992,7 @@ public class Double4x4Impl implements Double4x4 {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 rotateAxis(double angle, Double3R axis) {
         return rotateAxis(angle, axis.x(), axis.y(), axis.z());
@@ -59110,7 +59278,7 @@ public class Double4x4Impl implements Double4x4 {
      *        vector must have unit length)
      * @param axisZ the {@code z} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
      *        vector must have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateAxis(double angle, double axisX, double axisY, double axisZ) {
         if (Joml.RETURN_NEW) return rotateAxis(angle, axisX, axisY, axisZ, Joml.double4x4());
@@ -59147,7 +59315,7 @@ public class Double4x4Impl implements Double4x4 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param q the quaternion (must be a unit quaternion)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 rotateQuat(DoubleQuatR q) {
         return rotateQuat(q.x(), q.y(), q.z(), q.w());
@@ -59435,7 +59603,7 @@ public class Double4x4Impl implements Double4x4 {
      *        must have unit length)
      * @param qW the {@code w} component of the quaternion {@code (qX, qY, qZ, qW)} (the quaternion
      *        must have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateQuat(double qX, double qY, double qZ, double qW) {
         if (Joml.RETURN_NEW) return rotateQuat(qX, qY, qZ, qW, Joml.double4x4());
@@ -59636,7 +59804,7 @@ public class Double4x4Impl implements Double4x4 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateX(double angle) {
         if (Joml.RETURN_NEW) return rotateX(angle, Joml.double4x4());
@@ -59671,7 +59839,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateX180() {
         return mapXnYnZ();
@@ -59701,7 +59869,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateX270() {
         return mapXnZY();
@@ -59731,7 +59899,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateX90() {
         return mapXZnY();
@@ -60048,7 +60216,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateXYZ(double angleX, double angleY, double angleZ) {
         if (Joml.RETURN_NEW) return rotateXYZ(angleX, angleY, angleZ, Joml.double4x4());
@@ -60370,7 +60538,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateXZY(double angleX, double angleY, double angleZ) {
         if (Joml.RETURN_NEW) return rotateXZY(angleX, angleY, angleZ, Joml.double4x4());
@@ -60405,7 +60573,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateXn180() {
         return mapXnYnZ();
@@ -60435,7 +60603,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateXn270() {
         return mapXZnY();
@@ -60465,7 +60633,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateXn90() {
         return mapXnZY();
@@ -60661,7 +60829,7 @@ public class Double4x4Impl implements Double4x4 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateY(double angle) {
         if (Joml.RETURN_NEW) return rotateY(angle, Joml.double4x4());
@@ -60696,7 +60864,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateY180() {
         return mapnXYnZ();
@@ -60726,7 +60894,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateY270() {
         return mapZYnX();
@@ -60756,7 +60924,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateY90() {
         return mapnZYX();
@@ -61073,7 +61241,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateYXZ(double angleX, double angleY, double angleZ) {
         if (Joml.RETURN_NEW) return rotateYXZ(angleX, angleY, angleZ, Joml.double4x4());
@@ -61395,7 +61563,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateYZX(double angleX, double angleY, double angleZ) {
         if (Joml.RETURN_NEW) return rotateYZX(angleX, angleY, angleZ, Joml.double4x4());
@@ -61430,7 +61598,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateYn180() {
         return mapnXYnZ();
@@ -61460,7 +61628,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateYn270() {
         return mapnZYX();
@@ -61490,7 +61658,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateYn90() {
         return mapZYnX();
@@ -61686,7 +61854,7 @@ public class Double4x4Impl implements Double4x4 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateZ(double angle) {
         if (Joml.RETURN_NEW) return rotateZ(angle, Joml.double4x4());
@@ -61721,7 +61889,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateZ180() {
         return mapnXnYZ();
@@ -61751,7 +61919,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateZ270() {
         return mapnYXZ();
@@ -61781,7 +61949,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateZ90() {
         return mapYnXZ();
@@ -62098,7 +62266,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateZXY(double angleX, double angleY, double angleZ) {
         if (Joml.RETURN_NEW) return rotateZXY(angleX, angleY, angleZ, Joml.double4x4());
@@ -62420,7 +62588,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateZYX(double angleX, double angleY, double angleZ) {
         if (Joml.RETURN_NEW) return rotateZYX(angleX, angleY, angleZ, Joml.double4x4());
@@ -62455,7 +62623,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateZn180() {
         return mapnXnYZ();
@@ -62485,7 +62653,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateZn270() {
         return mapYnXZ();
@@ -62515,7 +62683,7 @@ public class Double4x4Impl implements Double4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 rotateZn90() {
         return mapnYXZ();
@@ -62546,7 +62714,7 @@ public class Double4x4Impl implements Double4x4 {
      * {@code M * S * p}, the scaling will be applied first.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 scale(Double3R v) {
         return scale(v.x(), v.y(), v.z());
@@ -62725,7 +62893,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
      * @param vZ the {@code z} component of the vector {@code (vX, vY, vZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 scale(double vX, double vY, double vZ) {
         if (Joml.RETURN_NEW) return scale(vX, vY, vZ, Joml.double4x4());
@@ -62904,7 +63072,7 @@ public class Double4x4Impl implements Double4x4 {
      * {@code M * S * v}, the scaling will be applied first.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 scale(double s) {
         if (Joml.RETURN_NEW) return scale(s, Joml.double4x4());
@@ -62943,7 +63111,7 @@ public class Double4x4Impl implements Double4x4 {
      *
      * @param s the uniform scale factor
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 scaleAround(double s, Double3R pivot) {
         return scaleAround(s, pivot.x(), pivot.y(), pivot.z());
@@ -63164,7 +63332,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 scaleAround(double s, double pivotX, double pivotY, double pivotZ) {
         if (Joml.RETURN_NEW) return scaleAround(s, pivotX, pivotY, pivotZ, Joml.double4x4());
@@ -63203,7 +63371,7 @@ public class Double4x4Impl implements Double4x4 {
      *
      * @param s the scale factors
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 scaleAround(Double3R s, Double3R pivot) {
         return scaleAround(s.x(), s.y(), s.z(), pivot.x(), pivot.y(), pivot.z());
@@ -63429,7 +63597,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 scaleAround(double sX, double sY, double sZ, double pivotX, double pivotY, double pivotZ) {
         if (Joml.RETURN_NEW) return scaleAround(sX, sY, sZ, pivotX, pivotY, pivotZ, Joml.double4x4());
@@ -63473,7 +63641,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param light the light direction or position ({@code w = 0} for a directional light,
      *        {@code w = 1} for a point light)
      * @param plane the plane equation {@code (a, b, c, d)} with {@code ax + by + cz + d = 0}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 shadow(Double4R light, Double4R plane) {
         return shadow(light.x(), light.y(), light.z(), light.w(), plane.x(), plane.y(), plane.z(), plane.w());
@@ -63754,7 +63922,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param planeY the {@code y} component of the vector {@code (planeX, planeY, planeZ, planeW)}
      * @param planeZ the {@code z} component of the vector {@code (planeX, planeY, planeZ, planeW)}
      * @param planeW the {@code w} component of the vector {@code (planeX, planeY, planeZ, planeW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 shadow(double lightX, double lightY, double lightZ, double lightW, double planeX, double planeY, double planeZ, double planeW) {
         if (Joml.RETURN_NEW) return shadow(lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW, Joml.double4x4());
@@ -63993,7 +64161,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param yz the shear of y proportional to z
      * @param zx the shear of z proportional to x
      * @param zy the shear of z proportional to y
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 shear(double xy, double xz, double yx, double yz, double zx, double zy) {
         if (Joml.RETURN_NEW) return shear(xy, xz, yx, yz, zx, zy, Joml.double4x4());
@@ -64228,7 +64396,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param y the row index of the tile, in {@code [0, h)}
      * @param w the number of tiles along the x axis
      * @param h the number of tiles along the y axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 tile(double x, double y, double w, double h) {
         if (Joml.RETURN_NEW) return tile(x, y, w, h, Joml.double4x4());
@@ -64264,7 +64432,7 @@ public class Double4x4Impl implements Double4x4 {
      * {@code M * T * p}, the translation will be applied first.
      *
      * @param v the translation offsets
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 translate(Double3R v) {
         return translate(v.x(), v.y(), v.z());
@@ -64447,7 +64615,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param vX the {@code x} component of the translation offsets {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the translation offsets {@code (vX, vY, vZ)}
      * @param vZ the {@code z} component of the translation offsets {@code (vX, vY, vZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 translate(double vX, double vY, double vZ) {
         if (Joml.RETURN_NEW) return translate(vX, vY, vZ, Joml.double4x4());
@@ -64491,7 +64659,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param p1 the right corner of the shorter parallel edge of the trapezoid
      * @param p2 the right corner of the longer parallel edge of the trapezoid
      * @param p3 the left corner of the longer parallel edge of the trapezoid
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double4x4 trapezoidCrop(Double2R p0, Double2R p1, Double2R p2, Double2R p3) {
         return trapezoidCrop(p0.x(), p0.y(), p1.x(), p1.y(), p2.x(), p2.y(), p3.x(), p3.y());
@@ -64925,7 +65093,7 @@ public class Double4x4Impl implements Double4x4 {
      * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y)}
      * @param p3X the {@code x} component of the vector {@code (p3X, p3Y)}
      * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double4x4 trapezoidCrop(double p0X, double p0Y, double p1X, double p1Y, double p2X, double p2Y, double p3X, double p3Y) {
         if (Joml.RETURN_NEW) return trapezoidCrop(p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y, Joml.double4x4());
@@ -65645,19 +65813,20 @@ public class Double4x4Impl implements Double4x4 {
         double _t18 = this.m11 * _t12;
         double _t19 = this.m20 * _t11;
         double _t20 = this.m21 * _t12;
+        double _t26 = _t13 + (_t14 + (this.m03 - this.m02));
         double _t27 = _t15 + (_t16 + (this.m33 - this.m32));
         double _t27_inv = 1.0 / _t27;
+        double _t28 = _t17 + (_t18 + (this.m13 - this.m12));
+        double _t29 = _t19 + (_t20 + (this.m23 - this.m22));
         double _t30 = _t15 + (_t16 + (this.m33 + this.m32));
-        double _t30_inv = 1.0 / _t30;
-        double _t31 = (_t13 + (_t14 + (this.m03 - this.m02))) * _t27_inv;
-        double _t32 = (_t17 + (_t18 + (this.m13 - this.m12))) * _t27_inv;
-        double _t33 = (_t19 + (_t20 + (this.m23 - this.m22))) * _t27_inv;
-        d0.x = _t31;
-        d0.y = _t32;
-        d0.z = _t33;
-        d1.x = (_t13 + (_t14 + (this.m03 + this.m02))) * _t30_inv - _t31;
-        d1.y = (_t17 + (_t18 + (this.m13 + this.m12))) * _t30_inv - _t32;
-        d1.z = (_t19 + (_t20 + (this.m23 + this.m22))) * _t30_inv - _t33;
+        double _t34 = Math.abs(_t30) <= Math.abs(_t27) * 9.094947017729282E-13 ? _t27 : _t30;
+        double _t34_inv = 1.0 / _t34;
+        d0.x = _t26 * _t27_inv;
+        d0.y = _t28 * _t27_inv;
+        d0.z = _t29 * _t27_inv;
+        d1.x = (_t13 + (_t14 + (this.m03 + this.m02 - _t26 * _t30 * _t27_inv))) * _t34_inv;
+        d1.y = (_t17 + (_t18 + (this.m13 + this.m12 - _t28 * _t30 * _t27_inv))) * _t34_inv;
+        d1.z = (_t19 + (_t20 + (this.m23 + this.m22 - _t29 * _t30 * _t27_inv))) * _t34_inv;
     }
 
 
@@ -65783,19 +65952,20 @@ public class Double4x4Impl implements Double4x4 {
         double _t14 = this.m11 * _t8;
         double _t15 = this.m20 * _t7;
         double _t16 = this.m21 * _t8;
+        double _t22 = _t9 + (_t10 + this.m03);
         double _t23 = _t11 + (_t12 + this.m33);
         double _t23_inv = 1.0 / _t23;
-        double _t26 = _t11 + (_t12 + (this.m33 + this.m32));
-        double _t26_inv = 1.0 / _t26;
-        double _t27 = (_t9 + (_t10 + this.m03)) * _t23_inv;
-        double _t28 = (_t13 + (_t14 + this.m13)) * _t23_inv;
-        double _t29 = (_t15 + (_t16 + this.m23)) * _t23_inv;
-        d0.x = _t27;
-        d0.y = _t28;
-        d0.z = _t29;
-        d1.x = (_t9 + (_t10 + (this.m03 + this.m02))) * _t26_inv - _t27;
-        d1.y = (_t13 + (_t14 + (this.m13 + this.m12))) * _t26_inv - _t28;
-        d1.z = (_t15 + (_t16 + (this.m23 + this.m22))) * _t26_inv - _t29;
+        double _t24 = _t13 + (_t14 + this.m13);
+        double _t25 = _t15 + (_t16 + this.m23);
+        double _t27 = _t11 + (_t12 + (this.m33 + this.m32));
+        double _t30 = Math.abs(_t27) <= Math.abs(_t23) * 9.094947017729282E-13 ? _t23 : _t27;
+        double _t30_inv = 1.0 / _t30;
+        d0.x = _t22 * _t23_inv;
+        d0.y = _t24 * _t23_inv;
+        d0.z = _t25 * _t23_inv;
+        d1.x = (_t9 + (_t10 + (this.m03 + this.m02 - _t22 * _t27 * _t23_inv))) * _t30_inv;
+        d1.y = (_t13 + (_t14 + (this.m13 + this.m12 - _t24 * _t27 * _t23_inv))) * _t30_inv;
+        d1.z = (_t15 + (_t16 + (this.m23 + this.m22 - _t25 * _t27 * _t23_inv))) * _t30_inv;
     }
 
 
@@ -65818,6 +65988,11 @@ public class Double4x4Impl implements Double4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
      * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      *
      * @param winCoords the window coordinates {@code (x, y)} to unproject
      * @param viewport the viewport {@code [x, y, width, height]}
@@ -65838,6 +66013,11 @@ public class Double4x4Impl implements Double4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
      * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
      *        unproject
@@ -65869,6 +66049,11 @@ public class Double4x4Impl implements Double4x4 {
      * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
      * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
      * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
+     * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param winCoords the window coordinates {@code (x, y)} to unproject
@@ -65884,6 +66069,11 @@ public class Double4x4Impl implements Double4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
      * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -66053,6 +66243,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t69 = this.m01 * _t46;
         double _t70 = this.m03 * _t47;
         double _t71 = this.m01 * _t48;
+        double _t72 = this.m02 * _t49;
+        double _t73 = this.m03 * _t50;
         double _t74 = this.m00 * _t47;
         double _t75 = this.m01 * _t51;
         double _t76 = this.m02 * _t52;
@@ -66069,8 +66261,8 @@ public class Double4x4Impl implements Double4x4 {
         double _t105 = this.m00 * _t45;
         double _t106 = this.m03 * _t52;
         double _t107 = this.m00 * _t49;
-        double _t115 = this.m02 * _t49 - this.m03 * _t50;
-        double _t127 = this.m01 * _t59 - this.m03 * _t55;
+        double _t108 = this.m01 * _t59;
+        double _t109 = this.m03 * _t55;
         double _t140 = (this.m11 * _t42 - this.m12 * _t43 + this.m13 * _t44) * _t60;
         double _t141 = (this.m01 * _t42 - this.m02 * _t43 + this.m03 * _t44) * _t61;
         double _t142 = (this.m00 * _t44 - this.m01 * _t53 + this.m02 * _t54) * _t61;
@@ -66081,17 +66273,18 @@ public class Double4x4Impl implements Double4x4 {
         double _t147 = (this.m00 * _t43 - this.m01 * _t58 + this.m03 * _t54) * _t61;
         double _t167 = _t74 - _t75 + (_t76 + _t142) + (_t80 - _t143 + (_t84 - _t85));
         double _t167_inv = 1.0 / _t167;
+        double _t168 = _t86 - _t87 + (_t88 + _t144) + (_t92 - _t145 + (_t96 - _t97));
+        double _t169 = _t140 - _t141 + (_t68 - _t69) + (-_t70 - _t71 + (_t72 - _t73));
+        double _t170 = _t146 - _t147 + (_t104 - _t105) + (-_t106 - _t107 + (_t108 - _t109));
         double _t171 = _t80 - _t85 + (_t84 + _t142) + (-_t143 - _t74 + (_t75 - _t76));
-        double _t171_inv = 1.0 / _t171;
-        double _t172 = (_t86 - _t87 + (_t88 + _t144) + (_t92 - _t145 + (_t96 - _t97))) * _t167_inv;
-        double _t173 = (_t140 - _t141 + (_t68 - _t69) + (-_t70 - _t71 + _t115)) * _t167_inv;
-        double _t174 = (_t146 - _t147 + (_t104 - _t105) + (-_t106 - _t107 + _t127)) * _t167_inv;
-        d0.x = _t173;
-        d0.y = _t172;
-        d0.z = _t174;
-        d1.x = (_t69 - _t68 + (_t70 + _t140) + (-_t141 - _t71 + _t115)) * _t171_inv - _t173;
-        d1.y = (_t92 - _t97 + (_t96 + _t144) + (-_t145 - _t86 + (_t87 - _t88))) * _t171_inv - _t172;
-        d1.z = (_t105 - _t104 + (_t106 + _t146) + (-_t147 - _t107 + _t127)) * _t171_inv - _t174;
+        double _t175 = Math.abs(_t171) <= Math.abs(_t167) * 9.094947017729282E-13 ? _t167 : _t171;
+        double _t175_inv = 1.0 / _t175;
+        d0.x = _t169 * _t167_inv;
+        d0.y = _t168 * _t167_inv;
+        d0.z = _t170 * _t167_inv;
+        d1.x = (_t69 - _t68 + (_t70 + _t140) + (-_t141 - _t71 + (_t72 + (-_t73 - _t171 * _t169 * _t167_inv)))) * _t175_inv;
+        d1.y = (_t92 - _t97 + (_t96 + _t144) + (-_t145 - _t86 + (_t87 + (-_t88 - _t168 * _t171 * _t167_inv)))) * _t175_inv;
+        d1.z = (_t105 - _t104 + (_t106 + _t146) + (-_t147 - _t107 + (_t108 + (-_t109 - _t171 * _t170 * _t167_inv)))) * _t175_inv;
     }
 
 
@@ -66262,19 +66455,20 @@ public class Double4x4Impl implements Double4x4 {
         double _t131 = (this.m10 * _t42 - this.m12 * _t53 + this.m13 * _t50) * _t60;
         double _t132 = (this.m10 * _t43 - this.m11 * _t53 + this.m13 * _t51) * _t60;
         double _t133 = (this.m00 * _t43 - this.m01 * _t53 + this.m03 * _t51) * _t61;
+        double _t143 = _t126 - _t127 - (_t68 - _t69 + _t70);
         double _t144 = _t104 + _t73 + (_t128 - _t129);
         double _t144_inv = 1.0 / _t144;
-        double _t147 = _t104 + (_t73 + _t128) + (-_t129 - this.m00 * _t56 + (this.m01 * _t57 - this.m02 * _t58));
-        double _t147_inv = 1.0 / _t147;
-        double _t148 = (_t126 - _t127 - (_t68 - _t69 + _t70)) * _t144_inv;
-        double _t149 = (_t107 + _t82 + (_t130 - _t131)) * _t144_inv;
-        double _t150 = (_t132 - _t133 - (_t95 - _t96 + _t97)) * _t144_inv;
-        d0.x = _t148;
-        d0.y = _t149;
-        d0.z = _t150;
-        double _d1buf0 = (this.m01 * _t54 - this.m02 * _t55 + (this.m03 * _t56 + _t126) + (-_t127 - _t68 + (_t69 - _t70))) * _t147_inv - _t148;
-        double _d1buf1 = (_t107 + (_t82 + _t130) + (-_t131 - this.m00 * _t54 + (this.m02 * _t59 - this.m03 * _t57))) * _t147_inv - _t149;
-        d1.z = (this.m00 * _t55 - this.m01 * _t59 + (this.m03 * _t58 + _t132) + (-_t133 - _t95 + (_t96 - _t97))) * _t147_inv - _t150;
+        double _t145 = _t107 + _t82 + (_t130 - _t131);
+        double _t146 = _t132 - _t133 - (_t95 - _t96 + _t97);
+        double _t149 = _t104 + (_t73 + _t128) + (-_t129 - this.m00 * _t56 + (this.m01 * _t57 - this.m02 * _t58));
+        double _t151 = Math.abs(_t149) <= Math.abs(_t144) * 9.094947017729282E-13 ? _t144 : _t149;
+        double _t151_inv = 1.0 / _t151;
+        d0.x = _t143 * _t144_inv;
+        d0.y = _t145 * _t144_inv;
+        d0.z = _t146 * _t144_inv;
+        double _d1buf0 = (this.m01 * _t54 - this.m02 * _t55 + (this.m03 * _t56 + _t126) + (-_t127 - _t68 + (_t69 + (-_t70 - _t149 * _t143 * _t144_inv)))) * _t151_inv;
+        double _d1buf1 = (_t107 + (_t82 + _t130) + (-_t131 - this.m00 * _t54 + (this.m02 * _t59 + (-(this.m03 * _t57) - _t149 * _t145 * _t144_inv)))) * _t151_inv;
+        d1.z = (this.m00 * _t55 - this.m01 * _t59 + (this.m03 * _t58 + _t132) + (-_t133 - _t95 + (_t96 + (-_t97 - _t149 * _t146 * _t144_inv)))) * _t151_inv;
         d1.x = _d1buf0;
         d1.y = _d1buf1;
     }
@@ -66299,6 +66493,11 @@ public class Double4x4Impl implements Double4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
      * the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      *
      * @param winCoords the window coordinates {@code (x, y)} to unproject
      * @param viewport the viewport {@code [x, y, width, height]}
@@ -66319,6 +66518,11 @@ public class Double4x4Impl implements Double4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
      * the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
      *        unproject
@@ -66350,6 +66554,11 @@ public class Double4x4Impl implements Double4x4 {
      * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
      * the ray direction in {@code rayDir}.
      * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
+     * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param winCoords the window coordinates {@code (x, y)} to unproject
@@ -66365,6 +66574,11 @@ public class Double4x4Impl implements Double4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
      * the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *

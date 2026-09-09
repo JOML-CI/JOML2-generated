@@ -13,6 +13,14 @@ import java.nio.DoubleBuffer;
  * All operations leave the receiver unchanged and return their result as a value. An operation
  * whose result equals one of its operands may return that operand instead of allocating a new
  * instance.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns).
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  *
  * @param x the {@code x} component
  * @param y the {@code y} component
@@ -840,6 +848,9 @@ public record Float2(float x, float y) {
 
     /**
      * Compute the angle in radians between this vector and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other vector
      * @return the angle in radians between this vector and {@code other}
@@ -851,13 +862,16 @@ public record Float2(float x, float y) {
 
     /**
      * Compute the angle in radians between this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
      * @return the angle in radians between this vector and ({@code otherX}, {@code otherY})
      */
     public float angleBetween(float otherX, float otherY) {
-        return (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(otherX, this.x, otherY * this.y) * (1.0f / (float) Math.sqrt(Math.fma(this.x, this.x, this.y * this.y))) * (1.0f / (float) Math.sqrt(Math.fma(otherX, otherX, otherY * otherY))))));
+        return (float) Math.atan2(Math.abs(Math.fma(otherY, this.x, -(otherX * this.y))), Math.fma(otherX, this.x, otherY * this.y));
     }
 
 
@@ -1093,6 +1107,10 @@ public record Float2(float x, float y) {
 
     /**
      * Compute the distance between this vector and {@code other}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the difference vector must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param other the other vector
      * @return the distance between this vector and {@code other}
@@ -1104,6 +1122,10 @@ public record Float2(float x, float y) {
 
     /**
      * Compute the distance between this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the difference vector must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
@@ -1317,6 +1339,10 @@ public record Float2(float x, float y) {
 
     /**
      * Compute the length of this vector.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this vector must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @return the length of this vector
      */
@@ -1562,8 +1588,8 @@ public record Float2(float x, float y) {
      * <p>
      * The squared length is formed at the component precision, so components whose squares overflow
      * or underflow that precision are out of domain: the result is the zero vector rather than a
-     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}).
+     * unit vector. Rescale such inputs before normalizing (the magnitude must lie roughly between
+     * 1e-19 and 1.8e19 for {@code float}, 1.5e-154 and 1.3e154 for {@code double}).
      *
      * @return the resulting vector
      */
@@ -1598,6 +1624,9 @@ public record Float2(float x, float y) {
 
     /**
      * Compute the signed angle in radians between this vector and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other vector
      * @return the signed angle in radians between this vector and {@code other}
@@ -1609,6 +1638,9 @@ public record Float2(float x, float y) {
 
     /**
      * Compute the signed angle in radians between this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
@@ -2226,6 +2258,10 @@ public record Float2(float x, float y) {
     /**
      * Compare this value component-wise against {@code other}, allowing a difference of at
      * most {@code epsilon} per component.
+     * <p>
+     * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+     * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and
+     * a NaN component never compares equal to anything.
      *
      * @param other the value to compare against
      * @param epsilon the maximum allowed difference per component
@@ -2298,6 +2334,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2312,6 +2352,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -2327,6 +2371,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2344,6 +2392,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float2} holding the loaded elements
@@ -2358,6 +2410,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -2373,6 +2429,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float2} holding the loaded elements
@@ -2390,6 +2450,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2404,6 +2468,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -2419,6 +2487,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2436,6 +2508,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float2} holding the loaded elements
@@ -2450,6 +2526,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -2465,6 +2545,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float2} holding the loaded elements
@@ -2500,6 +2584,10 @@ public record Float2(float x, float y) {
 
     /**
      * Store the elements into the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -2508,6 +2596,10 @@ public record Float2(float x, float y) {
 
     /**
      * Store the elements into the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -2519,6 +2611,10 @@ public record Float2(float x, float y) {
 
     /**
      * Load the elements from the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code Float2} holding the loaded elements
@@ -2527,6 +2623,10 @@ public record Float2(float x, float y) {
 
     /**
      * Load the elements from the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -2587,6 +2687,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2601,6 +2705,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -2616,6 +2724,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2633,6 +2745,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float2} holding the loaded elements
@@ -2647,6 +2763,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -2662,6 +2782,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float2} holding the loaded elements
@@ -2679,6 +2803,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2693,6 +2821,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -2708,6 +2840,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2725,6 +2861,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float2} holding the loaded elements
@@ -2739,6 +2879,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -2754,6 +2898,10 @@ public record Float2(float x, float y) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float2} holding the loaded elements
@@ -2789,6 +2937,10 @@ public record Float2(float x, float y) {
 
     /**
      * Store the elements into the given memory segment, converting each element to {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -2798,6 +2950,10 @@ public record Float2(float x, float y) {
     /**
      * Store the elements into the given memory segment, converting each element to {@code double},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -2809,6 +2965,10 @@ public record Float2(float x, float y) {
 
     /**
      * Load the elements from the given memory segment, converting each element from {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code Float2} holding the loaded elements
@@ -2818,6 +2978,10 @@ public record Float2(float x, float y) {
     /**
      * Load the elements from the given memory segment, converting each element from {@code double},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

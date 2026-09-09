@@ -46,7 +46,7 @@ inline fun Int4.copy(x: Int = x(), y: Int = y(), z: Int = z(), w: Int = w()): In
 inline fun Int4.toIntArray(): IntArray = store(IntArray(4))
 /** A Int4 read from this array in storage order, starting at index 0. */
 inline fun IntArray.toInt4(): Int4 = Int4.load(this)
-/** The component of this Int4 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. */
+/** The component of this Int4 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT with 3 indices (`v[a, b, ...] = x`) resolves to the Java 4-argument value factory `Int4.set(...)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Int4.get(index: Int): Int = when (index) {
     0 -> x()
     1 -> y()

@@ -367,14 +367,14 @@ public final class Double3Impl implements Double3 {
                 d.z = (byte) Math.ceil(this.z);
             } break;
             case HALF_TOWARD_POSITIVE_INFINITY: {
-                d.x = (byte) Math.round(this.x);
-                d.y = (byte) Math.round(this.y);
-                d.z = (byte) Math.round(this.z);
+                d.x = (byte) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.x)));
+                d.y = (byte) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.y)));
+                d.z = (byte) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.z)));
             } break;
             case HALF_AWAY_FROM_ZERO: {
-                d.x = (byte) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5));
-                d.y = (byte) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5));
-                d.z = (byte) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5));
+                d.x = (byte) (Math.abs(this.x - Math.rint(this.x)) == 0.5 ? this.x + Math.copySign(0.5, this.x) : Math.rint(this.x));
+                d.y = (byte) (Math.abs(this.y - Math.rint(this.y)) == 0.5 ? this.y + Math.copySign(0.5, this.y) : Math.rint(this.y));
+                d.z = (byte) (Math.abs(this.z - Math.rint(this.z)) == 0.5 ? this.z + Math.copySign(0.5, this.z) : Math.rint(this.z));
             } break;
             case HALF_EVEN: {
                 d.x = (byte) Math.rint(this.x);
@@ -427,14 +427,14 @@ public final class Double3Impl implements Double3 {
                 d.z = (short) Math.ceil(this.z);
             } break;
             case HALF_TOWARD_POSITIVE_INFINITY: {
-                d.x = (short) Math.round(this.x);
-                d.y = (short) Math.round(this.y);
-                d.z = (short) Math.round(this.z);
+                d.x = (short) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.x)));
+                d.y = (short) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.y)));
+                d.z = (short) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.z)));
             } break;
             case HALF_AWAY_FROM_ZERO: {
-                d.x = (short) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5));
-                d.y = (short) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5));
-                d.z = (short) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5));
+                d.x = (short) (Math.abs(this.x - Math.rint(this.x)) == 0.5 ? this.x + Math.copySign(0.5, this.x) : Math.rint(this.x));
+                d.y = (short) (Math.abs(this.y - Math.rint(this.y)) == 0.5 ? this.y + Math.copySign(0.5, this.y) : Math.rint(this.y));
+                d.z = (short) (Math.abs(this.z - Math.rint(this.z)) == 0.5 ? this.z + Math.copySign(0.5, this.z) : Math.rint(this.z));
             } break;
             case HALF_EVEN: {
                 d.x = (short) Math.rint(this.x);
@@ -492,9 +492,9 @@ public final class Double3Impl implements Double3 {
                 d.z = (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.z)));
             } break;
             case HALF_AWAY_FROM_ZERO: {
-                d.x = (int) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5));
-                d.y = (int) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5));
-                d.z = (int) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5));
+                d.x = (int) (Math.abs(this.x - Math.rint(this.x)) == 0.5 ? this.x + Math.copySign(0.5, this.x) : Math.rint(this.x));
+                d.y = (int) (Math.abs(this.y - Math.rint(this.y)) == 0.5 ? this.y + Math.copySign(0.5, this.y) : Math.rint(this.y));
+                d.z = (int) (Math.abs(this.z - Math.rint(this.z)) == 0.5 ? this.z + Math.copySign(0.5, this.z) : Math.rint(this.z));
             } break;
             case HALF_EVEN: {
                 d.x = (int) Math.rint(this.x);
@@ -552,9 +552,9 @@ public final class Double3Impl implements Double3 {
                 d.z = Math.round(this.z);
             } break;
             case HALF_AWAY_FROM_ZERO: {
-                d.x = (long) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5));
-                d.y = (long) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5));
-                d.z = (long) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5));
+                d.x = (long) (Math.abs(this.x - Math.rint(this.x)) == 0.5 ? this.x + Math.copySign(0.5, this.x) : Math.rint(this.x));
+                d.y = (long) (Math.abs(this.y - Math.rint(this.y)) == 0.5 ? this.y + Math.copySign(0.5, this.y) : Math.rint(this.y));
+                d.z = (long) (Math.abs(this.z - Math.rint(this.z)) == 0.5 ? this.z + Math.copySign(0.5, this.z) : Math.rint(this.z));
             } break;
             case HALF_EVEN: {
                 d.x = (long) Math.rint(this.x);
@@ -1118,6 +1118,9 @@ public final class Double3Impl implements Double3 {
 
     /**
      * Compute the angle in radians between this vector and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other vector
      * @return the angle in radians between this vector and {@code other}
@@ -1130,6 +1133,9 @@ public final class Double3Impl implements Double3 {
     /**
      * Compute the angle in radians between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -1138,7 +1144,10 @@ public final class Double3Impl implements Double3 {
      *        {@code otherZ})
      */
     public double angleBetween(double otherX, double otherY, double otherZ) {
-        return Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(otherZ, this.z, Math.fma(otherX, this.x, otherY * this.y)) * (1.0 / Math.sqrt(Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y)))) * (1.0 / Math.sqrt(Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY)))))));
+        double _t6 = Math.fma(otherZ, this.y, -(otherY * this.z));
+        double _t7 = Math.fma(otherY, this.x, -(otherX * this.y));
+        double _t8 = Math.fma(otherZ, this.x, -(otherX * this.z));
+        return Math.atan2(Math.sqrt(Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8))), Math.fma(otherZ, this.z, Math.fma(otherX, this.x, otherY * this.y)));
     }
 
 
@@ -1524,6 +1533,10 @@ public final class Double3Impl implements Double3 {
 
     /**
      * Compute the distance between this vector and {@code other}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the difference vector must lie
+     * roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param other the other vector
      * @return the distance between this vector and {@code other}
@@ -1536,6 +1549,10 @@ public final class Double3Impl implements Double3 {
     /**
      * Compute the distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}).
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the difference vector must lie
+     * roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -1809,6 +1826,10 @@ public final class Double3Impl implements Double3 {
 
     /**
      * Compute the length of this vector.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this vector must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @return the length of this vector
      */
@@ -2112,8 +2133,8 @@ public final class Double3Impl implements Double3 {
      * <p>
      * The squared length is formed at the component precision, so components whose squares overflow
      * or underflow that precision are out of domain: the result is the zero vector rather than a
-     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}).
+     * unit vector. Rescale such inputs before normalizing (the magnitude must lie roughly between
+     * 1e-19 and 1.8e19 for {@code float}, 1.5e-154 and 1.3e154 for {@code double}).
      *
      * @param dest will hold the result
      * @return dest
@@ -2164,6 +2185,9 @@ public final class Double3Impl implements Double3 {
      * Compute the signed angle in radians between this vector and {@code other}, positive when the
      * rotation from this vector to {@code other} is counter-clockwise as seen from the direction of
      * the given normal.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other vector
      * @param normal the reference axis that defines the sign of the angle
@@ -2181,6 +2205,9 @@ public final class Double3Impl implements Double3 {
      * {@code otherZ}), positive when the rotation from this vector to ({@code otherX},
      * {@code otherY}, {@code otherZ}) is counter-clockwise as seen from the direction of the given
      * normal.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -2194,10 +2221,11 @@ public final class Double3Impl implements Double3 {
      *        given normal
      */
     public double orientedAngle(double otherX, double otherY, double otherZ, double normalX, double normalY, double normalZ) {
-        double _t6 = Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY));
-        double _t7 = Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y));
-        double _t15 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(otherZ, this.z, Math.fma(otherX, this.x, otherY * this.y)) * (1.0 / Math.sqrt(_t7)) * (1.0 / Math.sqrt(_t6)))));
-        return Math.sqrt(_t6) * Math.sqrt(_t7) > 0.0 ? Math.fma(normalZ, Math.fma(otherY, this.x, -(otherX * this.y)), Math.fma(normalX, Math.fma(otherZ, this.y, -(otherY * this.z)), normalY * Math.fma(otherX, this.z, -(otherZ * this.x)))) < 0.0 ? -_t15 : _t15 : 0.0;
+        double _t8 = Math.fma(otherY, this.x, -(otherX * this.y));
+        double _t9 = Math.fma(otherZ, this.y, -(otherY * this.z));
+        double _t10 = Math.fma(otherX, this.z, -(otherZ * this.x));
+        double _t16 = Math.atan2(Math.sqrt(Math.fma(_t8, _t8, Math.fma(_t10, _t10, _t9 * _t9))), Math.fma(otherZ, this.z, Math.fma(otherX, this.x, otherY * this.y)));
+        return Math.fma(normalZ, _t8, Math.fma(normalX, _t9, normalY * _t10)) < 0.0 ? -_t16 : _t16;
     }
 
 

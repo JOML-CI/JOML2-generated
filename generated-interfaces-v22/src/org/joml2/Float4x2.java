@@ -14,6 +14,16 @@ import java.lang.foreign.MemorySegment;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of a matrix
+ * never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface Float4x2 extends Float4x2R {
 
@@ -21,7 +31,7 @@ public interface Float4x2 extends Float4x2R {
      * Add {@code other} to this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x2 add(Float4x2R other) { return add(other, Joml.RETURN_NEW ? Joml.float4x2() : this); }
 
@@ -37,14 +47,14 @@ public interface Float4x2 extends Float4x2R {
      * @param m21 the element in row 2, column 1 of the matrix
      * @param m30 the element in row 3, column 0 of the matrix
      * @param m31 the element in row 3, column 1 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x2 add(float m00, float m01, float m10, float m11, float m20, float m21, float m30, float m31) { return add(m00, m01, m10, m11, m20, m21, m30, m31, Joml.RETURN_NEW ? Joml.float4x2() : this); }
 
     /**
      * Negate this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x2 negate() { return negate(Joml.RETURN_NEW ? Joml.float4x2() : this); }
 
@@ -52,7 +62,7 @@ public interface Float4x2 extends Float4x2R {
      * Subtract {@code other} from this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x2 sub(Float4x2R other) { return sub(other, Joml.RETURN_NEW ? Joml.float4x2() : this); }
 
@@ -68,7 +78,7 @@ public interface Float4x2 extends Float4x2R {
      * @param m21 the element in row 2, column 1 of the matrix
      * @param m30 the element in row 3, column 0 of the matrix
      * @param m31 the element in row 3, column 1 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x2 sub(float m00, float m01, float m10, float m11, float m20, float m21, float m30, float m31) { return sub(m00, m01, m10, m11, m20, m21, m30, m31, Joml.RETURN_NEW ? Joml.float4x2() : this); }
 
@@ -115,7 +125,7 @@ public interface Float4x2 extends Float4x2R {
      *
      * @param other the other matrix
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x2 lerp(Float4x2R other, float t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.float4x2() : this); }
 
@@ -133,7 +143,7 @@ public interface Float4x2 extends Float4x2R {
      * @param m30 the element in row 3, column 0 of the matrix
      * @param m31 the element in row 3, column 1 of the matrix
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x2 lerp(float m00, float m01, float m10, float m11, float m20, float m21, float m30, float m31, float t) { return lerp(m00, m01, m10, m11, m20, m21, m30, m31, t, Joml.RETURN_NEW ? Joml.float4x2() : this); }
 
@@ -148,7 +158,7 @@ public interface Float4x2 extends Float4x2R {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x2 mul(Float2x2R right) { return mul(right, Joml.RETURN_NEW ? Joml.float4x2() : this); }
 
@@ -160,7 +170,7 @@ public interface Float4x2 extends Float4x2R {
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x2 preMul(Float4x4R other) { return preMul(other, Joml.RETURN_NEW ? Joml.float4x2() : this); }
 
@@ -187,6 +197,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -199,6 +213,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -211,6 +229,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -224,6 +246,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -241,6 +267,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -253,6 +283,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -265,6 +299,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -278,6 +316,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -291,6 +333,10 @@ public interface Float4x2 extends Float4x2R {
 
     /**
      * Load the elements from the given memory segment in column-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -300,6 +346,10 @@ public interface Float4x2 extends Float4x2R {
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -339,6 +389,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -351,6 +405,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -363,6 +421,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -376,6 +438,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -393,6 +459,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -405,6 +475,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -418,6 +492,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -431,6 +509,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -445,6 +527,10 @@ public interface Float4x2 extends Float4x2R {
     /**
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -454,6 +540,10 @@ public interface Float4x2 extends Float4x2R {
     /**
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code double}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -493,6 +583,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -505,6 +599,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -517,6 +615,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -530,6 +632,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -547,6 +653,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -559,6 +669,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -571,6 +685,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -584,6 +702,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -597,6 +719,10 @@ public interface Float4x2 extends Float4x2R {
 
     /**
      * Load the elements from the given memory segment in row-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -606,6 +732,10 @@ public interface Float4x2 extends Float4x2R {
     /**
      * Load the elements from the given memory segment in row-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -645,6 +775,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -657,6 +791,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -669,6 +807,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -682,6 +824,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -699,6 +845,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -711,6 +861,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -723,6 +877,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -736,6 +894,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -750,6 +912,10 @@ public interface Float4x2 extends Float4x2R {
     /**
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -759,6 +925,10 @@ public interface Float4x2 extends Float4x2R {
     /**
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code double}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -793,6 +963,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -807,6 +981,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -822,6 +1000,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -841,6 +1023,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -855,6 +1041,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -870,6 +1060,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -885,6 +1079,10 @@ public interface Float4x2 extends Float4x2R {
     /**
      * Load the elements from the given memory segment in column-major order, with {@code stride}
      * elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -895,6 +1093,10 @@ public interface Float4x2 extends Float4x2R {
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -932,6 +1134,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -946,6 +1152,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -961,6 +1171,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -980,6 +1194,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -994,6 +1212,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1009,6 +1231,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1025,6 +1251,10 @@ public interface Float4x2 extends Float4x2R {
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code double}, with {@code stride} elements between the starts of consecutive
      * columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1036,6 +1266,10 @@ public interface Float4x2 extends Float4x2R {
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code double}, starting at the given offset, with {@code stride} elements
      * between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -1073,6 +1307,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1087,6 +1325,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1102,6 +1344,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1121,6 +1367,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1135,6 +1385,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1150,6 +1404,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1165,6 +1423,10 @@ public interface Float4x2 extends Float4x2R {
     /**
      * Load the elements from the given memory segment in row-major order, with {@code stride}
      * elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1175,6 +1437,10 @@ public interface Float4x2 extends Float4x2R {
     /**
      * Load the elements from the given memory segment in row-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -1212,6 +1478,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1226,6 +1496,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1241,6 +1515,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1260,6 +1538,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1274,6 +1556,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1289,6 +1575,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1305,6 +1595,10 @@ public interface Float4x2 extends Float4x2R {
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code double}, with {@code stride} elements between the starts of consecutive
      * columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1316,6 +1610,10 @@ public interface Float4x2 extends Float4x2R {
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code double}, starting at the given offset, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -1358,6 +1656,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1370,6 +1672,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1383,6 +1689,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1414,6 +1724,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1426,6 +1740,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1439,6 +1757,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1451,6 +1773,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1463,6 +1789,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1476,6 +1806,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1484,6 +1818,10 @@ public interface Float4x2 extends Float4x2R {
 
     /**
      * Load the elements from the given memory segment in column-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -1493,6 +1831,10 @@ public interface Float4x2 extends Float4x2R {
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -1539,6 +1881,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1554,6 +1900,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1568,6 +1918,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1583,6 +1937,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1597,6 +1955,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1612,6 +1974,10 @@ public interface Float4x2 extends Float4x2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -1622,6 +1988,10 @@ public interface Float4x2 extends Float4x2R {
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

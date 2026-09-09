@@ -135,6 +135,11 @@ public final class DoublePlaneImpl implements DoublePlane {
     /**
      * Normalize this plane, scaling {@code (a, b, c, d)} so that the normal {@code (a, b, c)} has
      * unit length and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the normal {@code (a, b, c)} must
+     * lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band
+     * first.
      *
      * @param dest will hold the result
      * @return dest

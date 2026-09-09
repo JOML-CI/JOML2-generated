@@ -13,6 +13,16 @@ import java.nio.ByteBuffer;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of a rigid
+ * transform never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface FloatRigid extends FloatRigidR {
 
@@ -115,7 +125,7 @@ public interface FloatRigid extends FloatRigidR {
      * Set the rotation of this rigid transform to {@code r}.
      *
      * @param r the quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid setRotation(FloatQuatR r) { return setRotation(r, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -126,7 +136,7 @@ public interface FloatRigid extends FloatRigidR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid setRotation(float x, float y, float z, float w) { return setRotation(x, y, z, w, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -134,7 +144,7 @@ public interface FloatRigid extends FloatRigidR {
      * Set the translation of this rigid transform to {@code t}.
      *
      * @param t the translation vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid setTranslation(Float3R t) { return setTranslation(t, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -144,7 +154,7 @@ public interface FloatRigid extends FloatRigidR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid setTranslation(float x, float y, float z) { return setTranslation(x, y, z, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -358,7 +368,7 @@ public interface FloatRigid extends FloatRigidR {
      *
      * @param other the other rigid transform
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid lerp(FloatRigidR other, float t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -382,7 +392,7 @@ public interface FloatRigid extends FloatRigidR {
      * @param rW the {@code rW} component of the rigid transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid lerp(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW, float t) { return lerp(tX, tY, tZ, rX, rY, rZ, rW, t, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -395,7 +405,7 @@ public interface FloatRigid extends FloatRigidR {
      * first.
      *
      * @param other the other rigid transform
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid mul(FloatRigidR other) { return mul(other, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -422,7 +432,7 @@ public interface FloatRigid extends FloatRigidR {
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
      * @param rW the {@code rW} component of the rigid transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid mul(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW) { return mul(tX, tY, tZ, rX, rY, rZ, rW, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -434,7 +444,7 @@ public interface FloatRigid extends FloatRigidR {
      * transform by using {@code R * M * v}, the transformation of the operand will be applied last.
      *
      * @param other the other rigid transform
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid preMul(FloatRigidR other) { return preMul(other, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -460,7 +470,7 @@ public interface FloatRigid extends FloatRigidR {
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
      * @param rW the {@code rW} component of the rigid transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid preMul(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW) { return preMul(tX, tY, tZ, rX, rY, rZ, rW, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -469,7 +479,7 @@ public interface FloatRigid extends FloatRigidR {
      * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}.
      *
      * @param other the other rigid transform
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid difference(FloatRigidR other) { return difference(other, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -493,22 +503,26 @@ public interface FloatRigid extends FloatRigidR {
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
      * @param rW the {@code rW} component of the rigid transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid difference(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW) { return difference(tX, tY, tZ, rX, rY, rZ, rW, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
     /**
      * Invert this rigid transform; exact for any rigid motion (no scale divisions).
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid invert() { return invert(Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
     /**
      * Normalize this rigid transform so that its rotation part has unit length, leaving its
      * translation unchanged (a zero-length rotation yields the zero quaternion).
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the rotation quaternion must lie
+     * roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid normalize() { return normalize(Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -640,7 +654,7 @@ public interface FloatRigid extends FloatRigidR {
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
      * @param rotation the quaternion (must be a unit quaternion)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid rotate(FloatQuatR rotation) { return rotate(rotation, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -660,7 +674,7 @@ public interface FloatRigid extends FloatRigidR {
      *        have unit length)
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid rotate(float x, float y, float z, float w) { return rotate(x, y, z, w, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -674,7 +688,7 @@ public interface FloatRigid extends FloatRigidR {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid rotateAxis(float angle, Float3R axis) { return rotateAxis(angle, axis, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -693,7 +707,7 @@ public interface FloatRigid extends FloatRigidR {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid rotateAxis(float angle, float x, float y, float z) { return rotateAxis(angle, x, y, z, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -705,7 +719,7 @@ public interface FloatRigid extends FloatRigidR {
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid rotateX(float angle) { return rotateX(angle, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -721,7 +735,7 @@ public interface FloatRigid extends FloatRigidR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid rotateXYZ(float angleX, float angleY, float angleZ) { return rotateXYZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -737,7 +751,7 @@ public interface FloatRigid extends FloatRigidR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid rotateXZY(float angleX, float angleY, float angleZ) { return rotateXZY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -749,7 +763,7 @@ public interface FloatRigid extends FloatRigidR {
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid rotateY(float angle) { return rotateY(angle, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -765,7 +779,7 @@ public interface FloatRigid extends FloatRigidR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid rotateYXZ(float angleX, float angleY, float angleZ) { return rotateYXZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -781,7 +795,7 @@ public interface FloatRigid extends FloatRigidR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid rotateYZX(float angleX, float angleY, float angleZ) { return rotateYZX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -793,7 +807,7 @@ public interface FloatRigid extends FloatRigidR {
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid rotateZ(float angle) { return rotateZ(angle, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -809,7 +823,7 @@ public interface FloatRigid extends FloatRigidR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid rotateZXY(float angleX, float angleY, float angleZ) { return rotateZXY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -825,7 +839,7 @@ public interface FloatRigid extends FloatRigidR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid rotateZYX(float angleX, float angleY, float angleZ) { return rotateZYX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -838,7 +852,7 @@ public interface FloatRigid extends FloatRigidR {
      * first.
      *
      * @param translation the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid translate(Float3R translation) { return translate(translation, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -853,7 +867,7 @@ public interface FloatRigid extends FloatRigidR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRigid translate(float x, float y, float z) { return translate(x, y, z, Joml.RETURN_NEW ? Joml.floatRigid() : this); }
 
@@ -880,6 +894,10 @@ public interface FloatRigid extends FloatRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -892,6 +910,10 @@ public interface FloatRigid extends FloatRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -904,6 +926,10 @@ public interface FloatRigid extends FloatRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -917,6 +943,10 @@ public interface FloatRigid extends FloatRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -934,6 +964,10 @@ public interface FloatRigid extends FloatRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -946,6 +980,10 @@ public interface FloatRigid extends FloatRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -958,6 +996,10 @@ public interface FloatRigid extends FloatRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -971,6 +1013,10 @@ public interface FloatRigid extends FloatRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -988,6 +1034,8 @@ public interface FloatRigid extends FloatRigidR {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated FloatRigid loadUnsafe(long address);
 
@@ -1014,6 +1062,10 @@ public interface FloatRigid extends FloatRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1026,6 +1078,10 @@ public interface FloatRigid extends FloatRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1038,6 +1094,10 @@ public interface FloatRigid extends FloatRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1051,6 +1111,10 @@ public interface FloatRigid extends FloatRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1068,6 +1132,10 @@ public interface FloatRigid extends FloatRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1080,6 +1148,10 @@ public interface FloatRigid extends FloatRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1092,6 +1164,10 @@ public interface FloatRigid extends FloatRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1105,6 +1181,10 @@ public interface FloatRigid extends FloatRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1122,6 +1202,8 @@ public interface FloatRigid extends FloatRigidR {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated FloatRigid loadDoubleUnsafe(long address);
 }

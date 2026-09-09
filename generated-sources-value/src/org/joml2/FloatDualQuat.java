@@ -14,6 +14,14 @@ import java.nio.DoubleBuffer;
  * All operations leave the receiver unchanged and return their result as a value. An operation
  * whose result equals one of its operands may return that operand instead of allocating a new
  * instance; as a value class, instances have no identity and may be flattened by the JVM.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns).
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  *
  * @param rX the {@code rX} component
  * @param rY the {@code rY} component
@@ -1145,6 +1153,9 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @return the resulting vector
      */
@@ -1157,9 +1168,9 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t12 = Math.fma(_t10, _t10, _t9 * _t9);
         float _t14 = Math.fma(_t8, _t8, _t12) * 1.0E-7f;
         if (_t12 < _t14) {
-            return new Float3((float) Math.atan2(2.0f * Math.fma(this.rX, this.rW, _t1), Math.fma(-2.0f, Math.fma(this.rX, this.rX, _t3), 1.0f)), (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8))), 0.0f);
+            return new Float3((float) Math.atan2(2.0f * Math.fma(this.rX, this.rW, _t1), Math.fma(-2.0f, Math.fma(this.rX, this.rX, _t3), 1.0f)), (float) Math.atan2(_t8, (float) Math.sqrt(_t12)), 0.0f);
         } else {
-            return new Float3((float) Math.atan2(_t9, _t10), (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8))), (float) Math.atan2(2.0f * Math.fma(this.rZ, this.rW, -(this.rX * this.rY)), Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t3), 1.0f)));
+            return new Float3((float) Math.atan2(_t9, _t10), (float) Math.atan2(_t8, (float) Math.sqrt(_t12)), (float) Math.atan2(2.0f * Math.fma(this.rZ, this.rW, -(this.rX * this.rY)), Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t3), 1.0f)));
         }
     }
 
@@ -1170,6 +1181,9 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @return the resulting vector
      */
@@ -1182,9 +1196,9 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t11 = Math.fma(_t9, _t9, _t7 * _t7);
         float _t13 = Math.fma(_t8, _t8, _t11) * 1.0E-7f;
         if (_t11 < _t13) {
-            return new Float3((float) Math.atan2(2.0f * Math.fma(this.rX, this.rW, -_t1), Math.fma(-2.0f, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0f)), 0.0f, (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8))));
+            return new Float3((float) Math.atan2(2.0f * Math.fma(this.rX, this.rW, -_t1), Math.fma(-2.0f, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0f)), 0.0f, (float) Math.atan2(_t8, (float) Math.sqrt(_t11)));
         } else {
-            return new Float3((float) Math.atan2(_t7, _t9), (float) Math.atan2(2.0f * Math.fma(this.rX, this.rZ, this.rY * this.rW), Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t0), 1.0f)), (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8))));
+            return new Float3((float) Math.atan2(_t7, _t9), (float) Math.atan2(2.0f * Math.fma(this.rX, this.rZ, this.rY * this.rW), Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t0), 1.0f)), (float) Math.atan2(_t8, (float) Math.sqrt(_t11)));
         }
     }
 
@@ -1195,6 +1209,9 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @return the resulting vector
      */
@@ -1206,9 +1223,9 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t12 = Math.fma(_t10, _t10, _t8 * _t8);
         float _t14 = Math.fma(_t9, _t9, _t12) * 1.0E-7f;
         if (_t12 < _t14) {
-            return new Float3((float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t9))), (float) Math.atan2(2.0f * Math.fma(this.rY, this.rW, -(this.rX * this.rZ)), Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t3), 1.0f)), 0.0f);
+            return new Float3((float) Math.atan2(_t9, (float) Math.sqrt(_t12)), (float) Math.atan2(2.0f * Math.fma(this.rY, this.rW, -(this.rX * this.rZ)), Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t3), 1.0f)), 0.0f);
         } else {
-            return new Float3((float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t9))), (float) Math.atan2(_t8, _t10), (float) Math.atan2(2.0f * Math.fma(this.rX, this.rY, this.rZ * this.rW), Math.fma(-2.0f, Math.fma(this.rX, this.rX, _t3), 1.0f)));
+            return new Float3((float) Math.atan2(_t9, (float) Math.sqrt(_t12)), (float) Math.atan2(_t8, _t10), (float) Math.atan2(2.0f * Math.fma(this.rX, this.rY, this.rZ * this.rW), Math.fma(-2.0f, Math.fma(this.rX, this.rX, _t3), 1.0f)));
         }
     }
 
@@ -1219,6 +1236,9 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @return the resulting vector
      */
@@ -1230,9 +1250,9 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t11 = Math.fma(_t9, _t9, _t8 * _t8);
         float _t13 = Math.fma(_t7, _t7, _t11) * 1.0E-7f;
         if (_t11 < _t13) {
-            return new Float3(0.0f, (float) Math.atan2(2.0f * Math.fma(this.rX, this.rZ, this.rY * this.rW), Math.fma(-2.0f, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0f)), (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t7))));
+            return new Float3(0.0f, (float) Math.atan2(2.0f * Math.fma(this.rX, this.rZ, this.rY * this.rW), Math.fma(-2.0f, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0f)), (float) Math.atan2(_t7, (float) Math.sqrt(_t11)));
         } else {
-            return new Float3((float) Math.atan2(2.0f * Math.fma(this.rX, this.rW, -(this.rY * this.rZ)), Math.fma(-2.0f, Math.fma(this.rX, this.rX, _t0), 1.0f)), (float) Math.atan2(_t8, _t9), (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t7))));
+            return new Float3((float) Math.atan2(2.0f * Math.fma(this.rX, this.rW, -(this.rY * this.rZ)), Math.fma(-2.0f, Math.fma(this.rX, this.rX, _t0), 1.0f)), (float) Math.atan2(_t8, _t9), (float) Math.atan2(_t7, (float) Math.sqrt(_t11)));
         }
     }
 
@@ -1243,6 +1263,9 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @return the resulting vector
      */
@@ -1254,9 +1277,9 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t11 = Math.fma(_t9, _t9, _t8 * _t8);
         float _t13 = Math.fma(_t7, _t7, _t11) * 1.0E-7f;
         if (_t11 < _t13) {
-            return new Float3((float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t7))), 0.0f, (float) Math.atan2(2.0f * Math.fma(this.rX, this.rY, this.rZ * this.rW), Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t1), 1.0f)));
+            return new Float3((float) Math.atan2(_t7, (float) Math.sqrt(_t11)), 0.0f, (float) Math.atan2(2.0f * Math.fma(this.rX, this.rY, this.rZ * this.rW), Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t1), 1.0f)));
         } else {
-            return new Float3((float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t7))), (float) Math.atan2(2.0f * Math.fma(this.rY, this.rW, -(this.rX * this.rZ)), Math.fma(-2.0f, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0f)), (float) Math.atan2(_t8, _t9));
+            return new Float3((float) Math.atan2(_t7, (float) Math.sqrt(_t11)), (float) Math.atan2(2.0f * Math.fma(this.rY, this.rW, -(this.rX * this.rZ)), Math.fma(-2.0f, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0f)), (float) Math.atan2(_t8, _t9));
         }
     }
 
@@ -1267,6 +1290,9 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @return the resulting vector
      */
@@ -1278,9 +1304,9 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
         float _t11 = Math.fma(_t9, _t9, _t7 * _t7);
         float _t13 = Math.fma(_t8, _t8, _t11) * 1.0E-7f;
         if (_t11 < _t13) {
-            return new Float3(0.0f, (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8))), (float) Math.atan2(2.0f * Math.fma(this.rZ, this.rW, -(this.rX * this.rY)), Math.fma(-2.0f, Math.fma(this.rX, this.rX, _t0), 1.0f)));
+            return new Float3(0.0f, (float) Math.atan2(_t8, (float) Math.sqrt(_t11)), (float) Math.atan2(2.0f * Math.fma(this.rZ, this.rW, -(this.rX * this.rY)), Math.fma(-2.0f, Math.fma(this.rX, this.rX, _t0), 1.0f)));
         } else {
-            return new Float3((float) Math.atan2(2.0f * Math.fma(this.rX, this.rW, this.rY * this.rZ), Math.fma(-2.0f, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0f)), (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8))), (float) Math.atan2(_t7, _t9));
+            return new Float3((float) Math.atan2(2.0f * Math.fma(this.rX, this.rW, this.rY * this.rZ), Math.fma(-2.0f, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0f)), (float) Math.atan2(_t8, (float) Math.sqrt(_t11)), (float) Math.atan2(_t7, _t9));
         }
     }
 
@@ -1335,6 +1361,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
 
     /**
      * Compute the length of this dual quaternion's real (rotation) part.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the real part must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @return the length of this dual quaternion's real (rotation) part
      */
@@ -1534,6 +1564,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
     /**
      * Normalize this dual quaternion so that its real (rotation) part has unit length, returning
      * the result as a value.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the real part must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @return the resulting dual quaternion
      */
@@ -2920,6 +2954,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
     /**
      * Compare this value component-wise against {@code other}, allowing a difference of at
      * most {@code epsilon} per component.
+     * <p>
+     * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+     * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and
+     * a NaN component never compares equal to anything.
      *
      * @param other the value to compare against
      * @param epsilon the maximum allowed difference per component
@@ -3010,6 +3048,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3024,6 +3066,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -3039,6 +3085,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3056,6 +3106,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code FloatDualQuat} holding the loaded elements
@@ -3070,6 +3124,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -3085,6 +3143,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code FloatDualQuat} holding the loaded elements
@@ -3102,6 +3164,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3116,6 +3182,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -3131,6 +3201,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3148,6 +3222,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatDualQuat} holding the loaded elements
@@ -3162,6 +3240,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -3177,6 +3259,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatDualQuat} holding the loaded elements
@@ -3212,6 +3298,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
 
     /**
      * Store the elements into the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -3220,6 +3310,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
 
     /**
      * Store the elements into the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -3231,6 +3325,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
 
     /**
      * Load the elements from the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code FloatDualQuat} holding the loaded elements
@@ -3239,6 +3337,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
 
     /**
      * Load the elements from the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -3311,6 +3413,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3325,6 +3431,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -3340,6 +3450,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3357,6 +3471,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code FloatDualQuat} holding the loaded elements
@@ -3371,6 +3489,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -3386,6 +3508,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code FloatDualQuat} holding the loaded elements
@@ -3403,6 +3529,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3417,6 +3547,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -3432,6 +3566,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3449,6 +3587,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatDualQuat} holding the loaded elements
@@ -3463,6 +3605,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -3478,6 +3624,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatDualQuat} holding the loaded elements
@@ -3513,6 +3663,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
 
     /**
      * Store the elements into the given memory segment, converting each element to {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -3522,6 +3676,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
     /**
      * Store the elements into the given memory segment, converting each element to {@code double},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -3533,6 +3691,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
 
     /**
      * Load the elements from the given memory segment, converting each element from {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code FloatDualQuat} holding the loaded elements
@@ -3542,6 +3704,10 @@ public value record FloatDualQuat(float rX, float rY, float rZ, float rW, float 
     /**
      * Load the elements from the given memory segment, converting each element from {@code double},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

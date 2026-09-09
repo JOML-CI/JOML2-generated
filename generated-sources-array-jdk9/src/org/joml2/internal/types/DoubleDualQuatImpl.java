@@ -1336,6 +1336,9 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1359,7 +1362,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
             dd[2] = Math.atan2(2.0 * Math.fma(sd[2], sd[3], -(sd[0] * sd[1])), Math.fma(-2.0, Math.fma(sd[1], sd[1], _t3), 1.0));
             dd[0] = _buf0;
         }
-        dd[1] = Math.asin(Math.min(1.0, Math.max(-1.0, _t8)));
+        dd[1] = Math.atan2(_t8, Math.sqrt(_t12));
         return dest;
     }
 
@@ -1370,6 +1373,9 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1393,7 +1399,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
             dd[1] = Math.atan2(2.0 * Math.fma(sd[0], sd[2], sd[1] * sd[3]), Math.fma(-2.0, Math.fma(sd[1], sd[1], _t0), 1.0));
             dd[0] = _buf0;
         }
-        dd[2] = Math.asin(Math.min(1.0, Math.max(-1.0, _t8)));
+        dd[2] = Math.atan2(_t8, Math.sqrt(_t11));
         return dest;
     }
 
@@ -1404,6 +1410,9 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1426,7 +1435,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
             dd[2] = Math.atan2(2.0 * Math.fma(sd[0], sd[1], sd[2] * sd[3]), Math.fma(-2.0, Math.fma(sd[0], sd[0], _t3), 1.0));
             dd[1] = _buf0;
         }
-        dd[0] = Math.asin(Math.min(1.0, Math.max(-1.0, _t9)));
+        dd[0] = Math.atan2(_t9, Math.sqrt(_t12));
         return dest;
     }
 
@@ -1437,6 +1446,9 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1459,7 +1471,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
             dd[1] = Math.atan2(_t8, _t9);
             dd[0] = _buf0;
         }
-        dd[2] = Math.asin(Math.min(1.0, Math.max(-1.0, _t7)));
+        dd[2] = Math.atan2(_t7, Math.sqrt(_t11));
         return dest;
     }
 
@@ -1470,6 +1482,9 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1492,7 +1507,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
             dd[2] = Math.atan2(_t8, _t9);
             dd[1] = _buf0;
         }
-        dd[0] = Math.asin(Math.min(1.0, Math.max(-1.0, _t7)));
+        dd[0] = Math.atan2(_t7, Math.sqrt(_t11));
         return dest;
     }
 
@@ -1503,6 +1518,9 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1525,7 +1543,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
             dd[2] = Math.atan2(_t7, _t9);
             dd[0] = _buf0;
         }
-        dd[1] = Math.asin(Math.min(1.0, Math.max(-1.0, _t8)));
+        dd[1] = Math.atan2(_t8, Math.sqrt(_t11));
         return dest;
     }
 
@@ -1612,6 +1630,10 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
 
     /**
      * Compute the length of this dual quaternion's real (rotation) part.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the real part must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @return the length of this dual quaternion's real (rotation) part
      */
@@ -1876,6 +1898,10 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Normalize this dual quaternion so that its real (rotation) part has unit length and store the
      * result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the real part must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest

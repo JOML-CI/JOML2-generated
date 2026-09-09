@@ -11,6 +11,16 @@ import java.nio.DoubleBuffer;
  * All operations leave the receiver unchanged and return their result as a value. An operation
  * whose result equals one of its operands may return that operand instead of allocating a new
  * instance.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN; the cached structural property bits are ignored, so two matrix objects holding the same
+ * elements are equal whatever either one has determined about itself. {@code hashCode} is
+ * consistent with it (derived from the same bit patterns).
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  *
  * @param m00 the element in row 0, column 0
  * @param m01 the element in row 0, column 1
@@ -2339,6 +2349,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
     /**
      * Compare this value component-wise against {@code other}, allowing a difference of at
      * most {@code epsilon} per component.
+     * <p>
+     * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+     * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and
+     * a NaN component never compares equal to anything.
      *
      * @param other the value to compare against
      * @param epsilon the maximum allowed difference per component
@@ -2413,6 +2427,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2427,6 +2445,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -2442,6 +2464,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2459,6 +2485,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -2473,6 +2503,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -2488,6 +2522,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -2505,6 +2543,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2519,6 +2561,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -2534,6 +2580,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2551,6 +2601,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -2565,6 +2619,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -2580,6 +2638,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -2597,6 +2659,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 storeCMUnsafe(long address) {
         return RAW_OPS.storeCMUnsafe(this, address);
@@ -2608,6 +2672,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return a new {@code Float2x2} holding the loaded elements
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public static Float2x2 loadCMUnsafe(long address) {
         return RAW_OPS.loadCMUnsafe(address);
@@ -2670,6 +2736,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2684,6 +2754,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -2699,6 +2773,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2716,6 +2794,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -2730,6 +2812,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -2745,6 +2831,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -2762,6 +2852,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2777,6 +2871,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -2792,6 +2890,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2809,6 +2911,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -2824,6 +2930,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -2839,6 +2949,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -2856,6 +2970,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 storeCMDoubleUnsafe(long address) {
         return RAW_OPS.storeCMDoubleUnsafe(this, address);
@@ -2867,6 +2983,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return a new {@code Float2x2} holding the loaded elements
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public static Float2x2 loadCMDoubleUnsafe(long address) {
         return RAW_OPS.loadCMDoubleUnsafe(address);
@@ -2925,6 +3043,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2939,6 +3061,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -2954,6 +3080,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2971,6 +3101,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -2985,6 +3119,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -3000,6 +3138,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -3017,6 +3159,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3031,6 +3177,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -3046,6 +3196,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3063,6 +3217,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -3077,6 +3235,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -3092,6 +3254,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -3109,6 +3275,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 storeRMUnsafe(long address) {
         return RAW_OPS.storeRMUnsafe(this, address);
@@ -3120,6 +3288,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return a new {@code Float2x2} holding the loaded elements
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public static Float2x2 loadRMUnsafe(long address) {
         return RAW_OPS.loadRMUnsafe(address);
@@ -3182,6 +3352,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3196,6 +3370,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -3211,6 +3389,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3228,6 +3410,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -3242,6 +3428,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -3257,6 +3447,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -3274,6 +3468,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3288,6 +3486,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -3303,6 +3505,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3320,6 +3526,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -3334,6 +3544,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -3349,6 +3563,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -3366,6 +3584,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 storeRMDoubleUnsafe(long address) {
         return RAW_OPS.storeRMDoubleUnsafe(this, address);
@@ -3377,6 +3597,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return a new {@code Float2x2} holding the loaded elements
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public static Float2x2 loadRMDoubleUnsafe(long address) {
         return RAW_OPS.loadRMDoubleUnsafe(address);
@@ -3426,6 +3648,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3442,6 +3668,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -3459,6 +3689,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3478,6 +3712,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3494,6 +3732,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -3511,6 +3753,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3530,6 +3776,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3546,6 +3796,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -3563,6 +3817,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3582,6 +3840,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3598,6 +3860,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -3615,6 +3881,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3635,6 +3905,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * @param address the raw memory address
      * @param stride the number of elements between the starts of consecutive columns/rows
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 storeCMUnsafe(long address, int stride) {
         return RAW_OPS.storeCMUnsafe(this, address, stride);
@@ -3648,6 +3920,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * @param address the raw memory address
      * @param stride the number of elements between the starts of consecutive columns/rows
      * @return a new {@code Float2x2} holding the loaded elements
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public static Float2x2 loadCMUnsafe(long address, int stride) {
         return RAW_OPS.loadCMUnsafe(address, stride);
@@ -3699,6 +3973,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3715,6 +3993,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -3732,6 +4014,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3751,6 +4037,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3767,6 +4057,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -3784,6 +4078,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3803,6 +4101,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3819,6 +4121,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -3836,6 +4142,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3855,6 +4165,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3871,6 +4185,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -3888,6 +4206,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3908,6 +4230,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * @param address the raw memory address
      * @param stride the number of elements between the starts of consecutive columns/rows
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 storeCMDoubleUnsafe(long address, int stride) {
         return RAW_OPS.storeCMDoubleUnsafe(this, address, stride);
@@ -3921,6 +4245,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * @param address the raw memory address
      * @param stride the number of elements between the starts of consecutive columns/rows
      * @return a new {@code Float2x2} holding the loaded elements
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public static Float2x2 loadCMDoubleUnsafe(long address, int stride) {
         return RAW_OPS.loadCMDoubleUnsafe(address, stride);
@@ -3970,6 +4296,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -3986,6 +4316,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -4003,6 +4337,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4022,6 +4360,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4038,6 +4380,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -4055,6 +4401,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4074,6 +4424,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4090,6 +4444,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -4107,6 +4465,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4126,6 +4488,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4142,6 +4508,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -4159,6 +4529,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4179,6 +4553,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * @param address the raw memory address
      * @param stride the number of elements between the starts of consecutive columns/rows
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 storeRMUnsafe(long address, int stride) {
         return RAW_OPS.storeRMUnsafe(this, address, stride);
@@ -4192,6 +4568,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * @param address the raw memory address
      * @param stride the number of elements between the starts of consecutive columns/rows
      * @return a new {@code Float2x2} holding the loaded elements
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public static Float2x2 loadRMUnsafe(long address, int stride) {
         return RAW_OPS.loadRMUnsafe(address, stride);
@@ -4243,6 +4621,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4259,6 +4641,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -4276,6 +4662,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4295,6 +4685,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4311,6 +4705,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -4328,6 +4726,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4347,6 +4749,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4363,6 +4769,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -4380,6 +4790,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4399,6 +4813,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4415,6 +4833,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -4432,6 +4854,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4452,6 +4878,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * @param address the raw memory address
      * @param stride the number of elements between the starts of consecutive columns/rows
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 storeRMDoubleUnsafe(long address, int stride) {
         return RAW_OPS.storeRMDoubleUnsafe(this, address, stride);
@@ -4465,6 +4893,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * @param address the raw memory address
      * @param stride the number of elements between the starts of consecutive columns/rows
      * @return a new {@code Float2x2} holding the loaded elements
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public static Float2x2 loadRMDoubleUnsafe(long address, int stride) {
         return RAW_OPS.loadRMDoubleUnsafe(address, stride);
@@ -4507,6 +4937,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -4521,6 +4955,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -4536,6 +4974,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -4553,6 +4995,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -4567,6 +5013,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -4582,6 +5032,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -4599,6 +5053,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 storeCM3x3Unsafe(long address) {
         return RAW_OPS.storeCM3x3Unsafe(this, address);
@@ -4642,6 +5098,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -4657,6 +5117,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -4673,6 +5137,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -4691,6 +5159,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -4706,6 +5178,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -4722,6 +5198,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -4740,6 +5220,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 storeCM3x3DoubleUnsafe(long address) {
         return RAW_OPS.storeCM3x3DoubleUnsafe(this, address);
@@ -4782,6 +5264,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -4796,6 +5282,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -4811,6 +5301,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -4828,6 +5322,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -4842,6 +5340,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -4857,6 +5359,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -4874,6 +5380,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 storeRM3x3Unsafe(long address) {
         return RAW_OPS.storeRM3x3Unsafe(this, address);
@@ -4917,6 +5425,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -4932,6 +5444,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -4948,6 +5464,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -4966,6 +5486,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -4981,6 +5505,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -4997,6 +5525,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -5015,6 +5547,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 storeRM3x3DoubleUnsafe(long address) {
         return RAW_OPS.storeRM3x3DoubleUnsafe(this, address);
@@ -5064,6 +5598,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -5078,6 +5616,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -5093,6 +5635,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -5110,6 +5656,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -5124,6 +5674,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -5139,6 +5693,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -5156,6 +5714,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 storeCM4x4Unsafe(long address) {
         return RAW_OPS.storeCM4x4Unsafe(this, address);
@@ -5206,6 +5766,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -5221,6 +5785,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -5237,6 +5805,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -5255,6 +5827,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -5270,6 +5846,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -5286,6 +5866,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -5304,6 +5888,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 storeCM4x4DoubleUnsafe(long address) {
         return RAW_OPS.storeCM4x4DoubleUnsafe(this, address);
@@ -5353,6 +5939,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -5367,6 +5957,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -5382,6 +5976,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -5399,6 +5997,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -5413,6 +6015,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -5428,6 +6034,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -5445,6 +6055,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 storeRM4x4Unsafe(long address) {
         return RAW_OPS.storeRM4x4Unsafe(this, address);
@@ -5495,6 +6107,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -5510,6 +6126,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -5526,6 +6146,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -5544,6 +6168,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -5559,6 +6187,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -5575,6 +6207,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -5593,6 +6229,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 storeRM4x4DoubleUnsafe(long address) {
         return RAW_OPS.storeRM4x4DoubleUnsafe(this, address);
@@ -5622,6 +6260,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -5634,6 +6276,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -5647,6 +6293,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -5678,6 +6328,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -5690,6 +6344,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -5703,6 +6361,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -5715,6 +6377,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -5727,6 +6393,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -5740,6 +6410,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -5752,6 +6426,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 storeUnsafe(long address) { return storeCMUnsafe(address); }
 
@@ -5785,6 +6461,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -5800,6 +6480,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5814,6 +6498,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -5829,6 +6517,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5843,6 +6535,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -5858,6 +6554,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5873,6 +6573,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * @param address the raw memory address
      * @param stride the number of elements between the starts of consecutive columns/rows
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 storeUnsafe(long address, int stride) { return storeCMUnsafe(address, stride); }
 
@@ -5899,6 +6601,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -5911,6 +6617,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -5924,6 +6634,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -5955,6 +6669,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -5967,6 +6685,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -5980,6 +6702,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -5992,6 +6718,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -6004,6 +6734,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -6017,6 +6751,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return a new {@code Float2x2} holding the loaded elements
@@ -6029,6 +6767,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return a new {@code Float2x2} holding the loaded elements
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public static Float2x2 loadUnsafe(long address) { return loadCMUnsafe(address); }
 
@@ -6062,6 +6802,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6077,6 +6821,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6091,6 +6839,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6106,6 +6858,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6120,6 +6876,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -6135,6 +6895,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6150,6 +6914,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * @param address the raw memory address
      * @param stride the number of elements between the starts of consecutive columns/rows
      * @return a new {@code Float2x2} holding the loaded elements
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public static Float2x2 loadUnsafe(long address, int stride) { return loadCMUnsafe(address, stride); }
 
@@ -6178,6 +6944,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -6190,6 +6960,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -6203,6 +6977,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -6235,6 +7013,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -6248,6 +7030,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -6262,6 +7048,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -6274,6 +7064,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -6286,6 +7080,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -6299,6 +7097,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -6311,6 +7113,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 store3x3Unsafe(long address) { return storeCM3x3Unsafe(address); }
 
@@ -6339,6 +7143,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -6351,6 +7159,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -6364,6 +7176,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -6396,6 +7212,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -6409,6 +7229,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -6423,6 +7247,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -6435,6 +7263,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -6447,6 +7279,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -6460,6 +7296,10 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -6472,6 +7312,8 @@ public record Float2x2(float m00, float m01, float m10, float m11, int propertie
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Float2x2 store4x4Unsafe(long address) { return storeCM4x4Unsafe(address); }
 }

@@ -13,6 +13,16 @@ import java.nio.DoubleBuffer;
  * All operations leave the receiver unchanged and return their result as a value. An operation
  * whose result equals one of its operands may return that operand instead of allocating a new
  * instance; as a value class, instances have no identity and may be flattened by the JVM.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN; the cached structural property bits are ignored, so two matrix objects holding the same
+ * elements are equal whatever either one has determined about itself. {@code hashCode} is
+ * consistent with it (derived from the same bit patterns).
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  *
  * @param m00 the element in row 0, column 0
  * @param m01 the element in row 0, column 1
@@ -205,7 +215,8 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * only through the public {@code getEulerAnglesXYZ} dispatcher.
      */
     private Float3 getEulerAnglesXYZ_translation() {
-        return new Float3(Math.fma(this.m12, this.m12, 1.0f) < Math.fma(this.m12, this.m12, Math.fma(this.m02, this.m02, 1.0f)) * 1.0E-7f ? 0.0f : (float) Math.atan2(-this.m12, 1.0f), (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, this.m02))), 0.0f);
+        float _t0 = Math.fma(this.m12, this.m12, 1.0f);
+        return new Float3(_t0 < Math.fma(this.m12, this.m12, Math.fma(this.m02, this.m02, 1.0f)) * 1.0E-7f ? 0.0f : (float) Math.atan2(-this.m12, 1.0f), (float) Math.atan2(this.m02, (float) Math.sqrt(_t0)), 0.0f);
     }
 
 
@@ -217,9 +228,9 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t1 = Math.fma(this.m12, this.m12, this.m22 * this.m22);
         float _t3 = Math.fma(this.m02, this.m02, _t1) * 1.0E-7f;
         if (_t1 < _t3) {
-            return new Float3((float) Math.atan2(this.m21, this.m11), (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, this.m02))), 0.0f);
+            return new Float3((float) Math.atan2(this.m21, this.m11), (float) Math.atan2(this.m02, (float) Math.sqrt(_t1)), 0.0f);
         } else {
-            return new Float3((float) Math.atan2(-this.m12, this.m22), (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, this.m02))), (float) Math.atan2(-this.m01, this.m00));
+            return new Float3((float) Math.atan2(-this.m12, this.m22), (float) Math.atan2(this.m02, (float) Math.sqrt(_t1)), (float) Math.atan2(-this.m01, this.m00));
         }
     }
 
@@ -230,6 +241,9 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -275,9 +289,9 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t1 = Math.fma(this.m11, this.m11, this.m21 * this.m21);
         float _t3 = Math.fma(this.m01, this.m01, _t1) * 1.0E-7f;
         if (_t1 < _t3) {
-            return new Float3((float) Math.atan2(-this.m12, this.m22), 0.0f, (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -this.m01))));
+            return new Float3((float) Math.atan2(-this.m12, this.m22), 0.0f, (float) Math.atan2(-this.m01, (float) Math.sqrt(_t1)));
         } else {
-            return new Float3((float) Math.atan2(this.m21, this.m11), (float) Math.atan2(this.m02, this.m00), (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -this.m01))));
+            return new Float3((float) Math.atan2(this.m21, this.m11), (float) Math.atan2(this.m02, this.m00), (float) Math.atan2(-this.m01, (float) Math.sqrt(_t1)));
         }
     }
 
@@ -288,6 +302,9 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -317,7 +334,8 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * only through the public {@code getEulerAnglesYXZ} dispatcher.
      */
     private Float3 getEulerAnglesYXZ_translation() {
-        return new Float3((float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -this.m12))), Math.fma(this.m02, this.m02, 1.0f) < Math.fma(this.m02, this.m02, Math.fma(this.m12, this.m12, 1.0f)) * 1.0E-7f ? 0.0f : (float) Math.atan2(this.m02, 1.0f), 0.0f);
+        float _t0 = Math.fma(this.m02, this.m02, 1.0f);
+        return new Float3((float) Math.atan2(-this.m12, (float) Math.sqrt(_t0)), _t0 < Math.fma(this.m02, this.m02, Math.fma(this.m12, this.m12, 1.0f)) * 1.0E-7f ? 0.0f : (float) Math.atan2(this.m02, 1.0f), 0.0f);
     }
 
 
@@ -329,9 +347,9 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t1 = Math.fma(this.m02, this.m02, this.m22 * this.m22);
         float _t3 = Math.fma(this.m12, this.m12, _t1) * 1.0E-7f;
         if (_t1 < _t3) {
-            return new Float3((float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -this.m12))), (float) Math.atan2(-this.m20, this.m00), 0.0f);
+            return new Float3((float) Math.atan2(-this.m12, (float) Math.sqrt(_t1)), (float) Math.atan2(-this.m20, this.m00), 0.0f);
         } else {
-            return new Float3((float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -this.m12))), (float) Math.atan2(this.m02, this.m22), (float) Math.atan2(this.m10, this.m11));
+            return new Float3((float) Math.atan2(-this.m12, (float) Math.sqrt(_t1)), (float) Math.atan2(this.m02, this.m22), (float) Math.atan2(this.m10, this.m11));
         }
     }
 
@@ -342,6 +360,9 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -374,9 +395,9 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t0 = Math.fma(this.m12, this.m12, 1.0f);
         float _t1 = _t0 * 1.0E-7f;
         if (_t0 < _t1) {
-            return new Float3(0.0f, (float) Math.atan2(this.m02, 1.0f), 0.0f);
+            return new Float3(0.0f, (float) Math.atan2(this.m02, 1.0f), (float) Math.atan2(0.0f, (float) Math.sqrt(_t0)));
         } else {
-            return new Float3((float) Math.atan2(-this.m12, 1.0f), 0.0f, 0.0f);
+            return new Float3((float) Math.atan2(-this.m12, 1.0f), 0.0f, (float) Math.atan2(0.0f, (float) Math.sqrt(_t0)));
         }
     }
 
@@ -389,9 +410,9 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t1 = Math.fma(this.m11, this.m11, this.m12 * this.m12);
         float _t3 = Math.fma(this.m10, this.m10, _t1) * 1.0E-7f;
         if (_t1 < _t3) {
-            return new Float3(0.0f, (float) Math.atan2(this.m02, this.m22), (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, this.m10))));
+            return new Float3(0.0f, (float) Math.atan2(this.m02, this.m22), (float) Math.atan2(this.m10, (float) Math.sqrt(_t1)));
         } else {
-            return new Float3((float) Math.atan2(-this.m12, this.m11), (float) Math.atan2(-this.m20, this.m00), (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, this.m10))));
+            return new Float3((float) Math.atan2(-this.m12, this.m11), (float) Math.atan2(-this.m20, this.m00), (float) Math.atan2(this.m10, (float) Math.sqrt(_t1)));
         }
     }
 
@@ -402,6 +423,9 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -430,23 +454,13 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Private body of {@code getEulerAnglesZXY}, specialized by runtime matrix properties; reached
      * only through the public {@code getEulerAnglesZXY} dispatcher.
      */
-    private Float3 getEulerAnglesZXY_orthogonal() {
-        float _t1 = Math.fma(this.m01, this.m01, this.m11 * this.m11);
-        return new Float3(0.0f, 0.0f, _t1 < _t1 * 1.0E-7f ? (float) Math.atan2(this.m10, this.m00) : (float) Math.atan2(-this.m01, this.m11));
-    }
-
-
-    /**
-     * Private body of {@code getEulerAnglesZXY}, specialized by runtime matrix properties; reached
-     * only through the public {@code getEulerAnglesZXY} dispatcher.
-     */
     private Float3 getEulerAnglesZXY_general() {
         float _t1 = Math.fma(this.m01, this.m01, this.m11 * this.m11);
         float _t3 = Math.fma(this.m21, this.m21, _t1) * 1.0E-7f;
         if (_t1 < _t3) {
-            return new Float3((float) Math.asin(Math.min(1.0f, Math.max(-1.0f, this.m21))), 0.0f, (float) Math.atan2(this.m10, this.m00));
+            return new Float3((float) Math.atan2(this.m21, (float) Math.sqrt(_t1)), 0.0f, (float) Math.atan2(this.m10, this.m00));
         } else {
-            return new Float3((float) Math.asin(Math.min(1.0f, Math.max(-1.0f, this.m21))), (float) Math.atan2(-this.m20, this.m22), (float) Math.atan2(-this.m01, this.m11));
+            return new Float3((float) Math.atan2(this.m21, (float) Math.sqrt(_t1)), (float) Math.atan2(-this.m20, this.m22), (float) Math.atan2(-this.m01, this.m11));
         }
     }
 
@@ -458,6 +472,9 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
+     * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
      * rather than the angles of its rotation part.
@@ -467,7 +484,6 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     public Float3 getEulerAnglesZXY() {
         int p = this.properties;
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getEulerAnglesZXY_identity();
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return getEulerAnglesZXY_orthogonal();
         return getEulerAnglesZXY_general();
     }
 
@@ -498,9 +514,9 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t1 = Math.fma(this.m21, this.m21, this.m22 * this.m22);
         float _t3 = Math.fma(this.m20, this.m20, _t1) * 1.0E-7f;
         if (_t1 < _t3) {
-            return new Float3(0.0f, (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -this.m20))), (float) Math.atan2(-this.m01, this.m11));
+            return new Float3(0.0f, (float) Math.atan2(-this.m20, (float) Math.sqrt(_t1)), (float) Math.atan2(-this.m01, this.m11));
         } else {
-            return new Float3((float) Math.atan2(this.m21, this.m22), (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -this.m20))), (float) Math.atan2(this.m10, this.m00));
+            return new Float3((float) Math.atan2(this.m21, this.m22), (float) Math.atan2(-this.m20, (float) Math.sqrt(_t1)), (float) Math.atan2(this.m10, this.m00));
         }
     }
 
@@ -511,6 +527,9 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -702,6 +721,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
      * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
      * unit length), returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @return the resulting quaternion
      */
@@ -788,6 +811,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * For a 2D homogeneous 3x3 matrix the third factor is simply the length of the third column -
      * {@code sqrt(m02² + m12² + 1)} for a 2D affine transform, not a scale of anything.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @return the resulting vector
      */
@@ -2929,6 +2956,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
 
     /**
      * Extract the rotation part of this matrix, returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @return the resulting quaternion
      */
@@ -3012,6 +3043,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Extract the scaling factors of this matrix via Gram-Schmidt orthogonalization (skew-aware;
      * the x factor carries the sign of a reflection when the determinant is negative), returning
      * the result as a value.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @return the resulting vector
      */
@@ -3113,6 +3148,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Extract the shear (skew) factors of this matrix via Gram-Schmidt orthogonalization, as
      * {@code (skewYZ, skewXZ, skewXY)} (all zero for a shear-free matrix), returning the result as
      * a value.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @return the resulting vector
      */
@@ -4655,6 +4694,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivot the pivot point
@@ -4672,8 +4715,9 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     private Float3x3 preRotateAround_identity(float angle, float pivotX, float pivotY) {
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
-        return new Float3x3(_t0, -_t1, Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX)), _t1, _t0, Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY)), 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t5 = 2.0f * _t3 * _t3;
+        return new Float3x3(_t0, -_t1, Math.fma(pivotX, _t5, pivotY * _t1), _t1, _t0, Math.fma(pivotY, _t5, -(pivotX * _t1)), 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -4684,8 +4728,9 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     private Float3x3 preRotateAround_translation(float angle, float pivotX, float pivotY) {
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
-        return new Float3x3(_t0, -_t1, Math.fma(pivotY, _t1, Math.fma(_t2, _t0, Math.fma(this.m02, _t0, Math.fma(-this.m12, _t1, pivotX)))), _t1, _t0, Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, Math.fma(this.m02, _t1, Math.fma(this.m12, _t0, pivotY)))), 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t5 = 2.0f * _t3 * _t3;
+        return new Float3x3(_t0, -_t1, Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(this.m02, _t0, -(this.m12 * _t1)), _t1, _t0, Math.fma(this.m02, _t1, this.m12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1)), 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -4696,8 +4741,9 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     private Float3x3 preRotateAround_orthogonal(float angle, float pivotX, float pivotY) {
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
-        return new Float3x3(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(pivotY, _t1, Math.fma(_t2, _t0, Math.fma(this.m02, _t0, Math.fma(-this.m12, _t1, pivotX)))), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, Math.fma(this.m02, _t1, Math.fma(this.m12, _t0, pivotY)))), 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t5 = 2.0f * _t3 * _t3;
+        return new Float3x3(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(this.m02, _t0, -(this.m12 * _t1)), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), Math.fma(this.m02, _t1, this.m12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1)), 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -4708,8 +4754,9 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     private Float3x3 preRotateAround_affine(float angle, float pivotX, float pivotY) {
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
-        return new Float3x3(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(pivotY, _t1, Math.fma(_t2, _t0, Math.fma(this.m02, _t0, Math.fma(-this.m12, _t1, pivotX)))), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, Math.fma(this.m02, _t1, Math.fma(this.m12, _t0, pivotY)))), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t5 = 2.0f * _t3 * _t3;
+        return new Float3x3(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(this.m02, _t0, -(this.m12 * _t1)), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), Math.fma(this.m02, _t1, this.m12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1)), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -4720,10 +4767,11 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     private Float3x3 preRotateAround_general(float angle, float pivotX, float pivotY) {
         float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cos(angle);
-        float _t2 = -pivotX;
-        float _t6 = Math.fma(pivotY, _t0, Math.fma(_t2, _t1, pivotX));
-        float _t7 = Math.fma(_t2, _t0, Math.fma(-pivotY, _t1, pivotY));
-        return new Float3x3(Math.fma(this.m20, _t6, Math.fma(this.m00, _t1, -(this.m10 * _t0))), Math.fma(this.m21, _t6, Math.fma(this.m01, _t1, -(this.m11 * _t0))), Math.fma(this.m22, _t6, Math.fma(this.m02, _t1, -(this.m12 * _t0))), Math.fma(this.m20, _t7, Math.fma(this.m00, _t0, this.m10 * _t1)), Math.fma(this.m21, _t7, Math.fma(this.m01, _t0, this.m11 * _t1)), Math.fma(this.m22, _t7, Math.fma(this.m02, _t0, this.m12 * _t1)), this.m20, this.m21, this.m22, 0);
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t8 = 2.0f * _t3 * _t3;
+        float _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
+        float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t0));
+        return new Float3x3(Math.fma(this.m20, _t9, Math.fma(this.m00, _t1, -(this.m10 * _t0))), Math.fma(this.m21, _t9, Math.fma(this.m01, _t1, -(this.m11 * _t0))), Math.fma(this.m22, _t9, Math.fma(this.m02, _t1, -(this.m12 * _t0))), Math.fma(this.m20, _t10, Math.fma(this.m00, _t0, this.m10 * _t1)), Math.fma(this.m21, _t10, Math.fma(this.m01, _t0, this.m11 * _t1)), Math.fma(this.m22, _t10, Math.fma(this.m02, _t0, this.m12 * _t1)), this.m20, this.m21, this.m22, 0);
     }
 
 
@@ -4734,6 +4782,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
@@ -5508,6 +5560,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivot the pivot point
@@ -5534,8 +5590,9 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     private Float3x3 rotateAround_translation(float angle, float pivotX, float pivotY) {
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
-        return new Float3x3(_t0, -_t1, Math.fma(pivotY, _t1, Math.fma(_t2, _t0, this.m02 + pivotX)), _t1, _t0, Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, this.m12 + pivotY)), 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t5 = 2.0f * _t3 * _t3;
+        return new Float3x3(_t0, -_t1, Math.fma(pivotX, _t5, Math.fma(pivotY, _t1, this.m02)), _t1, _t0, Math.fma(pivotY, _t5, Math.fma(-pivotX, _t1, this.m12)), 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -5546,10 +5603,11 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     private Float3x3 rotateAround_orthogonal(float angle, float pivotX, float pivotY) {
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
-        float _t6 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX));
-        float _t7 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY));
-        return new Float3x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), Math.fma(this.m00, _t6, Math.fma(this.m01, _t7, this.m02)), Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), Math.fma(this.m10, _t6, Math.fma(this.m11, _t7, this.m12)), 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t8 = 2.0f * _t3 * _t3;
+        float _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
+        float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
+        return new Float3x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), Math.fma(this.m00, _t9, Math.fma(this.m01, _t10, this.m02)), Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), Math.fma(this.m10, _t9, Math.fma(this.m11, _t10, this.m12)), 0.0f, 0.0f, 1.0f, Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -5560,10 +5618,11 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     private Float3x3 rotateAround_affine(float angle, float pivotX, float pivotY) {
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
-        float _t6 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX));
-        float _t7 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY));
-        return new Float3x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), Math.fma(this.m00, _t6, Math.fma(this.m01, _t7, this.m02)), Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), Math.fma(this.m10, _t6, Math.fma(this.m11, _t7, this.m12)), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t8 = 2.0f * _t3 * _t3;
+        float _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
+        float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
+        return new Float3x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), Math.fma(this.m00, _t9, Math.fma(this.m01, _t10, this.m02)), Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), Math.fma(this.m10, _t9, Math.fma(this.m11, _t10, this.m12)), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -5574,10 +5633,11 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     private Float3x3 rotateAround_general(float angle, float pivotX, float pivotY) {
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
-        float _t6 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX));
-        float _t7 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY));
-        return new Float3x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), Math.fma(this.m00, _t6, Math.fma(this.m01, _t7, this.m02)), Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), Math.fma(this.m10, _t6, Math.fma(this.m11, _t7, this.m12)), Math.fma(this.m20, _t0, this.m21 * _t1), Math.fma(this.m21, _t0, -(this.m20 * _t1)), Math.fma(this.m20, _t6, Math.fma(this.m21, _t7, this.m22)), 0);
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t8 = 2.0f * _t3 * _t3;
+        float _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
+        float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
+        return new Float3x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), Math.fma(this.m00, _t9, Math.fma(this.m01, _t10, this.m02)), Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), Math.fma(this.m10, _t9, Math.fma(this.m11, _t10, this.m12)), Math.fma(this.m20, _t0, this.m21 * _t1), Math.fma(this.m21, _t0, -(this.m20 * _t1)), Math.fma(this.m20, _t9, Math.fma(this.m21, _t10, this.m22)), 0);
     }
 
 
@@ -5588,6 +5648,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
@@ -7951,6 +8015,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Compare this value component-wise against {@code other}, allowing a difference of at
      * most {@code epsilon} per component.
+     * <p>
+     * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+     * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and
+     * a NaN component never compares equal to anything.
      *
      * @param other the value to compare against
      * @param epsilon the maximum allowed difference per component
@@ -8044,6 +8112,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -8058,6 +8130,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -8073,6 +8149,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -8090,6 +8170,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8104,6 +8188,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -8119,6 +8207,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8136,6 +8228,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -8150,6 +8246,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -8165,6 +8265,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -8182,6 +8286,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8196,6 +8304,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -8211,6 +8323,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8246,6 +8362,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
 
     /**
      * Store the elements into the given memory segment in column-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -8255,6 +8375,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in column-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -8266,6 +8390,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
 
     /**
      * Load the elements from the given memory segment in column-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8275,6 +8403,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -8351,6 +8483,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -8365,6 +8501,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -8380,6 +8520,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -8397,6 +8541,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8411,6 +8559,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -8426,6 +8578,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8443,6 +8599,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -8458,6 +8618,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -8473,6 +8637,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -8490,6 +8658,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8505,6 +8677,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -8520,6 +8696,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8556,6 +8736,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in column-major order, converting each
      * element to {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -8565,6 +8749,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in column-major order, converting each
      * element to {@code double}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -8577,6 +8765,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8586,6 +8778,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code double}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -8658,6 +8854,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -8672,6 +8872,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -8687,6 +8891,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -8704,6 +8912,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8718,6 +8930,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -8733,6 +8949,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8750,6 +8970,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -8764,6 +8988,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -8779,6 +9007,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -8796,6 +9028,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8810,6 +9046,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -8825,6 +9065,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8860,6 +9104,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
 
     /**
      * Store the elements into the given memory segment in row-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -8869,6 +9117,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in row-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -8880,6 +9132,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
 
     /**
      * Load the elements from the given memory segment in row-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code Float3x3} holding the loaded elements
@@ -8889,6 +9145,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Load the elements from the given memory segment in row-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -8965,6 +9225,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -8979,6 +9243,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -8994,6 +9262,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -9011,6 +9283,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -9025,6 +9301,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -9040,6 +9320,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -9057,6 +9341,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -9071,6 +9359,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -9086,6 +9378,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -9103,6 +9399,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -9117,6 +9417,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -9132,6 +9436,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -9168,6 +9476,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in row-major order, converting each element
      * to {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -9177,6 +9489,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in row-major order, converting each element
      * to {@code double}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -9189,6 +9505,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code Float3x3} holding the loaded elements
@@ -9198,6 +9518,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code double}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -9263,6 +9587,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9279,6 +9607,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -9296,6 +9628,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9315,6 +9651,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9331,6 +9671,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -9348,6 +9692,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9367,6 +9715,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9383,6 +9735,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -9400,6 +9756,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9419,6 +9779,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9435,6 +9799,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -9452,6 +9820,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9493,6 +9865,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in column-major order, with {@code stride}
      * elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9503,6 +9879,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in column-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -9516,6 +9896,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Load the elements from the given memory segment in column-major order, with {@code stride}
      * elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9526,6 +9910,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -9594,6 +9982,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9610,6 +10002,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -9627,6 +10023,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9646,6 +10046,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9662,6 +10066,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -9679,6 +10087,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9698,6 +10110,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9714,6 +10130,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -9731,6 +10151,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9750,6 +10174,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9766,6 +10194,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -9783,6 +10215,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9825,6 +10261,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Store the elements into the given memory segment in column-major order, converting each
      * element to {@code double}, with {@code stride} elements between the starts of consecutive
      * columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9836,6 +10276,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Store the elements into the given memory segment in column-major order, converting each
      * element to {@code double}, starting at the given offset, with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -9850,6 +10294,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code double}, with {@code stride} elements between the starts of consecutive
      * columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9861,6 +10309,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code double}, starting at the given offset, with {@code stride} elements
      * between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -9927,6 +10379,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9943,6 +10399,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -9960,6 +10420,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9979,6 +10443,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -9995,6 +10463,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -10012,6 +10484,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10031,6 +10507,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10047,6 +10527,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -10064,6 +10548,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10083,6 +10571,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10099,6 +10591,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -10116,6 +10612,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10157,6 +10657,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in row-major order, with {@code stride}
      * elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10167,6 +10671,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in row-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -10180,6 +10688,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Load the elements from the given memory segment in row-major order, with {@code stride}
      * elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10190,6 +10702,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Load the elements from the given memory segment in row-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -10258,6 +10774,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10274,6 +10794,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -10291,6 +10815,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10310,6 +10838,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10326,6 +10858,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -10343,6 +10879,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10362,6 +10902,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10378,6 +10922,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -10395,6 +10943,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10414,6 +10966,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10430,6 +10986,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -10447,6 +11007,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10489,6 +11053,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Store the elements into the given memory segment in row-major order, converting each element
      * to {@code double}, with {@code stride} elements between the starts of consecutive
      * columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10500,6 +11068,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Store the elements into the given memory segment in row-major order, converting each element
      * to {@code double}, starting at the given offset, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -10514,6 +11086,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code double}, with {@code stride} elements between the starts of consecutive
      * columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -10525,6 +11101,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code double}, starting at the given offset, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -10579,6 +11159,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -10593,6 +11177,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -10608,6 +11196,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -10625,6 +11217,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -10639,6 +11235,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -10654,6 +11254,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -10679,6 +11283,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in column-major order, identity-extended to
      * a 4x4 matrix.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -10688,6 +11296,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in column-major order, identity-extended to
      * a 4x4 matrix, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -10742,6 +11354,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -10757,6 +11373,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -10773,6 +11393,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -10791,6 +11415,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -10806,6 +11434,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -10822,6 +11454,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -10848,6 +11484,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in column-major order, identity-extended to
      * a 4x4 matrix, converting each element to {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -10857,6 +11497,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in column-major order, identity-extended to
      * a 4x4 matrix, converting each element to {@code double}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -10910,6 +11554,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -10924,6 +11572,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -10939,6 +11591,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -10956,6 +11612,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -10970,6 +11630,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -10985,6 +11649,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -11010,6 +11678,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in row-major order, identity-extended to a
      * 4x4 matrix.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -11019,6 +11691,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in row-major order, identity-extended to a
      * 4x4 matrix, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -11073,6 +11749,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -11088,6 +11768,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -11104,6 +11788,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -11122,6 +11810,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -11137,6 +11829,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -11153,6 +11849,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -11179,6 +11879,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in row-major order, identity-extended to a
      * 4x4 matrix, converting each element to {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -11188,6 +11892,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in row-major order, identity-extended to a
      * 4x4 matrix, converting each element to {@code double}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -11221,6 +11929,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -11233,6 +11945,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -11246,6 +11962,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -11277,6 +11997,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -11289,6 +12013,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -11302,6 +12030,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -11314,6 +12046,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -11326,6 +12062,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -11339,6 +12079,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -11347,6 +12091,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
 
     /**
      * Store the elements into the given memory segment in column-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -11356,6 +12104,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in column-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -11402,6 +12154,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -11417,6 +12173,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11431,6 +12191,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -11446,6 +12210,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11460,6 +12228,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -11475,6 +12247,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11485,6 +12261,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in column-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -11527,6 +12307,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -11539,6 +12323,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -11552,6 +12340,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -11583,6 +12375,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -11595,6 +12391,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -11608,6 +12408,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -11620,6 +12424,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -11632,6 +12440,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -11645,6 +12457,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return a new {@code Float3x3} holding the loaded elements
@@ -11653,6 +12469,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
 
     /**
      * Load the elements from the given memory segment in column-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code Float3x3} holding the loaded elements
@@ -11662,6 +12482,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -11708,6 +12532,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -11723,6 +12551,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11737,6 +12569,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -11752,6 +12588,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11766,6 +12606,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -11781,6 +12625,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -11791,6 +12639,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -11835,6 +12687,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -11847,6 +12703,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -11860,6 +12720,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -11892,6 +12756,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -11905,6 +12773,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -11919,6 +12791,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -11931,6 +12807,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -11943,6 +12823,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -11956,6 +12840,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -11965,6 +12853,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in column-major order, identity-extended to
      * a 4x4 matrix.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -11974,6 +12866,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Store the elements into the given memory segment in column-major order, identity-extended to
      * a 4x4 matrix, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment

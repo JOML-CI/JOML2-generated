@@ -56,7 +56,7 @@ public final class Double3x3OpsKernelsAddress {
             UnsafeOpsHolder.U.putDouble(dest + 0L, Math.atan2(-_self12, _self22));
             UnsafeOpsHolder.U.putDouble(dest + 16L, Math.atan2(-_self01, _self00));
         }
-        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.asin(Math.min(1.0, Math.max(-1.0, _self02))));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.atan2(_self02, Math.sqrt(_t1)));
         return dest;
     }
 
@@ -77,7 +77,7 @@ public final class Double3x3OpsKernelsAddress {
             UnsafeOpsHolder.U.putDouble(dest + 0L, Math.atan2(_self21, _self11));
             UnsafeOpsHolder.U.putDouble(dest + 8L, Math.atan2(_self02, _self00));
         }
-        UnsafeOpsHolder.U.putDouble(dest + 16L, Math.asin(Math.min(1.0, Math.max(-1.0, -_self01))));
+        UnsafeOpsHolder.U.putDouble(dest + 16L, Math.atan2(-_self01, Math.sqrt(_t1)));
         return dest;
     }
 
@@ -98,7 +98,7 @@ public final class Double3x3OpsKernelsAddress {
             UnsafeOpsHolder.U.putDouble(dest + 8L, Math.atan2(_self02, _self22));
             UnsafeOpsHolder.U.putDouble(dest + 16L, Math.atan2(_self10, _self11));
         }
-        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.asin(Math.min(1.0, Math.max(-1.0, -_self12))));
+        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.atan2(-_self12, Math.sqrt(_t1)));
         return dest;
     }
 
@@ -119,7 +119,7 @@ public final class Double3x3OpsKernelsAddress {
             UnsafeOpsHolder.U.putDouble(dest + 0L, Math.atan2(-_self12, _self11));
             UnsafeOpsHolder.U.putDouble(dest + 8L, Math.atan2(-_self20, _self00));
         }
-        UnsafeOpsHolder.U.putDouble(dest + 16L, Math.asin(Math.min(1.0, Math.max(-1.0, _self10))));
+        UnsafeOpsHolder.U.putDouble(dest + 16L, Math.atan2(_self10, Math.sqrt(_t1)));
         return dest;
     }
 
@@ -140,7 +140,7 @@ public final class Double3x3OpsKernelsAddress {
             UnsafeOpsHolder.U.putDouble(dest + 8L, Math.atan2(-_self20, _self22));
             UnsafeOpsHolder.U.putDouble(dest + 16L, Math.atan2(-_self01, _self11));
         }
-        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.asin(Math.min(1.0, Math.max(-1.0, _self21))));
+        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.atan2(_self21, Math.sqrt(_t1)));
         return dest;
     }
 
@@ -161,7 +161,7 @@ public final class Double3x3OpsKernelsAddress {
             UnsafeOpsHolder.U.putDouble(dest + 0L, Math.atan2(_self21, _self22));
             UnsafeOpsHolder.U.putDouble(dest + 16L, Math.atan2(_self10, _self00));
         }
-        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.asin(Math.min(1.0, Math.max(-1.0, -_self20))));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.atan2(-_self20, Math.sqrt(_t1)));
         return dest;
     }
 
@@ -2029,17 +2029,18 @@ public final class Double3x3OpsKernelsAddress {
         double _self22 = UnsafeOpsHolder.U.getDouble(src + 64L);
         double _t0 = Math.sin(angle);
         double _t1 = Math.cos(angle);
-        double _t2 = -pivotX;
-        double _t6 = Math.fma(pivotY, _t0, Math.fma(_t2, _t1, pivotX));
-        double _t7 = Math.fma(_t2, _t0, Math.fma(-pivotY, _t1, pivotY));
-        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self20, _t6, Math.fma(_self00, _t1, -(_self10 * _t0))));
-        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self20, _t7, Math.fma(_self00, _t0, _self10 * _t1)));
+        double _t3 = Math.sin(0.5 * angle);
+        double _t8 = 2.0 * _t3 * _t3;
+        double _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
+        double _t10 = Math.fma(pivotY, _t8, -(pivotX * _t0));
+        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self20, _t9, Math.fma(_self00, _t1, -(_self10 * _t0))));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self20, _t10, Math.fma(_self00, _t0, _self10 * _t1)));
         UnsafeOpsHolder.U.putDouble(dest + 16L, _self20);
-        UnsafeOpsHolder.U.putDouble(dest + 24L, Math.fma(_self21, _t6, Math.fma(_self01, _t1, -(_self11 * _t0))));
-        UnsafeOpsHolder.U.putDouble(dest + 32L, Math.fma(_self21, _t7, Math.fma(_self01, _t0, _self11 * _t1)));
+        UnsafeOpsHolder.U.putDouble(dest + 24L, Math.fma(_self21, _t9, Math.fma(_self01, _t1, -(_self11 * _t0))));
+        UnsafeOpsHolder.U.putDouble(dest + 32L, Math.fma(_self21, _t10, Math.fma(_self01, _t0, _self11 * _t1)));
         UnsafeOpsHolder.U.putDouble(dest + 40L, _self21);
-        UnsafeOpsHolder.U.putDouble(dest + 48L, Math.fma(_self22, _t6, Math.fma(_self02, _t1, -(_self12 * _t0))));
-        UnsafeOpsHolder.U.putDouble(dest + 56L, Math.fma(_self22, _t7, Math.fma(_self02, _t0, _self12 * _t1)));
+        UnsafeOpsHolder.U.putDouble(dest + 48L, Math.fma(_self22, _t9, Math.fma(_self02, _t1, -(_self12 * _t0))));
+        UnsafeOpsHolder.U.putDouble(dest + 56L, Math.fma(_self22, _t10, Math.fma(_self02, _t0, _self12 * _t1)));
         UnsafeOpsHolder.U.putDouble(dest + 64L, _self22);
         return dest;
     }
@@ -2058,17 +2059,18 @@ public final class Double3x3OpsKernelsAddress {
         double _pivoty = UnsafeOpsHolder.U.getDouble(pivot + 8L);
         double _t0 = Math.sin(angle);
         double _t1 = Math.cos(angle);
-        double _t2 = -_pivotx;
-        double _t6 = Math.fma(_pivoty, _t0, Math.fma(_t2, _t1, _pivotx));
-        double _t7 = Math.fma(_t2, _t0, Math.fma(-_pivoty, _t1, _pivoty));
-        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self20, _t6, Math.fma(_self00, _t1, -(_self10 * _t0))));
-        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self20, _t7, Math.fma(_self00, _t0, _self10 * _t1)));
+        double _t3 = Math.sin(0.5 * angle);
+        double _t8 = 2.0 * _t3 * _t3;
+        double _t9 = Math.fma(_pivotx, _t8, _pivoty * _t0);
+        double _t10 = Math.fma(_pivoty, _t8, -(_pivotx * _t0));
+        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self20, _t9, Math.fma(_self00, _t1, -(_self10 * _t0))));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self20, _t10, Math.fma(_self00, _t0, _self10 * _t1)));
         UnsafeOpsHolder.U.putDouble(dest + 16L, _self20);
-        UnsafeOpsHolder.U.putDouble(dest + 24L, Math.fma(_self21, _t6, Math.fma(_self01, _t1, -(_self11 * _t0))));
-        UnsafeOpsHolder.U.putDouble(dest + 32L, Math.fma(_self21, _t7, Math.fma(_self01, _t0, _self11 * _t1)));
+        UnsafeOpsHolder.U.putDouble(dest + 24L, Math.fma(_self21, _t9, Math.fma(_self01, _t1, -(_self11 * _t0))));
+        UnsafeOpsHolder.U.putDouble(dest + 32L, Math.fma(_self21, _t10, Math.fma(_self01, _t0, _self11 * _t1)));
         UnsafeOpsHolder.U.putDouble(dest + 40L, _self21);
-        UnsafeOpsHolder.U.putDouble(dest + 48L, Math.fma(_self22, _t6, Math.fma(_self02, _t1, -(_self12 * _t0))));
-        UnsafeOpsHolder.U.putDouble(dest + 56L, Math.fma(_self22, _t7, Math.fma(_self02, _t0, _self12 * _t1)));
+        UnsafeOpsHolder.U.putDouble(dest + 48L, Math.fma(_self22, _t9, Math.fma(_self02, _t1, -(_self12 * _t0))));
+        UnsafeOpsHolder.U.putDouble(dest + 56L, Math.fma(_self22, _t10, Math.fma(_self02, _t0, _self12 * _t1)));
         UnsafeOpsHolder.U.putDouble(dest + 64L, _self22);
         return dest;
     }
@@ -2405,18 +2407,19 @@ public final class Double3x3OpsKernelsAddress {
         double _self22 = UnsafeOpsHolder.U.getDouble(src + 64L);
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -pivotX;
-        double _t6 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX));
-        double _t7 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY));
+        double _t3 = Math.sin(0.5 * angle);
+        double _t8 = 2.0 * _t3 * _t3;
+        double _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
+        double _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
         UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self00, _t0, _self01 * _t1));
         UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self10, _t0, _self11 * _t1));
         UnsafeOpsHolder.U.putDouble(dest + 16L, Math.fma(_self20, _t0, _self21 * _t1));
         UnsafeOpsHolder.U.putDouble(dest + 24L, Math.fma(_self01, _t0, -(_self00 * _t1)));
         UnsafeOpsHolder.U.putDouble(dest + 32L, Math.fma(_self11, _t0, -(_self10 * _t1)));
         UnsafeOpsHolder.U.putDouble(dest + 40L, Math.fma(_self21, _t0, -(_self20 * _t1)));
-        UnsafeOpsHolder.U.putDouble(dest + 48L, Math.fma(_self00, _t6, Math.fma(_self01, _t7, _self02)));
-        UnsafeOpsHolder.U.putDouble(dest + 56L, Math.fma(_self10, _t6, Math.fma(_self11, _t7, _self12)));
-        UnsafeOpsHolder.U.putDouble(dest + 64L, Math.fma(_self20, _t6, Math.fma(_self21, _t7, _self22)));
+        UnsafeOpsHolder.U.putDouble(dest + 48L, Math.fma(_self00, _t9, Math.fma(_self01, _t10, _self02)));
+        UnsafeOpsHolder.U.putDouble(dest + 56L, Math.fma(_self10, _t9, Math.fma(_self11, _t10, _self12)));
+        UnsafeOpsHolder.U.putDouble(dest + 64L, Math.fma(_self20, _t9, Math.fma(_self21, _t10, _self22)));
         return dest;
     }
 
@@ -2434,18 +2437,19 @@ public final class Double3x3OpsKernelsAddress {
         double _pivoty = UnsafeOpsHolder.U.getDouble(pivot + 8L);
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -_pivotx;
-        double _t6 = Math.fma(_pivoty, _t1, Math.fma(_t2, _t0, _pivotx));
-        double _t7 = Math.fma(_t2, _t1, Math.fma(-_pivoty, _t0, _pivoty));
+        double _t3 = Math.sin(0.5 * angle);
+        double _t8 = 2.0 * _t3 * _t3;
+        double _t9 = Math.fma(_pivotx, _t8, _pivoty * _t1);
+        double _t10 = Math.fma(_pivoty, _t8, -(_pivotx * _t1));
         UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self00, _t0, _self01 * _t1));
         UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self10, _t0, _self11 * _t1));
         UnsafeOpsHolder.U.putDouble(dest + 16L, Math.fma(_self20, _t0, _self21 * _t1));
         UnsafeOpsHolder.U.putDouble(dest + 24L, Math.fma(_self01, _t0, -(_self00 * _t1)));
         UnsafeOpsHolder.U.putDouble(dest + 32L, Math.fma(_self11, _t0, -(_self10 * _t1)));
         UnsafeOpsHolder.U.putDouble(dest + 40L, Math.fma(_self21, _t0, -(_self20 * _t1)));
-        UnsafeOpsHolder.U.putDouble(dest + 48L, Math.fma(_self00, _t6, Math.fma(_self01, _t7, _self02)));
-        UnsafeOpsHolder.U.putDouble(dest + 56L, Math.fma(_self10, _t6, Math.fma(_self11, _t7, _self12)));
-        UnsafeOpsHolder.U.putDouble(dest + 64L, Math.fma(_self20, _t6, Math.fma(_self21, _t7, _self22)));
+        UnsafeOpsHolder.U.putDouble(dest + 48L, Math.fma(_self00, _t9, Math.fma(_self01, _t10, _self02)));
+        UnsafeOpsHolder.U.putDouble(dest + 56L, Math.fma(_self10, _t9, Math.fma(_self11, _t10, _self12)));
+        UnsafeOpsHolder.U.putDouble(dest + 64L, Math.fma(_self20, _t9, Math.fma(_self21, _t10, _self22)));
         return dest;
     }
 

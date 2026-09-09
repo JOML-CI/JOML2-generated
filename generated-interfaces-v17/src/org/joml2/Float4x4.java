@@ -13,20 +13,32 @@ import java.nio.ByteBuffer;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN; the cached structural property bits are ignored, so two matrix objects holding the same
+ * elements are equal whatever either one has determined about itself. {@code hashCode} is
+ * consistent with it (derived from the same bit patterns). Only instances of this library's
+ * implementation compare equal to each other; the {@code equals} of a matrix never returns
+ * {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface Float4x4 extends Float4x4R {
 
     /**
      * Compute the cofactor matrix of this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 cofactor() { return cofactor(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
     /**
      * Invert this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 invert() { return invert(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -35,7 +47,7 @@ public interface Float4x4 extends Float4x4R {
      * {@code (this * other)^-1}.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 invertProduct(Float4x4R other) { return invertProduct(other, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -60,21 +72,21 @@ public interface Float4x4 extends Float4x4R {
      * @param m31 the element in row 3, column 1 of the matrix
      * @param m32 the element in row 3, column 2 of the matrix
      * @param m33 the element in row 3, column 3 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 invertProduct(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33) { return invertProduct(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
     /**
      * Compute the normal matrix of this matrix, i.e. the transpose of its inverse.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 normal() { return normal(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
     /**
      * Transpose this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 transpose() { return transpose(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -82,7 +94,7 @@ public interface Float4x4 extends Float4x4R {
      * Add {@code other} to this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 add(Float4x4R other) { return add(other, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -107,14 +119,14 @@ public interface Float4x4 extends Float4x4R {
      * @param m31 the element in row 3, column 1 of the matrix
      * @param m32 the element in row 3, column 2 of the matrix
      * @param m33 the element in row 3, column 3 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 add(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33) { return add(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
     /**
      * Negate this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 negate() { return negate(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -122,7 +134,7 @@ public interface Float4x4 extends Float4x4R {
      * Subtract {@code other} from this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 sub(Float4x4R other) { return sub(other, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -147,7 +159,7 @@ public interface Float4x4 extends Float4x4R {
      * @param m31 the element in row 3, column 1 of the matrix
      * @param m32 the element in row 3, column 2 of the matrix
      * @param m33 the element in row 3, column 3 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 sub(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33) { return sub(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -208,7 +220,7 @@ public interface Float4x4 extends Float4x4R {
      * translation instead of composing a translation onto the existing transformation.
      *
      * @param t the translation offsets
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 withTranslation(Float3R t) { return withTranslation(t, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -222,7 +234,7 @@ public interface Float4x4 extends Float4x4R {
      * @param x the {@code x} component of the translation offsets {@code (x, y, z)}
      * @param y the {@code y} component of the translation offsets {@code (x, y, z)}
      * @param z the {@code z} component of the translation offsets {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 withTranslation(float x, float y, float z) { return withTranslation(x, y, z, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -310,7 +322,7 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param other the other matrix
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 lerp(Float4x4R other, float t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -337,7 +349,7 @@ public interface Float4x4 extends Float4x4R {
      * @param m32 the element in row 3, column 2 of the matrix
      * @param m33 the element in row 3, column 3 of the matrix
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 lerp(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33, float t) { return lerp(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33, t, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -349,7 +361,7 @@ public interface Float4x4 extends Float4x4R {
      * {@code M * R * v}, the transformation of the operand will be applied first.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mul(Float4x4R right) { return mul(right, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -378,7 +390,7 @@ public interface Float4x4 extends Float4x4R {
      * @param m31 the element in row 3, column 1 of the matrix
      * @param m32 the element in row 3, column 2 of the matrix
      * @param m33 the element in row 3, column 3 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mul(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33) { return mul(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -393,7 +405,7 @@ public interface Float4x4 extends Float4x4R {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mul(Float2x2R right) { return mul(right, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -408,7 +420,7 @@ public interface Float4x4 extends Float4x4R {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mul(Float2x3R right) { return mul(right, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -423,7 +435,7 @@ public interface Float4x4 extends Float4x4R {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mul(Float3x3R right) { return mul(right, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -438,7 +450,7 @@ public interface Float4x4 extends Float4x4R {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mul(Float3x4R right) { return mul(right, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -450,7 +462,7 @@ public interface Float4x4 extends Float4x4R {
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preMul(Float4x4R other) { return preMul(other, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -479,7 +491,7 @@ public interface Float4x4 extends Float4x4R {
      * @param m31 the element in row 3, column 1 of the matrix
      * @param m32 the element in row 3, column 2 of the matrix
      * @param m33 the element in row 3, column 3 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preMul(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33) { return preMul(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -494,7 +506,7 @@ public interface Float4x4 extends Float4x4R {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preMul(Float2x2R other) { return preMul(other, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -509,7 +521,7 @@ public interface Float4x4 extends Float4x4R {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preMul(Float2x3R other) { return preMul(other, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -524,7 +536,7 @@ public interface Float4x4 extends Float4x4R {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preMul(Float3x3R other) { return preMul(other, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -539,7 +551,7 @@ public interface Float4x4 extends Float4x4R {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preMul(Float3x4R other) { return preMul(other, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -579,7 +591,7 @@ public interface Float4x4 extends Float4x4R {
      * @param center the center point
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 arcball(float radius, Float3R center, float angleX, float angleY) { return arcball(radius, center, angleX, angleY, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -596,7 +608,7 @@ public interface Float4x4 extends Float4x4R {
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 arcball(float radius, float x, float y, float z, float angleX, float angleY) { return arcball(radius, x, y, z, angleX, angleY, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -610,7 +622,7 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param alpha the tilt angle in radians about the X axis (at {@code atan(1/sqrt(2))} the
      *        result is isometric)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 axonometricDimetric(float alpha) { return axonometricDimetric(alpha, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -622,7 +634,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 axonometricIsometric() { return axonometricIsometric(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -636,7 +648,7 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param alphaX the rotation angle in radians about the X axis
      * @param alphaY the rotation angle in radians about the Y axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 axonometricTrimetric(float alphaX, float alphaY) { return axonometricTrimetric(alphaX, alphaY, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -744,7 +756,7 @@ public interface Float4x4 extends Float4x4R {
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 frustum(float left, float right, float bottom, float top, float zNear, float zFar, Handedness handedness, DepthRange depthRange) { return frustum(left, right, bottom, top, zNear, zFar, handedness, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -771,7 +783,7 @@ public interface Float4x4 extends Float4x4R {
      * @param zFar the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 frustum(float left, float right, float bottom, float top, float zNear, float zFar, DepthRange depthRange) { return frustum(left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -798,7 +810,7 @@ public interface Float4x4 extends Float4x4R {
      * @param zFar the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 frustum(float left, float right, float bottom, float top, float zNear, float zFar, Handedness handedness) { return frustum(left, right, bottom, top, zNear, zFar, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -825,7 +837,7 @@ public interface Float4x4 extends Float4x4R {
      *        the angle-based builders for an infinite near)
      * @param zFar the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 frustum(float left, float right, float bottom, float top, float zNear, float zFar) { return frustum(left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -838,7 +850,7 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param dir the direction
      * @param up the direction of "up"
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 lookAlong(Float3R dir, Float3R up) { return lookAlong(dir, up, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -856,7 +868,7 @@ public interface Float4x4 extends Float4x4R {
      * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
      * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
      * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) { return lookAlong(dirX, dirY, dirZ, upX, upY, upZ, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -872,7 +884,7 @@ public interface Float4x4 extends Float4x4R {
      * @param center the point in space to look at
      * @param up the direction of "up"
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 lookAt(Float3R eye, Float3R center, Float3R up, Handedness handedness) { return lookAt(eye, center, up, handedness, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -894,7 +906,7 @@ public interface Float4x4 extends Float4x4R {
      * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
      * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 lookAt(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, Handedness handedness) { return lookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, handedness, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -911,7 +923,7 @@ public interface Float4x4 extends Float4x4R {
      * @param eye the position of the camera
      * @param center the point in space to look at
      * @param up the direction of "up"
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 lookAt(Float3R eye, Float3R center, Float3R up) { return lookAt(eye, center, up, Handedness.RIGHT_HANDED, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -934,7 +946,7 @@ public interface Float4x4 extends Float4x4R {
      * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
      * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
      * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 lookAt(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ) { return lookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, Handedness.RIGHT_HANDED, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2759,7 +2771,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapXYZ() { return mapXYZ(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2771,7 +2783,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapXYnZ() { return mapXYnZ(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2783,7 +2795,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapXZY() { return mapXZY(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2795,7 +2807,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapXZnY() { return mapXZnY(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2807,7 +2819,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapXnYZ() { return mapXnYZ(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2819,7 +2831,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapXnYnZ() { return mapXnYnZ(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2831,7 +2843,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapXnZY() { return mapXnZY(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2843,7 +2855,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapXnZnY() { return mapXnZnY(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2855,7 +2867,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapYXZ() { return mapYXZ(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2867,7 +2879,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapYXnZ() { return mapYXnZ(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2879,7 +2891,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapYZX() { return mapYZX(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2891,7 +2903,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapYZnX() { return mapYZnX(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2903,7 +2915,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapYnXZ() { return mapYnXZ(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2915,7 +2927,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapYnXnZ() { return mapYnXnZ(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2927,7 +2939,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapYnZX() { return mapYnZX(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2939,7 +2951,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapYnZnX() { return mapYnZnX(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2951,7 +2963,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapZXY() { return mapZXY(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2963,7 +2975,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapZXnY() { return mapZXnY(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2975,7 +2987,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapZYX() { return mapZYX(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2987,7 +2999,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapZYnX() { return mapZYnX(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -2999,7 +3011,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapZnXY() { return mapZnXY(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3011,7 +3023,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapZnXnY() { return mapZnXnY(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3023,7 +3035,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapZnYX() { return mapZnYX(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3035,7 +3047,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapZnYnX() { return mapZnYnX(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3047,7 +3059,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnXYZ() { return mapnXYZ(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3059,7 +3071,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnXYnZ() { return mapnXYnZ(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3071,7 +3083,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnXZY() { return mapnXZY(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3083,7 +3095,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnXZnY() { return mapnXZnY(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3095,7 +3107,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnXnYZ() { return mapnXnYZ(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3107,7 +3119,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnXnYnZ() { return mapnXnYnZ(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3119,7 +3131,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnXnZY() { return mapnXnZY(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3131,7 +3143,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnXnZnY() { return mapnXnZnY(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3143,7 +3155,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnYXZ() { return mapnYXZ(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3155,7 +3167,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnYXnZ() { return mapnYXnZ(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3167,7 +3179,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnYZX() { return mapnYZX(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3179,7 +3191,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnYZnX() { return mapnYZnX(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3191,7 +3203,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnYnXZ() { return mapnYnXZ(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3203,7 +3215,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnYnXnZ() { return mapnYnXnZ(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3215,7 +3227,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnYnZX() { return mapnYnZX(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3227,7 +3239,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnYnZnX() { return mapnYnZnX(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3239,7 +3251,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnZXY() { return mapnZXY(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3251,7 +3263,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnZXnY() { return mapnZXnY(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3263,7 +3275,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnZYX() { return mapnZYX(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3275,7 +3287,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnZYnX() { return mapnZYnX(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3287,7 +3299,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnZnXY() { return mapnZnXY(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3299,7 +3311,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnZnXnY() { return mapnZnXnY(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3311,7 +3323,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnZnYX() { return mapnZnYX(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3323,7 +3335,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 mapnZnYnX() { return mapnZnYnX(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3336,7 +3348,7 @@ public interface Float4x4 extends Float4x4R {
      * using {@code M * O * v}, the oblique shear will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 obliqueCabinet(float angle) { return obliqueCabinet(angle, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3349,7 +3361,7 @@ public interface Float4x4 extends Float4x4R {
      * using {@code M * O * v}, the oblique shear will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 obliqueCavalier(float angle) { return obliqueCavalier(angle, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3362,7 +3374,7 @@ public interface Float4x4 extends Float4x4R {
      * using {@code M * O * v}, the oblique shear will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 obliqueMilitary(float angle) { return obliqueMilitary(angle, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3379,7 +3391,7 @@ public interface Float4x4 extends Float4x4R {
      *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 obliqueZ(Float4R plane, Handedness handedness, DepthRange depthRange) { return obliqueZ(plane, handedness, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3402,7 +3414,7 @@ public interface Float4x4 extends Float4x4R {
      *        the normal pointing into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 obliqueZ(float x, float y, float z, float w, Handedness handedness, DepthRange depthRange) { return obliqueZ(x, y, z, w, handedness, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3419,7 +3431,7 @@ public interface Float4x4 extends Float4x4R {
      *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 obliqueZ(FloatPlaneR plane, Handedness handedness, DepthRange depthRange) { return obliqueZ(plane.a(), plane.b(), plane.c(), plane.d(), handedness, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3437,7 +3449,7 @@ public interface Float4x4 extends Float4x4R {
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 obliqueZ(Float4R plane, DepthRange depthRange) { return obliqueZ(plane, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3461,7 +3473,7 @@ public interface Float4x4 extends Float4x4R {
      * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
      *        the normal pointing into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 obliqueZ(float x, float y, float z, float w, DepthRange depthRange) { return obliqueZ(x, y, z, w, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3479,7 +3491,7 @@ public interface Float4x4 extends Float4x4R {
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 obliqueZ(Float4R plane, Handedness handedness) { return obliqueZ(plane, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3503,7 +3515,7 @@ public interface Float4x4 extends Float4x4R {
      * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
      *        the normal pointing into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 obliqueZ(float x, float y, float z, float w, Handedness handedness) { return obliqueZ(x, y, z, w, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3521,7 +3533,7 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 obliqueZ(Float4R plane) { return obliqueZ(plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3545,7 +3557,7 @@ public interface Float4x4 extends Float4x4R {
      *        the normal pointing into the visible half-space
      * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
      *        the normal pointing into the visible half-space
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 obliqueZ(float x, float y, float z, float w) { return obliqueZ(x, y, z, w, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3563,7 +3575,7 @@ public interface Float4x4 extends Float4x4R {
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 obliqueZ(FloatPlaneR plane, DepthRange depthRange) { return obliqueZ(plane, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3581,7 +3593,7 @@ public interface Float4x4 extends Float4x4R {
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 obliqueZ(FloatPlaneR plane, Handedness handedness) { return obliqueZ(plane, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3599,7 +3611,7 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 obliqueZ(FloatPlaneR plane) { return obliqueZ(plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3622,7 +3634,7 @@ public interface Float4x4 extends Float4x4R {
      * @param zFar the distance to the far clip plane
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 ortho(float left, float right, float bottom, float top, float zNear, float zFar, Handedness handedness, DepthRange depthRange) { return ortho(left, right, bottom, top, zNear, zFar, handedness, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3646,7 +3658,7 @@ public interface Float4x4 extends Float4x4R {
      * @param zNear the distance to the near clip plane
      * @param zFar the distance to the far clip plane
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 ortho(float left, float right, float bottom, float top, float zNear, float zFar, DepthRange depthRange) { return ortho(left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3670,7 +3682,7 @@ public interface Float4x4 extends Float4x4R {
      * @param zNear the distance to the near clip plane
      * @param zFar the distance to the far clip plane
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 ortho(float left, float right, float bottom, float top, float zNear, float zFar, Handedness handedness) { return ortho(left, right, bottom, top, zNear, zFar, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3694,7 +3706,7 @@ public interface Float4x4 extends Float4x4R {
      * @param top the distance to the top frustum edge
      * @param zNear the distance to the near clip plane
      * @param zFar the distance to the far clip plane
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 ortho(float left, float right, float bottom, float top, float zNear, float zFar) { return ortho(left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3715,7 +3727,7 @@ public interface Float4x4 extends Float4x4R {
      * @param top the distance to the top frustum edge
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 ortho2D(float left, float right, float bottom, float top, Handedness handedness, DepthRange depthRange) { return ortho2D(left, right, bottom, top, handedness, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3737,7 +3749,7 @@ public interface Float4x4 extends Float4x4R {
      * @param bottom the distance to the bottom frustum edge
      * @param top the distance to the top frustum edge
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 ortho2D(float left, float right, float bottom, float top, DepthRange depthRange) { return ortho2D(left, right, bottom, top, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3759,7 +3771,7 @@ public interface Float4x4 extends Float4x4R {
      * @param bottom the distance to the bottom frustum edge
      * @param top the distance to the top frustum edge
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 ortho2D(float left, float right, float bottom, float top, Handedness handedness) { return ortho2D(left, right, bottom, top, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3781,7 +3793,7 @@ public interface Float4x4 extends Float4x4R {
      * @param right the distance to the right frustum edge
      * @param bottom the distance to the bottom frustum edge
      * @param top the distance to the top frustum edge
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 ortho2D(float left, float right, float bottom, float top) { return ortho2D(left, right, bottom, top, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3804,7 +3816,7 @@ public interface Float4x4 extends Float4x4R {
      * @param view the light view transformation (must be affine)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 orthoCrop(Float4x4R view, Handedness handedness, DepthRange depthRange) { return orthoCrop(view, handedness, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3828,7 +3840,7 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param view the light view transformation (must be affine)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 orthoCrop(Float4x4R view, DepthRange depthRange) { return orthoCrop(view, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3852,7 +3864,7 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param view the light view transformation (must be affine)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 orthoCrop(Float4x4R view, Handedness handedness) { return orthoCrop(view, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3876,7 +3888,7 @@ public interface Float4x4 extends Float4x4R {
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param view the light view transformation (must be affine)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 orthoCrop(Float4x4R view) { return orthoCrop(view, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3895,7 +3907,7 @@ public interface Float4x4 extends Float4x4R {
      * @param maxZ the far depth bound of the slice, in source-projection NDC z
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 orthoCrop(Float4x4R view, float minZ, float maxZ, Handedness handedness, DepthRange depthRange) { return orthoCrop(view, minZ, maxZ, handedness, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3915,7 +3927,7 @@ public interface Float4x4 extends Float4x4R {
      * @param minZ the near depth bound of the slice, in source-projection NDC z
      * @param maxZ the far depth bound of the slice, in source-projection NDC z
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 orthoCrop(Float4x4R view, float minZ, float maxZ, DepthRange depthRange) { return orthoCrop(view, minZ, maxZ, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3935,7 +3947,7 @@ public interface Float4x4 extends Float4x4R {
      * @param minZ the near depth bound of the slice, in source-projection NDC z
      * @param maxZ the far depth bound of the slice, in source-projection NDC z
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 orthoCrop(Float4x4R view, float minZ, float maxZ, Handedness handedness) { return orthoCrop(view, minZ, maxZ, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3955,7 +3967,7 @@ public interface Float4x4 extends Float4x4R {
      * @param view the light view transformation (must be affine)
      * @param minZ the near depth bound of the slice, in source-projection NDC z
      * @param maxZ the far depth bound of the slice, in source-projection NDC z
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 orthoCrop(Float4x4R view, float minZ, float maxZ) { return orthoCrop(view, minZ, maxZ, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -3980,7 +3992,7 @@ public interface Float4x4 extends Float4x4R {
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 perspective(float fovy, float aspect, float near, float far, Handedness handedness, DepthRange depthRange) { return perspective(fovy, aspect, near, far, handedness, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4006,7 +4018,7 @@ public interface Float4x4 extends Float4x4R {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 perspective(float fovy, float aspect, float near, float far, DepthRange depthRange) { return perspective(fovy, aspect, near, far, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4032,7 +4044,7 @@ public interface Float4x4 extends Float4x4R {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 perspective(float fovy, float aspect, float near, float far, Handedness handedness) { return perspective(fovy, aspect, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4058,7 +4070,7 @@ public interface Float4x4 extends Float4x4R {
      *        reversed)
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 perspective(float fovy, float aspect, float near, float far) { return perspective(fovy, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4084,7 +4096,7 @@ public interface Float4x4 extends Float4x4R {
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 perspectiveFovRange(float angleMin, float angleMax, float aspect, float near, float far, Handedness handedness, DepthRange depthRange) { return perspectiveFovRange(angleMin, angleMax, aspect, near, far, handedness, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4111,7 +4123,7 @@ public interface Float4x4 extends Float4x4R {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 perspectiveFovRange(float angleMin, float angleMax, float aspect, float near, float far, DepthRange depthRange) { return perspectiveFovRange(angleMin, angleMax, aspect, near, far, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4138,7 +4150,7 @@ public interface Float4x4 extends Float4x4R {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 perspectiveFovRange(float angleMin, float angleMax, float aspect, float near, float far, Handedness handedness) { return perspectiveFovRange(angleMin, angleMax, aspect, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4165,7 +4177,7 @@ public interface Float4x4 extends Float4x4R {
      *        reversed)
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 perspectiveFovRange(float angleMin, float angleMax, float aspect, float near, float far) { return perspectiveFovRange(angleMin, angleMax, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4185,7 +4197,7 @@ public interface Float4x4 extends Float4x4R {
      *        infinite far plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 perspectiveFrustumSlice(float near, float far, Handedness handedness, DepthRange depthRange) { return perspectiveFrustumSlice(near, far, handedness, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4206,7 +4218,7 @@ public interface Float4x4 extends Float4x4R {
      * @param far the new distance to the far clip plane (pass positive infinity to re-slice to an
      *        infinite far plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 perspectiveFrustumSlice(float near, float far, DepthRange depthRange) { return perspectiveFrustumSlice(near, far, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4227,7 +4239,7 @@ public interface Float4x4 extends Float4x4R {
      * @param far the new distance to the far clip plane (pass positive infinity to re-slice to an
      *        infinite far plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 perspectiveFrustumSlice(float near, float far, Handedness handedness) { return perspectiveFrustumSlice(near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4248,7 +4260,7 @@ public interface Float4x4 extends Float4x4R {
      *        reversed)
      * @param far the new distance to the far clip plane (pass positive infinity to re-slice to an
      *        infinite far plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 perspectiveFrustumSlice(float near, float far) { return perspectiveFrustumSlice(near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4277,7 +4289,7 @@ public interface Float4x4 extends Float4x4R {
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 perspectiveOffCenterFov(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, Handedness handedness, DepthRange depthRange) { return perspectiveOffCenterFov(angleLeft, angleRight, angleDown, angleUp, near, far, handedness, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4307,7 +4319,7 @@ public interface Float4x4 extends Float4x4R {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 perspectiveOffCenterFov(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, DepthRange depthRange) { return perspectiveOffCenterFov(angleLeft, angleRight, angleDown, angleUp, near, far, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4337,7 +4349,7 @@ public interface Float4x4 extends Float4x4R {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 perspectiveOffCenterFov(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, Handedness handedness) { return perspectiveOffCenterFov(angleLeft, angleRight, angleDown, angleUp, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4367,7 +4379,7 @@ public interface Float4x4 extends Float4x4R {
      *        reversed)
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 perspectiveOffCenterFov(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) { return perspectiveOffCenterFov(angleLeft, angleRight, angleDown, angleUp, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4387,7 +4399,7 @@ public interface Float4x4 extends Float4x4R {
      * @param vpY the y coordinate of the viewport origin
      * @param vpW the width of the viewport
      * @param vpH the height of the viewport
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 pickMatrix(float centerX, float centerY, float deltaX, float deltaY, float vpX, float vpY, float vpW, float vpH) { return pickMatrix(centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4397,10 +4409,14 @@ public interface Float4x4 extends Float4x4R {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rot the quaternion (must be a unit quaternion)
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preRotateAround(FloatQuatR rot, Float3R pivot) { return preRotateAround(rot, pivot, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4411,6 +4427,10 @@ public interface Float4x4 extends Float4x4R {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rotX the {@code x} component of the quaternion {@code (rotX, rotY, rotZ, rotW)} (the
      *        quaternion must have unit length)
@@ -4423,7 +4443,7 @@ public interface Float4x4 extends Float4x4R {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preRotateAround(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) { return preRotateAround(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4437,7 +4457,7 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preRotateAxis(float angle, Float3R axis) { return preRotateAxis(angle, axis, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4456,7 +4476,7 @@ public interface Float4x4 extends Float4x4R {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preRotateAxis(float angle, float x, float y, float z) { return preRotateAxis(angle, x, y, z, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4468,7 +4488,7 @@ public interface Float4x4 extends Float4x4R {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param q the quaternion (must be a unit quaternion)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preRotateQuat(FloatQuatR q) { return preRotateQuat(q, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4488,7 +4508,7 @@ public interface Float4x4 extends Float4x4R {
      *        have unit length)
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preRotateQuat(float x, float y, float z, float w) { return preRotateQuat(x, y, z, w, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4500,7 +4520,7 @@ public interface Float4x4 extends Float4x4R {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preRotateX(float angle) { return preRotateX(angle, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4512,7 +4532,7 @@ public interface Float4x4 extends Float4x4R {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preRotateY(float angle) { return preRotateY(angle, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4524,7 +4544,7 @@ public interface Float4x4 extends Float4x4R {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preRotateZ(float angle) { return preRotateZ(angle, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4536,7 +4556,7 @@ public interface Float4x4 extends Float4x4R {
      * {@code S * M * p}, the scaling will be applied last.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preScale(Float3R v) { return preScale(v, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4550,7 +4570,7 @@ public interface Float4x4 extends Float4x4R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preScale(float x, float y, float z) { return preScale(x, y, z, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4562,7 +4582,7 @@ public interface Float4x4 extends Float4x4R {
      * {@code S * M * v}, the scaling will be applied last.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preScale(float s) { return preScale(s, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4575,7 +4595,7 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param s the uniform scale factor
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preScaleAround(float s, Float3R pivot) { return preScaleAround(s, pivot, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4591,7 +4611,7 @@ public interface Float4x4 extends Float4x4R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preScaleAround(float s, float x, float y, float z) { return preScaleAround(s, x, y, z, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4604,7 +4624,7 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param s the scale factors
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preScaleAround(Float3R s, Float3R pivot) { return preScaleAround(s, pivot, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4622,7 +4642,7 @@ public interface Float4x4 extends Float4x4R {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preScaleAround(float sX, float sY, float sZ, float pivotX, float pivotY, float pivotZ) { return preScaleAround(sX, sY, sZ, pivotX, pivotY, pivotZ, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4634,7 +4654,7 @@ public interface Float4x4 extends Float4x4R {
      * {@code T * M * p}, the translation will be applied last.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preTranslate(Float3R v) { return preTranslate(v, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4648,7 +4668,7 @@ public interface Float4x4 extends Float4x4R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 preTranslate(float x, float y, float z) { return preTranslate(x, y, z, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4661,7 +4681,7 @@ public interface Float4x4 extends Float4x4R {
      * {@code M * R * v}, the reflection will be applied first.
      *
      * @param normal the normal (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 reflect(Float3R normal) { return reflect(normal, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4679,7 +4699,7 @@ public interface Float4x4 extends Float4x4R {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 reflect(float x, float y, float z) { return reflect(x, y, z, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4689,10 +4709,14 @@ public interface Float4x4 extends Float4x4R {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rot the quaternion (must be a unit quaternion)
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateAround(FloatQuatR rot, Float3R pivot) { return rotateAround(rot, pivot, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4703,6 +4727,10 @@ public interface Float4x4 extends Float4x4R {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rotX the {@code x} component of the quaternion {@code (rotX, rotY, rotZ, rotW)} (the
      *        quaternion must have unit length)
@@ -4715,7 +4743,7 @@ public interface Float4x4 extends Float4x4R {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateAround(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) { return rotateAround(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4728,7 +4756,7 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateAxis(float angle, Float3R axis) { return rotateAxis(angle, axis, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4747,7 +4775,7 @@ public interface Float4x4 extends Float4x4R {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateAxis(float angle, float x, float y, float z) { return rotateAxis(angle, x, y, z, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4759,7 +4787,7 @@ public interface Float4x4 extends Float4x4R {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param q the quaternion (must be a unit quaternion)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateQuat(FloatQuatR q) { return rotateQuat(q, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4779,7 +4807,7 @@ public interface Float4x4 extends Float4x4R {
      *        have unit length)
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateQuat(float x, float y, float z, float w) { return rotateQuat(x, y, z, w, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4791,7 +4819,7 @@ public interface Float4x4 extends Float4x4R {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateX(float angle) { return rotateX(angle, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4802,7 +4830,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateX180() { return rotateX180(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4813,7 +4841,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateX270() { return rotateX270(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4824,7 +4852,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateX90() { return rotateX90(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4840,7 +4868,7 @@ public interface Float4x4 extends Float4x4R {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateXYZ(float angleX, float angleY, float angleZ) { return rotateXYZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4856,7 +4884,7 @@ public interface Float4x4 extends Float4x4R {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateXZY(float angleX, float angleY, float angleZ) { return rotateXZY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4867,7 +4895,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateXn180() { return rotateXn180(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4878,7 +4906,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateXn270() { return rotateXn270(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4889,7 +4917,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateXn90() { return rotateXn90(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4901,7 +4929,7 @@ public interface Float4x4 extends Float4x4R {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateY(float angle) { return rotateY(angle, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4912,7 +4940,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateY180() { return rotateY180(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4923,7 +4951,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateY270() { return rotateY270(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4934,7 +4962,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateY90() { return rotateY90(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4950,7 +4978,7 @@ public interface Float4x4 extends Float4x4R {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateYXZ(float angleX, float angleY, float angleZ) { return rotateYXZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4966,7 +4994,7 @@ public interface Float4x4 extends Float4x4R {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateYZX(float angleX, float angleY, float angleZ) { return rotateYZX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4977,7 +5005,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateYn180() { return rotateYn180(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4988,7 +5016,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateYn270() { return rotateYn270(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -4999,7 +5027,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateYn90() { return rotateYn90(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5011,7 +5039,7 @@ public interface Float4x4 extends Float4x4R {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateZ(float angle) { return rotateZ(angle, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5022,7 +5050,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateZ180() { return rotateZ180(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5033,7 +5061,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateZ270() { return rotateZ270(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5044,7 +5072,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateZ90() { return rotateZ90(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5060,7 +5088,7 @@ public interface Float4x4 extends Float4x4R {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateZXY(float angleX, float angleY, float angleZ) { return rotateZXY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5076,7 +5104,7 @@ public interface Float4x4 extends Float4x4R {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateZYX(float angleX, float angleY, float angleZ) { return rotateZYX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5087,7 +5115,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateZn180() { return rotateZn180(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5098,7 +5126,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateZn270() { return rotateZn270(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5109,7 +5137,7 @@ public interface Float4x4 extends Float4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 rotateZn90() { return rotateZn90(Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5121,7 +5149,7 @@ public interface Float4x4 extends Float4x4R {
      * {@code M * S * p}, the scaling will be applied first.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 scale(Float3R v) { return scale(v, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5135,7 +5163,7 @@ public interface Float4x4 extends Float4x4R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 scale(float x, float y, float z) { return scale(x, y, z, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5147,7 +5175,7 @@ public interface Float4x4 extends Float4x4R {
      * {@code M * S * v}, the scaling will be applied first.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 scale(float s) { return scale(s, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5160,7 +5188,7 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param s the uniform scale factor
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 scaleAround(float s, Float3R pivot) { return scaleAround(s, pivot, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5176,7 +5204,7 @@ public interface Float4x4 extends Float4x4R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 scaleAround(float s, float x, float y, float z) { return scaleAround(s, x, y, z, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5189,7 +5217,7 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param s the scale factors
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 scaleAround(Float3R s, Float3R pivot) { return scaleAround(s, pivot, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5207,7 +5235,7 @@ public interface Float4x4 extends Float4x4R {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 scaleAround(float sX, float sY, float sZ, float pivotX, float pivotY, float pivotZ) { return scaleAround(sX, sY, sZ, pivotX, pivotY, pivotZ, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5223,7 +5251,7 @@ public interface Float4x4 extends Float4x4R {
      * @param light the light direction or position ({@code w = 0} for a directional light,
      *        {@code w = 1} for a point light)
      * @param plane the plane equation {@code (a, b, c, d)} with {@code ax + by + cz + d = 0}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 shadow(Float4R light, Float4R plane) { return shadow(light, plane, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5244,7 +5272,7 @@ public interface Float4x4 extends Float4x4R {
      * @param planeY the {@code y} component of the vector {@code (planeX, planeY, planeZ, planeW)}
      * @param planeZ the {@code z} component of the vector {@code (planeX, planeY, planeZ, planeW)}
      * @param planeW the {@code w} component of the vector {@code (planeX, planeY, planeZ, planeW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 shadow(float lightX, float lightY, float lightZ, float lightW, float planeX, float planeY, float planeZ, float planeW) { return shadow(lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5261,7 +5289,7 @@ public interface Float4x4 extends Float4x4R {
      * @param yz the shear of y proportional to z
      * @param zx the shear of z proportional to x
      * @param zy the shear of z proportional to y
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 shear(float xy, float xz, float yx, float yz, float zx, float zy) { return shear(xy, xz, yx, yz, zx, zy, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5276,7 +5304,7 @@ public interface Float4x4 extends Float4x4R {
      * @param y the row index of the tile, in {@code [0, h)}
      * @param w the number of tiles along the x axis
      * @param h the number of tiles along the y axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 tile(float x, float y, float w, float h) { return tile(x, y, w, h, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5288,7 +5316,7 @@ public interface Float4x4 extends Float4x4R {
      * {@code M * T * p}, the translation will be applied first.
      *
      * @param v the translation offsets
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 translate(Float3R v) { return translate(v, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5302,7 +5330,7 @@ public interface Float4x4 extends Float4x4R {
      * @param x the {@code x} component of the translation offsets {@code (x, y, z)}
      * @param y the {@code y} component of the translation offsets {@code (x, y, z)}
      * @param z the {@code z} component of the translation offsets {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 translate(float x, float y, float z) { return translate(x, y, z, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5318,7 +5346,7 @@ public interface Float4x4 extends Float4x4R {
      * @param p1 the right corner of the shorter parallel edge of the trapezoid
      * @param p2 the right corner of the longer parallel edge of the trapezoid
      * @param p3 the left corner of the longer parallel edge of the trapezoid
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 trapezoidCrop(Float2R p0, Float2R p1, Float2R p2, Float2R p3) { return trapezoidCrop(p0, p1, p2, p3, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5338,7 +5366,7 @@ public interface Float4x4 extends Float4x4R {
      * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y)}
      * @param p3X the {@code x} component of the vector {@code (p3X, p3Y)}
      * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x4 trapezoidCrop(float p0X, float p0Y, float p1X, float p1Y, float p2X, float p2Y, float p3X, float p3Y) { return trapezoidCrop(p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y, Joml.RETURN_NEW ? Joml.float4x4() : this); }
 
@@ -5365,6 +5393,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -5377,6 +5409,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -5389,6 +5425,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -5402,6 +5442,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -5419,6 +5463,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5431,6 +5479,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5443,6 +5495,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -5456,6 +5512,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5473,6 +5533,8 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated Float4x4 loadCMUnsafe(long address);
 
@@ -5499,6 +5561,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -5511,6 +5577,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -5523,6 +5593,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -5536,6 +5610,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -5553,6 +5631,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5565,6 +5647,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5578,6 +5664,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -5591,6 +5681,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5608,6 +5702,8 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated Float4x4 loadCMDoubleUnsafe(long address);
 
@@ -5634,6 +5730,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -5646,6 +5746,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -5658,6 +5762,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -5671,6 +5779,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -5688,6 +5800,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5700,6 +5816,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5712,6 +5832,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -5725,6 +5849,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5742,6 +5870,8 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated Float4x4 loadRMUnsafe(long address);
 
@@ -5768,6 +5898,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -5780,6 +5914,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -5792,6 +5930,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -5805,6 +5947,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -5822,6 +5968,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5834,6 +5984,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5846,6 +6000,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -5859,6 +6017,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5876,6 +6038,8 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated Float4x4 loadRMDoubleUnsafe(long address);
 
@@ -5897,6 +6061,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5911,6 +6079,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -5926,6 +6098,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5945,6 +6121,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5959,6 +6139,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -5974,6 +6158,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5994,6 +6182,8 @@ public interface Float4x4 extends Float4x4R {
      * @param address the raw memory address
      * @param stride the number of elements between the starts of consecutive columns/rows
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated Float4x4 loadCMUnsafe(long address, int stride);
 
@@ -6015,6 +6205,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6029,6 +6223,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6044,6 +6242,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6063,6 +6265,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6077,6 +6283,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -6092,6 +6302,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6112,6 +6326,8 @@ public interface Float4x4 extends Float4x4R {
      * @param address the raw memory address
      * @param stride the number of elements between the starts of consecutive columns/rows
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated Float4x4 loadCMDoubleUnsafe(long address, int stride);
 
@@ -6133,6 +6349,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6147,6 +6367,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6162,6 +6386,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6181,6 +6409,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6195,6 +6427,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -6210,6 +6446,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6230,6 +6470,8 @@ public interface Float4x4 extends Float4x4R {
      * @param address the raw memory address
      * @param stride the number of elements between the starts of consecutive columns/rows
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated Float4x4 loadRMUnsafe(long address, int stride);
 
@@ -6251,6 +6493,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6265,6 +6511,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6280,6 +6530,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6299,6 +6553,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6313,6 +6571,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -6328,6 +6590,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6348,6 +6614,8 @@ public interface Float4x4 extends Float4x4R {
      * @param address the raw memory address
      * @param stride the number of elements between the starts of consecutive columns/rows
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated Float4x4 loadRMDoubleUnsafe(long address, int stride);
 
@@ -6374,6 +6642,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -6386,6 +6658,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6399,6 +6675,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -6430,6 +6710,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -6442,6 +6726,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6455,6 +6743,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -6467,6 +6759,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -6479,6 +6775,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -6492,6 +6792,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -6504,6 +6808,8 @@ public interface Float4x4 extends Float4x4R {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated default Float4x4 loadUnsafe(long address) { return loadCMUnsafe(address); }
 
@@ -6537,6 +6843,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6552,6 +6862,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6566,6 +6880,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6581,6 +6899,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6595,6 +6917,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -6610,6 +6936,10 @@ public interface Float4x4 extends Float4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6625,6 +6955,8 @@ public interface Float4x4 extends Float4x4R {
      * @param address the raw memory address
      * @param stride the number of elements between the starts of consecutive columns/rows
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated default Float4x4 loadUnsafe(long address, int stride) { return loadCMUnsafe(address, stride); }
 }

@@ -46,7 +46,7 @@ inline fun Long3.copy(x: Long = x(), y: Long = y(), z: Long = z()): Long3 = Long
 inline fun Long3.toLongArray(): LongArray = store(LongArray(3))
 /** A Long3 read from this array in storage order, starting at index 0. */
 inline fun LongArray.toLong3(): Long3 = Long3.load(this)
-/** The component of this Long3 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. */
+/** The component of this Long3 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT with 2 indices (`v[a, b] = c`) resolves to the Java 3-argument value factory `Long3.set(...)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Long3.get(index: Int): Long = when (index) {
     0 -> x()
     1 -> y()

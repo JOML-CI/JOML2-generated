@@ -18,6 +18,7 @@ public final class Float2OpsSimd {
     private static final int PREFERRED_LANES = FloatVector.SPECIES_PREFERRED.length();
 
     public static float[] add(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -44,6 +45,7 @@ public final class Float2OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment add(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment a, long aOffset, java.lang.foreign.MemorySegment b, long bOffset, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -70,6 +72,7 @@ public final class Float2OpsSimd {
     }
 
     public static float[] sub(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -96,6 +99,7 @@ public final class Float2OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment sub(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment a, long aOffset, java.lang.foreign.MemorySegment b, long bOffset, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -122,6 +126,7 @@ public final class Float2OpsSimd {
     }
 
     public static float[] mul(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -148,6 +153,7 @@ public final class Float2OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment mul(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment a, long aOffset, java.lang.foreign.MemorySegment b, long bOffset, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -174,6 +180,7 @@ public final class Float2OpsSimd {
     }
 
     public static float[] div(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -200,6 +207,7 @@ public final class Float2OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment div(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment a, long aOffset, java.lang.foreign.MemorySegment b, long bOffset, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -226,6 +234,7 @@ public final class Float2OpsSimd {
     }
 
     public static float[] min(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -252,6 +261,7 @@ public final class Float2OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment min(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment a, long aOffset, java.lang.foreign.MemorySegment b, long bOffset, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -278,6 +288,7 @@ public final class Float2OpsSimd {
     }
 
     public static float[] max(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -304,6 +315,7 @@ public final class Float2OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment max(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment a, long aOffset, java.lang.foreign.MemorySegment b, long bOffset, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -330,6 +342,7 @@ public final class Float2OpsSimd {
     }
 
     public static float[] negate(float[] dest, int destOffset, float[] src, int srcOffset, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -353,6 +366,7 @@ public final class Float2OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment negate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -376,6 +390,7 @@ public final class Float2OpsSimd {
     }
 
     public static float[] abs(float[] dest, int destOffset, float[] src, int srcOffset, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -399,6 +414,7 @@ public final class Float2OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment abs(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -422,6 +438,7 @@ public final class Float2OpsSimd {
     }
 
     public static float[] lerp(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, float t, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -448,6 +465,7 @@ public final class Float2OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment lerp(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment a, long aOffset, java.lang.foreign.MemorySegment b, long bOffset, float t, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -474,6 +492,7 @@ public final class Float2OpsSimd {
     }
 
     public static float[] scale(float[] dest, int destOffset, float[] src, int srcOffset, float s, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -497,6 +516,7 @@ public final class Float2OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment scale(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float s, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -520,6 +540,7 @@ public final class Float2OpsSimd {
     }
 
     public static float[] fma(float[] dest, int destOffset, float[] self, int selfOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -549,6 +570,7 @@ public final class Float2OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment self, long selfOffset, java.lang.foreign.MemorySegment a, long aOffset, java.lang.foreign.MemorySegment b, long bOffset, int count) {
+        if (count > 1073741823) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 2;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);

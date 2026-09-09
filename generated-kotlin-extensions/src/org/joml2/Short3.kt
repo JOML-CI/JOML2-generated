@@ -46,7 +46,7 @@ inline fun Short3.copy(x: Short = x(), y: Short = y(), z: Short = z()): Short3 =
 inline fun Short3.toShortArray(): ShortArray = store(ShortArray(3))
 /** A Short3 read from this array in storage order, starting at index 0. */
 inline fun ShortArray.toShort3(): Short3 = Short3.load(this)
-/** The component of this Short3 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. */
+/** The component of this Short3 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT with 2 indices (`v[a, b] = c`) resolves to the Java 3-argument value factory `Short3.set(...)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Short3.get(index: Int): Short = when (index) {
     0 -> x()
     1 -> y()

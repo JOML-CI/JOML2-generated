@@ -14,6 +14,16 @@ import java.lang.foreign.MemorySegment;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of an
+ * axis-aligned bounding box never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface FloatAABB extends FloatAABBR {
 
@@ -48,7 +58,7 @@ public interface FloatAABB extends FloatAABBR {
      * Set the maximum corner of this axis-aligned bounding box to {@code max}.
      *
      * @param max the maximum corner
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatAABB setMax(Float3R max) { return setMax(max, Joml.RETURN_NEW ? Joml.floatAABB() : this); }
 
@@ -59,7 +69,7 @@ public interface FloatAABB extends FloatAABBR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatAABB setMax(float x, float y, float z) { return setMax(x, y, z, Joml.RETURN_NEW ? Joml.floatAABB() : this); }
 
@@ -67,7 +77,7 @@ public interface FloatAABB extends FloatAABBR {
      * Set the minimum corner of this axis-aligned bounding box to {@code min}.
      *
      * @param min the minimum corner
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatAABB setMin(Float3R min) { return setMin(min, Joml.RETURN_NEW ? Joml.floatAABB() : this); }
 
@@ -78,7 +88,7 @@ public interface FloatAABB extends FloatAABBR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatAABB setMin(float x, float y, float z) { return setMin(x, y, z, Joml.RETURN_NEW ? Joml.floatAABB() : this); }
 
@@ -94,7 +104,7 @@ public interface FloatAABB extends FloatAABBR {
      * Swap the minimum and maximum bounds of this axis-aligned bounding box where necessary so the
      * bounds are valid.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatAABB correctBounds() { return correctBounds(Joml.RETURN_NEW ? Joml.floatAABB() : this); }
 
@@ -103,7 +113,7 @@ public interface FloatAABB extends FloatAABBR {
      * enclosing the transformed box.
      *
      * @param m the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatAABB transform(Float3x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.floatAABB() : this); }
 
@@ -115,7 +125,7 @@ public interface FloatAABB extends FloatAABBR {
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
      * @param m the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatAABB transform(Float4x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.floatAABB() : this); }
 
@@ -123,7 +133,7 @@ public interface FloatAABB extends FloatAABBR {
      * Translate this axis-aligned bounding box by {@code delta}.
      *
      * @param delta the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatAABB translate(Float3R delta) { return translate(delta, Joml.RETURN_NEW ? Joml.floatAABB() : this); }
 
@@ -133,7 +143,7 @@ public interface FloatAABB extends FloatAABBR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatAABB translate(float x, float y, float z) { return translate(x, y, z, Joml.RETURN_NEW ? Joml.floatAABB() : this); }
 
@@ -141,7 +151,7 @@ public interface FloatAABB extends FloatAABBR {
      * Set this axis-aligned bounding box to the union of itself and {@code other}.
      *
      * @param other the other axis-aligned bounding box
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatAABB union(FloatAABBR other) { return union(other, Joml.RETURN_NEW ? Joml.floatAABB() : this); }
 
@@ -161,7 +171,7 @@ public interface FloatAABB extends FloatAABBR {
      *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
      * @param maxZ the {@code maxZ} component of the axis-aligned bounding box
      *        {@code (minX, minY, minZ, maxX, maxY, maxZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatAABB union(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) { return union(minX, minY, minZ, maxX, maxY, maxZ, Joml.RETURN_NEW ? Joml.floatAABB() : this); }
 
@@ -169,7 +179,7 @@ public interface FloatAABB extends FloatAABBR {
      * Grow this axis-aligned bounding box to include the point {@code p}.
      *
      * @param p the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatAABB union(Float3R p) { return union(p, Joml.RETURN_NEW ? Joml.floatAABB() : this); }
 
@@ -179,7 +189,7 @@ public interface FloatAABB extends FloatAABBR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatAABB union(float x, float y, float z) { return union(x, y, z, Joml.RETURN_NEW ? Joml.floatAABB() : this); }
 
@@ -206,6 +216,10 @@ public interface FloatAABB extends FloatAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -218,6 +232,10 @@ public interface FloatAABB extends FloatAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -230,6 +248,10 @@ public interface FloatAABB extends FloatAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -243,6 +265,10 @@ public interface FloatAABB extends FloatAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -260,6 +286,10 @@ public interface FloatAABB extends FloatAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -272,6 +302,10 @@ public interface FloatAABB extends FloatAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -284,6 +318,10 @@ public interface FloatAABB extends FloatAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -297,6 +335,10 @@ public interface FloatAABB extends FloatAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -310,6 +352,10 @@ public interface FloatAABB extends FloatAABBR {
 
     /**
      * Load the elements from the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -318,6 +364,10 @@ public interface FloatAABB extends FloatAABBR {
 
     /**
      * Load the elements from the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -357,6 +407,10 @@ public interface FloatAABB extends FloatAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -369,6 +423,10 @@ public interface FloatAABB extends FloatAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -381,6 +439,10 @@ public interface FloatAABB extends FloatAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -394,6 +456,10 @@ public interface FloatAABB extends FloatAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -411,6 +477,10 @@ public interface FloatAABB extends FloatAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -423,6 +493,10 @@ public interface FloatAABB extends FloatAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -435,6 +509,10 @@ public interface FloatAABB extends FloatAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -448,6 +526,10 @@ public interface FloatAABB extends FloatAABBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -461,6 +543,10 @@ public interface FloatAABB extends FloatAABBR {
 
     /**
      * Load the elements from the given memory segment, converting each element from {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -470,6 +556,10 @@ public interface FloatAABB extends FloatAABBR {
     /**
      * Load the elements from the given memory segment, converting each element from {@code double},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

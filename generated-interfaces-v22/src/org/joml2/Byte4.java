@@ -14,6 +14,14 @@ import java.lang.foreign.MemorySegment;
  * returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise with {@code ==}. {@code hashCode} is
+ * consistent with it. Only instances of this library's implementation compare equal to each other;
+ * the {@code equals} of a vector never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with an exact, non-negative integer tolerance: the
+ * difference is widened to {@code int} before its magnitude is taken, so the two are compared
+ * exactly without overflow, and a negative {@code epsilon} matches nothing.
  */
 public interface Byte4 extends Byte4R {
 
@@ -21,7 +29,7 @@ public interface Byte4 extends Byte4R {
      * Add {@code other} to this vector.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 add(Byte4R other) { return add(other, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -32,7 +40,7 @@ public interface Byte4 extends Byte4R {
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 add(byte x, byte y, byte z, byte w) { return add(x, y, z, w, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -40,7 +48,7 @@ public interface Byte4 extends Byte4R {
      * Compute the component-wise ceiling division of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ceilDiv(byte scalar) { return ceilDiv(scalar, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -48,7 +56,7 @@ public interface Byte4 extends Byte4R {
      * Compute the component-wise ceiling division of this vector by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ceilDiv(Byte4R other) { return ceilDiv(other, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -60,7 +68,7 @@ public interface Byte4 extends Byte4R {
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ceilDiv(byte x, byte y, byte z, byte w) { return ceilDiv(x, y, z, w, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -68,7 +76,7 @@ public interface Byte4 extends Byte4R {
      * Compute the component-wise ceiling modulus of this vector and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ceilMod(byte scalar) { return ceilMod(scalar, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -76,7 +84,7 @@ public interface Byte4 extends Byte4R {
      * Compute the component-wise ceiling modulus of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ceilMod(Byte4R other) { return ceilMod(other, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -88,7 +96,7 @@ public interface Byte4 extends Byte4R {
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ceilMod(byte x, byte y, byte z, byte w) { return ceilMod(x, y, z, w, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -97,7 +105,7 @@ public interface Byte4 extends Byte4R {
      * zero).
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 div(byte scalar) { return div(scalar, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -106,7 +114,7 @@ public interface Byte4 extends Byte4R {
      * zero).
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 div(Byte4R other) { return div(other, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -118,7 +126,7 @@ public interface Byte4 extends Byte4R {
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 div(byte x, byte y, byte z, byte w) { return div(x, y, z, w, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -126,7 +134,7 @@ public interface Byte4 extends Byte4R {
      * Compute the component-wise floor division of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 floorDiv(byte scalar) { return floorDiv(scalar, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -134,7 +142,7 @@ public interface Byte4 extends Byte4R {
      * Compute the component-wise floor division of this vector by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 floorDiv(Byte4R other) { return floorDiv(other, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -146,7 +154,7 @@ public interface Byte4 extends Byte4R {
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 floorDiv(byte x, byte y, byte z, byte w) { return floorDiv(x, y, z, w, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -154,7 +162,7 @@ public interface Byte4 extends Byte4R {
      * Compute the component-wise floor modulus of this vector and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 floorMod(byte scalar) { return floorMod(scalar, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -162,7 +170,7 @@ public interface Byte4 extends Byte4R {
      * Compute the component-wise floor modulus of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 floorMod(Byte4R other) { return floorMod(other, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -174,7 +182,7 @@ public interface Byte4 extends Byte4R {
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 floorMod(byte x, byte y, byte z, byte w) { return floorMod(x, y, z, w, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -182,7 +190,7 @@ public interface Byte4 extends Byte4R {
      * Multiply each component of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 mul(byte scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -190,7 +198,7 @@ public interface Byte4 extends Byte4R {
      * Multiply this vector component-wise by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 mul(Byte4R other) { return mul(other, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -201,14 +209,14 @@ public interface Byte4 extends Byte4R {
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 mul(byte x, byte y, byte z, byte w) { return mul(x, y, z, w, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Negate this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 negate() { return negate(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -218,7 +226,7 @@ public interface Byte4 extends Byte4R {
      * {@code div}).
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 rem(byte scalar) { return rem(scalar, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -228,7 +236,7 @@ public interface Byte4 extends Byte4R {
      * {@code div}).
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 rem(Byte4R other) { return rem(other, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -241,7 +249,7 @@ public interface Byte4 extends Byte4R {
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 rem(byte x, byte y, byte z, byte w) { return rem(x, y, z, w, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -249,7 +257,7 @@ public interface Byte4 extends Byte4R {
      * Subtract {@code other} from this vector.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 sub(Byte4R other) { return sub(other, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -260,7 +268,7 @@ public interface Byte4 extends Byte4R {
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 sub(byte x, byte y, byte z, byte w) { return sub(x, y, z, w, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -268,7 +276,7 @@ public interface Byte4 extends Byte4R {
      * Compute the bitwise AND of each component of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 and(Byte4R other) { return and(other, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -280,35 +288,35 @@ public interface Byte4 extends Byte4R {
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 and(byte x, byte y, byte z, byte w) { return and(x, y, z, w, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Compute the number of one-bits of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 bitCount() { return bitCount(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Compute the bitwise NOT of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 not() { return not(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Compute the number of leading zero bits of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 numberOfLeadingZeros() { return numberOfLeadingZeros(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Compute the number of trailing zero bits of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 numberOfTrailingZeros() { return numberOfTrailingZeros(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -316,7 +324,7 @@ public interface Byte4 extends Byte4R {
      * Compute the bitwise OR of each component of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 or(Byte4R other) { return or(other, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -328,21 +336,21 @@ public interface Byte4 extends Byte4R {
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 or(byte x, byte y, byte z, byte w) { return or(x, y, z, w, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Compute the bit-reversed value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 reverseBits() { return reverseBits(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Compute the byte-reversed value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 reverseBytes() { return reverseBytes(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -350,7 +358,7 @@ public interface Byte4 extends Byte4R {
      * Rotate the bits of each component of this vector left by {@code distance} positions.
      *
      * @param distance the number of bit positions to rotate by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 rotateLeft(byte distance) { return rotateLeft(distance, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -358,7 +366,7 @@ public interface Byte4 extends Byte4R {
      * Rotate the bits of each component of this vector right by {@code distance} positions.
      *
      * @param distance the number of bit positions to rotate by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 rotateRight(byte distance) { return rotateRight(distance, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -368,7 +376,7 @@ public interface Byte4 extends Byte4R {
      * and takes it modulo 32).
      *
      * @param shift the number of bit positions to shift by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 shl(byte shift) { return shl(shift, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -378,7 +386,7 @@ public interface Byte4 extends Byte4R {
      * to {@code int} and takes it modulo 32).
      *
      * @param shift the number of bit positions to shift by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 shr(byte shift) { return shr(shift, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -388,7 +396,7 @@ public interface Byte4 extends Byte4R {
      * {@code int} and takes it modulo 32).
      *
      * @param shift the number of bit positions to shift by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ushr(byte shift) { return ushr(shift, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -396,7 +404,7 @@ public interface Byte4 extends Byte4R {
      * Compute the bitwise XOR of each component of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xor(Byte4R other) { return xor(other, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -408,7 +416,7 @@ public interface Byte4 extends Byte4R {
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xor(byte x, byte y, byte z, byte w) { return xor(x, y, z, w, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -435,7 +443,7 @@ public interface Byte4 extends Byte4R {
      * Set this vector to {@code s}.
      *
      * @param s the value assigned to every component
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 set(byte s) { return set(s, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -484,7 +492,7 @@ public interface Byte4 extends Byte4R {
     /**
      * Compute the absolute value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 absolute() { return absolute(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -493,7 +501,7 @@ public interface Byte4 extends Byte4R {
      *
      * @param min the lower bound
      * @param max the upper bound
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 clamp(byte min, byte max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -502,7 +510,7 @@ public interface Byte4 extends Byte4R {
      *
      * @param min the per-component lower bounds
      * @param max the per-component upper bounds
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 clamp(Byte4R min, Byte4R max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -518,7 +526,7 @@ public interface Byte4 extends Byte4R {
      * @param maxY the {@code y} component of the vector {@code (maxX, maxY, maxZ, maxW)}
      * @param maxZ the {@code z} component of the vector {@code (maxX, maxY, maxZ, maxW)}
      * @param maxW the {@code w} component of the vector {@code (maxX, maxY, maxZ, maxW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 clamp(byte minX, byte minY, byte minZ, byte minW, byte maxX, byte maxY, byte maxZ, byte maxW) { return clamp(minX, minY, minZ, minW, maxX, maxY, maxZ, maxW, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -526,7 +534,7 @@ public interface Byte4 extends Byte4R {
      * Set each component of this vector to the larger of itself and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 max(byte scalar) { return max(scalar, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -535,7 +543,7 @@ public interface Byte4 extends Byte4R {
      * {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 max(Byte4R other) { return max(other, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -547,7 +555,7 @@ public interface Byte4 extends Byte4R {
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 max(byte x, byte y, byte z, byte w) { return max(x, y, z, w, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -555,7 +563,7 @@ public interface Byte4 extends Byte4R {
      * Set each component of this vector to the smaller of itself and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 min(byte scalar) { return min(scalar, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -564,7 +572,7 @@ public interface Byte4 extends Byte4R {
      * {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 min(Byte4R other) { return min(other, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -576,14 +584,14 @@ public interface Byte4 extends Byte4R {
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 min(byte x, byte y, byte z, byte w) { return min(x, y, z, w, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Compute the sign of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 sign() { return sign(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -591,7 +599,7 @@ public interface Byte4 extends Byte4R {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 satAdd(Byte4R other) { return satAdd(other, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -603,7 +611,7 @@ public interface Byte4 extends Byte4R {
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 satAdd(byte x, byte y, byte z, byte w) { return satAdd(x, y, z, w, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -611,7 +619,7 @@ public interface Byte4 extends Byte4R {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 satMul(Byte4R other) { return satMul(other, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -623,14 +631,14 @@ public interface Byte4 extends Byte4R {
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 satMul(byte x, byte y, byte z, byte w) { return satMul(x, y, z, w, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Negate this vector, clamping to the value range instead of overflowing.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 satNegate() { return satNegate(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -638,7 +646,7 @@ public interface Byte4 extends Byte4R {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 satSub(Byte4R other) { return satSub(other, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -650,1799 +658,1799 @@ public interface Byte4 extends Byte4R {
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
      * @param z the {@code z} component of the vector {@code (x, y, z, w)}
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 satSub(byte x, byte y, byte z, byte w) { return satSub(x, y, z, w, Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xxxx() { return xxxx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xxxy() { return xxxy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xxxz() { return xxxz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code x}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xxxw() { return xxxw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xxyx() { return xxyx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xxyy() { return xxyy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xxyz() { return xxyz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code y}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xxyw() { return xxyw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xxzx() { return xxzx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xxzy() { return xxzy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xxzz() { return xxzz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code z}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xxzw() { return xxzw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code w}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xxwx() { return xxwx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code w}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xxwy() { return xxwy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code w}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xxwz() { return xxwz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code w}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xxww() { return xxww(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xyxx() { return xyxx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xyxy() { return xyxy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xyxz() { return xyxz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code x}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xyxw() { return xyxw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xyyx() { return xyyx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xyyy() { return xyyy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xyyz() { return xyyz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code y}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xyyw() { return xyyw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xyzx() { return xyzx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xyzy() { return xyzy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xyzz() { return xyzz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code z}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xyzw() { return xyzw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code w}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xywx() { return xywx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code w}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xywy() { return xywy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code w}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xywz() { return xywz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code w}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xyww() { return xyww(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xzxx() { return xzxx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xzxy() { return xzxy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xzxz() { return xzxz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code x}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xzxw() { return xzxw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xzyx() { return xzyx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xzyy() { return xzyy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xzyz() { return xzyz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code y}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xzyw() { return xzyw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xzzx() { return xzzx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xzzy() { return xzzy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xzzz() { return xzzz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code z}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xzzw() { return xzzw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code w}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xzwx() { return xzwx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code w}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xzwy() { return xzwy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code w}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xzwz() { return xzwz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code w}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xzww() { return xzww(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code w}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xwxx() { return xwxx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code w}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xwxy() { return xwxy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code w}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xwxz() { return xwxz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code w}, {@code x}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xwxw() { return xwxw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code w}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xwyx() { return xwyx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code w}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xwyy() { return xwyy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code w}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xwyz() { return xwyz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code w}, {@code y}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xwyw() { return xwyw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code w}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xwzx() { return xwzx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code w}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xwzy() { return xwzy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code w}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xwzz() { return xwzz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code w}, {@code z}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xwzw() { return xwzw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code w}, {@code w}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xwwx() { return xwwx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code w}, {@code w}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xwwy() { return xwwy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code w}, {@code w}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xwwz() { return xwwz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code w}, {@code w}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 xwww() { return xwww(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yxxx() { return yxxx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yxxy() { return yxxy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yxxz() { return yxxz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code x}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yxxw() { return yxxw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yxyx() { return yxyx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yxyy() { return yxyy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yxyz() { return yxyz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code y}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yxyw() { return yxyw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yxzx() { return yxzx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yxzy() { return yxzy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yxzz() { return yxzz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code z}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yxzw() { return yxzw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code w}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yxwx() { return yxwx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code w}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yxwy() { return yxwy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code w}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yxwz() { return yxwz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code w}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yxww() { return yxww(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yyxx() { return yyxx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yyxy() { return yyxy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yyxz() { return yyxz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code x}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yyxw() { return yyxw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yyyx() { return yyyx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yyyy() { return yyyy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yyyz() { return yyyz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code y}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yyyw() { return yyyw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yyzx() { return yyzx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yyzy() { return yyzy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yyzz() { return yyzz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code z}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yyzw() { return yyzw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code w}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yywx() { return yywx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code w}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yywy() { return yywy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code w}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yywz() { return yywz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code w}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yyww() { return yyww(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yzxx() { return yzxx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yzxy() { return yzxy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yzxz() { return yzxz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code x}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yzxw() { return yzxw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yzyx() { return yzyx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yzyy() { return yzyy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yzyz() { return yzyz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code y}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yzyw() { return yzyw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yzzx() { return yzzx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yzzy() { return yzzy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yzzz() { return yzzz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code z}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yzzw() { return yzzw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code w}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yzwx() { return yzwx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code w}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yzwy() { return yzwy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code w}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yzwz() { return yzwz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code w}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 yzww() { return yzww(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code w}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ywxx() { return ywxx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code w}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ywxy() { return ywxy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code w}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ywxz() { return ywxz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code w}, {@code x}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ywxw() { return ywxw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code w}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ywyx() { return ywyx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code w}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ywyy() { return ywyy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code w}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ywyz() { return ywyz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code w}, {@code y}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ywyw() { return ywyw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code w}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ywzx() { return ywzx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code w}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ywzy() { return ywzy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code w}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ywzz() { return ywzz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code w}, {@code z}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ywzw() { return ywzw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code w}, {@code w}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ywwx() { return ywwx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code w}, {@code w}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ywwy() { return ywwy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code w}, {@code w}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ywwz() { return ywwz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code w}, {@code w}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 ywww() { return ywww(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zxxx() { return zxxx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zxxy() { return zxxy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zxxz() { return zxxz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code x}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zxxw() { return zxxw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zxyx() { return zxyx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zxyy() { return zxyy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zxyz() { return zxyz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code y}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zxyw() { return zxyw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zxzx() { return zxzx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zxzy() { return zxzy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zxzz() { return zxzz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code z}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zxzw() { return zxzw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code w}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zxwx() { return zxwx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code w}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zxwy() { return zxwy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code w}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zxwz() { return zxwz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code w}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zxww() { return zxww(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zyxx() { return zyxx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zyxy() { return zyxy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zyxz() { return zyxz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code x}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zyxw() { return zyxw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zyyx() { return zyyx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zyyy() { return zyyy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zyyz() { return zyyz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code y}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zyyw() { return zyyw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zyzx() { return zyzx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zyzy() { return zyzy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zyzz() { return zyzz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code z}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zyzw() { return zyzw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code w}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zywx() { return zywx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code w}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zywy() { return zywy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code w}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zywz() { return zywz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code w}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zyww() { return zyww(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zzxx() { return zzxx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zzxy() { return zzxy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zzxz() { return zzxz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code x}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zzxw() { return zzxw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zzyx() { return zzyx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zzyy() { return zzyy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zzyz() { return zzyz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code y}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zzyw() { return zzyw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zzzx() { return zzzx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zzzy() { return zzzy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zzzz() { return zzzz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code z}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zzzw() { return zzzw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code w}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zzwx() { return zzwx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code w}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zzwy() { return zzwy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code w}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zzwz() { return zzwz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code w}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zzww() { return zzww(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code w}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zwxx() { return zwxx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code w}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zwxy() { return zwxy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code w}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zwxz() { return zwxz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code w}, {@code x}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zwxw() { return zwxw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code w}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zwyx() { return zwyx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code w}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zwyy() { return zwyy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code w}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zwyz() { return zwyz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code w}, {@code y}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zwyw() { return zwyw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code w}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zwzx() { return zwzx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code w}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zwzy() { return zwzy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code w}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zwzz() { return zwzz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code w}, {@code z}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zwzw() { return zwzw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code w}, {@code w}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zwwx() { return zwwx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code w}, {@code w}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zwwy() { return zwwy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code w}, {@code w}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zwwz() { return zwwz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code w}, {@code w}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 zwww() { return zwww(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code x}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wxxx() { return wxxx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code x}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wxxy() { return wxxy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code x}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wxxz() { return wxxz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code x}, {@code x}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wxxw() { return wxxw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code x}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wxyx() { return wxyx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code x}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wxyy() { return wxyy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code x}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wxyz() { return wxyz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code x}, {@code y}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wxyw() { return wxyw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code x}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wxzx() { return wxzx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code x}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wxzy() { return wxzy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code x}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wxzz() { return wxzz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code x}, {@code z}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wxzw() { return wxzw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code x}, {@code w}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wxwx() { return wxwx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code x}, {@code w}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wxwy() { return wxwy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code x}, {@code w}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wxwz() { return wxwz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code x}, {@code w}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wxww() { return wxww(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code y}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wyxx() { return wyxx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code y}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wyxy() { return wyxy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code y}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wyxz() { return wyxz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code y}, {@code x}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wyxw() { return wyxw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code y}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wyyx() { return wyyx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code y}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wyyy() { return wyyy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code y}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wyyz() { return wyyz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code y}, {@code y}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wyyw() { return wyyw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code y}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wyzx() { return wyzx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code y}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wyzy() { return wyzy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code y}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wyzz() { return wyzz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code y}, {@code z}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wyzw() { return wyzw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code y}, {@code w}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wywx() { return wywx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code y}, {@code w}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wywy() { return wywy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code y}, {@code w}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wywz() { return wywz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code y}, {@code w}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wyww() { return wyww(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code z}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wzxx() { return wzxx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code z}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wzxy() { return wzxy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code z}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wzxz() { return wzxz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code z}, {@code x}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wzxw() { return wzxw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code z}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wzyx() { return wzyx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code z}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wzyy() { return wzyy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code z}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wzyz() { return wzyz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code z}, {@code y}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wzyw() { return wzyw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code z}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wzzx() { return wzzx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code z}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wzzy() { return wzzy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code z}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wzzz() { return wzzz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code z}, {@code z}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wzzw() { return wzzw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code z}, {@code w}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wzwx() { return wzwx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code z}, {@code w}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wzwy() { return wzwy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code z}, {@code w}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wzwz() { return wzwz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code z}, {@code w}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wzww() { return wzww(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code w}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wwxx() { return wwxx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code w}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wwxy() { return wwxy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code w}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wwxz() { return wwxz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code w}, {@code x}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wwxw() { return wwxw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code w}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wwyx() { return wwyx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code w}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wwyy() { return wwyy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code w}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wwyz() { return wwyz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code w}, {@code y}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wwyw() { return wwyw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code w}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wwzx() { return wwzx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code w}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wwzy() { return wwzy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code w}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wwzz() { return wwzz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code w}, {@code z}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wwzw() { return wwzw(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code w}, {@code w}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wwwx() { return wwwx(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code w}, {@code w}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wwwy() { return wwwy(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code w}, {@code w}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wwwz() { return wwwz(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code w}, {@code w}, {@code w}, {@code w}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte4 wwww() { return wwww(Joml.RETURN_NEW ? Joml.byte4() : this); }
 
@@ -2469,6 +2477,10 @@ public interface Byte4 extends Byte4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -2481,6 +2493,10 @@ public interface Byte4 extends Byte4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -2493,6 +2509,10 @@ public interface Byte4 extends Byte4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2506,6 +2526,10 @@ public interface Byte4 extends Byte4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -2519,6 +2543,10 @@ public interface Byte4 extends Byte4R {
 
     /**
      * Load the elements from the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -2527,6 +2555,10 @@ public interface Byte4 extends Byte4R {
 
     /**
      * Load the elements from the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -2566,6 +2598,10 @@ public interface Byte4 extends Byte4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -2578,6 +2614,10 @@ public interface Byte4 extends Byte4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -2590,6 +2630,10 @@ public interface Byte4 extends Byte4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2603,6 +2647,10 @@ public interface Byte4 extends Byte4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -2620,6 +2668,10 @@ public interface Byte4 extends Byte4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -2632,6 +2684,10 @@ public interface Byte4 extends Byte4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -2644,6 +2700,10 @@ public interface Byte4 extends Byte4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2657,6 +2717,10 @@ public interface Byte4 extends Byte4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -2670,6 +2734,10 @@ public interface Byte4 extends Byte4R {
 
     /**
      * Load the elements from the given memory segment, converting each element from {@code short}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -2679,6 +2747,10 @@ public interface Byte4 extends Byte4R {
     /**
      * Load the elements from the given memory segment, converting each element from {@code short},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

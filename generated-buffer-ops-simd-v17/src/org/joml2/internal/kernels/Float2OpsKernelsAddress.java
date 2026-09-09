@@ -505,7 +505,7 @@ public final class Float2OpsKernelsAddress {
     public static float angleBetween_unsafe(long src, float otherX, float otherY) {
         float _selfx = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _selfy = UnsafeOpsHolder.U.getFloat(src + 4L);
-        return (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(otherX, _selfx, otherY * _selfy) * (1.0f / (float) Math.sqrt(Math.fma(_selfx, _selfx, _selfy * _selfy))) * (1.0f / (float) Math.sqrt(Math.fma(otherX, otherX, otherY * otherY))))));
+        return (float) Math.atan2(Math.abs(Math.fma(otherY, _selfx, -(otherX * _selfy))), Math.fma(otherX, _selfx, otherY * _selfy));
     }
 
     public static float angleBetween_unsafe(long src, long other) {
@@ -513,7 +513,7 @@ public final class Float2OpsKernelsAddress {
         float _selfy = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _otherx = UnsafeOpsHolder.U.getFloat(other + 0L);
         float _othery = UnsafeOpsHolder.U.getFloat(other + 4L);
-        return (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(_otherx, _selfx, _othery * _selfy) * (1.0f / (float) Math.sqrt(Math.fma(_selfx, _selfx, _selfy * _selfy))) * (1.0f / (float) Math.sqrt(Math.fma(_otherx, _otherx, _othery * _othery))))));
+        return (float) Math.atan2(Math.abs(Math.fma(_othery, _selfx, -(_otherx * _selfy))), Math.fma(_otherx, _selfx, _othery * _selfy));
     }
 
     public static long asin_unsafe(long dest, long src) {

@@ -14,6 +14,14 @@ import java.lang.foreign.MemorySegment;
  * returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise with {@code ==}. {@code hashCode} is
+ * consistent with it. Only instances of this library's implementation compare equal to each other;
+ * the {@code equals} of a vector never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with an exact, non-negative integer tolerance: the
+ * difference is widened to {@code long} before its magnitude is taken, so the two are compared
+ * exactly without overflow, and a negative {@code epsilon} matches nothing.
  */
 public interface Int2 extends Int2R {
 
@@ -21,7 +29,7 @@ public interface Int2 extends Int2R {
      * Add {@code other} to this vector.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 add(Int2R other) { return add(other, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -30,7 +38,7 @@ public interface Int2 extends Int2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 add(int x, int y) { return add(x, y, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -38,7 +46,7 @@ public interface Int2 extends Int2R {
      * Compute the component-wise ceiling division of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 ceilDiv(int scalar) { return ceilDiv(scalar, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -46,7 +54,7 @@ public interface Int2 extends Int2R {
      * Compute the component-wise ceiling division of this vector by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 ceilDiv(Int2R other) { return ceilDiv(other, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -55,7 +63,7 @@ public interface Int2 extends Int2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 ceilDiv(int x, int y) { return ceilDiv(x, y, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -63,7 +71,7 @@ public interface Int2 extends Int2R {
      * Compute the component-wise ceiling modulus of this vector and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 ceilMod(int scalar) { return ceilMod(scalar, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -71,7 +79,7 @@ public interface Int2 extends Int2R {
      * Compute the component-wise ceiling modulus of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 ceilMod(Int2R other) { return ceilMod(other, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -80,7 +88,7 @@ public interface Int2 extends Int2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 ceilMod(int x, int y) { return ceilMod(x, y, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -89,7 +97,7 @@ public interface Int2 extends Int2R {
      * zero).
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 div(int scalar) { return div(scalar, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -98,7 +106,7 @@ public interface Int2 extends Int2R {
      * zero).
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 div(Int2R other) { return div(other, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -108,7 +116,7 @@ public interface Int2 extends Int2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 div(int x, int y) { return div(x, y, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -116,7 +124,7 @@ public interface Int2 extends Int2R {
      * Compute the component-wise floor division of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 floorDiv(int scalar) { return floorDiv(scalar, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -124,7 +132,7 @@ public interface Int2 extends Int2R {
      * Compute the component-wise floor division of this vector by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 floorDiv(Int2R other) { return floorDiv(other, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -133,7 +141,7 @@ public interface Int2 extends Int2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 floorDiv(int x, int y) { return floorDiv(x, y, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -141,7 +149,7 @@ public interface Int2 extends Int2R {
      * Compute the component-wise floor modulus of this vector and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 floorMod(int scalar) { return floorMod(scalar, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -149,7 +157,7 @@ public interface Int2 extends Int2R {
      * Compute the component-wise floor modulus of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 floorMod(Int2R other) { return floorMod(other, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -158,7 +166,7 @@ public interface Int2 extends Int2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 floorMod(int x, int y) { return floorMod(x, y, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -166,7 +174,7 @@ public interface Int2 extends Int2R {
      * Multiply each component of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 mul(int scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -174,7 +182,7 @@ public interface Int2 extends Int2R {
      * Multiply this vector component-wise by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 mul(Int2R other) { return mul(other, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -183,14 +191,14 @@ public interface Int2 extends Int2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 mul(int x, int y) { return mul(x, y, Joml.RETURN_NEW ? Joml.int2() : this); }
 
     /**
      * Negate this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 negate() { return negate(Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -200,7 +208,7 @@ public interface Int2 extends Int2R {
      * {@code div}).
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 rem(int scalar) { return rem(scalar, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -210,7 +218,7 @@ public interface Int2 extends Int2R {
      * {@code div}).
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 rem(Int2R other) { return rem(other, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -221,7 +229,7 @@ public interface Int2 extends Int2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 rem(int x, int y) { return rem(x, y, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -229,7 +237,7 @@ public interface Int2 extends Int2R {
      * Subtract {@code other} from this vector.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 sub(Int2R other) { return sub(other, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -238,7 +246,7 @@ public interface Int2 extends Int2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 sub(int x, int y) { return sub(x, y, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -246,7 +254,7 @@ public interface Int2 extends Int2R {
      * Compute the bitwise AND of each component of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 and(Int2R other) { return and(other, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -255,35 +263,35 @@ public interface Int2 extends Int2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 and(int x, int y) { return and(x, y, Joml.RETURN_NEW ? Joml.int2() : this); }
 
     /**
      * Compute the number of one-bits of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 bitCount() { return bitCount(Joml.RETURN_NEW ? Joml.int2() : this); }
 
     /**
      * Compute the bitwise NOT of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 not() { return not(Joml.RETURN_NEW ? Joml.int2() : this); }
 
     /**
      * Compute the number of leading zero bits of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 numberOfLeadingZeros() { return numberOfLeadingZeros(Joml.RETURN_NEW ? Joml.int2() : this); }
 
     /**
      * Compute the number of trailing zero bits of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 numberOfTrailingZeros() { return numberOfTrailingZeros(Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -291,7 +299,7 @@ public interface Int2 extends Int2R {
      * Compute the bitwise OR of each component of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 or(Int2R other) { return or(other, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -300,21 +308,21 @@ public interface Int2 extends Int2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 or(int x, int y) { return or(x, y, Joml.RETURN_NEW ? Joml.int2() : this); }
 
     /**
      * Compute the bit-reversed value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 reverseBits() { return reverseBits(Joml.RETURN_NEW ? Joml.int2() : this); }
 
     /**
      * Compute the byte-reversed value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 reverseBytes() { return reverseBytes(Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -322,7 +330,7 @@ public interface Int2 extends Int2R {
      * Rotate the bits of each component of this vector left by {@code distance} positions.
      *
      * @param distance the number of bit positions to rotate by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 rotateLeft(int distance) { return rotateLeft(distance, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -330,7 +338,7 @@ public interface Int2 extends Int2R {
      * Rotate the bits of each component of this vector right by {@code distance} positions.
      *
      * @param distance the number of bit positions to rotate by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 rotateRight(int distance) { return rotateRight(distance, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -338,7 +346,7 @@ public interface Int2 extends Int2R {
      * Shift each component of this vector left by {@code shift} bits.
      *
      * @param shift the number of bit positions to shift by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 shl(int shift) { return shl(shift, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -346,7 +354,7 @@ public interface Int2 extends Int2R {
      * Arithmetically shift each component of this vector right by {@code shift} bits.
      *
      * @param shift the number of bit positions to shift by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 shr(int shift) { return shr(shift, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -354,7 +362,7 @@ public interface Int2 extends Int2R {
      * Logically shift each component of this vector right by {@code shift} bits.
      *
      * @param shift the number of bit positions to shift by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 ushr(int shift) { return ushr(shift, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -362,7 +370,7 @@ public interface Int2 extends Int2R {
      * Compute the bitwise XOR of each component of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 xor(Int2R other) { return xor(other, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -371,7 +379,7 @@ public interface Int2 extends Int2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 xor(int x, int y) { return xor(x, y, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -396,7 +404,7 @@ public interface Int2 extends Int2R {
      * Set this vector to {@code s}.
      *
      * @param s the value assigned to every component
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 set(int s) { return set(s, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -451,7 +459,7 @@ public interface Int2 extends Int2R {
     /**
      * Compute the absolute value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 absolute() { return absolute(Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -460,7 +468,7 @@ public interface Int2 extends Int2R {
      *
      * @param min the lower bound
      * @param max the upper bound
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 clamp(int min, int max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -469,7 +477,7 @@ public interface Int2 extends Int2R {
      *
      * @param min the per-component lower bounds
      * @param max the per-component upper bounds
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 clamp(Int2R min, Int2R max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -481,7 +489,7 @@ public interface Int2 extends Int2R {
      * @param minY the {@code y} component of the vector {@code (minX, minY)}
      * @param maxX the {@code x} component of the vector {@code (maxX, maxY)}
      * @param maxY the {@code y} component of the vector {@code (maxX, maxY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 clamp(int minX, int minY, int maxX, int maxY) { return clamp(minX, minY, maxX, maxY, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -489,7 +497,7 @@ public interface Int2 extends Int2R {
      * Set each component of this vector to the larger of itself and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 max(int scalar) { return max(scalar, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -498,7 +506,7 @@ public interface Int2 extends Int2R {
      * {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 max(Int2R other) { return max(other, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -508,7 +516,7 @@ public interface Int2 extends Int2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 max(int x, int y) { return max(x, y, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -516,7 +524,7 @@ public interface Int2 extends Int2R {
      * Set each component of this vector to the smaller of itself and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 min(int scalar) { return min(scalar, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -525,7 +533,7 @@ public interface Int2 extends Int2R {
      * {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 min(Int2R other) { return min(other, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -535,14 +543,14 @@ public interface Int2 extends Int2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 min(int x, int y) { return min(x, y, Joml.RETURN_NEW ? Joml.int2() : this); }
 
     /**
      * Compute the sign of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 sign() { return sign(Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -550,7 +558,7 @@ public interface Int2 extends Int2R {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 satAdd(Int2R other) { return satAdd(other, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -560,7 +568,7 @@ public interface Int2 extends Int2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 satAdd(int x, int y) { return satAdd(x, y, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -568,7 +576,7 @@ public interface Int2 extends Int2R {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 satMul(Int2R other) { return satMul(other, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -578,14 +586,14 @@ public interface Int2 extends Int2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 satMul(int x, int y) { return satMul(x, y, Joml.RETURN_NEW ? Joml.int2() : this); }
 
     /**
      * Negate this vector, clamping to the value range instead of overflowing.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 satNegate() { return satNegate(Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -593,7 +601,7 @@ public interface Int2 extends Int2R {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 satSub(Int2R other) { return satSub(other, Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -603,35 +611,35 @@ public interface Int2 extends Int2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 satSub(int x, int y) { return satSub(x, y, Joml.RETURN_NEW ? Joml.int2() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 xx() { return xx(Joml.RETURN_NEW ? Joml.int2() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 xy() { return xy(Joml.RETURN_NEW ? Joml.int2() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 yx() { return yx(Joml.RETURN_NEW ? Joml.int2() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Int2 yy() { return yy(Joml.RETURN_NEW ? Joml.int2() : this); }
 
@@ -658,6 +666,10 @@ public interface Int2 extends Int2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -670,6 +682,10 @@ public interface Int2 extends Int2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -682,6 +698,10 @@ public interface Int2 extends Int2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -695,6 +715,10 @@ public interface Int2 extends Int2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -712,6 +736,10 @@ public interface Int2 extends Int2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -724,6 +752,10 @@ public interface Int2 extends Int2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -736,6 +768,10 @@ public interface Int2 extends Int2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -749,6 +785,10 @@ public interface Int2 extends Int2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -762,6 +802,10 @@ public interface Int2 extends Int2R {
 
     /**
      * Load the elements from the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -770,6 +814,10 @@ public interface Int2 extends Int2R {
 
     /**
      * Load the elements from the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -809,6 +857,10 @@ public interface Int2 extends Int2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -821,6 +873,10 @@ public interface Int2 extends Int2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -833,6 +889,10 @@ public interface Int2 extends Int2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -846,6 +906,10 @@ public interface Int2 extends Int2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -863,6 +927,10 @@ public interface Int2 extends Int2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -875,6 +943,10 @@ public interface Int2 extends Int2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -887,6 +959,10 @@ public interface Int2 extends Int2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -900,6 +976,10 @@ public interface Int2 extends Int2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -913,6 +993,10 @@ public interface Int2 extends Int2R {
 
     /**
      * Load the elements from the given memory segment, converting each element from {@code long}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -922,6 +1006,10 @@ public interface Int2 extends Int2R {
     /**
      * Load the elements from the given memory segment, converting each element from {@code long},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

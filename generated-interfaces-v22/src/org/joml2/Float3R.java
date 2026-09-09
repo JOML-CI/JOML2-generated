@@ -12,6 +12,21 @@ import java.lang.foreign.MemorySegment;
  * mutate the receiver; the mutable counterpart is {@link Float3}. APIs that only read a 3D vector
  * should accept {@code Float3R}, so callers can pass mutable instances without exposing them to
  * modification.
+ * <p>
+ * Arguments of type {@code Float3R} must be instances created by the library ({@link Joml}
+ * factories / the library's own types); the implementations read cached state through the library's
+ * own classes, so foreign implementations of the {@code *R} interfaces are not supported as
+ * arguments.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of a vector
+ * never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface Float3R {
     /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
@@ -1325,6 +1340,9 @@ public interface Float3R {
 
     /**
      * Compute the angle in radians between this vector and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other vector
      * @return the angle in radians between this vector and {@code other}
@@ -1333,6 +1351,9 @@ public interface Float3R {
 
     /**
      * Compute the angle in radians between this vector and ({@code x}, {@code y}, {@code z}).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1861,6 +1882,10 @@ public interface Float3R {
 
     /**
      * Compute the distance between this vector and {@code other}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the difference vector must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param other the other vector
      * @return the distance between this vector and {@code other}
@@ -1869,6 +1894,10 @@ public interface Float3R {
 
     /**
      * Compute the distance between this vector and ({@code x}, {@code y}, {@code z}).
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the difference vector must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -2201,6 +2230,10 @@ public interface Float3R {
 
     /**
      * Compute the length of this vector.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this vector must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @return the length of this vector
      */
@@ -2609,8 +2642,8 @@ public interface Float3R {
      * <p>
      * The squared length is formed at the component precision, so components whose squares overflow
      * or underflow that precision are out of domain: the result is the zero vector rather than a
-     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}).
+     * unit vector. Rescale such inputs before normalizing (the magnitude must lie roughly between
+     * 1e-19 and 1.8e19 for {@code float}, 1.5e-154 and 1.3e154 for {@code double}).
      *
      * @param dest will hold the result
      * @return dest
@@ -2623,8 +2656,8 @@ public interface Float3R {
      * <p>
      * The squared length is formed at the component precision, so components whose squares overflow
      * or underflow that precision are out of domain: the result is the zero vector rather than a
-     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}).
+     * unit vector. Rescale such inputs before normalizing (the magnitude must lie roughly between
+     * 1e-19 and 1.8e19 for {@code float}, 1.5e-154 and 1.3e154 for {@code double}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2661,6 +2694,9 @@ public interface Float3R {
      * Compute the signed angle in radians between this vector and {@code other}, positive when the
      * rotation from this vector to {@code other} is counter-clockwise as seen from the direction of
      * the given normal.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other vector
      * @param normal the reference axis that defines the sign of the angle
@@ -2675,6 +2711,9 @@ public interface Float3R {
      * {@code otherZ}), positive when the rotation from this vector to ({@code otherX},
      * {@code otherY}, {@code otherZ}) is counter-clockwise as seen from the direction of the given
      * normal.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -4891,6 +4930,10 @@ public interface Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4903,6 +4946,10 @@ public interface Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4915,6 +4962,10 @@ public interface Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -4928,6 +4979,10 @@ public interface Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -4945,6 +5000,10 @@ public interface Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4957,6 +5016,10 @@ public interface Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4969,6 +5032,10 @@ public interface Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -4982,6 +5049,10 @@ public interface Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -4995,6 +5066,10 @@ public interface Float3R {
 
     /**
      * Store the elements into the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -5003,6 +5078,10 @@ public interface Float3R {
 
     /**
      * Store the elements into the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -5042,6 +5121,10 @@ public interface Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -5054,6 +5137,10 @@ public interface Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -5066,6 +5153,10 @@ public interface Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -5079,6 +5170,10 @@ public interface Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -5096,6 +5191,10 @@ public interface Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -5108,6 +5207,10 @@ public interface Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -5120,6 +5223,10 @@ public interface Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -5133,6 +5240,10 @@ public interface Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -5146,6 +5257,10 @@ public interface Float3R {
 
     /**
      * Store the elements into the given memory segment, converting each element to {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -5155,6 +5270,10 @@ public interface Float3R {
     /**
      * Store the elements into the given memory segment, converting each element to {@code double},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -5177,12 +5296,40 @@ public interface Float3R {
     /**
      * Compare this vector component-wise against {@code other}, allowing a difference
      * of at most {@code epsilon} per component.
+     * <p>
+     * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+     * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and
+     * a NaN component never compares equal to anything.
      *
      * @param other the vector to compare against
      * @param epsilon the maximum allowed difference per component
      * @return {@code true} if all components differ by at most {@code epsilon}, {@code false} otherwise
      */
     boolean equalsEpsilon(Float3R other, float epsilon);
+
+    /**
+     * Compare this vector with the given object for element-wise equality.
+     * <p>
+     * Each component is compared bitwise, as by {@code Float.floatToIntBits}: {@code 0.0} and
+     * {@code -0.0} are not equal, and NaN is equal to NaN. Use {@link #equalsEpsilon} for a
+     * tolerant comparison.
+     * <p>
+     * Only instances of this library's implementation compare equal to each other; any other object
+     * yields {@code false}.
+     *
+     * @param obj the object to compare with
+     * @return {@code true} if {@code obj} is a vector of this library with element-wise equal
+     *        components, {@code false} otherwise
+     */
+    boolean equals(@org.jspecify.annotations.Nullable Object obj);
+
+    /**
+     * Compute a hash code consistent with {@link #equals}: it is derived from the components via
+     * {@code Float.floatToIntBits} alone.
+     *
+     * @return the hash code of this vector
+     */
+    int hashCode();
 
     /** Backs {@code ZERO()}: defers the shared instance's
      *  allocation to first use, avoiding a class-initialization cycle with the

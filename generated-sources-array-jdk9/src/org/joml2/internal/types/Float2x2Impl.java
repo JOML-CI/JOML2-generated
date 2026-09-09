@@ -428,7 +428,7 @@ public class Float2x2Impl implements Float2x2 {
     /**
      * Compute the cofactor matrix of this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x2 cofactor() {
         if (Joml.RETURN_NEW) return cofactor(Joml.float2x2());
@@ -601,7 +601,7 @@ public class Float2x2Impl implements Float2x2 {
     /**
      * Invert this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x2 invert() {
         if (Joml.RETURN_NEW) return invert(Joml.float2x2());
@@ -1012,7 +1012,7 @@ public class Float2x2Impl implements Float2x2 {
      * {@code (this * other)^-1}.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x2 invertProduct(Float2x2R other) {
         if (Joml.RETURN_NEW) return invertProduct(other, Joml.float2x2());
@@ -1234,7 +1234,7 @@ public class Float2x2Impl implements Float2x2 {
     /**
      * Compute the normal matrix of this matrix, i.e. the transpose of its inverse.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x2 normal() {
         if (Joml.RETURN_NEW) return normal(Joml.float2x2());
@@ -1397,7 +1397,7 @@ public class Float2x2Impl implements Float2x2 {
     /**
      * Transpose this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x2 transpose() {
         if (Joml.RETURN_NEW) return transpose(Joml.float2x2());
@@ -1748,7 +1748,7 @@ public class Float2x2Impl implements Float2x2 {
      * Add {@code other} to this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x2 add(Float2x2R other) {
         if (Joml.RETURN_NEW) return add(other, Joml.float2x2());
@@ -1975,7 +1975,7 @@ public class Float2x2Impl implements Float2x2 {
     /**
      * Negate this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x2 negate() {
         if (Joml.RETURN_NEW) return negate(Joml.float2x2());
@@ -2291,7 +2291,7 @@ public class Float2x2Impl implements Float2x2 {
      * Subtract {@code other} from this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x2 sub(Float2x2R other) {
         if (Joml.RETURN_NEW) return sub(other, Joml.float2x2());
@@ -3062,7 +3062,7 @@ public class Float2x2Impl implements Float2x2 {
      *
      * @param other the other matrix
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x2 lerp(Float2x2R other, float t) {
         if (Joml.RETURN_NEW) return lerp(other, t, Joml.float2x2());
@@ -3374,7 +3374,7 @@ public class Float2x2Impl implements Float2x2 {
      * {@code M * R * v}, the transformation of the operand will be applied first.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x2 mul(Float2x2R right) {
         if (Joml.RETURN_NEW) return mul(right, Joml.float2x2());
@@ -3694,7 +3694,7 @@ public class Float2x2Impl implements Float2x2 {
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x2 preMul(Float2x2R other) {
         if (Joml.RETURN_NEW) return preMul(other, Joml.float2x2());
@@ -4008,7 +4008,7 @@ public class Float2x2Impl implements Float2x2 {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x2 preRotate(float angle) {
         if (Joml.RETURN_NEW) return preRotate(angle, Joml.float2x2());
@@ -4094,7 +4094,7 @@ public class Float2x2Impl implements Float2x2 {
      * {@code S * M * p}, the scaling will be applied last.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float2x2 preScale(Float2R v) {
         return preScale(v.x(), v.y());
@@ -4240,7 +4240,7 @@ public class Float2x2Impl implements Float2x2 {
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY)}
      * @param vY the {@code y} component of the vector {@code (vX, vY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x2 preScale(float vX, float vY) {
         if (Joml.RETURN_NEW) return preScale(vX, vY, Joml.float2x2());
@@ -4416,7 +4416,7 @@ public class Float2x2Impl implements Float2x2 {
      * {@code S * M * v}, the scaling will be applied last.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x2 preScale(float s) {
         if (Joml.RETURN_NEW) return preScale(s, Joml.float2x2());
@@ -4548,7 +4548,7 @@ public class Float2x2Impl implements Float2x2 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x2 rotate(float angle) {
         if (Joml.RETURN_NEW) return rotate(angle, Joml.float2x2());
@@ -4633,7 +4633,7 @@ public class Float2x2Impl implements Float2x2 {
      * {@code M * S * p}, the scaling will be applied first.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float2x2 scale(Float2R v) {
         return scale(v.x(), v.y());
@@ -4767,7 +4767,7 @@ public class Float2x2Impl implements Float2x2 {
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY)}
      * @param vY the {@code y} component of the vector {@code (vX, vY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x2 scale(float vX, float vY) {
         if (Joml.RETURN_NEW) return scale(vX, vY, Joml.float2x2());
@@ -4850,7 +4850,7 @@ public class Float2x2Impl implements Float2x2 {
      * {@code M * S * v}, the scaling will be applied first.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float2x2 scale(float s) {
         return preScale(s);

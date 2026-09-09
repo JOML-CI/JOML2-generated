@@ -2184,6 +2184,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -2206,7 +2209,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
             d.z = (float) Math.atan2(2.0f * Math.fma(this.rZ, this.rW, -(this.rX * this.rY)), Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t3), 1.0f));
             d.x = _buf0;
         }
-        d.y = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8)));
+        d.y = (float) Math.atan2(_t8, (float) Math.sqrt(_t12));
         return d;
     }
 
@@ -2217,6 +2220,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2242,7 +2248,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
             d.z = (float) Math.atan2(2.0f * Math.fma(this.rZ, this.rW, -(this.rX * this.rY)), Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t3), 1.0f));
             d.x = _buf0;
         }
-        d.y = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8)));
+        d.y = (float) Math.atan2(_t8, (float) Math.sqrt(_t12));
         return d;
     }
 
@@ -2253,6 +2259,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -2275,7 +2284,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
             d.y = (float) Math.atan2(2.0f * Math.fma(this.rX, this.rZ, this.rY * this.rW), Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t0), 1.0f));
             d.x = _buf0;
         }
-        d.z = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8)));
+        d.z = (float) Math.atan2(_t8, (float) Math.sqrt(_t11));
         return d;
     }
 
@@ -2286,6 +2295,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2311,7 +2323,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
             d.y = (float) Math.atan2(2.0f * Math.fma(this.rX, this.rZ, this.rY * this.rW), Math.fma(-2.0f, Math.fma(this.rY, this.rY, _t0), 1.0f));
             d.x = _buf0;
         }
-        d.z = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8)));
+        d.z = (float) Math.atan2(_t8, (float) Math.sqrt(_t11));
         return d;
     }
 
@@ -2322,6 +2334,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -2343,7 +2358,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
             d.z = (float) Math.atan2(2.0f * Math.fma(this.rX, this.rY, this.rZ * this.rW), Math.fma(-2.0f, Math.fma(this.rX, this.rX, _t3), 1.0f));
             d.y = _buf0;
         }
-        d.x = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t9)));
+        d.x = (float) Math.atan2(_t9, (float) Math.sqrt(_t12));
         return d;
     }
 
@@ -2354,6 +2369,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2378,7 +2396,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
             d.z = (float) Math.atan2(2.0f * Math.fma(this.rX, this.rY, this.rZ * this.rW), Math.fma(-2.0f, Math.fma(this.rX, this.rX, _t3), 1.0f));
             d.y = _buf0;
         }
-        d.x = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t9)));
+        d.x = (float) Math.atan2(_t9, (float) Math.sqrt(_t12));
         return d;
     }
 
@@ -2389,6 +2407,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -2410,7 +2431,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
             d.y = (float) Math.atan2(_t8, _t9);
             d.x = _buf0;
         }
-        d.z = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t7)));
+        d.z = (float) Math.atan2(_t7, (float) Math.sqrt(_t11));
         return d;
     }
 
@@ -2421,6 +2442,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2445,7 +2469,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
             d.y = (float) Math.atan2(_t8, _t9);
             d.x = _buf0;
         }
-        d.z = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t7)));
+        d.z = (float) Math.atan2(_t7, (float) Math.sqrt(_t11));
         return d;
     }
 
@@ -2456,6 +2480,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -2477,7 +2504,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
             d.z = (float) Math.atan2(_t8, _t9);
             d.y = _buf0;
         }
-        d.x = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t7)));
+        d.x = (float) Math.atan2(_t7, (float) Math.sqrt(_t11));
         return d;
     }
 
@@ -2488,6 +2515,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2512,7 +2542,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
             d.z = (float) Math.atan2(_t8, _t9);
             d.y = _buf0;
         }
-        d.x = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t7)));
+        d.x = (float) Math.atan2(_t7, (float) Math.sqrt(_t11));
         return d;
     }
 
@@ -2523,6 +2553,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -2544,7 +2577,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
             d.z = (float) Math.atan2(_t7, _t9);
             d.x = _buf0;
         }
-        d.y = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8)));
+        d.y = (float) Math.atan2(_t8, (float) Math.sqrt(_t11));
         return d;
     }
 
@@ -2555,6 +2588,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2579,7 +2615,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
             d.z = (float) Math.atan2(_t7, _t9);
             d.x = _buf0;
         }
-        d.y = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8)));
+        d.y = (float) Math.atan2(_t8, (float) Math.sqrt(_t11));
         return d;
     }
 
@@ -2752,6 +2788,10 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
     /**
      * Compute the length of this dual quaternion's real (rotation) part.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the real part must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @return the length of this dual quaternion's real (rotation) part
      */
@@ -3056,6 +3096,10 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
     /**
      * Normalize this dual quaternion so that its real (rotation) part has unit length and store the
      * result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the real part must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -3078,6 +3122,10 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
     /**
      * Normalize this dual quaternion so that its real (rotation) part has unit length and store the
      * result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the real part must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.

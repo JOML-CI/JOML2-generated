@@ -14,6 +14,14 @@ import java.lang.foreign.MemorySegment;
  * returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise with {@code ==}. {@code hashCode} is
+ * consistent with it. Only instances of this library's implementation compare equal to each other;
+ * the {@code equals} of a vector never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with an exact, non-negative integer tolerance: the
+ * difference is widened to {@code int} before its magnitude is taken, so the two are compared
+ * exactly without overflow, and a negative {@code epsilon} matches nothing.
  */
 public interface Byte3 extends Byte3R {
 
@@ -21,7 +29,7 @@ public interface Byte3 extends Byte3R {
      * Add {@code other} to this vector.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 add(Byte3R other) { return add(other, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -31,7 +39,7 @@ public interface Byte3 extends Byte3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 add(byte x, byte y, byte z) { return add(x, y, z, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -39,7 +47,7 @@ public interface Byte3 extends Byte3R {
      * Compute the component-wise ceiling division of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 ceilDiv(byte scalar) { return ceilDiv(scalar, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -47,7 +55,7 @@ public interface Byte3 extends Byte3R {
      * Compute the component-wise ceiling division of this vector by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 ceilDiv(Byte3R other) { return ceilDiv(other, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -58,7 +66,7 @@ public interface Byte3 extends Byte3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 ceilDiv(byte x, byte y, byte z) { return ceilDiv(x, y, z, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -66,7 +74,7 @@ public interface Byte3 extends Byte3R {
      * Compute the component-wise ceiling modulus of this vector and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 ceilMod(byte scalar) { return ceilMod(scalar, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -74,7 +82,7 @@ public interface Byte3 extends Byte3R {
      * Compute the component-wise ceiling modulus of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 ceilMod(Byte3R other) { return ceilMod(other, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -85,7 +93,7 @@ public interface Byte3 extends Byte3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 ceilMod(byte x, byte y, byte z) { return ceilMod(x, y, z, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -94,7 +102,7 @@ public interface Byte3 extends Byte3R {
      * zero).
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 div(byte scalar) { return div(scalar, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -103,7 +111,7 @@ public interface Byte3 extends Byte3R {
      * zero).
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 div(Byte3R other) { return div(other, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -114,7 +122,7 @@ public interface Byte3 extends Byte3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 div(byte x, byte y, byte z) { return div(x, y, z, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -122,7 +130,7 @@ public interface Byte3 extends Byte3R {
      * Compute the component-wise floor division of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 floorDiv(byte scalar) { return floorDiv(scalar, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -130,7 +138,7 @@ public interface Byte3 extends Byte3R {
      * Compute the component-wise floor division of this vector by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 floorDiv(Byte3R other) { return floorDiv(other, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -141,7 +149,7 @@ public interface Byte3 extends Byte3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 floorDiv(byte x, byte y, byte z) { return floorDiv(x, y, z, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -149,7 +157,7 @@ public interface Byte3 extends Byte3R {
      * Compute the component-wise floor modulus of this vector and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 floorMod(byte scalar) { return floorMod(scalar, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -157,7 +165,7 @@ public interface Byte3 extends Byte3R {
      * Compute the component-wise floor modulus of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 floorMod(Byte3R other) { return floorMod(other, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -168,7 +176,7 @@ public interface Byte3 extends Byte3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 floorMod(byte x, byte y, byte z) { return floorMod(x, y, z, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -176,7 +184,7 @@ public interface Byte3 extends Byte3R {
      * Multiply each component of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 mul(byte scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -184,7 +192,7 @@ public interface Byte3 extends Byte3R {
      * Multiply this vector component-wise by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 mul(Byte3R other) { return mul(other, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -194,14 +202,14 @@ public interface Byte3 extends Byte3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 mul(byte x, byte y, byte z) { return mul(x, y, z, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Negate this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 negate() { return negate(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -211,7 +219,7 @@ public interface Byte3 extends Byte3R {
      * {@code div}).
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 rem(byte scalar) { return rem(scalar, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -221,7 +229,7 @@ public interface Byte3 extends Byte3R {
      * {@code div}).
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 rem(Byte3R other) { return rem(other, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -233,7 +241,7 @@ public interface Byte3 extends Byte3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 rem(byte x, byte y, byte z) { return rem(x, y, z, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -241,7 +249,7 @@ public interface Byte3 extends Byte3R {
      * Subtract {@code other} from this vector.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 sub(Byte3R other) { return sub(other, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -251,7 +259,7 @@ public interface Byte3 extends Byte3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 sub(byte x, byte y, byte z) { return sub(x, y, z, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -259,7 +267,7 @@ public interface Byte3 extends Byte3R {
      * Compute the bitwise AND of each component of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 and(Byte3R other) { return and(other, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -270,35 +278,35 @@ public interface Byte3 extends Byte3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 and(byte x, byte y, byte z) { return and(x, y, z, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Compute the number of one-bits of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 bitCount() { return bitCount(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Compute the bitwise NOT of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 not() { return not(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Compute the number of leading zero bits of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 numberOfLeadingZeros() { return numberOfLeadingZeros(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Compute the number of trailing zero bits of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 numberOfTrailingZeros() { return numberOfTrailingZeros(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -306,7 +314,7 @@ public interface Byte3 extends Byte3R {
      * Compute the bitwise OR of each component of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 or(Byte3R other) { return or(other, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -317,21 +325,21 @@ public interface Byte3 extends Byte3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 or(byte x, byte y, byte z) { return or(x, y, z, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Compute the bit-reversed value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 reverseBits() { return reverseBits(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Compute the byte-reversed value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 reverseBytes() { return reverseBytes(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -339,7 +347,7 @@ public interface Byte3 extends Byte3R {
      * Rotate the bits of each component of this vector left by {@code distance} positions.
      *
      * @param distance the number of bit positions to rotate by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 rotateLeft(byte distance) { return rotateLeft(distance, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -347,7 +355,7 @@ public interface Byte3 extends Byte3R {
      * Rotate the bits of each component of this vector right by {@code distance} positions.
      *
      * @param distance the number of bit positions to rotate by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 rotateRight(byte distance) { return rotateRight(distance, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -357,7 +365,7 @@ public interface Byte3 extends Byte3R {
      * and takes it modulo 32).
      *
      * @param shift the number of bit positions to shift by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 shl(byte shift) { return shl(shift, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -367,7 +375,7 @@ public interface Byte3 extends Byte3R {
      * to {@code int} and takes it modulo 32).
      *
      * @param shift the number of bit positions to shift by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 shr(byte shift) { return shr(shift, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -377,7 +385,7 @@ public interface Byte3 extends Byte3R {
      * {@code int} and takes it modulo 32).
      *
      * @param shift the number of bit positions to shift by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 ushr(byte shift) { return ushr(shift, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -385,7 +393,7 @@ public interface Byte3 extends Byte3R {
      * Compute the bitwise XOR of each component of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 xor(Byte3R other) { return xor(other, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -396,7 +404,7 @@ public interface Byte3 extends Byte3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 xor(byte x, byte y, byte z) { return xor(x, y, z, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -422,7 +430,7 @@ public interface Byte3 extends Byte3R {
      * Set this vector to {@code s}.
      *
      * @param s the value assigned to every component
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 set(byte s) { return set(s, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -471,7 +479,7 @@ public interface Byte3 extends Byte3R {
     /**
      * Compute the absolute value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 absolute() { return absolute(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -480,7 +488,7 @@ public interface Byte3 extends Byte3R {
      *
      * @param min the lower bound
      * @param max the upper bound
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 clamp(byte min, byte max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -489,7 +497,7 @@ public interface Byte3 extends Byte3R {
      *
      * @param min the per-component lower bounds
      * @param max the per-component upper bounds
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 clamp(Byte3R min, Byte3R max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -503,7 +511,7 @@ public interface Byte3 extends Byte3R {
      * @param maxX the {@code x} component of the vector {@code (maxX, maxY, maxZ)}
      * @param maxY the {@code y} component of the vector {@code (maxX, maxY, maxZ)}
      * @param maxZ the {@code z} component of the vector {@code (maxX, maxY, maxZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 clamp(byte minX, byte minY, byte minZ, byte maxX, byte maxY, byte maxZ) { return clamp(minX, minY, minZ, maxX, maxY, maxZ, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -511,7 +519,7 @@ public interface Byte3 extends Byte3R {
      * Compute the cross product of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 cross(Byte3R other) { return cross(other, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -521,7 +529,7 @@ public interface Byte3 extends Byte3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 cross(byte x, byte y, byte z) { return cross(x, y, z, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -529,7 +537,7 @@ public interface Byte3 extends Byte3R {
      * Set each component of this vector to the larger of itself and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 max(byte scalar) { return max(scalar, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -538,7 +546,7 @@ public interface Byte3 extends Byte3R {
      * {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 max(Byte3R other) { return max(other, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -549,7 +557,7 @@ public interface Byte3 extends Byte3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 max(byte x, byte y, byte z) { return max(x, y, z, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -557,7 +565,7 @@ public interface Byte3 extends Byte3R {
      * Set each component of this vector to the smaller of itself and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 min(byte scalar) { return min(scalar, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -566,7 +574,7 @@ public interface Byte3 extends Byte3R {
      * {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 min(Byte3R other) { return min(other, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -577,14 +585,14 @@ public interface Byte3 extends Byte3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 min(byte x, byte y, byte z) { return min(x, y, z, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Compute the sign of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 sign() { return sign(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -592,7 +600,7 @@ public interface Byte3 extends Byte3R {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 satAdd(Byte3R other) { return satAdd(other, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -603,7 +611,7 @@ public interface Byte3 extends Byte3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 satAdd(byte x, byte y, byte z) { return satAdd(x, y, z, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -611,7 +619,7 @@ public interface Byte3 extends Byte3R {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 satMul(Byte3R other) { return satMul(other, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -622,14 +630,14 @@ public interface Byte3 extends Byte3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 satMul(byte x, byte y, byte z) { return satMul(x, y, z, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Negate this vector, clamping to the value range instead of overflowing.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 satNegate() { return satNegate(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -637,7 +645,7 @@ public interface Byte3 extends Byte3R {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 satSub(Byte3R other) { return satSub(other, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -648,196 +656,196 @@ public interface Byte3 extends Byte3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 satSub(byte x, byte y, byte z) { return satSub(x, y, z, Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 xxx() { return xxx(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 xxy() { return xxy(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 xxz() { return xxz(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 xyx() { return xyx(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 xyy() { return xyy(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 xyz() { return xyz(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 xzx() { return xzx(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 xzy() { return xzy(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 xzz() { return xzz(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 yxx() { return yxx(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 yxy() { return yxy(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 yxz() { return yxz(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 yyx() { return yyx(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 yyy() { return yyy(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 yyz() { return yyz(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 yzx() { return yzx(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 yzy() { return yzy(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 yzz() { return yzz(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 zxx() { return zxx(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 zxy() { return zxy(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 zxz() { return zxz(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 zyx() { return zyx(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 zyy() { return zyy(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 zyz() { return zyz(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 zzx() { return zzx(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 zzy() { return zzy(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte3 zzz() { return zzz(Joml.RETURN_NEW ? Joml.byte3() : this); }
 
@@ -864,6 +872,10 @@ public interface Byte3 extends Byte3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -876,6 +888,10 @@ public interface Byte3 extends Byte3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -888,6 +904,10 @@ public interface Byte3 extends Byte3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -901,6 +921,10 @@ public interface Byte3 extends Byte3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -914,6 +938,10 @@ public interface Byte3 extends Byte3R {
 
     /**
      * Load the elements from the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -922,6 +950,10 @@ public interface Byte3 extends Byte3R {
 
     /**
      * Load the elements from the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -961,6 +993,10 @@ public interface Byte3 extends Byte3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -973,6 +1009,10 @@ public interface Byte3 extends Byte3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -985,6 +1025,10 @@ public interface Byte3 extends Byte3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -998,6 +1042,10 @@ public interface Byte3 extends Byte3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1015,6 +1063,10 @@ public interface Byte3 extends Byte3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1027,6 +1079,10 @@ public interface Byte3 extends Byte3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1039,6 +1095,10 @@ public interface Byte3 extends Byte3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1052,6 +1112,10 @@ public interface Byte3 extends Byte3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1065,6 +1129,10 @@ public interface Byte3 extends Byte3R {
 
     /**
      * Load the elements from the given memory segment, converting each element from {@code short}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -1074,6 +1142,10 @@ public interface Byte3 extends Byte3R {
     /**
      * Load the elements from the given memory segment, converting each element from {@code short},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

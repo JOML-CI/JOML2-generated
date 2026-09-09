@@ -11,6 +11,14 @@ import java.nio.DoubleBuffer;
  * All operations leave the receiver unchanged and return their result as a value. An operation
  * whose result equals one of its operands may return that operand instead of allocating a new
  * instance.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns).
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  *
  * @param a the {@code a} component
  * @param b the {@code b} component
@@ -110,6 +118,10 @@ public record FloatPlane(float a, float b, float c, float d) {
     /**
      * Normalize this plane, scaling {@code (a, b, c, d)} so that the normal {@code (a, b, c)} has
      * unit length, returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the normal {@code (a, b, c)} must lie
+     * roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @return the resulting plane
      */
@@ -313,6 +325,10 @@ public record FloatPlane(float a, float b, float c, float d) {
     /**
      * Compare this value component-wise against {@code other}, allowing a difference of at
      * most {@code epsilon} per component.
+     * <p>
+     * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+     * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and
+     * a NaN component never compares equal to anything.
      *
      * @param other the value to compare against
      * @param epsilon the maximum allowed difference per component
@@ -387,6 +403,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -401,6 +421,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -416,6 +440,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -433,6 +461,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code FloatPlane} holding the loaded elements
@@ -447,6 +479,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -462,6 +498,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code FloatPlane} holding the loaded elements
@@ -479,6 +519,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -493,6 +537,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -508,6 +556,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -525,6 +577,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatPlane} holding the loaded elements
@@ -539,6 +595,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -554,6 +614,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatPlane} holding the loaded elements
@@ -571,6 +635,8 @@ public record FloatPlane(float a, float b, float c, float d) {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public FloatPlane storeUnsafe(long address) {
         return RAW_OPS.storeUnsafe(this, address);
@@ -582,6 +648,8 @@ public record FloatPlane(float a, float b, float c, float d) {
      *
      * @param address the raw memory address
      * @return a new {@code FloatPlane} holding the loaded elements
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public static FloatPlane loadUnsafe(long address) {
         return RAW_OPS.loadUnsafe(address);
@@ -642,6 +710,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -656,6 +728,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -671,6 +747,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -688,6 +768,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code FloatPlane} holding the loaded elements
@@ -702,6 +786,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -717,6 +805,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code FloatPlane} holding the loaded elements
@@ -734,6 +826,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -748,6 +844,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -763,6 +863,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -780,6 +884,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatPlane} holding the loaded elements
@@ -794,6 +902,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -809,6 +921,10 @@ public record FloatPlane(float a, float b, float c, float d) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code FloatPlane} holding the loaded elements
@@ -826,6 +942,8 @@ public record FloatPlane(float a, float b, float c, float d) {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public FloatPlane storeDoubleUnsafe(long address) {
         return RAW_OPS.storeDoubleUnsafe(this, address);
@@ -837,6 +955,8 @@ public record FloatPlane(float a, float b, float c, float d) {
      *
      * @param address the raw memory address
      * @return a new {@code FloatPlane} holding the loaded elements
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public static FloatPlane loadDoubleUnsafe(long address) {
         return RAW_OPS.loadDoubleUnsafe(address);

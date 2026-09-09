@@ -13,6 +13,16 @@ import java.nio.ByteBuffer;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of a sphere
+ * never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface FloatSphere extends FloatSphereR {
 
@@ -39,7 +49,7 @@ public interface FloatSphere extends FloatSphereR {
      * Set the center of this sphere to {@code c}.
      *
      * @param c the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatSphere setCenter(Float3R c) { return setCenter(c, Joml.RETURN_NEW ? Joml.floatSphere() : this); }
 
@@ -49,7 +59,7 @@ public interface FloatSphere extends FloatSphereR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatSphere setCenter(float x, float y, float z) { return setCenter(x, y, z, Joml.RETURN_NEW ? Joml.floatSphere() : this); }
 
@@ -57,7 +67,7 @@ public interface FloatSphere extends FloatSphereR {
      * Set the radius of this sphere to {@code radius}.
      *
      * @param radius the radius
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatSphere setRadius(float radius) { return setRadius(radius, Joml.RETURN_NEW ? Joml.floatSphere() : this); }
 
@@ -73,7 +83,7 @@ public interface FloatSphere extends FloatSphereR {
      * axis scale.
      *
      * @param m the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatSphere transform(Float3x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.floatSphere() : this); }
 
@@ -85,7 +95,7 @@ public interface FloatSphere extends FloatSphereR {
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
      * @param m the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatSphere transform(Float4x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.floatSphere() : this); }
 
@@ -93,7 +103,7 @@ public interface FloatSphere extends FloatSphereR {
      * Translate this sphere by {@code delta}.
      *
      * @param delta the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatSphere translate(Float3R delta) { return translate(delta, Joml.RETURN_NEW ? Joml.floatSphere() : this); }
 
@@ -103,7 +113,7 @@ public interface FloatSphere extends FloatSphereR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatSphere translate(float x, float y, float z) { return translate(x, y, z, Joml.RETURN_NEW ? Joml.floatSphere() : this); }
 
@@ -130,6 +140,10 @@ public interface FloatSphere extends FloatSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -142,6 +156,10 @@ public interface FloatSphere extends FloatSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -154,6 +172,10 @@ public interface FloatSphere extends FloatSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -167,6 +189,10 @@ public interface FloatSphere extends FloatSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -184,6 +210,10 @@ public interface FloatSphere extends FloatSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -196,6 +226,10 @@ public interface FloatSphere extends FloatSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -208,6 +242,10 @@ public interface FloatSphere extends FloatSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -221,6 +259,10 @@ public interface FloatSphere extends FloatSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -238,6 +280,8 @@ public interface FloatSphere extends FloatSphereR {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated FloatSphere loadUnsafe(long address);
 
@@ -264,6 +308,10 @@ public interface FloatSphere extends FloatSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -276,6 +324,10 @@ public interface FloatSphere extends FloatSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -288,6 +340,10 @@ public interface FloatSphere extends FloatSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -301,6 +357,10 @@ public interface FloatSphere extends FloatSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -318,6 +378,10 @@ public interface FloatSphere extends FloatSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -330,6 +394,10 @@ public interface FloatSphere extends FloatSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -342,6 +410,10 @@ public interface FloatSphere extends FloatSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -355,6 +427,10 @@ public interface FloatSphere extends FloatSphereR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -372,6 +448,8 @@ public interface FloatSphere extends FloatSphereR {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated FloatSphere loadDoubleUnsafe(long address);
 }

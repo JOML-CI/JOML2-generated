@@ -367,7 +367,7 @@ public class Double2x2Impl implements Double2x2 {
     /**
      * Compute the cofactor matrix of this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x2 cofactor() {
         if (Joml.RETURN_NEW) return cofactor(Joml.double2x2());
@@ -510,7 +510,7 @@ public class Double2x2Impl implements Double2x2 {
     /**
      * Invert this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x2 invert() {
         if (Joml.RETURN_NEW) return invert(Joml.double2x2());
@@ -863,7 +863,7 @@ public class Double2x2Impl implements Double2x2 {
      * {@code (this * other)^-1}.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x2 invertProduct(Double2x2R other) {
         if (Joml.RETURN_NEW) return invertProduct(other, Joml.double2x2());
@@ -1033,7 +1033,7 @@ public class Double2x2Impl implements Double2x2 {
     /**
      * Compute the normal matrix of this matrix, i.e. the transpose of its inverse.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x2 normal() {
         if (Joml.RETURN_NEW) return normal(Joml.double2x2());
@@ -1164,7 +1164,7 @@ public class Double2x2Impl implements Double2x2 {
     /**
      * Transpose this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x2 transpose() {
         if (Joml.RETURN_NEW) return transpose(Joml.double2x2());
@@ -1461,7 +1461,7 @@ public class Double2x2Impl implements Double2x2 {
      * Add {@code other} to this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x2 add(Double2x2R other) {
         if (Joml.RETURN_NEW) return add(other, Joml.double2x2());
@@ -1639,7 +1639,7 @@ public class Double2x2Impl implements Double2x2 {
     /**
      * Negate this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x2 negate() {
         if (Joml.RETURN_NEW) return negate(Joml.double2x2());
@@ -1906,7 +1906,7 @@ public class Double2x2Impl implements Double2x2 {
      * Subtract {@code other} from this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x2 sub(Double2x2R other) {
         if (Joml.RETURN_NEW) return sub(other, Joml.double2x2());
@@ -2551,7 +2551,7 @@ public class Double2x2Impl implements Double2x2 {
      *
      * @param other the other matrix
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x2 lerp(Double2x2R other, double t) {
         if (Joml.RETURN_NEW) return lerp(other, t, Joml.double2x2());
@@ -2801,7 +2801,7 @@ public class Double2x2Impl implements Double2x2 {
      * {@code M * R * v}, the transformation of the operand will be applied first.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x2 mul(Double2x2R right) {
         if (Joml.RETURN_NEW) return mul(right, Joml.double2x2());
@@ -3051,7 +3051,7 @@ public class Double2x2Impl implements Double2x2 {
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x2 preMul(Double2x2R other) {
         if (Joml.RETURN_NEW) return preMul(other, Joml.double2x2());
@@ -3304,7 +3304,7 @@ public class Double2x2Impl implements Double2x2 {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x2 preRotate(double angle) {
         if (Joml.RETURN_NEW) return preRotate(angle, Joml.double2x2());
@@ -3340,7 +3340,7 @@ public class Double2x2Impl implements Double2x2 {
      * {@code S * M * p}, the scaling will be applied last.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double2x2 preScale(Double2R v) {
         return preScale(v.x(), v.y());
@@ -3479,7 +3479,7 @@ public class Double2x2Impl implements Double2x2 {
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY)}
      * @param vY the {@code y} component of the vector {@code (vX, vY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x2 preScale(double vX, double vY) {
         if (Joml.RETURN_NEW) return preScale(vX, vY, Joml.double2x2());
@@ -3620,7 +3620,7 @@ public class Double2x2Impl implements Double2x2 {
      * {@code S * M * v}, the scaling will be applied last.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x2 preScale(double s) {
         if (Joml.RETURN_NEW) return preScale(s, Joml.double2x2());
@@ -3723,7 +3723,7 @@ public class Double2x2Impl implements Double2x2 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x2 rotate(double angle) {
         if (Joml.RETURN_NEW) return rotate(angle, Joml.double2x2());
@@ -3759,7 +3759,7 @@ public class Double2x2Impl implements Double2x2 {
      * {@code M * S * p}, the scaling will be applied first.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double2x2 scale(Double2R v) {
         return scale(v.x(), v.y());
@@ -3888,7 +3888,7 @@ public class Double2x2Impl implements Double2x2 {
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY)}
      * @param vY the {@code y} component of the vector {@code (vX, vY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x2 scale(double vX, double vY) {
         if (Joml.RETURN_NEW) return scale(vX, vY, Joml.double2x2());
@@ -3924,7 +3924,7 @@ public class Double2x2Impl implements Double2x2 {
      * {@code M * S * v}, the scaling will be applied first.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x2 scale(double s) {
         return preScale(s);

@@ -52,7 +52,7 @@ inline fun Double3.copy(x: Double = x(), y: Double = y(), z: Double = z()): Doub
 inline fun Double3.toDoubleArray(): DoubleArray = store(DoubleArray(3))
 /** A Double3 read from this array in storage order, starting at index 0. */
 inline fun DoubleArray.toDouble3(): Double3 = Double3.load(this)
-/** The component of this Double3 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. */
+/** The component of this Double3 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT with 2 indices (`v[a, b] = c`) resolves to the Java 3-argument value factory `Double3.set(...)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Double3.get(index: Int): Double = when (index) {
     0 -> x()
     1 -> y()

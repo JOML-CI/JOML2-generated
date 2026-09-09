@@ -11,6 +11,21 @@ import java.nio.ByteBuffer;
  * mutate the receiver; the mutable counterpart is {@link FloatQuat}. APIs that only read a
  * quaternion should accept {@code FloatQuatR}, so callers can pass mutable instances without
  * exposing them to modification.
+ * <p>
+ * Arguments of type {@code FloatQuatR} must be instances created by the library ({@link Joml}
+ * factories / the library's own types); the implementations read cached state through the library's
+ * own classes, so foreign implementations of the {@code *R} interfaces are not supported as
+ * arguments.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of a quaternion
+ * never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface FloatQuatR {
     /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
@@ -581,6 +596,10 @@ public interface FloatQuatR {
     /**
      * Interpolate between this quaternion and {@code target} using the interpolation factor
      * {@code alpha} and normalize the result and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -592,6 +611,10 @@ public interface FloatQuatR {
     /**
      * Interpolate between this quaternion and {@code target} using the interpolation factor
      * {@code alpha} and normalize the result and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -607,6 +630,10 @@ public interface FloatQuatR {
      * Interpolate between this quaternion and ({@code x}, {@code y}, {@code z}, {@code w}) using
      * the interpolation factor {@code alpha} and normalize the result and store the result in
      * {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
@@ -622,6 +649,10 @@ public interface FloatQuatR {
      * Interpolate between this quaternion and ({@code x}, {@code y}, {@code z}, {@code w}) using
      * the interpolation factor {@code alpha} and normalize the result and store the result in
      * {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -640,6 +671,10 @@ public interface FloatQuatR {
      * Interpolate along the shortest path between this quaternion and {@code target} using the
      * interpolation factor {@code alpha} and normalize the result and store the result in
      * {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -652,6 +687,10 @@ public interface FloatQuatR {
      * Interpolate along the shortest path between this quaternion and {@code target} using the
      * interpolation factor {@code alpha} and normalize the result and store the result in
      * {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -667,6 +706,10 @@ public interface FloatQuatR {
      * Interpolate along the shortest path between this quaternion and ({@code x}, {@code y},
      * {@code z}, {@code w}) using the interpolation factor {@code alpha} and normalize the result
      * and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
@@ -682,6 +725,10 @@ public interface FloatQuatR {
      * Interpolate along the shortest path between this quaternion and ({@code x}, {@code y},
      * {@code z}, {@code w}) using the interpolation factor {@code alpha} and normalize the result
      * and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1089,6 +1136,9 @@ public interface FloatQuatR {
     /**
      * Compute the rotation angle in radians of this quaternion, within {@code [0, 2*PI]} (assumes
      * unit length).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @return the rotation angle in radians of this quaternion, within {@code [0, 2*PI]} (assumes
      *        unit length)
@@ -1097,6 +1147,9 @@ public interface FloatQuatR {
 
     /**
      * Compute the angle in radians between this quaternion and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other quaternion
      * @return the angle in radians between this quaternion and {@code other}
@@ -1106,6 +1159,9 @@ public interface FloatQuatR {
     /**
      * Compute the angle in radians between this quaternion and ({@code x}, {@code y}, {@code z},
      * {@code w}).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
@@ -1335,6 +1391,9 @@ public interface FloatQuatR {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1347,6 +1406,9 @@ public interface FloatQuatR {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1362,6 +1424,9 @@ public interface FloatQuatR {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1374,6 +1439,9 @@ public interface FloatQuatR {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1389,6 +1457,9 @@ public interface FloatQuatR {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1401,6 +1472,9 @@ public interface FloatQuatR {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1416,6 +1490,9 @@ public interface FloatQuatR {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1428,6 +1505,9 @@ public interface FloatQuatR {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1443,6 +1523,9 @@ public interface FloatQuatR {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1455,6 +1538,9 @@ public interface FloatQuatR {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1470,6 +1556,9 @@ public interface FloatQuatR {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1482,6 +1571,9 @@ public interface FloatQuatR {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1548,6 +1640,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code -X} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1557,6 +1654,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code -X} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1569,6 +1671,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code -Y} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1578,6 +1685,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code -Y} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1590,6 +1702,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code -Z} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1599,6 +1716,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code -Z} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1773,6 +1895,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code +X} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1782,6 +1909,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code +X} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1794,6 +1926,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code +Y} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1803,6 +1940,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code +Y} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1815,6 +1957,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code +Z} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1824,6 +1971,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code +Z} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1835,6 +1987,10 @@ public interface FloatQuatR {
 
     /**
      * Compute the length of this quaternion.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @return the length of this quaternion
      */
@@ -1849,6 +2005,9 @@ public interface FloatQuatR {
 
     /**
      * Compute the natural logarithm of this quaternion and store the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      *
      * @param dest will hold the result
      * @return dest
@@ -1857,6 +2016,9 @@ public interface FloatQuatR {
 
     /**
      * Compute the natural logarithm of this quaternion and store the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1869,6 +2031,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code -X} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1878,6 +2045,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code -X} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1890,6 +2062,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code -Y} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1899,6 +2076,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code -Y} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1911,6 +2093,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code -Z} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1920,6 +2107,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code -Z} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1931,6 +2123,10 @@ public interface FloatQuatR {
 
     /**
      * Normalize this quaternion to unit length and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1939,6 +2135,10 @@ public interface FloatQuatR {
 
     /**
      * Normalize this quaternion to unit length and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2113,6 +2313,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code +X} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2122,6 +2327,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code +X} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2134,6 +2344,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code +Y} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2143,6 +2358,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code +Y} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2155,6 +2375,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code +Z} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2164,6 +2389,11 @@ public interface FloatQuatR {
     /**
      * Obtain the direction of {@code +Z} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2176,6 +2406,9 @@ public interface FloatQuatR {
     /**
      * Raise this quaternion to the power of {@code t}, i.e. compute {@code exp(t * log(this))} and
      * store the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      *
      * @param t the exponent
      * @param dest will hold the result
@@ -2186,6 +2419,9 @@ public interface FloatQuatR {
     /**
      * Raise this quaternion to the power of {@code t}, i.e. compute {@code exp(t * log(this))} and
      * store the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2277,6 +2513,9 @@ public interface FloatQuatR {
     /**
      * Rotate this quaternion towards {@code target}, by at most the given maximum angle and store
      * the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      *
      * @param target the target rotation
      * @param step the maximum rotation angle in radians
@@ -2288,6 +2527,9 @@ public interface FloatQuatR {
     /**
      * Rotate this quaternion towards {@code target}, by at most the given maximum angle and store
      * the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2302,6 +2544,9 @@ public interface FloatQuatR {
     /**
      * Rotate this quaternion towards ({@code x}, {@code y}, {@code z}, {@code w}), by at most the
      * given maximum angle and store the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
@@ -2316,6 +2561,9 @@ public interface FloatQuatR {
     /**
      * Rotate this quaternion towards ({@code x}, {@code y}, {@code z}, {@code w}), by at most the
      * given maximum angle and store the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2581,6 +2829,11 @@ public interface FloatQuatR {
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDir the vector
      * @param toDir the vector
@@ -2597,6 +2850,11 @@ public interface FloatQuatR {
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2617,6 +2875,11 @@ public interface FloatQuatR {
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDirX the {@code x} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
      * @param fromDirY the {@code y} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
@@ -2638,6 +2901,11 @@ public interface FloatQuatR {
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3102,6 +3370,10 @@ public interface FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3114,6 +3386,10 @@ public interface FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3126,6 +3402,10 @@ public interface FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -3139,6 +3419,10 @@ public interface FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3156,6 +3440,10 @@ public interface FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3168,6 +3456,10 @@ public interface FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3180,6 +3472,10 @@ public interface FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -3193,6 +3489,10 @@ public interface FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3210,6 +3510,8 @@ public interface FloatQuatR {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     FloatQuat storeUnsafe(long address);
 
@@ -3236,6 +3538,10 @@ public interface FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3248,6 +3554,10 @@ public interface FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3260,6 +3570,10 @@ public interface FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -3273,6 +3587,10 @@ public interface FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3290,6 +3608,10 @@ public interface FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3302,6 +3624,10 @@ public interface FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3314,6 +3640,10 @@ public interface FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -3327,6 +3657,10 @@ public interface FloatQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3344,6 +3678,8 @@ public interface FloatQuatR {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     FloatQuat storeDoubleUnsafe(long address);
 
@@ -3353,12 +3689,40 @@ public interface FloatQuatR {
     /**
      * Compare this quaternion component-wise against {@code other}, allowing a difference
      * of at most {@code epsilon} per component.
+     * <p>
+     * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+     * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and
+     * a NaN component never compares equal to anything.
      *
      * @param other the quaternion to compare against
      * @param epsilon the maximum allowed difference per component
      * @return {@code true} if all components differ by at most {@code epsilon}, {@code false} otherwise
      */
     boolean equalsEpsilon(FloatQuatR other, float epsilon);
+
+    /**
+     * Compare this quaternion with the given object for element-wise equality.
+     * <p>
+     * Each component is compared bitwise, as by {@code Float.floatToIntBits}: {@code 0.0} and
+     * {@code -0.0} are not equal, and NaN is equal to NaN. Use {@link #equalsEpsilon} for a
+     * tolerant comparison.
+     * <p>
+     * Only instances of this library's implementation compare equal to each other; any other object
+     * yields {@code false}.
+     *
+     * @param obj the object to compare with
+     * @return {@code true} if {@code obj} is a quaternion of this library with element-wise equal
+     *        components, {@code false} otherwise
+     */
+    boolean equals(@org.jspecify.annotations.Nullable Object obj);
+
+    /**
+     * Compute a hash code consistent with {@link #equals}: it is derived from the components via
+     * {@code Float.floatToIntBits} alone.
+     *
+     * @return the hash code of this quaternion
+     */
+    int hashCode();
 
     /** Backs {@code ZERO()} and {@code IDENTITY()}: defers the shared instances'
      *  allocation to first use, avoiding a class-initialization cycle with the

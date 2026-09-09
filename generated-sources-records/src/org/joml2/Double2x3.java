@@ -13,6 +13,16 @@ import java.nio.FloatBuffer;
  * All operations leave the receiver unchanged and return their result as a value. An operation
  * whose result equals one of its operands may return that operand instead of allocating a new
  * instance.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN; the cached structural property bits are ignored, so two matrix objects holding the same
+ * elements are equal whatever either one has determined about itself. {@code hashCode} is
+ * consistent with it (derived from the same bit patterns).
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  *
  * @param m00 the element in row 0, column 0
  * @param m01 the element in row 0, column 1
@@ -1828,6 +1838,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivot the pivot point
@@ -1845,8 +1859,9 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     private Double2x3 preRotateAround_identity(double angle, double pivotX, double pivotY) {
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -pivotX;
-        return new Double2x3(_t0, -_t1, Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX)), _t1, _t0, Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY)), Joml.BIT_ORTHOGONAL);
+        double _t3 = Math.sin(0.5 * angle);
+        double _t5 = 2.0 * _t3 * _t3;
+        return new Double2x3(_t0, -_t1, Math.fma(pivotX, _t5, pivotY * _t1), _t1, _t0, Math.fma(pivotY, _t5, -(pivotX * _t1)), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -1857,8 +1872,9 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     private Double2x3 preRotateAround_translation(double angle, double pivotX, double pivotY) {
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -pivotX;
-        return new Double2x3(_t0, -_t1, Math.fma(pivotY, _t1, Math.fma(_t2, _t0, Math.fma(this.m02, _t0, Math.fma(-this.m12, _t1, pivotX)))), _t1, _t0, Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, Math.fma(this.m02, _t1, Math.fma(this.m12, _t0, pivotY)))), Joml.BIT_ORTHOGONAL);
+        double _t3 = Math.sin(0.5 * angle);
+        double _t5 = 2.0 * _t3 * _t3;
+        return new Double2x3(_t0, -_t1, Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(this.m02, _t0, -(this.m12 * _t1)), _t1, _t0, Math.fma(this.m02, _t1, this.m12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1)), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -1869,8 +1885,9 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     private Double2x3 preRotateAround_orthogonal(double angle, double pivotX, double pivotY) {
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -pivotX;
-        return new Double2x3(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(pivotY, _t1, Math.fma(_t2, _t0, Math.fma(this.m02, _t0, Math.fma(-this.m12, _t1, pivotX)))), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, Math.fma(this.m02, _t1, Math.fma(this.m12, _t0, pivotY)))), Joml.BIT_ORTHOGONAL);
+        double _t3 = Math.sin(0.5 * angle);
+        double _t5 = 2.0 * _t3 * _t3;
+        return new Double2x3(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(this.m02, _t0, -(this.m12 * _t1)), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), Math.fma(this.m02, _t1, this.m12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1)), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -1881,8 +1898,9 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     private Double2x3 preRotateAround_general(double angle, double pivotX, double pivotY) {
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -pivotX;
-        return new Double2x3(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(pivotY, _t1, Math.fma(_t2, _t0, Math.fma(this.m02, _t0, Math.fma(-this.m12, _t1, pivotX)))), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, Math.fma(this.m02, _t1, Math.fma(this.m12, _t0, pivotY)))), Joml.BIT_AFFINE);
+        double _t3 = Math.sin(0.5 * angle);
+        double _t5 = 2.0 * _t3 * _t3;
+        return new Double2x3(Math.fma(this.m00, _t0, -(this.m10 * _t1)), Math.fma(this.m01, _t0, -(this.m11 * _t1)), Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(this.m02, _t0, -(this.m12 * _t1)), Math.fma(this.m00, _t1, this.m10 * _t0), Math.fma(this.m01, _t1, this.m11 * _t0), Math.fma(this.m02, _t1, this.m12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1)), Joml.BIT_AFFINE);
     }
 
 
@@ -1893,6 +1911,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
@@ -2276,6 +2298,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivot the pivot point
@@ -2302,8 +2328,9 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     private Double2x3 rotateAround_translation(double angle, double pivotX, double pivotY) {
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -pivotX;
-        return new Double2x3(_t0, -_t1, Math.fma(pivotY, _t1, Math.fma(_t2, _t0, this.m02 + pivotX)), _t1, _t0, Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, this.m12 + pivotY)), Joml.BIT_ORTHOGONAL);
+        double _t3 = Math.sin(0.5 * angle);
+        double _t5 = 2.0 * _t3 * _t3;
+        return new Double2x3(_t0, -_t1, Math.fma(pivotX, _t5, Math.fma(pivotY, _t1, this.m02)), _t1, _t0, Math.fma(pivotY, _t5, Math.fma(-pivotX, _t1, this.m12)), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -2314,10 +2341,11 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     private Double2x3 rotateAround_orthogonal(double angle, double pivotX, double pivotY) {
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -pivotX;
-        double _t6 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX));
-        double _t7 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY));
-        return new Double2x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), Math.fma(this.m00, _t6, Math.fma(this.m01, _t7, this.m02)), Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), Math.fma(this.m10, _t6, Math.fma(this.m11, _t7, this.m12)), Joml.BIT_ORTHOGONAL);
+        double _t3 = Math.sin(0.5 * angle);
+        double _t8 = 2.0 * _t3 * _t3;
+        double _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
+        double _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
+        return new Double2x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), Math.fma(this.m00, _t9, Math.fma(this.m01, _t10, this.m02)), Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), Math.fma(this.m10, _t9, Math.fma(this.m11, _t10, this.m12)), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -2328,10 +2356,11 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     private Double2x3 rotateAround_general(double angle, double pivotX, double pivotY) {
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -pivotX;
-        double _t6 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX));
-        double _t7 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY));
-        return new Double2x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), Math.fma(this.m00, _t6, Math.fma(this.m01, _t7, this.m02)), Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), Math.fma(this.m10, _t6, Math.fma(this.m11, _t7, this.m12)), Joml.BIT_AFFINE);
+        double _t3 = Math.sin(0.5 * angle);
+        double _t8 = 2.0 * _t3 * _t3;
+        double _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
+        double _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
+        return new Double2x3(Math.fma(this.m00, _t0, this.m01 * _t1), Math.fma(this.m01, _t0, -(this.m00 * _t1)), Math.fma(this.m00, _t9, Math.fma(this.m01, _t10, this.m02)), Math.fma(this.m10, _t0, this.m11 * _t1), Math.fma(this.m11, _t0, -(this.m10 * _t1)), Math.fma(this.m10, _t9, Math.fma(this.m11, _t10, this.m12)), Joml.BIT_AFFINE);
     }
 
 
@@ -2342,6 +2371,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
@@ -2997,6 +3030,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Compare this value component-wise against {@code other}, allowing a difference of at
      * most {@code epsilon} per component.
+     * <p>
+     * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+     * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and
+     * a NaN component never compares equal to anything.
      *
      * @param other the value to compare against
      * @param epsilon the maximum allowed difference per component
@@ -3081,6 +3118,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3095,6 +3136,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -3110,6 +3155,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3127,6 +3176,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -3141,6 +3194,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -3156,6 +3213,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -3173,6 +3234,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3187,6 +3252,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -3202,6 +3271,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3219,6 +3292,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -3233,6 +3310,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -3248,6 +3329,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -3283,6 +3368,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
 
     /**
      * Store the elements into the given memory segment in column-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -3292,6 +3381,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in column-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -3303,6 +3396,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
 
     /**
      * Load the elements from the given memory segment in column-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code Double2x3} holding the loaded elements
@@ -3312,6 +3409,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -3382,6 +3483,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3396,6 +3501,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -3411,6 +3520,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3428,6 +3541,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -3442,6 +3559,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -3457,6 +3578,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -3474,6 +3599,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3489,6 +3618,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -3504,6 +3637,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3521,6 +3658,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -3536,6 +3677,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -3551,6 +3696,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -3587,6 +3736,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in column-major order, converting each
      * element to {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -3596,6 +3749,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in column-major order, converting each
      * element to {@code float}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -3608,6 +3765,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code Double2x3} holding the loaded elements
@@ -3617,6 +3778,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code float}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -3683,6 +3848,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3697,6 +3866,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -3712,6 +3885,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3729,6 +3906,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -3743,6 +3924,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -3758,6 +3943,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -3775,6 +3964,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3789,6 +3982,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -3804,6 +4001,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3821,6 +4022,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -3835,6 +4040,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -3850,6 +4059,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -3885,6 +4098,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
 
     /**
      * Store the elements into the given memory segment in row-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -3894,6 +4111,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in row-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -3905,6 +4126,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
 
     /**
      * Load the elements from the given memory segment in row-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code Double2x3} holding the loaded elements
@@ -3914,6 +4139,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Load the elements from the given memory segment in row-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -3984,6 +4213,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3998,6 +4231,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -4013,6 +4250,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -4030,6 +4271,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -4044,6 +4289,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -4059,6 +4308,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -4076,6 +4329,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -4090,6 +4347,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -4105,6 +4366,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -4122,6 +4387,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -4136,6 +4405,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -4151,6 +4424,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -4187,6 +4464,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in row-major order, converting each element
      * to {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -4196,6 +4477,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in row-major order, converting each element
      * to {@code float}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -4208,6 +4493,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code Double2x3} holding the loaded elements
@@ -4217,6 +4506,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code float}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -4276,6 +4569,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4292,6 +4589,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -4309,6 +4610,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4328,6 +4633,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4344,6 +4653,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -4361,6 +4674,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4380,6 +4697,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4396,6 +4717,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -4413,6 +4738,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4432,6 +4761,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4448,6 +4781,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -4465,6 +4802,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4506,6 +4847,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in column-major order, with {@code stride}
      * elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4516,6 +4861,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in column-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -4529,6 +4878,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Load the elements from the given memory segment in column-major order, with {@code stride}
      * elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4539,6 +4892,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -4601,6 +4958,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4617,6 +4978,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -4634,6 +4999,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4653,6 +5022,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4669,6 +5042,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -4686,6 +5063,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4705,6 +5086,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4721,6 +5106,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -4738,6 +5127,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4757,6 +5150,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4773,6 +5170,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -4790,6 +5191,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4832,6 +5237,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * Store the elements into the given memory segment in column-major order, converting each
      * element to {@code float}, with {@code stride} elements between the starts of consecutive
      * columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4843,6 +5252,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * Store the elements into the given memory segment in column-major order, converting each
      * element to {@code float}, starting at the given offset, with {@code stride} elements between
      * the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -4857,6 +5270,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code float}, with {@code stride} elements between the starts of consecutive
      * columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4868,6 +5285,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code float}, starting at the given offset, with {@code stride} elements
      * between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -4926,6 +5347,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4942,6 +5367,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -4959,6 +5388,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4978,6 +5411,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -4994,6 +5431,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -5011,6 +5452,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5030,6 +5475,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5046,6 +5495,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -5063,6 +5516,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5082,6 +5539,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5098,6 +5559,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -5115,6 +5580,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5156,6 +5625,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in row-major order, with {@code stride}
      * elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5166,6 +5639,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in row-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -5179,6 +5656,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Load the elements from the given memory segment in row-major order, with {@code stride}
      * elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5189,6 +5670,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Load the elements from the given memory segment in row-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -5249,6 +5734,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5265,6 +5754,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -5282,6 +5775,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5301,6 +5798,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5317,6 +5818,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -5334,6 +5839,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5353,6 +5862,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5369,6 +5882,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -5386,6 +5903,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5405,6 +5926,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5421,6 +5946,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -5438,6 +5967,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5480,6 +6013,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * Store the elements into the given memory segment in row-major order, converting each element
      * to {@code float}, with {@code stride} elements between the starts of consecutive
      * columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5491,6 +6028,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * Store the elements into the given memory segment in row-major order, converting each element
      * to {@code float}, starting at the given offset, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -5505,6 +6046,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code float}, with {@code stride} elements between the starts of consecutive
      * columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5516,6 +6061,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code float}, starting at the given offset, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -5563,6 +6112,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -5577,6 +6130,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -5592,6 +6149,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -5609,6 +6170,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -5623,6 +6188,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -5638,6 +6207,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -5663,6 +6236,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in column-major order, identity-extended to
      * a 3x3 matrix.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -5672,6 +6249,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in column-major order, identity-extended to
      * a 3x3 matrix, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -5719,6 +6300,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -5734,6 +6319,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -5750,6 +6339,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -5768,6 +6361,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -5783,6 +6380,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -5799,6 +6400,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -5825,6 +6430,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in column-major order, identity-extended to
      * a 3x3 matrix, converting each element to {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -5834,6 +6443,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in column-major order, identity-extended to
      * a 3x3 matrix, converting each element to {@code float}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -5880,6 +6493,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -5894,6 +6511,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -5909,6 +6530,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -5926,6 +6551,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -5940,6 +6569,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -5955,6 +6588,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -5980,6 +6617,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in row-major order, identity-extended to a
      * 3x3 matrix.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -5989,6 +6630,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in row-major order, identity-extended to a
      * 3x3 matrix, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -6036,6 +6681,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -6051,6 +6700,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -6067,6 +6720,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -6085,6 +6742,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -6100,6 +6761,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -6116,6 +6781,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -6142,6 +6811,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in row-major order, identity-extended to a
      * 3x3 matrix, converting each element to {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -6151,6 +6824,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in row-major order, identity-extended to a
      * 3x3 matrix, converting each element to {@code float}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -6206,6 +6883,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -6221,6 +6902,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -6237,6 +6922,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -6255,6 +6944,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -6270,6 +6963,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -6286,6 +6983,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -6312,6 +7013,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in column-major order, extended to a 4x4
      * matrix with the translation column moved to its last column and identity filling the gap.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -6322,6 +7027,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * Store the elements into the given memory segment in column-major order, extended to a 4x4
      * matrix with the translation column moved to its last column and identity filling the gap,
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -6378,6 +7087,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -6394,6 +7107,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -6411,6 +7128,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -6430,6 +7151,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -6446,6 +7171,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -6463,6 +7192,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -6490,6 +7223,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * Store the elements into the given memory segment in column-major order, extended to a 4x4
      * matrix with the translation column moved to its last column and identity filling the gap,
      * converting each element to {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -6500,6 +7237,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * Store the elements into the given memory segment in column-major order, extended to a 4x4
      * matrix with the translation column moved to its last column and identity filling the gap,
      * converting each element to {@code float}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -6555,6 +7296,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -6570,6 +7315,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -6586,6 +7335,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -6604,6 +7357,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -6619,6 +7376,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -6635,6 +7396,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -6661,6 +7426,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in row-major order, extended to a 4x4 matrix
      * with the translation column moved to its last column and identity filling the gap.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -6671,6 +7440,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * Store the elements into the given memory segment in row-major order, extended to a 4x4 matrix
      * with the translation column moved to its last column and identity filling the gap, starting
      * at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -6727,6 +7500,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -6743,6 +7520,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -6760,6 +7541,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -6779,6 +7564,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -6795,6 +7584,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -6812,6 +7605,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -6839,6 +7636,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * Store the elements into the given memory segment in row-major order, extended to a 4x4 matrix
      * with the translation column moved to its last column and identity filling the gap, converting
      * each element to {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -6849,6 +7650,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * Store the elements into the given memory segment in row-major order, extended to a 4x4 matrix
      * with the translation column moved to its last column and identity filling the gap, converting
      * each element to {@code float}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -6882,6 +7687,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -6894,6 +7703,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -6907,6 +7720,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -6938,6 +7755,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -6950,6 +7771,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -6963,6 +7788,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -6975,6 +7804,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -6987,6 +7820,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -7000,6 +7837,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -7008,6 +7849,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
 
     /**
      * Store the elements into the given memory segment in column-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -7017,6 +7862,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in column-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -7063,6 +7912,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -7078,6 +7931,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -7092,6 +7949,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -7107,6 +7968,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -7121,6 +7986,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -7136,6 +8005,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -7146,6 +8019,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in column-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -7188,6 +8065,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -7200,6 +8081,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -7213,6 +8098,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -7244,6 +8133,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -7256,6 +8149,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -7269,6 +8166,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -7281,6 +8182,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -7293,6 +8198,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -7306,6 +8215,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return a new {@code Double2x3} holding the loaded elements
@@ -7314,6 +8227,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
 
     /**
      * Load the elements from the given memory segment in column-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code Double2x3} holding the loaded elements
@@ -7323,6 +8240,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -7369,6 +8290,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -7384,6 +8309,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -7398,6 +8327,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -7413,6 +8346,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -7427,6 +8364,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -7442,6 +8383,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -7452,6 +8397,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -7496,6 +8445,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -7508,6 +8461,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -7521,6 +8478,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -7553,6 +8514,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -7566,6 +8531,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -7580,6 +8549,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -7592,6 +8565,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -7604,6 +8581,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -7617,6 +8598,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -7626,6 +8611,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in column-major order, identity-extended to
      * a 3x3 matrix.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -7635,6 +8624,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in column-major order, identity-extended to
      * a 3x3 matrix, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -7678,6 +8671,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -7691,6 +8688,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -7705,6 +8706,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -7739,6 +8744,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -7753,6 +8762,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -7768,6 +8781,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -7781,6 +8798,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -7794,6 +8815,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -7808,6 +8833,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -7817,6 +8846,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
     /**
      * Store the elements into the given memory segment in column-major order, extended to a 4x4
      * matrix with the translation column moved to its last column and identity filling the gap.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -7827,6 +8860,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * Store the elements into the given memory segment in column-major order, extended to a 4x4
      * matrix with the translation column moved to its last column and identity filling the gap,
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment

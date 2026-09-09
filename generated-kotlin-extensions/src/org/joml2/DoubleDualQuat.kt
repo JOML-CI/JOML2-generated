@@ -62,7 +62,7 @@ inline fun DoubleDualQuat.copy(rX: Double = rX(), rY: Double = rY(), rZ: Double 
 inline fun DoubleDualQuat.toDoubleArray(): DoubleArray = store(DoubleArray(8))
 /** A DoubleDualQuat read from this array in storage order, starting at index 0. */
 inline fun DoubleArray.toDoubleDualQuat(): DoubleDualQuat = DoubleDualQuat.load(this)
-/** The component of this DoubleDualQuat at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT `v[i] = x` (or `v[i] += x`) resolves to the Java 2-argument value factory `DoubleDualQuat.set(a, b)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
+/** The component of this DoubleDualQuat at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT with 7 indices (`v[a, b, ...] = x`) resolves to the Java 8-argument value factory `DoubleDualQuat.set(...)`, whose result is discarded (and `v[q] = t` to `set(Quat, Vec3)` likewise) - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun DoubleDualQuat.get(index: Int): Double = when (index) {
     0 -> rX()
     1 -> rY()

@@ -14,6 +14,16 @@ import java.lang.foreign.MemorySegment;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of a rectangle
+ * never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface DoubleRect extends DoubleRectR {
 
@@ -21,7 +31,7 @@ public interface DoubleRect extends DoubleRectR {
      * Add {@code other} to this rectangle.
      *
      * @param other the other rectangle
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect add(DoubleRectR other) { return add(other, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -32,14 +42,14 @@ public interface DoubleRect extends DoubleRectR {
      * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect add(double minX, double minY, double maxX, double maxY) { return add(minX, minY, maxX, maxY, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
     /**
      * Negate this rectangle.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect negate() { return negate(Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -47,7 +57,7 @@ public interface DoubleRect extends DoubleRectR {
      * Subtract {@code other} from this rectangle.
      *
      * @param other the other rectangle
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect sub(DoubleRectR other) { return sub(other, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -58,7 +68,7 @@ public interface DoubleRect extends DoubleRectR {
      * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect sub(double minX, double minY, double maxX, double maxY) { return sub(minX, minY, maxX, maxY, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -85,7 +95,7 @@ public interface DoubleRect extends DoubleRectR {
      * Set the maximum corner of this rectangle to {@code max}.
      *
      * @param max the maximum corner
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect setMax(Double2R max) { return setMax(max, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -94,7 +104,7 @@ public interface DoubleRect extends DoubleRectR {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect setMax(double x, double y) { return setMax(x, y, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -102,7 +112,7 @@ public interface DoubleRect extends DoubleRectR {
      * Set the minimum corner of this rectangle to {@code min}.
      *
      * @param min the minimum corner
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect setMin(Double2R min) { return setMin(min, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -111,7 +121,7 @@ public interface DoubleRect extends DoubleRectR {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect setMin(double x, double y) { return setMin(x, y, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -149,7 +159,7 @@ public interface DoubleRect extends DoubleRectR {
      *
      * @param other the other rectangle
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect lerp(DoubleRectR other, double t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -162,7 +172,7 @@ public interface DoubleRect extends DoubleRectR {
      * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect lerp(double minX, double minY, double maxX, double maxY, double t) { return lerp(minX, minY, maxX, maxY, t, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -170,7 +180,7 @@ public interface DoubleRect extends DoubleRectR {
      * Swap the minimum and maximum bounds of this rectangle where necessary so the bounds are
      * valid.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect correctBounds() { return correctBounds(Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -178,7 +188,7 @@ public interface DoubleRect extends DoubleRectR {
      * Expand this rectangle by {@code margin} in every direction.
      *
      * @param margin the amount to expand by in every direction
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect expand(double margin) { return expand(margin, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -187,7 +197,7 @@ public interface DoubleRect extends DoubleRectR {
      *
      * @param sx the scale factor along the x axis
      * @param sy the scale factor along the y axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect scale(double sx, double sy) { return scale(sx, sy, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -195,7 +205,7 @@ public interface DoubleRect extends DoubleRectR {
      * Translate this rectangle by {@code delta}.
      *
      * @param delta the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect translate(Double2R delta) { return translate(delta, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -204,7 +214,7 @@ public interface DoubleRect extends DoubleRectR {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect translate(double x, double y) { return translate(x, y, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -212,7 +222,7 @@ public interface DoubleRect extends DoubleRectR {
      * Set this rectangle to the union of itself and {@code other}.
      *
      * @param other the other rectangle
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect union(DoubleRectR other) { return union(other, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -224,7 +234,7 @@ public interface DoubleRect extends DoubleRectR {
      * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect union(double minX, double minY, double maxX, double maxY) { return union(minX, minY, maxX, maxY, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -232,7 +242,7 @@ public interface DoubleRect extends DoubleRectR {
      * Grow this rectangle to include the point {@code p}.
      *
      * @param p the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect union(Double2R p) { return union(p, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -241,7 +251,7 @@ public interface DoubleRect extends DoubleRectR {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRect union(double x, double y) { return union(x, y, Joml.RETURN_NEW ? Joml.doubleRect() : this); }
 
@@ -268,6 +278,10 @@ public interface DoubleRect extends DoubleRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -280,6 +294,10 @@ public interface DoubleRect extends DoubleRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -292,6 +310,10 @@ public interface DoubleRect extends DoubleRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -305,6 +327,10 @@ public interface DoubleRect extends DoubleRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -322,6 +348,10 @@ public interface DoubleRect extends DoubleRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -334,6 +364,10 @@ public interface DoubleRect extends DoubleRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -346,6 +380,10 @@ public interface DoubleRect extends DoubleRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -359,6 +397,10 @@ public interface DoubleRect extends DoubleRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -372,6 +414,10 @@ public interface DoubleRect extends DoubleRectR {
 
     /**
      * Load the elements from the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -380,6 +426,10 @@ public interface DoubleRect extends DoubleRectR {
 
     /**
      * Load the elements from the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -419,6 +469,10 @@ public interface DoubleRect extends DoubleRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -431,6 +485,10 @@ public interface DoubleRect extends DoubleRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -443,6 +501,10 @@ public interface DoubleRect extends DoubleRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -456,6 +518,10 @@ public interface DoubleRect extends DoubleRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -473,6 +539,10 @@ public interface DoubleRect extends DoubleRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -485,6 +555,10 @@ public interface DoubleRect extends DoubleRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -497,6 +571,10 @@ public interface DoubleRect extends DoubleRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -510,6 +588,10 @@ public interface DoubleRect extends DoubleRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -523,6 +605,10 @@ public interface DoubleRect extends DoubleRectR {
 
     /**
      * Load the elements from the given memory segment, converting each element from {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -532,6 +618,10 @@ public interface DoubleRect extends DoubleRectR {
     /**
      * Load the elements from the given memory segment, converting each element from {@code float},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

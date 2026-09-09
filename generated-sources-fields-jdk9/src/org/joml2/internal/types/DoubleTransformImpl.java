@@ -1362,6 +1362,10 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * Normalize this transform so that its rotation part has unit length, leaving its translation
      * and scale unchanged (a zero-length rotation yields the zero quaternion) and store the result
      * in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the rotation quaternion must lie
+     * roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1397,6 +1401,9 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1417,7 +1424,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
             d.x = Math.atan2(_t9, _t10);
             d.z = Math.atan2(2.0 * Math.fma(this.rZ, this.rW, -(this.rX * this.rY)), Math.fma(-2.0, Math.fma(this.rY, this.rY, _t3), 1.0));
         }
-        d.y = Math.asin(Math.min(1.0, Math.max(-1.0, _t8)));
+        d.y = Math.atan2(_t8, Math.sqrt(_t12));
         return d;
     }
 
@@ -1428,6 +1435,9 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1448,7 +1458,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
             d.x = Math.atan2(_t7, _t9);
             d.y = Math.atan2(2.0 * Math.fma(this.rX, this.rZ, this.rY * this.rW), Math.fma(-2.0, Math.fma(this.rY, this.rY, _t0), 1.0));
         }
-        d.z = Math.asin(Math.min(1.0, Math.max(-1.0, _t8)));
+        d.z = Math.atan2(_t8, Math.sqrt(_t11));
         return d;
     }
 
@@ -1459,6 +1469,9 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1478,7 +1491,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
             d.y = Math.atan2(_t8, _t10);
             d.z = Math.atan2(2.0 * Math.fma(this.rX, this.rY, this.rZ * this.rW), Math.fma(-2.0, Math.fma(this.rX, this.rX, _t3), 1.0));
         }
-        d.x = Math.asin(Math.min(1.0, Math.max(-1.0, _t9)));
+        d.x = Math.atan2(_t9, Math.sqrt(_t12));
         return d;
     }
 
@@ -1489,6 +1502,9 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1508,7 +1524,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
             d.x = Math.atan2(2.0 * Math.fma(this.rX, this.rW, -(this.rY * this.rZ)), Math.fma(-2.0, Math.fma(this.rX, this.rX, _t0), 1.0));
             d.y = Math.atan2(_t8, _t9);
         }
-        d.z = Math.asin(Math.min(1.0, Math.max(-1.0, _t7)));
+        d.z = Math.atan2(_t7, Math.sqrt(_t11));
         return d;
     }
 
@@ -1519,6 +1535,9 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1538,7 +1557,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
             d.y = Math.atan2(2.0 * Math.fma(this.rY, this.rW, -(this.rX * this.rZ)), Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0));
             d.z = Math.atan2(_t8, _t9);
         }
-        d.x = Math.asin(Math.min(1.0, Math.max(-1.0, _t7)));
+        d.x = Math.atan2(_t7, Math.sqrt(_t11));
         return d;
     }
 
@@ -1549,6 +1568,9 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1568,7 +1590,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
             d.x = Math.atan2(2.0 * Math.fma(this.rX, this.rW, this.rY * this.rZ), Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0));
             d.z = Math.atan2(_t7, _t9);
         }
-        d.y = Math.asin(Math.min(1.0, Math.max(-1.0, _t8)));
+        d.y = Math.atan2(_t8, Math.sqrt(_t11));
         return d;
     }
 

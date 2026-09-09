@@ -42,7 +42,7 @@ inline fun Double2.copy(x: Double = x(), y: Double = y()): Double2 = Double2(x, 
 inline fun Double2.toDoubleArray(): DoubleArray = store(DoubleArray(2))
 /** A Double2 read from this array in storage order, starting at index 0. */
 inline fun DoubleArray.toDouble2(): Double2 = Double2.load(this)
-/** The component of this Double2 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT `v[i] = x` (or `v[i] += x`) resolves to the Java 2-argument value factory `Double2.set(a, b)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
+/** The component of this Double2 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT with 1 index (`v[a] = b`) resolves to the Java 2-argument value factory `Double2.set(...)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Double2.get(index: Int): Double = when (index) {
     0 -> x()
     1 -> y()

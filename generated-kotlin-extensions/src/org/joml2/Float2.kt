@@ -42,7 +42,7 @@ inline fun Float2.copy(x: Float = x(), y: Float = y()): Float2 = Float2(x, y)
 inline fun Float2.toFloatArray(): FloatArray = store(FloatArray(2))
 /** A Float2 read from this array in storage order, starting at index 0. */
 inline fun FloatArray.toFloat2(): Float2 = Float2.load(this)
-/** The component of this Float2 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT `v[i] = x` (or `v[i] += x`) resolves to the Java 2-argument value factory `Float2.set(a, b)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
+/** The component of this Float2 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT with 1 index (`v[a] = b`) resolves to the Java 2-argument value factory `Float2.set(...)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Float2.get(index: Int): Float = when (index) {
     0 -> x()
     1 -> y()

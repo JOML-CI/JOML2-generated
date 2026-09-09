@@ -14,20 +14,32 @@ import java.lang.foreign.MemorySegment;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN; the cached structural property bits are ignored, so two matrix objects holding the same
+ * elements are equal whatever either one has determined about itself. {@code hashCode} is
+ * consistent with it (derived from the same bit patterns). Only instances of this library's
+ * implementation compare equal to each other; the {@code equals} of a matrix never returns
+ * {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface Double4x4 extends Double4x4R {
 
     /**
      * Compute the cofactor matrix of this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 cofactor() { return cofactor(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
     /**
      * Invert this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 invert() { return invert(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -36,7 +48,7 @@ public interface Double4x4 extends Double4x4R {
      * {@code (this * other)^-1}.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 invertProduct(Double4x4R other) { return invertProduct(other, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -61,21 +73,21 @@ public interface Double4x4 extends Double4x4R {
      * @param m31 the element in row 3, column 1 of the matrix
      * @param m32 the element in row 3, column 2 of the matrix
      * @param m33 the element in row 3, column 3 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 invertProduct(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23, double m30, double m31, double m32, double m33) { return invertProduct(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
     /**
      * Compute the normal matrix of this matrix, i.e. the transpose of its inverse.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 normal() { return normal(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
     /**
      * Transpose this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 transpose() { return transpose(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -83,7 +95,7 @@ public interface Double4x4 extends Double4x4R {
      * Add {@code other} to this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 add(Double4x4R other) { return add(other, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -108,14 +120,14 @@ public interface Double4x4 extends Double4x4R {
      * @param m31 the element in row 3, column 1 of the matrix
      * @param m32 the element in row 3, column 2 of the matrix
      * @param m33 the element in row 3, column 3 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 add(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23, double m30, double m31, double m32, double m33) { return add(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
     /**
      * Negate this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 negate() { return negate(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -123,7 +135,7 @@ public interface Double4x4 extends Double4x4R {
      * Subtract {@code other} from this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 sub(Double4x4R other) { return sub(other, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -148,7 +160,7 @@ public interface Double4x4 extends Double4x4R {
      * @param m31 the element in row 3, column 1 of the matrix
      * @param m32 the element in row 3, column 2 of the matrix
      * @param m33 the element in row 3, column 3 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 sub(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23, double m30, double m31, double m32, double m33) { return sub(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -209,7 +221,7 @@ public interface Double4x4 extends Double4x4R {
      * translation instead of composing a translation onto the existing transformation.
      *
      * @param t the translation offsets
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 withTranslation(Double3R t) { return withTranslation(t, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -223,7 +235,7 @@ public interface Double4x4 extends Double4x4R {
      * @param x the {@code x} component of the translation offsets {@code (x, y, z)}
      * @param y the {@code y} component of the translation offsets {@code (x, y, z)}
      * @param z the {@code z} component of the translation offsets {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 withTranslation(double x, double y, double z) { return withTranslation(x, y, z, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -313,7 +325,7 @@ public interface Double4x4 extends Double4x4R {
      *
      * @param other the other matrix
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 lerp(Double4x4R other, double t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -340,7 +352,7 @@ public interface Double4x4 extends Double4x4R {
      * @param m32 the element in row 3, column 2 of the matrix
      * @param m33 the element in row 3, column 3 of the matrix
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 lerp(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23, double m30, double m31, double m32, double m33, double t) { return lerp(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33, t, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -352,7 +364,7 @@ public interface Double4x4 extends Double4x4R {
      * {@code M * R * v}, the transformation of the operand will be applied first.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mul(Double4x4R right) { return mul(right, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -381,7 +393,7 @@ public interface Double4x4 extends Double4x4R {
      * @param m31 the element in row 3, column 1 of the matrix
      * @param m32 the element in row 3, column 2 of the matrix
      * @param m33 the element in row 3, column 3 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mul(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23, double m30, double m31, double m32, double m33) { return mul(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -396,7 +408,7 @@ public interface Double4x4 extends Double4x4R {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mul(Double2x2R right) { return mul(right, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -411,7 +423,7 @@ public interface Double4x4 extends Double4x4R {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mul(Double2x3R right) { return mul(right, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -426,7 +438,7 @@ public interface Double4x4 extends Double4x4R {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mul(Double3x3R right) { return mul(right, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -441,7 +453,7 @@ public interface Double4x4 extends Double4x4R {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mul(Double3x4R right) { return mul(right, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -453,7 +465,7 @@ public interface Double4x4 extends Double4x4R {
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preMul(Double4x4R other) { return preMul(other, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -482,7 +494,7 @@ public interface Double4x4 extends Double4x4R {
      * @param m31 the element in row 3, column 1 of the matrix
      * @param m32 the element in row 3, column 2 of the matrix
      * @param m33 the element in row 3, column 3 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preMul(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23, double m30, double m31, double m32, double m33) { return preMul(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -497,7 +509,7 @@ public interface Double4x4 extends Double4x4R {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preMul(Double2x2R other) { return preMul(other, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -512,7 +524,7 @@ public interface Double4x4 extends Double4x4R {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preMul(Double2x3R other) { return preMul(other, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -527,7 +539,7 @@ public interface Double4x4 extends Double4x4R {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preMul(Double3x3R other) { return preMul(other, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -542,7 +554,7 @@ public interface Double4x4 extends Double4x4R {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preMul(Double3x4R other) { return preMul(other, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -582,7 +594,7 @@ public interface Double4x4 extends Double4x4R {
      * @param center the center point
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 arcball(double radius, Double3R center, double angleX, double angleY) { return arcball(radius, center, angleX, angleY, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -599,7 +611,7 @@ public interface Double4x4 extends Double4x4R {
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 arcball(double radius, double x, double y, double z, double angleX, double angleY) { return arcball(radius, x, y, z, angleX, angleY, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -613,7 +625,7 @@ public interface Double4x4 extends Double4x4R {
      *
      * @param alpha the tilt angle in radians about the X axis (at {@code atan(1/sqrt(2))} the
      *        result is isometric)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 axonometricDimetric(double alpha) { return axonometricDimetric(alpha, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -625,7 +637,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 axonometricIsometric() { return axonometricIsometric(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -639,7 +651,7 @@ public interface Double4x4 extends Double4x4R {
      *
      * @param alphaX the rotation angle in radians about the X axis
      * @param alphaY the rotation angle in radians about the Y axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 axonometricTrimetric(double alphaX, double alphaY) { return axonometricTrimetric(alphaX, alphaY, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -747,7 +759,7 @@ public interface Double4x4 extends Double4x4R {
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 frustum(double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness, DepthRange depthRange) { return frustum(left, right, bottom, top, zNear, zFar, handedness, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -774,7 +786,7 @@ public interface Double4x4 extends Double4x4R {
      * @param zFar the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 frustum(double left, double right, double bottom, double top, double zNear, double zFar, DepthRange depthRange) { return frustum(left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -801,7 +813,7 @@ public interface Double4x4 extends Double4x4R {
      * @param zFar the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 frustum(double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness) { return frustum(left, right, bottom, top, zNear, zFar, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -828,7 +840,7 @@ public interface Double4x4 extends Double4x4R {
      *        the angle-based builders for an infinite near)
      * @param zFar the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 frustum(double left, double right, double bottom, double top, double zNear, double zFar) { return frustum(left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -841,7 +853,7 @@ public interface Double4x4 extends Double4x4R {
      *
      * @param dir the direction
      * @param up the direction of "up"
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 lookAlong(Double3R dir, Double3R up) { return lookAlong(dir, up, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -859,7 +871,7 @@ public interface Double4x4 extends Double4x4R {
      * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
      * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
      * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 lookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) { return lookAlong(dirX, dirY, dirZ, upX, upY, upZ, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -875,7 +887,7 @@ public interface Double4x4 extends Double4x4R {
      * @param center the point in space to look at
      * @param up the direction of "up"
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 lookAt(Double3R eye, Double3R center, Double3R up, Handedness handedness) { return lookAt(eye, center, up, handedness, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -897,7 +909,7 @@ public interface Double4x4 extends Double4x4R {
      * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
      * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 lookAt(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, Handedness handedness) { return lookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, handedness, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -914,7 +926,7 @@ public interface Double4x4 extends Double4x4R {
      * @param eye the position of the camera
      * @param center the point in space to look at
      * @param up the direction of "up"
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 lookAt(Double3R eye, Double3R center, Double3R up) { return lookAt(eye, center, up, Handedness.RIGHT_HANDED, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -937,7 +949,7 @@ public interface Double4x4 extends Double4x4R {
      * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
      * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
      * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 lookAt(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) { return lookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, Handedness.RIGHT_HANDED, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2762,7 +2774,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapXYZ() { return mapXYZ(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2774,7 +2786,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapXYnZ() { return mapXYnZ(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2786,7 +2798,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapXZY() { return mapXZY(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2798,7 +2810,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapXZnY() { return mapXZnY(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2810,7 +2822,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapXnYZ() { return mapXnYZ(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2822,7 +2834,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapXnYnZ() { return mapXnYnZ(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2834,7 +2846,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapXnZY() { return mapXnZY(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2846,7 +2858,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapXnZnY() { return mapXnZnY(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2858,7 +2870,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapYXZ() { return mapYXZ(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2870,7 +2882,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapYXnZ() { return mapYXnZ(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2882,7 +2894,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapYZX() { return mapYZX(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2894,7 +2906,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapYZnX() { return mapYZnX(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2906,7 +2918,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapYnXZ() { return mapYnXZ(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2918,7 +2930,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapYnXnZ() { return mapYnXnZ(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2930,7 +2942,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapYnZX() { return mapYnZX(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2942,7 +2954,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapYnZnX() { return mapYnZnX(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2954,7 +2966,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapZXY() { return mapZXY(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2966,7 +2978,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapZXnY() { return mapZXnY(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2978,7 +2990,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapZYX() { return mapZYX(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -2990,7 +3002,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapZYnX() { return mapZYnX(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3002,7 +3014,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapZnXY() { return mapZnXY(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3014,7 +3026,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapZnXnY() { return mapZnXnY(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3026,7 +3038,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapZnYX() { return mapZnYX(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3038,7 +3050,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapZnYnX() { return mapZnYnX(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3050,7 +3062,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnXYZ() { return mapnXYZ(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3062,7 +3074,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnXYnZ() { return mapnXYnZ(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3074,7 +3086,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnXZY() { return mapnXZY(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3086,7 +3098,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnXZnY() { return mapnXZnY(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3098,7 +3110,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnXnYZ() { return mapnXnYZ(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3110,7 +3122,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnXnYnZ() { return mapnXnYnZ(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3122,7 +3134,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnXnZY() { return mapnXnZY(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3134,7 +3146,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnXnZnY() { return mapnXnZnY(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3146,7 +3158,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnYXZ() { return mapnYXZ(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3158,7 +3170,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnYXnZ() { return mapnYXnZ(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3170,7 +3182,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnYZX() { return mapnYZX(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3182,7 +3194,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnYZnX() { return mapnYZnX(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3194,7 +3206,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnYnXZ() { return mapnYnXZ(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3206,7 +3218,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnYnXnZ() { return mapnYnXnZ(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3218,7 +3230,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnYnZX() { return mapnYnZX(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3230,7 +3242,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnYnZnX() { return mapnYnZnX(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3242,7 +3254,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnZXY() { return mapnZXY(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3254,7 +3266,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnZXnY() { return mapnZXnY(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3266,7 +3278,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnZYX() { return mapnZYX(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3278,7 +3290,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnZYnX() { return mapnZYnX(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3290,7 +3302,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnZnXY() { return mapnZnXY(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3302,7 +3314,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnZnXnY() { return mapnZnXnY(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3314,7 +3326,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnZnYX() { return mapnZnYX(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3326,7 +3338,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 mapnZnYnX() { return mapnZnYnX(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3339,7 +3351,7 @@ public interface Double4x4 extends Double4x4R {
      * using {@code M * O * v}, the oblique shear will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 obliqueCabinet(double angle) { return obliqueCabinet(angle, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3352,7 +3364,7 @@ public interface Double4x4 extends Double4x4R {
      * using {@code M * O * v}, the oblique shear will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 obliqueCavalier(double angle) { return obliqueCavalier(angle, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3365,7 +3377,7 @@ public interface Double4x4 extends Double4x4R {
      * using {@code M * O * v}, the oblique shear will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 obliqueMilitary(double angle) { return obliqueMilitary(angle, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3382,7 +3394,7 @@ public interface Double4x4 extends Double4x4R {
      *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 obliqueZ(Double4R plane, Handedness handedness, DepthRange depthRange) { return obliqueZ(plane, handedness, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3405,7 +3417,7 @@ public interface Double4x4 extends Double4x4R {
      *        the normal pointing into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 obliqueZ(double x, double y, double z, double w, Handedness handedness, DepthRange depthRange) { return obliqueZ(x, y, z, w, handedness, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3422,7 +3434,7 @@ public interface Double4x4 extends Double4x4R {
      *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 obliqueZ(DoublePlaneR plane, Handedness handedness, DepthRange depthRange) { return obliqueZ(plane.a(), plane.b(), plane.c(), plane.d(), handedness, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3440,7 +3452,7 @@ public interface Double4x4 extends Double4x4R {
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 obliqueZ(Double4R plane, DepthRange depthRange) { return obliqueZ(plane, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3464,7 +3476,7 @@ public interface Double4x4 extends Double4x4R {
      * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
      *        the normal pointing into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 obliqueZ(double x, double y, double z, double w, DepthRange depthRange) { return obliqueZ(x, y, z, w, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3482,7 +3494,7 @@ public interface Double4x4 extends Double4x4R {
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 obliqueZ(Double4R plane, Handedness handedness) { return obliqueZ(plane, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3506,7 +3518,7 @@ public interface Double4x4 extends Double4x4R {
      * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
      *        the normal pointing into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 obliqueZ(double x, double y, double z, double w, Handedness handedness) { return obliqueZ(x, y, z, w, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3524,7 +3536,7 @@ public interface Double4x4 extends Double4x4R {
      *
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 obliqueZ(Double4R plane) { return obliqueZ(plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3548,7 +3560,7 @@ public interface Double4x4 extends Double4x4R {
      *        the normal pointing into the visible half-space
      * @param w the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space, with
      *        the normal pointing into the visible half-space
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 obliqueZ(double x, double y, double z, double w) { return obliqueZ(x, y, z, w, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3566,7 +3578,7 @@ public interface Double4x4 extends Double4x4R {
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 obliqueZ(DoublePlaneR plane, DepthRange depthRange) { return obliqueZ(plane, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3584,7 +3596,7 @@ public interface Double4x4 extends Double4x4R {
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 obliqueZ(DoublePlaneR plane, Handedness handedness) { return obliqueZ(plane, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3602,7 +3614,7 @@ public interface Double4x4 extends Double4x4R {
      *
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 obliqueZ(DoublePlaneR plane) { return obliqueZ(plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3625,7 +3637,7 @@ public interface Double4x4 extends Double4x4R {
      * @param zFar the distance to the far clip plane
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 ortho(double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness, DepthRange depthRange) { return ortho(left, right, bottom, top, zNear, zFar, handedness, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3649,7 +3661,7 @@ public interface Double4x4 extends Double4x4R {
      * @param zNear the distance to the near clip plane
      * @param zFar the distance to the far clip plane
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 ortho(double left, double right, double bottom, double top, double zNear, double zFar, DepthRange depthRange) { return ortho(left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3673,7 +3685,7 @@ public interface Double4x4 extends Double4x4R {
      * @param zNear the distance to the near clip plane
      * @param zFar the distance to the far clip plane
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 ortho(double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness) { return ortho(left, right, bottom, top, zNear, zFar, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3697,7 +3709,7 @@ public interface Double4x4 extends Double4x4R {
      * @param top the distance to the top frustum edge
      * @param zNear the distance to the near clip plane
      * @param zFar the distance to the far clip plane
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 ortho(double left, double right, double bottom, double top, double zNear, double zFar) { return ortho(left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3718,7 +3730,7 @@ public interface Double4x4 extends Double4x4R {
      * @param top the distance to the top frustum edge
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 ortho2D(double left, double right, double bottom, double top, Handedness handedness, DepthRange depthRange) { return ortho2D(left, right, bottom, top, handedness, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3740,7 +3752,7 @@ public interface Double4x4 extends Double4x4R {
      * @param bottom the distance to the bottom frustum edge
      * @param top the distance to the top frustum edge
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 ortho2D(double left, double right, double bottom, double top, DepthRange depthRange) { return ortho2D(left, right, bottom, top, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3762,7 +3774,7 @@ public interface Double4x4 extends Double4x4R {
      * @param bottom the distance to the bottom frustum edge
      * @param top the distance to the top frustum edge
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 ortho2D(double left, double right, double bottom, double top, Handedness handedness) { return ortho2D(left, right, bottom, top, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3784,7 +3796,7 @@ public interface Double4x4 extends Double4x4R {
      * @param right the distance to the right frustum edge
      * @param bottom the distance to the bottom frustum edge
      * @param top the distance to the top frustum edge
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 ortho2D(double left, double right, double bottom, double top) { return ortho2D(left, right, bottom, top, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3807,7 +3819,7 @@ public interface Double4x4 extends Double4x4R {
      * @param view the light view transformation (must be affine)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 orthoCrop(Double4x4R view, Handedness handedness, DepthRange depthRange) { return orthoCrop(view, handedness, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3831,7 +3843,7 @@ public interface Double4x4 extends Double4x4R {
      *
      * @param view the light view transformation (must be affine)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 orthoCrop(Double4x4R view, DepthRange depthRange) { return orthoCrop(view, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3855,7 +3867,7 @@ public interface Double4x4 extends Double4x4R {
      *
      * @param view the light view transformation (must be affine)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 orthoCrop(Double4x4R view, Handedness handedness) { return orthoCrop(view, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3879,7 +3891,7 @@ public interface Double4x4 extends Double4x4R {
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param view the light view transformation (must be affine)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 orthoCrop(Double4x4R view) { return orthoCrop(view, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3898,7 +3910,7 @@ public interface Double4x4 extends Double4x4R {
      * @param maxZ the far depth bound of the slice, in source-projection NDC z
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 orthoCrop(Double4x4R view, double minZ, double maxZ, Handedness handedness, DepthRange depthRange) { return orthoCrop(view, minZ, maxZ, handedness, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3918,7 +3930,7 @@ public interface Double4x4 extends Double4x4R {
      * @param minZ the near depth bound of the slice, in source-projection NDC z
      * @param maxZ the far depth bound of the slice, in source-projection NDC z
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 orthoCrop(Double4x4R view, double minZ, double maxZ, DepthRange depthRange) { return orthoCrop(view, minZ, maxZ, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3938,7 +3950,7 @@ public interface Double4x4 extends Double4x4R {
      * @param minZ the near depth bound of the slice, in source-projection NDC z
      * @param maxZ the far depth bound of the slice, in source-projection NDC z
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 orthoCrop(Double4x4R view, double minZ, double maxZ, Handedness handedness) { return orthoCrop(view, minZ, maxZ, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3958,7 +3970,7 @@ public interface Double4x4 extends Double4x4R {
      * @param view the light view transformation (must be affine)
      * @param minZ the near depth bound of the slice, in source-projection NDC z
      * @param maxZ the far depth bound of the slice, in source-projection NDC z
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 orthoCrop(Double4x4R view, double minZ, double maxZ) { return orthoCrop(view, minZ, maxZ, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -3983,7 +3995,7 @@ public interface Double4x4 extends Double4x4R {
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 perspective(double fovy, double aspect, double near, double far, Handedness handedness, DepthRange depthRange) { return perspective(fovy, aspect, near, far, handedness, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4009,7 +4021,7 @@ public interface Double4x4 extends Double4x4R {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 perspective(double fovy, double aspect, double near, double far, DepthRange depthRange) { return perspective(fovy, aspect, near, far, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4035,7 +4047,7 @@ public interface Double4x4 extends Double4x4R {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 perspective(double fovy, double aspect, double near, double far, Handedness handedness) { return perspective(fovy, aspect, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4061,7 +4073,7 @@ public interface Double4x4 extends Double4x4R {
      *        reversed)
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 perspective(double fovy, double aspect, double near, double far) { return perspective(fovy, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4087,7 +4099,7 @@ public interface Double4x4 extends Double4x4R {
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 perspectiveFovRange(double angleMin, double angleMax, double aspect, double near, double far, Handedness handedness, DepthRange depthRange) { return perspectiveFovRange(angleMin, angleMax, aspect, near, far, handedness, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4114,7 +4126,7 @@ public interface Double4x4 extends Double4x4R {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 perspectiveFovRange(double angleMin, double angleMax, double aspect, double near, double far, DepthRange depthRange) { return perspectiveFovRange(angleMin, angleMax, aspect, near, far, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4141,7 +4153,7 @@ public interface Double4x4 extends Double4x4R {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 perspectiveFovRange(double angleMin, double angleMax, double aspect, double near, double far, Handedness handedness) { return perspectiveFovRange(angleMin, angleMax, aspect, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4168,7 +4180,7 @@ public interface Double4x4 extends Double4x4R {
      *        reversed)
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 perspectiveFovRange(double angleMin, double angleMax, double aspect, double near, double far) { return perspectiveFovRange(angleMin, angleMax, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4188,7 +4200,7 @@ public interface Double4x4 extends Double4x4R {
      *        infinite far plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 perspectiveFrustumSlice(double near, double far, Handedness handedness, DepthRange depthRange) { return perspectiveFrustumSlice(near, far, handedness, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4209,7 +4221,7 @@ public interface Double4x4 extends Double4x4R {
      * @param far the new distance to the far clip plane (pass positive infinity to re-slice to an
      *        infinite far plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 perspectiveFrustumSlice(double near, double far, DepthRange depthRange) { return perspectiveFrustumSlice(near, far, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4230,7 +4242,7 @@ public interface Double4x4 extends Double4x4R {
      * @param far the new distance to the far clip plane (pass positive infinity to re-slice to an
      *        infinite far plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 perspectiveFrustumSlice(double near, double far, Handedness handedness) { return perspectiveFrustumSlice(near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4251,7 +4263,7 @@ public interface Double4x4 extends Double4x4R {
      *        reversed)
      * @param far the new distance to the far clip plane (pass positive infinity to re-slice to an
      *        infinite far plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 perspectiveFrustumSlice(double near, double far) { return perspectiveFrustumSlice(near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4280,7 +4292,7 @@ public interface Double4x4 extends Double4x4R {
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 perspectiveOffCenterFov(double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far, Handedness handedness, DepthRange depthRange) { return perspectiveOffCenterFov(angleLeft, angleRight, angleDown, angleUp, near, far, handedness, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4310,7 +4322,7 @@ public interface Double4x4 extends Double4x4R {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 perspectiveOffCenterFov(double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far, DepthRange depthRange) { return perspectiveOffCenterFov(angleLeft, angleRight, angleDown, angleUp, near, far, Handedness.RIGHT_HANDED, depthRange, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4340,7 +4352,7 @@ public interface Double4x4 extends Double4x4R {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 perspectiveOffCenterFov(double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far, Handedness handedness) { return perspectiveOffCenterFov(angleLeft, angleRight, angleDown, angleUp, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4370,7 +4382,7 @@ public interface Double4x4 extends Double4x4R {
      *        reversed)
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 perspectiveOffCenterFov(double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) { return perspectiveOffCenterFov(angleLeft, angleRight, angleDown, angleUp, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4390,7 +4402,7 @@ public interface Double4x4 extends Double4x4R {
      * @param vpY the y coordinate of the viewport origin
      * @param vpW the width of the viewport
      * @param vpH the height of the viewport
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 pickMatrix(double centerX, double centerY, double deltaX, double deltaY, double vpX, double vpY, double vpW, double vpH) { return pickMatrix(centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4400,10 +4412,14 @@ public interface Double4x4 extends Double4x4R {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rot the quaternion (must be a unit quaternion)
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preRotateAround(DoubleQuatR rot, Double3R pivot) { return preRotateAround(rot, pivot, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4414,6 +4430,10 @@ public interface Double4x4 extends Double4x4R {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rotX the {@code x} component of the quaternion {@code (rotX, rotY, rotZ, rotW)} (the
      *        quaternion must have unit length)
@@ -4426,7 +4446,7 @@ public interface Double4x4 extends Double4x4R {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preRotateAround(double rotX, double rotY, double rotZ, double rotW, double pivotX, double pivotY, double pivotZ) { return preRotateAround(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4440,7 +4460,7 @@ public interface Double4x4 extends Double4x4R {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preRotateAxis(double angle, Double3R axis) { return preRotateAxis(angle, axis, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4459,7 +4479,7 @@ public interface Double4x4 extends Double4x4R {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preRotateAxis(double angle, double x, double y, double z) { return preRotateAxis(angle, x, y, z, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4471,7 +4491,7 @@ public interface Double4x4 extends Double4x4R {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param q the quaternion (must be a unit quaternion)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preRotateQuat(DoubleQuatR q) { return preRotateQuat(q, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4491,7 +4511,7 @@ public interface Double4x4 extends Double4x4R {
      *        have unit length)
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preRotateQuat(double x, double y, double z, double w) { return preRotateQuat(x, y, z, w, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4503,7 +4523,7 @@ public interface Double4x4 extends Double4x4R {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preRotateX(double angle) { return preRotateX(angle, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4515,7 +4535,7 @@ public interface Double4x4 extends Double4x4R {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preRotateY(double angle) { return preRotateY(angle, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4527,7 +4547,7 @@ public interface Double4x4 extends Double4x4R {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preRotateZ(double angle) { return preRotateZ(angle, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4539,7 +4559,7 @@ public interface Double4x4 extends Double4x4R {
      * {@code S * M * p}, the scaling will be applied last.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preScale(Double3R v) { return preScale(v, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4553,7 +4573,7 @@ public interface Double4x4 extends Double4x4R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preScale(double x, double y, double z) { return preScale(x, y, z, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4565,7 +4585,7 @@ public interface Double4x4 extends Double4x4R {
      * {@code S * M * v}, the scaling will be applied last.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preScale(double s) { return preScale(s, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4578,7 +4598,7 @@ public interface Double4x4 extends Double4x4R {
      *
      * @param s the uniform scale factor
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preScaleAround(double s, Double3R pivot) { return preScaleAround(s, pivot, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4594,7 +4614,7 @@ public interface Double4x4 extends Double4x4R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preScaleAround(double s, double x, double y, double z) { return preScaleAround(s, x, y, z, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4607,7 +4627,7 @@ public interface Double4x4 extends Double4x4R {
      *
      * @param s the scale factors
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preScaleAround(Double3R s, Double3R pivot) { return preScaleAround(s, pivot, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4625,7 +4645,7 @@ public interface Double4x4 extends Double4x4R {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preScaleAround(double sX, double sY, double sZ, double pivotX, double pivotY, double pivotZ) { return preScaleAround(sX, sY, sZ, pivotX, pivotY, pivotZ, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4637,7 +4657,7 @@ public interface Double4x4 extends Double4x4R {
      * {@code T * M * p}, the translation will be applied last.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preTranslate(Double3R v) { return preTranslate(v, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4651,7 +4671,7 @@ public interface Double4x4 extends Double4x4R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 preTranslate(double x, double y, double z) { return preTranslate(x, y, z, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4664,7 +4684,7 @@ public interface Double4x4 extends Double4x4R {
      * {@code M * R * v}, the reflection will be applied first.
      *
      * @param normal the normal (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 reflect(Double3R normal) { return reflect(normal, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4682,7 +4702,7 @@ public interface Double4x4 extends Double4x4R {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 reflect(double x, double y, double z) { return reflect(x, y, z, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4692,10 +4712,14 @@ public interface Double4x4 extends Double4x4R {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rot the quaternion (must be a unit quaternion)
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateAround(DoubleQuatR rot, Double3R pivot) { return rotateAround(rot, pivot, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4706,6 +4730,10 @@ public interface Double4x4 extends Double4x4R {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rotX the {@code x} component of the quaternion {@code (rotX, rotY, rotZ, rotW)} (the
      *        quaternion must have unit length)
@@ -4718,7 +4746,7 @@ public interface Double4x4 extends Double4x4R {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateAround(double rotX, double rotY, double rotZ, double rotW, double pivotX, double pivotY, double pivotZ) { return rotateAround(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4731,7 +4759,7 @@ public interface Double4x4 extends Double4x4R {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateAxis(double angle, Double3R axis) { return rotateAxis(angle, axis, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4750,7 +4778,7 @@ public interface Double4x4 extends Double4x4R {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateAxis(double angle, double x, double y, double z) { return rotateAxis(angle, x, y, z, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4762,7 +4790,7 @@ public interface Double4x4 extends Double4x4R {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param q the quaternion (must be a unit quaternion)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateQuat(DoubleQuatR q) { return rotateQuat(q, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4782,7 +4810,7 @@ public interface Double4x4 extends Double4x4R {
      *        have unit length)
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateQuat(double x, double y, double z, double w) { return rotateQuat(x, y, z, w, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4794,7 +4822,7 @@ public interface Double4x4 extends Double4x4R {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateX(double angle) { return rotateX(angle, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4805,7 +4833,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateX180() { return rotateX180(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4816,7 +4844,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateX270() { return rotateX270(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4827,7 +4855,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateX90() { return rotateX90(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4843,7 +4871,7 @@ public interface Double4x4 extends Double4x4R {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateXYZ(double angleX, double angleY, double angleZ) { return rotateXYZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4859,7 +4887,7 @@ public interface Double4x4 extends Double4x4R {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateXZY(double angleX, double angleY, double angleZ) { return rotateXZY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4870,7 +4898,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateXn180() { return rotateXn180(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4881,7 +4909,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateXn270() { return rotateXn270(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4892,7 +4920,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateXn90() { return rotateXn90(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4904,7 +4932,7 @@ public interface Double4x4 extends Double4x4R {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateY(double angle) { return rotateY(angle, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4915,7 +4943,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateY180() { return rotateY180(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4926,7 +4954,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateY270() { return rotateY270(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4937,7 +4965,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateY90() { return rotateY90(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4953,7 +4981,7 @@ public interface Double4x4 extends Double4x4R {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateYXZ(double angleX, double angleY, double angleZ) { return rotateYXZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4969,7 +4997,7 @@ public interface Double4x4 extends Double4x4R {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateYZX(double angleX, double angleY, double angleZ) { return rotateYZX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4980,7 +5008,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateYn180() { return rotateYn180(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -4991,7 +5019,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateYn270() { return rotateYn270(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5002,7 +5030,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateYn90() { return rotateYn90(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5014,7 +5042,7 @@ public interface Double4x4 extends Double4x4R {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateZ(double angle) { return rotateZ(angle, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5025,7 +5053,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateZ180() { return rotateZ180(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5036,7 +5064,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateZ270() { return rotateZ270(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5047,7 +5075,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateZ90() { return rotateZ90(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5063,7 +5091,7 @@ public interface Double4x4 extends Double4x4R {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateZXY(double angleX, double angleY, double angleZ) { return rotateZXY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5079,7 +5107,7 @@ public interface Double4x4 extends Double4x4R {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateZYX(double angleX, double angleY, double angleZ) { return rotateZYX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5090,7 +5118,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateZn180() { return rotateZn180(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5101,7 +5129,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateZn270() { return rotateZn270(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5112,7 +5140,7 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 rotateZn90() { return rotateZn90(Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5124,7 +5152,7 @@ public interface Double4x4 extends Double4x4R {
      * {@code M * S * p}, the scaling will be applied first.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 scale(Double3R v) { return scale(v, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5138,7 +5166,7 @@ public interface Double4x4 extends Double4x4R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 scale(double x, double y, double z) { return scale(x, y, z, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5150,7 +5178,7 @@ public interface Double4x4 extends Double4x4R {
      * {@code M * S * v}, the scaling will be applied first.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 scale(double s) { return scale(s, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5163,7 +5191,7 @@ public interface Double4x4 extends Double4x4R {
      *
      * @param s the uniform scale factor
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 scaleAround(double s, Double3R pivot) { return scaleAround(s, pivot, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5179,7 +5207,7 @@ public interface Double4x4 extends Double4x4R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 scaleAround(double s, double x, double y, double z) { return scaleAround(s, x, y, z, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5192,7 +5220,7 @@ public interface Double4x4 extends Double4x4R {
      *
      * @param s the scale factors
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 scaleAround(Double3R s, Double3R pivot) { return scaleAround(s, pivot, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5210,7 +5238,7 @@ public interface Double4x4 extends Double4x4R {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 scaleAround(double sX, double sY, double sZ, double pivotX, double pivotY, double pivotZ) { return scaleAround(sX, sY, sZ, pivotX, pivotY, pivotZ, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5226,7 +5254,7 @@ public interface Double4x4 extends Double4x4R {
      * @param light the light direction or position ({@code w = 0} for a directional light,
      *        {@code w = 1} for a point light)
      * @param plane the plane equation {@code (a, b, c, d)} with {@code ax + by + cz + d = 0}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 shadow(Double4R light, Double4R plane) { return shadow(light, plane, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5247,7 +5275,7 @@ public interface Double4x4 extends Double4x4R {
      * @param planeY the {@code y} component of the vector {@code (planeX, planeY, planeZ, planeW)}
      * @param planeZ the {@code z} component of the vector {@code (planeX, planeY, planeZ, planeW)}
      * @param planeW the {@code w} component of the vector {@code (planeX, planeY, planeZ, planeW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 shadow(double lightX, double lightY, double lightZ, double lightW, double planeX, double planeY, double planeZ, double planeW) { return shadow(lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5264,7 +5292,7 @@ public interface Double4x4 extends Double4x4R {
      * @param yz the shear of y proportional to z
      * @param zx the shear of z proportional to x
      * @param zy the shear of z proportional to y
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 shear(double xy, double xz, double yx, double yz, double zx, double zy) { return shear(xy, xz, yx, yz, zx, zy, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5279,7 +5307,7 @@ public interface Double4x4 extends Double4x4R {
      * @param y the row index of the tile, in {@code [0, h)}
      * @param w the number of tiles along the x axis
      * @param h the number of tiles along the y axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 tile(double x, double y, double w, double h) { return tile(x, y, w, h, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5291,7 +5319,7 @@ public interface Double4x4 extends Double4x4R {
      * {@code M * T * p}, the translation will be applied first.
      *
      * @param v the translation offsets
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 translate(Double3R v) { return translate(v, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5305,7 +5333,7 @@ public interface Double4x4 extends Double4x4R {
      * @param x the {@code x} component of the translation offsets {@code (x, y, z)}
      * @param y the {@code y} component of the translation offsets {@code (x, y, z)}
      * @param z the {@code z} component of the translation offsets {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 translate(double x, double y, double z) { return translate(x, y, z, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5321,7 +5349,7 @@ public interface Double4x4 extends Double4x4R {
      * @param p1 the right corner of the shorter parallel edge of the trapezoid
      * @param p2 the right corner of the longer parallel edge of the trapezoid
      * @param p3 the left corner of the longer parallel edge of the trapezoid
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 trapezoidCrop(Double2R p0, Double2R p1, Double2R p2, Double2R p3) { return trapezoidCrop(p0, p1, p2, p3, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5341,7 +5369,7 @@ public interface Double4x4 extends Double4x4R {
      * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y)}
      * @param p3X the {@code x} component of the vector {@code (p3X, p3Y)}
      * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 trapezoidCrop(double p0X, double p0Y, double p1X, double p1Y, double p2X, double p2Y, double p3X, double p3Y) { return trapezoidCrop(p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
@@ -5368,6 +5396,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -5380,6 +5412,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -5392,6 +5428,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -5405,6 +5445,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -5422,6 +5466,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5434,6 +5482,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5446,6 +5498,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -5459,6 +5515,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5472,6 +5532,10 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Load the elements from the given memory segment in column-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -5481,6 +5545,10 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -5520,6 +5588,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -5532,6 +5604,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -5544,6 +5620,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -5557,6 +5637,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -5574,6 +5658,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5586,6 +5674,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5599,6 +5691,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -5612,6 +5708,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5626,6 +5726,10 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -5635,6 +5739,10 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code float}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -5674,6 +5782,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -5686,6 +5798,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -5698,6 +5814,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -5711,6 +5831,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -5728,6 +5852,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5740,6 +5868,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5752,6 +5884,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -5765,6 +5901,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5778,6 +5918,10 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Load the elements from the given memory segment in row-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -5787,6 +5931,10 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given memory segment in row-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -5826,6 +5974,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -5838,6 +5990,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -5850,6 +6006,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -5863,6 +6023,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -5880,6 +6044,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5892,6 +6060,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5904,6 +6076,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -5917,6 +6093,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -5931,6 +6111,10 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -5940,6 +6124,10 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code float}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -5974,6 +6162,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -5988,6 +6180,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6003,6 +6199,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6022,6 +6222,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6036,6 +6240,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -6051,6 +6259,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6066,6 +6278,10 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given memory segment in column-major order, with {@code stride}
      * elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6076,6 +6292,10 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -6113,6 +6333,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6127,6 +6351,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6142,6 +6370,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6161,6 +6393,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6175,6 +6411,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -6190,6 +6430,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6206,6 +6450,10 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code float}, with {@code stride} elements between the starts of consecutive
      * columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6217,6 +6465,10 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code float}, starting at the given offset, with {@code stride} elements
      * between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -6254,6 +6506,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6268,6 +6524,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6283,6 +6543,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6302,6 +6566,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6316,6 +6584,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -6331,6 +6603,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6346,6 +6622,10 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given memory segment in row-major order, with {@code stride}
      * elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6356,6 +6636,10 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given memory segment in row-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -6393,6 +6677,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6407,6 +6695,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6422,6 +6714,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6441,6 +6737,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6455,6 +6755,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -6470,6 +6774,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6486,6 +6794,10 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code float}, with {@code stride} elements between the starts of consecutive
      * columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6497,6 +6809,10 @@ public interface Double4x4 extends Double4x4R {
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code float}, starting at the given offset, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -6539,6 +6855,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -6551,6 +6871,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6564,6 +6888,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -6595,6 +6923,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -6607,6 +6939,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6620,6 +6956,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -6632,6 +6972,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -6644,6 +6988,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -6657,6 +7005,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -6665,6 +7017,10 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Load the elements from the given memory segment in column-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -6674,6 +7030,10 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -6720,6 +7080,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6735,6 +7099,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6749,6 +7117,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -6764,6 +7136,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6778,6 +7154,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -6793,6 +7173,10 @@ public interface Double4x4 extends Double4x4R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -6803,6 +7187,10 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

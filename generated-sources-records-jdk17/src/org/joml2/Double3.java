@@ -11,6 +11,14 @@ import java.nio.FloatBuffer;
  * All operations leave the receiver unchanged and return their result as a value. An operation
  * whose result equals one of its operands may return that operand instead of allocating a new
  * instance.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns).
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  *
  * @param x the {@code x} component
  * @param y the {@code y} component
@@ -325,8 +333,8 @@ public record Double3(double x, double y, double z) {
             case TRUNCATE -> toByte();
             case FLOOR -> new Byte3((byte) Math.floor(this.x), (byte) Math.floor(this.y), (byte) Math.floor(this.z));
             case CEILING -> new Byte3((byte) Math.ceil(this.x), (byte) Math.ceil(this.y), (byte) Math.ceil(this.z));
-            case HALF_TOWARD_POSITIVE_INFINITY -> new Byte3((byte) Math.round(this.x), (byte) Math.round(this.y), (byte) Math.round(this.z));
-            case HALF_AWAY_FROM_ZERO -> new Byte3((byte) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5)), (byte) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5)), (byte) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5)));
+            case HALF_TOWARD_POSITIVE_INFINITY -> new Byte3((byte) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.x))), (byte) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.y))), (byte) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.z))));
+            case HALF_AWAY_FROM_ZERO -> new Byte3((byte) (Math.abs(this.x - Math.rint(this.x)) == 0.5 ? this.x + Math.copySign(0.5, this.x) : Math.rint(this.x)), (byte) (Math.abs(this.y - Math.rint(this.y)) == 0.5 ? this.y + Math.copySign(0.5, this.y) : Math.rint(this.y)), (byte) (Math.abs(this.z - Math.rint(this.z)) == 0.5 ? this.z + Math.copySign(0.5, this.z) : Math.rint(this.z)));
             case HALF_EVEN -> new Byte3((byte) Math.rint(this.x), (byte) Math.rint(this.y), (byte) Math.rint(this.z));
         };
     }
@@ -357,8 +365,8 @@ public record Double3(double x, double y, double z) {
             case TRUNCATE -> toShort();
             case FLOOR -> new Short3((short) Math.floor(this.x), (short) Math.floor(this.y), (short) Math.floor(this.z));
             case CEILING -> new Short3((short) Math.ceil(this.x), (short) Math.ceil(this.y), (short) Math.ceil(this.z));
-            case HALF_TOWARD_POSITIVE_INFINITY -> new Short3((short) Math.round(this.x), (short) Math.round(this.y), (short) Math.round(this.z));
-            case HALF_AWAY_FROM_ZERO -> new Short3((short) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5)), (short) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5)), (short) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5)));
+            case HALF_TOWARD_POSITIVE_INFINITY -> new Short3((short) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.x))), (short) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.y))), (short) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.z))));
+            case HALF_AWAY_FROM_ZERO -> new Short3((short) (Math.abs(this.x - Math.rint(this.x)) == 0.5 ? this.x + Math.copySign(0.5, this.x) : Math.rint(this.x)), (short) (Math.abs(this.y - Math.rint(this.y)) == 0.5 ? this.y + Math.copySign(0.5, this.y) : Math.rint(this.y)), (short) (Math.abs(this.z - Math.rint(this.z)) == 0.5 ? this.z + Math.copySign(0.5, this.z) : Math.rint(this.z)));
             case HALF_EVEN -> new Short3((short) Math.rint(this.x), (short) Math.rint(this.y), (short) Math.rint(this.z));
         };
     }
@@ -390,7 +398,7 @@ public record Double3(double x, double y, double z) {
             case FLOOR -> new Int3((int) Math.floor(this.x), (int) Math.floor(this.y), (int) Math.floor(this.z));
             case CEILING -> new Int3((int) Math.ceil(this.x), (int) Math.ceil(this.y), (int) Math.ceil(this.z));
             case HALF_TOWARD_POSITIVE_INFINITY -> new Int3((int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.x))), (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.y))), (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.z))));
-            case HALF_AWAY_FROM_ZERO -> new Int3((int) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5)), (int) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5)), (int) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5)));
+            case HALF_AWAY_FROM_ZERO -> new Int3((int) (Math.abs(this.x - Math.rint(this.x)) == 0.5 ? this.x + Math.copySign(0.5, this.x) : Math.rint(this.x)), (int) (Math.abs(this.y - Math.rint(this.y)) == 0.5 ? this.y + Math.copySign(0.5, this.y) : Math.rint(this.y)), (int) (Math.abs(this.z - Math.rint(this.z)) == 0.5 ? this.z + Math.copySign(0.5, this.z) : Math.rint(this.z)));
             case HALF_EVEN -> new Int3((int) Math.rint(this.x), (int) Math.rint(this.y), (int) Math.rint(this.z));
         };
     }
@@ -422,7 +430,7 @@ public record Double3(double x, double y, double z) {
             case FLOOR -> new Long3((long) Math.floor(this.x), (long) Math.floor(this.y), (long) Math.floor(this.z));
             case CEILING -> new Long3((long) Math.ceil(this.x), (long) Math.ceil(this.y), (long) Math.ceil(this.z));
             case HALF_TOWARD_POSITIVE_INFINITY -> new Long3(Math.round(this.x), Math.round(this.y), Math.round(this.z));
-            case HALF_AWAY_FROM_ZERO -> new Long3((long) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5)), (long) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5)), (long) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5)));
+            case HALF_AWAY_FROM_ZERO -> new Long3((long) (Math.abs(this.x - Math.rint(this.x)) == 0.5 ? this.x + Math.copySign(0.5, this.x) : Math.rint(this.x)), (long) (Math.abs(this.y - Math.rint(this.y)) == 0.5 ? this.y + Math.copySign(0.5, this.y) : Math.rint(this.y)), (long) (Math.abs(this.z - Math.rint(this.z)) == 0.5 ? this.z + Math.copySign(0.5, this.z) : Math.rint(this.z)));
             case HALF_EVEN -> new Long3((long) Math.rint(this.x), (long) Math.rint(this.y), (long) Math.rint(this.z));
         };
     }
@@ -894,6 +902,9 @@ public record Double3(double x, double y, double z) {
 
     /**
      * Compute the angle in radians between this vector and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other vector
      * @return the angle in radians between this vector and {@code other}
@@ -906,6 +917,9 @@ public record Double3(double x, double y, double z) {
     /**
      * Compute the angle in radians between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -914,7 +928,10 @@ public record Double3(double x, double y, double z) {
      *        {@code otherZ})
      */
     public double angleBetween(double otherX, double otherY, double otherZ) {
-        return Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(otherZ, this.z, Math.fma(otherX, this.x, otherY * this.y)) * (1.0 / Math.sqrt(Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y)))) * (1.0 / Math.sqrt(Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY)))))));
+        double _t6 = Math.fma(otherZ, this.y, -(otherY * this.z));
+        double _t7 = Math.fma(otherY, this.x, -(otherX * this.y));
+        double _t8 = Math.fma(otherZ, this.x, -(otherX * this.z));
+        return Math.atan2(Math.sqrt(Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8))), Math.fma(otherZ, this.z, Math.fma(otherX, this.x, otherY * this.y)));
     }
 
 
@@ -1222,6 +1239,10 @@ public record Double3(double x, double y, double z) {
 
     /**
      * Compute the distance between this vector and {@code other}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the difference vector must lie
+     * roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param other the other vector
      * @return the distance between this vector and {@code other}
@@ -1234,6 +1255,10 @@ public record Double3(double x, double y, double z) {
     /**
      * Compute the distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}).
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the difference vector must lie
+     * roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -1457,6 +1482,10 @@ public record Double3(double x, double y, double z) {
 
     /**
      * Compute the length of this vector.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this vector must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @return the length of this vector
      */
@@ -1708,8 +1737,8 @@ public record Double3(double x, double y, double z) {
      * <p>
      * The squared length is formed at the component precision, so components whose squares overflow
      * or underflow that precision are out of domain: the result is the zero vector rather than a
-     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}).
+     * unit vector. Rescale such inputs before normalizing (the magnitude must lie roughly between
+     * 1e-19 and 1.8e19 for {@code float}, 1.5e-154 and 1.3e154 for {@code double}).
      *
      * @return the resulting vector
      */
@@ -1746,6 +1775,9 @@ public record Double3(double x, double y, double z) {
      * Compute the signed angle in radians between this vector and {@code other}, positive when the
      * rotation from this vector to {@code other} is counter-clockwise as seen from the direction of
      * the given normal.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other vector
      * @param normal the reference axis that defines the sign of the angle
@@ -1763,6 +1795,9 @@ public record Double3(double x, double y, double z) {
      * {@code otherZ}), positive when the rotation from this vector to ({@code otherX},
      * {@code otherY}, {@code otherZ}) is counter-clockwise as seen from the direction of the given
      * normal.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -1776,10 +1811,11 @@ public record Double3(double x, double y, double z) {
      *        given normal
      */
     public double orientedAngle(double otherX, double otherY, double otherZ, double normalX, double normalY, double normalZ) {
-        double _t6 = Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY));
-        double _t7 = Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y));
-        double _t15 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(otherZ, this.z, Math.fma(otherX, this.x, otherY * this.y)) * (1.0 / Math.sqrt(_t7)) * (1.0 / Math.sqrt(_t6)))));
-        return Math.sqrt(_t6) * Math.sqrt(_t7) > 0.0 ? Math.fma(normalZ, Math.fma(otherY, this.x, -(otherX * this.y)), Math.fma(normalX, Math.fma(otherZ, this.y, -(otherY * this.z)), normalY * Math.fma(otherX, this.z, -(otherZ * this.x)))) < 0.0 ? -_t15 : _t15 : 0.0;
+        double _t8 = Math.fma(otherY, this.x, -(otherX * this.y));
+        double _t9 = Math.fma(otherZ, this.y, -(otherY * this.z));
+        double _t10 = Math.fma(otherX, this.z, -(otherZ * this.x));
+        double _t16 = Math.atan2(Math.sqrt(Math.fma(_t8, _t8, Math.fma(_t10, _t10, _t9 * _t9))), Math.fma(otherZ, this.z, Math.fma(otherX, this.x, otherY * this.y)));
+        return Math.fma(normalZ, _t8, Math.fma(normalX, _t9, normalY * _t10)) < 0.0 ? -_t16 : _t16;
     }
 
 
@@ -3133,6 +3169,10 @@ public record Double3(double x, double y, double z) {
     /**
      * Compare this value component-wise against {@code other}, allowing a difference of at
      * most {@code epsilon} per component.
+     * <p>
+     * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+     * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and
+     * a NaN component never compares equal to anything.
      *
      * @param other the value to compare against
      * @param epsilon the maximum allowed difference per component
@@ -3204,6 +3244,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3218,6 +3262,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -3233,6 +3281,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3250,6 +3302,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code Double3} holding the loaded elements
@@ -3264,6 +3320,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -3279,6 +3339,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code Double3} holding the loaded elements
@@ -3296,6 +3360,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3310,6 +3378,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -3325,6 +3397,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3342,6 +3418,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double3} holding the loaded elements
@@ -3356,6 +3436,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -3371,6 +3455,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double3} holding the loaded elements
@@ -3388,6 +3476,8 @@ public record Double3(double x, double y, double z) {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Double3 storeUnsafe(long address) {
         return RAW_OPS.storeUnsafe(this, address);
@@ -3399,6 +3489,8 @@ public record Double3(double x, double y, double z) {
      *
      * @param address the raw memory address
      * @return a new {@code Double3} holding the loaded elements
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public static Double3 loadUnsafe(long address) {
         return RAW_OPS.loadUnsafe(address);
@@ -3457,6 +3549,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3471,6 +3567,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -3486,6 +3586,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3503,6 +3607,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code Double3} holding the loaded elements
@@ -3517,6 +3625,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -3532,6 +3644,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code Double3} holding the loaded elements
@@ -3549,6 +3665,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3563,6 +3683,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -3578,6 +3702,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3595,6 +3723,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double3} holding the loaded elements
@@ -3609,6 +3741,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -3624,6 +3760,10 @@ public record Double3(double x, double y, double z) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code Double3} holding the loaded elements
@@ -3641,6 +3781,8 @@ public record Double3(double x, double y, double z) {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public Double3 storeFloatUnsafe(long address) {
         return RAW_OPS.storeFloatUnsafe(this, address);
@@ -3652,6 +3794,8 @@ public record Double3(double x, double y, double z) {
      *
      * @param address the raw memory address
      * @return a new {@code Double3} holding the loaded elements
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public static Double3 loadFloatUnsafe(long address) {
         return RAW_OPS.loadFloatUnsafe(address);

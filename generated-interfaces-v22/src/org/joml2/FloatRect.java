@@ -14,6 +14,16 @@ import java.lang.foreign.MemorySegment;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of a rectangle
+ * never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface FloatRect extends FloatRectR {
 
@@ -21,7 +31,7 @@ public interface FloatRect extends FloatRectR {
      * Add {@code other} to this rectangle.
      *
      * @param other the other rectangle
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect add(FloatRectR other) { return add(other, Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -32,14 +42,14 @@ public interface FloatRect extends FloatRectR {
      * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect add(float minX, float minY, float maxX, float maxY) { return add(minX, minY, maxX, maxY, Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
     /**
      * Negate this rectangle.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect negate() { return negate(Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -47,7 +57,7 @@ public interface FloatRect extends FloatRectR {
      * Subtract {@code other} from this rectangle.
      *
      * @param other the other rectangle
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect sub(FloatRectR other) { return sub(other, Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -58,7 +68,7 @@ public interface FloatRect extends FloatRectR {
      * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect sub(float minX, float minY, float maxX, float maxY) { return sub(minX, minY, maxX, maxY, Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -85,7 +95,7 @@ public interface FloatRect extends FloatRectR {
      * Set the maximum corner of this rectangle to {@code max}.
      *
      * @param max the maximum corner
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect setMax(Float2R max) { return setMax(max, Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -94,7 +104,7 @@ public interface FloatRect extends FloatRectR {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect setMax(float x, float y) { return setMax(x, y, Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -102,7 +112,7 @@ public interface FloatRect extends FloatRectR {
      * Set the minimum corner of this rectangle to {@code min}.
      *
      * @param min the minimum corner
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect setMin(Float2R min) { return setMin(min, Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -111,7 +121,7 @@ public interface FloatRect extends FloatRectR {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect setMin(float x, float y) { return setMin(x, y, Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -147,7 +157,7 @@ public interface FloatRect extends FloatRectR {
      *
      * @param other the other rectangle
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect lerp(FloatRectR other, float t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -160,7 +170,7 @@ public interface FloatRect extends FloatRectR {
      * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect lerp(float minX, float minY, float maxX, float maxY, float t) { return lerp(minX, minY, maxX, maxY, t, Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -168,7 +178,7 @@ public interface FloatRect extends FloatRectR {
      * Swap the minimum and maximum bounds of this rectangle where necessary so the bounds are
      * valid.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect correctBounds() { return correctBounds(Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -176,7 +186,7 @@ public interface FloatRect extends FloatRectR {
      * Expand this rectangle by {@code margin} in every direction.
      *
      * @param margin the amount to expand by in every direction
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect expand(float margin) { return expand(margin, Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -185,7 +195,7 @@ public interface FloatRect extends FloatRectR {
      *
      * @param sx the scale factor along the x axis
      * @param sy the scale factor along the y axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect scale(float sx, float sy) { return scale(sx, sy, Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -193,7 +203,7 @@ public interface FloatRect extends FloatRectR {
      * Translate this rectangle by {@code delta}.
      *
      * @param delta the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect translate(Float2R delta) { return translate(delta, Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -202,7 +212,7 @@ public interface FloatRect extends FloatRectR {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect translate(float x, float y) { return translate(x, y, Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -210,7 +220,7 @@ public interface FloatRect extends FloatRectR {
      * Set this rectangle to the union of itself and {@code other}.
      *
      * @param other the other rectangle
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect union(FloatRectR other) { return union(other, Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -222,7 +232,7 @@ public interface FloatRect extends FloatRectR {
      * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect union(float minX, float minY, float maxX, float maxY) { return union(minX, minY, maxX, maxY, Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -230,7 +240,7 @@ public interface FloatRect extends FloatRectR {
      * Grow this rectangle to include the point {@code p}.
      *
      * @param p the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect union(Float2R p) { return union(p, Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -239,7 +249,7 @@ public interface FloatRect extends FloatRectR {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatRect union(float x, float y) { return union(x, y, Joml.RETURN_NEW ? Joml.floatRect() : this); }
 
@@ -266,6 +276,10 @@ public interface FloatRect extends FloatRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -278,6 +292,10 @@ public interface FloatRect extends FloatRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -290,6 +308,10 @@ public interface FloatRect extends FloatRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -303,6 +325,10 @@ public interface FloatRect extends FloatRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -320,6 +346,10 @@ public interface FloatRect extends FloatRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -332,6 +362,10 @@ public interface FloatRect extends FloatRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -344,6 +378,10 @@ public interface FloatRect extends FloatRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -357,6 +395,10 @@ public interface FloatRect extends FloatRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -370,6 +412,10 @@ public interface FloatRect extends FloatRectR {
 
     /**
      * Load the elements from the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -378,6 +424,10 @@ public interface FloatRect extends FloatRectR {
 
     /**
      * Load the elements from the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -417,6 +467,10 @@ public interface FloatRect extends FloatRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -429,6 +483,10 @@ public interface FloatRect extends FloatRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -441,6 +499,10 @@ public interface FloatRect extends FloatRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -454,6 +516,10 @@ public interface FloatRect extends FloatRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -471,6 +537,10 @@ public interface FloatRect extends FloatRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -483,6 +553,10 @@ public interface FloatRect extends FloatRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -495,6 +569,10 @@ public interface FloatRect extends FloatRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -508,6 +586,10 @@ public interface FloatRect extends FloatRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -521,6 +603,10 @@ public interface FloatRect extends FloatRectR {
 
     /**
      * Load the elements from the given memory segment, converting each element from {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -530,6 +616,10 @@ public interface FloatRect extends FloatRectR {
     /**
      * Load the elements from the given memory segment, converting each element from {@code double},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

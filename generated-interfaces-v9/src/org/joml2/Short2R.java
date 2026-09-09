@@ -11,6 +11,19 @@ import java.nio.ByteBuffer;
  * mutate the receiver; the mutable counterpart is {@link Short2}. APIs that only read a 2D vector
  * should accept {@code Short2R}, so callers can pass mutable instances without exposing them to
  * modification.
+ * <p>
+ * Arguments of type {@code Short2R} must be instances created by the library ({@link Joml}
+ * factories / the library's own types); the implementations read cached state through the library's
+ * own classes, so foreign implementations of the {@code *R} interfaces are not supported as
+ * arguments.
+ * <p>
+ * {@code equals} compares the components element-wise with {@code ==}. {@code hashCode} is
+ * consistent with it. Only instances of this library's implementation compare equal to each other;
+ * the {@code equals} of a vector never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with an exact, non-negative integer tolerance: the
+ * difference is widened to {@code int} before its magnitude is taken, so the two are compared
+ * exactly without overflow, and a negative {@code epsilon} matches nothing.
  */
 public interface Short2R {
     /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
@@ -1429,8 +1442,9 @@ public interface Short2R {
      * Compute the number of one-bits of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param dest will hold the result
      * @return dest
@@ -1441,8 +1455,9 @@ public interface Short2R {
      * Compute the number of one-bits of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param dest will hold the result
      * @return dest
@@ -1453,8 +1468,9 @@ public interface Short2R {
      * Compute the number of one-bits of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param dest will hold the result
      * @return dest
@@ -1519,8 +1535,9 @@ public interface Short2R {
      * Compute the number of leading zero bits of each component of this vector and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param dest will hold the result
      * @return dest
@@ -1531,8 +1548,9 @@ public interface Short2R {
      * Compute the number of leading zero bits of each component of this vector and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param dest will hold the result
      * @return dest
@@ -1543,8 +1561,9 @@ public interface Short2R {
      * Compute the number of leading zero bits of each component of this vector and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param dest will hold the result
      * @return dest
@@ -1564,8 +1583,9 @@ public interface Short2R {
      * Compute the number of trailing zero bits of each component of this vector and store the
      * result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param dest will hold the result
      * @return dest
@@ -1576,8 +1596,9 @@ public interface Short2R {
      * Compute the number of trailing zero bits of each component of this vector and store the
      * result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param dest will hold the result
      * @return dest
@@ -1588,8 +1609,9 @@ public interface Short2R {
      * Compute the number of trailing zero bits of each component of this vector and store the
      * result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param dest will hold the result
      * @return dest
@@ -1711,8 +1733,9 @@ public interface Short2R {
      * Compute the bit-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param dest will hold the result
      * @return dest
@@ -1723,8 +1746,9 @@ public interface Short2R {
      * Compute the bit-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param dest will hold the result
      * @return dest
@@ -1735,8 +1759,9 @@ public interface Short2R {
      * Compute the bit-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param dest will hold the result
      * @return dest
@@ -1756,8 +1781,9 @@ public interface Short2R {
      * Compute the byte-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param dest will hold the result
      * @return dest
@@ -1768,8 +1794,9 @@ public interface Short2R {
      * Compute the byte-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param dest will hold the result
      * @return dest
@@ -1780,8 +1807,9 @@ public interface Short2R {
      * Compute the byte-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param dest will hold the result
      * @return dest
@@ -1802,8 +1830,9 @@ public interface Short2R {
      * Rotate the bits of each component of this vector left by {@code distance} positions and store
      * the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -1815,8 +1844,9 @@ public interface Short2R {
      * Rotate the bits of each component of this vector left by {@code distance} positions and store
      * the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -1828,8 +1858,9 @@ public interface Short2R {
      * Rotate the bits of each component of this vector left by {@code distance} positions and store
      * the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -1851,8 +1882,9 @@ public interface Short2R {
      * Rotate the bits of each component of this vector right by {@code distance} positions and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -1864,8 +1896,9 @@ public interface Short2R {
      * Rotate the bits of each component of this vector right by {@code distance} positions and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -1877,8 +1910,9 @@ public interface Short2R {
      * Rotate the bits of each component of this vector right by {@code distance} positions and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -2467,9 +2501,6 @@ public interface Short2R {
 
     /**
      * Compute the largest component of this vector.
-     * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
      *
      * @return the largest component of this vector
      */
@@ -2477,9 +2508,6 @@ public interface Short2R {
 
     /**
      * Compute the smallest component of this vector.
-     * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
      *
      * @return the smallest component of this vector
      */
@@ -2941,8 +2969,9 @@ public interface Short2R {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -2954,8 +2983,9 @@ public interface Short2R {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -2967,8 +2997,9 @@ public interface Short2R {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -2991,8 +3022,9 @@ public interface Short2R {
      * Add ({@code x}, {@code y}) to this vector, clamping to the value range instead of overflowing
      * and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
@@ -3005,8 +3037,9 @@ public interface Short2R {
      * Add ({@code x}, {@code y}) to this vector, clamping to the value range instead of overflowing
      * and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
@@ -3019,8 +3052,9 @@ public interface Short2R {
      * Add ({@code x}, {@code y}) to this vector, clamping to the value range instead of overflowing
      * and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
@@ -3043,8 +3077,9 @@ public interface Short2R {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -3056,8 +3091,9 @@ public interface Short2R {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -3069,8 +3105,9 @@ public interface Short2R {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -3093,8 +3130,9 @@ public interface Short2R {
      * Multiply this vector by ({@code x}, {@code y}), clamping to the value range instead of
      * overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
@@ -3107,8 +3145,9 @@ public interface Short2R {
      * Multiply this vector by ({@code x}, {@code y}), clamping to the value range instead of
      * overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
@@ -3121,8 +3160,9 @@ public interface Short2R {
      * Multiply this vector by ({@code x}, {@code y}), clamping to the value range instead of
      * overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
@@ -3144,8 +3184,9 @@ public interface Short2R {
      * Negate this vector, clamping to the value range instead of overflowing and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param dest will hold the result
      * @return dest
@@ -3156,8 +3197,9 @@ public interface Short2R {
      * Negate this vector, clamping to the value range instead of overflowing and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param dest will hold the result
      * @return dest
@@ -3168,8 +3210,9 @@ public interface Short2R {
      * Negate this vector, clamping to the value range instead of overflowing and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param dest will hold the result
      * @return dest
@@ -3190,8 +3233,9 @@ public interface Short2R {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing
      * and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -3203,8 +3247,9 @@ public interface Short2R {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing
      * and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -3216,8 +3261,9 @@ public interface Short2R {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing
      * and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -3240,8 +3286,9 @@ public interface Short2R {
      * Subtract ({@code x}, {@code y}) from this vector, clamping to the value range instead of
      * overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
@@ -3254,8 +3301,9 @@ public interface Short2R {
      * Subtract ({@code x}, {@code y}) from this vector, clamping to the value range instead of
      * overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
@@ -3268,8 +3316,9 @@ public interface Short2R {
      * Subtract ({@code x}, {@code y}) from this vector, clamping to the value range instead of
      * overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
@@ -3529,6 +3578,10 @@ public interface Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3541,6 +3594,10 @@ public interface Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3553,6 +3610,10 @@ public interface Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -3566,6 +3627,10 @@ public interface Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -3583,6 +3648,10 @@ public interface Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3595,6 +3664,10 @@ public interface Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3607,6 +3680,10 @@ public interface Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -3620,6 +3697,10 @@ public interface Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3637,6 +3718,8 @@ public interface Short2R {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     Short2 storeUnsafe(long address);
 
@@ -3663,6 +3746,10 @@ public interface Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3675,6 +3762,10 @@ public interface Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3687,6 +3778,10 @@ public interface Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -3700,6 +3795,10 @@ public interface Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -3717,6 +3816,8 @@ public interface Short2R {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     Short2 storeByteUnsafe(long address);
 
@@ -3726,12 +3827,38 @@ public interface Short2R {
     /**
      * Compare this vector component-wise against {@code other}, allowing a difference
      * of at most {@code epsilon} per component.
+     * <p>
+     * {@code equalsEpsilon} compares per component with an exact, non-negative integer tolerance:
+     * the difference is widened to {@code int} before its magnitude is taken, so the two are
+     * compared exactly without overflow, and a negative {@code epsilon} matches nothing.
      *
      * @param other the vector to compare against
      * @param epsilon the maximum allowed difference per component
      * @return {@code true} if all components differ by at most {@code epsilon}, {@code false} otherwise
      */
     boolean equalsEpsilon(Short2R other, short epsilon);
+
+    /**
+     * Compare this vector with the given object for element-wise equality.
+     * <p>
+     * Each component is compared with {@code ==}. Use {@link #equalsEpsilon} for a tolerant
+     * comparison.
+     * <p>
+     * Only instances of this library's implementation compare equal to each other; any other object
+     * yields {@code false}.
+     *
+     * @param obj the object to compare with
+     * @return {@code true} if {@code obj} is a vector of this library with element-wise equal
+     *        components, {@code false} otherwise
+     */
+    boolean equals(@org.jspecify.annotations.Nullable Object obj);
+
+    /**
+     * Compute a hash code consistent with {@link #equals}: it is derived from the components alone.
+     *
+     * @return the hash code of this vector
+     */
+    int hashCode();
 
     /** Backs {@code ZERO()}: defers the shared instance's
      *  allocation to first use, avoiding a class-initialization cycle with the

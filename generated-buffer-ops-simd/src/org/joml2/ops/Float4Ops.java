@@ -21,6 +21,26 @@ import org.joml2.internal.simd.*;
  * (the {@code ByteBuffer} default is big-endian) is honoured through the slower
  * API path.</p>
  *
+ * <p>With the UNSAFE backend, offsets into direct buffers and native segments are not
+ * bounds-checked and segment liveness / thread confinement is not verified; the API
+ * backend performs the standard checks. Heap arrays are bounds-checked on every backend
+ * ({@link IndexOutOfBoundsException}). The UNSAFE backend uses {@code sun.misc.Unsafe}; on
+ * JDK 23+ (JEP 471) run with {@code --sun-misc-unsafe-memory-access=allow} or select
+ * {@code -Djoml.storeLoadBackend=api}.</p>
+ *
+ * <p>Edge cases, per backend: a read-only {@code dest} buffer or segment never takes the
+ * Unsafe path and is rejected by the API path ({@link IllegalArgumentException} from the
+ * read-only segment view, or {@link java.nio.ReadOnlyBufferException} from a buffer
+ * {@code put}). Buffer offsets are absolute indices counted from index 0, regardless of
+ * the buffer's position; the API path addresses a buffer through a segment view that ends at
+ * its {@code limit}, so an access beyond the limit throws {@link IndexOutOfBoundsException},
+ * whereas the UNSAFE path addresses a direct buffer by its base address and ignores position,
+ * limit and capacity. A negative {@code count} performs no reads or writes on the API and
+ * SIMD paths, except through the raw {@code long}-address {@code copy} overloads, whose API path
+ * slices {@code count} elements off the address first and throws {@link IllegalArgumentException}
+ * for a negative length; the UNSAFE {@code copy} fast path rejects it ({@link IndexOutOfBoundsException}
+ * for an array end, {@link IllegalArgumentException} from {@code Unsafe.copyMemory} otherwise).</p>
+ *
  * <p>All buffer parameters in a single call must use the same storage backing,
  * except the {@code copy} methods, which translate between any two backings.
  * Elements are laid out in component order (the canonical Float4 storage order).</p>
@@ -66,13 +86,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.add_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #add(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #add(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer add(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.add_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsByteBuffer.add_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #add(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #add(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment add(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.add_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsSegment.add_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
@@ -107,13 +127,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.add_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #add(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #add(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer add(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.add_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4OpsKernelsByteBuffer.add_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #add(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #add(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment add(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.add(dest, destOffset, src, srcOffset, other, otherOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && other.isNative()) return Float4OpsKernelsSegment.add_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
@@ -148,13 +168,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.div_api(dest, destOffset, src, srcOffset, scalar);
     }
 
-    /** {@link #div(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #div(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer div(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.div_unsafe(dest, destOffset, src, srcOffset, scalar);
         return Float4OpsKernelsByteBuffer.div_api(dest, destOffset, src, srcOffset, scalar);
     }
 
-    /** {@link #div(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #div(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment div(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float scalar) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.div(dest, destOffset, src, srcOffset, scalar);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.div_unsafe(dest, destOffset, src, srcOffset, scalar);
@@ -199,13 +219,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.div_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #div(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #div(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer div(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.div_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsByteBuffer.div_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #div(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #div(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment div(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.div_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsSegment.div_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
@@ -240,13 +260,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.div_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #div(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #div(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer div(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.div_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4OpsKernelsByteBuffer.div_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #div(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #div(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment div(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.div(dest, destOffset, src, srcOffset, other, otherOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && other.isNative()) return Float4OpsKernelsSegment.div_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
@@ -293,13 +313,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.fma_api(dest, destOffset, src, srcOffset, b, cX, cY, cZ, cW);
     }
 
-    /** {@link #fma(float[], int, float[], int, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #fma(float[], int, float[], int, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer fma(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float b, float cX, float cY, float cZ, float cW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.fma_unsafe(dest, destOffset, src, srcOffset, b, cX, cY, cZ, cW);
         return Float4OpsKernelsByteBuffer.fma_api(dest, destOffset, src, srcOffset, b, cX, cY, cZ, cW);
     }
 
-    /** {@link #fma(float[], int, float[], int, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #fma(float[], int, float[], int, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float b, float cX, float cY, float cZ, float cW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.fma_unsafe(dest, destOffset, src, srcOffset, b, cX, cY, cZ, cW);
         return Float4OpsKernelsSegment.fma_api(dest, destOffset, src, srcOffset, b, cX, cY, cZ, cW);
@@ -336,13 +356,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.fma_api(dest, destOffset, src, srcOffset, c, cOffset, b);
     }
 
-    /** {@link #fma(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #fma(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer fma(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer c, int cOffset, float b) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && c.isDirect() && c.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.fma_unsafe(dest, destOffset, src, srcOffset, c, cOffset, b);
         return Float4OpsKernelsByteBuffer.fma_api(dest, destOffset, src, srcOffset, c, cOffset, b);
     }
 
-    /** {@link #fma(float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #fma(float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment c, long cOffset, float b) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.fma(dest, destOffset, src, srcOffset, c, cOffset, b);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && c.isNative()) return Float4OpsKernelsSegment.fma_unsafe(dest, destOffset, src, srcOffset, c, cOffset, b);
@@ -392,13 +412,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.fma_api(dest, destOffset, src, srcOffset, bX, bY, bZ, bW, cX, cY, cZ, cW);
     }
 
-    /** {@link #fma(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #fma(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer fma(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float bX, float bY, float bZ, float bW, float cX, float cY, float cZ, float cW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.fma_unsafe(dest, destOffset, src, srcOffset, bX, bY, bZ, bW, cX, cY, cZ, cW);
         return Float4OpsKernelsByteBuffer.fma_api(dest, destOffset, src, srcOffset, bX, bY, bZ, bW, cX, cY, cZ, cW);
     }
 
-    /** {@link #fma(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #fma(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float bX, float bY, float bZ, float bW, float cX, float cY, float cZ, float cW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.fma_unsafe(dest, destOffset, src, srcOffset, bX, bY, bZ, bW, cX, cY, cZ, cW);
         return Float4OpsKernelsSegment.fma_api(dest, destOffset, src, srcOffset, bX, bY, bZ, bW, cX, cY, cZ, cW);
@@ -436,13 +456,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.fma_api(dest, destOffset, src, srcOffset, b, bOffset, c, cOffset);
     }
 
-    /** {@link #fma(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #fma(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer fma(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer b, int bOffset, java.nio.ByteBuffer c, int cOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && b.isDirect() && b.order() == java.nio.ByteOrder.nativeOrder() && c.isDirect() && c.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.fma_unsafe(dest, destOffset, src, srcOffset, b, bOffset, c, cOffset);
         return Float4OpsKernelsByteBuffer.fma_api(dest, destOffset, src, srcOffset, b, bOffset, c, cOffset);
     }
 
-    /** {@link #fma(float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #fma(float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment b, long bOffset, java.lang.foreign.MemorySegment c, long cOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.fma(dest, destOffset, src, srcOffset, b, bOffset, c, cOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && b.isNative() && c.isNative()) return Float4OpsKernelsSegment.fma_unsafe(dest, destOffset, src, srcOffset, b, bOffset, c, cOffset);
@@ -478,13 +498,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.mul_api(dest, destOffset, src, srcOffset, scalar);
     }
 
-    /** {@link #mul(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mul(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.mul_unsafe(dest, destOffset, src, srcOffset, scalar);
         return Float4OpsKernelsByteBuffer.mul_api(dest, destOffset, src, srcOffset, scalar);
     }
 
-    /** {@link #mul(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #mul(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment mul(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float scalar) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.mul(dest, destOffset, src, srcOffset, scalar);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.mul_unsafe(dest, destOffset, src, srcOffset, scalar);
@@ -529,13 +549,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.mul_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #mul(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mul(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.mul_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsByteBuffer.mul_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #mul(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #mul(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment mul(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.mul_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsSegment.mul_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
@@ -570,13 +590,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.mul_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #mul(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mul(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.mul_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4OpsKernelsByteBuffer.mul_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #mul(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #mul(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment mul(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.mul(dest, destOffset, src, srcOffset, other, otherOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && other.isNative()) return Float4OpsKernelsSegment.mul_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
@@ -610,13 +630,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.negate_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #negate(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #negate(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer negate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.negate_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.negate_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #negate(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #negate(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment negate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.negate(dest, destOffset, src, srcOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.negate_unsafe(dest, destOffset, src, srcOffset);
@@ -661,13 +681,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.sub_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #sub(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #sub(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer sub(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.sub_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsByteBuffer.sub_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #sub(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #sub(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment sub(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.sub_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsSegment.sub_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
@@ -702,13 +722,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.sub_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #sub(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #sub(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer sub(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.sub_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4OpsKernelsByteBuffer.sub_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #sub(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #sub(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment sub(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.sub(dest, destOffset, src, srcOffset, other, otherOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && other.isNative()) return Float4OpsKernelsSegment.sub_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
@@ -747,13 +767,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.set_api(dest, destOffset, vX, vY, vZ, vW);
     }
 
-    /** {@link #set(float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #set(float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer set(java.nio.ByteBuffer dest, int destOffset, float vX, float vY, float vZ, float vW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.set_unsafe(dest, destOffset, vX, vY, vZ, vW);
         return Float4OpsKernelsByteBuffer.set_api(dest, destOffset, vX, vY, vZ, vW);
     }
 
-    /** {@link #set(float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #set(float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment set(java.lang.foreign.MemorySegment dest, long destOffset, float vX, float vY, float vZ, float vW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Float4OpsKernelsSegment.set_unsafe(dest, destOffset, vX, vY, vZ, vW);
         return Float4OpsKernelsSegment.set_api(dest, destOffset, vX, vY, vZ, vW);
@@ -786,13 +806,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.set_api(dest, destOffset, v, vOffset);
     }
 
-    /** {@link #set(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #set(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer set(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer v, int vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.set_unsafe(dest, destOffset, v, vOffset);
         return Float4OpsKernelsByteBuffer.set_api(dest, destOffset, v, vOffset);
     }
 
-    /** {@link #set(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #set(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment set(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment v, long vOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.set(dest, destOffset, v, vOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && v.isNative()) return Float4OpsKernelsSegment.set_unsafe(dest, destOffset, v, vOffset);
@@ -825,13 +845,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.set_api(dest, destOffset, s);
     }
 
-    /** {@link #set(float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #set(float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer set(java.nio.ByteBuffer dest, int destOffset, float s) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.set_unsafe(dest, destOffset, s);
         return Float4OpsKernelsByteBuffer.set_api(dest, destOffset, s);
     }
 
-    /** {@link #set(float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #set(float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment set(java.lang.foreign.MemorySegment dest, long destOffset, float s) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.set(dest, destOffset, s);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Float4OpsKernelsSegment.set_unsafe(dest, destOffset, s);
@@ -863,13 +883,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.makeZero_api(dest, destOffset);
     }
 
-    /** {@link #makeZero(float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeZero(float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeZero(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.makeZero_unsafe(dest, destOffset);
         return Float4OpsKernelsByteBuffer.makeZero_api(dest, destOffset);
     }
 
-    /** {@link #makeZero(float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #makeZero(float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeZero(java.lang.foreign.MemorySegment dest, long destOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.makeZero(dest, destOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Float4OpsKernelsSegment.makeZero_unsafe(dest, destOffset);
@@ -931,13 +951,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.bezier_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
     }
 
-    /** {@link #bezier(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #bezier(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer bezier(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float p3X, float p3Y, float p3Z, float p3W, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.bezier_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
         return Float4OpsKernelsByteBuffer.bezier_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
     }
 
-    /** {@link #bezier(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #bezier(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment bezier(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float p3X, float p3Y, float p3Z, float p3W, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.bezier_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
         return Float4OpsKernelsSegment.bezier_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
@@ -978,13 +998,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.bezier_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
     }
 
-    /** {@link #bezier(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #bezier(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer bezier(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset, java.nio.ByteBuffer p3, int p3Offset, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder() && p3.isDirect() && p3.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.bezier_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
         return Float4OpsKernelsByteBuffer.bezier_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
     }
 
-    /** {@link #bezier(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #bezier(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment bezier(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment p1, long p1Offset, java.lang.foreign.MemorySegment p2, long p2Offset, java.lang.foreign.MemorySegment p3, long p3Offset, float t) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.bezier(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && p1.isNative() && p2.isNative() && p3.isNative()) return Float4OpsKernelsSegment.bezier_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
@@ -1039,13 +1059,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.bezier2_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, t);
     }
 
-    /** {@link #bezier2(float[], int, float[], int, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #bezier2(float[], int, float[], int, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer bezier2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.bezier2_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, t);
         return Float4OpsKernelsByteBuffer.bezier2_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, t);
     }
 
-    /** {@link #bezier2(float[], int, float[], int, float, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #bezier2(float[], int, float[], int, float, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment bezier2(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.bezier2_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, t);
         return Float4OpsKernelsSegment.bezier2_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, t);
@@ -1084,13 +1104,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.bezier2_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, t);
     }
 
-    /** {@link #bezier2(float[], int, float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #bezier2(float[], int, float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer bezier2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.bezier2_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, t);
         return Float4OpsKernelsByteBuffer.bezier2_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, t);
     }
 
-    /** {@link #bezier2(float[], int, float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #bezier2(float[], int, float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment bezier2(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment p1, long p1Offset, java.lang.foreign.MemorySegment p2, long p2Offset, float t) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.bezier2(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, t);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && p1.isNative() && p2.isNative()) return Float4OpsKernelsSegment.bezier2_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, t);
@@ -1144,13 +1164,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.bezier2Tangent_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, t);
     }
 
-    /** {@link #bezier2Tangent(float[], int, float[], int, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #bezier2Tangent(float[], int, float[], int, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer bezier2Tangent(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.bezier2Tangent_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, t);
         return Float4OpsKernelsByteBuffer.bezier2Tangent_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, t);
     }
 
-    /** {@link #bezier2Tangent(float[], int, float[], int, float, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #bezier2Tangent(float[], int, float[], int, float, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment bezier2Tangent(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.bezier2Tangent_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, t);
         return Float4OpsKernelsSegment.bezier2Tangent_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, t);
@@ -1190,13 +1210,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.bezier2Tangent_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, t);
     }
 
-    /** {@link #bezier2Tangent(float[], int, float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #bezier2Tangent(float[], int, float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer bezier2Tangent(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.bezier2Tangent_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, t);
         return Float4OpsKernelsByteBuffer.bezier2Tangent_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, t);
     }
 
-    /** {@link #bezier2Tangent(float[], int, float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #bezier2Tangent(float[], int, float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment bezier2Tangent(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment p1, long p1Offset, java.lang.foreign.MemorySegment p2, long p2Offset, float t) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.bezier2Tangent(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, t);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && p1.isNative() && p2.isNative()) return Float4OpsKernelsSegment.bezier2Tangent_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, t);
@@ -1256,13 +1276,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.bezierTangent_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
     }
 
-    /** {@link #bezierTangent(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #bezierTangent(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer bezierTangent(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float p3X, float p3Y, float p3Z, float p3W, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.bezierTangent_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
         return Float4OpsKernelsByteBuffer.bezierTangent_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
     }
 
-    /** {@link #bezierTangent(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #bezierTangent(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment bezierTangent(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float p3X, float p3Y, float p3Z, float p3W, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.bezierTangent_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
         return Float4OpsKernelsSegment.bezierTangent_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
@@ -1304,13 +1324,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.bezierTangent_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
     }
 
-    /** {@link #bezierTangent(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #bezierTangent(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer bezierTangent(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset, java.nio.ByteBuffer p3, int p3Offset, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder() && p3.isDirect() && p3.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.bezierTangent_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
         return Float4OpsKernelsByteBuffer.bezierTangent_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
     }
 
-    /** {@link #bezierTangent(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #bezierTangent(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment bezierTangent(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment p1, long p1Offset, java.lang.foreign.MemorySegment p2, long p2Offset, java.lang.foreign.MemorySegment p3, long p3Offset, float t) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.bezierTangent(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && p1.isNative() && p2.isNative() && p3.isNative()) return Float4OpsKernelsSegment.bezierTangent_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
@@ -1367,13 +1387,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.catmullRom_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
     }
 
-    /** {@link #catmullRom(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #catmullRom(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer catmullRom(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float p3X, float p3Y, float p3Z, float p3W, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.catmullRom_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
         return Float4OpsKernelsByteBuffer.catmullRom_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
     }
 
-    /** {@link #catmullRom(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #catmullRom(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment catmullRom(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float p3X, float p3Y, float p3Z, float p3W, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.catmullRom_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
         return Float4OpsKernelsSegment.catmullRom_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
@@ -1414,13 +1434,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.catmullRom_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
     }
 
-    /** {@link #catmullRom(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #catmullRom(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer catmullRom(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset, java.nio.ByteBuffer p3, int p3Offset, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder() && p3.isDirect() && p3.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.catmullRom_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
         return Float4OpsKernelsByteBuffer.catmullRom_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
     }
 
-    /** {@link #catmullRom(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #catmullRom(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment catmullRom(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment p1, long p1Offset, java.lang.foreign.MemorySegment p2, long p2Offset, java.lang.foreign.MemorySegment p3, long p3Offset, float t) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.catmullRom(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && p1.isNative() && p2.isNative() && p3.isNative()) return Float4OpsKernelsSegment.catmullRom_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
@@ -1477,13 +1497,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.catmullRomTangent_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
     }
 
-    /** {@link #catmullRomTangent(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #catmullRomTangent(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer catmullRomTangent(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float p3X, float p3Y, float p3Z, float p3W, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.catmullRomTangent_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
         return Float4OpsKernelsByteBuffer.catmullRomTangent_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
     }
 
-    /** {@link #catmullRomTangent(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #catmullRomTangent(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment catmullRomTangent(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float p3X, float p3Y, float p3Z, float p3W, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.catmullRomTangent_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
         return Float4OpsKernelsSegment.catmullRomTangent_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
@@ -1525,13 +1545,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.catmullRomTangent_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
     }
 
-    /** {@link #catmullRomTangent(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #catmullRomTangent(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer catmullRomTangent(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset, java.nio.ByteBuffer p3, int p3Offset, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder() && p3.isDirect() && p3.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.catmullRomTangent_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
         return Float4OpsKernelsByteBuffer.catmullRomTangent_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
     }
 
-    /** {@link #catmullRomTangent(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #catmullRomTangent(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment catmullRomTangent(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment p1, long p1Offset, java.lang.foreign.MemorySegment p2, long p2Offset, java.lang.foreign.MemorySegment p3, long p3Offset, float t) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.catmullRomTangent(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && p1.isNative() && p2.isNative() && p3.isNative()) return Float4OpsKernelsSegment.catmullRomTangent_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
@@ -1592,13 +1612,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.hermite_api(dest, destOffset, src, srcOffset, t0X, t0Y, t0Z, t0W, v1X, v1Y, v1Z, v1W, t1X, t1Y, t1Z, t1W, t);
     }
 
-    /** {@link #hermite(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #hermite(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer hermite(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float t0X, float t0Y, float t0Z, float t0W, float v1X, float v1Y, float v1Z, float v1W, float t1X, float t1Y, float t1Z, float t1W, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.hermite_unsafe(dest, destOffset, src, srcOffset, t0X, t0Y, t0Z, t0W, v1X, v1Y, v1Z, v1W, t1X, t1Y, t1Z, t1W, t);
         return Float4OpsKernelsByteBuffer.hermite_api(dest, destOffset, src, srcOffset, t0X, t0Y, t0Z, t0W, v1X, v1Y, v1Z, v1W, t1X, t1Y, t1Z, t1W, t);
     }
 
-    /** {@link #hermite(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #hermite(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment hermite(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float t0X, float t0Y, float t0Z, float t0W, float v1X, float v1Y, float v1Z, float v1W, float t1X, float t1Y, float t1Z, float t1W, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.hermite_unsafe(dest, destOffset, src, srcOffset, t0X, t0Y, t0Z, t0W, v1X, v1Y, v1Z, v1W, t1X, t1Y, t1Z, t1W, t);
         return Float4OpsKernelsSegment.hermite_api(dest, destOffset, src, srcOffset, t0X, t0Y, t0Z, t0W, v1X, v1Y, v1Z, v1W, t1X, t1Y, t1Z, t1W, t);
@@ -1639,13 +1659,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.hermite_api(dest, destOffset, src, srcOffset, t0, t0Offset, v1, v1Offset, t1, t1Offset, t);
     }
 
-    /** {@link #hermite(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #hermite(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer hermite(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer t0, int t0Offset, java.nio.ByteBuffer v1, int v1Offset, java.nio.ByteBuffer t1, int t1Offset, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && t0.isDirect() && t0.order() == java.nio.ByteOrder.nativeOrder() && v1.isDirect() && v1.order() == java.nio.ByteOrder.nativeOrder() && t1.isDirect() && t1.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.hermite_unsafe(dest, destOffset, src, srcOffset, t0, t0Offset, v1, v1Offset, t1, t1Offset, t);
         return Float4OpsKernelsByteBuffer.hermite_api(dest, destOffset, src, srcOffset, t0, t0Offset, v1, v1Offset, t1, t1Offset, t);
     }
 
-    /** {@link #hermite(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #hermite(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment hermite(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment t0, long t0Offset, java.lang.foreign.MemorySegment v1, long v1Offset, java.lang.foreign.MemorySegment t1, long t1Offset, float t) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.hermite(dest, destOffset, src, srcOffset, t0, t0Offset, v1, v1Offset, t1, t1Offset, t);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && t0.isNative() && v1.isNative() && t1.isNative()) return Float4OpsKernelsSegment.hermite_unsafe(dest, destOffset, src, srcOffset, t0, t0Offset, v1, v1Offset, t1, t1Offset, t);
@@ -1706,13 +1726,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.hermiteTangent_api(dest, destOffset, src, srcOffset, t0X, t0Y, t0Z, t0W, v1X, v1Y, v1Z, v1W, t1X, t1Y, t1Z, t1W, t);
     }
 
-    /** {@link #hermiteTangent(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #hermiteTangent(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer hermiteTangent(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float t0X, float t0Y, float t0Z, float t0W, float v1X, float v1Y, float v1Z, float v1W, float t1X, float t1Y, float t1Z, float t1W, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.hermiteTangent_unsafe(dest, destOffset, src, srcOffset, t0X, t0Y, t0Z, t0W, v1X, v1Y, v1Z, v1W, t1X, t1Y, t1Z, t1W, t);
         return Float4OpsKernelsByteBuffer.hermiteTangent_api(dest, destOffset, src, srcOffset, t0X, t0Y, t0Z, t0W, v1X, v1Y, v1Z, v1W, t1X, t1Y, t1Z, t1W, t);
     }
 
-    /** {@link #hermiteTangent(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #hermiteTangent(float[], int, float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment hermiteTangent(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float t0X, float t0Y, float t0Z, float t0W, float v1X, float v1Y, float v1Z, float v1W, float t1X, float t1Y, float t1Z, float t1W, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.hermiteTangent_unsafe(dest, destOffset, src, srcOffset, t0X, t0Y, t0Z, t0W, v1X, v1Y, v1Z, v1W, t1X, t1Y, t1Z, t1W, t);
         return Float4OpsKernelsSegment.hermiteTangent_api(dest, destOffset, src, srcOffset, t0X, t0Y, t0Z, t0W, v1X, v1Y, v1Z, v1W, t1X, t1Y, t1Z, t1W, t);
@@ -1754,13 +1774,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.hermiteTangent_api(dest, destOffset, src, srcOffset, t0, t0Offset, v1, v1Offset, t1, t1Offset, t);
     }
 
-    /** {@link #hermiteTangent(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #hermiteTangent(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer hermiteTangent(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer t0, int t0Offset, java.nio.ByteBuffer v1, int v1Offset, java.nio.ByteBuffer t1, int t1Offset, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && t0.isDirect() && t0.order() == java.nio.ByteOrder.nativeOrder() && v1.isDirect() && v1.order() == java.nio.ByteOrder.nativeOrder() && t1.isDirect() && t1.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.hermiteTangent_unsafe(dest, destOffset, src, srcOffset, t0, t0Offset, v1, v1Offset, t1, t1Offset, t);
         return Float4OpsKernelsByteBuffer.hermiteTangent_api(dest, destOffset, src, srcOffset, t0, t0Offset, v1, v1Offset, t1, t1Offset, t);
     }
 
-    /** {@link #hermiteTangent(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #hermiteTangent(float[], int, float[], int, float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment hermiteTangent(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment t0, long t0Offset, java.lang.foreign.MemorySegment v1, long v1Offset, java.lang.foreign.MemorySegment t1, long t1Offset, float t) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.hermiteTangent(dest, destOffset, src, srcOffset, t0, t0Offset, v1, v1Offset, t1, t1Offset, t);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && t0.isNative() && v1.isNative() && t1.isNative()) return Float4OpsKernelsSegment.hermiteTangent_unsafe(dest, destOffset, src, srcOffset, t0, t0Offset, v1, v1Offset, t1, t1Offset, t);
@@ -1800,13 +1820,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.lerp_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, t);
     }
 
-    /** {@link #lerp(float[], int, float[], int, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #lerp(float[], int, float[], int, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer lerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.lerp_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, t);
         return Float4OpsKernelsByteBuffer.lerp_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, t);
     }
 
-    /** {@link #lerp(float[], int, float[], int, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #lerp(float[], int, float[], int, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment lerp(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float otherX, float otherY, float otherZ, float otherW, float t) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.lerp(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, t);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.lerp_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, t);
@@ -1844,13 +1864,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.lerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
     }
 
-    /** {@link #lerp(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #lerp(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer lerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, float t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.lerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
         return Float4OpsKernelsByteBuffer.lerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
     }
 
-    /** {@link #lerp(float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #lerp(float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment lerp(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset, float t) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.lerp(dest, destOffset, src, srcOffset, other, otherOffset, t);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && other.isNative()) return Float4OpsKernelsSegment.lerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
@@ -1900,13 +1920,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.lerp_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, tX, tY, tZ, tW);
     }
 
-    /** {@link #lerp(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #lerp(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer lerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW, float tX, float tY, float tZ, float tW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.lerp_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, tX, tY, tZ, tW);
         return Float4OpsKernelsByteBuffer.lerp_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, tX, tY, tZ, tW);
     }
 
-    /** {@link #lerp(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #lerp(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment lerp(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float otherX, float otherY, float otherZ, float otherW, float tX, float tY, float tZ, float tW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.lerp_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, tX, tY, tZ, tW);
         return Float4OpsKernelsSegment.lerp_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, tX, tY, tZ, tW);
@@ -1945,13 +1965,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.lerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t, tOffset);
     }
 
-    /** {@link #lerp(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #lerp(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer lerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, java.nio.ByteBuffer t, int tOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder() && t.isDirect() && t.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.lerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t, tOffset);
         return Float4OpsKernelsByteBuffer.lerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t, tOffset);
     }
 
-    /** {@link #lerp(float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #lerp(float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment lerp(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset, java.lang.foreign.MemorySegment t, long tOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.lerp(dest, destOffset, src, srcOffset, other, otherOffset, t, tOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && other.isNative() && t.isNative()) return Float4OpsKernelsSegment.lerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t, tOffset);
@@ -1986,13 +2006,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.absolute_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #absolute(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #absolute(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer absolute(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.absolute_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.absolute_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #absolute(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #absolute(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment absolute(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.absolute(dest, destOffset, src, srcOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.absolute_unsafe(dest, destOffset, src, srcOffset);
@@ -2033,13 +2053,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.acos_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #acos(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #acos(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer acos(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.acos_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.acos_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #acos(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #acos(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment acos(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.acos_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.acos_api(dest, destOffset, src, srcOffset);
@@ -2084,13 +2104,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.addScaled_api(dest, destOffset, src, srcOffset, bX, bY, bZ, bW, scalar);
     }
 
-    /** {@link #addScaled(float[], int, float[], int, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #addScaled(float[], int, float[], int, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer addScaled(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float bX, float bY, float bZ, float bW, float scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.addScaled_unsafe(dest, destOffset, src, srcOffset, bX, bY, bZ, bW, scalar);
         return Float4OpsKernelsByteBuffer.addScaled_api(dest, destOffset, src, srcOffset, bX, bY, bZ, bW, scalar);
     }
 
-    /** {@link #addScaled(float[], int, float[], int, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #addScaled(float[], int, float[], int, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment addScaled(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float bX, float bY, float bZ, float bW, float scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.addScaled_unsafe(dest, destOffset, src, srcOffset, bX, bY, bZ, bW, scalar);
         return Float4OpsKernelsSegment.addScaled_api(dest, destOffset, src, srcOffset, bX, bY, bZ, bW, scalar);
@@ -2126,13 +2146,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.addScaled_api(dest, destOffset, src, srcOffset, b, bOffset, scalar);
     }
 
-    /** {@link #addScaled(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #addScaled(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer addScaled(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer b, int bOffset, float scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && b.isDirect() && b.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.addScaled_unsafe(dest, destOffset, src, srcOffset, b, bOffset, scalar);
         return Float4OpsKernelsByteBuffer.addScaled_api(dest, destOffset, src, srcOffset, b, bOffset, scalar);
     }
 
-    /** {@link #addScaled(float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #addScaled(float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment addScaled(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment b, long bOffset, float scalar) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.addScaled(dest, destOffset, src, srcOffset, b, bOffset, scalar);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && b.isNative()) return Float4OpsKernelsSegment.addScaled_unsafe(dest, destOffset, src, srcOffset, b, bOffset, scalar);
@@ -2181,13 +2201,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.addScaled_api(dest, destOffset, src, srcOffset, bX, bY, bZ, bW, cX, cY, cZ, cW);
     }
 
-    /** {@link #addScaled(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #addScaled(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer addScaled(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float bX, float bY, float bZ, float bW, float cX, float cY, float cZ, float cW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.addScaled_unsafe(dest, destOffset, src, srcOffset, bX, bY, bZ, bW, cX, cY, cZ, cW);
         return Float4OpsKernelsByteBuffer.addScaled_api(dest, destOffset, src, srcOffset, bX, bY, bZ, bW, cX, cY, cZ, cW);
     }
 
-    /** {@link #addScaled(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #addScaled(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment addScaled(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float bX, float bY, float bZ, float bW, float cX, float cY, float cZ, float cW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.addScaled_unsafe(dest, destOffset, src, srcOffset, bX, bY, bZ, bW, cX, cY, cZ, cW);
         return Float4OpsKernelsSegment.addScaled_api(dest, destOffset, src, srcOffset, bX, bY, bZ, bW, cX, cY, cZ, cW);
@@ -2224,13 +2244,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.addScaled_api(dest, destOffset, src, srcOffset, b, bOffset, c, cOffset);
     }
 
-    /** {@link #addScaled(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #addScaled(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer addScaled(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer b, int bOffset, java.nio.ByteBuffer c, int cOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && b.isDirect() && b.order() == java.nio.ByteOrder.nativeOrder() && c.isDirect() && c.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.addScaled_unsafe(dest, destOffset, src, srcOffset, b, bOffset, c, cOffset);
         return Float4OpsKernelsByteBuffer.addScaled_api(dest, destOffset, src, srcOffset, b, bOffset, c, cOffset);
     }
 
-    /** {@link #addScaled(float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #addScaled(float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment addScaled(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment b, long bOffset, java.lang.foreign.MemorySegment c, long cOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.addScaled(dest, destOffset, src, srcOffset, b, bOffset, c, cOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && b.isNative() && c.isNative()) return Float4OpsKernelsSegment.addScaled_unsafe(dest, destOffset, src, srcOffset, b, bOffset, c, cOffset);
@@ -2246,6 +2266,9 @@ public final class Float4Ops {
 
     /**
      * Compute the angle in radians between this vector and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
@@ -2260,7 +2283,13 @@ public final class Float4Ops {
         float _selfy = src[srcOffset + 1];
         float _selfz = src[srcOffset + 2];
         float _selfw = src[srcOffset + 3];
-        return (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(otherW, _selfw, Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy))) * (1.0f / (float) Math.sqrt(Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy))))) * (1.0f / (float) Math.sqrt(Math.fma(otherW, otherW, Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY))))))));
+        float _t12 = Math.fma(otherW, _selfz, -(otherZ * _selfw));
+        float _t13 = Math.fma(otherW, _selfy, -(otherY * _selfw));
+        float _t14 = Math.fma(otherZ, _selfy, -(otherY * _selfz));
+        float _t15 = Math.fma(otherW, _selfx, -(otherX * _selfw));
+        float _t16 = Math.fma(otherY, _selfx, -(otherX * _selfy));
+        float _t17 = Math.fma(otherZ, _selfx, -(otherX * _selfz));
+        return (float) Math.atan2((float) Math.sqrt(Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))))), Math.fma(otherW, _selfw, Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy))));
     }
 
     /** {@link #angleBetween(float[], int, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
@@ -2269,13 +2298,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.angleBetween_api(src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #angleBetween(float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #angleBetween(float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float angleBetween(java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.angleBetween_unsafe(src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsByteBuffer.angleBetween_api(src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #angleBetween(float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #angleBetween(float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float angleBetween(java.lang.foreign.MemorySegment src, long srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return Float4OpsKernelsSegment.angleBetween_unsafe(src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsSegment.angleBetween_api(src, srcOffset, otherX, otherY, otherZ, otherW);
@@ -2289,6 +2318,9 @@ public final class Float4Ops {
 
     /**
      * Compute the angle in radians between this vector and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
@@ -2305,7 +2337,13 @@ public final class Float4Ops {
         float _othery = other[otherOffset + 1];
         float _otherz = other[otherOffset + 2];
         float _otherw = other[otherOffset + 3];
-        return (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(_otherw, _selfw, Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy))) * (1.0f / (float) Math.sqrt(Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy))))) * (1.0f / (float) Math.sqrt(Math.fma(_otherw, _otherw, Math.fma(_otherz, _otherz, Math.fma(_otherx, _otherx, _othery * _othery))))))));
+        float _t12 = Math.fma(_otherw, _selfz, -(_otherz * _selfw));
+        float _t13 = Math.fma(_otherw, _selfy, -(_othery * _selfw));
+        float _t14 = Math.fma(_otherz, _selfy, -(_othery * _selfz));
+        float _t15 = Math.fma(_otherw, _selfx, -(_otherx * _selfw));
+        float _t16 = Math.fma(_othery, _selfx, -(_otherx * _selfy));
+        float _t17 = Math.fma(_otherz, _selfx, -(_otherx * _selfz));
+        return (float) Math.atan2((float) Math.sqrt(Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))))), Math.fma(_otherw, _selfw, Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy))));
     }
 
     /** {@link #angleBetween(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -2314,13 +2352,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.angleBetween_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #angleBetween(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #angleBetween(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float angleBetween(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.angleBetween_unsafe(src, srcOffset, other, otherOffset);
         return Float4OpsKernelsByteBuffer.angleBetween_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #angleBetween(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #angleBetween(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float angleBetween(java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative() && other.isNative()) return Float4OpsKernelsSegment.angleBetween_unsafe(src, srcOffset, other, otherOffset);
         return Float4OpsKernelsSegment.angleBetween_api(src, srcOffset, other, otherOffset);
@@ -2359,13 +2397,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.asin_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #asin(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #asin(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer asin(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.asin_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.asin_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #asin(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #asin(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment asin(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.asin_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.asin_api(dest, destOffset, src, srcOffset);
@@ -2406,13 +2444,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.atan_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #atan(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #atan(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer atan(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.atan_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.atan_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #atan(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #atan(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment atan(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.atan_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.atan_api(dest, destOffset, src, srcOffset);
@@ -2455,13 +2493,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.atan2_api(dest, destOffset, src, srcOffset, x);
     }
 
-    /** {@link #atan2(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #atan2(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer atan2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float x) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.atan2_unsafe(dest, destOffset, src, srcOffset, x);
         return Float4OpsKernelsByteBuffer.atan2_api(dest, destOffset, src, srcOffset, x);
     }
 
-    /** {@link #atan2(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #atan2(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment atan2(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float x) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.atan2_unsafe(dest, destOffset, src, srcOffset, x);
         return Float4OpsKernelsSegment.atan2_api(dest, destOffset, src, srcOffset, x);
@@ -2507,13 +2545,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.atan2_api(dest, destOffset, src, srcOffset, xX, xY, xZ, xW);
     }
 
-    /** {@link #atan2(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #atan2(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer atan2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float xX, float xY, float xZ, float xW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.atan2_unsafe(dest, destOffset, src, srcOffset, xX, xY, xZ, xW);
         return Float4OpsKernelsByteBuffer.atan2_api(dest, destOffset, src, srcOffset, xX, xY, xZ, xW);
     }
 
-    /** {@link #atan2(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #atan2(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment atan2(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float xX, float xY, float xZ, float xW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.atan2_unsafe(dest, destOffset, src, srcOffset, xX, xY, xZ, xW);
         return Float4OpsKernelsSegment.atan2_api(dest, destOffset, src, srcOffset, xX, xY, xZ, xW);
@@ -2561,13 +2599,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.atan2_api(dest, destOffset, src, srcOffset, x, xOffset);
     }
 
-    /** {@link #atan2(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #atan2(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer atan2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer x, int xOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && x.isDirect() && x.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.atan2_unsafe(dest, destOffset, src, srcOffset, x, xOffset);
         return Float4OpsKernelsByteBuffer.atan2_api(dest, destOffset, src, srcOffset, x, xOffset);
     }
 
-    /** {@link #atan2(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #atan2(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment atan2(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment x, long xOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && x.isNative()) return Float4OpsKernelsSegment.atan2_unsafe(dest, destOffset, src, srcOffset, x, xOffset);
         return Float4OpsKernelsSegment.atan2_api(dest, destOffset, src, srcOffset, x, xOffset);
@@ -2607,13 +2645,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.cbrt_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #cbrt(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #cbrt(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer cbrt(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.cbrt_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.cbrt_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #cbrt(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #cbrt(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment cbrt(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.cbrt_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.cbrt_api(dest, destOffset, src, srcOffset);
@@ -2653,13 +2691,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.ceil_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #ceil(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #ceil(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer ceil(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.ceil_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.ceil_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #ceil(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #ceil(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment ceil(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.ceil_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.ceil_api(dest, destOffset, src, srcOffset);
@@ -2695,13 +2733,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.clamp_api(dest, destOffset, src, srcOffset, min, max);
     }
 
-    /** {@link #clamp(float[], int, float[], int, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #clamp(float[], int, float[], int, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer clamp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float min, float max) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.clamp_unsafe(dest, destOffset, src, srcOffset, min, max);
         return Float4OpsKernelsByteBuffer.clamp_api(dest, destOffset, src, srcOffset, min, max);
     }
 
-    /** {@link #clamp(float[], int, float[], int, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #clamp(float[], int, float[], int, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment clamp(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float min, float max) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.clamp(dest, destOffset, src, srcOffset, min, max);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.clamp_unsafe(dest, destOffset, src, srcOffset, min, max);
@@ -2751,13 +2789,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.clamp_api(dest, destOffset, src, srcOffset, minX, minY, minZ, minW, maxX, maxY, maxZ, maxW);
     }
 
-    /** {@link #clamp(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #clamp(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer clamp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float minX, float minY, float minZ, float minW, float maxX, float maxY, float maxZ, float maxW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.clamp_unsafe(dest, destOffset, src, srcOffset, minX, minY, minZ, minW, maxX, maxY, maxZ, maxW);
         return Float4OpsKernelsByteBuffer.clamp_api(dest, destOffset, src, srcOffset, minX, minY, minZ, minW, maxX, maxY, maxZ, maxW);
     }
 
-    /** {@link #clamp(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #clamp(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment clamp(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float minX, float minY, float minZ, float minW, float maxX, float maxY, float maxZ, float maxW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.clamp_unsafe(dest, destOffset, src, srcOffset, minX, minY, minZ, minW, maxX, maxY, maxZ, maxW);
         return Float4OpsKernelsSegment.clamp_api(dest, destOffset, src, srcOffset, minX, minY, minZ, minW, maxX, maxY, maxZ, maxW);
@@ -2795,13 +2833,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.clamp_api(dest, destOffset, src, srcOffset, min, minOffset, max, maxOffset);
     }
 
-    /** {@link #clamp(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #clamp(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer clamp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer min, int minOffset, java.nio.ByteBuffer max, int maxOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && min.isDirect() && min.order() == java.nio.ByteOrder.nativeOrder() && max.isDirect() && max.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.clamp_unsafe(dest, destOffset, src, srcOffset, min, minOffset, max, maxOffset);
         return Float4OpsKernelsByteBuffer.clamp_api(dest, destOffset, src, srcOffset, min, minOffset, max, maxOffset);
     }
 
-    /** {@link #clamp(float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #clamp(float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment clamp(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment min, long minOffset, java.lang.foreign.MemorySegment max, long maxOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.clamp(dest, destOffset, src, srcOffset, min, minOffset, max, maxOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && min.isNative() && max.isNative()) return Float4OpsKernelsSegment.clamp_unsafe(dest, destOffset, src, srcOffset, min, minOffset, max, maxOffset);
@@ -2836,13 +2874,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.compAdd_api(src, srcOffset);
     }
 
-    /** {@link #compAdd(float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #compAdd(float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float compAdd(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.compAdd_unsafe(src, srcOffset);
         return Float4OpsKernelsByteBuffer.compAdd_api(src, srcOffset);
     }
 
-    /** {@link #compAdd(float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #compAdd(float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float compAdd(java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return Float4OpsKernelsSegment.compAdd_unsafe(src, srcOffset);
         return Float4OpsKernelsSegment.compAdd_api(src, srcOffset);
@@ -2875,13 +2913,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.compMax_api(src, srcOffset);
     }
 
-    /** {@link #compMax(float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #compMax(float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float compMax(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.compMax_unsafe(src, srcOffset);
         return Float4OpsKernelsByteBuffer.compMax_api(src, srcOffset);
     }
 
-    /** {@link #compMax(float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #compMax(float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float compMax(java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return Float4OpsKernelsSegment.compMax_unsafe(src, srcOffset);
         return Float4OpsKernelsSegment.compMax_api(src, srcOffset);
@@ -2914,13 +2952,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.compMin_api(src, srcOffset);
     }
 
-    /** {@link #compMin(float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #compMin(float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float compMin(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.compMin_unsafe(src, srcOffset);
         return Float4OpsKernelsByteBuffer.compMin_api(src, srcOffset);
     }
 
-    /** {@link #compMin(float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #compMin(float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float compMin(java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return Float4OpsKernelsSegment.compMin_unsafe(src, srcOffset);
         return Float4OpsKernelsSegment.compMin_api(src, srcOffset);
@@ -2953,13 +2991,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.compMul_api(src, srcOffset);
     }
 
-    /** {@link #compMul(float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #compMul(float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float compMul(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.compMul_unsafe(src, srcOffset);
         return Float4OpsKernelsByteBuffer.compMul_api(src, srcOffset);
     }
 
-    /** {@link #compMul(float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #compMul(float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float compMul(java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return Float4OpsKernelsSegment.compMul_unsafe(src, srcOffset);
         return Float4OpsKernelsSegment.compMul_api(src, srcOffset);
@@ -3000,13 +3038,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.copySign_api(dest, destOffset, src, srcOffset, sign);
     }
 
-    /** {@link #copySign(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #copySign(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer copySign(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float sign) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.copySign_unsafe(dest, destOffset, src, srcOffset, sign);
         return Float4OpsKernelsByteBuffer.copySign_api(dest, destOffset, src, srcOffset, sign);
     }
 
-    /** {@link #copySign(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #copySign(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment copySign(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float sign) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.copySign_unsafe(dest, destOffset, src, srcOffset, sign);
         return Float4OpsKernelsSegment.copySign_api(dest, destOffset, src, srcOffset, sign);
@@ -3051,13 +3089,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.copySign_api(dest, destOffset, src, srcOffset, signX, signY, signZ, signW);
     }
 
-    /** {@link #copySign(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #copySign(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer copySign(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float signX, float signY, float signZ, float signW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.copySign_unsafe(dest, destOffset, src, srcOffset, signX, signY, signZ, signW);
         return Float4OpsKernelsByteBuffer.copySign_api(dest, destOffset, src, srcOffset, signX, signY, signZ, signW);
     }
 
-    /** {@link #copySign(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #copySign(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment copySign(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float signX, float signY, float signZ, float signW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.copySign_unsafe(dest, destOffset, src, srcOffset, signX, signY, signZ, signW);
         return Float4OpsKernelsSegment.copySign_api(dest, destOffset, src, srcOffset, signX, signY, signZ, signW);
@@ -3104,13 +3142,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.copySign_api(dest, destOffset, src, srcOffset, sign, signOffset);
     }
 
-    /** {@link #copySign(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #copySign(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer copySign(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer sign, int signOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && sign.isDirect() && sign.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.copySign_unsafe(dest, destOffset, src, srcOffset, sign, signOffset);
         return Float4OpsKernelsByteBuffer.copySign_api(dest, destOffset, src, srcOffset, sign, signOffset);
     }
 
-    /** {@link #copySign(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #copySign(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment copySign(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment sign, long signOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && sign.isNative()) return Float4OpsKernelsSegment.copySign_unsafe(dest, destOffset, src, srcOffset, sign, signOffset);
         return Float4OpsKernelsSegment.copySign_api(dest, destOffset, src, srcOffset, sign, signOffset);
@@ -3150,13 +3188,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.cos_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #cos(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #cos(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer cos(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.cos_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.cos_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #cos(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #cos(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment cos(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.cos_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.cos_api(dest, destOffset, src, srcOffset);
@@ -3197,13 +3235,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.cosh_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #cosh(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #cosh(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer cosh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.cosh_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.cosh_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #cosh(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #cosh(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment cosh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.cosh_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.cosh_api(dest, destOffset, src, srcOffset);
@@ -3244,13 +3282,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.degrees_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #degrees(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #degrees(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer degrees(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.degrees_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.degrees_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #degrees(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #degrees(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment degrees(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.degrees_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.degrees_api(dest, destOffset, src, srcOffset);
@@ -3265,6 +3303,10 @@ public final class Float4Ops {
 
     /**
      * Compute the distance between this vector and {@code other}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the difference vector must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
@@ -3292,13 +3334,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.distance_api(src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #distance(float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #distance(float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float distance(java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.distance_unsafe(src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsByteBuffer.distance_api(src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #distance(float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #distance(float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float distance(java.lang.foreign.MemorySegment src, long srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return Float4OpsKernelsSegment.distance_unsafe(src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsSegment.distance_api(src, srcOffset, otherX, otherY, otherZ, otherW);
@@ -3312,6 +3354,10 @@ public final class Float4Ops {
 
     /**
      * Compute the distance between this vector and {@code other}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the difference vector must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
@@ -3341,13 +3387,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.distance_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #distance(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #distance(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float distance(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.distance_unsafe(src, srcOffset, other, otherOffset);
         return Float4OpsKernelsByteBuffer.distance_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #distance(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #distance(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float distance(java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative() && other.isNative()) return Float4OpsKernelsSegment.distance_unsafe(src, srcOffset, other, otherOffset);
         return Float4OpsKernelsSegment.distance_api(src, srcOffset, other, otherOffset);
@@ -3388,13 +3434,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.distanceSquared_api(src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #distanceSquared(float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #distanceSquared(float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float distanceSquared(java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.distanceSquared_unsafe(src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsByteBuffer.distanceSquared_api(src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #distanceSquared(float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #distanceSquared(float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float distanceSquared(java.lang.foreign.MemorySegment src, long srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return Float4OpsKernelsSegment.distanceSquared_unsafe(src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsSegment.distanceSquared_api(src, srcOffset, otherX, otherY, otherZ, otherW);
@@ -3437,13 +3483,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.distanceSquared_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #distanceSquared(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #distanceSquared(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float distanceSquared(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.distanceSquared_unsafe(src, srcOffset, other, otherOffset);
         return Float4OpsKernelsByteBuffer.distanceSquared_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #distanceSquared(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #distanceSquared(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float distanceSquared(java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative() && other.isNative()) return Float4OpsKernelsSegment.distanceSquared_unsafe(src, srcOffset, other, otherOffset);
         return Float4OpsKernelsSegment.distanceSquared_api(src, srcOffset, other, otherOffset);
@@ -3480,13 +3526,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.dot_api(src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #dot(float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #dot(float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float dot(java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.dot_unsafe(src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsByteBuffer.dot_api(src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #dot(float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #dot(float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float dot(java.lang.foreign.MemorySegment src, long srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return Float4OpsKernelsSegment.dot_unsafe(src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsSegment.dot_api(src, srcOffset, otherX, otherY, otherZ, otherW);
@@ -3525,13 +3571,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.dot_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #dot(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #dot(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float dot(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.dot_unsafe(src, srcOffset, other, otherOffset);
         return Float4OpsKernelsByteBuffer.dot_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #dot(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #dot(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float dot(java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative() && other.isNative()) return Float4OpsKernelsSegment.dot_unsafe(src, srcOffset, other, otherOffset);
         return Float4OpsKernelsSegment.dot_api(src, srcOffset, other, otherOffset);
@@ -3571,13 +3617,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.exp_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #exp(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #exp(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer exp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.exp_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.exp_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #exp(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #exp(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment exp(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.exp_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.exp_api(dest, destOffset, src, srcOffset);
@@ -3618,13 +3664,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.exp2_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #exp2(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #exp2(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer exp2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.exp2_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.exp2_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #exp2(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #exp2(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment exp2(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.exp2_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.exp2_api(dest, destOffset, src, srcOffset);
@@ -3665,13 +3711,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.expm1_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #expm1(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #expm1(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer expm1(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.expm1_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.expm1_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #expm1(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #expm1(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment expm1(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.expm1_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.expm1_api(dest, destOffset, src, srcOffset);
@@ -3714,13 +3760,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.faceforward_api(dest, destOffset, src, srcOffset, IX, IY, IZ, IW, NrefX, NrefY, NrefZ, NrefW);
     }
 
-    /** {@link #faceforward(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #faceforward(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer faceforward(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float IX, float IY, float IZ, float IW, float NrefX, float NrefY, float NrefZ, float NrefW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.faceforward_unsafe(dest, destOffset, src, srcOffset, IX, IY, IZ, IW, NrefX, NrefY, NrefZ, NrefW);
         return Float4OpsKernelsByteBuffer.faceforward_api(dest, destOffset, src, srcOffset, IX, IY, IZ, IW, NrefX, NrefY, NrefZ, NrefW);
     }
 
-    /** {@link #faceforward(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #faceforward(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment faceforward(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float IX, float IY, float IZ, float IW, float NrefX, float NrefY, float NrefZ, float NrefW) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.faceforward(dest, destOffset, src, srcOffset, IX, IY, IZ, IW, NrefX, NrefY, NrefZ, NrefW);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.faceforward_unsafe(dest, destOffset, src, srcOffset, IX, IY, IZ, IW, NrefX, NrefY, NrefZ, NrefW);
@@ -3760,13 +3806,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.faceforward_api(dest, destOffset, src, srcOffset, I, IOffset, Nref, NrefOffset);
     }
 
-    /** {@link #faceforward(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #faceforward(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer faceforward(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer I, int IOffset, java.nio.ByteBuffer Nref, int NrefOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && I.isDirect() && I.order() == java.nio.ByteOrder.nativeOrder() && Nref.isDirect() && Nref.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.faceforward_unsafe(dest, destOffset, src, srcOffset, I, IOffset, Nref, NrefOffset);
         return Float4OpsKernelsByteBuffer.faceforward_api(dest, destOffset, src, srcOffset, I, IOffset, Nref, NrefOffset);
     }
 
-    /** {@link #faceforward(float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #faceforward(float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment faceforward(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment I, long IOffset, java.lang.foreign.MemorySegment Nref, long NrefOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.faceforward(dest, destOffset, src, srcOffset, I, IOffset, Nref, NrefOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && I.isNative() && Nref.isNative()) return Float4OpsKernelsSegment.faceforward_unsafe(dest, destOffset, src, srcOffset, I, IOffset, Nref, NrefOffset);
@@ -3807,13 +3853,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.floor_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #floor(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #floor(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer floor(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.floor_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.floor_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #floor(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #floor(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment floor(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.floor_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.floor_api(dest, destOffset, src, srcOffset);
@@ -3854,13 +3900,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.fract_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #fract(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #fract(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer fract(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.fract_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.fract_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #fract(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #fract(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment fract(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.fract_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.fract_api(dest, destOffset, src, srcOffset);
@@ -3902,13 +3948,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.hypot_api(dest, destOffset, src, srcOffset, y);
     }
 
-    /** {@link #hypot(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #hypot(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer hypot(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float y) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.hypot_unsafe(dest, destOffset, src, srcOffset, y);
         return Float4OpsKernelsByteBuffer.hypot_api(dest, destOffset, src, srcOffset, y);
     }
 
-    /** {@link #hypot(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #hypot(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment hypot(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float y) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.hypot_unsafe(dest, destOffset, src, srcOffset, y);
         return Float4OpsKernelsSegment.hypot_api(dest, destOffset, src, srcOffset, y);
@@ -3954,13 +4000,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.hypot_api(dest, destOffset, src, srcOffset, yX, yY, yZ, yW);
     }
 
-    /** {@link #hypot(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #hypot(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer hypot(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float yX, float yY, float yZ, float yW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.hypot_unsafe(dest, destOffset, src, srcOffset, yX, yY, yZ, yW);
         return Float4OpsKernelsByteBuffer.hypot_api(dest, destOffset, src, srcOffset, yX, yY, yZ, yW);
     }
 
-    /** {@link #hypot(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #hypot(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment hypot(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float yX, float yY, float yZ, float yW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.hypot_unsafe(dest, destOffset, src, srcOffset, yX, yY, yZ, yW);
         return Float4OpsKernelsSegment.hypot_api(dest, destOffset, src, srcOffset, yX, yY, yZ, yW);
@@ -4008,13 +4054,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.hypot_api(dest, destOffset, src, srcOffset, y, yOffset);
     }
 
-    /** {@link #hypot(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #hypot(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer hypot(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer y, int yOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && y.isDirect() && y.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.hypot_unsafe(dest, destOffset, src, srcOffset, y, yOffset);
         return Float4OpsKernelsByteBuffer.hypot_api(dest, destOffset, src, srcOffset, y, yOffset);
     }
 
-    /** {@link #hypot(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #hypot(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment hypot(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment y, long yOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && y.isNative()) return Float4OpsKernelsSegment.hypot_unsafe(dest, destOffset, src, srcOffset, y, yOffset);
         return Float4OpsKernelsSegment.hypot_api(dest, destOffset, src, srcOffset, y, yOffset);
@@ -4048,13 +4094,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.inverse_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #inverse(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #inverse(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer inverse(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.inverse_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.inverse_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #inverse(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #inverse(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment inverse(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.inverse(dest, destOffset, src, srcOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.inverse_unsafe(dest, destOffset, src, srcOffset);
@@ -4096,13 +4142,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.inverseSqrt_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #inverseSqrt(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #inverseSqrt(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer inverseSqrt(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.inverseSqrt_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.inverseSqrt_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #inverseSqrt(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #inverseSqrt(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment inverseSqrt(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.inverseSqrt_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.inverseSqrt_api(dest, destOffset, src, srcOffset);
@@ -4117,6 +4163,10 @@ public final class Float4Ops {
 
     /**
      * Compute the length of this vector.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this vector must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
@@ -4136,13 +4186,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.length_api(src, srcOffset);
     }
 
-    /** {@link #length(float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #length(float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float length(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.length_unsafe(src, srcOffset);
         return Float4OpsKernelsByteBuffer.length_api(src, srcOffset);
     }
 
-    /** {@link #length(float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #length(float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float length(java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return Float4OpsKernelsSegment.length_unsafe(src, srcOffset);
         return Float4OpsKernelsSegment.length_api(src, srcOffset);
@@ -4175,13 +4225,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.lengthSquared_api(src, srcOffset);
     }
 
-    /** {@link #lengthSquared(float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #lengthSquared(float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float lengthSquared(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.lengthSquared_unsafe(src, srcOffset);
         return Float4OpsKernelsByteBuffer.lengthSquared_api(src, srcOffset);
     }
 
-    /** {@link #lengthSquared(float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #lengthSquared(float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float lengthSquared(java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return Float4OpsKernelsSegment.lengthSquared_unsafe(src, srcOffset);
         return Float4OpsKernelsSegment.lengthSquared_api(src, srcOffset);
@@ -4221,13 +4271,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.log_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #log(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #log(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer log(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.log_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.log_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #log(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #log(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment log(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.log_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.log_api(dest, destOffset, src, srcOffset);
@@ -4268,13 +4318,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.log10_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #log10(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #log10(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer log10(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.log10_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.log10_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #log10(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #log10(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment log10(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.log10_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.log10_api(dest, destOffset, src, srcOffset);
@@ -4315,13 +4365,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.log1p_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #log1p(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #log1p(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer log1p(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.log1p_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.log1p_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #log1p(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #log1p(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment log1p(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.log1p_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.log1p_api(dest, destOffset, src, srcOffset);
@@ -4364,13 +4414,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.log2_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #log2(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #log2(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer log2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.log2_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.log2_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #log2(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #log2(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment log2(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.log2_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.log2_api(dest, destOffset, src, srcOffset);
@@ -4408,13 +4458,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.manhattanDistance_api(src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #manhattanDistance(float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #manhattanDistance(float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float manhattanDistance(java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.manhattanDistance_unsafe(src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsByteBuffer.manhattanDistance_api(src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #manhattanDistance(float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #manhattanDistance(float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float manhattanDistance(java.lang.foreign.MemorySegment src, long srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return Float4OpsKernelsSegment.manhattanDistance_unsafe(src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsSegment.manhattanDistance_api(src, srcOffset, otherX, otherY, otherZ, otherW);
@@ -4453,13 +4503,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.manhattanDistance_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #manhattanDistance(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #manhattanDistance(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float manhattanDistance(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.manhattanDistance_unsafe(src, srcOffset, other, otherOffset);
         return Float4OpsKernelsByteBuffer.manhattanDistance_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #manhattanDistance(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #manhattanDistance(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float manhattanDistance(java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative() && other.isNative()) return Float4OpsKernelsSegment.manhattanDistance_unsafe(src, srcOffset, other, otherOffset);
         return Float4OpsKernelsSegment.manhattanDistance_api(src, srcOffset, other, otherOffset);
@@ -4492,13 +4542,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.manhattanLength_api(src, srcOffset);
     }
 
-    /** {@link #manhattanLength(float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #manhattanLength(float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float manhattanLength(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.manhattanLength_unsafe(src, srcOffset);
         return Float4OpsKernelsByteBuffer.manhattanLength_api(src, srcOffset);
     }
 
-    /** {@link #manhattanLength(float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #manhattanLength(float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static float manhattanLength(java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) return Float4OpsKernelsSegment.manhattanLength_unsafe(src, srcOffset);
         return Float4OpsKernelsSegment.manhattanLength_api(src, srcOffset);
@@ -4532,13 +4582,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.max_api(dest, destOffset, src, srcOffset, scalar);
     }
 
-    /** {@link #max(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #max(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer max(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.max_unsafe(dest, destOffset, src, srcOffset, scalar);
         return Float4OpsKernelsByteBuffer.max_api(dest, destOffset, src, srcOffset, scalar);
     }
 
-    /** {@link #max(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #max(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment max(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float scalar) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.max(dest, destOffset, src, srcOffset, scalar);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.max_unsafe(dest, destOffset, src, srcOffset, scalar);
@@ -4584,13 +4634,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.max_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #max(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #max(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer max(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.max_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsByteBuffer.max_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #max(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #max(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment max(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.max_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsSegment.max_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
@@ -4626,13 +4676,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.max_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #max(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #max(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer max(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.max_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4OpsKernelsByteBuffer.max_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #max(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #max(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment max(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.max(dest, destOffset, src, srcOffset, other, otherOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && other.isNative()) return Float4OpsKernelsSegment.max_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
@@ -4668,13 +4718,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.min_api(dest, destOffset, src, srcOffset, scalar);
     }
 
-    /** {@link #min(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #min(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer min(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.min_unsafe(dest, destOffset, src, srcOffset, scalar);
         return Float4OpsKernelsByteBuffer.min_api(dest, destOffset, src, srcOffset, scalar);
     }
 
-    /** {@link #min(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #min(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment min(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float scalar) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.min(dest, destOffset, src, srcOffset, scalar);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.min_unsafe(dest, destOffset, src, srcOffset, scalar);
@@ -4720,13 +4770,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.min_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #min(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #min(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer min(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.min_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsByteBuffer.min_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
     }
 
-    /** {@link #min(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #min(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment min(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float otherX, float otherY, float otherZ, float otherW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.min_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
         return Float4OpsKernelsSegment.min_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW);
@@ -4762,13 +4812,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.min_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #min(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #min(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer min(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.min_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Float4OpsKernelsByteBuffer.min_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #min(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #min(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment min(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.min(dest, destOffset, src, srcOffset, other, otherOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && other.isNative()) return Float4OpsKernelsSegment.min_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
@@ -4815,13 +4865,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.mod_api(dest, destOffset, src, srcOffset, y);
     }
 
-    /** {@link #mod(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mod(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mod(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float y) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.mod_unsafe(dest, destOffset, src, srcOffset, y);
         return Float4OpsKernelsByteBuffer.mod_api(dest, destOffset, src, srcOffset, y);
     }
 
-    /** {@link #mod(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #mod(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment mod(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float y) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.mod_unsafe(dest, destOffset, src, srcOffset, y);
         return Float4OpsKernelsSegment.mod_api(dest, destOffset, src, srcOffset, y);
@@ -4869,13 +4919,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.mod_api(dest, destOffset, src, srcOffset, yX, yY, yZ, yW);
     }
 
-    /** {@link #mod(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mod(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mod(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float yX, float yY, float yZ, float yW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.mod_unsafe(dest, destOffset, src, srcOffset, yX, yY, yZ, yW);
         return Float4OpsKernelsByteBuffer.mod_api(dest, destOffset, src, srcOffset, yX, yY, yZ, yW);
     }
 
-    /** {@link #mod(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #mod(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment mod(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float yX, float yY, float yZ, float yW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.mod_unsafe(dest, destOffset, src, srcOffset, yX, yY, yZ, yW);
         return Float4OpsKernelsSegment.mod_api(dest, destOffset, src, srcOffset, yX, yY, yZ, yW);
@@ -4925,13 +4975,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.mod_api(dest, destOffset, src, srcOffset, y, yOffset);
     }
 
-    /** {@link #mod(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mod(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mod(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer y, int yOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && y.isDirect() && y.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.mod_unsafe(dest, destOffset, src, srcOffset, y, yOffset);
         return Float4OpsKernelsByteBuffer.mod_api(dest, destOffset, src, srcOffset, y, yOffset);
     }
 
-    /** {@link #mod(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #mod(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment mod(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment y, long yOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && y.isNative()) return Float4OpsKernelsSegment.mod_unsafe(dest, destOffset, src, srcOffset, y, yOffset);
         return Float4OpsKernelsSegment.mod_api(dest, destOffset, src, srcOffset, y, yOffset);
@@ -4972,13 +5022,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.nextDown_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #nextDown(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #nextDown(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer nextDown(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.nextDown_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.nextDown_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #nextDown(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #nextDown(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment nextDown(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.nextDown_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.nextDown_api(dest, destOffset, src, srcOffset);
@@ -5019,13 +5069,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.nextUp_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #nextUp(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #nextUp(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer nextUp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.nextUp_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.nextUp_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #nextUp(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #nextUp(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment nextUp(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.nextUp_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.nextUp_api(dest, destOffset, src, srcOffset);
@@ -5044,8 +5094,8 @@ public final class Float4Ops {
      * <p>
      * The squared length is formed at the component precision, so components whose squares overflow
      * or underflow that precision are out of domain: the result is the zero vector rather than a
-     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}).
+     * unit vector. Rescale such inputs before normalizing (the magnitude must lie roughly between
+     * 1e-19 and 1.8e19 for {@code float}, 1.5e-154 and 1.3e154 for {@code double}).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -5064,13 +5114,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.normalize_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normalize(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #normalize(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer normalize(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.normalize_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.normalize_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normalize(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #normalize(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment normalize(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.normalize(dest, destOffset, src, srcOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.normalize_unsafe(dest, destOffset, src, srcOffset);
@@ -5106,13 +5156,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.normalizeMul_api(dest, destOffset, src, srcOffset, length);
     }
 
-    /** {@link #normalizeMul(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #normalizeMul(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer normalizeMul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float length) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.normalizeMul_unsafe(dest, destOffset, src, srcOffset, length);
         return Float4OpsKernelsByteBuffer.normalizeMul_api(dest, destOffset, src, srcOffset, length);
     }
 
-    /** {@link #normalizeMul(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #normalizeMul(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment normalizeMul(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float length) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.normalizeMul(dest, destOffset, src, srcOffset, length);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.normalizeMul_unsafe(dest, destOffset, src, srcOffset, length);
@@ -5151,13 +5201,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.outerProduct_api(dest, destOffset, src, srcOffset, rowX, rowY, rowZ, rowW);
     }
 
-    /** {@link #outerProduct(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #outerProduct(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer outerProduct(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float rowX, float rowY, float rowZ, float rowW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.outerProduct_unsafe(dest, destOffset, src, srcOffset, rowX, rowY, rowZ, rowW);
         return Float4OpsKernelsByteBuffer.outerProduct_api(dest, destOffset, src, srcOffset, rowX, rowY, rowZ, rowW);
     }
 
-    /** {@link #outerProduct(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #outerProduct(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment outerProduct(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float rowX, float rowY, float rowZ, float rowW) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.outerProduct(dest, destOffset, src, srcOffset, rowX, rowY, rowZ, rowW);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.outerProduct_unsafe(dest, destOffset, src, srcOffset, rowX, rowY, rowZ, rowW);
@@ -5194,13 +5244,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.outerProduct_api(dest, destOffset, src, srcOffset, row, rowOffset);
     }
 
-    /** {@link #outerProduct(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #outerProduct(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer outerProduct(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer row, int rowOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && row.isDirect() && row.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.outerProduct_unsafe(dest, destOffset, src, srcOffset, row, rowOffset);
         return Float4OpsKernelsByteBuffer.outerProduct_api(dest, destOffset, src, srcOffset, row, rowOffset);
     }
 
-    /** {@link #outerProduct(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #outerProduct(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment outerProduct(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment row, long rowOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.outerProduct(dest, destOffset, src, srcOffset, row, rowOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && row.isNative()) return Float4OpsKernelsSegment.outerProduct_unsafe(dest, destOffset, src, srcOffset, row, rowOffset);
@@ -5243,13 +5293,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.pow_api(dest, destOffset, src, srcOffset, exponent);
     }
 
-    /** {@link #pow(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #pow(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer pow(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float exponent) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.pow_unsafe(dest, destOffset, src, srcOffset, exponent);
         return Float4OpsKernelsByteBuffer.pow_api(dest, destOffset, src, srcOffset, exponent);
     }
 
-    /** {@link #pow(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #pow(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment pow(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float exponent) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.pow_unsafe(dest, destOffset, src, srcOffset, exponent);
         return Float4OpsKernelsSegment.pow_api(dest, destOffset, src, srcOffset, exponent);
@@ -5298,13 +5348,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.pow_api(dest, destOffset, src, srcOffset, exponentX, exponentY, exponentZ, exponentW);
     }
 
-    /** {@link #pow(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #pow(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer pow(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float exponentX, float exponentY, float exponentZ, float exponentW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.pow_unsafe(dest, destOffset, src, srcOffset, exponentX, exponentY, exponentZ, exponentW);
         return Float4OpsKernelsByteBuffer.pow_api(dest, destOffset, src, srcOffset, exponentX, exponentY, exponentZ, exponentW);
     }
 
-    /** {@link #pow(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #pow(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment pow(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float exponentX, float exponentY, float exponentZ, float exponentW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.pow_unsafe(dest, destOffset, src, srcOffset, exponentX, exponentY, exponentZ, exponentW);
         return Float4OpsKernelsSegment.pow_api(dest, destOffset, src, srcOffset, exponentX, exponentY, exponentZ, exponentW);
@@ -5351,13 +5401,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.pow_api(dest, destOffset, src, srcOffset, exponent, exponentOffset);
     }
 
-    /** {@link #pow(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #pow(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer pow(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer exponent, int exponentOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && exponent.isDirect() && exponent.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.pow_unsafe(dest, destOffset, src, srcOffset, exponent, exponentOffset);
         return Float4OpsKernelsByteBuffer.pow_api(dest, destOffset, src, srcOffset, exponent, exponentOffset);
     }
 
-    /** {@link #pow(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #pow(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment pow(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment exponent, long exponentOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && exponent.isNative()) return Float4OpsKernelsSegment.pow_unsafe(dest, destOffset, src, srcOffset, exponent, exponentOffset);
         return Float4OpsKernelsSegment.pow_api(dest, destOffset, src, srcOffset, exponent, exponentOffset);
@@ -5394,13 +5444,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.project_api(dest, destOffset, src, srcOffset, ontoX, ontoY, ontoZ, ontoW);
     }
 
-    /** {@link #project(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #project(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer project(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float ontoX, float ontoY, float ontoZ, float ontoW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.project_unsafe(dest, destOffset, src, srcOffset, ontoX, ontoY, ontoZ, ontoW);
         return Float4OpsKernelsByteBuffer.project_api(dest, destOffset, src, srcOffset, ontoX, ontoY, ontoZ, ontoW);
     }
 
-    /** {@link #project(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #project(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment project(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float ontoX, float ontoY, float ontoZ, float ontoW) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.project(dest, destOffset, src, srcOffset, ontoX, ontoY, ontoZ, ontoW);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.project_unsafe(dest, destOffset, src, srcOffset, ontoX, ontoY, ontoZ, ontoW);
@@ -5436,13 +5486,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.project_api(dest, destOffset, src, srcOffset, onto, ontoOffset);
     }
 
-    /** {@link #project(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #project(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer project(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer onto, int ontoOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && onto.isDirect() && onto.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.project_unsafe(dest, destOffset, src, srcOffset, onto, ontoOffset);
         return Float4OpsKernelsByteBuffer.project_api(dest, destOffset, src, srcOffset, onto, ontoOffset);
     }
 
-    /** {@link #project(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #project(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment project(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment onto, long ontoOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.project(dest, destOffset, src, srcOffset, onto, ontoOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && onto.isNative()) return Float4OpsKernelsSegment.project_unsafe(dest, destOffset, src, srcOffset, onto, ontoOffset);
@@ -5493,13 +5543,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.projectOnPlane_api(dest, destOffset, src, srcOffset, normalX, normalY, normalZ, normalW);
     }
 
-    /** {@link #projectOnPlane(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #projectOnPlane(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer projectOnPlane(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float normalX, float normalY, float normalZ, float normalW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.projectOnPlane_unsafe(dest, destOffset, src, srcOffset, normalX, normalY, normalZ, normalW);
         return Float4OpsKernelsByteBuffer.projectOnPlane_api(dest, destOffset, src, srcOffset, normalX, normalY, normalZ, normalW);
     }
 
-    /** {@link #projectOnPlane(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #projectOnPlane(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment projectOnPlane(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float normalX, float normalY, float normalZ, float normalW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.projectOnPlane_unsafe(dest, destOffset, src, srcOffset, normalX, normalY, normalZ, normalW);
         return Float4OpsKernelsSegment.projectOnPlane_api(dest, destOffset, src, srcOffset, normalX, normalY, normalZ, normalW);
@@ -5535,13 +5585,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.projectOnPlane_api(dest, destOffset, src, srcOffset, normal, normalOffset);
     }
 
-    /** {@link #projectOnPlane(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #projectOnPlane(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer projectOnPlane(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer normal, int normalOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && normal.isDirect() && normal.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.projectOnPlane_unsafe(dest, destOffset, src, srcOffset, normal, normalOffset);
         return Float4OpsKernelsByteBuffer.projectOnPlane_api(dest, destOffset, src, srcOffset, normal, normalOffset);
     }
 
-    /** {@link #projectOnPlane(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #projectOnPlane(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment projectOnPlane(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment normal, long normalOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.projectOnPlane(dest, destOffset, src, srcOffset, normal, normalOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && normal.isNative()) return Float4OpsKernelsSegment.projectOnPlane_unsafe(dest, destOffset, src, srcOffset, normal, normalOffset);
@@ -5583,13 +5633,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.radians_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #radians(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #radians(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer radians(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.radians_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.radians_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #radians(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #radians(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment radians(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.radians_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.radians_api(dest, destOffset, src, srcOffset);
@@ -5638,13 +5688,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.reflect_api(dest, destOffset, src, srcOffset, normalX, normalY, normalZ, normalW);
     }
 
-    /** {@link #reflect(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #reflect(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer reflect(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float normalX, float normalY, float normalZ, float normalW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.reflect_unsafe(dest, destOffset, src, srcOffset, normalX, normalY, normalZ, normalW);
         return Float4OpsKernelsByteBuffer.reflect_api(dest, destOffset, src, srcOffset, normalX, normalY, normalZ, normalW);
     }
 
-    /** {@link #reflect(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #reflect(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment reflect(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float normalX, float normalY, float normalZ, float normalW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.reflect_unsafe(dest, destOffset, src, srcOffset, normalX, normalY, normalZ, normalW);
         return Float4OpsKernelsSegment.reflect_api(dest, destOffset, src, srcOffset, normalX, normalY, normalZ, normalW);
@@ -5679,13 +5729,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.reflect_api(dest, destOffset, src, srcOffset, normal, normalOffset);
     }
 
-    /** {@link #reflect(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #reflect(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer reflect(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer normal, int normalOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && normal.isDirect() && normal.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.reflect_unsafe(dest, destOffset, src, srcOffset, normal, normalOffset);
         return Float4OpsKernelsByteBuffer.reflect_api(dest, destOffset, src, srcOffset, normal, normalOffset);
     }
 
-    /** {@link #reflect(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #reflect(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment reflect(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment normal, long normalOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.reflect(dest, destOffset, src, srcOffset, normal, normalOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && normal.isNative()) return Float4OpsKernelsSegment.reflect_unsafe(dest, destOffset, src, srcOffset, normal, normalOffset);
@@ -5731,13 +5781,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.refract_api(dest, destOffset, src, srcOffset, normalX, normalY, normalZ, normalW, eta);
     }
 
-    /** {@link #refract(float[], int, float[], int, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #refract(float[], int, float[], int, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer refract(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float normalX, float normalY, float normalZ, float normalW, float eta) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.refract_unsafe(dest, destOffset, src, srcOffset, normalX, normalY, normalZ, normalW, eta);
         return Float4OpsKernelsByteBuffer.refract_api(dest, destOffset, src, srcOffset, normalX, normalY, normalZ, normalW, eta);
     }
 
-    /** {@link #refract(float[], int, float[], int, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #refract(float[], int, float[], int, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment refract(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float normalX, float normalY, float normalZ, float normalW, float eta) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.refract(dest, destOffset, src, srcOffset, normalX, normalY, normalZ, normalW, eta);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.refract_unsafe(dest, destOffset, src, srcOffset, normalX, normalY, normalZ, normalW, eta);
@@ -5777,13 +5827,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.refract_api(dest, destOffset, src, srcOffset, normal, normalOffset, eta);
     }
 
-    /** {@link #refract(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #refract(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer refract(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer normal, int normalOffset, float eta) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && normal.isDirect() && normal.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.refract_unsafe(dest, destOffset, src, srcOffset, normal, normalOffset, eta);
         return Float4OpsKernelsByteBuffer.refract_api(dest, destOffset, src, srcOffset, normal, normalOffset, eta);
     }
 
-    /** {@link #refract(float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #refract(float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment refract(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment normal, long normalOffset, float eta) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.refract(dest, destOffset, src, srcOffset, normal, normalOffset, eta);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && normal.isNative()) return Float4OpsKernelsSegment.refract_unsafe(dest, destOffset, src, srcOffset, normal, normalOffset, eta);
@@ -5825,13 +5875,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.round_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #round(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #round(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer round(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.round_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.round_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #round(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #round(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment round(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.round_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.round_api(dest, destOffset, src, srcOffset);
@@ -5871,13 +5921,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.sign_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #sign(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #sign(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer sign(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.sign_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.sign_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #sign(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #sign(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment sign(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.sign_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.sign_api(dest, destOffset, src, srcOffset);
@@ -5917,13 +5967,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.sin_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #sin(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #sin(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer sin(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.sin_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.sin_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #sin(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #sin(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment sin(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.sin_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.sin_api(dest, destOffset, src, srcOffset);
@@ -5964,13 +6014,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.sinh_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #sinh(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #sinh(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer sinh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.sinh_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.sinh_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #sinh(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #sinh(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment sinh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.sinh_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.sinh_api(dest, destOffset, src, srcOffset);
@@ -6020,13 +6070,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.smoothstep_api(dest, destOffset, src, srcOffset, edge0, edge1);
     }
 
-    /** {@link #smoothstep(float[], int, float[], int, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #smoothstep(float[], int, float[], int, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer smoothstep(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float edge0, float edge1) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.smoothstep_unsafe(dest, destOffset, src, srcOffset, edge0, edge1);
         return Float4OpsKernelsByteBuffer.smoothstep_api(dest, destOffset, src, srcOffset, edge0, edge1);
     }
 
-    /** {@link #smoothstep(float[], int, float[], int, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #smoothstep(float[], int, float[], int, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment smoothstep(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float edge0, float edge1) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.smoothstep_unsafe(dest, destOffset, src, srcOffset, edge0, edge1);
         return Float4OpsKernelsSegment.smoothstep_api(dest, destOffset, src, srcOffset, edge0, edge1);
@@ -6080,13 +6130,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.smoothstep_api(dest, destOffset, src, srcOffset, edge0X, edge0Y, edge0Z, edge0W, edge1X, edge1Y, edge1Z, edge1W);
     }
 
-    /** {@link #smoothstep(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #smoothstep(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer smoothstep(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float edge0X, float edge0Y, float edge0Z, float edge0W, float edge1X, float edge1Y, float edge1Z, float edge1W) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.smoothstep_unsafe(dest, destOffset, src, srcOffset, edge0X, edge0Y, edge0Z, edge0W, edge1X, edge1Y, edge1Z, edge1W);
         return Float4OpsKernelsByteBuffer.smoothstep_api(dest, destOffset, src, srcOffset, edge0X, edge0Y, edge0Z, edge0W, edge1X, edge1Y, edge1Z, edge1W);
     }
 
-    /** {@link #smoothstep(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #smoothstep(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment smoothstep(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float edge0X, float edge0Y, float edge0Z, float edge0W, float edge1X, float edge1Y, float edge1Z, float edge1W) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.smoothstep_unsafe(dest, destOffset, src, srcOffset, edge0X, edge0Y, edge0Z, edge0W, edge1X, edge1Y, edge1Z, edge1W);
         return Float4OpsKernelsSegment.smoothstep_api(dest, destOffset, src, srcOffset, edge0X, edge0Y, edge0Z, edge0W, edge1X, edge1Y, edge1Z, edge1W);
@@ -6144,13 +6194,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.smoothstep_api(dest, destOffset, src, srcOffset, edge0, edge0Offset, edge1, edge1Offset);
     }
 
-    /** {@link #smoothstep(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #smoothstep(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer smoothstep(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer edge0, int edge0Offset, java.nio.ByteBuffer edge1, int edge1Offset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && edge0.isDirect() && edge0.order() == java.nio.ByteOrder.nativeOrder() && edge1.isDirect() && edge1.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.smoothstep_unsafe(dest, destOffset, src, srcOffset, edge0, edge0Offset, edge1, edge1Offset);
         return Float4OpsKernelsByteBuffer.smoothstep_api(dest, destOffset, src, srcOffset, edge0, edge0Offset, edge1, edge1Offset);
     }
 
-    /** {@link #smoothstep(float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #smoothstep(float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment smoothstep(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment edge0, long edge0Offset, java.lang.foreign.MemorySegment edge1, long edge1Offset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && edge0.isNative() && edge1.isNative()) return Float4OpsKernelsSegment.smoothstep_unsafe(dest, destOffset, src, srcOffset, edge0, edge0Offset, edge1, edge1Offset);
         return Float4OpsKernelsSegment.smoothstep_api(dest, destOffset, src, srcOffset, edge0, edge0Offset, edge1, edge1Offset);
@@ -6184,13 +6234,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.sqrt_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #sqrt(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #sqrt(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer sqrt(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.sqrt_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.sqrt_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #sqrt(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #sqrt(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment sqrt(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.sqrt(dest, destOffset, src, srcOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.sqrt_unsafe(dest, destOffset, src, srcOffset);
@@ -6233,13 +6283,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.step_api(dest, destOffset, src, srcOffset, edge);
     }
 
-    /** {@link #step(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #step(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer step(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float edge) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.step_unsafe(dest, destOffset, src, srcOffset, edge);
         return Float4OpsKernelsByteBuffer.step_api(dest, destOffset, src, srcOffset, edge);
     }
 
-    /** {@link #step(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #step(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment step(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float edge) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.step_unsafe(dest, destOffset, src, srcOffset, edge);
         return Float4OpsKernelsSegment.step_api(dest, destOffset, src, srcOffset, edge);
@@ -6284,13 +6334,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.step_api(dest, destOffset, src, srcOffset, edgeX, edgeY, edgeZ, edgeW);
     }
 
-    /** {@link #step(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #step(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer step(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float edgeX, float edgeY, float edgeZ, float edgeW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.step_unsafe(dest, destOffset, src, srcOffset, edgeX, edgeY, edgeZ, edgeW);
         return Float4OpsKernelsByteBuffer.step_api(dest, destOffset, src, srcOffset, edgeX, edgeY, edgeZ, edgeW);
     }
 
-    /** {@link #step(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #step(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment step(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float edgeX, float edgeY, float edgeZ, float edgeW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.step_unsafe(dest, destOffset, src, srcOffset, edgeX, edgeY, edgeZ, edgeW);
         return Float4OpsKernelsSegment.step_api(dest, destOffset, src, srcOffset, edgeX, edgeY, edgeZ, edgeW);
@@ -6337,13 +6387,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.step_api(dest, destOffset, src, srcOffset, edge, edgeOffset);
     }
 
-    /** {@link #step(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #step(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer step(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer edge, int edgeOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && edge.isDirect() && edge.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.step_unsafe(dest, destOffset, src, srcOffset, edge, edgeOffset);
         return Float4OpsKernelsByteBuffer.step_api(dest, destOffset, src, srcOffset, edge, edgeOffset);
     }
 
-    /** {@link #step(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #step(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment step(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment edge, long edgeOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && edge.isNative()) return Float4OpsKernelsSegment.step_unsafe(dest, destOffset, src, srcOffset, edge, edgeOffset);
         return Float4OpsKernelsSegment.step_api(dest, destOffset, src, srcOffset, edge, edgeOffset);
@@ -6383,13 +6433,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.tan_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #tan(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #tan(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer tan(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.tan_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.tan_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #tan(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #tan(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment tan(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.tan_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.tan_api(dest, destOffset, src, srcOffset);
@@ -6430,13 +6480,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.tanh_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #tanh(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #tanh(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer tanh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.tanh_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.tanh_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #tanh(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #tanh(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment tanh(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.tanh_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.tanh_api(dest, destOffset, src, srcOffset);
@@ -6477,13 +6527,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.trunc_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #trunc(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #trunc(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer trunc(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.trunc_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.trunc_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #trunc(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #trunc(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment trunc(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.trunc_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.trunc_api(dest, destOffset, src, srcOffset);
@@ -6524,13 +6574,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.ulp_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #ulp(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #ulp(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer ulp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.ulp_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsByteBuffer.ulp_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #ulp(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #ulp(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment ulp(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.ulp_unsafe(dest, destOffset, src, srcOffset);
         return Float4OpsKernelsSegment.ulp_api(dest, destOffset, src, srcOffset);
@@ -6566,13 +6616,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.preMul_api(dest, destOffset, src, srcOffset, mat, matOffset);
     }
 
-    /** {@link #preMul(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preMul(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preMul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer mat, int matOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.preMul_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
         return Float4OpsKernelsByteBuffer.preMul_api(dest, destOffset, src, srcOffset, mat, matOffset);
     }
 
-    /** {@link #preMul(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #preMul(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment preMul(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment mat, long matOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.preMul(dest, destOffset, src, srcOffset, mat, matOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && mat.isNative()) return Float4OpsKernelsSegment.preMul_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
@@ -6626,13 +6676,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.rotate_api(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW);
     }
 
-    /** {@link #rotate(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotate(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float quatX, float quatY, float quatZ, float quatW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.rotate_unsafe(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW);
         return Float4OpsKernelsByteBuffer.rotate_api(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW);
     }
 
-    /** {@link #rotate(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #rotate(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment rotate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float quatX, float quatY, float quatZ, float quatW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.rotate_unsafe(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW);
         return Float4OpsKernelsSegment.rotate_api(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW);
@@ -6683,13 +6733,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.rotate_api(dest, destOffset, src, srcOffset, quat, quatOffset);
     }
 
-    /** {@link #rotate(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotate(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer quat, int quatOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && quat.isDirect() && quat.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.rotate_unsafe(dest, destOffset, src, srcOffset, quat, quatOffset);
         return Float4OpsKernelsByteBuffer.rotate_api(dest, destOffset, src, srcOffset, quat, quatOffset);
     }
 
-    /** {@link #rotate(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #rotate(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment rotate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment quat, long quatOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && quat.isNative()) return Float4OpsKernelsSegment.rotate_unsafe(dest, destOffset, src, srcOffset, quat, quatOffset);
         return Float4OpsKernelsSegment.rotate_api(dest, destOffset, src, srcOffset, quat, quatOffset);
@@ -6741,13 +6791,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.rotateAxis_api(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
     }
 
-    /** {@link #rotateAxis(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateAxis(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateAxis(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle, float axisX, float axisY, float axisZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.rotateAxis_unsafe(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
         return Float4OpsKernelsByteBuffer.rotateAxis_api(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
     }
 
-    /** {@link #rotateAxis(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #rotateAxis(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment rotateAxis(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle, float axisX, float axisY, float axisZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.rotateAxis_unsafe(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
         return Float4OpsKernelsSegment.rotateAxis_api(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
@@ -6798,13 +6848,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.rotateAxis_api(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
     }
 
-    /** {@link #rotateAxis(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateAxis(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateAxis(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer axis, int axisOffset, float angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && axis.isDirect() && axis.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.rotateAxis_unsafe(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
         return Float4OpsKernelsByteBuffer.rotateAxis_api(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
     }
 
-    /** {@link #rotateAxis(float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #rotateAxis(float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment rotateAxis(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment axis, long axisOffset, float angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && axis.isNative()) return Float4OpsKernelsSegment.rotateAxis_unsafe(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
         return Float4OpsKernelsSegment.rotateAxis_api(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
@@ -6856,13 +6906,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.rotateInverse_api(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW);
     }
 
-    /** {@link #rotateInverse(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateInverse(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateInverse(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float quatX, float quatY, float quatZ, float quatW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.rotateInverse_unsafe(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW);
         return Float4OpsKernelsByteBuffer.rotateInverse_api(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW);
     }
 
-    /** {@link #rotateInverse(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #rotateInverse(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment rotateInverse(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float quatX, float quatY, float quatZ, float quatW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.rotateInverse_unsafe(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW);
         return Float4OpsKernelsSegment.rotateInverse_api(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW);
@@ -6912,13 +6962,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.rotateInverse_api(dest, destOffset, src, srcOffset, quat, quatOffset);
     }
 
-    /** {@link #rotateInverse(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateInverse(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateInverse(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer quat, int quatOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && quat.isDirect() && quat.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.rotateInverse_unsafe(dest, destOffset, src, srcOffset, quat, quatOffset);
         return Float4OpsKernelsByteBuffer.rotateInverse_api(dest, destOffset, src, srcOffset, quat, quatOffset);
     }
 
-    /** {@link #rotateInverse(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #rotateInverse(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment rotateInverse(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment quat, long quatOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && quat.isNative()) return Float4OpsKernelsSegment.rotateInverse_unsafe(dest, destOffset, src, srcOffset, quat, quatOffset);
         return Float4OpsKernelsSegment.rotateInverse_api(dest, destOffset, src, srcOffset, quat, quatOffset);
@@ -6962,13 +7012,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.rotateX_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotateX(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateX(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.rotateX_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4OpsKernelsByteBuffer.rotateX_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotateX(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #rotateX(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment rotateX(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.rotateX_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4OpsKernelsSegment.rotateX_api(dest, destOffset, src, srcOffset, angle);
@@ -7012,13 +7062,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.rotateY_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotateY(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateY(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.rotateY_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4OpsKernelsByteBuffer.rotateY_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotateY(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #rotateY(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment rotateY(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.rotateY_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4OpsKernelsSegment.rotateY_api(dest, destOffset, src, srcOffset, angle);
@@ -7062,13 +7112,13 @@ public final class Float4Ops {
         return Float4OpsKernelsTypedBuffer.rotateZ_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotateZ(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateZ(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.rotateZ_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4OpsKernelsByteBuffer.rotateZ_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotateZ(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage. */
+    /** {@link #rotateZ(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment rotateZ(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4OpsKernelsSegment.rotateZ_unsafe(dest, destOffset, src, srcOffset, angle);
         return Float4OpsKernelsSegment.rotateZ_api(dest, destOffset, src, srcOffset, angle);
@@ -7084,12 +7134,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code add} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code add} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code add}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static float[] add(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.add(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = a[aOffset + _i] + b[bOffset + _i];
@@ -7099,11 +7150,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code add} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code add} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code add}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.FloatBuffer add(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer a, int aOffset, java.nio.FloatBuffer b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, a.get(aOffset + _i) + b.get(bOffset + _i));
@@ -7113,11 +7165,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code add} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code add} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code add}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.ByteBuffer add(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer a, int aOffset, java.nio.ByteBuffer b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.putFloat(destOffset + _i * 4, a.getFloat(aOffset + _i * 4) + b.getFloat(bOffset + _i * 4));
@@ -7127,12 +7180,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code add} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code add} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code add}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.lang.foreign.MemorySegment add(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment a, long aOffset, java.lang.foreign.MemorySegment b, long bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.add(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (long) _i * 4L, a.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, aOffset + (long) _i * 4L) + b.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, bOffset + (long) _i * 4L));
@@ -7142,12 +7196,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code sub} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code sub} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code sub}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static float[] sub(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.sub(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = a[aOffset + _i] - b[bOffset + _i];
@@ -7157,11 +7212,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code sub} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code sub} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code sub}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.FloatBuffer sub(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer a, int aOffset, java.nio.FloatBuffer b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, a.get(aOffset + _i) - b.get(bOffset + _i));
@@ -7171,11 +7227,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code sub} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code sub} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code sub}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.ByteBuffer sub(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer a, int aOffset, java.nio.ByteBuffer b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.putFloat(destOffset + _i * 4, a.getFloat(aOffset + _i * 4) - b.getFloat(bOffset + _i * 4));
@@ -7185,12 +7242,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code sub} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code sub} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code sub}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.lang.foreign.MemorySegment sub(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment a, long aOffset, java.lang.foreign.MemorySegment b, long bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.sub(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (long) _i * 4L, a.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, aOffset + (long) _i * 4L) - b.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, bOffset + (long) _i * 4L));
@@ -7200,12 +7258,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code mul} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code mul} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code mul}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static float[] mul(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.mul(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = a[aOffset + _i] * b[bOffset + _i];
@@ -7215,11 +7274,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code mul} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code mul} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code mul}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.FloatBuffer mul(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer a, int aOffset, java.nio.FloatBuffer b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, a.get(aOffset + _i) * b.get(bOffset + _i));
@@ -7229,11 +7289,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code mul} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code mul} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code mul}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.ByteBuffer mul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer a, int aOffset, java.nio.ByteBuffer b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.putFloat(destOffset + _i * 4, a.getFloat(aOffset + _i * 4) * b.getFloat(bOffset + _i * 4));
@@ -7243,12 +7304,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code mul} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code mul} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code mul}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.lang.foreign.MemorySegment mul(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment a, long aOffset, java.lang.foreign.MemorySegment b, long bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.mul(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (long) _i * 4L, a.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, aOffset + (long) _i * 4L) * b.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, bOffset + (long) _i * 4L));
@@ -7258,12 +7320,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code div} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code div} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code div}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static float[] div(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.div(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = a[aOffset + _i] / b[bOffset + _i];
@@ -7273,11 +7336,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code div} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code div} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code div}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.FloatBuffer div(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer a, int aOffset, java.nio.FloatBuffer b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, a.get(aOffset + _i) / b.get(bOffset + _i));
@@ -7287,11 +7351,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code div} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code div} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code div}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.ByteBuffer div(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer a, int aOffset, java.nio.ByteBuffer b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.putFloat(destOffset + _i * 4, a.getFloat(aOffset + _i * 4) / b.getFloat(bOffset + _i * 4));
@@ -7301,12 +7366,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code div} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code div} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code div}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.lang.foreign.MemorySegment div(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment a, long aOffset, java.lang.foreign.MemorySegment b, long bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.div(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (long) _i * 4L, a.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, aOffset + (long) _i * 4L) / b.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, bOffset + (long) _i * 4L));
@@ -7316,12 +7382,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code min} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code min} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code min}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static float[] min(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.min(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = Math.min(a[aOffset + _i], b[bOffset + _i]);
@@ -7331,11 +7398,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code min} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code min} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code min}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.FloatBuffer min(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer a, int aOffset, java.nio.FloatBuffer b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, Math.min(a.get(aOffset + _i), b.get(bOffset + _i)));
@@ -7345,11 +7413,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code min} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code min} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code min}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.ByteBuffer min(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer a, int aOffset, java.nio.ByteBuffer b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.putFloat(destOffset + _i * 4, Math.min(a.getFloat(aOffset + _i * 4), b.getFloat(bOffset + _i * 4)));
@@ -7359,12 +7428,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code min} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code min} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code min}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.lang.foreign.MemorySegment min(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment a, long aOffset, java.lang.foreign.MemorySegment b, long bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.min(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (long) _i * 4L, Math.min(a.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, aOffset + (long) _i * 4L), b.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, bOffset + (long) _i * 4L)));
@@ -7374,12 +7444,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code max} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code max} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code max}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static float[] max(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.max(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = Math.max(a[aOffset + _i], b[bOffset + _i]);
@@ -7389,11 +7460,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code max} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code max} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code max}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.FloatBuffer max(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer a, int aOffset, java.nio.FloatBuffer b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, Math.max(a.get(aOffset + _i), b.get(bOffset + _i)));
@@ -7403,11 +7475,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code max} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code max} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code max}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.ByteBuffer max(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer a, int aOffset, java.nio.ByteBuffer b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.putFloat(destOffset + _i * 4, Math.max(a.getFloat(aOffset + _i * 4), b.getFloat(bOffset + _i * 4)));
@@ -7417,12 +7490,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code max} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code max} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code max}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.lang.foreign.MemorySegment max(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment a, long aOffset, java.lang.foreign.MemorySegment b, long bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.max(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (long) _i * 4L, Math.max(a.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, aOffset + (long) _i * 4L), b.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, bOffset + (long) _i * 4L)));
@@ -7432,12 +7506,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code negate} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code negate} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code negate}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static float[] negate(float[] dest, int destOffset, float[] src, int srcOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.negate(dest, destOffset, src, srcOffset, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = -src[srcOffset + _i];
@@ -7447,11 +7522,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code negate} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code negate} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code negate}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.FloatBuffer negate(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, -src.get(srcOffset + _i));
@@ -7461,11 +7537,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code negate} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code negate} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code negate}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.ByteBuffer negate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.putFloat(destOffset + _i * 4, -src.getFloat(srcOffset + _i * 4));
@@ -7475,12 +7552,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code negate} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code negate} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code negate}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.lang.foreign.MemorySegment negate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.negate(dest, destOffset, src, srcOffset, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (long) _i * 4L, -src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + (long) _i * 4L));
@@ -7490,12 +7568,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code abs} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code abs} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code abs}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static float[] abs(float[] dest, int destOffset, float[] src, int srcOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.abs(dest, destOffset, src, srcOffset, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = Math.abs(src[srcOffset + _i]);
@@ -7505,11 +7584,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code abs} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code abs} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code abs}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.FloatBuffer abs(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, Math.abs(src.get(srcOffset + _i)));
@@ -7519,11 +7599,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code abs} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code abs} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code abs}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.ByteBuffer abs(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.putFloat(destOffset + _i * 4, Math.abs(src.getFloat(srcOffset + _i * 4)));
@@ -7533,12 +7614,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code abs} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code abs} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code abs}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.lang.foreign.MemorySegment abs(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.abs(dest, destOffset, src, srcOffset, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (long) _i * 4L, Math.abs(src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + (long) _i * 4L)));
@@ -7548,12 +7630,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code lerp} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code lerp} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code lerp}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static float[] lerp(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, float t, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.lerp(dest, destOffset, a, aOffset, b, bOffset, t, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = a[aOffset + _i] + t * (b[bOffset + _i] - a[aOffset + _i]);
@@ -7563,11 +7646,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code lerp} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code lerp} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code lerp}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.FloatBuffer lerp(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer a, int aOffset, java.nio.FloatBuffer b, int bOffset, float t, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, a.get(aOffset + _i) + t * (b.get(bOffset + _i) - a.get(aOffset + _i)));
@@ -7577,11 +7661,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code lerp} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code lerp} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code lerp}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.ByteBuffer lerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer a, int aOffset, java.nio.ByteBuffer b, int bOffset, float t, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.putFloat(destOffset + _i * 4, a.getFloat(aOffset + _i * 4) + t * (b.getFloat(bOffset + _i * 4) - a.getFloat(aOffset + _i * 4)));
@@ -7591,12 +7676,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code lerp} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code lerp} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code lerp}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.lang.foreign.MemorySegment lerp(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment a, long aOffset, java.lang.foreign.MemorySegment b, long bOffset, float t, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.lerp(dest, destOffset, a, aOffset, b, bOffset, t, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (long) _i * 4L, a.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, aOffset + (long) _i * 4L) + t * (b.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, bOffset + (long) _i * 4L) - a.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, aOffset + (long) _i * 4L)));
@@ -7606,12 +7692,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code scale} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code scale} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code scale}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static float[] scale(float[] dest, int destOffset, float[] src, int srcOffset, float s, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.scale(dest, destOffset, src, srcOffset, s, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = src[srcOffset + _i] * s;
@@ -7621,11 +7708,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code scale} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code scale} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code scale}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.FloatBuffer scale(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float s, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, src.get(srcOffset + _i) * s);
@@ -7635,11 +7723,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code scale} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code scale} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code scale}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.ByteBuffer scale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float s, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.putFloat(destOffset + _i * 4, src.getFloat(srcOffset + _i * 4) * s);
@@ -7649,12 +7738,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code scale} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code scale} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code scale}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.lang.foreign.MemorySegment scale(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float s, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.scale(dest, destOffset, src, srcOffset, s, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (long) _i * 4L, src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + (long) _i * 4L) * s);
@@ -7664,12 +7754,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code fma} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code fma} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code fma}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static float[] fma(float[] dest, int destOffset, float[] self, int selfOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.fma(dest, destOffset, self, selfOffset, a, aOffset, b, bOffset, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = Math.fma(self[selfOffset + _i], a[aOffset + _i], b[bOffset + _i]);
@@ -7679,11 +7770,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code fma} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code fma} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code fma}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.FloatBuffer fma(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer self, int selfOffset, java.nio.FloatBuffer a, int aOffset, java.nio.FloatBuffer b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, Math.fma(self.get(selfOffset + _i), a.get(aOffset + _i), b.get(bOffset + _i)));
@@ -7693,11 +7785,12 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code fma} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code fma} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code fma}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.nio.ByteBuffer fma(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer self, int selfOffset, java.nio.ByteBuffer a, int aOffset, java.nio.ByteBuffer b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.putFloat(destOffset + _i * 4, Math.fma(self.getFloat(selfOffset + _i * 4), a.getFloat(aOffset + _i * 4), b.getFloat(bOffset + _i * 4)));
@@ -7707,12 +7800,13 @@ public final class Float4Ops {
 
     /**
      * Bulk out-of-place component-wise {@code fma} over {@code count} consecutive Float4 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code fma} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code fma}
+     * overload of the same name, which processes exactly one Float4.
      */
     public static java.lang.foreign.MemorySegment fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment self, long selfOffset, java.lang.foreign.MemorySegment a, long aOffset, java.lang.foreign.MemorySegment b, long bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.fma(dest, destOffset, self, selfOffset, a, aOffset, b, bOffset, count);
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (long) _i * 4L, Math.fma(self.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, selfOffset + (long) _i * 4L), a.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, aOffset + (long) _i * 4L), b.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, bOffset + (long) _i * 4L)));
@@ -7738,9 +7832,12 @@ public final class Float4Ops {
     public static float[] copy(float[] dest, int destOffset, float[] src, int srcOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
+            java.util.Objects.checkFromIndexSize(srcOffset, (count > 536870911 ? -1 : count * 4), src.length);
+            java.util.Objects.checkFromIndexSize(destOffset, (count > 536870911 ? -1 : count * 4), dest.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.FLOAT_ARRAY_BASE + (long) srcOffset * 4L, dest, UnsafeCopy.FLOAT_ARRAY_BASE + (long) destOffset * 4L, (long) count * 16L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest[destOffset + _i] = src[srcOffset + _i];
@@ -7765,9 +7862,11 @@ public final class Float4Ops {
     public static float[] copy(float[] dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
         if (SimdSupport.VECTOR_API && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(destOffset, (count > 536870911 ? -1 : count * 4), dest.length);
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L, dest, UnsafeCopy.FLOAT_ARRAY_BASE + (long) destOffset * 4L, (long) count * 16L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest[destOffset + _i] = src.get(srcOffset + _i);
@@ -7778,6 +7877,7 @@ public final class Float4Ops {
      * Copy one Float4 (4 floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static float[] copy(float[] dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (SimdSupport.VECTOR_API && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset);
@@ -7788,13 +7888,16 @@ public final class Float4Ops {
      * Bulk-copy {@code count} consecutive Float4 values ({@code count * 4} floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static float[] copy(float[] dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
         if (SimdSupport.VECTOR_API && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(destOffset, (count > 536870911 ? -1 : count * 4), dest.length);
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, dest, UnsafeCopy.FLOAT_ARRAY_BASE + (long) destOffset * 4L, (long) count * 16L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest[destOffset + _i] = src.getFloat(srcOffset + _i * 4);
@@ -7805,6 +7908,7 @@ public final class Float4Ops {
      * Copy one Float4 (4 floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static float[] copy(float[] dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset);
@@ -7815,13 +7919,16 @@ public final class Float4Ops {
      * Bulk-copy {@code count} consecutive Float4 values ({@code count * 4} floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static float[] copy(float[] dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) {
+            java.util.Objects.checkFromIndexSize(destOffset, (count > 536870911 ? -1 : count * 4), dest.length);
             UnsafeOpsHolder.U.copyMemory(null, src.address() + srcOffset, dest, UnsafeCopy.FLOAT_ARRAY_BASE + (long) destOffset * 4L, (long) count * 16L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest[destOffset + _i] = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + (long) _i * 4L);
@@ -7844,6 +7951,7 @@ public final class Float4Ops {
      */
     public static float[] copy(float[] dest, int destOffset, long src, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
+            java.util.Objects.checkFromIndexSize(destOffset, (count > 536870911 ? -1 : count * 4), dest.length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest, UnsafeCopy.FLOAT_ARRAY_BASE + (long) destOffset * 4L, (long) count * 16L);
             return dest;
         }
@@ -7868,9 +7976,11 @@ public final class Float4Ops {
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, float[] src, int srcOffset, int count) {
         if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(srcOffset, (count > 536870911 ? -1 : count * 4), src.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.FLOAT_ARRAY_BASE + (long) srcOffset * 4L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L, (long) count * 16L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.put(destOffset + _i, src[srcOffset + _i]);
@@ -7898,6 +8008,7 @@ public final class Float4Ops {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L, (long) count * 16L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.put(destOffset + _i, src.get(srcOffset + _i));
@@ -7908,6 +8019,7 @@ public final class Float4Ops {
      * Copy one Float4 (4 floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset);
@@ -7918,6 +8030,7 @@ public final class Float4Ops {
      * Bulk-copy {@code count} consecutive Float4 values ({@code count * 4} floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
         if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
@@ -7925,6 +8038,7 @@ public final class Float4Ops {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L, (long) count * 16L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.put(destOffset + _i, src.getFloat(srcOffset + _i * 4));
@@ -7935,6 +8049,7 @@ public final class Float4Ops {
      * Copy one Float4 (4 floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset);
@@ -7945,6 +8060,7 @@ public final class Float4Ops {
      * Bulk-copy {@code count} consecutive Float4 values ({@code count * 4} floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
         if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
@@ -7952,6 +8068,7 @@ public final class Float4Ops {
             UnsafeOpsHolder.U.copyMemory(null, src.address() + srcOffset, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L, (long) count * 16L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.put(destOffset + _i, src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + (long) _i * 4L));
@@ -7984,6 +8101,7 @@ public final class Float4Ops {
      * Copy one Float4 (4 floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, float[] src, int srcOffset) {
         if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset);
@@ -7994,13 +8112,16 @@ public final class Float4Ops {
      * Bulk-copy {@code count} consecutive Float4 values ({@code count * 4} floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, float[] src, int srcOffset, int count) {
         if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(srcOffset, (count > 536870911 ? -1 : count * 4), src.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.FLOAT_ARRAY_BASE + (long) srcOffset * 4L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 16L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.putFloat(destOffset + _i * 4, src[srcOffset + _i]);
@@ -8011,6 +8132,7 @@ public final class Float4Ops {
      * Copy one Float4 (4 floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
         if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset);
@@ -8021,6 +8143,7 @@ public final class Float4Ops {
      * Bulk-copy {@code count} consecutive Float4 values ({@code count * 4} floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
         if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
@@ -8028,6 +8151,7 @@ public final class Float4Ops {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 16L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.putFloat(destOffset + _i * 4, src.get(srcOffset + _i));
@@ -8038,6 +8162,7 @@ public final class Float4Ops {
      * Copy one Float4 (4 floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset);
@@ -8048,6 +8173,7 @@ public final class Float4Ops {
      * Bulk-copy {@code count} consecutive Float4 values ({@code count * 4} floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
         if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
@@ -8055,6 +8181,7 @@ public final class Float4Ops {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 16L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.putFloat(destOffset + _i * 4, src.getFloat(srcOffset + _i * 4));
@@ -8065,6 +8192,7 @@ public final class Float4Ops {
      * Copy one Float4 (4 floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset);
@@ -8075,6 +8203,7 @@ public final class Float4Ops {
      * Bulk-copy {@code count} consecutive Float4 values ({@code count * 4} floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
         if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
@@ -8082,6 +8211,7 @@ public final class Float4Ops {
             UnsafeOpsHolder.U.copyMemory(null, src.address() + srcOffset, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 16L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.putFloat(destOffset + _i * 4, src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + (long) _i * 4L));
@@ -8092,6 +8222,7 @@ public final class Float4Ops {
      * Copy one Float4 (4 floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, long src) {
         return copy(dest, destOffset, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 16L), 0L);
@@ -8101,6 +8232,7 @@ public final class Float4Ops {
      * Bulk-copy {@code count} consecutive Float4 values ({@code count * 4} floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, long src, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -8114,6 +8246,7 @@ public final class Float4Ops {
      * Copy one Float4 (4 floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, float[] src, int srcOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset);
@@ -8124,13 +8257,16 @@ public final class Float4Ops {
      * Bulk-copy {@code count} consecutive Float4 values ({@code count * 4} floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, float[] src, int srcOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) {
+            java.util.Objects.checkFromIndexSize(srcOffset, (count > 536870911 ? -1 : count * 4), src.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.FLOAT_ARRAY_BASE + (long) srcOffset * 4L, null, dest.address() + destOffset, (long) count * 16L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (long) _i * 4L, src[srcOffset + _i]);
@@ -8141,6 +8277,7 @@ public final class Float4Ops {
      * Copy one Float4 (4 floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.nio.FloatBuffer src, int srcOffset) {
         if (SimdSupport.VECTOR_API && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset);
@@ -8151,6 +8288,7 @@ public final class Float4Ops {
      * Bulk-copy {@code count} consecutive Float4 values ({@code count * 4} floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
         if (SimdSupport.VECTOR_API && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
@@ -8158,6 +8296,7 @@ public final class Float4Ops {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L, null, dest.address() + destOffset, (long) count * 16L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (long) _i * 4L, src.get(srcOffset + _i));
@@ -8168,6 +8307,7 @@ public final class Float4Ops {
      * Copy one Float4 (4 floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (SimdSupport.VECTOR_API && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset);
@@ -8178,6 +8318,7 @@ public final class Float4Ops {
      * Bulk-copy {@code count} consecutive Float4 values ({@code count * 4} floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
         if (SimdSupport.VECTOR_API && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
@@ -8185,6 +8326,7 @@ public final class Float4Ops {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, dest.address() + destOffset, (long) count * 16L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (long) _i * 4L, src.getFloat(srcOffset + _i * 4));
@@ -8195,6 +8337,7 @@ public final class Float4Ops {
      * Copy one Float4 (4 floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset);
@@ -8205,6 +8348,7 @@ public final class Float4Ops {
      * Bulk-copy {@code count} consecutive Float4 values ({@code count * 4} floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
         if (SimdSupport.VECTOR_API) return Float4OpsSimd.copy(dest, destOffset, src, srcOffset, count);
@@ -8212,6 +8356,7 @@ public final class Float4Ops {
             UnsafeOpsHolder.U.copyMemory(null, src.address() + srcOffset, null, dest.address() + destOffset, (long) count * 16L);
             return dest;
         }
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         for (int _i = 0; _i < n; _i++)
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (long) _i * 4L, src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + (long) _i * 4L));
@@ -8222,6 +8367,7 @@ public final class Float4Ops {
      * Copy one Float4 (4 floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, long src) {
         return copy(dest, destOffset, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 16L), 0L);
@@ -8231,6 +8377,7 @@ public final class Float4Ops {
      * Bulk-copy {@code count} consecutive Float4 values ({@code count * 4} floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, long src, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) {
@@ -8257,6 +8404,7 @@ public final class Float4Ops {
      */
     public static long copy(long dest, float[] src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
+            java.util.Objects.checkFromIndexSize(srcOffset, (count > 536870911 ? -1 : count * 4), src.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.FLOAT_ARRAY_BASE + (long) srcOffset * 4L, null, dest, (long) count * 16L);
             return dest;
         }
@@ -8292,6 +8440,7 @@ public final class Float4Ops {
      * Copy one Float4 (4 floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static long copy(long dest, java.nio.ByteBuffer src, int srcOffset) {
         copy(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 16L), 0L, src, srcOffset);
@@ -8302,6 +8451,7 @@ public final class Float4Ops {
      * Bulk-copy {@code count} consecutive Float4 values ({@code count * 4} floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static long copy(long dest, java.nio.ByteBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -8316,6 +8466,7 @@ public final class Float4Ops {
      * Copy one Float4 (4 floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static long copy(long dest, java.lang.foreign.MemorySegment src, long srcOffset) {
         copy(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 16L), 0L, src, srcOffset);
@@ -8326,6 +8477,7 @@ public final class Float4Ops {
      * Bulk-copy {@code count} consecutive Float4 values ({@code count * 4} floats) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static long copy(long dest, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isNative()) {

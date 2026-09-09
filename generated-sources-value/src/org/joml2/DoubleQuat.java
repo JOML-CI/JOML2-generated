@@ -13,6 +13,14 @@ import java.nio.FloatBuffer;
  * All operations leave the receiver unchanged and return their result as a value. An operation
  * whose result equals one of its operands may return that operand instead of allocating a new
  * instance; as a value class, instances have no identity and may be flattened by the JVM.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns).
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  *
  * @param x the {@code x} component
  * @param y the {@code y} component
@@ -622,6 +630,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Interpolate between this quaternion and {@code target} using the interpolation factor
      * {@code alpha} and normalize the result, returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -636,6 +648,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * Interpolate between this quaternion and ({@code targetX}, {@code targetY}, {@code targetZ},
      * {@code targetW}) using the interpolation factor {@code alpha} and normalize the result,
      * returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -666,6 +682,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Interpolate along the shortest path between this quaternion and {@code target} using the
      * interpolation factor {@code alpha} and normalize the result, returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -680,6 +700,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * Interpolate along the shortest path between this quaternion and ({@code targetX},
      * {@code targetY}, {@code targetZ}, {@code targetW}) using the interpolation factor
      * {@code alpha} and normalize the result, returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -1046,17 +1070,23 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Compute the rotation angle in radians of this quaternion, within {@code [0, 2*PI]} (assumes
      * unit length).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @return the rotation angle in radians of this quaternion, within {@code [0, 2*PI]} (assumes
      *        unit length)
      */
     public double angle() {
-        return 2.0 * Math.acos(Math.min(1.0, Math.max(-1.0, this.w)));
+        return 2.0 * Math.atan2(Math.sqrt(Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y))), this.w);
     }
 
 
     /**
      * Compute the angle in radians between this quaternion and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other quaternion
      * @return the angle in radians between this quaternion and {@code other}
@@ -1069,6 +1099,9 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Compute the angle in radians between this quaternion and ({@code otherX}, {@code otherY},
      * {@code otherZ}, {@code otherW}).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param otherX the {@code x} component of the quaternion
      *        {@code (otherX, otherY, otherZ, otherW)}
@@ -1082,7 +1115,28 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      *        {@code otherZ}, {@code otherW})
      */
     public double angleTo(double otherX, double otherY, double otherZ, double otherW) {
-        return 2.0 * Math.acos(Math.min(1.0, Math.abs(Math.fma(otherW, this.w, Math.fma(otherZ, this.z, Math.fma(otherX, this.x, otherY * this.y))))));
+        double _t8 = -Math.fma(otherW, this.w, Math.fma(otherZ, this.z, Math.fma(otherX, this.x, otherY * this.y)));
+        double _t9, _t10, _t11, _t12;
+        if (_t8 > 0.0) {
+            _t9 = -otherW;
+            _t10 = -otherZ;
+            _t11 = -otherX;
+            _t12 = -otherY;
+        } else {
+            _t9 = otherW;
+            _t10 = otherZ;
+            _t11 = otherX;
+            _t12 = otherY;
+        }
+        double _t13 = this.w - _t9;
+        double _t14 = this.z - _t10;
+        double _t15 = this.x - _t11;
+        double _t16 = this.y - _t12;
+        double _t17 = this.w + _t9;
+        double _t18 = this.z + _t10;
+        double _t19 = this.x + _t11;
+        double _t20 = this.y + _t12;
+        return 4.0 * Math.atan2(Math.sqrt(Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))), Math.sqrt(Math.fma(_t17, _t17, Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)))));
     }
 
 
@@ -1249,6 +1303,9 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @return the resulting vector
      */
@@ -1261,9 +1318,9 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t12 = Math.fma(_t10, _t10, _t9 * _t9);
         double _t14 = Math.fma(_t8, _t8, _t12) * 1.0E-15;
         if (_t12 < _t14) {
-            return new Double3(Math.atan2(2.0 * Math.fma(this.x, this.w, _t1), Math.fma(-2.0, Math.fma(this.x, this.x, _t3), 1.0)), Math.asin(Math.min(1.0, Math.max(-1.0, _t8))), 0.0);
+            return new Double3(Math.atan2(2.0 * Math.fma(this.x, this.w, _t1), Math.fma(-2.0, Math.fma(this.x, this.x, _t3), 1.0)), Math.atan2(_t8, Math.sqrt(_t12)), 0.0);
         } else {
-            return new Double3(Math.atan2(_t9, _t10), Math.asin(Math.min(1.0, Math.max(-1.0, _t8))), Math.atan2(2.0 * Math.fma(this.z, this.w, -(this.x * this.y)), Math.fma(-2.0, Math.fma(this.y, this.y, _t3), 1.0)));
+            return new Double3(Math.atan2(_t9, _t10), Math.atan2(_t8, Math.sqrt(_t12)), Math.atan2(2.0 * Math.fma(this.z, this.w, -(this.x * this.y)), Math.fma(-2.0, Math.fma(this.y, this.y, _t3), 1.0)));
         }
     }
 
@@ -1274,6 +1331,9 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @return the resulting vector
      */
@@ -1286,9 +1346,9 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t11 = Math.fma(_t9, _t9, _t7 * _t7);
         double _t13 = Math.fma(_t8, _t8, _t11) * 1.0E-15;
         if (_t11 < _t13) {
-            return new Double3(Math.atan2(2.0 * Math.fma(this.x, this.w, -_t1), Math.fma(-2.0, Math.fma(this.x, this.x, this.y * this.y), 1.0)), 0.0, Math.asin(Math.min(1.0, Math.max(-1.0, _t8))));
+            return new Double3(Math.atan2(2.0 * Math.fma(this.x, this.w, -_t1), Math.fma(-2.0, Math.fma(this.x, this.x, this.y * this.y), 1.0)), 0.0, Math.atan2(_t8, Math.sqrt(_t11)));
         } else {
-            return new Double3(Math.atan2(_t7, _t9), Math.atan2(2.0 * Math.fma(this.x, this.z, this.y * this.w), Math.fma(-2.0, Math.fma(this.y, this.y, _t0), 1.0)), Math.asin(Math.min(1.0, Math.max(-1.0, _t8))));
+            return new Double3(Math.atan2(_t7, _t9), Math.atan2(2.0 * Math.fma(this.x, this.z, this.y * this.w), Math.fma(-2.0, Math.fma(this.y, this.y, _t0), 1.0)), Math.atan2(_t8, Math.sqrt(_t11)));
         }
     }
 
@@ -1299,6 +1359,9 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @return the resulting vector
      */
@@ -1310,9 +1373,9 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t12 = Math.fma(_t10, _t10, _t8 * _t8);
         double _t14 = Math.fma(_t9, _t9, _t12) * 1.0E-15;
         if (_t12 < _t14) {
-            return new Double3(Math.asin(Math.min(1.0, Math.max(-1.0, _t9))), Math.atan2(2.0 * Math.fma(this.y, this.w, -(this.x * this.z)), Math.fma(-2.0, Math.fma(this.y, this.y, _t3), 1.0)), 0.0);
+            return new Double3(Math.atan2(_t9, Math.sqrt(_t12)), Math.atan2(2.0 * Math.fma(this.y, this.w, -(this.x * this.z)), Math.fma(-2.0, Math.fma(this.y, this.y, _t3), 1.0)), 0.0);
         } else {
-            return new Double3(Math.asin(Math.min(1.0, Math.max(-1.0, _t9))), Math.atan2(_t8, _t10), Math.atan2(2.0 * Math.fma(this.x, this.y, this.z * this.w), Math.fma(-2.0, Math.fma(this.x, this.x, _t3), 1.0)));
+            return new Double3(Math.atan2(_t9, Math.sqrt(_t12)), Math.atan2(_t8, _t10), Math.atan2(2.0 * Math.fma(this.x, this.y, this.z * this.w), Math.fma(-2.0, Math.fma(this.x, this.x, _t3), 1.0)));
         }
     }
 
@@ -1323,6 +1386,9 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @return the resulting vector
      */
@@ -1334,9 +1400,9 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t11 = Math.fma(_t9, _t9, _t8 * _t8);
         double _t13 = Math.fma(_t7, _t7, _t11) * 1.0E-15;
         if (_t11 < _t13) {
-            return new Double3(0.0, Math.atan2(2.0 * Math.fma(this.x, this.z, this.y * this.w), Math.fma(-2.0, Math.fma(this.x, this.x, this.y * this.y), 1.0)), Math.asin(Math.min(1.0, Math.max(-1.0, _t7))));
+            return new Double3(0.0, Math.atan2(2.0 * Math.fma(this.x, this.z, this.y * this.w), Math.fma(-2.0, Math.fma(this.x, this.x, this.y * this.y), 1.0)), Math.atan2(_t7, Math.sqrt(_t11)));
         } else {
-            return new Double3(Math.atan2(2.0 * Math.fma(this.x, this.w, -(this.y * this.z)), Math.fma(-2.0, Math.fma(this.x, this.x, _t0), 1.0)), Math.atan2(_t8, _t9), Math.asin(Math.min(1.0, Math.max(-1.0, _t7))));
+            return new Double3(Math.atan2(2.0 * Math.fma(this.x, this.w, -(this.y * this.z)), Math.fma(-2.0, Math.fma(this.x, this.x, _t0), 1.0)), Math.atan2(_t8, _t9), Math.atan2(_t7, Math.sqrt(_t11)));
         }
     }
 
@@ -1347,6 +1413,9 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @return the resulting vector
      */
@@ -1358,9 +1427,9 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t11 = Math.fma(_t9, _t9, _t8 * _t8);
         double _t13 = Math.fma(_t7, _t7, _t11) * 1.0E-15;
         if (_t11 < _t13) {
-            return new Double3(Math.asin(Math.min(1.0, Math.max(-1.0, _t7))), 0.0, Math.atan2(2.0 * Math.fma(this.x, this.y, this.z * this.w), Math.fma(-2.0, Math.fma(this.y, this.y, _t1), 1.0)));
+            return new Double3(Math.atan2(_t7, Math.sqrt(_t11)), 0.0, Math.atan2(2.0 * Math.fma(this.x, this.y, this.z * this.w), Math.fma(-2.0, Math.fma(this.y, this.y, _t1), 1.0)));
         } else {
-            return new Double3(Math.asin(Math.min(1.0, Math.max(-1.0, _t7))), Math.atan2(2.0 * Math.fma(this.y, this.w, -(this.x * this.z)), Math.fma(-2.0, Math.fma(this.x, this.x, this.y * this.y), 1.0)), Math.atan2(_t8, _t9));
+            return new Double3(Math.atan2(_t7, Math.sqrt(_t11)), Math.atan2(2.0 * Math.fma(this.y, this.w, -(this.x * this.z)), Math.fma(-2.0, Math.fma(this.x, this.x, this.y * this.y), 1.0)), Math.atan2(_t8, _t9));
         }
     }
 
@@ -1371,6 +1440,9 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @return the resulting vector
      */
@@ -1382,9 +1454,9 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t11 = Math.fma(_t9, _t9, _t7 * _t7);
         double _t13 = Math.fma(_t8, _t8, _t11) * 1.0E-15;
         if (_t11 < _t13) {
-            return new Double3(0.0, Math.asin(Math.min(1.0, Math.max(-1.0, _t8))), Math.atan2(2.0 * Math.fma(this.z, this.w, -(this.x * this.y)), Math.fma(-2.0, Math.fma(this.x, this.x, _t0), 1.0)));
+            return new Double3(0.0, Math.atan2(_t8, Math.sqrt(_t11)), Math.atan2(2.0 * Math.fma(this.z, this.w, -(this.x * this.y)), Math.fma(-2.0, Math.fma(this.x, this.x, _t0), 1.0)));
         } else {
-            return new Double3(Math.atan2(2.0 * Math.fma(this.x, this.w, this.y * this.z), Math.fma(-2.0, Math.fma(this.x, this.x, this.y * this.y), 1.0)), Math.asin(Math.min(1.0, Math.max(-1.0, _t8))), Math.atan2(_t7, _t9));
+            return new Double3(Math.atan2(2.0 * Math.fma(this.x, this.w, this.y * this.z), Math.fma(-2.0, Math.fma(this.x, this.x, this.y * this.y), 1.0)), Math.atan2(_t8, Math.sqrt(_t11)), Math.atan2(_t7, _t9));
         }
     }
 
@@ -1441,6 +1513,11 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Obtain the direction of {@code -X} before the transformation represented by this quaternion
      * is applied, returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @return the resulting vector
      */
@@ -1461,6 +1538,11 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Obtain the direction of {@code -Y} before the transformation represented by this quaternion
      * is applied, returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @return the resulting vector
      */
@@ -1481,6 +1563,11 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Obtain the direction of {@code -Z} before the transformation represented by this quaternion
      * is applied, returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @return the resulting vector
      */
@@ -1585,6 +1672,11 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Obtain the direction of {@code +X} before the transformation represented by this quaternion
      * is applied, returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @return the resulting vector
      */
@@ -1605,6 +1697,11 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Obtain the direction of {@code +Y} before the transformation represented by this quaternion
      * is applied, returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @return the resulting vector
      */
@@ -1625,6 +1722,11 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Obtain the direction of {@code +Z} before the transformation represented by this quaternion
      * is applied, returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @return the resulting vector
      */
@@ -1644,6 +1746,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
 
     /**
      * Compute the length of this quaternion.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @return the length of this quaternion
      */
@@ -1664,17 +1770,19 @@ public value record DoubleQuat(double x, double y, double z, double w) {
 
     /**
      * Compute the natural logarithm of this quaternion, returning the result as a value.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code double}
+     * resolution down to 0 - small rotations are not truncated.
      *
      * @return the resulting quaternion
      */
     public DoubleQuat log() {
         double _t2 = Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y));
-        double _t4 = Math.fma(this.w, this.w, _t2);
-        double _t8 = Math.acos(this.w * (1.0 / Math.sqrt(_t4))) * (1.0 / Math.sqrt(_t2));
+        double _t6 = Math.atan2(Math.sqrt(_t2), this.w) * (1.0 / Math.sqrt(_t2));
         if (_t2 > 0.0) {
-            return new DoubleQuat(this.x * _t8, this.y * _t8, this.z * _t8, Math.log(Math.sqrt(_t4)));
+            return new DoubleQuat(this.x * _t6, this.y * _t6, this.z * _t6, Math.log(Math.sqrt(Math.fma(this.w, this.w, _t2))));
         } else {
-            return new DoubleQuat(0.0, 0.0, 0.0, Math.log(Math.sqrt(_t4)));
+            return new DoubleQuat(0.0, 0.0, 0.0, Math.log(Math.sqrt(Math.fma(this.w, this.w, _t2))));
         }
     }
 
@@ -1682,6 +1790,11 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Obtain the direction of {@code -X} after the transformation represented by this quaternion is
      * applied, returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @return the resulting vector
      */
@@ -1702,6 +1815,11 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Obtain the direction of {@code -Y} after the transformation represented by this quaternion is
      * applied, returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @return the resulting vector
      */
@@ -1722,6 +1840,11 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Obtain the direction of {@code -Z} after the transformation represented by this quaternion is
      * applied, returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @return the resulting vector
      */
@@ -1741,6 +1864,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
 
     /**
      * Normalize this quaternion to unit length, returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @return the resulting quaternion
      */
@@ -1842,6 +1969,11 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Obtain the direction of {@code +X} after the transformation represented by this quaternion is
      * applied, returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @return the resulting vector
      */
@@ -1862,6 +1994,11 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Obtain the direction of {@code +Y} after the transformation represented by this quaternion is
      * applied, returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @return the resulting vector
      */
@@ -1882,6 +2019,11 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Obtain the direction of {@code +Z} after the transformation represented by this quaternion is
      * applied, returning the result as a value.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @return the resulting vector
      */
@@ -1902,32 +2044,34 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Raise this quaternion to the power of {@code t}, i.e. compute {@code exp(t * log(this))},
      * returning the result as a value.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code double}
+     * resolution down to 0 - small rotations are not truncated.
      *
      * @param t the exponent
      * @return the resulting quaternion
      */
     public DoubleQuat pow(double t) {
         double _t2 = Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y));
-        double _t4 = Math.fma(this.w, this.w, _t2);
-        double _t11 = Math.exp(t * Math.log(Math.sqrt(_t4)));
-        double _t12 = Math.acos(this.w * (1.0 / Math.sqrt(_t4))) * (1.0 / Math.sqrt(_t2));
-        double _t19, _t20, _t21;
+        double _t10 = Math.exp(t * Math.log(Math.sqrt(Math.fma(this.w, this.w, _t2))));
+        double _t11 = Math.atan2(Math.sqrt(_t2), this.w) * (1.0 / Math.sqrt(_t2));
+        double _t18, _t19, _t20;
         if (_t2 > 0.0) {
-            _t19 = t * this.z * _t12;
-            _t20 = t * this.x * _t12;
-            _t21 = t * this.y * _t12;
+            _t18 = t * this.z * _t11;
+            _t19 = t * this.x * _t11;
+            _t20 = t * this.y * _t11;
         } else {
+            _t18 = t * 0.0;
             _t19 = t * 0.0;
             _t20 = t * 0.0;
-            _t21 = t * 0.0;
         }
-        double _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
-        double _t25 = Math.sqrt(_t24);
-        double _t29 = Math.sin(_t25) * _t11 * (1.0 / Math.sqrt(_t24));
-        if (_t24 > 0.0) {
-            return new DoubleQuat(_t20 * _t29, _t21 * _t29, _t19 * _t29, Math.cos(_t25) * _t11);
+        double _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
+        double _t24 = Math.sqrt(_t23);
+        double _t28 = Math.sin(_t24) * _t10 * (1.0 / Math.sqrt(_t23));
+        if (_t23 > 0.0) {
+            return new DoubleQuat(_t19 * _t28, _t20 * _t28, _t18 * _t28, Math.cos(_t24) * _t10);
         } else {
-            return new DoubleQuat(0.0, 0.0, 0.0, Math.cos(_t25) * _t11);
+            return new DoubleQuat(0.0, 0.0, 0.0, Math.cos(_t24) * _t10);
         }
     }
 
@@ -1979,6 +2123,9 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Rotate this quaternion towards {@code target}, by at most the given maximum angle, returning
      * the result as a value.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code double}
+     * resolution down to 0 - small rotations are not truncated.
      *
      * @param target the target rotation
      * @param step the maximum rotation angle in radians
@@ -1989,23 +2136,25 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     }
 
     /** Private tail of {@code rotateTowards}; reached only through it. */
-    private DoubleQuat rotateTowards_s287f86c9_tail(double _t12, double _t25, double _t23, double _t15, double _t12_inv, double _t21, double _t20, double _t16, double _t17, double _t18) {
-        double _t46, _t47, _t48, _t49;
+    private DoubleQuat rotateTowards_s287f86c9_tail(double _t11, double _t39, double _t40, double _t12, double _t13, double _t12_inv, double _t14, double _t15, double _t16) {
+        double _t42 = Math.sin(_t11 * _t39);
+        double _t44 = Math.sin(_t40 * _t11);
+        double _t65, _t66, _t67, _t68;
         if (_t12 > 0.0) {
-            _t46 = Math.fma(this.w, _t25, _t23 * _t15) * _t12_inv;
-            _t47 = Math.fma(this.z, _t25, _t23 * _t16) * _t12_inv;
-            _t48 = Math.fma(this.x, _t25, _t23 * _t17) * _t12_inv;
-            _t49 = Math.fma(this.y, _t25, _t23 * _t18) * _t12_inv;
+            _t65 = Math.fma(this.w, _t44, _t42 * _t13) * _t12_inv;
+            _t66 = Math.fma(this.z, _t44, _t42 * _t14) * _t12_inv;
+            _t67 = Math.fma(this.x, _t44, _t42 * _t15) * _t12_inv;
+            _t68 = Math.fma(this.y, _t44, _t42 * _t16) * _t12_inv;
         } else {
-            _t46 = Math.fma(this.w, _t21, _t15 * _t20);
-            _t47 = Math.fma(this.z, _t21, _t16 * _t20);
-            _t48 = Math.fma(this.x, _t21, _t17 * _t20);
-            _t49 = Math.fma(this.y, _t21, _t18 * _t20);
+            _t65 = Math.fma(this.w, _t40, _t13 * _t39);
+            _t66 = Math.fma(this.z, _t40, _t14 * _t39);
+            _t67 = Math.fma(this.x, _t40, _t15 * _t39);
+            _t68 = Math.fma(this.y, _t40, _t16 * _t39);
         }
-        double _t53 = Math.fma(_t46, _t46, Math.fma(_t47, _t47, Math.fma(_t48, _t48, _t49 * _t49)));
-        double _t54 = (1.0 / Math.sqrt(_t53));
-        if (_t53 > 0.0) {
-            return new DoubleQuat(_t54 * _t48, _t54 * _t49, _t54 * _t47, _t54 * _t46);
+        double _t72 = Math.fma(_t65, _t65, Math.fma(_t66, _t66, Math.fma(_t67, _t67, _t68 * _t68)));
+        double _t73 = (1.0 / Math.sqrt(_t72));
+        if (_t72 > 0.0) {
+            return new DoubleQuat(_t73 * _t67, _t73 * _t68, _t73 * _t66, _t73 * _t65);
         } else {
             return DoubleQuat.ZERO;
         }
@@ -2015,6 +2164,9 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Rotate this quaternion towards ({@code targetX}, {@code targetY}, {@code targetZ},
      * {@code targetW}), by at most the given maximum angle, returning the result as a value.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code double}
+     * resolution down to 0 - small rotations are not truncated.
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -2033,24 +2185,30 @@ public value record DoubleQuat(double x, double y, double z, double w) {
         double _t11 = Math.acos(Math.min(1.0, Math.abs(_t7)));
         double _t12 = Math.sin(_t11);
         double _t12_inv = 1.0 / _t12;
-        double _t13 = 2.0 * _t11;
-        double _t15, _t16, _t17, _t18;
+        double _t13, _t14, _t15, _t16;
         if (_t9 > 0.0) {
-            _t15 = -targetW;
-            _t16 = -targetZ;
-            _t17 = -targetX;
-            _t18 = -targetY;
+            _t13 = -targetW;
+            _t14 = -targetZ;
+            _t15 = -targetX;
+            _t16 = -targetY;
         } else {
-            _t15 = targetW;
-            _t16 = targetZ;
-            _t17 = targetX;
-            _t18 = targetY;
+            _t13 = targetW;
+            _t14 = targetZ;
+            _t15 = targetX;
+            _t16 = targetY;
         }
-        double _t20 = _t13 > 0.0 ? Math.min(1.0, step / _t13) : 0.0;
-        double _t21 = 1.0 - _t20;
-        double _t23 = Math.sin(_t11 * _t20);
-        double _t25 = Math.sin(_t21 * _t11);
-        return rotateTowards_s287f86c9_tail(_t12, _t25, _t23, _t15, _t12_inv, _t21, _t20, _t16, _t17, _t18);
+        double _t17 = this.w - _t13;
+        double _t18 = this.z - _t14;
+        double _t19 = this.x - _t15;
+        double _t20 = this.y - _t16;
+        double _t21 = this.w + _t13;
+        double _t22 = this.z + _t14;
+        double _t23 = this.x + _t15;
+        double _t24 = this.y + _t16;
+        double _t36 = 4.0 * Math.atan2(Math.sqrt(Math.fma(_t17, _t17, Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)))), Math.sqrt(Math.fma(_t21, _t21, Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24)))));
+        double _t39 = _t36 > 0.0 ? Math.min(1.0, step / _t36) : 0.0;
+        double _t40 = 1.0 - _t39;
+        return rotateTowards_s287f86c9_tail(_t11, _t39, _t40, _t12, _t13, _t12_inv, _t14, _t15, _t16);
     }
 
 
@@ -2290,6 +2448,11 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Create the rotation that rotates {@code fromDir} onto {@code toDir} (both must be unit
      * vectors; for opposite vectors an arbitrary perpendicular rotation axis is chosen).
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDir the vector
      * @param toDir the vector
@@ -2304,6 +2467,11 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * Create the rotation that rotates ({@code fromDirX}, {@code fromDirY}, {@code fromDirZ}) onto
      * ({@code toDirX}, {@code toDirY}, {@code toDirZ}) (both must be unit vectors; for opposite
      * vectors an arbitrary perpendicular rotation axis is chosen).
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDirX the {@code x} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
      * @param fromDirY the {@code y} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
@@ -2314,27 +2482,33 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * @return the resulting quaternion
      */
     public static DoubleQuat makeRotationTo(double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ) {
-        double _t4 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
-        double _t6, _t8, _t9;
-        if (_t4 > 0.0) {
-            _t6 = fromDirY;
-            _t8 = 0.0;
-            _t9 = -fromDirX;
+        double _t3 = fromDirZ + toDirZ;
+        double _t4 = fromDirX + toDirX;
+        double _t5 = fromDirY + toDirY;
+        double _t13 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        double _t15 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        double _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
+        double _t17 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
+        double _t18, _t19, _t20;
+        if (_t13 > 0.0) {
+            _t18 = fromDirY;
+            _t19 = 0.0;
+            _t20 = -fromDirX;
         } else {
-            _t6 = 0.0;
-            _t8 = -fromDirY;
-            _t9 = fromDirZ;
+            _t18 = 0.0;
+            _t19 = -fromDirY;
+            _t20 = fromDirZ;
         }
-        double _t7 = Math.fma(fromDirX, toDirX, Math.fma(fromDirY, toDirY, Math.fma(fromDirZ, toDirZ, 1.0)));
-        double _t10 = 2.0 * _t7;
-        double _t11 = (1.0 / Math.sqrt(_t10));
-        double _t14 = Math.fma(_t8, _t8, Math.fma(_t6, _t6, _t9 * _t9));
-        double _t15 = (1.0 / Math.sqrt(_t14));
-        if (_t7 > 1.0E-6) {
-            return new DoubleQuat(Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY)) * _t11, Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ)) * _t11, Math.fma(fromDirX, toDirY, -(fromDirY * toDirX)) * _t11, 0.5 * Math.sqrt(_t10));
+        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        double _t23 = 0.5 * _t22;
+        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        double _t30 = (1.0 / Math.sqrt(_t29));
+        double _t33 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
+        if (_t23 > 1.0E-6) {
+            return new DoubleQuat(_t15 * _t33, _t16 * _t33, _t17 * _t33, 0.5 * _t22 * _t33);
         } else {
-            if (_t14 > 0.0) {
-                return new DoubleQuat(_t15 * _t6, _t15 * _t9, _t15 * _t8, 0.0);
+            if (_t29 > 0.0) {
+                return new DoubleQuat(_t30 * _t18, _t30 * _t20, _t30 * _t19, 0.0);
             } else {
                 return DoubleQuat.ZERO;
             }
@@ -2656,6 +2830,11 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDir the vector
      * @param toDir the vector
@@ -2666,24 +2845,27 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     }
 
     /** Private tail of {@code rotateTo}; reached only through it. */
-    private DoubleQuat rotateTo_s6ca4b61d_tail(double _t16, double fromDirY, double toDirZ, double fromDirZ, double toDirY, double _t21, double _t29, double _t30, double _t15, double fromDirX, double toDirX, double _t17, double _t18, double _t27) {
-        double _t37, _t38, _t39;
-        if (_t16 > 1.0E-6) {
-            _t37 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY)) * _t21;
-            _t38 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX)) * _t21;
-            _t39 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ)) * _t21;
+    private DoubleQuat rotateTo_s6ca4b61d_tail(double _t23, double _t22, double _t36, double _t15, double _t29, double _t30, double _t18, double _t17, double _t19, double _t16, double _t20) {
+        double _t42, _t46, _t47, _t48;
+        if (_t23 > 1.0E-6) {
+            _t42 = 0.5 * _t22 * _t36;
+            _t46 = _t15 * _t36;
+            _t47 = _t17 * _t36;
+            _t48 = _t16 * _t36;
         } else {
             if (_t29 > 0.0) {
-                _t37 = _t30 * _t15;
-                _t38 = _t30 * _t17;
-                _t39 = _t30 * _t18;
+                _t42 = 0.0;
+                _t46 = _t30 * _t18;
+                _t47 = _t30 * _t19;
+                _t48 = _t30 * _t20;
             } else {
-                _t37 = 0.0;
-                _t38 = 0.0;
-                _t39 = 0.0;
+                _t42 = 0.0;
+                _t46 = 0.0;
+                _t47 = 0.0;
+                _t48 = 0.0;
             }
         }
-        return new DoubleQuat(Math.fma(this.x, _t27, this.w * _t37) + Math.fma(this.y, _t38, -(this.z * _t39)), Math.fma(this.y, _t27, this.z * _t37) + Math.fma(this.w, _t39, -(this.x * _t38)), Math.fma(this.x, _t39, this.w * _t38) + Math.fma(this.z, _t27, -(this.y * _t37)), Math.fma(-this.z, _t38, Math.fma(-this.y, _t39, Math.fma(this.w, _t27, -(this.x * _t37)))));
+        return new DoubleQuat(Math.fma(this.x, _t42, this.w * _t46) + Math.fma(this.y, _t47, -(this.z * _t48)), Math.fma(this.y, _t42, this.z * _t46) + Math.fma(this.w, _t48, -(this.x * _t47)), Math.fma(this.x, _t48, this.w * _t47) + Math.fma(this.z, _t42, -(this.y * _t46)), Math.fma(-this.z, _t47, Math.fma(-this.y, _t48, Math.fma(this.w, _t42, -(this.x * _t46)))));
     }
 
 
@@ -2696,6 +2878,11 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDirX the {@code x} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
      * @param fromDirY the {@code y} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
@@ -2706,24 +2893,29 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * @return the resulting quaternion
      */
     public DoubleQuat rotateTo(double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ) {
-        double _t10 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
-        double _t15, _t17, _t18;
-        if (_t10 > 0.0) {
-            _t15 = fromDirY;
-            _t17 = 0.0;
-            _t18 = -fromDirX;
+        double _t3 = fromDirZ + toDirZ;
+        double _t4 = fromDirX + toDirX;
+        double _t5 = fromDirY + toDirY;
+        double _t13 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        double _t15 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        double _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
+        double _t17 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
+        double _t18, _t19, _t20;
+        if (_t13 > 0.0) {
+            _t18 = fromDirY;
+            _t19 = 0.0;
+            _t20 = -fromDirX;
         } else {
-            _t15 = 0.0;
-            _t17 = -fromDirY;
-            _t18 = fromDirZ;
+            _t18 = 0.0;
+            _t19 = -fromDirY;
+            _t20 = fromDirZ;
         }
-        double _t16 = Math.fma(fromDirX, toDirX, Math.fma(fromDirY, toDirY, Math.fma(fromDirZ, toDirZ, 1.0)));
-        double _t19 = 2.0 * _t16;
-        double _t21 = (1.0 / Math.sqrt(_t19));
-        double _t27 = _t16 > 1.0E-6 ? 0.5 * Math.sqrt(_t19) : 0.0;
-        double _t29 = Math.fma(_t17, _t17, Math.fma(_t15, _t15, _t18 * _t18));
+        double _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        double _t23 = 0.5 * _t22;
+        double _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
         double _t30 = (1.0 / Math.sqrt(_t29));
-        return rotateTo_s6ca4b61d_tail(_t16, fromDirY, toDirZ, fromDirZ, toDirY, _t21, _t29, _t30, _t15, fromDirX, toDirX, _t17, _t18, _t27);
+        double _t36 = (1.0 / Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0 * 2.0))))));
+        return rotateTo_s6ca4b61d_tail(_t23, _t22, _t36, _t15, _t29, _t30, _t18, _t17, _t19, _t16, _t20);
     }
 
 
@@ -3098,6 +3290,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Compare this value component-wise against {@code other}, allowing a difference of at
      * most {@code epsilon} per component.
+     * <p>
+     * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+     * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and
+     * a NaN component never compares equal to anything.
      *
      * @param other the value to compare against
      * @param epsilon the maximum allowed difference per component
@@ -3176,6 +3372,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3190,6 +3390,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -3205,6 +3409,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3222,6 +3430,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleQuat} holding the loaded elements
@@ -3236,6 +3448,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -3251,6 +3467,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleQuat} holding the loaded elements
@@ -3268,6 +3488,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3282,6 +3506,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -3297,6 +3525,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3314,6 +3546,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleQuat} holding the loaded elements
@@ -3328,6 +3564,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -3343,6 +3583,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleQuat} holding the loaded elements
@@ -3378,6 +3622,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
 
     /**
      * Store the elements into the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -3386,6 +3634,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
 
     /**
      * Store the elements into the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -3397,6 +3649,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
 
     /**
      * Load the elements from the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code DoubleQuat} holding the loaded elements
@@ -3405,6 +3661,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
 
     /**
      * Load the elements from the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -3469,6 +3729,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3483,6 +3747,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -3498,6 +3766,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -3515,6 +3787,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleQuat} holding the loaded elements
@@ -3529,6 +3805,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -3544,6 +3824,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleQuat} holding the loaded elements
@@ -3561,6 +3845,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3575,6 +3863,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -3590,6 +3882,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -3607,6 +3903,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleQuat} holding the loaded elements
@@ -3621,6 +3921,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -3636,6 +3940,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleQuat} holding the loaded elements
@@ -3671,6 +3979,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
 
     /**
      * Store the elements into the given memory segment, converting each element to {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -3680,6 +3992,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Store the elements into the given memory segment, converting each element to {@code float},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -3691,6 +4007,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
 
     /**
      * Load the elements from the given memory segment, converting each element from {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code DoubleQuat} holding the loaded elements
@@ -3700,6 +4020,10 @@ public value record DoubleQuat(double x, double y, double z, double w) {
     /**
      * Load the elements from the given memory segment, converting each element from {@code float},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

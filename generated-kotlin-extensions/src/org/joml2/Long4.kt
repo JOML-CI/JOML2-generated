@@ -46,7 +46,7 @@ inline fun Long4.copy(x: Long = x(), y: Long = y(), z: Long = z(), w: Long = w()
 inline fun Long4.toLongArray(): LongArray = store(LongArray(4))
 /** A Long4 read from this array in storage order, starting at index 0. */
 inline fun LongArray.toLong4(): Long4 = Long4.load(this)
-/** The component of this Long4 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. */
+/** The component of this Long4 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT with 3 indices (`v[a, b, ...] = x`) resolves to the Java 4-argument value factory `Long4.set(...)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Long4.get(index: Int): Long = when (index) {
     0 -> x()
     1 -> y()

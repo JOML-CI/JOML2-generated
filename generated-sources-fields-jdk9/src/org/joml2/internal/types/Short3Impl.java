@@ -2006,8 +2006,9 @@ public final class Short3Impl implements Short3 {
      * Compute the number of one-bits of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2025,8 +2026,9 @@ public final class Short3Impl implements Short3 {
      * Compute the number of one-bits of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2044,8 +2046,9 @@ public final class Short3Impl implements Short3 {
      * Compute the number of one-bits of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2152,8 +2155,9 @@ public final class Short3Impl implements Short3 {
      * Compute the number of leading zero bits of each component of this vector and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2171,8 +2175,9 @@ public final class Short3Impl implements Short3 {
      * Compute the number of leading zero bits of each component of this vector and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2190,8 +2195,9 @@ public final class Short3Impl implements Short3 {
      * Compute the number of leading zero bits of each component of this vector and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2225,8 +2231,9 @@ public final class Short3Impl implements Short3 {
      * Compute the number of trailing zero bits of each component of this vector and store the
      * result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2244,8 +2251,9 @@ public final class Short3Impl implements Short3 {
      * Compute the number of trailing zero bits of each component of this vector and store the
      * result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2263,8 +2271,9 @@ public final class Short3Impl implements Short3 {
      * Compute the number of trailing zero bits of each component of this vector and store the
      * result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2444,8 +2453,9 @@ public final class Short3Impl implements Short3 {
      * Compute the bit-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2463,8 +2473,9 @@ public final class Short3Impl implements Short3 {
      * Compute the bit-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2482,8 +2493,9 @@ public final class Short3Impl implements Short3 {
      * Compute the bit-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2517,8 +2529,9 @@ public final class Short3Impl implements Short3 {
      * Compute the byte-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2536,8 +2549,9 @@ public final class Short3Impl implements Short3 {
      * Compute the byte-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2555,8 +2569,9 @@ public final class Short3Impl implements Short3 {
      * Compute the byte-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2591,8 +2606,9 @@ public final class Short3Impl implements Short3 {
      * Rotate the bits of each component of this vector left by {@code distance} positions and store
      * the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -2611,8 +2627,9 @@ public final class Short3Impl implements Short3 {
      * Rotate the bits of each component of this vector left by {@code distance} positions and store
      * the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -2631,8 +2648,9 @@ public final class Short3Impl implements Short3 {
      * Rotate the bits of each component of this vector left by {@code distance} positions and store
      * the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -2668,8 +2686,9 @@ public final class Short3Impl implements Short3 {
      * Rotate the bits of each component of this vector right by {@code distance} positions and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -2688,8 +2707,9 @@ public final class Short3Impl implements Short3 {
      * Rotate the bits of each component of this vector right by {@code distance} positions and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -2708,8 +2728,9 @@ public final class Short3Impl implements Short3 {
      * Rotate the bits of each component of this vector right by {@code distance} positions and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code short} lane of 16 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -3643,9 +3664,6 @@ public final class Short3Impl implements Short3 {
 
     /**
      * Compute the largest component of this vector.
-     * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
      *
      * @return the largest component of this vector
      */
@@ -3656,9 +3674,6 @@ public final class Short3Impl implements Short3 {
 
     /**
      * Compute the smallest component of this vector.
-     * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
      *
      * @return the smallest component of this vector
      */
@@ -3753,8 +3768,8 @@ public final class Short3Impl implements Short3 {
      */
     public Short3 cross(short otherX, short otherY, short otherZ, @Mutated Short3 dest) {
         Short3Impl d = (Short3Impl) dest;
-        short _buf0 = (short) (otherZ * this.y - otherY * this.z);
-        short _buf1 = (short) (otherX * this.z - otherZ * this.x);
+        int _buf0 = otherZ * this.y - otherY * this.z;
+        int _buf1 = otherX * this.z - otherZ * this.x;
         d.z = (short) (otherY * this.x - otherX * this.y);
         d.x = (short) (_buf0);
         d.y = (short) (_buf1);
@@ -3777,8 +3792,8 @@ public final class Short3Impl implements Short3 {
      */
     public Int3 cross(short otherX, short otherY, short otherZ, @Mutated Int3 dest) {
         Int3Impl d = (Int3Impl) dest;
-        short _buf0 = (short) (otherZ * this.y - otherY * this.z);
-        short _buf1 = (short) (otherX * this.z - otherZ * this.x);
+        int _buf0 = otherZ * this.y - otherY * this.z;
+        int _buf1 = otherX * this.z - otherZ * this.x;
         d.z = otherY * this.x - otherX * this.y;
         d.x = _buf0;
         d.y = _buf1;
@@ -3801,8 +3816,8 @@ public final class Short3Impl implements Short3 {
      */
     public Long3 cross(short otherX, short otherY, short otherZ, @Mutated Long3 dest) {
         Long3Impl d = (Long3Impl) dest;
-        short _buf0 = (short) (otherZ * this.y - otherY * this.z);
-        short _buf1 = (short) (otherX * this.z - otherZ * this.x);
+        int _buf0 = otherZ * this.y - otherY * this.z;
+        int _buf1 = otherX * this.z - otherZ * this.x;
         d.z = otherY * this.x - otherX * this.y;
         d.x = _buf0;
         d.y = _buf1;
@@ -3825,8 +3840,8 @@ public final class Short3Impl implements Short3 {
      */
     public Double3 cross(short otherX, short otherY, short otherZ, @Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        short _buf0 = (short) (otherZ * this.y - otherY * this.z);
-        short _buf1 = (short) (otherX * this.z - otherZ * this.x);
+        int _buf0 = otherZ * this.y - otherY * this.z;
+        int _buf1 = otherX * this.z - otherZ * this.x;
         d.z = otherY * this.x - otherX * this.y;
         d.x = _buf0;
         d.y = _buf1;
@@ -4457,8 +4472,9 @@ public final class Short3Impl implements Short3 {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -4473,8 +4489,9 @@ public final class Short3Impl implements Short3 {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -4489,8 +4506,9 @@ public final class Short3Impl implements Short3 {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -4524,8 +4542,9 @@ public final class Short3Impl implements Short3 {
      * Add ({@code otherX}, {@code otherY}, {@code otherZ}) to this vector, clamping to the value
      * range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -4546,8 +4565,9 @@ public final class Short3Impl implements Short3 {
      * Add ({@code otherX}, {@code otherY}, {@code otherZ}) to this vector, clamping to the value
      * range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -4568,8 +4588,9 @@ public final class Short3Impl implements Short3 {
      * Add ({@code otherX}, {@code otherY}, {@code otherZ}) to this vector, clamping to the value
      * range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -4603,8 +4624,9 @@ public final class Short3Impl implements Short3 {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -4619,8 +4641,9 @@ public final class Short3Impl implements Short3 {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -4635,8 +4658,9 @@ public final class Short3Impl implements Short3 {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -4670,8 +4694,9 @@ public final class Short3Impl implements Short3 {
      * Multiply this vector by ({@code otherX}, {@code otherY}, {@code otherZ}), clamping to the
      * value range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -4692,8 +4717,9 @@ public final class Short3Impl implements Short3 {
      * Multiply this vector by ({@code otherX}, {@code otherY}, {@code otherZ}), clamping to the
      * value range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -4714,8 +4740,9 @@ public final class Short3Impl implements Short3 {
      * Multiply this vector by ({@code otherX}, {@code otherY}, {@code otherZ}), clamping to the
      * value range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -4752,8 +4779,9 @@ public final class Short3Impl implements Short3 {
      * Negate this vector, clamping to the value range instead of overflowing and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param dest will hold the result
      * @return dest
@@ -4771,8 +4799,9 @@ public final class Short3Impl implements Short3 {
      * Negate this vector, clamping to the value range instead of overflowing and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param dest will hold the result
      * @return dest
@@ -4790,8 +4819,9 @@ public final class Short3Impl implements Short3 {
      * Negate this vector, clamping to the value range instead of overflowing and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param dest will hold the result
      * @return dest
@@ -4822,8 +4852,9 @@ public final class Short3Impl implements Short3 {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing
      * and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -4838,8 +4869,9 @@ public final class Short3Impl implements Short3 {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing
      * and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -4854,8 +4886,9 @@ public final class Short3Impl implements Short3 {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing
      * and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -4889,8 +4922,9 @@ public final class Short3Impl implements Short3 {
      * Subtract ({@code otherX}, {@code otherY}, {@code otherZ}) from this vector, clamping to the
      * value range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -4911,8 +4945,9 @@ public final class Short3Impl implements Short3 {
      * Subtract ({@code otherX}, {@code otherY}, {@code otherZ}) from this vector, clamping to the
      * value range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -4933,8 +4968,9 @@ public final class Short3Impl implements Short3 {
      * Subtract ({@code otherX}, {@code otherY}, {@code otherZ}) from this vector, clamping to the
      * value range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code short} range ({@code Short.MIN_VALUE} to
+     * {@code Short.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}

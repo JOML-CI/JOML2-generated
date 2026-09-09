@@ -15,6 +15,13 @@ import org.joml2.internal.types.Double3x3Impl;
  * <p>This assumes the default in-place mode: with {@code joml.returnNew} enabled,
  * the inherited self-form operations return fresh instances instead of mutating
  * this stack top, which defeats the push/pop workflow.</p>
+ *
+ * <p>Only the top matrix takes part in {@code equals}, {@code hashCode} and
+ * {@code set}: two stacks compare equal when their current matrices do, whatever
+ * their depths and saved snapshots (a stack is also equal to a plain
+ * {@link Double3x3} holding the same elements), {@code hashCode} hashes the top
+ * alone, and {@code set(otherStack)} copies only the other stack's top matrix - its
+ * saved snapshots and stack pointer are not copied.</p>
  */
 public class Double3x3Stack extends Double3x3Impl {
 

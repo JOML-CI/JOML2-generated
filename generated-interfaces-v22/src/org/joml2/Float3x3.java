@@ -14,20 +14,32 @@ import java.lang.foreign.MemorySegment;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN; the cached structural property bits are ignored, so two matrix objects holding the same
+ * elements are equal whatever either one has determined about itself. {@code hashCode} is
+ * consistent with it (derived from the same bit patterns). Only instances of this library's
+ * implementation compare equal to each other; the {@code equals} of a matrix never returns
+ * {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface Float3x3 extends Float3x3R {
 
     /**
      * Compute the cofactor matrix of this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 cofactor() { return cofactor(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
     /**
      * Invert this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 invert() { return invert(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -36,7 +48,7 @@ public interface Float3x3 extends Float3x3R {
      * {@code (this * other)^-1}.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 invertProduct(Float3x3R other) { return invertProduct(other, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -53,21 +65,21 @@ public interface Float3x3 extends Float3x3R {
      * @param m20 the element in row 2, column 0 of the matrix
      * @param m21 the element in row 2, column 1 of the matrix
      * @param m22 the element in row 2, column 2 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 invertProduct(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22) { return invertProduct(m00, m01, m02, m10, m11, m12, m20, m21, m22, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
     /**
      * Compute the normal matrix of this matrix, i.e. the transpose of its inverse.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 normal() { return normal(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
     /**
      * Transpose this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 transpose() { return transpose(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -75,7 +87,7 @@ public interface Float3x3 extends Float3x3R {
      * Add {@code other} to this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 add(Float3x3R other) { return add(other, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -92,14 +104,14 @@ public interface Float3x3 extends Float3x3R {
      * @param m20 the element in row 2, column 0 of the matrix
      * @param m21 the element in row 2, column 1 of the matrix
      * @param m22 the element in row 2, column 2 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 add(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22) { return add(m00, m01, m02, m10, m11, m12, m20, m21, m22, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
     /**
      * Negate this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 negate() { return negate(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -107,7 +119,7 @@ public interface Float3x3 extends Float3x3R {
      * Subtract {@code other} from this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 sub(Float3x3R other) { return sub(other, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -124,7 +136,7 @@ public interface Float3x3 extends Float3x3R {
      * @param m20 the element in row 2, column 0 of the matrix
      * @param m21 the element in row 2, column 1 of the matrix
      * @param m22 the element in row 2, column 2 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 sub(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22) { return sub(m00, m01, m02, m10, m11, m12, m20, m21, m22, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -194,7 +206,7 @@ public interface Float3x3 extends Float3x3R {
      * translation instead of composing a translation onto the existing transformation.
      *
      * @param t the translation offsets
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 withTranslation(Float2R t) { return withTranslation(t, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -207,7 +219,7 @@ public interface Float3x3 extends Float3x3R {
      *
      * @param x the {@code x} component of the translation offsets {@code (x, y)}
      * @param y the {@code y} component of the translation offsets {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 withTranslation(float x, float y) { return withTranslation(x, y, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -297,7 +309,7 @@ public interface Float3x3 extends Float3x3R {
      *
      * @param other the other matrix
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 lerp(Float3x3R other, float t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -316,7 +328,7 @@ public interface Float3x3 extends Float3x3R {
      * @param m21 the element in row 2, column 1 of the matrix
      * @param m22 the element in row 2, column 2 of the matrix
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 lerp(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22, float t) { return lerp(m00, m01, m02, m10, m11, m12, m20, m21, m22, t, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -328,7 +340,7 @@ public interface Float3x3 extends Float3x3R {
      * {@code M * R * v}, the transformation of the operand will be applied first.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 mul(Float3x3R right) { return mul(right, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -349,7 +361,7 @@ public interface Float3x3 extends Float3x3R {
      * @param m20 the element in row 2, column 0 of the matrix
      * @param m21 the element in row 2, column 1 of the matrix
      * @param m22 the element in row 2, column 2 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 mul(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22) { return mul(m00, m01, m02, m10, m11, m12, m20, m21, m22, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -364,7 +376,7 @@ public interface Float3x3 extends Float3x3R {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 mul(Float2x2R right) { return mul(right, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -379,7 +391,7 @@ public interface Float3x3 extends Float3x3R {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 mul(Float2x3R right) { return mul(right, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -391,7 +403,7 @@ public interface Float3x3 extends Float3x3R {
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preMul(Float3x3R other) { return preMul(other, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -412,7 +424,7 @@ public interface Float3x3 extends Float3x3R {
      * @param m20 the element in row 2, column 0 of the matrix
      * @param m21 the element in row 2, column 1 of the matrix
      * @param m22 the element in row 2, column 2 of the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preMul(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22) { return preMul(m00, m01, m02, m10, m11, m12, m20, m21, m22, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -427,7 +439,7 @@ public interface Float3x3 extends Float3x3R {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preMul(Float2x2R other) { return preMul(other, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -442,7 +454,7 @@ public interface Float3x3 extends Float3x3R {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preMul(Float2x3R other) { return preMul(other, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -478,7 +490,7 @@ public interface Float3x3 extends Float3x3R {
      *
      * @param dir the direction
      * @param up the direction of "up"
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 lookAlong(Float3R dir, Float3R up) { return lookAlong(dir, up, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -496,7 +508,7 @@ public interface Float3x3 extends Float3x3R {
      * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
      * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
      * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) { return lookAlong(dirX, dirY, dirZ, upX, upY, upZ, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -772,7 +784,7 @@ public interface Float3x3 extends Float3x3R {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preRotate(float angle) { return preRotate(angle, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -782,10 +794,14 @@ public interface Float3x3 extends Float3x3R {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preRotateAround(float angle, Float2R pivot) { return preRotateAround(angle, pivot, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -796,11 +812,15 @@ public interface Float3x3 extends Float3x3R {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preRotateAround(float angle, float x, float y) { return preRotateAround(angle, x, y, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -814,7 +834,7 @@ public interface Float3x3 extends Float3x3R {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preRotateAxis(float angle, Float3R axis) { return preRotateAxis(angle, axis, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -833,7 +853,7 @@ public interface Float3x3 extends Float3x3R {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preRotateAxis(float angle, float x, float y, float z) { return preRotateAxis(angle, x, y, z, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -845,7 +865,7 @@ public interface Float3x3 extends Float3x3R {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preRotateX(float angle) { return preRotateX(angle, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -857,7 +877,7 @@ public interface Float3x3 extends Float3x3R {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preRotateY(float angle) { return preRotateY(angle, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -869,7 +889,7 @@ public interface Float3x3 extends Float3x3R {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preRotateZ(float angle) { return preRotateZ(angle, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -881,7 +901,7 @@ public interface Float3x3 extends Float3x3R {
      * {@code S * M * p}, the scaling will be applied last.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preScale(Float2R v) { return preScale(v, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -894,7 +914,7 @@ public interface Float3x3 extends Float3x3R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preScale(float x, float y) { return preScale(x, y, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -907,7 +927,7 @@ public interface Float3x3 extends Float3x3R {
      * {@code S * M * v}, the scaling will be applied last.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preScale(float s) { return preScale(s, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -922,7 +942,7 @@ public interface Float3x3 extends Float3x3R {
      *
      * @param s the uniform scale factor
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preScaleAround(float s, Float2R pivot) { return preScaleAround(s, pivot, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -938,7 +958,7 @@ public interface Float3x3 extends Float3x3R {
      * @param s the uniform scale factor
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preScaleAround(float s, float x, float y) { return preScaleAround(s, x, y, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -951,7 +971,7 @@ public interface Float3x3 extends Float3x3R {
      *
      * @param s the scale factors
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preScaleAround(Float2R s, Float2R pivot) { return preScaleAround(s, pivot, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -967,7 +987,7 @@ public interface Float3x3 extends Float3x3R {
      * @param sY the {@code y} component of the vector {@code (sX, sY)}
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preScaleAround(float sX, float sY, float pivotX, float pivotY) { return preScaleAround(sX, sY, pivotX, pivotY, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -979,7 +999,7 @@ public interface Float3x3 extends Float3x3R {
      * {@code T * M * p}, the translation will be applied last.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preTranslate(Float2R v) { return preTranslate(v, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -992,7 +1012,7 @@ public interface Float3x3 extends Float3x3R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 preTranslate(float x, float y) { return preTranslate(x, y, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1004,7 +1024,7 @@ public interface Float3x3 extends Float3x3R {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotate(float angle) { return rotate(angle, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1014,10 +1034,14 @@ public interface Float3x3 extends Float3x3R {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateAround(float angle, Float2R pivot) { return rotateAround(angle, pivot, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1027,11 +1051,15 @@ public interface Float3x3 extends Float3x3R {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateAround(float angle, float x, float y) { return rotateAround(angle, x, y, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1044,7 +1072,7 @@ public interface Float3x3 extends Float3x3R {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateAxis(float angle, Float3R axis) { return rotateAxis(angle, axis, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1063,7 +1091,7 @@ public interface Float3x3 extends Float3x3R {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateAxis(float angle, float x, float y, float z) { return rotateAxis(angle, x, y, z, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1075,7 +1103,7 @@ public interface Float3x3 extends Float3x3R {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateX(float angle) { return rotateX(angle, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1086,7 +1114,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateX180() { return rotateX180(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1097,7 +1125,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateX270() { return rotateX270(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1108,7 +1136,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateX90() { return rotateX90(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1124,7 +1152,7 @@ public interface Float3x3 extends Float3x3R {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateXYZ(float angleX, float angleY, float angleZ) { return rotateXYZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1140,7 +1168,7 @@ public interface Float3x3 extends Float3x3R {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateXZY(float angleX, float angleY, float angleZ) { return rotateXZY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1151,7 +1179,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateXn180() { return rotateXn180(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1162,7 +1190,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateXn270() { return rotateXn270(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1173,7 +1201,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateXn90() { return rotateXn90(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1185,7 +1213,7 @@ public interface Float3x3 extends Float3x3R {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateY(float angle) { return rotateY(angle, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1196,7 +1224,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateY180() { return rotateY180(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1207,7 +1235,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateY270() { return rotateY270(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1218,7 +1246,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateY90() { return rotateY90(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1234,7 +1262,7 @@ public interface Float3x3 extends Float3x3R {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateYXZ(float angleX, float angleY, float angleZ) { return rotateYXZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1250,7 +1278,7 @@ public interface Float3x3 extends Float3x3R {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateYZX(float angleX, float angleY, float angleZ) { return rotateYZX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1261,7 +1289,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateYn180() { return rotateYn180(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1272,7 +1300,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateYn270() { return rotateYn270(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1283,7 +1311,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateYn90() { return rotateYn90(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1295,7 +1323,7 @@ public interface Float3x3 extends Float3x3R {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateZ(float angle) { return rotateZ(angle, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1306,7 +1334,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateZ180() { return rotateZ180(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1317,7 +1345,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateZ270() { return rotateZ270(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1328,7 +1356,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateZ90() { return rotateZ90(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1344,7 +1372,7 @@ public interface Float3x3 extends Float3x3R {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateZXY(float angleX, float angleY, float angleZ) { return rotateZXY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1360,7 +1388,7 @@ public interface Float3x3 extends Float3x3R {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateZYX(float angleX, float angleY, float angleZ) { return rotateZYX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1371,7 +1399,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateZn180() { return rotateZn180(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1382,7 +1410,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateZn270() { return rotateZn270(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1393,7 +1421,7 @@ public interface Float3x3 extends Float3x3R {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 rotateZn90() { return rotateZn90(Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1405,7 +1433,7 @@ public interface Float3x3 extends Float3x3R {
      * {@code M * S * p}, the scaling will be applied first.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 scale(Float2R v) { return scale(v, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1418,7 +1446,7 @@ public interface Float3x3 extends Float3x3R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 scale(float x, float y) { return scale(x, y, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1431,7 +1459,7 @@ public interface Float3x3 extends Float3x3R {
      * {@code M * S * v}, the scaling will be applied first.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 scale(float s) { return scale(s, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1446,7 +1474,7 @@ public interface Float3x3 extends Float3x3R {
      *
      * @param s the uniform scale factor
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 scaleAround(float s, Float2R pivot) { return scaleAround(s, pivot, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1462,7 +1490,7 @@ public interface Float3x3 extends Float3x3R {
      * @param s the uniform scale factor
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 scaleAround(float s, float x, float y) { return scaleAround(s, x, y, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1475,7 +1503,7 @@ public interface Float3x3 extends Float3x3R {
      *
      * @param s the scale factors
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 scaleAround(Float2R s, Float2R pivot) { return scaleAround(s, pivot, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1491,7 +1519,7 @@ public interface Float3x3 extends Float3x3R {
      * @param sY the {@code y} component of the vector {@code (sX, sY)}
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 scaleAround(float sX, float sY, float pivotX, float pivotY) { return scaleAround(sX, sY, pivotX, pivotY, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1503,7 +1531,7 @@ public interface Float3x3 extends Float3x3R {
      * {@code M * T * p}, the translation will be applied first.
      *
      * @param v the translation offsets
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 translate(Float2R v) { return translate(v, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1516,7 +1544,7 @@ public interface Float3x3 extends Float3x3R {
      *
      * @param x the {@code x} component of the translation offsets {@code (x, y)}
      * @param y the {@code y} component of the translation offsets {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 translate(float x, float y) { return translate(x, y, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1532,7 +1560,7 @@ public interface Float3x3 extends Float3x3R {
      * @param right the distance to the right edge of the view rectangle
      * @param bottom the distance to the bottom edge of the view rectangle
      * @param top the distance to the top edge of the view rectangle
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3x3 view(float left, float right, float bottom, float top) { return view(left, right, bottom, top, Joml.RETURN_NEW ? Joml.float3x3() : this); }
 
@@ -1559,6 +1587,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1571,6 +1603,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1583,6 +1619,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1596,6 +1636,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1613,6 +1657,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1625,6 +1673,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1637,6 +1689,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1650,6 +1706,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1663,6 +1723,10 @@ public interface Float3x3 extends Float3x3R {
 
     /**
      * Load the elements from the given memory segment in column-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -1672,6 +1736,10 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -1711,6 +1779,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1723,6 +1795,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1735,6 +1811,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1748,6 +1828,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1765,6 +1849,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1777,6 +1865,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1790,6 +1882,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1803,6 +1899,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1817,6 +1917,10 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -1826,6 +1930,10 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code double}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -1865,6 +1973,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1877,6 +1989,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1889,6 +2005,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1902,6 +2022,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1919,6 +2043,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1931,6 +2059,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1943,6 +2075,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1956,6 +2092,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1969,6 +2109,10 @@ public interface Float3x3 extends Float3x3R {
 
     /**
      * Load the elements from the given memory segment in row-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -1978,6 +2122,10 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given memory segment in row-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -2017,6 +2165,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -2029,6 +2181,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -2041,6 +2197,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2054,6 +2214,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -2071,6 +2235,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -2083,6 +2251,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -2095,6 +2267,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2108,6 +2284,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -2122,6 +2302,10 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -2131,6 +2315,10 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code double}, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -2165,6 +2353,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2179,6 +2371,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2194,6 +2390,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2213,6 +2413,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2227,6 +2431,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2242,6 +2450,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2257,6 +2469,10 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given memory segment in column-major order, with {@code stride}
      * elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2267,6 +2483,10 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -2304,6 +2524,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2318,6 +2542,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2333,6 +2561,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2352,6 +2584,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2366,6 +2602,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2381,6 +2621,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2397,6 +2641,10 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code double}, with {@code stride} elements between the starts of consecutive
      * columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2408,6 +2656,10 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given memory segment in column-major order, converting each
      * element from {@code double}, starting at the given offset, with {@code stride} elements
      * between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -2445,6 +2697,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2459,6 +2715,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2474,6 +2734,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2493,6 +2757,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2507,6 +2775,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2522,6 +2794,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2537,6 +2813,10 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given memory segment in row-major order, with {@code stride}
      * elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2547,6 +2827,10 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given memory segment in row-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -2584,6 +2868,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2598,6 +2886,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2613,6 +2905,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2632,6 +2928,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2646,6 +2946,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2661,6 +2965,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2677,6 +2985,10 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code double}, with {@code stride} elements between the starts of consecutive
      * columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2688,6 +3000,10 @@ public interface Float3x3 extends Float3x3R {
      * Load the elements from the given memory segment in row-major order, converting each element
      * from {@code double}, starting at the given offset, with {@code stride} elements between the
      * starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -2730,6 +3046,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -2742,6 +3062,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2755,6 +3079,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -2786,6 +3114,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -2798,6 +3130,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2811,6 +3147,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -2823,6 +3163,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -2835,6 +3179,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2848,6 +3196,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -2856,6 +3208,10 @@ public interface Float3x3 extends Float3x3R {
 
     /**
      * Load the elements from the given memory segment in column-major order.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -2865,6 +3221,10 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -2911,6 +3271,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2926,6 +3290,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2940,6 +3308,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -2955,6 +3327,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2969,6 +3345,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -2984,6 +3364,10 @@ public interface Float3x3 extends Float3x3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @param stride the number of elements between the starts of consecutive columns/rows
@@ -2994,6 +3378,10 @@ public interface Float3x3 extends Float3x3R {
     /**
      * Load the elements from the given memory segment in column-major order, starting at the given
      * offset, with {@code stride} elements between the starts of consecutive columns/rows.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

@@ -32,32 +32,58 @@ public final class Joml {
     /** The single bit that distinguishes {@link #BIT_IDENTITY} from the next-weaker mask. */
     public static final int UNIQUE_IDENTITY    = 8;
 
-    /** Whether no-dest self-form operations allocate and return a fresh instance instead of
-     *  mutating {@code this}. Resolved once at class initialization from
-     *  {@link JomlConfig#setReturnNew} or {@code -Djoml.returnNew}. */
+    /** Whether the computing no-dest self-form operations ({@code v.add(o)}, {@code m.mul(n)},
+     *  {@code q.normalize()}, ...) leave {@code this} unchanged and return a freshly allocated
+     *  instance holding the result instead of mutating and returning {@code this}. The
+     *  {@code set*}, {@code make*}, {@code load*} and {@code composeTRS*} methods are setters,
+     *  not computations: they always mutate and return {@code this}. Resolved once at class
+     *  initialization from {@link JomlConfig#setReturnNew} or the {@code joml.returnNew} system
+     *  property; accepted spellings are {@code -Djoml.returnNew=true} / {@code =false}
+     *  (case-insensitive) and a bare {@code -Djoml.returnNew}, which means {@code true}. */
     public static final boolean RETURN_NEW = resolveReturnNew();
 
     private static boolean resolveReturnNew() {
         try {
             Boolean o = JomlConfig.returnNewOverride;
-            return o != null ? o : Boolean.getBoolean("joml.returnNew");
+            if (o != null) return o;
+            String s = System.getProperty("joml.returnNew");
+            // A bare -Djoml.returnNew (present, empty value) enables the mode, like -Djoml.strictMath.
+            return s != null && (s.trim().isEmpty() || Boolean.parseBoolean(s.trim()));
         } finally {
             JomlConfig.jomlInitialized = true;
         }
     }
 
     /** The store/load backend, resolved once at class initialization from
-     *  {@link JomlConfig#setStoreLoadBackend} or {@code -Djoml.storeLoadBackend};
-     *  defaults to {@link StoreLoadBackend#UNSAFE} when {@code Unsafe} is available. */
+     *  {@link JomlConfig#setStoreLoadBackend} or {@code -Djoml.storeLoadBackend} ({@code api} or
+     *  {@code unsafe}, case-insensitive); defaults to {@link StoreLoadBackend#UNSAFE} when
+     *  {@code sun.misc.Unsafe} is available. Requesting {@code unsafe} on a JVM without
+     *  {@code sun.misc.Unsafe}, or an unrecognised value, logs one warning on {@code System.err}
+     *  and uses the API backend (respectively the default) instead of failing later.
+     *  The UNSAFE backend uses {@code sun.misc.Unsafe}; on JDK 23+ (JEP 471) run with
+     *  {@code --sun-misc-unsafe-memory-access=allow} or select {@code -Djoml.storeLoadBackend=api}. */
     public static final StoreLoadBackend STORE_LOAD_BACKEND = resolveStoreLoadBackend();
 
     private static StoreLoadBackend resolveStoreLoadBackend() {
         StoreLoadBackend o = JomlConfig.storeLoadBackendOverride;
-        if (o != null) return o;
+        if (o != null) return o == StoreLoadBackend.UNSAFE ? unsafeOrWarn("JomlConfig.setStoreLoadBackend(UNSAFE)") : o;
         String s = System.getProperty("joml.storeLoadBackend");
-        if (s != null && s.equalsIgnoreCase("api")) return StoreLoadBackend.API;
-        if (s != null && s.equalsIgnoreCase("unsafe")) return StoreLoadBackend.UNSAFE;
+        if (s == null || s.trim().isEmpty()) return unsafeAvailable() ? StoreLoadBackend.UNSAFE : StoreLoadBackend.API;
+        String v = s.trim();
+        if (v.equalsIgnoreCase("api")) return StoreLoadBackend.API;
+        if (v.equalsIgnoreCase("unsafe")) return unsafeOrWarn("-Djoml.storeLoadBackend=" + s);
+        System.err.println("[org.joml2] unrecognised -Djoml.storeLoadBackend=" + s
+            + " (expected api or unsafe); using the default backend");
         return unsafeAvailable() ? StoreLoadBackend.UNSAFE : StoreLoadBackend.API;
+    }
+
+    /** UNSAFE when {@code sun.misc.Unsafe} is usable, else one warning and API (instead of a
+     *  NoClassDefFoundError from the first Unsafe-backed call). */
+    private static StoreLoadBackend unsafeOrWarn(String requested) {
+        if (unsafeAvailable()) return StoreLoadBackend.UNSAFE;
+        System.err.println("[org.joml2] " + requested
+            + " requested but sun.misc.Unsafe is not available on this JVM; using the API backend");
+        return StoreLoadBackend.API;
     }
 
     private static boolean unsafeAvailable() {

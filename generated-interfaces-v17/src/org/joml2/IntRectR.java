@@ -11,6 +11,19 @@ import java.nio.ByteBuffer;
  * mutate the receiver; the mutable counterpart is {@link IntRect}. APIs that only read a rectangle
  * should accept {@code IntRectR}, so callers can pass mutable instances without exposing them to
  * modification.
+ * <p>
+ * Arguments of type {@code IntRectR} must be instances created by the library ({@link Joml}
+ * factories / the library's own types); the implementations read cached state through the library's
+ * own classes, so foreign implementations of the {@code *R} interfaces are not supported as
+ * arguments.
+ * <p>
+ * {@code equals} compares the components element-wise with {@code ==}. {@code hashCode} is
+ * consistent with it. Only instances of this library's implementation compare equal to each other;
+ * the {@code equals} of a rectangle never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with an exact, non-negative integer tolerance: the
+ * difference is widened to {@code long} before its magnitude is taken, so the two are compared
+ * exactly without overflow, and a negative {@code epsilon} matches nothing.
  */
 public interface IntRectR {
     /** The number of bytes one instance occupies in the natural {@code store}/{@code load} layout. */
@@ -919,6 +932,10 @@ public interface IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -931,6 +948,10 @@ public interface IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -943,6 +964,10 @@ public interface IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -956,6 +981,10 @@ public interface IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -973,6 +1002,10 @@ public interface IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -985,6 +1018,10 @@ public interface IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -997,6 +1034,10 @@ public interface IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -1010,6 +1051,10 @@ public interface IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -1027,6 +1072,8 @@ public interface IntRectR {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     IntRect storeUnsafe(long address);
 
@@ -1053,6 +1100,10 @@ public interface IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -1065,6 +1116,10 @@ public interface IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -1077,6 +1132,10 @@ public interface IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param dest the destination buffer
@@ -1090,6 +1149,10 @@ public interface IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination buffer
      * @return dest
@@ -1107,6 +1170,10 @@ public interface IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -1119,6 +1186,10 @@ public interface IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -1131,6 +1202,10 @@ public interface IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param dest the destination byte buffer
@@ -1144,6 +1219,10 @@ public interface IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param dest the destination byte buffer
      * @return dest
@@ -1161,6 +1240,8 @@ public interface IntRectR {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     IntRect storeLongUnsafe(long address);
 
@@ -1170,12 +1251,38 @@ public interface IntRectR {
     /**
      * Compare this rectangle component-wise against {@code other}, allowing a difference
      * of at most {@code epsilon} per component.
+     * <p>
+     * {@code equalsEpsilon} compares per component with an exact, non-negative integer tolerance:
+     * the difference is widened to {@code long} before its magnitude is taken, so the two are
+     * compared exactly without overflow, and a negative {@code epsilon} matches nothing.
      *
      * @param other the rectangle to compare against
      * @param epsilon the maximum allowed difference per component
      * @return {@code true} if all components differ by at most {@code epsilon}, {@code false} otherwise
      */
     boolean equalsEpsilon(IntRectR other, int epsilon);
+
+    /**
+     * Compare this rectangle with the given object for element-wise equality.
+     * <p>
+     * Each component is compared with {@code ==}. Use {@link #equalsEpsilon} for a tolerant
+     * comparison.
+     * <p>
+     * Only instances of this library's implementation compare equal to each other; any other object
+     * yields {@code false}.
+     *
+     * @param obj the object to compare with
+     * @return {@code true} if {@code obj} is a rectangle of this library with element-wise equal
+     *        components, {@code false} otherwise
+     */
+    boolean equals(@org.jspecify.annotations.Nullable Object obj);
+
+    /**
+     * Compute a hash code consistent with {@link #equals}: it is derived from the components alone.
+     *
+     * @return the hash code of this rectangle
+     */
+    int hashCode();
 
     /** Backs {@code ZERO()}: defers the shared instance's
      *  allocation to first use, avoiding a class-initialization cycle with the

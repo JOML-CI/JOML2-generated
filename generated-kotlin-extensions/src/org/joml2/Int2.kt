@@ -42,7 +42,7 @@ inline fun Int2.copy(x: Int = x(), y: Int = y()): Int2 = Int2(x, y)
 inline fun Int2.toIntArray(): IntArray = store(IntArray(2))
 /** A Int2 read from this array in storage order, starting at index 0. */
 inline fun IntArray.toInt2(): Int2 = Int2.load(this)
-/** The component of this Int2 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT `v[i] = x` (or `v[i] += x`) resolves to the Java 2-argument value factory `Int2.set(a, b)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
+/** The component of this Int2 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT with 1 index (`v[a] = b`, or `v[a] += b`) resolves to the Java 2-argument value factory `Int2.set(...)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Int2.get(index: Int): Int = when (index) {
     0 -> x()
     1 -> y()

@@ -856,7 +856,7 @@ public final class Float2OpsKernelsByteBuffer {
     public static float angleBetween_api(java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY) {
         float _selfx = src.getFloat(srcOffset + 0);
         float _selfy = src.getFloat(srcOffset + 4);
-        return (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(otherX, _selfx, otherY * _selfy) * (1.0f / (float) Math.sqrt(Math.fma(_selfx, _selfx, _selfy * _selfy))) * (1.0f / (float) Math.sqrt(Math.fma(otherX, otherX, otherY * otherY))))));
+        return (float) Math.atan2(Math.abs(Math.fma(otherY, _selfx, -(otherX * _selfy))), Math.fma(otherX, _selfx, otherY * _selfy));
     }
 
     public static float angleBetween_unsafe(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
@@ -870,7 +870,7 @@ public final class Float2OpsKernelsByteBuffer {
         float _selfy = src.getFloat(srcOffset + 4);
         float _otherx = other.getFloat(otherOffset + 0);
         float _othery = other.getFloat(otherOffset + 4);
-        return (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(_otherx, _selfx, _othery * _selfy) * (1.0f / (float) Math.sqrt(Math.fma(_selfx, _selfx, _selfy * _selfy))) * (1.0f / (float) Math.sqrt(Math.fma(_otherx, _otherx, _othery * _othery))))));
+        return (float) Math.atan2(Math.abs(Math.fma(_othery, _selfx, -(_otherx * _selfy))), Math.fma(_otherx, _selfx, _othery * _selfy));
     }
 
     public static java.nio.ByteBuffer asin_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {

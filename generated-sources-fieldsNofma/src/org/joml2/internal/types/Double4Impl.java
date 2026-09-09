@@ -397,16 +397,16 @@ public final class Double4Impl implements Double4 {
                 d.w = (byte) Math.ceil(this.w);
             }
             case HALF_TOWARD_POSITIVE_INFINITY -> {
-                d.x = (byte) Math.round(this.x);
-                d.y = (byte) Math.round(this.y);
-                d.z = (byte) Math.round(this.z);
-                d.w = (byte) Math.round(this.w);
+                d.x = (byte) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.x)));
+                d.y = (byte) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.y)));
+                d.z = (byte) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.z)));
+                d.w = (byte) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.w)));
             }
             case HALF_AWAY_FROM_ZERO -> {
-                d.x = (byte) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5));
-                d.y = (byte) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5));
-                d.z = (byte) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5));
-                d.w = (byte) (this.w >= 0 ? Math.floor(this.w + 0.5) : Math.ceil(this.w - 0.5));
+                d.x = (byte) (Math.abs(this.x - Math.rint(this.x)) == 0.5 ? this.x + Math.copySign(0.5, this.x) : Math.rint(this.x));
+                d.y = (byte) (Math.abs(this.y - Math.rint(this.y)) == 0.5 ? this.y + Math.copySign(0.5, this.y) : Math.rint(this.y));
+                d.z = (byte) (Math.abs(this.z - Math.rint(this.z)) == 0.5 ? this.z + Math.copySign(0.5, this.z) : Math.rint(this.z));
+                d.w = (byte) (Math.abs(this.w - Math.rint(this.w)) == 0.5 ? this.w + Math.copySign(0.5, this.w) : Math.rint(this.w));
             }
             case HALF_EVEN -> {
                 d.x = (byte) Math.rint(this.x);
@@ -463,16 +463,16 @@ public final class Double4Impl implements Double4 {
                 d.w = (short) Math.ceil(this.w);
             }
             case HALF_TOWARD_POSITIVE_INFINITY -> {
-                d.x = (short) Math.round(this.x);
-                d.y = (short) Math.round(this.y);
-                d.z = (short) Math.round(this.z);
-                d.w = (short) Math.round(this.w);
+                d.x = (short) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.x)));
+                d.y = (short) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.y)));
+                d.z = (short) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.z)));
+                d.w = (short) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.w)));
             }
             case HALF_AWAY_FROM_ZERO -> {
-                d.x = (short) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5));
-                d.y = (short) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5));
-                d.z = (short) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5));
-                d.w = (short) (this.w >= 0 ? Math.floor(this.w + 0.5) : Math.ceil(this.w - 0.5));
+                d.x = (short) (Math.abs(this.x - Math.rint(this.x)) == 0.5 ? this.x + Math.copySign(0.5, this.x) : Math.rint(this.x));
+                d.y = (short) (Math.abs(this.y - Math.rint(this.y)) == 0.5 ? this.y + Math.copySign(0.5, this.y) : Math.rint(this.y));
+                d.z = (short) (Math.abs(this.z - Math.rint(this.z)) == 0.5 ? this.z + Math.copySign(0.5, this.z) : Math.rint(this.z));
+                d.w = (short) (Math.abs(this.w - Math.rint(this.w)) == 0.5 ? this.w + Math.copySign(0.5, this.w) : Math.rint(this.w));
             }
             case HALF_EVEN -> {
                 d.x = (short) Math.rint(this.x);
@@ -535,10 +535,10 @@ public final class Double4Impl implements Double4 {
                 d.w = (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.w)));
             }
             case HALF_AWAY_FROM_ZERO -> {
-                d.x = (int) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5));
-                d.y = (int) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5));
-                d.z = (int) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5));
-                d.w = (int) (this.w >= 0 ? Math.floor(this.w + 0.5) : Math.ceil(this.w - 0.5));
+                d.x = (int) (Math.abs(this.x - Math.rint(this.x)) == 0.5 ? this.x + Math.copySign(0.5, this.x) : Math.rint(this.x));
+                d.y = (int) (Math.abs(this.y - Math.rint(this.y)) == 0.5 ? this.y + Math.copySign(0.5, this.y) : Math.rint(this.y));
+                d.z = (int) (Math.abs(this.z - Math.rint(this.z)) == 0.5 ? this.z + Math.copySign(0.5, this.z) : Math.rint(this.z));
+                d.w = (int) (Math.abs(this.w - Math.rint(this.w)) == 0.5 ? this.w + Math.copySign(0.5, this.w) : Math.rint(this.w));
             }
             case HALF_EVEN -> {
                 d.x = (int) Math.rint(this.x);
@@ -601,10 +601,10 @@ public final class Double4Impl implements Double4 {
                 d.w = Math.round(this.w);
             }
             case HALF_AWAY_FROM_ZERO -> {
-                d.x = (long) (this.x >= 0 ? Math.floor(this.x + 0.5) : Math.ceil(this.x - 0.5));
-                d.y = (long) (this.y >= 0 ? Math.floor(this.y + 0.5) : Math.ceil(this.y - 0.5));
-                d.z = (long) (this.z >= 0 ? Math.floor(this.z + 0.5) : Math.ceil(this.z - 0.5));
-                d.w = (long) (this.w >= 0 ? Math.floor(this.w + 0.5) : Math.ceil(this.w - 0.5));
+                d.x = (long) (Math.abs(this.x - Math.rint(this.x)) == 0.5 ? this.x + Math.copySign(0.5, this.x) : Math.rint(this.x));
+                d.y = (long) (Math.abs(this.y - Math.rint(this.y)) == 0.5 ? this.y + Math.copySign(0.5, this.y) : Math.rint(this.y));
+                d.z = (long) (Math.abs(this.z - Math.rint(this.z)) == 0.5 ? this.z + Math.copySign(0.5, this.z) : Math.rint(this.z));
+                d.w = (long) (Math.abs(this.w - Math.rint(this.w)) == 0.5 ? this.w + Math.copySign(0.5, this.w) : Math.rint(this.w));
             }
             case HALF_EVEN -> {
                 d.x = (long) Math.rint(this.x);
@@ -1215,6 +1215,9 @@ public final class Double4Impl implements Double4 {
 
     /**
      * Compute the angle in radians between this vector and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other vector
      * @return the angle in radians between this vector and {@code other}
@@ -1227,6 +1230,9 @@ public final class Double4Impl implements Double4 {
     /**
      * Compute the angle in radians between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}, {@code otherW}).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -1236,7 +1242,13 @@ public final class Double4Impl implements Double4 {
      *        {@code otherZ}, {@code otherW})
      */
     public double angleBetween(double otherX, double otherY, double otherZ, double otherW) {
-        return Math.acos(Math.min(1.0, Math.max(-1.0, (otherX * this.x + otherY * this.y + otherZ * this.z + otherW * this.w) * (1.0 / Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w)) * (1.0 / Math.sqrt(otherX * otherX + otherY * otherY + otherZ * otherZ + otherW * otherW)))));
+        double _t12 = otherY * this.x - otherX * this.y;
+        double _t13 = otherZ * this.x - otherX * this.z;
+        double _t14 = otherW * this.x - otherX * this.w;
+        double _t15 = otherZ * this.y - otherY * this.z;
+        double _t16 = otherW * this.y - otherY * this.w;
+        double _t17 = otherW * this.z - otherZ * this.w;
+        return Math.atan2(Math.sqrt(_t12 * _t12 + _t13 * _t13 + _t14 * _t14 + _t15 * _t15 + _t16 * _t16 + _t17 * _t17), otherX * this.x + otherY * this.y + otherZ * this.z + otherW * this.w);
     }
 
 
@@ -1554,6 +1566,10 @@ public final class Double4Impl implements Double4 {
 
     /**
      * Compute the distance between this vector and {@code other}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the difference vector must lie
+     * roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param other the other vector
      * @return the distance between this vector and {@code other}
@@ -1566,6 +1582,10 @@ public final class Double4Impl implements Double4 {
     /**
      * Compute the distance between this vector and ({@code otherX}, {@code otherY}, {@code otherZ},
      * {@code otherW}).
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the difference vector must lie
+     * roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -1860,6 +1880,10 @@ public final class Double4Impl implements Double4 {
 
     /**
      * Compute the length of this vector.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this vector must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @return the length of this vector
      */
@@ -2178,8 +2202,8 @@ public final class Double4Impl implements Double4 {
      * <p>
      * The squared length is formed at the component precision, so components whose squares overflow
      * or underflow that precision are out of domain: the result is the zero vector rather than a
-     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}).
+     * unit vector. Rescale such inputs before normalizing (the magnitude must lie roughly between
+     * 1e-19 and 1.8e19 for {@code float}, 1.5e-154 and 1.3e154 for {@code double}).
      *
      * @param dest will hold the result
      * @return dest

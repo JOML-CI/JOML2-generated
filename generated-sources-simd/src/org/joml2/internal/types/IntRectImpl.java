@@ -907,7 +907,9 @@ public final class IntRectImpl implements IntRect {
      */
     public int centerX() {
         int[] sd = this.data;
-        return (sd[0] + sd[2]) / 2;
+        int _t1 = sd[0] ^ sd[2];
+        int _t3 = (sd[0] & sd[2]) + (_t1 >> 1);
+        return _t3 < 0 ? _t3 + (_t1 & 1) : _t3;
     }
 
 
@@ -920,7 +922,9 @@ public final class IntRectImpl implements IntRect {
      */
     public int centerY() {
         int[] sd = this.data;
-        return (sd[1] + sd[3]) / 2;
+        int _t1 = sd[1] ^ sd[3];
+        int _t3 = (sd[1] & sd[3]) + (_t1 >> 1);
+        return _t3 < 0 ? _t3 + (_t1 & 1) : _t3;
     }
 
 
@@ -1190,8 +1194,12 @@ public final class IntRectImpl implements IntRect {
     public Int2 getCenter(@Mutated Int2 dest) {
         int[] sd = this.data;
         int[] dd = ((Int2Impl) dest).data;
-        dd[0] = (sd[0] + sd[2]) / 2;
-        dd[1] = (sd[1] + sd[3]) / 2;
+        int _t1 = sd[0] ^ sd[2];
+        int _t3 = sd[1] ^ sd[3];
+        int _t6 = (sd[0] & sd[2]) + (_t1 >> 1);
+        int _t7 = (sd[1] & sd[3]) + (_t3 >> 1);
+        dd[0] = _t6 < 0 ? _t6 + (_t1 & 1) : _t6;
+        dd[1] = _t7 < 0 ? _t7 + (_t3 & 1) : _t7;
         return dest;
     }
 
@@ -1208,8 +1216,12 @@ public final class IntRectImpl implements IntRect {
     public Long2 getCenter(@Mutated Long2 dest) {
         int[] sd = this.data;
         long[] dd = ((Long2Impl) dest).data;
-        dd[0] = (sd[0] + sd[2]) / 2;
-        dd[1] = (sd[1] + sd[3]) / 2;
+        int _t1 = sd[0] ^ sd[2];
+        int _t3 = sd[1] ^ sd[3];
+        int _t6 = (sd[0] & sd[2]) + (_t1 >> 1);
+        int _t7 = (sd[1] & sd[3]) + (_t3 >> 1);
+        dd[0] = _t6 < 0 ? _t6 + (_t1 & 1) : _t6;
+        dd[1] = _t7 < 0 ? _t7 + (_t3 & 1) : _t7;
         return dest;
     }
 
@@ -1226,8 +1238,12 @@ public final class IntRectImpl implements IntRect {
     public Double2 getCenter(@Mutated Double2 dest) {
         int[] sd = this.data;
         double[] dd = ((Double2Impl) dest).data;
-        dd[0] = (sd[0] + sd[2]) / 2;
-        dd[1] = (sd[1] + sd[3]) / 2;
+        int _t1 = sd[0] ^ sd[2];
+        int _t3 = sd[1] ^ sd[3];
+        int _t6 = (sd[0] & sd[2]) + (_t1 >> 1);
+        int _t7 = (sd[1] & sd[3]) + (_t3 >> 1);
+        dd[0] = _t6 < 0 ? _t6 + (_t1 & 1) : _t6;
+        dd[1] = _t7 < 0 ? _t7 + (_t3 & 1) : _t7;
         return dest;
     }
 

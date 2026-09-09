@@ -197,7 +197,9 @@ public final class DoubleTriangleImpl implements DoubleTriangle {
      * <p>
      * The three components weight the triangle's first, second and third vertex respectively and
      * sum to 1. A point that is not coplanar with the triangle yields the coordinates of its
-     * orthogonal projection onto the triangle's plane.
+     * orthogonal projection onto the triangle's plane. The weights are formed with the
+     * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
+     * accurate for thin triangles.
      *
      * @param p the vector
      * @param dest will hold the result
@@ -214,7 +216,9 @@ public final class DoubleTriangleImpl implements DoubleTriangle {
      * <p>
      * The three components weight the triangle's first, second and third vertex respectively and
      * sum to 1. A point that is not coplanar with the triangle yields the coordinates of its
-     * orthogonal projection onto the triangle's plane.
+     * orthogonal projection onto the triangle's plane. The weights are formed with the
+     * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
+     * accurate for thin triangles.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -224,27 +228,25 @@ public final class DoubleTriangleImpl implements DoubleTriangle {
      */
     public Double3 barycentric(double pX, double pY, double pZ, @Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t0 = pZ - this.v0Z;
-        double _t1 = this.v1Z - this.v0Z;
-        double _t2 = pX - this.v0X;
-        double _t3 = this.v1X - this.v0X;
-        double _t4 = pY - this.v0Y;
+        double _t0 = pX - this.v0X;
+        double _t1 = this.v2Y - this.v0Y;
+        double _t2 = pY - this.v0Y;
+        double _t3 = this.v2X - this.v0X;
+        double _t4 = this.v1X - this.v0X;
         double _t5 = this.v1Y - this.v0Y;
         double _t6 = this.v2Z - this.v0Z;
-        double _t7 = this.v2X - this.v0X;
-        double _t8 = this.v2Y - this.v0Y;
-        double _t19 = Math.fma(_t0, _t1, Math.fma(_t2, _t3, _t4 * _t5));
-        double _t20 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        double _t21 = Math.fma(_t0, _t6, Math.fma(_t2, _t7, _t4 * _t8));
-        double _t22 = Math.fma(_t1, _t6, Math.fma(_t3, _t7, _t5 * _t8));
-        double _t23 = Math.fma(_t1, _t1, Math.fma(_t3, _t3, _t5 * _t5));
-        double _t31 = Math.fma(_t23, _t20, -(_t22 * _t22));
-        double _t31_inv = 1.0 / _t31;
-        double _t33 = Math.fma(_t19, _t20, -(_t21 * _t22)) * _t31_inv;
-        double _t34 = Math.fma(_t21, _t23, -(_t19 * _t22)) * _t31_inv;
-        d.x = 1.0 - _t33 - _t34;
-        d.y = _t33;
-        d.z = _t34;
+        double _t7 = pZ - this.v0Z;
+        double _t8 = this.v1Z - this.v0Z;
+        double _t28 = Math.fma(_t4, _t1, -(_t5 * _t3));
+        double _t30 = Math.fma(_t5, _t6, -(_t8 * _t1));
+        double _t32 = Math.fma(_t8, _t3, -(_t4 * _t6));
+        double _t43 = Math.fma(_t28, _t28, Math.fma(_t30, _t30, _t32 * _t32));
+        double _t43_inv = 1.0 / _t43;
+        double _t45 = Math.fma(Math.fma(_t0, _t1, -(_t2 * _t3)), _t28, Math.fma(Math.fma(_t2, _t6, -(_t7 * _t1)), _t30, Math.fma(_t7, _t3, -(_t0 * _t6)) * _t32)) * _t43_inv;
+        double _t46 = Math.fma(Math.fma(_t2, _t4, -(_t0 * _t5)), _t28, Math.fma(Math.fma(_t0, _t8, -(_t7 * _t4)), _t32, Math.fma(_t7, _t5, -(_t2 * _t8)) * _t30)) * _t43_inv;
+        d.x = 1.0 - _t45 - _t46;
+        d.y = _t45;
+        d.z = _t46;
         return d;
     }
 

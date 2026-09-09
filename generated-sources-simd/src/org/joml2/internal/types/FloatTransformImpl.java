@@ -2169,6 +2169,10 @@ public final class FloatTransformImpl implements FloatTransform {
      * Normalize this transform so that its rotation part has unit length, leaving its translation
      * and scale unchanged (a zero-length rotation yields the zero quaternion) and store the result
      * in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the rotation quaternion must lie
+     * roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2203,6 +2207,10 @@ public final class FloatTransformImpl implements FloatTransform {
      * Normalize this transform so that its rotation part has unit length, leaving its translation
      * and scale unchanged (a zero-length rotation yields the zero quaternion) and store the result
      * in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the rotation quaternion must lie
+     * roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2242,6 +2250,9 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -2263,7 +2274,7 @@ public final class FloatTransformImpl implements FloatTransform {
             dd[0] = (float) Math.atan2(_t9, _t10);
             dd[2] = (float) Math.atan2(2.0f * Math.fma(sd[5], sd[6], -(sd[3] * sd[4])), Math.fma(-2.0f, Math.fma(sd[4], sd[4], _t3), 1.0f));
         }
-        dd[1] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8)));
+        dd[1] = (float) Math.atan2(_t8, (float) Math.sqrt(_t12));
         return dest;
     }
 
@@ -2274,6 +2285,9 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2298,7 +2312,7 @@ public final class FloatTransformImpl implements FloatTransform {
             dd[0] = (float) Math.atan2(_t9, _t10);
             dd[2] = (float) Math.atan2(2.0f * Math.fma(sd[5], sd[6], -(sd[3] * sd[4])), Math.fma(-2.0f, Math.fma(sd[4], sd[4], _t3), 1.0f));
         }
-        dd[1] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8)));
+        dd[1] = (float) Math.atan2(_t8, (float) Math.sqrt(_t12));
         return dest;
     }
 
@@ -2309,6 +2323,9 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -2330,7 +2347,7 @@ public final class FloatTransformImpl implements FloatTransform {
             dd[0] = (float) Math.atan2(_t7, _t9);
             dd[1] = (float) Math.atan2(2.0f * Math.fma(sd[3], sd[5], sd[4] * sd[6]), Math.fma(-2.0f, Math.fma(sd[4], sd[4], _t0), 1.0f));
         }
-        dd[2] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8)));
+        dd[2] = (float) Math.atan2(_t8, (float) Math.sqrt(_t11));
         return dest;
     }
 
@@ -2341,6 +2358,9 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2365,7 +2385,7 @@ public final class FloatTransformImpl implements FloatTransform {
             dd[0] = (float) Math.atan2(_t7, _t9);
             dd[1] = (float) Math.atan2(2.0f * Math.fma(sd[3], sd[5], sd[4] * sd[6]), Math.fma(-2.0f, Math.fma(sd[4], sd[4], _t0), 1.0f));
         }
-        dd[2] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8)));
+        dd[2] = (float) Math.atan2(_t8, (float) Math.sqrt(_t11));
         return dest;
     }
 
@@ -2376,6 +2396,9 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -2396,7 +2419,7 @@ public final class FloatTransformImpl implements FloatTransform {
             dd[1] = (float) Math.atan2(_t8, _t10);
             dd[2] = (float) Math.atan2(2.0f * Math.fma(sd[3], sd[4], sd[5] * sd[6]), Math.fma(-2.0f, Math.fma(sd[3], sd[3], _t3), 1.0f));
         }
-        dd[0] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t9)));
+        dd[0] = (float) Math.atan2(_t9, (float) Math.sqrt(_t12));
         return dest;
     }
 
@@ -2407,6 +2430,9 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2430,7 +2456,7 @@ public final class FloatTransformImpl implements FloatTransform {
             dd[1] = (float) Math.atan2(_t8, _t10);
             dd[2] = (float) Math.atan2(2.0f * Math.fma(sd[3], sd[4], sd[5] * sd[6]), Math.fma(-2.0f, Math.fma(sd[3], sd[3], _t3), 1.0f));
         }
-        dd[0] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t9)));
+        dd[0] = (float) Math.atan2(_t9, (float) Math.sqrt(_t12));
         return dest;
     }
 
@@ -2441,6 +2467,9 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -2461,7 +2490,7 @@ public final class FloatTransformImpl implements FloatTransform {
             dd[0] = (float) Math.atan2(2.0f * Math.fma(sd[3], sd[6], -(sd[4] * sd[5])), Math.fma(-2.0f, Math.fma(sd[3], sd[3], _t0), 1.0f));
             dd[1] = (float) Math.atan2(_t8, _t9);
         }
-        dd[2] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t7)));
+        dd[2] = (float) Math.atan2(_t7, (float) Math.sqrt(_t11));
         return dest;
     }
 
@@ -2472,6 +2501,9 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2495,7 +2527,7 @@ public final class FloatTransformImpl implements FloatTransform {
             dd[0] = (float) Math.atan2(2.0f * Math.fma(sd[3], sd[6], -(sd[4] * sd[5])), Math.fma(-2.0f, Math.fma(sd[3], sd[3], _t0), 1.0f));
             dd[1] = (float) Math.atan2(_t8, _t9);
         }
-        dd[2] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t7)));
+        dd[2] = (float) Math.atan2(_t7, (float) Math.sqrt(_t11));
         return dest;
     }
 
@@ -2506,6 +2538,9 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -2526,7 +2561,7 @@ public final class FloatTransformImpl implements FloatTransform {
             dd[1] = (float) Math.atan2(2.0f * Math.fma(sd[4], sd[6], -(sd[3] * sd[5])), Math.fma(-2.0f, Math.fma(sd[3], sd[3], sd[4] * sd[4]), 1.0f));
             dd[2] = (float) Math.atan2(_t8, _t9);
         }
-        dd[0] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t7)));
+        dd[0] = (float) Math.atan2(_t7, (float) Math.sqrt(_t11));
         return dest;
     }
 
@@ -2537,6 +2572,9 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2560,7 +2598,7 @@ public final class FloatTransformImpl implements FloatTransform {
             dd[1] = (float) Math.atan2(2.0f * Math.fma(sd[4], sd[6], -(sd[3] * sd[5])), Math.fma(-2.0f, Math.fma(sd[3], sd[3], sd[4] * sd[4]), 1.0f));
             dd[2] = (float) Math.atan2(_t8, _t9);
         }
-        dd[0] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t7)));
+        dd[0] = (float) Math.atan2(_t7, (float) Math.sqrt(_t11));
         return dest;
     }
 
@@ -2571,6 +2609,9 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -2591,7 +2632,7 @@ public final class FloatTransformImpl implements FloatTransform {
             dd[0] = (float) Math.atan2(2.0f * Math.fma(sd[3], sd[6], sd[4] * sd[5]), Math.fma(-2.0f, Math.fma(sd[3], sd[3], sd[4] * sd[4]), 1.0f));
             dd[2] = (float) Math.atan2(_t7, _t9);
         }
-        dd[1] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8)));
+        dd[1] = (float) Math.atan2(_t8, (float) Math.sqrt(_t11));
         return dest;
     }
 
@@ -2602,6 +2643,9 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2625,7 +2669,7 @@ public final class FloatTransformImpl implements FloatTransform {
             dd[0] = (float) Math.atan2(2.0f * Math.fma(sd[3], sd[6], sd[4] * sd[5]), Math.fma(-2.0f, Math.fma(sd[3], sd[3], sd[4] * sd[4]), 1.0f));
             dd[2] = (float) Math.atan2(_t7, _t9);
         }
-        dd[1] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8)));
+        dd[1] = (float) Math.atan2(_t8, (float) Math.sqrt(_t11));
         return dest;
     }
 

@@ -13,6 +13,16 @@ import java.nio.ByteBuffer;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of a dual
+ * quaternion never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface FloatDualQuat extends FloatDualQuatR {
 
@@ -20,7 +30,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * Add {@code other} to this dual quaternion.
      *
      * @param other the other dual quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat add(FloatDualQuatR other) { return add(other, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -44,7 +54,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dW the {@code dW} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat add(float rX, float rY, float rZ, float rW, float dX, float dY, float dZ, float dW) { return add(rX, rY, rZ, rW, dX, dY, dZ, dW, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -52,14 +62,14 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * Multiply each component of this dual quaternion by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat mul(float scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
     /**
      * Negate this dual quaternion.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat negate() { return negate(Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -67,7 +77,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * Subtract {@code other} from this dual quaternion.
      *
      * @param other the other dual quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat sub(FloatDualQuatR other) { return sub(other, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -91,7 +101,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dW the {@code dW} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat sub(float rX, float rY, float rZ, float rW, float dX, float dY, float dZ, float dW) { return sub(rX, rY, rZ, rW, dX, dY, dZ, dW, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -404,7 +414,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      *
      * @param other the other dual quaternion
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat dlb(FloatDualQuatR other, float t) { return dlb(other, t, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -430,7 +440,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * @param dW the {@code dW} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat dlb(float rX, float rY, float rZ, float rW, float dX, float dY, float dZ, float dW, float t) { return dlb(rX, rY, rZ, rW, dX, dY, dZ, dW, t, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -440,7 +450,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      *
      * @param other the other dual quaternion
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat lerp(FloatDualQuatR other, float t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -466,7 +476,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * @param dW the {@code dW} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat lerp(float rX, float rY, float rZ, float rW, float dX, float dY, float dZ, float dW, float t) { return lerp(rX, rY, rZ, rW, dX, dY, dZ, dW, t, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -476,7 +486,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      *
      * @param other the other dual quaternion (must be a unit dual quaternion)
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat sclerp(FloatDualQuatR other, float t) { return sclerp(other, t, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -502,7 +512,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * @param dW the {@code dW} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat sclerp(float rX, float rY, float rZ, float rW, float dX, float dY, float dZ, float dW, float t) { return sclerp(rX, rY, rZ, rW, dX, dY, dZ, dW, t, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -515,7 +525,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * first.
      *
      * @param other the other dual quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat mul(FloatDualQuatR other) { return mul(other, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -544,7 +554,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dW the {@code dW} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat mul(float rX, float rY, float rZ, float rW, float dX, float dY, float dZ, float dW) { return mul(rX, rY, rZ, rW, dX, dY, dZ, dW, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -557,7 +567,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * last.
      *
      * @param other the other dual quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat preMul(FloatDualQuatR other) { return preMul(other, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -586,7 +596,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dW the {@code dW} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat preMul(float rX, float rY, float rZ, float rW, float dX, float dY, float dZ, float dW) { return preMul(rX, rY, rZ, rW, dX, dY, dZ, dW, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -595,7 +605,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      *
      * @param other the other dual quaternion
      * @param weight the factor to scale {@code other} by before adding
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat addScaled(FloatDualQuatR other, float weight) { return addScaled(other, weight, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -621,7 +631,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param weight the factor to scale ({@code rX}, {@code rY}, {@code rZ}, {@code rW},
      *        {@code dX}, {@code dY}, {@code dZ}, {@code dW}) by before adding
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat addScaled(float rX, float rY, float rZ, float rW, float dX, float dY, float dZ, float dW, float weight) { return addScaled(rX, rY, rZ, rW, dX, dY, dZ, dW, weight, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -629,7 +639,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * Compute the quaternion conjugate of this dual quaternion, conjugating both the real and the
      * dual part (for a unit dual quaternion this is its inverse).
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat conjugate() { return conjugate(Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -638,7 +648,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}.
      *
      * @param other the other dual quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat difference(FloatDualQuatR other) { return difference(other, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -664,42 +674,42 @@ public interface FloatDualQuat extends FloatDualQuatR {
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dW the {@code dW} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat difference(float rX, float rY, float rZ, float rW, float dX, float dY, float dZ, float dW) { return difference(rX, rY, rZ, rW, dX, dY, dZ, dW, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
     /**
      * Compute the dual-number conjugate of this dual quaternion.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat dualConjugate() { return dualConjugate(Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
     /**
      * Compute the exponential of this dual quaternion.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat exp() { return exp(Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
     /**
      * Compute the inverse of this dual quaternion, which is assumed to have unit length.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat inverseUnit() { return inverseUnit(Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
     /**
      * Invert this dual quaternion.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat invert() { return invert(Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
     /**
      * Compute the natural logarithm of this dual quaternion.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat log() { return log(Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -734,8 +744,12 @@ public interface FloatDualQuat extends FloatDualQuatR {
 
     /**
      * Normalize this dual quaternion so that its real (rotation) part has unit length.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the real part must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat normalize() { return normalize(Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -744,7 +758,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * yields the identity, {@code t = 1} yields {@code this}).
      *
      * @param t the exponent
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat pow(float t) { return pow(t, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -752,7 +766,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * Set the rotation of this dual quaternion to {@code rotation}.
      *
      * @param rotation the quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat setRotation(FloatQuatR rotation) { return setRotation(rotation, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -763,7 +777,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat setRotation(float x, float y, float z, float w) { return setRotation(x, y, z, w, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -771,7 +785,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * Set the translation of this dual quaternion to {@code translation}.
      *
      * @param translation the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat setTranslation(Float3R translation) { return setTranslation(translation, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -781,7 +795,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat setTranslation(float x, float y, float z) { return setTranslation(x, y, z, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -796,7 +810,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      *
      * @param dir the direction
      * @param up the direction of "up"
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat lookAlong(Float3R dir, Float3R up) { return lookAlong(dir, up, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -815,7 +829,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
      * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
      * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) { return lookAlong(dirX, dirY, dirZ, upX, upY, upZ, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -970,7 +984,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
      * @param rotation the quaternion (must be a unit quaternion)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat rotate(FloatQuatR rotation) { return rotate(rotation, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -990,7 +1004,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      *        have unit length)
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat rotate(float x, float y, float z, float w) { return rotate(x, y, z, w, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -1004,7 +1018,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat rotateAxis(float angle, Float3R axis) { return rotateAxis(angle, axis, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -1023,7 +1037,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat rotateAxis(float angle, float x, float y, float z) { return rotateAxis(angle, x, y, z, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -1035,7 +1049,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat rotateX(float angle) { return rotateX(angle, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -1051,7 +1065,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat rotateXYZ(float angleX, float angleY, float angleZ) { return rotateXYZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -1067,7 +1081,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat rotateXZY(float angleX, float angleY, float angleZ) { return rotateXZY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -1079,7 +1093,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat rotateY(float angle) { return rotateY(angle, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -1095,7 +1109,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat rotateYXZ(float angleX, float angleY, float angleZ) { return rotateYXZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -1111,7 +1125,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat rotateYZX(float angleX, float angleY, float angleZ) { return rotateYZX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -1123,7 +1137,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat rotateZ(float angle) { return rotateZ(angle, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -1139,7 +1153,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat rotateZXY(float angleX, float angleY, float angleZ) { return rotateZXY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -1155,7 +1169,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat rotateZYX(float angleX, float angleY, float angleZ) { return rotateZYX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -1168,7 +1182,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * first.
      *
      * @param translation the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat translate(Float3R translation) { return translate(translation, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -1183,7 +1197,7 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatDualQuat translate(float x, float y, float z) { return translate(x, y, z, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
@@ -1210,6 +1224,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1222,6 +1240,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1234,6 +1256,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1247,6 +1273,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1264,6 +1294,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1276,6 +1310,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1288,6 +1326,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1301,6 +1343,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1318,6 +1364,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated FloatDualQuat loadUnsafe(long address);
 
@@ -1344,6 +1392,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1356,6 +1408,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1368,6 +1424,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1381,6 +1441,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1398,6 +1462,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1410,6 +1478,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1422,6 +1494,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1435,6 +1511,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1452,6 +1532,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated FloatDualQuat loadDoubleUnsafe(long address);
 }

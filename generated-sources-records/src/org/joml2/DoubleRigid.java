@@ -13,6 +13,14 @@ import java.nio.FloatBuffer;
  * All operations leave the receiver unchanged and return their result as a value. An operation
  * whose result equals one of its operands may return that operand instead of allocating a new
  * instance.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns).
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  *
  * @param tX the {@code tX} component
  * @param tY the {@code tY} component
@@ -1014,6 +1022,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * Normalize this rigid transform so that its rotation part has unit length, leaving its
      * translation unchanged (a zero-length rotation yields the zero quaternion), returning the
      * result as a value.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the rotation quaternion must lie
+     * roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @return the resulting rigid transform
      */
@@ -1034,6 +1046,9 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @return the resulting vector
      */
@@ -1046,9 +1061,9 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
         double _t12 = Math.fma(_t10, _t10, _t9 * _t9);
         double _t14 = Math.fma(_t8, _t8, _t12) * 1.0E-15;
         if (_t12 < _t14) {
-            return new Double3(Math.atan2(2.0 * Math.fma(this.rX, this.rW, _t1), Math.fma(-2.0, Math.fma(this.rX, this.rX, _t3), 1.0)), Math.asin(Math.min(1.0, Math.max(-1.0, _t8))), 0.0);
+            return new Double3(Math.atan2(2.0 * Math.fma(this.rX, this.rW, _t1), Math.fma(-2.0, Math.fma(this.rX, this.rX, _t3), 1.0)), Math.atan2(_t8, Math.sqrt(_t12)), 0.0);
         } else {
-            return new Double3(Math.atan2(_t9, _t10), Math.asin(Math.min(1.0, Math.max(-1.0, _t8))), Math.atan2(2.0 * Math.fma(this.rZ, this.rW, -(this.rX * this.rY)), Math.fma(-2.0, Math.fma(this.rY, this.rY, _t3), 1.0)));
+            return new Double3(Math.atan2(_t9, _t10), Math.atan2(_t8, Math.sqrt(_t12)), Math.atan2(2.0 * Math.fma(this.rZ, this.rW, -(this.rX * this.rY)), Math.fma(-2.0, Math.fma(this.rY, this.rY, _t3), 1.0)));
         }
     }
 
@@ -1059,6 +1074,9 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @return the resulting vector
      */
@@ -1071,9 +1089,9 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
         double _t11 = Math.fma(_t9, _t9, _t7 * _t7);
         double _t13 = Math.fma(_t8, _t8, _t11) * 1.0E-15;
         if (_t11 < _t13) {
-            return new Double3(Math.atan2(2.0 * Math.fma(this.rX, this.rW, -_t1), Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0)), 0.0, Math.asin(Math.min(1.0, Math.max(-1.0, _t8))));
+            return new Double3(Math.atan2(2.0 * Math.fma(this.rX, this.rW, -_t1), Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0)), 0.0, Math.atan2(_t8, Math.sqrt(_t11)));
         } else {
-            return new Double3(Math.atan2(_t7, _t9), Math.atan2(2.0 * Math.fma(this.rX, this.rZ, this.rY * this.rW), Math.fma(-2.0, Math.fma(this.rY, this.rY, _t0), 1.0)), Math.asin(Math.min(1.0, Math.max(-1.0, _t8))));
+            return new Double3(Math.atan2(_t7, _t9), Math.atan2(2.0 * Math.fma(this.rX, this.rZ, this.rY * this.rW), Math.fma(-2.0, Math.fma(this.rY, this.rY, _t0), 1.0)), Math.atan2(_t8, Math.sqrt(_t11)));
         }
     }
 
@@ -1084,6 +1102,9 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @return the resulting vector
      */
@@ -1095,9 +1116,9 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
         double _t12 = Math.fma(_t10, _t10, _t8 * _t8);
         double _t14 = Math.fma(_t9, _t9, _t12) * 1.0E-15;
         if (_t12 < _t14) {
-            return new Double3(Math.asin(Math.min(1.0, Math.max(-1.0, _t9))), Math.atan2(2.0 * Math.fma(this.rY, this.rW, -(this.rX * this.rZ)), Math.fma(-2.0, Math.fma(this.rY, this.rY, _t3), 1.0)), 0.0);
+            return new Double3(Math.atan2(_t9, Math.sqrt(_t12)), Math.atan2(2.0 * Math.fma(this.rY, this.rW, -(this.rX * this.rZ)), Math.fma(-2.0, Math.fma(this.rY, this.rY, _t3), 1.0)), 0.0);
         } else {
-            return new Double3(Math.asin(Math.min(1.0, Math.max(-1.0, _t9))), Math.atan2(_t8, _t10), Math.atan2(2.0 * Math.fma(this.rX, this.rY, this.rZ * this.rW), Math.fma(-2.0, Math.fma(this.rX, this.rX, _t3), 1.0)));
+            return new Double3(Math.atan2(_t9, Math.sqrt(_t12)), Math.atan2(_t8, _t10), Math.atan2(2.0 * Math.fma(this.rX, this.rY, this.rZ * this.rW), Math.fma(-2.0, Math.fma(this.rX, this.rX, _t3), 1.0)));
         }
     }
 
@@ -1108,6 +1129,9 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @return the resulting vector
      */
@@ -1119,9 +1143,9 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
         double _t11 = Math.fma(_t9, _t9, _t8 * _t8);
         double _t13 = Math.fma(_t7, _t7, _t11) * 1.0E-15;
         if (_t11 < _t13) {
-            return new Double3(0.0, Math.atan2(2.0 * Math.fma(this.rX, this.rZ, this.rY * this.rW), Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0)), Math.asin(Math.min(1.0, Math.max(-1.0, _t7))));
+            return new Double3(0.0, Math.atan2(2.0 * Math.fma(this.rX, this.rZ, this.rY * this.rW), Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0)), Math.atan2(_t7, Math.sqrt(_t11)));
         } else {
-            return new Double3(Math.atan2(2.0 * Math.fma(this.rX, this.rW, -(this.rY * this.rZ)), Math.fma(-2.0, Math.fma(this.rX, this.rX, _t0), 1.0)), Math.atan2(_t8, _t9), Math.asin(Math.min(1.0, Math.max(-1.0, _t7))));
+            return new Double3(Math.atan2(2.0 * Math.fma(this.rX, this.rW, -(this.rY * this.rZ)), Math.fma(-2.0, Math.fma(this.rX, this.rX, _t0), 1.0)), Math.atan2(_t8, _t9), Math.atan2(_t7, Math.sqrt(_t11)));
         }
     }
 
@@ -1132,6 +1156,9 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @return the resulting vector
      */
@@ -1143,9 +1170,9 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
         double _t11 = Math.fma(_t9, _t9, _t8 * _t8);
         double _t13 = Math.fma(_t7, _t7, _t11) * 1.0E-15;
         if (_t11 < _t13) {
-            return new Double3(Math.asin(Math.min(1.0, Math.max(-1.0, _t7))), 0.0, Math.atan2(2.0 * Math.fma(this.rX, this.rY, this.rZ * this.rW), Math.fma(-2.0, Math.fma(this.rY, this.rY, _t1), 1.0)));
+            return new Double3(Math.atan2(_t7, Math.sqrt(_t11)), 0.0, Math.atan2(2.0 * Math.fma(this.rX, this.rY, this.rZ * this.rW), Math.fma(-2.0, Math.fma(this.rY, this.rY, _t1), 1.0)));
         } else {
-            return new Double3(Math.asin(Math.min(1.0, Math.max(-1.0, _t7))), Math.atan2(2.0 * Math.fma(this.rY, this.rW, -(this.rX * this.rZ)), Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0)), Math.atan2(_t8, _t9));
+            return new Double3(Math.atan2(_t7, Math.sqrt(_t11)), Math.atan2(2.0 * Math.fma(this.rY, this.rW, -(this.rX * this.rZ)), Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0)), Math.atan2(_t8, _t9));
         }
     }
 
@@ -1156,6 +1183,9 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @return the resulting vector
      */
@@ -1167,9 +1197,9 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
         double _t11 = Math.fma(_t9, _t9, _t7 * _t7);
         double _t13 = Math.fma(_t8, _t8, _t11) * 1.0E-15;
         if (_t11 < _t13) {
-            return new Double3(0.0, Math.asin(Math.min(1.0, Math.max(-1.0, _t8))), Math.atan2(2.0 * Math.fma(this.rZ, this.rW, -(this.rX * this.rY)), Math.fma(-2.0, Math.fma(this.rX, this.rX, _t0), 1.0)));
+            return new Double3(0.0, Math.atan2(_t8, Math.sqrt(_t11)), Math.atan2(2.0 * Math.fma(this.rZ, this.rW, -(this.rX * this.rY)), Math.fma(-2.0, Math.fma(this.rX, this.rX, _t0), 1.0)));
         } else {
-            return new Double3(Math.atan2(2.0 * Math.fma(this.rX, this.rW, this.rY * this.rZ), Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0)), Math.asin(Math.min(1.0, Math.max(-1.0, _t8))), Math.atan2(_t7, _t9));
+            return new Double3(Math.atan2(2.0 * Math.fma(this.rX, this.rW, this.rY * this.rZ), Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0)), Math.atan2(_t8, Math.sqrt(_t11)), Math.atan2(_t7, _t9));
         }
     }
 
@@ -2118,6 +2148,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
     /**
      * Compare this value component-wise against {@code other}, allowing a difference of at
      * most {@code epsilon} per component.
+     * <p>
+     * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+     * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and
+     * a NaN component never compares equal to anything.
      *
      * @param other the value to compare against
      * @param epsilon the maximum allowed difference per component
@@ -2205,6 +2239,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2219,6 +2257,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -2234,6 +2276,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2251,6 +2297,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleRigid} holding the loaded elements
@@ -2265,6 +2315,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -2280,6 +2334,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleRigid} holding the loaded elements
@@ -2297,6 +2355,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2311,6 +2373,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -2326,6 +2392,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2343,6 +2413,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleRigid} holding the loaded elements
@@ -2357,6 +2431,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -2372,6 +2450,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleRigid} holding the loaded elements
@@ -2407,6 +2489,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
 
     /**
      * Store the elements into the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -2415,6 +2501,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
 
     /**
      * Store the elements into the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -2426,6 +2516,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
 
     /**
      * Load the elements from the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code DoubleRigid} holding the loaded elements
@@ -2434,6 +2528,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
 
     /**
      * Load the elements from the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -2504,6 +2602,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2518,6 +2620,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -2533,6 +2639,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -2550,6 +2660,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleRigid} holding the loaded elements
@@ -2564,6 +2678,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -2579,6 +2697,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleRigid} holding the loaded elements
@@ -2596,6 +2718,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2610,6 +2736,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -2625,6 +2755,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -2642,6 +2776,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleRigid} holding the loaded elements
@@ -2656,6 +2794,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -2671,6 +2813,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleRigid} holding the loaded elements
@@ -2706,6 +2852,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
 
     /**
      * Store the elements into the given memory segment, converting each element to {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -2715,6 +2865,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
     /**
      * Store the elements into the given memory segment, converting each element to {@code float},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -2726,6 +2880,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
 
     /**
      * Load the elements from the given memory segment, converting each element from {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code DoubleRigid} holding the loaded elements
@@ -2735,6 +2893,10 @@ public record DoubleRigid(double tX, double tY, double tZ, double rX, double rY,
     /**
      * Load the elements from the given memory segment, converting each element from {@code float},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

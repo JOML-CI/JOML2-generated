@@ -361,12 +361,12 @@ public final class Double2Impl implements Double2 {
                 dd[1] = (byte) Math.ceil(sd[1]);
             }
             case HALF_TOWARD_POSITIVE_INFINITY -> {
-                dd[0] = (byte) Math.round(sd[0]);
-                dd[1] = (byte) Math.round(sd[1]);
+                dd[0] = (byte) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(sd[0])));
+                dd[1] = (byte) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(sd[1])));
             }
             case HALF_AWAY_FROM_ZERO -> {
-                dd[0] = (byte) (sd[0] >= 0 ? Math.floor(sd[0] + 0.5) : Math.ceil(sd[0] - 0.5));
-                dd[1] = (byte) (sd[1] >= 0 ? Math.floor(sd[1] + 0.5) : Math.ceil(sd[1] - 0.5));
+                dd[0] = (byte) (Math.abs(sd[0] - Math.rint(sd[0])) == 0.5 ? sd[0] + Math.copySign(0.5, sd[0]) : Math.rint(sd[0]));
+                dd[1] = (byte) (Math.abs(sd[1] - Math.rint(sd[1])) == 0.5 ? sd[1] + Math.copySign(0.5, sd[1]) : Math.rint(sd[1]));
             }
             case HALF_EVEN -> {
                 dd[0] = (byte) Math.rint(sd[0]);
@@ -417,12 +417,12 @@ public final class Double2Impl implements Double2 {
                 dd[1] = (short) Math.ceil(sd[1]);
             }
             case HALF_TOWARD_POSITIVE_INFINITY -> {
-                dd[0] = (short) Math.round(sd[0]);
-                dd[1] = (short) Math.round(sd[1]);
+                dd[0] = (short) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(sd[0])));
+                dd[1] = (short) (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(sd[1])));
             }
             case HALF_AWAY_FROM_ZERO -> {
-                dd[0] = (short) (sd[0] >= 0 ? Math.floor(sd[0] + 0.5) : Math.ceil(sd[0] - 0.5));
-                dd[1] = (short) (sd[1] >= 0 ? Math.floor(sd[1] + 0.5) : Math.ceil(sd[1] - 0.5));
+                dd[0] = (short) (Math.abs(sd[0] - Math.rint(sd[0])) == 0.5 ? sd[0] + Math.copySign(0.5, sd[0]) : Math.rint(sd[0]));
+                dd[1] = (short) (Math.abs(sd[1] - Math.rint(sd[1])) == 0.5 ? sd[1] + Math.copySign(0.5, sd[1]) : Math.rint(sd[1]));
             }
             case HALF_EVEN -> {
                 dd[0] = (short) Math.rint(sd[0]);
@@ -477,8 +477,8 @@ public final class Double2Impl implements Double2 {
                 dd[1] = (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(sd[1])));
             }
             case HALF_AWAY_FROM_ZERO -> {
-                dd[0] = (int) (sd[0] >= 0 ? Math.floor(sd[0] + 0.5) : Math.ceil(sd[0] - 0.5));
-                dd[1] = (int) (sd[1] >= 0 ? Math.floor(sd[1] + 0.5) : Math.ceil(sd[1] - 0.5));
+                dd[0] = (int) (Math.abs(sd[0] - Math.rint(sd[0])) == 0.5 ? sd[0] + Math.copySign(0.5, sd[0]) : Math.rint(sd[0]));
+                dd[1] = (int) (Math.abs(sd[1] - Math.rint(sd[1])) == 0.5 ? sd[1] + Math.copySign(0.5, sd[1]) : Math.rint(sd[1]));
             }
             case HALF_EVEN -> {
                 dd[0] = (int) Math.rint(sd[0]);
@@ -533,8 +533,8 @@ public final class Double2Impl implements Double2 {
                 dd[1] = Math.round(sd[1]);
             }
             case HALF_AWAY_FROM_ZERO -> {
-                dd[0] = (long) (sd[0] >= 0 ? Math.floor(sd[0] + 0.5) : Math.ceil(sd[0] - 0.5));
-                dd[1] = (long) (sd[1] >= 0 ? Math.floor(sd[1] + 0.5) : Math.ceil(sd[1] - 0.5));
+                dd[0] = (long) (Math.abs(sd[0] - Math.rint(sd[0])) == 0.5 ? sd[0] + Math.copySign(0.5, sd[0]) : Math.rint(sd[0]));
+                dd[1] = (long) (Math.abs(sd[1] - Math.rint(sd[1])) == 0.5 ? sd[1] + Math.copySign(0.5, sd[1]) : Math.rint(sd[1]));
             }
             case HALF_EVEN -> {
                 dd[0] = (long) Math.rint(sd[0]);
@@ -1068,6 +1068,9 @@ public final class Double2Impl implements Double2 {
 
     /**
      * Compute the angle in radians between this vector and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other vector
      * @return the angle in radians between this vector and {@code other}
@@ -1079,6 +1082,9 @@ public final class Double2Impl implements Double2 {
 
     /**
      * Compute the angle in radians between this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
@@ -1086,7 +1092,7 @@ public final class Double2Impl implements Double2 {
      */
     public double angleBetween(double otherX, double otherY) {
         double[] sd = this.data;
-        return Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(otherX, sd[0], otherY * sd[1]) * (1.0 / Math.sqrt(Math.fma(sd[0], sd[0], sd[1] * sd[1]))) * (1.0 / Math.sqrt(Math.fma(otherX, otherX, otherY * otherY))))));
+        return Math.atan2(Math.abs(Math.fma(otherY, sd[0], -(otherX * sd[1]))), Math.fma(otherX, sd[0], otherY * sd[1]));
     }
 
 
@@ -1387,6 +1393,10 @@ public final class Double2Impl implements Double2 {
 
     /**
      * Compute the distance between this vector and {@code other}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the difference vector must lie
+     * roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param other the other vector
      * @return the distance between this vector and {@code other}
@@ -1398,6 +1408,10 @@ public final class Double2Impl implements Double2 {
 
     /**
      * Compute the distance between this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the difference vector must lie
+     * roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
@@ -1663,6 +1677,10 @@ public final class Double2Impl implements Double2 {
 
     /**
      * Compute the length of this vector.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this vector must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @return the length of this vector
      */
@@ -1963,8 +1981,8 @@ public final class Double2Impl implements Double2 {
      * <p>
      * The squared length is formed at the component precision, so components whose squares overflow
      * or underflow that precision are out of domain: the result is the zero vector rather than a
-     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}).
+     * unit vector. Rescale such inputs before normalizing (the magnitude must lie roughly between
+     * 1e-19 and 1.8e19 for {@code float}, 1.5e-154 and 1.3e154 for {@code double}).
      *
      * @param dest will hold the result
      * @return dest
@@ -2011,6 +2029,9 @@ public final class Double2Impl implements Double2 {
 
     /**
      * Compute the signed angle in radians between this vector and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other vector
      * @return the signed angle in radians between this vector and {@code other}
@@ -2022,6 +2043,9 @@ public final class Double2Impl implements Double2 {
 
     /**
      * Compute the signed angle in radians between this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}

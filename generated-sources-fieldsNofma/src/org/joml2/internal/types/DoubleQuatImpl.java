@@ -827,6 +827,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Interpolate between this quaternion and {@code target} using the interpolation factor
      * {@code alpha} and normalize the result and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -842,6 +846,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * Interpolate between this quaternion and ({@code targetX}, {@code targetY}, {@code targetZ},
      * {@code targetW}) using the interpolation factor {@code alpha} and normalize the result and
      * store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -882,6 +890,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * Interpolate along the shortest path between this quaternion and {@code target} using the
      * interpolation factor {@code alpha} and normalize the result and store the result in
      * {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -897,6 +909,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * Interpolate along the shortest path between this quaternion and ({@code targetX},
      * {@code targetY}, {@code targetZ}, {@code targetW}) using the interpolation factor
      * {@code alpha} and normalize the result and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -1301,17 +1317,23 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Compute the rotation angle in radians of this quaternion, within {@code [0, 2*PI]} (assumes
      * unit length).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @return the rotation angle in radians of this quaternion, within {@code [0, 2*PI]} (assumes
      *        unit length)
      */
     public double angle() {
-        return 2.0 * Math.acos(Math.min(1.0, Math.max(-1.0, this.w)));
+        return 2.0 * Math.atan2(Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z), this.w);
     }
 
 
     /**
      * Compute the angle in radians between this quaternion and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other quaternion
      * @return the angle in radians between this quaternion and {@code other}
@@ -1324,6 +1346,9 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Compute the angle in radians between this quaternion and ({@code otherX}, {@code otherY},
      * {@code otherZ}, {@code otherW}).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param otherX the {@code x} component of the quaternion
      *        {@code (otherX, otherY, otherZ, otherW)}
@@ -1337,7 +1362,28 @@ public final class DoubleQuatImpl implements DoubleQuat {
      *        {@code otherZ}, {@code otherW})
      */
     public double angleTo(double otherX, double otherY, double otherZ, double otherW) {
-        return 2.0 * Math.acos(Math.min(1.0, Math.abs(otherX * this.x + otherY * this.y + otherZ * this.z + otherW * this.w)));
+        double _t11 = -(otherX * this.x + otherY * this.y + otherZ * this.z + otherW * this.w);
+        double _t12, _t13, _t14, _t15;
+        if (_t11 > 0.0) {
+            _t12 = -otherX;
+            _t13 = -otherY;
+            _t14 = -otherZ;
+            _t15 = -otherW;
+        } else {
+            _t12 = otherX;
+            _t13 = otherY;
+            _t14 = otherZ;
+            _t15 = otherW;
+        }
+        double _t16 = this.x - _t12;
+        double _t17 = this.y - _t13;
+        double _t18 = this.z - _t14;
+        double _t19 = this.w - _t15;
+        double _t20 = this.x + _t12;
+        double _t21 = this.y + _t13;
+        double _t22 = this.z + _t14;
+        double _t23 = this.w + _t15;
+        return 4.0 * Math.atan2(Math.sqrt(_t16 * _t16 + _t17 * _t17 + _t18 * _t18 + _t19 * _t19), Math.sqrt(_t20 * _t20 + _t21 * _t21 + _t22 * _t22 + _t23 * _t23));
     }
 
 
@@ -1551,6 +1597,9 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1576,7 +1625,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
             d.z = Math.atan2(2.0 * (this.z * this.w - this.x * this.y), 1.0 - 2.0 * (_t1 + _t6));
             d.x = _buf0;
         }
-        d.y = Math.asin(Math.min(1.0, Math.max(-1.0, _t12)));
+        d.y = Math.atan2(_t12, Math.sqrt(_t17));
         return d;
     }
 
@@ -1587,6 +1636,9 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1612,7 +1664,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
             d.y = Math.atan2(2.0 * (this.x * this.z + this.y * this.w), 1.0 - 2.0 * (_t6 + _t1));
             d.x = _buf0;
         }
-        d.z = Math.asin(Math.min(1.0, Math.max(-1.0, _t12)));
+        d.z = Math.atan2(_t12, Math.sqrt(_t17));
         return d;
     }
 
@@ -1623,6 +1675,9 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1648,7 +1703,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
             d.z = Math.atan2(2.0 * (this.x * this.y + this.z * this.w), 1.0 - 2.0 * (_t2 + _t6));
             d.y = _buf0;
         }
-        d.x = Math.asin(Math.min(1.0, Math.max(-1.0, _t10)));
+        d.x = Math.atan2(_t10, Math.sqrt(_t17));
         return d;
     }
 
@@ -1659,6 +1714,9 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1682,7 +1740,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
             d.x = Math.atan2(2.0 * (this.x * this.w - this.y * this.z), 1.0 - 2.0 * (_t6 + _t1));
             d.y = Math.atan2(_t11, _t13);
         }
-        d.z = Math.asin(Math.min(1.0, Math.max(-1.0, _t12)));
+        d.z = Math.atan2(_t12, Math.sqrt(_t17));
         return d;
     }
 
@@ -1693,6 +1751,9 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1716,7 +1777,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
             d.y = Math.atan2(2.0 * (this.y * this.w - this.x * this.z), 1.0 - 2.0 * (_t2 + _t6));
             d.z = Math.atan2(_t12, _t13);
         }
-        d.x = Math.asin(Math.min(1.0, Math.max(-1.0, _t10)));
+        d.x = Math.atan2(_t10, Math.sqrt(_t17));
         return d;
     }
 
@@ -1727,6 +1788,9 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1750,7 +1814,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
             d.x = Math.atan2(2.0 * (this.x * this.w + this.y * this.z), 1.0 - 2.0 * (_t6 + _t0));
             d.z = Math.atan2(_t11, _t13);
         }
-        d.y = Math.asin(Math.min(1.0, Math.max(-1.0, _t12)));
+        d.y = Math.atan2(_t12, Math.sqrt(_t17));
         return d;
     }
 
@@ -1817,6 +1881,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Obtain the direction of {@code -X} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1844,6 +1913,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Obtain the direction of {@code -Y} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1871,6 +1945,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Obtain the direction of {@code -Z} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2024,6 +2103,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Obtain the direction of {@code +X} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2051,6 +2135,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Obtain the direction of {@code +Y} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2078,6 +2167,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Obtain the direction of {@code +Z} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2104,6 +2198,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
 
     /**
      * Compute the length of this quaternion.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @return the length of this quaternion
      */
@@ -2124,25 +2222,27 @@ public final class DoubleQuatImpl implements DoubleQuat {
 
     /**
      * Compute the natural logarithm of this quaternion and store the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code double}
+     * resolution down to 0 - small rotations are not truncated.
      *
      * @param dest will hold the result
      * @return dest
      */
     public DoubleQuat log(@Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        double _t5 = this.x * this.x + this.y * this.y + this.z * this.z;
-        double _t7 = _t5 + this.w * this.w;
-        double _t11 = Math.acos(this.w * (1.0 / Math.sqrt(_t7))) * (1.0 / Math.sqrt(_t5));
-        if (_t5 > 0.0) {
-            d.x = this.x * _t11;
-            d.y = this.y * _t11;
-            d.z = this.z * _t11;
+        double _t4 = this.x * this.x + this.y * this.y + this.z * this.z;
+        double _t8 = Math.atan2(Math.sqrt(_t4), this.w) * (1.0 / Math.sqrt(_t4));
+        if (_t4 > 0.0) {
+            d.x = this.x * _t8;
+            d.y = this.y * _t8;
+            d.z = this.z * _t8;
         } else {
             d.x = 0.0;
             d.y = 0.0;
             d.z = 0.0;
         }
-        d.w = Math.log(Math.sqrt(_t7));
+        d.w = Math.log(Math.sqrt(_t4 + this.w * this.w));
         return d;
     }
 
@@ -2150,6 +2250,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Obtain the direction of {@code -X} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2177,6 +2282,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Obtain the direction of {@code -Y} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2204,6 +2314,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Obtain the direction of {@code -Z} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2230,6 +2345,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
 
     /**
      * Normalize this quaternion to unit length and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2382,6 +2501,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Obtain the direction of {@code +X} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2409,6 +2533,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Obtain the direction of {@code +Y} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2436,6 +2565,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Obtain the direction of {@code +Z} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1.5e-154} and {@code 1.3e154}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2463,6 +2597,9 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Raise this quaternion to the power of {@code t}, i.e. compute {@code exp(t * log(this))} and
      * store the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code double}
+     * resolution down to 0 - small rotations are not truncated.
      *
      * @param t the exponent
      * @param dest will hold the result
@@ -2471,32 +2608,31 @@ public final class DoubleQuatImpl implements DoubleQuat {
     public DoubleQuat pow(double t, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         double _t5 = this.x * this.x + this.y * this.y + this.z * this.z;
-        double _t7 = _t5 + this.w * this.w;
-        double _t14 = Math.exp(t * Math.log(Math.sqrt(_t7)));
-        double _t15 = Math.acos(this.w * (1.0 / Math.sqrt(_t7))) * (1.0 / Math.sqrt(_t5));
-        double _t22, _t23, _t24;
+        double _t13 = Math.exp(t * Math.log(Math.sqrt(_t5 + this.w * this.w)));
+        double _t14 = Math.atan2(Math.sqrt(_t5), this.w) * (1.0 / Math.sqrt(_t5));
+        double _t21, _t22, _t23;
         if (_t5 > 0.0) {
-            _t22 = t * this.x * _t15;
-            _t23 = t * this.y * _t15;
-            _t24 = t * this.z * _t15;
+            _t21 = t * this.x * _t14;
+            _t22 = t * this.y * _t14;
+            _t23 = t * this.z * _t14;
         } else {
+            _t21 = t * 0.0;
             _t22 = t * 0.0;
             _t23 = t * 0.0;
-            _t24 = t * 0.0;
         }
-        double _t29 = _t22 * _t22 + _t23 * _t23 + _t24 * _t24;
-        double _t30 = Math.sqrt(_t29);
-        double _t34 = Math.sin(_t30) * _t14 * (1.0 / Math.sqrt(_t29));
-        if (_t29 > 0.0) {
-            d.x = _t22 * _t34;
-            d.y = _t23 * _t34;
-            d.z = _t24 * _t34;
+        double _t28 = _t21 * _t21 + _t22 * _t22 + _t23 * _t23;
+        double _t29 = Math.sqrt(_t28);
+        double _t33 = Math.sin(_t29) * _t13 * (1.0 / Math.sqrt(_t28));
+        if (_t28 > 0.0) {
+            d.x = _t21 * _t33;
+            d.y = _t22 * _t33;
+            d.z = _t23 * _t33;
         } else {
             d.x = 0.0;
             d.y = 0.0;
             d.z = 0.0;
         }
-        d.w = Math.cos(_t30) * _t14;
+        d.w = Math.cos(_t29) * _t13;
         return d;
     }
 
@@ -2550,6 +2686,9 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Rotate this quaternion towards {@code target}, by at most the given maximum angle and store
      * the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code double}
+     * resolution down to 0 - small rotations are not truncated.
      *
      * @param target the target rotation
      * @param step the maximum rotation angle in radians
@@ -2564,6 +2703,9 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Rotate this quaternion towards ({@code targetX}, {@code targetY}, {@code targetZ},
      * {@code targetW}), by at most the given maximum angle and store the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code double}
+     * resolution down to 0 - small rotations are not truncated.
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -2584,42 +2726,50 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t14 = Math.acos(Math.min(1.0, Math.abs(_t10)));
         double _t15 = Math.sin(_t14);
         double _t15_inv = 1.0 / _t15;
-        double _t16 = 2.0 * _t14;
-        double _t18, _t19, _t20, _t21;
+        double _t16, _t17, _t18, _t19;
         if (_t12 > 0.0) {
-            _t18 = -targetX;
-            _t19 = -targetY;
-            _t20 = -targetZ;
-            _t21 = -targetW;
+            _t16 = -targetX;
+            _t17 = -targetY;
+            _t18 = -targetZ;
+            _t19 = -targetW;
         } else {
-            _t18 = targetX;
-            _t19 = targetY;
-            _t20 = targetZ;
-            _t21 = targetW;
+            _t16 = targetX;
+            _t17 = targetY;
+            _t18 = targetZ;
+            _t19 = targetW;
         }
-        double _t23 = _t16 > 0.0 ? Math.min(1.0, step / _t16) : 0.0;
-        double _t24 = 1.0 - _t23;
-        double _t30 = Math.sin(_t14 * _t23);
-        double _t32 = Math.sin(_t24 * _t14);
-        double _t57, _t58, _t59, _t60;
+        double _t20 = this.x - _t16;
+        double _t21 = this.y - _t17;
+        double _t22 = this.z - _t18;
+        double _t23 = this.w - _t19;
+        double _t24 = this.x + _t16;
+        double _t25 = this.y + _t17;
+        double _t26 = this.z + _t18;
+        double _t27 = this.w + _t19;
+        double _t45 = 4.0 * Math.atan2(Math.sqrt(_t20 * _t20 + _t21 * _t21 + _t22 * _t22 + _t23 * _t23), Math.sqrt(_t24 * _t24 + _t25 * _t25 + _t26 * _t26 + _t27 * _t27));
+        double _t48 = _t45 > 0.0 ? Math.min(1.0, step / _t45) : 0.0;
+        double _t49 = 1.0 - _t48;
+        double _t55 = Math.sin(_t14 * _t48);
+        double _t57 = Math.sin(_t49 * _t14);
+        double _t82, _t83, _t84, _t85;
         if (_t15 > 0.0) {
-            _t57 = (this.x * _t32 + _t30 * _t18) * _t15_inv;
-            _t58 = (this.y * _t32 + _t30 * _t19) * _t15_inv;
-            _t59 = (this.z * _t32 + _t30 * _t20) * _t15_inv;
-            _t60 = (this.w * _t32 + _t30 * _t21) * _t15_inv;
+            _t82 = (this.x * _t57 + _t55 * _t16) * _t15_inv;
+            _t83 = (this.y * _t57 + _t55 * _t17) * _t15_inv;
+            _t84 = (this.z * _t57 + _t55 * _t18) * _t15_inv;
+            _t85 = (this.w * _t57 + _t55 * _t19) * _t15_inv;
         } else {
-            _t57 = this.x * _t24 + _t18 * _t23;
-            _t58 = this.y * _t24 + _t19 * _t23;
-            _t59 = this.z * _t24 + _t20 * _t23;
-            _t60 = this.w * _t24 + _t21 * _t23;
+            _t82 = this.x * _t49 + _t16 * _t48;
+            _t83 = this.y * _t49 + _t17 * _t48;
+            _t84 = this.z * _t49 + _t18 * _t48;
+            _t85 = this.w * _t49 + _t19 * _t48;
         }
-        double _t67 = _t57 * _t57 + _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
-        double _t68 = (1.0 / Math.sqrt(_t67));
-        if (_t67 > 0.0) {
-            d.x = _t68 * _t57;
-            d.y = _t68 * _t58;
-            d.z = _t68 * _t59;
-            d.w = _t68 * _t60;
+        double _t92 = _t82 * _t82 + _t83 * _t83 + _t84 * _t84 + _t85 * _t85;
+        double _t93 = (1.0 / Math.sqrt(_t92));
+        if (_t92 > 0.0) {
+            d.x = _t93 * _t82;
+            d.y = _t93 * _t83;
+            d.z = _t93 * _t84;
+            d.w = _t93 * _t85;
         } else {
             d.x = 0.0;
             d.y = 0.0;
@@ -2900,6 +3050,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * Set this quaternion to the rotation that rotates {@code fromDir} onto {@code toDir} (both
      * must be unit vectors; for opposite vectors an arbitrary perpendicular rotation axis is
      * chosen).
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDir the vector
      * @param toDir the vector
@@ -2914,6 +3069,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * Set this quaternion to the rotation that rotates ({@code fromDirX}, {@code fromDirY},
      * {@code fromDirZ}) onto ({@code toDirX}, {@code toDirY}, {@code toDirZ}) (both must be unit
      * vectors; for opposite vectors an arbitrary perpendicular rotation axis is chosen).
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDirX the {@code x} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
      * @param fromDirY the {@code y} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
@@ -2924,32 +3084,38 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * @return this
      */
     @Mutated public DoubleQuat makeRotationTo(double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ) {
-        double _t8 = fromDirX * fromDirX + fromDirY * fromDirY;
-        double _t10, _t11, _t12;
-        if (_t8 > 0.0) {
-            _t10 = fromDirY;
-            _t11 = 0.0;
-            _t12 = -fromDirX;
+        double _t3 = fromDirX + toDirX;
+        double _t4 = fromDirY + toDirY;
+        double _t5 = fromDirZ + toDirZ;
+        double _t17 = fromDirY * toDirZ - fromDirZ * toDirY;
+        double _t18 = fromDirZ * toDirX - fromDirX * toDirZ;
+        double _t19 = fromDirX * toDirY - fromDirY * toDirX;
+        double _t20 = fromDirX * fromDirX + fromDirY * fromDirY;
+        double _t21, _t22, _t23;
+        if (_t20 > 0.0) {
+            _t21 = fromDirY;
+            _t22 = 0.0;
+            _t23 = -fromDirX;
         } else {
-            _t10 = 0.0;
-            _t11 = -fromDirY;
-            _t12 = fromDirZ;
+            _t21 = 0.0;
+            _t22 = -fromDirY;
+            _t23 = fromDirZ;
         }
-        double _t13 = fromDirX * toDirX + (fromDirY * toDirY + (fromDirZ * toDirZ + 1.0));
-        double _t14 = 2.0 * _t13;
-        double _t15 = (1.0 / Math.sqrt(_t14));
-        double _t20 = _t10 * _t10 + _t12 * _t12 + _t11 * _t11;
-        double _t21 = (1.0 / Math.sqrt(_t20));
-        if (_t13 > 1.0E-6) {
-            this.x = (fromDirY * toDirZ - fromDirZ * toDirY) * _t15;
-            this.y = (fromDirZ * toDirX - fromDirX * toDirZ) * _t15;
-            this.z = (fromDirX * toDirY - fromDirY * toDirX) * _t15;
-            this.w = 0.5 * Math.sqrt(_t14);
+        double _t29 = _t3 * _t3 + _t4 * _t4 + _t5 * _t5;
+        double _t31 = 0.5 * _t29;
+        double _t37 = _t21 * _t21 + _t23 * _t23 + _t22 * _t22;
+        double _t38 = (1.0 / Math.sqrt(_t37));
+        double _t41 = (1.0 / Math.sqrt(_t17 * _t17 + (_t18 * _t18 + (_t19 * _t19 + _t29 * _t29 / (2.0 * 2.0)))));
+        if (_t31 > 1.0E-6) {
+            this.x = _t17 * _t41;
+            this.y = _t18 * _t41;
+            this.z = _t19 * _t41;
+            this.w = 0.5 * _t29 * _t41;
         } else {
-            if (_t20 > 0.0) {
-                this.x = _t21 * _t10;
-                this.y = _t21 * _t12;
-                this.z = _t21 * _t11;
+            if (_t37 > 0.0) {
+                this.x = _t38 * _t21;
+                this.y = _t38 * _t23;
+                this.z = _t38 * _t22;
                 this.w = 0.0;
             } else {
                 this.x = 0.0;
@@ -3346,6 +3512,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDir the vector
      * @param toDir the vector
@@ -3366,6 +3537,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDirX the {@code x} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
      * @param fromDirY the {@code y} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
@@ -3378,43 +3554,51 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public DoubleQuat rotateTo(double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        double _t15 = fromDirX * fromDirX + fromDirY * fromDirY;
-        double _t19, _t20, _t21;
-        if (_t15 > 0.0) {
-            _t19 = fromDirY;
-            _t20 = 0.0;
-            _t21 = -fromDirX;
+        double _t3 = fromDirX + toDirX;
+        double _t4 = fromDirY + toDirY;
+        double _t5 = fromDirZ + toDirZ;
+        double _t17 = fromDirY * toDirZ - fromDirZ * toDirY;
+        double _t18 = fromDirZ * toDirX - fromDirX * toDirZ;
+        double _t19 = fromDirX * toDirY - fromDirY * toDirX;
+        double _t20 = fromDirX * fromDirX + fromDirY * fromDirY;
+        double _t21, _t22, _t23;
+        if (_t20 > 0.0) {
+            _t21 = fromDirY;
+            _t22 = 0.0;
+            _t23 = -fromDirX;
         } else {
-            _t19 = 0.0;
-            _t20 = -fromDirY;
-            _t21 = fromDirZ;
+            _t21 = 0.0;
+            _t22 = -fromDirY;
+            _t23 = fromDirZ;
         }
-        double _t22 = fromDirX * toDirX + (fromDirY * toDirY + (fromDirZ * toDirZ + 1.0));
-        double _t23 = 2.0 * _t22;
-        double _t25 = (1.0 / Math.sqrt(_t23));
-        double _t33 = _t22 > 1.0E-6 ? 0.5 * Math.sqrt(_t23) : 0.0;
-        double _t35 = _t19 * _t19 + _t21 * _t21 + _t20 * _t20;
-        double _t36 = (1.0 / Math.sqrt(_t35));
-        double _t43, _t44, _t45;
-        if (_t22 > 1.0E-6) {
-            _t43 = (fromDirY * toDirZ - fromDirZ * toDirY) * _t25;
-            _t44 = (fromDirX * toDirY - fromDirY * toDirX) * _t25;
-            _t45 = (fromDirZ * toDirX - fromDirX * toDirZ) * _t25;
+        double _t29 = _t3 * _t3 + _t4 * _t4 + _t5 * _t5;
+        double _t31 = 0.5 * _t29;
+        double _t37 = _t21 * _t21 + _t23 * _t23 + _t22 * _t22;
+        double _t38 = (1.0 / Math.sqrt(_t37));
+        double _t44 = (1.0 / Math.sqrt(_t17 * _t17 + (_t18 * _t18 + (_t19 * _t19 + _t29 * _t29 / (2.0 * 2.0)))));
+        double _t50, _t54, _t55, _t56;
+        if (_t31 > 1.0E-6) {
+            _t50 = 0.5 * _t29 * _t44;
+            _t54 = _t17 * _t44;
+            _t55 = _t19 * _t44;
+            _t56 = _t18 * _t44;
         } else {
-            if (_t35 > 0.0) {
-                _t43 = _t36 * _t19;
-                _t44 = _t36 * _t20;
-                _t45 = _t36 * _t21;
+            if (_t37 > 0.0) {
+                _t50 = 0.0;
+                _t54 = _t38 * _t21;
+                _t55 = _t38 * _t22;
+                _t56 = _t38 * _t23;
             } else {
-                _t43 = 0.0;
-                _t44 = 0.0;
-                _t45 = 0.0;
+                _t50 = 0.0;
+                _t54 = 0.0;
+                _t55 = 0.0;
+                _t56 = 0.0;
             }
         }
-        double _buf0 = this.x * _t33 + this.w * _t43 + (this.y * _t44 - this.z * _t45);
-        double _buf1 = this.y * _t33 + this.z * _t43 + (this.w * _t45 - this.x * _t44);
-        double _buf2 = this.x * _t45 + this.w * _t44 + (this.z * _t33 - this.y * _t43);
-        d.w = this.w * _t33 - this.x * _t43 - this.y * _t45 - this.z * _t44;
+        double _buf0 = this.x * _t50 + this.w * _t54 + (this.y * _t55 - this.z * _t56);
+        double _buf1 = this.y * _t50 + this.z * _t54 + (this.w * _t56 - this.x * _t55);
+        double _buf2 = this.x * _t56 + this.w * _t55 + (this.z * _t50 - this.y * _t54);
+        d.w = this.w * _t50 - this.x * _t54 - this.y * _t56 - this.z * _t55;
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;

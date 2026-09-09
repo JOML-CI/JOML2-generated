@@ -13,6 +13,14 @@ import java.nio.FloatBuffer;
  * All operations leave the receiver unchanged and return their result as a value. An operation
  * whose result equals one of its operands may return that operand instead of allocating a new
  * instance; as a value class, instances have no identity and may be flattened by the JVM.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns).
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  *
  * @param v0X the {@code v0X} component
  * @param v0Y the {@code v0Y} component
@@ -171,13 +179,24 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * The three components weight the triangle's first, second and third vertex respectively and
      * sum to 1. A point that is not coplanar with the triangle yields the coordinates of its
-     * orthogonal projection onto the triangle's plane.
+     * orthogonal projection onto the triangle's plane. The weights are formed with the
+     * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
+     * accurate for thin triangles.
      *
      * @param p the vector
      * @return the resulting vector
      */
     public Double3 barycentric(Double3 p) {
         return barycentric(p.x(), p.y(), p.z());
+    }
+
+    /** Private tail of {@code barycentric}; reached only through it. */
+    private Double3 barycentric_s1948e2d8_tail(double _t28, double _t30, double _t32, double _t0, double _t1, double _t2, double _t3, double _t6, double _t7, double _t4, double _t5, double _t8) {
+        double _t43 = Math.fma(_t28, _t28, Math.fma(_t30, _t30, _t32 * _t32));
+        double _t43_inv = 1.0 / _t43;
+        double _t45 = Math.fma(Math.fma(_t0, _t1, -(_t2 * _t3)), _t28, Math.fma(Math.fma(_t2, _t6, -(_t7 * _t1)), _t30, Math.fma(_t7, _t3, -(_t0 * _t6)) * _t32)) * _t43_inv;
+        double _t46 = Math.fma(Math.fma(_t2, _t4, -(_t0 * _t5)), _t28, Math.fma(Math.fma(_t0, _t8, -(_t7 * _t4)), _t32, Math.fma(_t7, _t5, -(_t2 * _t8)) * _t30)) * _t43_inv;
+        return new Double3(1.0 - _t45 - _t46, _t45, _t46);
     }
 
 
@@ -187,7 +206,9 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * The three components weight the triangle's first, second and third vertex respectively and
      * sum to 1. A point that is not coplanar with the triangle yields the coordinates of its
-     * orthogonal projection onto the triangle's plane.
+     * orthogonal projection onto the triangle's plane. The weights are formed with the
+     * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
+     * accurate for thin triangles.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -195,25 +216,19 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * @return the resulting vector
      */
     public Double3 barycentric(double pX, double pY, double pZ) {
-        double _t0 = pZ - this.v0Z;
-        double _t1 = this.v1Z - this.v0Z;
-        double _t2 = pX - this.v0X;
-        double _t3 = this.v1X - this.v0X;
-        double _t4 = pY - this.v0Y;
+        double _t0 = pX - this.v0X;
+        double _t1 = this.v2Y - this.v0Y;
+        double _t2 = pY - this.v0Y;
+        double _t3 = this.v2X - this.v0X;
+        double _t4 = this.v1X - this.v0X;
         double _t5 = this.v1Y - this.v0Y;
         double _t6 = this.v2Z - this.v0Z;
-        double _t7 = this.v2X - this.v0X;
-        double _t8 = this.v2Y - this.v0Y;
-        double _t19 = Math.fma(_t0, _t1, Math.fma(_t2, _t3, _t4 * _t5));
-        double _t20 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        double _t21 = Math.fma(_t0, _t6, Math.fma(_t2, _t7, _t4 * _t8));
-        double _t22 = Math.fma(_t1, _t6, Math.fma(_t3, _t7, _t5 * _t8));
-        double _t23 = Math.fma(_t1, _t1, Math.fma(_t3, _t3, _t5 * _t5));
-        double _t31 = Math.fma(_t23, _t20, -(_t22 * _t22));
-        double _t31_inv = 1.0 / _t31;
-        double _t33 = Math.fma(_t19, _t20, -(_t21 * _t22)) * _t31_inv;
-        double _t34 = Math.fma(_t21, _t23, -(_t19 * _t22)) * _t31_inv;
-        return new Double3(1.0 - _t33 - _t34, _t33, _t34);
+        double _t7 = pZ - this.v0Z;
+        double _t8 = this.v1Z - this.v0Z;
+        double _t28 = Math.fma(_t4, _t1, -(_t5 * _t3));
+        double _t30 = Math.fma(_t5, _t6, -(_t8 * _t1));
+        double _t32 = Math.fma(_t8, _t3, -(_t4 * _t6));
+        return barycentric_s1948e2d8_tail(_t28, _t30, _t32, _t0, _t1, _t2, _t3, _t6, _t7, _t4, _t5, _t8);
     }
 
 
@@ -431,6 +446,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
     /**
      * Compare this value component-wise against {@code other}, allowing a difference of at
      * most {@code epsilon} per component.
+     * <p>
+     * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+     * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and
+     * a NaN component never compares equal to anything.
      *
      * @param other the value to compare against
      * @param epsilon the maximum allowed difference per component
@@ -524,6 +543,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -538,6 +561,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -553,6 +580,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -570,6 +601,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleTriangle} holding the loaded elements
@@ -584,6 +619,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -599,6 +638,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleTriangle} holding the loaded elements
@@ -616,6 +659,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -630,6 +677,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -645,6 +696,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -662,6 +717,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleTriangle} holding the loaded elements
@@ -676,6 +735,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -691,6 +754,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleTriangle} holding the loaded elements
@@ -726,6 +793,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
 
     /**
      * Store the elements into the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -734,6 +805,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
 
     /**
      * Store the elements into the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -745,6 +820,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
 
     /**
      * Load the elements from the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code DoubleTriangle} holding the loaded elements
@@ -753,6 +832,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
 
     /**
      * Load the elements from the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -827,6 +910,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -841,6 +928,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -856,6 +947,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -873,6 +968,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleTriangle} holding the loaded elements
@@ -887,6 +986,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -902,6 +1005,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleTriangle} holding the loaded elements
@@ -919,6 +1026,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -933,6 +1044,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -948,6 +1063,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -965,6 +1084,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleTriangle} holding the loaded elements
@@ -979,6 +1102,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -994,6 +1121,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleTriangle} holding the loaded elements
@@ -1029,6 +1160,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
 
     /**
      * Store the elements into the given memory segment, converting each element to {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param dest the destination memory segment
      * @return dest
@@ -1038,6 +1173,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
     /**
      * Store the elements into the given memory segment, converting each element to {@code float},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param dest the destination memory segment
@@ -1049,6 +1188,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
 
     /**
      * Load the elements from the given memory segment, converting each element from {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return a new {@code DoubleTriangle} holding the loaded elements
@@ -1058,6 +1201,10 @@ public value record DoubleTriangle(double v0X, double v0Y, double v0Z, double v1
     /**
      * Load the elements from the given memory segment, converting each element from {@code float},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

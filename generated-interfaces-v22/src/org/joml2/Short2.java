@@ -14,6 +14,14 @@ import java.lang.foreign.MemorySegment;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise with {@code ==}. {@code hashCode} is
+ * consistent with it. Only instances of this library's implementation compare equal to each other;
+ * the {@code equals} of a vector never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with an exact, non-negative integer tolerance: the
+ * difference is widened to {@code int} before its magnitude is taken, so the two are compared
+ * exactly without overflow, and a negative {@code epsilon} matches nothing.
  */
 public interface Short2 extends Short2R {
 
@@ -21,7 +29,7 @@ public interface Short2 extends Short2R {
      * Add {@code other} to this vector.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 add(Short2R other) { return add(other, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -30,7 +38,7 @@ public interface Short2 extends Short2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 add(short x, short y) { return add(x, y, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -38,7 +46,7 @@ public interface Short2 extends Short2R {
      * Compute the component-wise ceiling division of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 ceilDiv(short scalar) { return ceilDiv(scalar, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -46,7 +54,7 @@ public interface Short2 extends Short2R {
      * Compute the component-wise ceiling division of this vector by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 ceilDiv(Short2R other) { return ceilDiv(other, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -55,7 +63,7 @@ public interface Short2 extends Short2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 ceilDiv(short x, short y) { return ceilDiv(x, y, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -63,7 +71,7 @@ public interface Short2 extends Short2R {
      * Compute the component-wise ceiling modulus of this vector and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 ceilMod(short scalar) { return ceilMod(scalar, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -71,7 +79,7 @@ public interface Short2 extends Short2R {
      * Compute the component-wise ceiling modulus of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 ceilMod(Short2R other) { return ceilMod(other, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -80,7 +88,7 @@ public interface Short2 extends Short2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 ceilMod(short x, short y) { return ceilMod(x, y, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -89,7 +97,7 @@ public interface Short2 extends Short2R {
      * zero).
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 div(short scalar) { return div(scalar, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -98,7 +106,7 @@ public interface Short2 extends Short2R {
      * zero).
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 div(Short2R other) { return div(other, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -108,7 +116,7 @@ public interface Short2 extends Short2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 div(short x, short y) { return div(x, y, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -116,7 +124,7 @@ public interface Short2 extends Short2R {
      * Compute the component-wise floor division of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 floorDiv(short scalar) { return floorDiv(scalar, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -124,7 +132,7 @@ public interface Short2 extends Short2R {
      * Compute the component-wise floor division of this vector by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 floorDiv(Short2R other) { return floorDiv(other, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -133,7 +141,7 @@ public interface Short2 extends Short2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 floorDiv(short x, short y) { return floorDiv(x, y, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -141,7 +149,7 @@ public interface Short2 extends Short2R {
      * Compute the component-wise floor modulus of this vector and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 floorMod(short scalar) { return floorMod(scalar, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -149,7 +157,7 @@ public interface Short2 extends Short2R {
      * Compute the component-wise floor modulus of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 floorMod(Short2R other) { return floorMod(other, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -158,7 +166,7 @@ public interface Short2 extends Short2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 floorMod(short x, short y) { return floorMod(x, y, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -166,7 +174,7 @@ public interface Short2 extends Short2R {
      * Multiply each component of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 mul(short scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -174,7 +182,7 @@ public interface Short2 extends Short2R {
      * Multiply this vector component-wise by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 mul(Short2R other) { return mul(other, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -183,14 +191,14 @@ public interface Short2 extends Short2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 mul(short x, short y) { return mul(x, y, Joml.RETURN_NEW ? Joml.short2() : this); }
 
     /**
      * Negate this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 negate() { return negate(Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -200,7 +208,7 @@ public interface Short2 extends Short2R {
      * {@code div}).
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 rem(short scalar) { return rem(scalar, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -210,7 +218,7 @@ public interface Short2 extends Short2R {
      * {@code div}).
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 rem(Short2R other) { return rem(other, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -221,7 +229,7 @@ public interface Short2 extends Short2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 rem(short x, short y) { return rem(x, y, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -229,7 +237,7 @@ public interface Short2 extends Short2R {
      * Subtract {@code other} from this vector.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 sub(Short2R other) { return sub(other, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -238,7 +246,7 @@ public interface Short2 extends Short2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 sub(short x, short y) { return sub(x, y, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -246,7 +254,7 @@ public interface Short2 extends Short2R {
      * Compute the bitwise AND of each component of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 and(Short2R other) { return and(other, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -255,35 +263,35 @@ public interface Short2 extends Short2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 and(short x, short y) { return and(x, y, Joml.RETURN_NEW ? Joml.short2() : this); }
 
     /**
      * Compute the number of one-bits of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 bitCount() { return bitCount(Joml.RETURN_NEW ? Joml.short2() : this); }
 
     /**
      * Compute the bitwise NOT of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 not() { return not(Joml.RETURN_NEW ? Joml.short2() : this); }
 
     /**
      * Compute the number of leading zero bits of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 numberOfLeadingZeros() { return numberOfLeadingZeros(Joml.RETURN_NEW ? Joml.short2() : this); }
 
     /**
      * Compute the number of trailing zero bits of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 numberOfTrailingZeros() { return numberOfTrailingZeros(Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -291,7 +299,7 @@ public interface Short2 extends Short2R {
      * Compute the bitwise OR of each component of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 or(Short2R other) { return or(other, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -300,21 +308,21 @@ public interface Short2 extends Short2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 or(short x, short y) { return or(x, y, Joml.RETURN_NEW ? Joml.short2() : this); }
 
     /**
      * Compute the bit-reversed value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 reverseBits() { return reverseBits(Joml.RETURN_NEW ? Joml.short2() : this); }
 
     /**
      * Compute the byte-reversed value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 reverseBytes() { return reverseBytes(Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -322,7 +330,7 @@ public interface Short2 extends Short2R {
      * Rotate the bits of each component of this vector left by {@code distance} positions.
      *
      * @param distance the number of bit positions to rotate by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 rotateLeft(short distance) { return rotateLeft(distance, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -330,7 +338,7 @@ public interface Short2 extends Short2R {
      * Rotate the bits of each component of this vector right by {@code distance} positions.
      *
      * @param distance the number of bit positions to rotate by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 rotateRight(short distance) { return rotateRight(distance, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -340,7 +348,7 @@ public interface Short2 extends Short2R {
      * and takes it modulo 32).
      *
      * @param shift the number of bit positions to shift by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 shl(short shift) { return shl(shift, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -350,7 +358,7 @@ public interface Short2 extends Short2R {
      * to {@code int} and takes it modulo 32).
      *
      * @param shift the number of bit positions to shift by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 shr(short shift) { return shr(shift, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -360,7 +368,7 @@ public interface Short2 extends Short2R {
      * {@code int} and takes it modulo 32).
      *
      * @param shift the number of bit positions to shift by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 ushr(short shift) { return ushr(shift, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -368,7 +376,7 @@ public interface Short2 extends Short2R {
      * Compute the bitwise XOR of each component of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 xor(Short2R other) { return xor(other, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -377,7 +385,7 @@ public interface Short2 extends Short2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 xor(short x, short y) { return xor(x, y, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -402,7 +410,7 @@ public interface Short2 extends Short2R {
      * Set this vector to {@code s}.
      *
      * @param s the value assigned to every component
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 set(short s) { return set(s, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -453,7 +461,7 @@ public interface Short2 extends Short2R {
     /**
      * Compute the absolute value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 absolute() { return absolute(Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -462,7 +470,7 @@ public interface Short2 extends Short2R {
      *
      * @param min the lower bound
      * @param max the upper bound
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 clamp(short min, short max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -471,7 +479,7 @@ public interface Short2 extends Short2R {
      *
      * @param min the per-component lower bounds
      * @param max the per-component upper bounds
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 clamp(Short2R min, Short2R max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -483,7 +491,7 @@ public interface Short2 extends Short2R {
      * @param minY the {@code y} component of the vector {@code (minX, minY)}
      * @param maxX the {@code x} component of the vector {@code (maxX, maxY)}
      * @param maxY the {@code y} component of the vector {@code (maxX, maxY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 clamp(short minX, short minY, short maxX, short maxY) { return clamp(minX, minY, maxX, maxY, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -491,7 +499,7 @@ public interface Short2 extends Short2R {
      * Set each component of this vector to the larger of itself and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 max(short scalar) { return max(scalar, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -500,7 +508,7 @@ public interface Short2 extends Short2R {
      * {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 max(Short2R other) { return max(other, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -510,7 +518,7 @@ public interface Short2 extends Short2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 max(short x, short y) { return max(x, y, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -518,7 +526,7 @@ public interface Short2 extends Short2R {
      * Set each component of this vector to the smaller of itself and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 min(short scalar) { return min(scalar, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -527,7 +535,7 @@ public interface Short2 extends Short2R {
      * {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 min(Short2R other) { return min(other, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -537,14 +545,14 @@ public interface Short2 extends Short2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 min(short x, short y) { return min(x, y, Joml.RETURN_NEW ? Joml.short2() : this); }
 
     /**
      * Compute the sign of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 sign() { return sign(Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -552,7 +560,7 @@ public interface Short2 extends Short2R {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 satAdd(Short2R other) { return satAdd(other, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -562,7 +570,7 @@ public interface Short2 extends Short2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 satAdd(short x, short y) { return satAdd(x, y, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -570,7 +578,7 @@ public interface Short2 extends Short2R {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 satMul(Short2R other) { return satMul(other, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -580,14 +588,14 @@ public interface Short2 extends Short2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 satMul(short x, short y) { return satMul(x, y, Joml.RETURN_NEW ? Joml.short2() : this); }
 
     /**
      * Negate this vector, clamping to the value range instead of overflowing.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 satNegate() { return satNegate(Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -595,7 +603,7 @@ public interface Short2 extends Short2R {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 satSub(Short2R other) { return satSub(other, Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -605,35 +613,35 @@ public interface Short2 extends Short2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 satSub(short x, short y) { return satSub(x, y, Joml.RETURN_NEW ? Joml.short2() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 xx() { return xx(Joml.RETURN_NEW ? Joml.short2() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 xy() { return xy(Joml.RETURN_NEW ? Joml.short2() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 yx() { return yx(Joml.RETURN_NEW ? Joml.short2() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Short2 yy() { return yy(Joml.RETURN_NEW ? Joml.short2() : this); }
 
@@ -660,6 +668,10 @@ public interface Short2 extends Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -672,6 +684,10 @@ public interface Short2 extends Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -684,6 +700,10 @@ public interface Short2 extends Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -697,6 +717,10 @@ public interface Short2 extends Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -714,6 +738,10 @@ public interface Short2 extends Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -726,6 +754,10 @@ public interface Short2 extends Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -738,6 +770,10 @@ public interface Short2 extends Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -751,6 +787,10 @@ public interface Short2 extends Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -764,6 +804,10 @@ public interface Short2 extends Short2R {
 
     /**
      * Load the elements from the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -772,6 +816,10 @@ public interface Short2 extends Short2R {
 
     /**
      * Load the elements from the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -811,6 +859,10 @@ public interface Short2 extends Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -823,6 +875,10 @@ public interface Short2 extends Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -835,6 +891,10 @@ public interface Short2 extends Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -848,6 +908,10 @@ public interface Short2 extends Short2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -861,6 +925,10 @@ public interface Short2 extends Short2R {
 
     /**
      * Load the elements from the given memory segment, converting each element from {@code byte}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -870,6 +938,10 @@ public interface Short2 extends Short2R {
     /**
      * Load the elements from the given memory segment, converting each element from {@code byte},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

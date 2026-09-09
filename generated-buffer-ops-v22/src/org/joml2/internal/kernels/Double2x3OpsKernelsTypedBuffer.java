@@ -1075,13 +1075,14 @@ public final class Double2x3OpsKernelsTypedBuffer {
         double _self12 = src.get(srcOffset + 5);
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -pivotX;
+        double _t3 = Math.sin(0.5 * angle);
+        double _t5 = 2.0 * _t3 * _t3;
         dest.put(destOffset + 0, Math.fma(_self00, _t0, -(_self10 * _t1)));
         dest.put(destOffset + 1, Math.fma(_self00, _t1, _self10 * _t0));
         dest.put(destOffset + 2, Math.fma(_self01, _t0, -(_self11 * _t1)));
         dest.put(destOffset + 3, Math.fma(_self01, _t1, _self11 * _t0));
-        dest.put(destOffset + 4, Math.fma(pivotY, _t1, Math.fma(_t2, _t0, Math.fma(_self02, _t0, Math.fma(-_self12, _t1, pivotX)))));
-        dest.put(destOffset + 5, Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, Math.fma(_self02, _t1, Math.fma(_self12, _t0, pivotY)))));
+        dest.put(destOffset + 4, Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(_self02, _t0, -(_self12 * _t1)));
+        dest.put(destOffset + 5, Math.fma(_self02, _t1, _self12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1)));
         return dest;
     }
 
@@ -1112,13 +1113,14 @@ public final class Double2x3OpsKernelsTypedBuffer {
         double _pivoty = pivot.get(pivotOffset + 1);
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -_pivotx;
+        double _t3 = Math.sin(0.5 * angle);
+        double _t5 = 2.0 * _t3 * _t3;
         dest.put(destOffset + 0, Math.fma(_self00, _t0, -(_self10 * _t1)));
         dest.put(destOffset + 1, Math.fma(_self00, _t1, _self10 * _t0));
         dest.put(destOffset + 2, Math.fma(_self01, _t0, -(_self11 * _t1)));
         dest.put(destOffset + 3, Math.fma(_self01, _t1, _self11 * _t0));
-        dest.put(destOffset + 4, Math.fma(_pivoty, _t1, Math.fma(_t2, _t0, Math.fma(_self02, _t0, Math.fma(-_self12, _t1, _pivotx)))));
-        dest.put(destOffset + 5, Math.fma(_t2, _t1, Math.fma(-_pivoty, _t0, Math.fma(_self02, _t1, Math.fma(_self12, _t0, _pivoty)))));
+        dest.put(destOffset + 4, Math.fma(_pivotx, _t5, _pivoty * _t1) + Math.fma(_self02, _t0, -(_self12 * _t1)));
+        dest.put(destOffset + 5, Math.fma(_self02, _t1, _self12 * _t0) + Math.fma(_pivoty, _t5, -(_pivotx * _t1)));
         return dest;
     }
 
@@ -1458,15 +1460,16 @@ public final class Double2x3OpsKernelsTypedBuffer {
         double _self12 = src.get(srcOffset + 5);
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -pivotX;
-        double _t6 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX));
-        double _t7 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY));
+        double _t3 = Math.sin(0.5 * angle);
+        double _t8 = 2.0 * _t3 * _t3;
+        double _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
+        double _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
         dest.put(destOffset + 0, Math.fma(_self00, _t0, _self01 * _t1));
         dest.put(destOffset + 1, Math.fma(_self10, _t0, _self11 * _t1));
         dest.put(destOffset + 2, Math.fma(_self01, _t0, -(_self00 * _t1)));
         dest.put(destOffset + 3, Math.fma(_self11, _t0, -(_self10 * _t1)));
-        dest.put(destOffset + 4, Math.fma(_self00, _t6, Math.fma(_self01, _t7, _self02)));
-        dest.put(destOffset + 5, Math.fma(_self10, _t6, Math.fma(_self11, _t7, _self12)));
+        dest.put(destOffset + 4, Math.fma(_self00, _t9, Math.fma(_self01, _t10, _self02)));
+        dest.put(destOffset + 5, Math.fma(_self10, _t9, Math.fma(_self11, _t10, _self12)));
         return dest;
     }
 
@@ -1497,15 +1500,16 @@ public final class Double2x3OpsKernelsTypedBuffer {
         double _pivoty = pivot.get(pivotOffset + 1);
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -_pivotx;
-        double _t6 = Math.fma(_pivoty, _t1, Math.fma(_t2, _t0, _pivotx));
-        double _t7 = Math.fma(_t2, _t1, Math.fma(-_pivoty, _t0, _pivoty));
+        double _t3 = Math.sin(0.5 * angle);
+        double _t8 = 2.0 * _t3 * _t3;
+        double _t9 = Math.fma(_pivotx, _t8, _pivoty * _t1);
+        double _t10 = Math.fma(_pivoty, _t8, -(_pivotx * _t1));
         dest.put(destOffset + 0, Math.fma(_self00, _t0, _self01 * _t1));
         dest.put(destOffset + 1, Math.fma(_self10, _t0, _self11 * _t1));
         dest.put(destOffset + 2, Math.fma(_self01, _t0, -(_self00 * _t1)));
         dest.put(destOffset + 3, Math.fma(_self11, _t0, -(_self10 * _t1)));
-        dest.put(destOffset + 4, Math.fma(_self00, _t6, Math.fma(_self01, _t7, _self02)));
-        dest.put(destOffset + 5, Math.fma(_self10, _t6, Math.fma(_self11, _t7, _self12)));
+        dest.put(destOffset + 4, Math.fma(_self00, _t9, Math.fma(_self01, _t10, _self02)));
+        dest.put(destOffset + 5, Math.fma(_self10, _t9, Math.fma(_self11, _t10, _self12)));
         return dest;
     }
 

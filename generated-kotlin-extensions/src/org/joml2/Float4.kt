@@ -52,7 +52,7 @@ inline fun Float4.copy(x: Float = x(), y: Float = y(), z: Float = z(), w: Float 
 inline fun Float4.toFloatArray(): FloatArray = store(FloatArray(4))
 /** A Float4 read from this array in storage order, starting at index 0. */
 inline fun FloatArray.toFloat4(): Float4 = Float4.load(this)
-/** The component of this Float4 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. */
+/** The component of this Float4 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT with 3 indices (`v[a, b, ...] = x`) resolves to the Java 4-argument value factory `Float4.set(...)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Float4.get(index: Int): Float = when (index) {
     0 -> x()
     1 -> y()

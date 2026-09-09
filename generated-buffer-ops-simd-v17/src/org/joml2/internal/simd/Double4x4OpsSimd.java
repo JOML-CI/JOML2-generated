@@ -3392,16 +3392,22 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] preScale_fma(double[] dest, int destOffset, double[] src, int srcOffset, double[] v, int vOffset) {
+        double _vx = v[vOffset + 0];
+        double _vy = v[vOffset + 1];
+        double _vz = v[vOffset + 2];
         for (int _li = 0; _li < 4; _li++) {
-            var _c = DoubleVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 3]).fma(UNIT_W, DoubleVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, v[vOffset + 0]).withLane(1, v[vOffset + 1]).withLane(2, v[vOffset + 2])));
+            var _c = DoubleVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 3]).fma(UNIT_W, DoubleVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _vx).withLane(1, _vy).withLane(2, _vz)));
             _c.intoArray(dest, destOffset + _li * 4);
         }
         return dest;
     }
 
     public static double[] preScale_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double[] v, int vOffset) {
+        double _vx = v[vOffset + 0];
+        double _vy = v[vOffset + 1];
+        double _vz = v[vOffset + 2];
         for (int _li = 0; _li < 4; _li++) {
-            var _c = DoubleVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 3]).mul(UNIT_W).add(DoubleVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, v[vOffset + 0]).withLane(1, v[vOffset + 1]).withLane(2, v[vOffset + 2])));
+            var _c = DoubleVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 3]).mul(UNIT_W).add(DoubleVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _vx).withLane(1, _vy).withLane(2, _vz)));
             _c.intoArray(dest, destOffset + _li * 4);
         }
         return dest;
@@ -3558,16 +3564,22 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] preTranslate_fma(double[] dest, int destOffset, double[] src, int srcOffset, double[] v, int vOffset) {
+        double _vx = v[vOffset + 0];
+        double _vy = v[vOffset + 1];
+        double _vz = v[vOffset + 2];
         for (int _li = 0; _li < 4; _li++) {
-            var _c = DoubleVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 3]).fma(DoubleVector.zero(SIMD_SPECIES).withLane(0, v[vOffset + 0]).withLane(1, v[vOffset + 1]).withLane(2, v[vOffset + 2]), DoubleVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4))).withLane(3, src[(srcOffset + _li * 4) + 3]);
+            var _c = DoubleVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 3]).fma(DoubleVector.zero(SIMD_SPECIES).withLane(0, _vx).withLane(1, _vy).withLane(2, _vz), DoubleVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4))).withLane(3, src[(srcOffset + _li * 4) + 3]);
             _c.intoArray(dest, destOffset + _li * 4);
         }
         return dest;
     }
 
     public static double[] preTranslate_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double[] v, int vOffset) {
+        double _vx = v[vOffset + 0];
+        double _vy = v[vOffset + 1];
+        double _vz = v[vOffset + 2];
         for (int _li = 0; _li < 4; _li++) {
-            var _c = DoubleVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 3]).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, v[vOffset + 0]).withLane(1, v[vOffset + 1]).withLane(2, v[vOffset + 2])).add(DoubleVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4))).withLane(3, src[(srcOffset + _li * 4) + 3]);
+            var _c = DoubleVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 3]).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _vx).withLane(1, _vy).withLane(2, _vz)).add(DoubleVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4))).withLane(3, src[(srcOffset + _li * 4) + 3]);
             _c.intoArray(dest, destOffset + _li * 4);
         }
         return dest;
@@ -3687,28 +3699,26 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] rotateAround_fma(double[] dest, int destOffset, double[] src, int srcOffset, double rotX, double rotY, double rotZ, double rotW, double pivotX, double pivotY, double pivotZ) {
-        double _t0 = -pivotX;
-        double _t1 = -pivotY;
-        double _t2 = -pivotZ;
-        double _t3 = rotY * rotW;
-        double _t4 = rotZ * rotZ;
-        double _t5 = rotZ * rotW;
-        double _t21 = 2.0 * Math.fma(rotX, rotY, _t5);
-        double _t22 = 2.0 * Math.fma(rotX, rotW, rotY * rotZ);
-        double _t23 = 2.0 * Math.fma(rotX, rotZ, _t3);
-        double _t24 = 2.0 * Math.fma(rotX, rotZ, -_t3);
-        double _t25 = 2.0 * Math.fma(rotX, rotY, -_t5);
-        double _t26 = 2.0 * Math.fma(rotY, rotZ, -(rotX * rotW));
-        double _t27 = Math.fma(-2.0, Math.fma(rotY, rotY, _t4), 1.0);
-        double _t28 = Math.fma(-2.0, Math.fma(rotX, rotX, _t4), 1.0);
-        double _t29 = Math.fma(-2.0, Math.fma(rotX, rotX, rotY * rotY), 1.0);
+        double _t0 = -pivotZ;
+        double _t2 = rotY * rotW;
+        double _t3 = rotZ * rotZ;
+        double _t4 = rotZ * rotW;
+        double _t11 = Math.fma(rotY, rotY, _t3);
+        double _t14 = Math.fma(rotX, rotX, _t3);
+        double _t15 = Math.fma(rotX, rotX, rotY * rotY);
+        double _t20 = 2.0 * Math.fma(rotX, rotY, _t4);
+        double _t21 = 2.0 * Math.fma(rotX, rotW, rotY * rotZ);
+        double _t22 = 2.0 * Math.fma(rotX, rotZ, _t2);
+        double _t26 = 2.0 * Math.fma(rotX, rotZ, -_t2);
+        double _t27 = 2.0 * Math.fma(rotX, rotY, -_t4);
+        double _t28 = 2.0 * Math.fma(rotY, rotZ, -(rotX * rotW));
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t24), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t27), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t21))));
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t22), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t25), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t28))));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t29), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t23), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t26))));
-        var _c3 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t27, Math.fma(_t1, _t25, Math.fma(_t2, _t23, pivotX)))), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t21, Math.fma(_t1, _t28, Math.fma(_t2, _t26, pivotY)))), _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t24, Math.fma(_t1, _t22, Math.fma(_t2, _t29, pivotZ)))), DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t26), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(-2.0, _t11, 1.0)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t20))));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t21), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t27), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(-2.0, _t14, 1.0)))));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(-2.0, _t15, 1.0)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t22), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t28))));
+        var _c3 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t22, Math.fma(pivotX, 2.0 * _t11, -(pivotY * _t27)))), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t28, Math.fma(pivotY, 2.0 * _t14, -(pivotX * _t20)))), _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0 * _t15, -(pivotX * _t26)))), DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -3717,28 +3727,26 @@ public final class Double4x4OpsSimd {
     }
 
     public static double[] rotateAround_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double rotX, double rotY, double rotZ, double rotW, double pivotX, double pivotY, double pivotZ) {
-        double _t0 = -pivotX;
-        double _t1 = -pivotY;
-        double _t2 = -pivotZ;
-        double _t3 = rotY * rotW;
-        double _t4 = rotZ * rotZ;
-        double _t5 = rotZ * rotW;
-        double _t21 = 2.0 * Math.fma(rotX, rotY, _t5);
-        double _t22 = 2.0 * Math.fma(rotX, rotW, rotY * rotZ);
-        double _t23 = 2.0 * Math.fma(rotX, rotZ, _t3);
-        double _t24 = 2.0 * Math.fma(rotX, rotZ, -_t3);
-        double _t25 = 2.0 * Math.fma(rotX, rotY, -_t5);
-        double _t26 = 2.0 * Math.fma(rotY, rotZ, -(rotX * rotW));
-        double _t27 = Math.fma(-2.0, Math.fma(rotY, rotY, _t4), 1.0);
-        double _t28 = Math.fma(-2.0, Math.fma(rotX, rotX, _t4), 1.0);
-        double _t29 = Math.fma(-2.0, Math.fma(rotX, rotX, rotY * rotY), 1.0);
+        double _t0 = -pivotZ;
+        double _t2 = rotY * rotW;
+        double _t3 = rotZ * rotZ;
+        double _t4 = rotZ * rotW;
+        double _t11 = Math.fma(rotY, rotY, _t3);
+        double _t14 = Math.fma(rotX, rotX, _t3);
+        double _t15 = Math.fma(rotX, rotX, rotY * rotY);
+        double _t20 = 2.0 * Math.fma(rotX, rotY, _t4);
+        double _t21 = 2.0 * Math.fma(rotX, rotW, rotY * rotZ);
+        double _t22 = 2.0 * Math.fma(rotX, rotZ, _t2);
+        double _t26 = 2.0 * Math.fma(rotX, rotZ, -_t2);
+        double _t27 = 2.0 * Math.fma(rotX, rotY, -_t4);
+        double _t28 = 2.0 * Math.fma(rotY, rotZ, -(rotX * rotW));
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t24)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t27)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t21))));
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t22)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t25)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t28))));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t29)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t23)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t26))));
-        var _c3 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t27, Math.fma(_t1, _t25, Math.fma(_t2, _t23, pivotX))))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t21, Math.fma(_t1, _t28, Math.fma(_t2, _t26, pivotY))))).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t24, Math.fma(_t1, _t22, Math.fma(_t2, _t29, pivotZ))))).add(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t26)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(-2.0, _t11, 1.0))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t20))));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t21)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t27)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(-2.0, _t14, 1.0)))));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(-2.0, _t15, 1.0))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t22)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t28))));
+        var _c3 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t22, Math.fma(pivotX, 2.0 * _t11, -(pivotY * _t27))))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t28, Math.fma(pivotY, 2.0 * _t14, -(pivotX * _t20))))).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0 * _t15, -(pivotX * _t26))))).add(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -3759,28 +3767,26 @@ public final class Double4x4OpsSimd {
         double _rotw = rot[rotOffset + 3];
         double _rotz = rot[rotOffset + 2];
         double _rotx = rot[rotOffset + 0];
-        double _t0 = -_pivotx;
-        double _t1 = -_pivoty;
-        double _t2 = -_pivotz;
-        double _t3 = _roty * _rotw;
-        double _t4 = _rotz * _rotz;
-        double _t5 = _rotz * _rotw;
-        double _t21 = 2.0 * Math.fma(_rotx, _roty, _t5);
-        double _t22 = 2.0 * Math.fma(_rotx, _rotw, _roty * _rotz);
-        double _t23 = 2.0 * Math.fma(_rotx, _rotz, _t3);
-        double _t24 = 2.0 * Math.fma(_rotx, _rotz, -_t3);
-        double _t25 = 2.0 * Math.fma(_rotx, _roty, -_t5);
-        double _t26 = 2.0 * Math.fma(_roty, _rotz, -(_rotx * _rotw));
-        double _t27 = Math.fma(-2.0, Math.fma(_roty, _roty, _t4), 1.0);
-        double _t28 = Math.fma(-2.0, Math.fma(_rotx, _rotx, _t4), 1.0);
-        double _t29 = Math.fma(-2.0, Math.fma(_rotx, _rotx, _roty * _roty), 1.0);
+        double _t0 = -_pivotz;
+        double _t2 = _roty * _rotw;
+        double _t3 = _rotz * _rotz;
+        double _t4 = _rotz * _rotw;
+        double _t11 = Math.fma(_roty, _roty, _t3);
+        double _t14 = Math.fma(_rotx, _rotx, _t3);
+        double _t15 = Math.fma(_rotx, _rotx, _roty * _roty);
+        double _t20 = 2.0 * Math.fma(_rotx, _roty, _t4);
+        double _t21 = 2.0 * Math.fma(_rotx, _rotw, _roty * _rotz);
+        double _t22 = 2.0 * Math.fma(_rotx, _rotz, _t2);
+        double _t26 = 2.0 * Math.fma(_rotx, _rotz, -_t2);
+        double _t27 = 2.0 * Math.fma(_rotx, _roty, -_t4);
+        double _t28 = 2.0 * Math.fma(_roty, _rotz, -(_rotx * _rotw));
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t24), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t27), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t21))));
-        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t22), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t25), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t28))));
-        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t29), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t23), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t26))));
-        var _c3 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t27, Math.fma(_t1, _t25, Math.fma(_t2, _t23, _pivotx)))), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t21, Math.fma(_t1, _t28, Math.fma(_t2, _t26, _pivoty)))), _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t24, Math.fma(_t1, _t22, Math.fma(_t2, _t29, _pivotz)))), DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c0 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t26), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(-2.0, _t11, 1.0)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t20))));
+        var _c1 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, _t21), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t27), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(-2.0, _t14, 1.0)))));
+        var _c2 = _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(-2.0, _t15, 1.0)), _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, _t22), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t28))));
+        var _c3 = _sv1.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t22, Math.fma(_pivotx, 2.0 * _t11, -(_pivoty * _t27)))), _sv2.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t28, Math.fma(_pivoty, 2.0 * _t14, -(_pivotx * _t20)))), _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(-_pivoty, _t21, Math.fma(_pivotz, 2.0 * _t15, -(_pivotx * _t26)))), DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -3796,28 +3802,26 @@ public final class Double4x4OpsSimd {
         double _rotw = rot[rotOffset + 3];
         double _rotz = rot[rotOffset + 2];
         double _rotx = rot[rotOffset + 0];
-        double _t0 = -_pivotx;
-        double _t1 = -_pivoty;
-        double _t2 = -_pivotz;
-        double _t3 = _roty * _rotw;
-        double _t4 = _rotz * _rotz;
-        double _t5 = _rotz * _rotw;
-        double _t21 = 2.0 * Math.fma(_rotx, _roty, _t5);
-        double _t22 = 2.0 * Math.fma(_rotx, _rotw, _roty * _rotz);
-        double _t23 = 2.0 * Math.fma(_rotx, _rotz, _t3);
-        double _t24 = 2.0 * Math.fma(_rotx, _rotz, -_t3);
-        double _t25 = 2.0 * Math.fma(_rotx, _roty, -_t5);
-        double _t26 = 2.0 * Math.fma(_roty, _rotz, -(_rotx * _rotw));
-        double _t27 = Math.fma(-2.0, Math.fma(_roty, _roty, _t4), 1.0);
-        double _t28 = Math.fma(-2.0, Math.fma(_rotx, _rotx, _t4), 1.0);
-        double _t29 = Math.fma(-2.0, Math.fma(_rotx, _rotx, _roty * _roty), 1.0);
+        double _t0 = -_pivotz;
+        double _t2 = _roty * _rotw;
+        double _t3 = _rotz * _rotz;
+        double _t4 = _rotz * _rotw;
+        double _t11 = Math.fma(_roty, _roty, _t3);
+        double _t14 = Math.fma(_rotx, _rotx, _t3);
+        double _t15 = Math.fma(_rotx, _rotx, _roty * _roty);
+        double _t20 = 2.0 * Math.fma(_rotx, _roty, _t4);
+        double _t21 = 2.0 * Math.fma(_rotx, _rotw, _roty * _rotz);
+        double _t22 = 2.0 * Math.fma(_rotx, _rotz, _t2);
+        double _t26 = 2.0 * Math.fma(_rotx, _rotz, -_t2);
+        double _t27 = 2.0 * Math.fma(_rotx, _roty, -_t4);
+        double _t28 = 2.0 * Math.fma(_roty, _rotz, -(_rotx * _rotw));
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t24)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t27)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t21))));
-        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t22)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t25)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t28))));
-        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t29)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t23)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t26))));
-        var _c3 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t27, Math.fma(_t1, _t25, Math.fma(_t2, _t23, _pivotx))))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t21, Math.fma(_t1, _t28, Math.fma(_t2, _t26, _pivoty))))).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t24, Math.fma(_t1, _t22, Math.fma(_t2, _t29, _pivotz))))).add(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c0 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t26)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(-2.0, _t11, 1.0))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t20))));
+        var _c1 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t21)).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t27)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(-2.0, _t14, 1.0)))));
+        var _c2 = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(-2.0, _t15, 1.0))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, _t22)).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, _t28))));
+        var _c3 = _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t22, Math.fma(_pivotx, 2.0 * _t11, -(_pivoty * _t27))))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(_t0, _t28, Math.fma(_pivoty, 2.0 * _t14, -(_pivotx * _t20))))).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.fma(-_pivoty, _t21, Math.fma(_pivotz, 2.0 * _t15, -(_pivotx * _t26))))).add(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);

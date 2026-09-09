@@ -14,6 +14,16 @@ import java.lang.foreign.MemorySegment;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of a vector
+ * never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface Float3 extends Float3R {
 
@@ -21,7 +31,7 @@ public interface Float3 extends Float3R {
      * Add {@code other} to this vector.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 add(Float3R other) { return add(other, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -31,7 +41,7 @@ public interface Float3 extends Float3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 add(float x, float y, float z) { return add(x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -39,7 +49,7 @@ public interface Float3 extends Float3R {
      * Divide each component of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 div(float scalar) { return div(scalar, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -47,7 +57,7 @@ public interface Float3 extends Float3R {
      * Divide this vector component-wise by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 div(Float3R other) { return div(other, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -57,7 +67,7 @@ public interface Float3 extends Float3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 div(float x, float y, float z) { return div(x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -67,7 +77,7 @@ public interface Float3 extends Float3R {
      *
      * @param b the factor to multiply this vector by
      * @param c the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 fma(float b, Float3R c) { return fma(b, c, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -79,7 +89,7 @@ public interface Float3 extends Float3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 fma(float b, float x, float y, float z) { return fma(b, x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -89,7 +99,7 @@ public interface Float3 extends Float3R {
      *
      * @param b the factor to multiply this vector by
      * @param c the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 fma(Float3R b, Float3R c) { return fma(b, c, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -104,7 +114,7 @@ public interface Float3 extends Float3R {
      * @param cX the {@code x} component of the vector {@code (cX, cY, cZ)}
      * @param cY the {@code y} component of the vector {@code (cX, cY, cZ)}
      * @param cZ the {@code z} component of the vector {@code (cX, cY, cZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 fma(float bX, float bY, float bZ, float cX, float cY, float cZ) { return fma(bX, bY, bZ, cX, cY, cZ, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -112,7 +122,7 @@ public interface Float3 extends Float3R {
      * Multiply each component of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 mul(float scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -120,7 +130,7 @@ public interface Float3 extends Float3R {
      * Multiply this vector component-wise by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 mul(Float3R other) { return mul(other, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -130,14 +140,14 @@ public interface Float3 extends Float3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 mul(float x, float y, float z) { return mul(x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Negate this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 negate() { return negate(Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -145,7 +155,7 @@ public interface Float3 extends Float3R {
      * Subtract {@code other} from this vector.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 sub(Float3R other) { return sub(other, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -155,7 +165,7 @@ public interface Float3 extends Float3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 sub(float x, float y, float z) { return sub(x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -181,7 +191,7 @@ public interface Float3 extends Float3R {
      * Set this vector to {@code s}.
      *
      * @param s the value assigned to every component
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 set(float s) { return set(s, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -282,7 +292,7 @@ public interface Float3 extends Float3R {
      * @param p2 the second control point
      * @param p3 the end point
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 bezier(Float3R p1, Float3R p2, Float3R p3, float t) { return bezier(p1, p2, p3, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -299,7 +309,7 @@ public interface Float3 extends Float3R {
      * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z)}
      * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 bezier(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float p3X, float p3Y, float p3Z, float t) { return bezier(p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -310,7 +320,7 @@ public interface Float3 extends Float3R {
      * @param p1 the control point
      * @param p2 the end point
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 bezier2(Float3R p1, Float3R p2, float t) { return bezier2(p1, p2, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -325,7 +335,7 @@ public interface Float3 extends Float3R {
      * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
      * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 bezier2(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float t) { return bezier2(p1X, p1Y, p1Z, p2X, p2Y, p2Z, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -336,7 +346,7 @@ public interface Float3 extends Float3R {
      * @param p1 the control point
      * @param p2 the end point
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 bezier2Tangent(Float3R p1, Float3R p2, float t) { return bezier2Tangent(p1, p2, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -351,7 +361,7 @@ public interface Float3 extends Float3R {
      * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
      * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 bezier2Tangent(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float t) { return bezier2Tangent(p1X, p1Y, p1Z, p2X, p2Y, p2Z, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -363,7 +373,7 @@ public interface Float3 extends Float3R {
      * @param p2 the second control point
      * @param p3 the end point
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 bezierTangent(Float3R p1, Float3R p2, Float3R p3, float t) { return bezierTangent(p1, p2, p3, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -381,7 +391,7 @@ public interface Float3 extends Float3R {
      * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z)}
      * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 bezierTangent(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float p3X, float p3Y, float p3Z, float t) { return bezierTangent(p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -392,7 +402,7 @@ public interface Float3 extends Float3R {
      * @param p2 the end point of the interpolated segment
      * @param p3 the outer control point after the segment
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 catmullRom(Float3R p1, Float3R p2, Float3R p3, float t) { return catmullRom(p1, p2, p3, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -409,7 +419,7 @@ public interface Float3 extends Float3R {
      * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z)}
      * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 catmullRom(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float p3X, float p3Y, float p3Z, float t) { return catmullRom(p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -421,7 +431,7 @@ public interface Float3 extends Float3R {
      * @param p2 the end point of the interpolated segment
      * @param p3 the outer control point after the segment
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 catmullRomTangent(Float3R p1, Float3R p2, Float3R p3, float t) { return catmullRomTangent(p1, p2, p3, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -439,7 +449,7 @@ public interface Float3 extends Float3R {
      * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z)}
      * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 catmullRomTangent(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float p3X, float p3Y, float p3Z, float t) { return catmullRomTangent(p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -450,7 +460,7 @@ public interface Float3 extends Float3R {
      * @param v1 the endpoint
      * @param t1 the tangent at the endpoint
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 hermite(Float3R t0, Float3R v1, Float3R t1, float t) { return hermite(t0, v1, t1, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -467,7 +477,7 @@ public interface Float3 extends Float3R {
      * @param t1Y the {@code y} component of the vector {@code (t1X, t1Y, t1Z)}
      * @param t1Z the {@code z} component of the vector {@code (t1X, t1Y, t1Z)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 hermite(float t0X, float t0Y, float t0Z, float v1X, float v1Y, float v1Z, float t1X, float t1Y, float t1Z, float t) { return hermite(t0X, t0Y, t0Z, v1X, v1Y, v1Z, t1X, t1Y, t1Z, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -479,7 +489,7 @@ public interface Float3 extends Float3R {
      * @param v1 the endpoint
      * @param t1 the tangent at the endpoint
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 hermiteTangent(Float3R t0, Float3R v1, Float3R t1, float t) { return hermiteTangent(t0, v1, t1, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -497,7 +507,7 @@ public interface Float3 extends Float3R {
      * @param t1Y the {@code y} component of the vector {@code (t1X, t1Y, t1Z)}
      * @param t1Z the {@code z} component of the vector {@code (t1X, t1Y, t1Z)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 hermiteTangent(float t0X, float t0Y, float t0Z, float v1X, float v1Y, float v1Z, float t1X, float t1Y, float t1Z, float t) { return hermiteTangent(t0X, t0Y, t0Z, v1X, v1Y, v1Z, t1X, t1Y, t1Z, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -507,7 +517,7 @@ public interface Float3 extends Float3R {
      *
      * @param other the other vector
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 lerp(Float3R other, float t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -519,7 +529,7 @@ public interface Float3 extends Float3R {
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 lerp(float x, float y, float z, float t) { return lerp(x, y, z, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -529,7 +539,7 @@ public interface Float3 extends Float3R {
      *
      * @param other the other vector
      * @param t the per-component interpolation factors, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 lerp(Float3R other, Float3R t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -543,21 +553,21 @@ public interface Float3 extends Float3R {
      * @param tX the {@code x} component of the vector {@code (tX, tY, tZ)}
      * @param tY the {@code y} component of the vector {@code (tX, tY, tZ)}
      * @param tZ the {@code z} component of the vector {@code (tX, tY, tZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 lerp(float otherX, float otherY, float otherZ, float tX, float tY, float tZ) { return lerp(otherX, otherY, otherZ, tX, tY, tZ, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the absolute value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 absolute() { return absolute(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the arc cosine of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 acos() { return acos(Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -566,7 +576,7 @@ public interface Float3 extends Float3R {
      *
      * @param b the vector
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 addScaled(Float3R b, float scalar) { return addScaled(b, scalar, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -577,7 +587,7 @@ public interface Float3 extends Float3R {
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 addScaled(float x, float y, float z, float scalar) { return addScaled(x, y, z, scalar, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -586,7 +596,7 @@ public interface Float3 extends Float3R {
      *
      * @param b the vector
      * @param c the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 addScaled(Float3R b, Float3R c) { return addScaled(b, c, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -600,21 +610,21 @@ public interface Float3 extends Float3R {
      * @param cX the {@code x} component of the vector {@code (cX, cY, cZ)}
      * @param cY the {@code y} component of the vector {@code (cX, cY, cZ)}
      * @param cZ the {@code z} component of the vector {@code (cX, cY, cZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 addScaled(float bX, float bY, float bZ, float cX, float cY, float cZ) { return addScaled(bX, bY, bZ, cX, cY, cZ, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the arc sine of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 asin() { return asin(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the arc tangent of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 atan() { return atan(Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -623,7 +633,7 @@ public interface Float3 extends Float3R {
      * this vector (the numerator) and {@code b} {@code x} (the denominator).
      *
      * @param x the value to take the arc tangent over (the denominator)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 atan2(float x) { return atan2(x, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -633,7 +643,7 @@ public interface Float3 extends Float3R {
      * denominator).
      *
      * @param x the vector of denominators, one per component
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 atan2(Float3R x) { return atan2(x, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -645,21 +655,21 @@ public interface Float3 extends Float3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 atan2(float x, float y, float z) { return atan2(x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the cube root of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 cbrt() { return cbrt(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the ceiling of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 ceil() { return ceil(Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -668,7 +678,7 @@ public interface Float3 extends Float3R {
      *
      * @param min the lower bound
      * @param max the upper bound
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 clamp(float min, float max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -677,7 +687,7 @@ public interface Float3 extends Float3R {
      *
      * @param min the per-component lower bounds
      * @param max the per-component upper bounds
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 clamp(Float3R min, Float3R max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -691,7 +701,7 @@ public interface Float3 extends Float3R {
      * @param maxX the {@code x} component of the vector {@code (maxX, maxY, maxZ)}
      * @param maxY the {@code y} component of the vector {@code (maxX, maxY, maxZ)}
      * @param maxZ the {@code z} component of the vector {@code (maxX, maxY, maxZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 clamp(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) { return clamp(minX, minY, minZ, maxX, maxY, maxZ, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -701,7 +711,7 @@ public interface Float3 extends Float3R {
      *
      * @param lineStart the vector
      * @param lineEnd the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 closestPointOnLine(Float3R lineStart, Float3R lineEnd) { return closestPointOnLine(lineStart, lineEnd, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -719,7 +729,7 @@ public interface Float3 extends Float3R {
      * @param lineEndX the {@code x} component of the vector {@code (lineEndX, lineEndY, lineEndZ)}
      * @param lineEndY the {@code y} component of the vector {@code (lineEndX, lineEndY, lineEndZ)}
      * @param lineEndZ the {@code z} component of the vector {@code (lineEndX, lineEndY, lineEndZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 closestPointOnLine(float lineStartX, float lineStartY, float lineStartZ, float lineEndX, float lineEndY, float lineEndZ) { return closestPointOnLine(lineStartX, lineStartY, lineStartZ, lineEndX, lineEndY, lineEndZ, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -727,7 +737,7 @@ public interface Float3 extends Float3R {
      * Copy the sign of {@code sign} onto each component of this vector.
      *
      * @param sign the value whose sign is copied
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 copySign(float sign) { return copySign(sign, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -736,7 +746,7 @@ public interface Float3 extends Float3R {
      * vector.
      *
      * @param sign the value whose sign is copied
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 copySign(Float3R sign) { return copySign(sign, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -747,21 +757,21 @@ public interface Float3 extends Float3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 copySign(float x, float y, float z) { return copySign(x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the cosine of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 cos() { return cos(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the hyperbolic cosine of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 cosh() { return cosh(Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -769,7 +779,7 @@ public interface Float3 extends Float3R {
      * Compute the cross product of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 cross(Float3R other) { return cross(other, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -779,35 +789,35 @@ public interface Float3 extends Float3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 cross(float x, float y, float z) { return cross(x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the value converted from radians to degrees of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 degrees() { return degrees(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the base-e exponential of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 exp() { return exp(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the base-2 exponential of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 exp2() { return exp2(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the base-e exponential minus one of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 expm1() { return expm1(Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -818,7 +828,7 @@ public interface Float3 extends Float3R {
      *
      * @param I the vector
      * @param Nref the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 faceforward(Float3R I, Float3R Nref) { return faceforward(I, Nref, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -834,21 +844,21 @@ public interface Float3 extends Float3R {
      * @param NrefX the {@code x} component of the vector {@code (NrefX, NrefY, NrefZ)}
      * @param NrefY the {@code y} component of the vector {@code (NrefX, NrefY, NrefZ)}
      * @param NrefZ the {@code z} component of the vector {@code (NrefX, NrefY, NrefZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 faceforward(float IX, float IY, float IZ, float NrefX, float NrefY, float NrefZ) { return faceforward(IX, IY, IZ, NrefX, NrefY, NrefZ, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the floor of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 floor() { return floor(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the fractional part of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 fract() { return fract(Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -857,7 +867,7 @@ public interface Float3 extends Float3R {
      * of this vector and {@code b} {@code y}.
      *
      * @param y the other operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 hypot(float y) { return hypot(y, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -866,7 +876,7 @@ public interface Float3 extends Float3R {
      * of this vector and {@code b} the corresponding component of {@code y}.
      *
      * @param y the vector of other operands, one per component
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 hypot(Float3R y) { return hypot(y, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -878,49 +888,49 @@ public interface Float3 extends Float3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 hypot(float x, float y, float z) { return hypot(x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the reciprocal {@code 1 / x} of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 inverse() { return inverse(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the inverse square root of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 inverseSqrt() { return inverseSqrt(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the natural logarithm of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 log() { return log(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the base-10 logarithm of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 log10() { return log10(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the natural logarithm of one plus the value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 log1p() { return log1p(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the base-2 logarithm of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 log2() { return log2(Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -928,7 +938,7 @@ public interface Float3 extends Float3R {
      * Set each component of this vector to the larger of itself and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 max(float scalar) { return max(scalar, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -937,7 +947,7 @@ public interface Float3 extends Float3R {
      * {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 max(Float3R other) { return max(other, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -948,7 +958,7 @@ public interface Float3 extends Float3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 max(float x, float y, float z) { return max(x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -956,7 +966,7 @@ public interface Float3 extends Float3R {
      * Set each component of this vector to the smaller of itself and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 min(float scalar) { return min(scalar, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -965,7 +975,7 @@ public interface Float3 extends Float3R {
      * {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 min(Float3R other) { return min(other, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -976,7 +986,7 @@ public interface Float3 extends Float3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 min(float x, float y, float z) { return min(x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -988,7 +998,7 @@ public interface Float3 extends Float3R {
      * dividend.
      *
      * @param y the divisor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 mod(float y) { return mod(y, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1000,7 +1010,7 @@ public interface Float3 extends Float3R {
      * dividend.
      *
      * @param y the vector of divisors, one per component
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 mod(Float3R y) { return mod(y, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1014,7 +1024,7 @@ public interface Float3 extends Float3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 mod(float x, float y, float z) { return mod(x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1022,7 +1032,7 @@ public interface Float3 extends Float3R {
      * Compute the next representable value toward negative infinity of each component of this
      * vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 nextDown() { return nextDown(Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1030,7 +1040,7 @@ public interface Float3 extends Float3R {
      * Compute the next representable value toward positive infinity of each component of this
      * vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 nextUp() { return nextUp(Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1039,10 +1049,10 @@ public interface Float3 extends Float3R {
      * <p>
      * The squared length is formed at the component precision, so components whose squares overflow
      * or underflow that precision are out of domain: the result is the zero vector rather than a
-     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}).
+     * unit vector. Rescale such inputs before normalizing (the magnitude must lie roughly between
+     * 1e-19 and 1.8e19 for {@code float}, 1.5e-154 and 1.3e154 for {@code double}).
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 normalize() { return normalize(Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1051,14 +1061,14 @@ public interface Float3 extends Float3R {
      * length (the zero vector yields the zero vector).
      *
      * @param length the length to rescale to
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 normalizeMul(float length) { return normalizeMul(length, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute a vector perpendicular to this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 perpendicular() { return perpendicular(Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1066,7 +1076,7 @@ public interface Float3 extends Float3R {
      * Raise each component of this vector to the power of {@code exponent}.
      *
      * @param exponent the exponent
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 pow(float exponent) { return pow(exponent, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1074,7 +1084,7 @@ public interface Float3 extends Float3R {
      * Raise each component of this vector to the power of {@code exponent}.
      *
      * @param exponent the exponent
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 pow(Float3R exponent) { return pow(exponent, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1084,7 +1094,7 @@ public interface Float3 extends Float3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 pow(float x, float y, float z) { return pow(x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1092,7 +1102,7 @@ public interface Float3 extends Float3R {
      * Project this vector onto {@code onto}.
      *
      * @param onto the vector to project onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 project(Float3R onto) { return project(onto, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1102,7 +1112,7 @@ public interface Float3 extends Float3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 project(float x, float y, float z) { return project(x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1110,7 +1120,7 @@ public interface Float3 extends Float3R {
      * Project this vector onto the plane with the given normal.
      *
      * @param normal the normal (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 projectOnPlane(Float3R normal) { return projectOnPlane(normal, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1123,14 +1133,14 @@ public interface Float3 extends Float3R {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 projectOnPlane(float x, float y, float z) { return projectOnPlane(x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the value converted from degrees to radians of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 radians() { return radians(Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1138,7 +1148,7 @@ public interface Float3 extends Float3R {
      * Reflect this vector about the given normal.
      *
      * @param normal the normal (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 reflect(Float3R normal) { return reflect(normal, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1151,7 +1161,7 @@ public interface Float3 extends Float3R {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 reflect(float x, float y, float z) { return reflect(x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1163,7 +1173,7 @@ public interface Float3 extends Float3R {
      * @param normal the normal (must be a unit vector)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
      *        destination medium's
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 refract(Float3R normal, float eta) { return refract(normal, eta, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1180,7 +1190,7 @@ public interface Float3 extends Float3R {
      *        length)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
      *        destination medium's
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 refract(float x, float y, float z, float eta) { return refract(x, y, z, eta, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1188,28 +1198,28 @@ public interface Float3 extends Float3R {
      * Compute the value rounded to the nearest integer, ties to even ({@code Math.rint}) of each
      * component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 round() { return round(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the sign of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 sign() { return sign(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the sine of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 sin() { return sin(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the hyperbolic sine of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 sinh() { return sinh(Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1220,7 +1230,7 @@ public interface Float3 extends Float3R {
      *
      * @param edge0 the lower edge
      * @param edge1 the upper edge
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 smoothstep(float edge0, float edge1) { return smoothstep(edge0, edge1, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1231,7 +1241,7 @@ public interface Float3 extends Float3R {
      *
      * @param edge0 the lower edge
      * @param edge1 the upper edge
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 smoothstep(Float3R edge0, Float3R edge1) { return smoothstep(edge0, edge1, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1247,14 +1257,14 @@ public interface Float3 extends Float3R {
      * @param edge1X the {@code x} component of the vector {@code (edge1X, edge1Y, edge1Z)}
      * @param edge1Y the {@code y} component of the vector {@code (edge1X, edge1Y, edge1Z)}
      * @param edge1Z the {@code z} component of the vector {@code (edge1X, edge1Y, edge1Z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 smoothstep(float edge0X, float edge0Y, float edge0Z, float edge1X, float edge1Y, float edge1Z) { return smoothstep(edge0X, edge0Y, edge0Z, edge1X, edge1Y, edge1Z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the square root of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 sqrt() { return sqrt(Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1263,7 +1273,7 @@ public interface Float3 extends Float3R {
      * {@code 1} otherwise.
      *
      * @param edge the edge to compare each component against
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 step(float edge) { return step(edge, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1272,7 +1282,7 @@ public interface Float3 extends Float3R {
      * component of the given edge, and to {@code 1} otherwise.
      *
      * @param edge the edge to compare each component against
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 step(Float3R edge) { return step(edge, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1283,21 +1293,21 @@ public interface Float3 extends Float3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 step(float x, float y, float z) { return step(x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the tangent of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 tan() { return tan(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the hyperbolic tangent of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 tanh() { return tanh(Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1309,7 +1319,7 @@ public interface Float3 extends Float3R {
      *
      * @param p1 the second vertex of the triangle (this vector is the first)
      * @param p2 the third vertex of the triangle
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 triangleNormal(Float3R p1, Float3R p2) { return triangleNormal(p1, p2, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1326,21 +1336,21 @@ public interface Float3 extends Float3R {
      * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z)}
      * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
      * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 triangleNormal(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z) { return triangleNormal(p1X, p1Y, p1Z, p2X, p2Y, p2Z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the truncated value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 trunc() { return trunc(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the unit in the last place (ulp) of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 ulp() { return ulp(Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1348,7 +1358,7 @@ public interface Float3 extends Float3R {
      * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this}.
      *
      * @param mat the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 preMul(Float3x3R mat) { return preMul(mat, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1358,7 +1368,7 @@ public interface Float3 extends Float3R {
      * translation.
      *
      * @param mat the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 preMulDirection(Float3x4R mat) { return preMulDirection(mat, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1368,7 +1378,7 @@ public interface Float3 extends Float3R {
      * translation.
      *
      * @param mat the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 preMulDirection(Float4x4R mat) { return preMulDirection(mat, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1378,7 +1388,7 @@ public interface Float3 extends Float3R {
      * translation.
      *
      * @param mat the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 preMulPosition(Float3x4R mat) { return preMulPosition(mat, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1388,7 +1398,7 @@ public interface Float3 extends Float3R {
      * translation.
      *
      * @param mat the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 preMulPosition(Float4x4R mat) { return preMulPosition(mat, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1398,7 +1408,7 @@ public interface Float3 extends Float3R {
      * {@code r.xyz / r.w}.
      *
      * @param mat the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 preMulProject(Float4x4R mat) { return preMulProject(mat, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1406,7 +1416,7 @@ public interface Float3 extends Float3R {
      * Rotate this vector by the quaternion {@code quat}, i.e. compute {@code q * this * q^-1}.
      *
      * @param quat the quaternion (must be a unit quaternion)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 rotate(FloatQuatR quat) { return rotate(quat, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1422,7 +1432,7 @@ public interface Float3 extends Float3R {
      *        have unit length)
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 rotate(float x, float y, float z, float w) { return rotate(x, y, z, w, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1431,7 +1441,7 @@ public interface Float3 extends Float3R {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 rotateAxis(float angle, Float3R axis) { return rotateAxis(angle, axis, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1445,7 +1455,7 @@ public interface Float3 extends Float3R {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 rotateAxis(float angle, float x, float y, float z) { return rotateAxis(angle, x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1453,7 +1463,7 @@ public interface Float3 extends Float3R {
      * Rotate this vector by the inverse of the given rotation.
      *
      * @param quat the quaternion (must be a unit quaternion)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 rotateInverse(FloatQuatR quat) { return rotateInverse(quat, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1468,7 +1478,7 @@ public interface Float3 extends Float3R {
      *        have unit length)
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 rotateInverse(float x, float y, float z, float w) { return rotateInverse(x, y, z, w, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1476,7 +1486,7 @@ public interface Float3 extends Float3R {
      * Rotate this vector by {@code angle} radians about the X axis.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 rotateX(float angle) { return rotateX(angle, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1484,7 +1494,7 @@ public interface Float3 extends Float3R {
      * Rotate this vector by {@code angle} radians about the Y axis.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 rotateY(float angle) { return rotateY(angle, Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1492,196 +1502,196 @@ public interface Float3 extends Float3R {
      * Rotate this vector by {@code angle} radians about the Z axis.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 rotateZ(float angle) { return rotateZ(angle, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 xxx() { return xxx(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 xxy() { return xxy(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 xxz() { return xxz(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 xyx() { return xyx(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 xyy() { return xyy(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 xyz() { return xyz(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 xzx() { return xzx(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 xzy() { return xzy(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 xzz() { return xzz(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 yxx() { return yxx(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 yxy() { return yxy(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 yxz() { return yxz(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 yyx() { return yyx(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 yyy() { return yyy(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 yyz() { return yyz(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 yzx() { return yzx(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 yzy() { return yzy(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 yzz() { return yzz(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 zxx() { return zxx(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 zxy() { return zxy(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 zxz() { return zxz(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 zyx() { return zyx(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 zyy() { return zyy(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 zyz() { return zyz(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 zzx() { return zzx(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 zzy() { return zzy(Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 zzz() { return zzz(Joml.RETURN_NEW ? Joml.float3() : this); }
 
@@ -1708,6 +1718,10 @@ public interface Float3 extends Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1720,6 +1734,10 @@ public interface Float3 extends Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1732,6 +1750,10 @@ public interface Float3 extends Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1745,6 +1767,10 @@ public interface Float3 extends Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1762,6 +1788,10 @@ public interface Float3 extends Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1774,6 +1804,10 @@ public interface Float3 extends Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1786,6 +1820,10 @@ public interface Float3 extends Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1799,6 +1837,10 @@ public interface Float3 extends Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1812,6 +1854,10 @@ public interface Float3 extends Float3R {
 
     /**
      * Load the elements from the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -1820,6 +1866,10 @@ public interface Float3 extends Float3R {
 
     /**
      * Load the elements from the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -1859,6 +1909,10 @@ public interface Float3 extends Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1871,6 +1925,10 @@ public interface Float3 extends Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1883,6 +1941,10 @@ public interface Float3 extends Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1896,6 +1958,10 @@ public interface Float3 extends Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1913,6 +1979,10 @@ public interface Float3 extends Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1925,6 +1995,10 @@ public interface Float3 extends Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1937,6 +2011,10 @@ public interface Float3 extends Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1950,6 +2028,10 @@ public interface Float3 extends Float3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1963,6 +2045,10 @@ public interface Float3 extends Float3R {
 
     /**
      * Load the elements from the given memory segment, converting each element from {@code double}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -1972,6 +2058,10 @@ public interface Float3 extends Float3R {
     /**
      * Load the elements from the given memory segment, converting each element from {@code double},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

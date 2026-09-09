@@ -14,13 +14,23 @@ import java.lang.foreign.MemorySegment;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of a quaternion
+ * never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface DoubleQuat extends DoubleQuatR {
 
     /**
      * Invert this quaternion.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat invert() { return invert(Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -29,7 +39,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * {@code (this * other)^-1}.
      *
      * @param other the other quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat invertProduct(DoubleQuatR other) { return invertProduct(other, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -41,7 +51,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat invertProduct(double x, double y, double z, double w) { return invertProduct(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -49,7 +59,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * Add {@code other} to this quaternion.
      *
      * @param other the other quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat add(DoubleQuatR other) { return add(other, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -60,14 +70,14 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat add(double x, double y, double z, double w) { return add(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
      * Negate this quaternion.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat negate() { return negate(Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -75,7 +85,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * Subtract {@code other} from this quaternion.
      *
      * @param other the other quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat sub(DoubleQuatR other) { return sub(other, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -86,7 +96,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat sub(double x, double y, double z, double w) { return sub(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -194,7 +204,7 @@ public interface DoubleQuat extends DoubleQuatR {
      *
      * @param other the other quaternion
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat lerp(DoubleQuatR other, double t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -207,53 +217,69 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat lerp(double x, double y, double z, double w, double t) { return lerp(x, y, z, w, t, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
      * Interpolate between this quaternion and {@code target} using the interpolation factor
      * {@code alpha} and normalize the result.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat nlerp(DoubleQuatR target, double alpha) { return nlerp(target, alpha, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
      * Interpolate between this quaternion and ({@code x}, {@code y}, {@code z}, {@code w}) using
      * the interpolation factor {@code alpha} and normalize the result.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat nlerp(double x, double y, double z, double w, double alpha) { return nlerp(x, y, z, w, alpha, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
      * Interpolate along the shortest path between this quaternion and {@code target} using the
      * interpolation factor {@code alpha} and normalize the result.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat nlerpShortest(DoubleQuatR target, double alpha) { return nlerpShortest(target, alpha, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
      * Interpolate along the shortest path between this quaternion and ({@code x}, {@code y},
      * {@code z}, {@code w}) using the interpolation factor {@code alpha} and normalize the result.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat nlerpShortest(double x, double y, double z, double w, double alpha) { return nlerpShortest(x, y, z, w, alpha, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -267,7 +293,7 @@ public interface DoubleQuat extends DoubleQuatR {
      *
      * @param target the target rotation (must be a unit quaternion)
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat slerp(DoubleQuatR target, double alpha) { return slerp(target, alpha, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -288,7 +314,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat slerp(double x, double y, double z, double w, double alpha) { return slerp(x, y, z, w, alpha, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -298,7 +324,7 @@ public interface DoubleQuat extends DoubleQuatR {
      *
      * @param target the target rotation (must be a unit quaternion)
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat slerpShortest(DoubleQuatR target, double alpha) { return slerpShortest(target, alpha, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -316,7 +342,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat slerpShortest(double x, double y, double z, double w, double alpha) { return slerpShortest(x, y, z, w, alpha, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -328,7 +354,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param control1 the inner control quaternion associated with the end rotation
      * @param target the target rotation
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat squad(DoubleQuatR control0, DoubleQuatR control1, DoubleQuatR target, double t) { return squad(control0, control1, target, t, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -361,7 +387,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param targetW the {@code w} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat squad(double control0X, double control0Y, double control0Z, double control0W, double control1X, double control1Y, double control1Z, double control1W, double targetX, double targetY, double targetZ, double targetW, double t) { return squad(control0X, control0Y, control0Z, control0W, control1X, control1Y, control1Z, control1W, targetX, targetY, targetZ, targetW, t, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -373,7 +399,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * using {@code Q * R * v}, the transformation of the operand will be applied first.
      *
      * @param other the other quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat mul(DoubleQuatR other) { return mul(other, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -388,7 +414,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat mul(double x, double y, double z, double w) { return mul(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -400,7 +426,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * the new quaternion by using {@code T * Q * v}, the given transformation will be applied last.
      *
      * @param other the other quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat preMul(DoubleQuatR other) { return preMul(other, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -416,7 +442,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat preMul(double x, double y, double z, double w) { return preMul(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -424,14 +450,14 @@ public interface DoubleQuat extends DoubleQuatR {
      * Recompute the {@code w} component of this quaternion from {@code x}, {@code y} and {@code z},
      * assuming unit length (the positive square root is chosen).
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat calculateW() { return calculateW(Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
      * Conjugate this quaternion.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat conjugate() { return conjugate(Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -440,7 +466,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * {@code q} is the given quaternion (equal to {@code q * this * q^-1} when it has unit length).
      *
      * @param q the quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat conjugateBy(DoubleQuatR q) { return conjugateBy(q, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -453,7 +479,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat conjugateBy(double x, double y, double z, double w) { return conjugateBy(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -462,7 +488,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * with {@code this * D = other}, that is {@code D = this^-1 * other}.
      *
      * @param other the other quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat difference(DoubleQuatR other) { return difference(other, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -475,14 +501,14 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat difference(double x, double y, double z, double w) { return difference(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
      * Compute the exponential of this quaternion.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat exp() { return exp(Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -492,7 +518,7 @@ public interface DoubleQuat extends DoubleQuatR {
      *
      * @param angularVel the angular velocity, in radians per second, applied in the reference frame
      * @param dt the time step
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat integrate(Double3R angularVel, double dt) { return integrate(angularVel, dt, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -504,29 +530,39 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @param dt the time step
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat integrate(double x, double y, double z, double dt) { return integrate(x, y, z, dt, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
      * Compute the natural logarithm of this quaternion.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code double}
+     * resolution down to 0 - small rotations are not truncated.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat log() { return log(Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
      * Normalize this quaternion to unit length.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat normalize() { return normalize(Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
      * Raise this quaternion to the power of {@code t}, i.e. compute {@code exp(t * log(this))}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code double}
+     * resolution down to 0 - small rotations are not truncated.
      *
      * @param t the exponent
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat pow(double t) { return pow(t, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -541,7 +577,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * compatibility.
      *
      * @param other the other quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat premul(DoubleQuatR other) { return premul(other, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -559,29 +595,35 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat premul(double x, double y, double z, double w) { return premul(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
      * Rotate this quaternion towards {@code target}, by at most the given maximum angle.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code double}
+     * resolution down to 0 - small rotations are not truncated.
      *
      * @param target the target rotation
      * @param step the maximum rotation angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat rotateTowards(DoubleQuatR target, double step) { return rotateTowards(target, step, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
      * Rotate this quaternion towards ({@code x}, {@code y}, {@code z}, {@code w}), by at most the
      * given maximum angle.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code double}
+     * resolution down to 0 - small rotations are not truncated.
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
      * @param step the maximum rotation angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat rotateTowards(double x, double y, double z, double w, double step) { return rotateTowards(x, y, z, w, step, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -595,7 +637,7 @@ public interface DoubleQuat extends DoubleQuatR {
      *
      * @param dir the direction
      * @param up the direction of "up"
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat lookAlong(Double3R dir, Double3R up) { return lookAlong(dir, up, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -613,7 +655,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
      * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
      * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat lookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) { return lookAlong(dirX, dirY, dirZ, upX, upY, upZ, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -668,6 +710,11 @@ public interface DoubleQuat extends DoubleQuatR {
      * Set this quaternion to the rotation that rotates {@code fromDir} onto {@code toDir} (both
      * must be unit vectors; for opposite vectors an arbitrary perpendicular rotation axis is
      * chosen).
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDir the vector
      * @param toDir the vector
@@ -679,6 +726,11 @@ public interface DoubleQuat extends DoubleQuatR {
      * Set this quaternion to the rotation that rotates ({@code fromDirX}, {@code fromDirY},
      * {@code fromDirZ}) onto ({@code toDirX}, {@code toDirY}, {@code toDirZ}) (both must be unit
      * vectors; for opposite vectors an arbitrary perpendicular rotation axis is chosen).
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDirX the {@code x} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
      * @param fromDirY the {@code y} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
@@ -794,7 +846,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * quaternion by using {@code R * Q * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat preRotateX(double angle) { return preRotateX(angle, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -806,7 +858,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * quaternion by using {@code R * Q * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat preRotateY(double angle) { return preRotateY(angle, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -818,7 +870,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * quaternion by using {@code R * Q * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat preRotateZ(double angle) { return preRotateZ(angle, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -831,7 +883,7 @@ public interface DoubleQuat extends DoubleQuatR {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat rotateAxis(double angle, Double3R axis) { return rotateAxis(angle, axis, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -850,7 +902,7 @@ public interface DoubleQuat extends DoubleQuatR {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat rotateAxis(double angle, double x, double y, double z) { return rotateAxis(angle, x, y, z, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -862,10 +914,15 @@ public interface DoubleQuat extends DoubleQuatR {
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDir the vector
      * @param toDir the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat rotateTo(Double3R fromDir, Double3R toDir) { return rotateTo(fromDir, toDir, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -877,6 +934,11 @@ public interface DoubleQuat extends DoubleQuatR {
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDirX the {@code x} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
      * @param fromDirY the {@code y} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
@@ -884,7 +946,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param toDirX the {@code x} component of the vector {@code (toDirX, toDirY, toDirZ)}
      * @param toDirY the {@code y} component of the vector {@code (toDirX, toDirY, toDirZ)}
      * @param toDirZ the {@code z} component of the vector {@code (toDirX, toDirY, toDirZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat rotateTo(double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ) { return rotateTo(fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -892,7 +954,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * Rotate this quaternion by {@code angle} radians about the local X axis.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat rotateX(double angle) { return rotateX(angle, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -908,7 +970,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat rotateXYZ(double angleX, double angleY, double angleZ) { return rotateXYZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -924,7 +986,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat rotateXZY(double angleX, double angleY, double angleZ) { return rotateXZY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -932,7 +994,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * Rotate this quaternion by {@code angle} radians about the local Y axis.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat rotateY(double angle) { return rotateY(angle, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -948,7 +1010,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat rotateYXZ(double angleX, double angleY, double angleZ) { return rotateYXZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -964,7 +1026,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat rotateYZX(double angleX, double angleY, double angleZ) { return rotateYZX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -972,7 +1034,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * Rotate this quaternion by {@code angle} radians about the local Z axis.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat rotateZ(double angle) { return rotateZ(angle, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -988,7 +1050,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat rotateZXY(double angleX, double angleY, double angleZ) { return rotateZXY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -1004,7 +1066,7 @@ public interface DoubleQuat extends DoubleQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat rotateZYX(double angleX, double angleY, double angleZ) { return rotateZYX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
@@ -1031,6 +1093,10 @@ public interface DoubleQuat extends DoubleQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1043,6 +1109,10 @@ public interface DoubleQuat extends DoubleQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1055,6 +1125,10 @@ public interface DoubleQuat extends DoubleQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1068,6 +1142,10 @@ public interface DoubleQuat extends DoubleQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1085,6 +1163,10 @@ public interface DoubleQuat extends DoubleQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1097,6 +1179,10 @@ public interface DoubleQuat extends DoubleQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1109,6 +1195,10 @@ public interface DoubleQuat extends DoubleQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1122,6 +1212,10 @@ public interface DoubleQuat extends DoubleQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1135,6 +1229,10 @@ public interface DoubleQuat extends DoubleQuatR {
 
     /**
      * Load the elements from the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -1143,6 +1241,10 @@ public interface DoubleQuat extends DoubleQuatR {
 
     /**
      * Load the elements from the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -1182,6 +1284,10 @@ public interface DoubleQuat extends DoubleQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1194,6 +1300,10 @@ public interface DoubleQuat extends DoubleQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1206,6 +1316,10 @@ public interface DoubleQuat extends DoubleQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1219,6 +1333,10 @@ public interface DoubleQuat extends DoubleQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1236,6 +1354,10 @@ public interface DoubleQuat extends DoubleQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1248,6 +1370,10 @@ public interface DoubleQuat extends DoubleQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1260,6 +1386,10 @@ public interface DoubleQuat extends DoubleQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1273,6 +1403,10 @@ public interface DoubleQuat extends DoubleQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1286,6 +1420,10 @@ public interface DoubleQuat extends DoubleQuatR {
 
     /**
      * Load the elements from the given memory segment, converting each element from {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -1295,6 +1433,10 @@ public interface DoubleQuat extends DoubleQuatR {
     /**
      * Load the elements from the given memory segment, converting each element from {@code float},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

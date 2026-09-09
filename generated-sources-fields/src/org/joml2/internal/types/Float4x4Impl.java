@@ -230,7 +230,7 @@ public class Float4x4Impl implements Float4x4 {
             d.z = (float) Math.atan2(-this.m01, this.m00);
             d.x = _buf0;
         }
-        d.y = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, this.m02)));
+        d.y = (float) Math.atan2(this.m02, (float) Math.sqrt(_t1));
         return d;
     }
 
@@ -241,6 +241,9 @@ public class Float4x4Impl implements Float4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -262,6 +265,9 @@ public class Float4x4Impl implements Float4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -286,7 +292,7 @@ public class Float4x4Impl implements Float4x4 {
             d.z = (float) Math.atan2(-this.m01, this.m00);
             d.x = _buf0;
         }
-        d.y = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, this.m02)));
+        d.y = (float) Math.atan2(this.m02, (float) Math.sqrt(_t1));
         return d;
     }
 
@@ -319,7 +325,7 @@ public class Float4x4Impl implements Float4x4 {
             d.x = _buf0;
             d.y = _buf1;
         }
-        d.z = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -this.m01)));
+        d.z = (float) Math.atan2(-this.m01, (float) Math.sqrt(_t1));
         return d;
     }
 
@@ -330,6 +336,9 @@ public class Float4x4Impl implements Float4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -351,6 +360,9 @@ public class Float4x4Impl implements Float4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -377,7 +389,7 @@ public class Float4x4Impl implements Float4x4 {
             d.x = _buf0;
             d.y = _buf1;
         }
-        d.z = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -this.m01)));
+        d.z = (float) Math.atan2(-this.m01, (float) Math.sqrt(_t1));
         return d;
     }
 
@@ -406,7 +418,7 @@ public class Float4x4Impl implements Float4x4 {
             d.y = (float) Math.atan2(this.m02, this.m22);
             d.z = (float) Math.atan2(this.m10, this.m11);
         }
-        d.x = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -this.m12)));
+        d.x = (float) Math.atan2(-this.m12, (float) Math.sqrt(_t1));
         return d;
     }
 
@@ -417,6 +429,9 @@ public class Float4x4Impl implements Float4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -439,6 +454,9 @@ public class Float4x4Impl implements Float4x4 {
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
+     * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
      * rather than the angles of its rotation part.
@@ -460,7 +478,7 @@ public class Float4x4Impl implements Float4x4 {
             d.y = (float) Math.atan2(this.m02, this.m22);
             d.z = (float) Math.atan2(this.m10, this.m11);
         }
-        d.x = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -this.m12)));
+        d.x = (float) Math.atan2(-this.m12, (float) Math.sqrt(_t1));
         return d;
     }
 
@@ -491,7 +509,7 @@ public class Float4x4Impl implements Float4x4 {
             d.y = (float) Math.atan2(-this.m20, this.m00);
             d.x = _buf0;
         }
-        d.z = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, this.m10)));
+        d.z = (float) Math.atan2(this.m10, (float) Math.sqrt(_t1));
         return d;
     }
 
@@ -502,6 +520,9 @@ public class Float4x4Impl implements Float4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -523,6 +544,9 @@ public class Float4x4Impl implements Float4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -547,7 +571,7 @@ public class Float4x4Impl implements Float4x4 {
             d.y = (float) Math.atan2(-this.m20, this.m00);
             d.x = _buf0;
         }
-        d.z = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, this.m10)));
+        d.z = (float) Math.atan2(this.m10, (float) Math.sqrt(_t1));
         return d;
     }
 
@@ -578,7 +602,7 @@ public class Float4x4Impl implements Float4x4 {
             d.z = (float) Math.atan2(-this.m01, this.m11);
             d.y = _buf0;
         }
-        d.x = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, this.m21)));
+        d.x = (float) Math.atan2(this.m21, (float) Math.sqrt(_t1));
         return d;
     }
 
@@ -589,6 +613,9 @@ public class Float4x4Impl implements Float4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -610,6 +637,9 @@ public class Float4x4Impl implements Float4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -634,7 +664,7 @@ public class Float4x4Impl implements Float4x4 {
             d.z = (float) Math.atan2(-this.m01, this.m11);
             d.y = _buf0;
         }
-        d.x = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, this.m21)));
+        d.x = (float) Math.atan2(this.m21, (float) Math.sqrt(_t1));
         return d;
     }
 
@@ -665,7 +695,7 @@ public class Float4x4Impl implements Float4x4 {
             d.z = (float) Math.atan2(this.m10, this.m00);
             d.x = _buf0;
         }
-        d.y = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -this.m20)));
+        d.y = (float) Math.atan2(-this.m20, (float) Math.sqrt(_t1));
         return d;
     }
 
@@ -676,6 +706,9 @@ public class Float4x4Impl implements Float4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -697,6 +730,9 @@ public class Float4x4Impl implements Float4x4 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -721,7 +757,7 @@ public class Float4x4Impl implements Float4x4 {
             d.z = (float) Math.atan2(this.m10, this.m00);
             d.x = _buf0;
         }
-        d.y = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -this.m20)));
+        d.y = (float) Math.atan2(-this.m20, (float) Math.sqrt(_t1));
         return d;
     }
 
@@ -843,6 +879,10 @@ public class Float4x4Impl implements Float4x4 {
      * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
      * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
      * unit length) and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -858,6 +898,10 @@ public class Float4x4Impl implements Float4x4 {
      * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
      * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
      * unit length) and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1112,6 +1156,10 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Get the scaling factors of this matrix, as the lengths of its basis columns (always
      * non-negative; skew is ignored) and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1126,6 +1174,10 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Get the scaling factors of this matrix, as the lengths of its basis columns (always
      * non-negative; skew is ignored) and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1386,6 +1438,10 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code -X} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
+     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1400,6 +1456,10 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code -X} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
+     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1467,6 +1527,10 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code -Y} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
+     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1481,6 +1545,10 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code -Y} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
+     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1548,6 +1616,10 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code -Z} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
+     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1562,6 +1634,10 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code -Z} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
+     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2003,6 +2079,10 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code +X} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
+     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2017,6 +2097,10 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code +X} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
+     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2080,6 +2164,10 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code +Y} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
+     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2094,6 +2182,10 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code +Y} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
+     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2157,6 +2249,10 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code +Z} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
+     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2171,6 +2267,10 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code +Z} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
+     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2231,6 +2331,11 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code -X} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band
+     * first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2245,6 +2350,11 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code -X} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band
+     * first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2302,6 +2412,11 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code -Y} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band
+     * first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2316,6 +2431,11 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code -Y} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band
+     * first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2373,6 +2493,11 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code -Z} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band
+     * first.
      *
      * @param dest will hold the result
      * @return dest
@@ -2387,6 +2512,11 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code -Z} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band
+     * first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3000,6 +3130,11 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code +X} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band
+     * first.
      *
      * @param dest will hold the result
      * @return dest
@@ -3014,6 +3149,11 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code +X} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band
+     * first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3071,6 +3211,11 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code +Y} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band
+     * first.
      *
      * @param dest will hold the result
      * @return dest
@@ -3085,6 +3230,11 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code +Y} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band
+     * first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3142,6 +3292,11 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code +Z} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band
+     * first.
      *
      * @param dest will hold the result
      * @return dest
@@ -3156,6 +3311,11 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Obtain the direction of {@code +Z} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band
+     * first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3443,7 +3603,7 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Compute the cofactor matrix of this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 cofactor() {
         if (Joml.RETURN_NEW) return cofactor(Joml.float4x4());
@@ -3823,7 +3983,7 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Invert this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 invert() {
         if (Joml.RETURN_NEW) return invert(Joml.float4x4());
@@ -4774,7 +4934,7 @@ public class Float4x4Impl implements Float4x4 {
      * {@code (this * other)^-1}.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 invertProduct(Float4x4R other) {
         if (Joml.RETURN_NEW) return invertProduct(other, Joml.float4x4());
@@ -5215,7 +5375,7 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Compute the normal matrix of this matrix, i.e. the transpose of its inverse.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 normal() {
         if (Joml.RETURN_NEW) return normal(Joml.float4x4());
@@ -5470,7 +5630,7 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Transpose this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 transpose() {
         if (Joml.RETURN_NEW) return transpose(Joml.float4x4());
@@ -5885,7 +6045,7 @@ public class Float4x4Impl implements Float4x4 {
      * Add {@code other} to this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 add(Float4x4R other) {
         if (Joml.RETURN_NEW) return add(other, Joml.float4x4());
@@ -6213,7 +6373,7 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Negate this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 negate() {
         if (Joml.RETURN_NEW) return negate(Joml.float4x4());
@@ -6704,7 +6864,7 @@ public class Float4x4Impl implements Float4x4 {
      * Subtract {@code other} from this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 sub(Float4x4R other) {
         if (Joml.RETURN_NEW) return sub(other, Joml.float4x4());
@@ -7026,7 +7186,7 @@ public class Float4x4Impl implements Float4x4 {
      * translation instead of composing a translation onto the existing transformation.
      *
      * @param t the translation offsets
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 withTranslation(Float3R t) {
         return withTranslation(t.x(), t.y(), t.z());
@@ -7184,7 +7344,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param tX the {@code x} component of the translation offsets {@code (tX, tY, tZ)}
      * @param tY the {@code y} component of the translation offsets {@code (tX, tY, tZ)}
      * @param tZ the {@code z} component of the translation offsets {@code (tX, tY, tZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 withTranslation(float tX, float tY, float tZ) {
         if (Joml.RETURN_NEW) return withTranslation(tX, tY, tZ, Joml.float4x4());
@@ -8305,6 +8465,10 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Extract the rotation part of this matrix and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -8318,6 +8482,10 @@ public class Float4x4Impl implements Float4x4 {
 
     /**
      * Extract the rotation part of this matrix and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -8501,6 +8669,10 @@ public class Float4x4Impl implements Float4x4 {
      * Extract the scaling factors of this matrix via Gram-Schmidt orthogonalization (skew-aware;
      * the x factor carries the sign of a reflection when the determinant is negative) and store the
      * result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -8516,6 +8688,10 @@ public class Float4x4Impl implements Float4x4 {
      * Extract the scaling factors of this matrix via Gram-Schmidt orthogonalization (skew-aware;
      * the x factor carries the sign of a reflection when the determinant is negative) and store the
      * result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -8660,6 +8836,10 @@ public class Float4x4Impl implements Float4x4 {
      * Extract the shear (skew) factors of this matrix via Gram-Schmidt orthogonalization, as
      * {@code (skewYZ, skewXZ, skewXY)} (all zero for a shear-free matrix) and store the result in
      * {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -8675,6 +8855,10 @@ public class Float4x4Impl implements Float4x4 {
      * Extract the shear (skew) factors of this matrix via Gram-Schmidt orthogonalization, as
      * {@code (skewYZ, skewXZ, skewXY)} (all zero for a shear-free matrix) and store the result in
      * {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -8750,6 +8934,10 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Decompose this matrix into its translation, rotation and scale components, storing them in
      * {@code translation}, {@code rotation} and {@code scale} respectively.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param translation will hold the translation
      * @param rotation will hold the rotation
@@ -8851,6 +9039,10 @@ public class Float4x4Impl implements Float4x4 {
     /**
      * Decompose this matrix into its translation, rotation and scale components, storing them in
      * {@code translation}, {@code rotation} and {@code scale} respectively.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -11330,25 +11522,26 @@ public class Float4x4Impl implements Float4x4 {
         float _t55 = Math.fma(this.m10, this.m23, -(this.m13 * this.m20));
         float _t56 = Math.fma(this.m20, this.m33, -(this.m23 * this.m30));
         float _t57 = Math.fma(this.m10, this.m33, -(this.m13 * this.m30));
+        float _t74 = -(this.m03 * _t48);
         float _t75 = -(this.m01 * _t49);
         float _t80 = -(this.m02 * _t55);
-        float _t88 = Math.fma(this.m02, _t47, -(this.m03 * _t48));
-        float _t99 = Math.fma(this.m01, _t55, -(this.m03 * _t50));
-        float _t100 = Math.fma(this.m13, _t43, Math.fma(this.m11, _t44, -(this.m12 * _t45)));
-        float _t106 = Math.fma(this.m13, _t51, Math.fma(this.m10, _t45, -(this.m11 * _t56)));
-        float _t109 = Math.fma(this.m02, _t51, Math.fma(this.m00, _t43, -(this.m01 * _t52))) * _t10;
-        float _t111 = Math.fma(this.m03, _t52, Math.fma(this.m00, _t44, -(this.m02 * _t56))) * _t10;
-        float _t114 = -(Math.fma(this.m03, _t43, Math.fma(this.m01, _t44, -(this.m02 * _t45))) * _t10);
-        float _t115 = -(Math.fma(this.m12, _t51, Math.fma(this.m10, _t43, -(this.m11 * _t52))) * _t8);
-        float _t116 = -(Math.fma(this.m13, _t52, Math.fma(this.m10, _t44, -(this.m12 * _t56))) * _t8);
-        float _t117 = -(Math.fma(this.m03, _t51, Math.fma(this.m00, _t45, -(this.m01 * _t56))) * _t10);
-        float _t126 = Math.fma(this.m00, _t42, -(this.m01 * _t53)) + Math.fma(this.m02, _t54, _t109) + (Math.fma(this.m00, _t48, _t115) + Math.fma(this.m02, _t50, _t75));
-        float _t126_inv = 1.0f / _t126;
-        float _t127 = Math.fma(this.m00, _t48, _t75) + Math.fma(this.m02, _t50, _t109) + (Math.fma(_t1, _t42, _t115) + Math.fma(this.m01, _t53, -(this.m02 * _t54)));
-        float _t127_inv = 1.0f / _t127;
-        float _buf0 = (Math.fma(this.m01, _t40, -(this.m02 * _t41)) + Math.fma(this.m03, _t42, _t100 * _t8) + (Math.fma(_t0, _t46, _t114) + _t88)) * _t127_inv - (Math.fma(_t100, _t8, _t114) + Math.fma(this.m02, _t41, -(this.m01 * _t40)) + (Math.fma(_t0, _t46, -(this.m03 * _t42)) + _t88)) * _t126_inv;
-        float _buf1 = (Math.fma(this.m00, _t46, _t80) + Math.fma(this.m03, _t49, _t111) + (Math.fma(_t1, _t40, _t116) + Math.fma(this.m02, _t57, -(this.m03 * _t53)))) * _t127_inv - (Math.fma(this.m00, _t40, -(this.m02 * _t57)) + Math.fma(this.m03, _t53, _t111) + (Math.fma(this.m00, _t46, _t116) + Math.fma(this.m03, _t49, _t80))) * _t126_inv;
-        d.z = (Math.fma(this.m00, _t41, -(this.m01 * _t57)) + Math.fma(this.m03, _t54, _t106 * _t8) + (Math.fma(_t1, _t47, _t117) + _t99)) * _t127_inv - (Math.fma(_t106, _t8, _t117) + Math.fma(this.m01, _t57, -(this.m00 * _t41)) + (Math.fma(_t1, _t47, -(this.m03 * _t54)) + _t99)) * _t126_inv;
+        float _t85 = -(this.m03 * _t50);
+        float _t98 = Math.fma(this.m13, _t43, Math.fma(this.m11, _t44, -(this.m12 * _t45)));
+        float _t104 = Math.fma(this.m13, _t51, Math.fma(this.m10, _t45, -(this.m11 * _t56)));
+        float _t107 = Math.fma(this.m02, _t51, Math.fma(this.m00, _t43, -(this.m01 * _t52))) * _t10;
+        float _t109 = Math.fma(this.m03, _t52, Math.fma(this.m00, _t44, -(this.m02 * _t56))) * _t10;
+        float _t112 = -(Math.fma(this.m03, _t43, Math.fma(this.m01, _t44, -(this.m02 * _t45))) * _t10);
+        float _t113 = -(Math.fma(this.m12, _t51, Math.fma(this.m10, _t43, -(this.m11 * _t52))) * _t8);
+        float _t114 = -(Math.fma(this.m13, _t52, Math.fma(this.m10, _t44, -(this.m12 * _t56))) * _t8);
+        float _t115 = -(Math.fma(this.m03, _t51, Math.fma(this.m00, _t45, -(this.m01 * _t56))) * _t10);
+        float _t124 = Math.fma(this.m00, _t42, -(this.m01 * _t53)) + Math.fma(this.m02, _t54, _t107) + (Math.fma(this.m00, _t48, _t113) + Math.fma(this.m02, _t50, _t75));
+        float _t124_inv = 1.0f / _t124;
+        float _t125 = Math.fma(this.m00, _t48, _t75) + Math.fma(this.m02, _t50, _t107) + (Math.fma(_t1, _t42, _t113) + Math.fma(this.m01, _t53, -(this.m02 * _t54)));
+        float _t129 = Math.abs(_t125) <= Math.abs(_t124) * 9.536743E-7f ? _t124 : _t125;
+        float _t129_inv = 1.0f / _t129;
+        float _buf0 = (Math.fma(this.m01, _t40, -(this.m02 * _t41)) + Math.fma(this.m03, _t42, _t98 * _t8) + (Math.fma(_t0, _t46, _t112) + Math.fma(this.m02, _t47, _t74 - _t125 * (Math.fma(_t98, _t8, _t112) + Math.fma(this.m02, _t41, -(this.m01 * _t40)) + (Math.fma(_t0, _t46, -(this.m03 * _t42)) + Math.fma(this.m02, _t47, _t74))) * _t124_inv))) * _t129_inv;
+        float _buf1 = (Math.fma(this.m00, _t46, _t80) + Math.fma(this.m03, _t49, _t109) + (Math.fma(_t1, _t40, _t114) + Math.fma(this.m02, _t57, -(this.m03 * _t53) - (Math.fma(this.m00, _t40, -(this.m02 * _t57)) + Math.fma(this.m03, _t53, _t109) + (Math.fma(this.m00, _t46, _t114) + Math.fma(this.m03, _t49, _t80))) * _t125 * _t124_inv))) * _t129_inv;
+        d.z = (Math.fma(this.m00, _t41, -(this.m01 * _t57)) + Math.fma(this.m03, _t54, _t104 * _t8) + (Math.fma(_t1, _t47, _t115) + Math.fma(this.m01, _t55, _t85 - _t125 * (Math.fma(_t104, _t8, _t115) + Math.fma(this.m01, _t57, -(this.m00 * _t41)) + (Math.fma(_t1, _t47, -(this.m03 * _t54)) + Math.fma(this.m01, _t55, _t85))) * _t124_inv))) * _t129_inv;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -11397,25 +11590,26 @@ public class Float4x4Impl implements Float4x4 {
         float _t55 = Math.fma(this.m10, this.m23, -(this.m13 * this.m20));
         float _t56 = Math.fma(this.m20, this.m33, -(this.m23 * this.m30));
         float _t57 = Math.fma(this.m10, this.m33, -(this.m13 * this.m30));
+        float _t74 = -(this.m03 * _t48);
         float _t75 = -(this.m01 * _t49);
         float _t80 = -(this.m02 * _t55);
-        float _t88 = Math.fma(this.m02, _t47, -(this.m03 * _t48));
-        float _t99 = Math.fma(this.m01, _t55, -(this.m03 * _t50));
-        float _t100 = Math.fma(this.m13, _t43, Math.fma(this.m11, _t44, -(this.m12 * _t45)));
-        float _t106 = Math.fma(this.m13, _t51, Math.fma(this.m10, _t45, -(this.m11 * _t56)));
-        float _t109 = Math.fma(this.m02, _t51, Math.fma(this.m00, _t43, -(this.m01 * _t52))) * _t10;
-        float _t111 = Math.fma(this.m03, _t52, Math.fma(this.m00, _t44, -(this.m02 * _t56))) * _t10;
-        float _t114 = -(Math.fma(this.m03, _t43, Math.fma(this.m01, _t44, -(this.m02 * _t45))) * _t10);
-        float _t115 = -(Math.fma(this.m12, _t51, Math.fma(this.m10, _t43, -(this.m11 * _t52))) * _t8);
-        float _t116 = -(Math.fma(this.m13, _t52, Math.fma(this.m10, _t44, -(this.m12 * _t56))) * _t8);
-        float _t117 = -(Math.fma(this.m03, _t51, Math.fma(this.m00, _t45, -(this.m01 * _t56))) * _t10);
-        float _t126 = Math.fma(this.m00, _t42, -(this.m01 * _t53)) + Math.fma(this.m02, _t54, _t109) + (Math.fma(this.m00, _t48, _t115) + Math.fma(this.m02, _t50, _t75));
-        float _t126_inv = 1.0f / _t126;
-        float _t127 = Math.fma(this.m00, _t48, _t75) + Math.fma(this.m02, _t50, _t109) + (Math.fma(_t1, _t42, _t115) + Math.fma(this.m01, _t53, -(this.m02 * _t54)));
-        float _t127_inv = 1.0f / _t127;
-        float _buf0 = (Math.fma(this.m01, _t40, -(this.m02 * _t41)) + Math.fma(this.m03, _t42, _t100 * _t8) + (Math.fma(_t0, _t46, _t114) + _t88)) * _t127_inv - (Math.fma(_t100, _t8, _t114) + Math.fma(this.m02, _t41, -(this.m01 * _t40)) + (Math.fma(_t0, _t46, -(this.m03 * _t42)) + _t88)) * _t126_inv;
-        float _buf1 = (Math.fma(this.m00, _t46, _t80) + Math.fma(this.m03, _t49, _t111) + (Math.fma(_t1, _t40, _t116) + Math.fma(this.m02, _t57, -(this.m03 * _t53)))) * _t127_inv - (Math.fma(this.m00, _t40, -(this.m02 * _t57)) + Math.fma(this.m03, _t53, _t111) + (Math.fma(this.m00, _t46, _t116) + Math.fma(this.m03, _t49, _t80))) * _t126_inv;
-        d.z = (Math.fma(this.m00, _t41, -(this.m01 * _t57)) + Math.fma(this.m03, _t54, _t106 * _t8) + (Math.fma(_t1, _t47, _t117) + _t99)) * _t127_inv - (Math.fma(_t106, _t8, _t117) + Math.fma(this.m01, _t57, -(this.m00 * _t41)) + (Math.fma(_t1, _t47, -(this.m03 * _t54)) + _t99)) * _t126_inv;
+        float _t85 = -(this.m03 * _t50);
+        float _t98 = Math.fma(this.m13, _t43, Math.fma(this.m11, _t44, -(this.m12 * _t45)));
+        float _t104 = Math.fma(this.m13, _t51, Math.fma(this.m10, _t45, -(this.m11 * _t56)));
+        float _t107 = Math.fma(this.m02, _t51, Math.fma(this.m00, _t43, -(this.m01 * _t52))) * _t10;
+        float _t109 = Math.fma(this.m03, _t52, Math.fma(this.m00, _t44, -(this.m02 * _t56))) * _t10;
+        float _t112 = -(Math.fma(this.m03, _t43, Math.fma(this.m01, _t44, -(this.m02 * _t45))) * _t10);
+        float _t113 = -(Math.fma(this.m12, _t51, Math.fma(this.m10, _t43, -(this.m11 * _t52))) * _t8);
+        float _t114 = -(Math.fma(this.m13, _t52, Math.fma(this.m10, _t44, -(this.m12 * _t56))) * _t8);
+        float _t115 = -(Math.fma(this.m03, _t51, Math.fma(this.m00, _t45, -(this.m01 * _t56))) * _t10);
+        float _t124 = Math.fma(this.m00, _t42, -(this.m01 * _t53)) + Math.fma(this.m02, _t54, _t107) + (Math.fma(this.m00, _t48, _t113) + Math.fma(this.m02, _t50, _t75));
+        float _t124_inv = 1.0f / _t124;
+        float _t125 = Math.fma(this.m00, _t48, _t75) + Math.fma(this.m02, _t50, _t107) + (Math.fma(_t1, _t42, _t113) + Math.fma(this.m01, _t53, -(this.m02 * _t54)));
+        float _t129 = Math.abs(_t125) <= Math.abs(_t124) * 9.536743E-7f ? _t124 : _t125;
+        float _t129_inv = 1.0f / _t129;
+        float _buf0 = (Math.fma(this.m01, _t40, -(this.m02 * _t41)) + Math.fma(this.m03, _t42, _t98 * _t8) + (Math.fma(_t0, _t46, _t112) + Math.fma(this.m02, _t47, _t74 - _t125 * (Math.fma(_t98, _t8, _t112) + Math.fma(this.m02, _t41, -(this.m01 * _t40)) + (Math.fma(_t0, _t46, -(this.m03 * _t42)) + Math.fma(this.m02, _t47, _t74))) * _t124_inv))) * _t129_inv;
+        float _buf1 = (Math.fma(this.m00, _t46, _t80) + Math.fma(this.m03, _t49, _t109) + (Math.fma(_t1, _t40, _t114) + Math.fma(this.m02, _t57, -(this.m03 * _t53) - (Math.fma(this.m00, _t40, -(this.m02 * _t57)) + Math.fma(this.m03, _t53, _t109) + (Math.fma(this.m00, _t46, _t114) + Math.fma(this.m03, _t49, _t80))) * _t125 * _t124_inv))) * _t129_inv;
+        d.z = (Math.fma(this.m00, _t41, -(this.m01 * _t57)) + Math.fma(this.m03, _t54, _t104 * _t8) + (Math.fma(_t1, _t47, _t115) + Math.fma(this.m01, _t55, _t85 - _t125 * (Math.fma(_t104, _t8, _t115) + Math.fma(this.m01, _t57, -(this.m00 * _t41)) + (Math.fma(_t1, _t47, -(this.m03 * _t54)) + Math.fma(this.m01, _t55, _t85))) * _t124_inv))) * _t129_inv;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -11531,11 +11725,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t107 = -(Math.fma(this.m03, _t50, Math.fma(this.m00, _t44, -(this.m01 * _t55))) * _t9);
         float _t113 = Math.fma(this.m02, _t49, _t81) + Math.fma(_t92, _t9, _t105);
         float _t113_inv = 1.0f / _t113;
-        float _t114 = _t81 + Math.fma(this.m02, _t49, _t92 * _t9) + (Math.fma(_t0, _t41, _t105) + Math.fma(this.m01, _t52, -(this.m02 * _t53)));
-        float _t114_inv = 1.0f / _t114;
-        float _buf0 = (Math.fma(this.m01, _t39, -(this.m02 * _t40)) + Math.fma(this.m03, _t41, _t90 * _t7) + (Math.fma(-this.m01, _t45, _t104) + Math.fma(this.m02, _t46, -(this.m03 * _t47)))) * _t114_inv - (Math.fma(_t90, _t7, _t104) - Math.fma(this.m03, _t47, Math.fma(this.m01, _t45, -(this.m02 * _t46)))) * _t113_inv;
-        float _buf1 = (_t85 + Math.fma(this.m03, _t48, _t95 * _t9) + (Math.fma(_t0, _t39, _t106) + Math.fma(this.m02, _t56, -(this.m03 * _t52)))) * _t114_inv - (Math.fma(this.m03, _t48, _t85) + Math.fma(_t95, _t9, _t106)) * _t113_inv;
-        d.z = (Math.fma(this.m00, _t40, -(this.m01 * _t56)) + Math.fma(this.m03, _t53, _t97 * _t7) + (Math.fma(_t0, _t46, _t107) + Math.fma(this.m01, _t54, -(this.m03 * _t49)))) * _t114_inv - (Math.fma(_t97, _t7, _t107) - Math.fma(this.m03, _t49, Math.fma(this.m00, _t46, -(this.m01 * _t54)))) * _t113_inv;
+        float _t116 = _t81 + Math.fma(this.m02, _t49, _t92 * _t9) + (Math.fma(_t0, _t41, _t105) + Math.fma(this.m01, _t52, -(this.m02 * _t53)));
+        float _t118 = Math.abs(_t116) <= Math.abs(_t113) * 9.536743E-7f ? _t113 : _t116;
+        float _t118_inv = 1.0f / _t118;
+        float _buf0 = (Math.fma(this.m01, _t39, -(this.m02 * _t40)) + Math.fma(this.m03, _t41, _t90 * _t7) + (Math.fma(-this.m01, _t45, _t104) + Math.fma(this.m02, _t46, -(this.m03 * _t47) - _t116 * (Math.fma(_t90, _t7, _t104) - Math.fma(this.m03, _t47, Math.fma(this.m01, _t45, -(this.m02 * _t46)))) * _t113_inv))) * _t118_inv;
+        float _buf1 = (_t85 + Math.fma(this.m03, _t48, _t95 * _t9) + (Math.fma(_t0, _t39, _t106) + Math.fma(this.m02, _t56, -(this.m03 * _t52) - _t116 * (Math.fma(this.m03, _t48, _t85) + Math.fma(_t95, _t9, _t106)) * _t113_inv))) * _t118_inv;
+        d.z = (Math.fma(this.m00, _t40, -(this.m01 * _t56)) + Math.fma(this.m03, _t53, _t97 * _t7) + (Math.fma(_t0, _t46, _t107) + Math.fma(this.m01, _t54, -(this.m03 * _t49) - _t116 * (Math.fma(_t97, _t7, _t107) - Math.fma(this.m03, _t49, Math.fma(this.m00, _t46, -(this.m01 * _t54)))) * _t113_inv))) * _t118_inv;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -11595,11 +11790,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t107 = -(Math.fma(this.m03, _t50, Math.fma(this.m00, _t44, -(this.m01 * _t55))) * _t9);
         float _t113 = Math.fma(this.m02, _t49, _t81) + Math.fma(_t92, _t9, _t105);
         float _t113_inv = 1.0f / _t113;
-        float _t114 = _t81 + Math.fma(this.m02, _t49, _t92 * _t9) + (Math.fma(_t0, _t41, _t105) + Math.fma(this.m01, _t52, -(this.m02 * _t53)));
-        float _t114_inv = 1.0f / _t114;
-        float _buf0 = (Math.fma(this.m01, _t39, -(this.m02 * _t40)) + Math.fma(this.m03, _t41, _t90 * _t7) + (Math.fma(-this.m01, _t45, _t104) + Math.fma(this.m02, _t46, -(this.m03 * _t47)))) * _t114_inv - (Math.fma(_t90, _t7, _t104) - Math.fma(this.m03, _t47, Math.fma(this.m01, _t45, -(this.m02 * _t46)))) * _t113_inv;
-        float _buf1 = (_t85 + Math.fma(this.m03, _t48, _t95 * _t9) + (Math.fma(_t0, _t39, _t106) + Math.fma(this.m02, _t56, -(this.m03 * _t52)))) * _t114_inv - (Math.fma(this.m03, _t48, _t85) + Math.fma(_t95, _t9, _t106)) * _t113_inv;
-        d.z = (Math.fma(this.m00, _t40, -(this.m01 * _t56)) + Math.fma(this.m03, _t53, _t97 * _t7) + (Math.fma(_t0, _t46, _t107) + Math.fma(this.m01, _t54, -(this.m03 * _t49)))) * _t114_inv - (Math.fma(_t97, _t7, _t107) - Math.fma(this.m03, _t49, Math.fma(this.m00, _t46, -(this.m01 * _t54)))) * _t113_inv;
+        float _t116 = _t81 + Math.fma(this.m02, _t49, _t92 * _t9) + (Math.fma(_t0, _t41, _t105) + Math.fma(this.m01, _t52, -(this.m02 * _t53)));
+        float _t118 = Math.abs(_t116) <= Math.abs(_t113) * 9.536743E-7f ? _t113 : _t116;
+        float _t118_inv = 1.0f / _t118;
+        float _buf0 = (Math.fma(this.m01, _t39, -(this.m02 * _t40)) + Math.fma(this.m03, _t41, _t90 * _t7) + (Math.fma(-this.m01, _t45, _t104) + Math.fma(this.m02, _t46, -(this.m03 * _t47) - _t116 * (Math.fma(_t90, _t7, _t104) - Math.fma(this.m03, _t47, Math.fma(this.m01, _t45, -(this.m02 * _t46)))) * _t113_inv))) * _t118_inv;
+        float _buf1 = (_t85 + Math.fma(this.m03, _t48, _t95 * _t9) + (Math.fma(_t0, _t39, _t106) + Math.fma(this.m02, _t56, -(this.m03 * _t52) - _t116 * (Math.fma(this.m03, _t48, _t85) + Math.fma(_t95, _t9, _t106)) * _t113_inv))) * _t118_inv;
+        d.z = (Math.fma(this.m00, _t40, -(this.m01 * _t56)) + Math.fma(this.m03, _t53, _t97 * _t7) + (Math.fma(_t0, _t46, _t107) + Math.fma(this.m01, _t54, -(this.m03 * _t49) - _t116 * (Math.fma(_t97, _t7, _t107) - Math.fma(this.m03, _t49, Math.fma(this.m00, _t46, -(this.m01 * _t54)))) * _t113_inv))) * _t118_inv;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -11607,14 +11803,17 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
-     * Compute the direction of the view ray through the frustum of this matrix, interpreted as a
-     * projection or combined view-projection matrix, at the given normalized position on the near
-     * face and store the result in {@code dest}.
+     * Compute the direction of the view ray through the frustum of this matrix at the given
+     * horizontal and vertical interpolation factors.
      * <p>
      * {@code (0, 0)} is the bottom-left and {@code (1, 1)} the top-right frustum corner. The result
-     * is not normalized: it is the near-to-far corner difference, so its length is the frustum's
-     * depth extent along that ray - and it is not finite for a projection whose far plane is at
-     * infinity.
+     * is not normalized: it is the difference between the far and the near frustum corner along
+     * that ray, so the near corner plus the result lies on the far plane. For a projection whose
+     * far plane is at infinity the result is a finite direction along the ray of unspecified
+     * length. A far plane whose homogeneous w is at most {@code 2^-20} ({@code float}) /
+     * {@code 2^-40} ({@code double}) times the near plane's is treated as being at infinity.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
      *
      * @param x the horizontal frustum interpolation factor in {@code [0, 1]}
      * @param y the vertical frustum interpolation factor in {@code [0, 1]}
@@ -11631,14 +11830,17 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
-     * Compute the direction of the view ray through the frustum of this matrix, interpreted as a
-     * projection or combined view-projection matrix, at the given normalized position on the near
-     * face and store the result in {@code dest}.
+     * Compute the direction of the view ray through the frustum of this matrix at the given
+     * horizontal and vertical interpolation factors.
      * <p>
      * {@code (0, 0)} is the bottom-left and {@code (1, 1)} the top-right frustum corner. The result
-     * is not normalized: it is the near-to-far corner difference, so its length is the frustum's
-     * depth extent along that ray - and it is not finite for a projection whose far plane is at
-     * infinity.
+     * is not normalized: it is the difference between the far and the near frustum corner along
+     * that ray, so the near corner plus the result lies on the far plane. For a projection whose
+     * far plane is at infinity the result is a finite direction along the ray of unspecified
+     * length. A far plane whose homogeneous w is at most {@code 2^-20} ({@code float}) /
+     * {@code 2^-40} ({@code double}) times the near plane's is treated as being at infinity.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -11658,14 +11860,17 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
-     * Compute the direction of the view ray through the frustum of this matrix, interpreted as a
-     * projection or combined view-projection matrix, at the given normalized position on the near
-     * face and store the result in {@code dest}.
+     * Compute the direction of the view ray through the frustum of this matrix at the given
+     * horizontal and vertical interpolation factors.
      * <p>
      * {@code (0, 0)} is the bottom-left and {@code (1, 1)} the top-right frustum corner. The result
-     * is not normalized: it is the near-to-far corner difference, so its length is the frustum's
-     * depth extent along that ray - and it is not finite for a projection whose far plane is at
-     * infinity.
+     * is not normalized: it is the difference between the far and the near frustum corner along
+     * that ray, so the near corner plus the result lies on the far plane. For a projection whose
+     * far plane is at infinity the result is a finite direction along the ray of unspecified
+     * length. A far plane whose homogeneous w is at most {@code 2^-20} ({@code float}) /
+     * {@code 2^-40} ({@code double}) times the near plane's is treated as being at infinity.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -11678,14 +11883,17 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
-     * Compute the direction of the view ray through the frustum of this matrix, interpreted as a
-     * projection or combined view-projection matrix, at the given normalized position on the near
-     * face and store the result in {@code dest}.
+     * Compute the direction of the view ray through the frustum of this matrix at the given
+     * horizontal and vertical interpolation factors.
      * <p>
      * {@code (0, 0)} is the bottom-left and {@code (1, 1)} the top-right frustum corner. The result
-     * is not normalized: it is the near-to-far corner difference, so its length is the frustum's
-     * depth extent along that ray - and it is not finite for a projection whose far plane is at
-     * infinity.
+     * is not normalized: it is the difference between the far and the near frustum corner along
+     * that ray, so the near corner plus the result lies on the far plane. For a projection whose
+     * far plane is at infinity the result is a finite direction along the ray of unspecified
+     * length. A far plane whose homogeneous w is at most {@code 2^-20} ({@code float}) /
+     * {@code 2^-40} ({@code double}) times the near plane's is treated as being at infinity.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      * <p>
@@ -12632,7 +12840,7 @@ public class Float4x4Impl implements Float4x4 {
      *
      * @param other the other matrix
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 lerp(Float4x4R other, float t) {
         if (Joml.RETURN_NEW) return lerp(other, t, Joml.float4x4());
@@ -13143,7 +13351,7 @@ public class Float4x4Impl implements Float4x4 {
      * {@code M * R * v}, the transformation of the operand will be applied first.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mul(Float4x4R right) {
         if (Joml.RETURN_NEW) return mul(right, Joml.float4x4());
@@ -13580,7 +13788,7 @@ public class Float4x4Impl implements Float4x4 {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mul(Float2x2R right) {
         if (Joml.RETURN_NEW) return mul(right, Joml.float4x4());
@@ -13922,7 +14130,7 @@ public class Float4x4Impl implements Float4x4 {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mul(Float2x3R right) {
         if (Joml.RETURN_NEW) return mul(right, Joml.float4x4());
@@ -14274,7 +14482,7 @@ public class Float4x4Impl implements Float4x4 {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mul(Float3x3R right) {
         if (Joml.RETURN_NEW) return mul(right, Joml.float4x4());
@@ -14639,7 +14847,7 @@ public class Float4x4Impl implements Float4x4 {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mul(Float3x4R right) {
         if (Joml.RETURN_NEW) return mul(right, Joml.float4x4());
@@ -15077,7 +15285,7 @@ public class Float4x4Impl implements Float4x4 {
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preMul(Float4x4R other) {
         if (Joml.RETURN_NEW) return preMul(other, Joml.float4x4());
@@ -15523,7 +15731,7 @@ public class Float4x4Impl implements Float4x4 {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preMul(Float2x2R other) {
         if (Joml.RETURN_NEW) return preMul(other, Joml.float4x4());
@@ -15855,7 +16063,7 @@ public class Float4x4Impl implements Float4x4 {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preMul(Float2x3R other) {
         if (Joml.RETURN_NEW) return preMul(other, Joml.float4x4());
@@ -16215,7 +16423,7 @@ public class Float4x4Impl implements Float4x4 {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preMul(Float3x3R other) {
         if (Joml.RETURN_NEW) return preMul(other, Joml.float4x4());
@@ -16556,7 +16764,7 @@ public class Float4x4Impl implements Float4x4 {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preMul(Float3x4R other) {
         if (Joml.RETURN_NEW) return preMul(other, Joml.float4x4());
@@ -16730,7 +16938,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param center the center point
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 arcball(float radius, Float3R center, float angleX, float angleY) {
         return arcball(radius, center.x(), center.y(), center.z(), angleX, angleY);
@@ -17062,7 +17270,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param centerZ the {@code z} component of the vector {@code (centerX, centerY, centerZ)}
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 arcball(float radius, float centerX, float centerY, float centerZ, float angleX, float angleY) {
         if (Joml.RETURN_NEW) return arcball(radius, centerX, centerY, centerZ, angleX, angleY, Joml.float4x4());
@@ -17480,7 +17688,7 @@ public class Float4x4Impl implements Float4x4 {
      *
      * @param alpha the tilt angle in radians about the X axis (at {@code atan(1/sqrt(2))} the
      *        result is isometric)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 axonometricDimetric(float alpha) {
         if (Joml.RETURN_NEW) return axonometricDimetric(alpha, Joml.float4x4());
@@ -17875,7 +18083,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 axonometricIsometric() {
         if (Joml.RETURN_NEW) return axonometricIsometric(Joml.float4x4());
@@ -18275,7 +18483,7 @@ public class Float4x4Impl implements Float4x4 {
      *
      * @param alphaX the rotation angle in radians about the X axis
      * @param alphaY the rotation angle in radians about the Y axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 axonometricTrimetric(float alphaX, float alphaY) {
         if (Joml.RETURN_NEW) return axonometricTrimetric(alphaX, alphaY, Joml.float4x4());
@@ -20426,7 +20634,7 @@ public class Float4x4Impl implements Float4x4 {
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 frustum(float left, float right, float bottom, float top, float zNear, float zFar, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -20526,7 +20734,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param zFar the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 frustum(float left, float right, float bottom, float top, float zNear, float zFar, DepthRange depthRange) { return frustum(left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -20617,7 +20825,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param zFar the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 frustum(float left, float right, float bottom, float top, float zNear, float zFar, Handedness handedness) { return frustum(left, right, bottom, top, zNear, zFar, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -20708,7 +20916,7 @@ public class Float4x4Impl implements Float4x4 {
      *        the angle-based builders for an infinite near)
      * @param zFar the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 frustum(float left, float right, float bottom, float top, float zNear, float zFar) { return frustum(left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -20794,7 +21002,7 @@ public class Float4x4Impl implements Float4x4 {
      *
      * @param dir the direction
      * @param up the direction of "up"
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 lookAlong(Float3R dir, Float3R up) {
         return lookAlong(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
@@ -21233,7 +21441,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
      * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
      * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
         if (Joml.RETURN_NEW) return lookAlong(dirX, dirY, dirZ, upX, upY, upZ, Joml.float4x4());
@@ -22545,7 +22753,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param center the point in space to look at
      * @param up the direction of "up"
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 lookAt(Float3R eye, Float3R center, Float3R up, Handedness handedness) {
         switch (handedness) {
@@ -22629,7 +22837,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
      * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 lookAt(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, Handedness handedness) {
         switch (handedness) {
@@ -22704,7 +22912,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param eye the position of the camera
      * @param center the point in space to look at
      * @param up the direction of "up"
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 lookAt(Float3R eye, Float3R center, Float3R up) { return lookAt(eye, center, up, Handedness.RIGHT_HANDED); }
 
@@ -22776,7 +22984,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
      * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
      * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 lookAt(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ) { return lookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, Handedness.RIGHT_HANDED); }
 
@@ -28385,7 +28593,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapXYZ() {
         if (Joml.RETURN_NEW) return mapXYZ(Joml.float4x4());
@@ -28620,7 +28828,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapXYnZ() {
         if (Joml.RETURN_NEW) return mapXYnZ(Joml.float4x4());
@@ -28871,7 +29079,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapXZY() {
         if (Joml.RETURN_NEW) return mapXZY(Joml.float4x4());
@@ -29126,7 +29334,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapXZnY() {
         if (Joml.RETURN_NEW) return mapXZnY(Joml.float4x4());
@@ -29365,7 +29573,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapXnYZ() {
         if (Joml.RETURN_NEW) return mapXnYZ(Joml.float4x4());
@@ -29602,7 +29810,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapXnYnZ() {
         if (Joml.RETURN_NEW) return mapXnYnZ(Joml.float4x4());
@@ -29853,7 +30061,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapXnZY() {
         if (Joml.RETURN_NEW) return mapXnZY(Joml.float4x4());
@@ -30108,7 +30316,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapXnZnY() {
         if (Joml.RETURN_NEW) return mapXnZnY(Joml.float4x4());
@@ -30363,7 +30571,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapYXZ() {
         if (Joml.RETURN_NEW) return mapYXZ(Joml.float4x4());
@@ -30620,7 +30828,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapYXnZ() {
         if (Joml.RETURN_NEW) return mapYXnZ(Joml.float4x4());
@@ -30879,7 +31087,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapYZX() {
         if (Joml.RETURN_NEW) return mapYZX(Joml.float4x4());
@@ -31138,7 +31346,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapYZnX() {
         if (Joml.RETURN_NEW) return mapYZnX(Joml.float4x4());
@@ -31393,7 +31601,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapYnXZ() {
         if (Joml.RETURN_NEW) return mapYnXZ(Joml.float4x4());
@@ -31650,7 +31858,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapYnXnZ() {
         if (Joml.RETURN_NEW) return mapYnXnZ(Joml.float4x4());
@@ -31909,7 +32117,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapYnZX() {
         if (Joml.RETURN_NEW) return mapYnZX(Joml.float4x4());
@@ -32168,7 +32376,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapYnZnX() {
         if (Joml.RETURN_NEW) return mapYnZnX(Joml.float4x4());
@@ -32437,7 +32645,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapZXY() {
         if (Joml.RETURN_NEW) return mapZXY(Joml.float4x4());
@@ -32710,7 +32918,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapZXnY() {
         if (Joml.RETURN_NEW) return mapZXnY(Joml.float4x4());
@@ -32969,7 +33177,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapZYX() {
         if (Joml.RETURN_NEW) return mapZYX(Joml.float4x4());
@@ -33224,7 +33432,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapZYnX() {
         if (Joml.RETURN_NEW) return mapZYnX(Joml.float4x4());
@@ -33493,7 +33701,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapZnXY() {
         if (Joml.RETURN_NEW) return mapZnXY(Joml.float4x4());
@@ -33766,7 +33974,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapZnXnY() {
         if (Joml.RETURN_NEW) return mapZnXnY(Joml.float4x4());
@@ -34027,7 +34235,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapZnYX() {
         if (Joml.RETURN_NEW) return mapZnYX(Joml.float4x4());
@@ -34284,7 +34492,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapZnYnX() {
         if (Joml.RETURN_NEW) return mapZnYnX(Joml.float4x4());
@@ -34523,7 +34731,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnXYZ() {
         if (Joml.RETURN_NEW) return mapnXYZ(Joml.float4x4());
@@ -34760,7 +34968,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnXYnZ() {
         if (Joml.RETURN_NEW) return mapnXYnZ(Joml.float4x4());
@@ -35013,7 +35221,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnXZY() {
         if (Joml.RETURN_NEW) return mapnXZY(Joml.float4x4());
@@ -35270,7 +35478,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnXZnY() {
         if (Joml.RETURN_NEW) return mapnXZnY(Joml.float4x4());
@@ -35511,7 +35719,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnXnYZ() {
         if (Joml.RETURN_NEW) return mapnXnYZ(Joml.float4x4());
@@ -35750,7 +35958,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnXnYnZ() {
         if (Joml.RETURN_NEW) return mapnXnYnZ(Joml.float4x4());
@@ -36003,7 +36211,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnXnZY() {
         if (Joml.RETURN_NEW) return mapnXnZY(Joml.float4x4());
@@ -36260,7 +36468,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnXnZnY() {
         if (Joml.RETURN_NEW) return mapnXnZnY(Joml.float4x4());
@@ -36515,7 +36723,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnYXZ() {
         if (Joml.RETURN_NEW) return mapnYXZ(Joml.float4x4());
@@ -36772,7 +36980,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnYXnZ() {
         if (Joml.RETURN_NEW) return mapnYXnZ(Joml.float4x4());
@@ -37031,7 +37239,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnYZX() {
         if (Joml.RETURN_NEW) return mapnYZX(Joml.float4x4());
@@ -37290,7 +37498,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnYZnX() {
         if (Joml.RETURN_NEW) return mapnYZnX(Joml.float4x4());
@@ -37545,7 +37753,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnYnXZ() {
         if (Joml.RETURN_NEW) return mapnYnXZ(Joml.float4x4());
@@ -37802,7 +38010,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnYnXnZ() {
         if (Joml.RETURN_NEW) return mapnYnXnZ(Joml.float4x4());
@@ -38061,7 +38269,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnYnZX() {
         if (Joml.RETURN_NEW) return mapnYnZX(Joml.float4x4());
@@ -38320,7 +38528,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnYnZnX() {
         if (Joml.RETURN_NEW) return mapnYnZnX(Joml.float4x4());
@@ -38589,7 +38797,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnZXY() {
         if (Joml.RETURN_NEW) return mapnZXY(Joml.float4x4());
@@ -38862,7 +39070,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnZXnY() {
         if (Joml.RETURN_NEW) return mapnZXnY(Joml.float4x4());
@@ -39121,7 +39329,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnZYX() {
         if (Joml.RETURN_NEW) return mapnZYX(Joml.float4x4());
@@ -39376,7 +39584,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnZYnX() {
         if (Joml.RETURN_NEW) return mapnZYnX(Joml.float4x4());
@@ -39645,7 +39853,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnZnXY() {
         if (Joml.RETURN_NEW) return mapnZnXY(Joml.float4x4());
@@ -39918,7 +40126,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnZnXnY() {
         if (Joml.RETURN_NEW) return mapnZnXnY(Joml.float4x4());
@@ -40179,7 +40387,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnZnYX() {
         if (Joml.RETURN_NEW) return mapnZnYX(Joml.float4x4());
@@ -40436,7 +40644,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * T}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * T * v}, the mapping will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 mapnZnYnX() {
         if (Joml.RETURN_NEW) return mapnZnYnX(Joml.float4x4());
@@ -40772,7 +40980,7 @@ public class Float4x4Impl implements Float4x4 {
      * using {@code M * O * v}, the oblique shear will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 obliqueCabinet(float angle) {
         if (Joml.RETURN_NEW) return obliqueCabinet(angle, Joml.float4x4());
@@ -41049,7 +41257,7 @@ public class Float4x4Impl implements Float4x4 {
      * using {@code M * O * v}, the oblique shear will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 obliqueCavalier(float angle) {
         if (Joml.RETURN_NEW) return obliqueCavalier(angle, Joml.float4x4());
@@ -41331,7 +41539,7 @@ public class Float4x4Impl implements Float4x4 {
      * using {@code M * O * v}, the oblique shear will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 obliqueMilitary(float angle) {
         if (Joml.RETURN_NEW) return obliqueMilitary(angle, Joml.float4x4());
@@ -42931,7 +43139,7 @@ public class Float4x4Impl implements Float4x4 {
      *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 obliqueZ(Float4R plane, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -43021,7 +43229,7 @@ public class Float4x4Impl implements Float4x4 {
      *        with the normal pointing into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 obliqueZ(float planeX, float planeY, float planeZ, float planeW, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -43105,7 +43313,7 @@ public class Float4x4Impl implements Float4x4 {
      *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 obliqueZ(FloatPlaneR plane, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -43180,7 +43388,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 obliqueZ(Float4R plane, DepthRange depthRange) { return obliqueZ(plane, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -43246,7 +43454,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 obliqueZ(Float4R plane, Handedness handedness) { return obliqueZ(plane, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -43312,7 +43520,7 @@ public class Float4x4Impl implements Float4x4 {
      *
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 obliqueZ(Float4R plane) { return obliqueZ(plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -43390,7 +43598,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 obliqueZ(float planeX, float planeY, float planeZ, float planeW, DepthRange depthRange) { return obliqueZ(planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -43474,7 +43682,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 obliqueZ(float planeX, float planeY, float planeZ, float planeW, Handedness handedness) { return obliqueZ(planeX, planeY, planeZ, planeW, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -43558,7 +43766,7 @@ public class Float4x4Impl implements Float4x4 {
      *        with the normal pointing into the visible half-space
      * @param planeW the {@code w} component of the clip plane {@code (a, b, c, d)} in camera space,
      *        with the normal pointing into the visible half-space
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 obliqueZ(float planeX, float planeY, float planeZ, float planeW) { return obliqueZ(planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -43630,7 +43838,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 obliqueZ(FloatPlaneR plane, DepthRange depthRange) { return obliqueZ(plane, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -43696,7 +43904,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 obliqueZ(FloatPlaneR plane, Handedness handedness) { return obliqueZ(plane, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -43762,7 +43970,7 @@ public class Float4x4Impl implements Float4x4 {
      *
      * @param plane the clip plane {@code (a, b, c, d)} in camera space, with the normal pointing
      *        into the visible half-space
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 obliqueZ(FloatPlaneR plane) { return obliqueZ(plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -45574,7 +45782,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param zFar the distance to the far clip plane
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 ortho(float left, float right, float bottom, float top, float zNear, float zFar, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -45665,7 +45873,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param zNear the distance to the near clip plane
      * @param zFar the distance to the far clip plane
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 ortho(float left, float right, float bottom, float top, float zNear, float zFar, DepthRange depthRange) { return ortho(left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -45747,7 +45955,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param zNear the distance to the near clip plane
      * @param zFar the distance to the far clip plane
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 ortho(float left, float right, float bottom, float top, float zNear, float zFar, Handedness handedness) { return ortho(left, right, bottom, top, zNear, zFar, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -45829,7 +46037,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param top the distance to the top frustum edge
      * @param zNear the distance to the near clip plane
      * @param zFar the distance to the far clip plane
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 ortho(float left, float right, float bottom, float top, float zNear, float zFar) { return ortho(left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -47338,7 +47546,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param top the distance to the top frustum edge
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 ortho2D(float left, float right, float bottom, float top, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -47423,7 +47631,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param bottom the distance to the bottom frustum edge
      * @param top the distance to the top frustum edge
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 ortho2D(float left, float right, float bottom, float top, DepthRange depthRange) { return ortho2D(left, right, bottom, top, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -47499,7 +47707,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param bottom the distance to the bottom frustum edge
      * @param top the distance to the top frustum edge
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 ortho2D(float left, float right, float bottom, float top, Handedness handedness) { return ortho2D(left, right, bottom, top, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -47575,7 +47783,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param right the distance to the right frustum edge
      * @param bottom the distance to the bottom frustum edge
      * @param top the distance to the top frustum edge
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 ortho2D(float left, float right, float bottom, float top) { return ortho2D(left, right, bottom, top, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -52017,7 +52225,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param view the light view transformation (must be affine)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 orthoCrop(Float4x4R view, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -52110,7 +52318,7 @@ public class Float4x4Impl implements Float4x4 {
      *
      * @param view the light view transformation (must be affine)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 orthoCrop(Float4x4R view, DepthRange depthRange) { return orthoCrop(view, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -52194,7 +52402,7 @@ public class Float4x4Impl implements Float4x4 {
      *
      * @param view the light view transformation (must be affine)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 orthoCrop(Float4x4R view, Handedness handedness) { return orthoCrop(view, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -52278,7 +52486,7 @@ public class Float4x4Impl implements Float4x4 {
      * {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param view the light view transformation (must be affine)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 orthoCrop(Float4x4R view) { return orthoCrop(view, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -56877,7 +57085,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param maxZ the far depth bound of the slice, in source-projection NDC z
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 orthoCrop(Float4x4R view, float minZ, float maxZ, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -56958,7 +57166,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param minZ the near depth bound of the slice, in source-projection NDC z
      * @param maxZ the far depth bound of the slice, in source-projection NDC z
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 orthoCrop(Float4x4R view, float minZ, float maxZ, DepthRange depthRange) { return orthoCrop(view, minZ, maxZ, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -57030,7 +57238,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param minZ the near depth bound of the slice, in source-projection NDC z
      * @param maxZ the far depth bound of the slice, in source-projection NDC z
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 orthoCrop(Float4x4R view, float minZ, float maxZ, Handedness handedness) { return orthoCrop(view, minZ, maxZ, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -57102,7 +57310,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param view the light view transformation (must be affine)
      * @param minZ the near depth bound of the slice, in source-projection NDC z
      * @param maxZ the far depth bound of the slice, in source-projection NDC z
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 orthoCrop(Float4x4R view, float minZ, float maxZ) { return orthoCrop(view, minZ, maxZ, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -58608,7 +58816,7 @@ public class Float4x4Impl implements Float4x4 {
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 perspective(float fovy, float aspect, float near, float far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -58705,7 +58913,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 perspective(float fovy, float aspect, float near, float far, DepthRange depthRange) { return perspective(fovy, aspect, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -58793,7 +59001,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 perspective(float fovy, float aspect, float near, float far, Handedness handedness) { return perspective(fovy, aspect, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -58881,7 +59089,7 @@ public class Float4x4Impl implements Float4x4 {
      *        reversed)
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 perspective(float fovy, float aspect, float near, float far) { return perspective(fovy, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -60555,7 +60763,7 @@ public class Float4x4Impl implements Float4x4 {
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 perspectiveFovRange(float angleMin, float angleMax, float aspect, float near, float far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -60653,7 +60861,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 perspectiveFovRange(float angleMin, float angleMax, float aspect, float near, float far, DepthRange depthRange) { return perspectiveFovRange(angleMin, angleMax, aspect, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -60742,7 +60950,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 perspectiveFovRange(float angleMin, float angleMax, float aspect, float near, float far, Handedness handedness) { return perspectiveFovRange(angleMin, angleMax, aspect, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -60831,7 +61039,7 @@ public class Float4x4Impl implements Float4x4 {
      *        reversed)
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 perspectiveFovRange(float angleMin, float angleMax, float aspect, float near, float far) { return perspectiveFovRange(angleMin, angleMax, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -61950,7 +62158,7 @@ public class Float4x4Impl implements Float4x4 {
      *        infinite far plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 perspectiveFrustumSlice(float near, float far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -62034,7 +62242,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param far the new distance to the far clip plane (pass positive infinity to re-slice to an
      *        infinite far plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 perspectiveFrustumSlice(float near, float far, DepthRange depthRange) { return perspectiveFrustumSlice(near, far, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -62109,7 +62317,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param far the new distance to the far clip plane (pass positive infinity to re-slice to an
      *        infinite far plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 perspectiveFrustumSlice(float near, float far, Handedness handedness) { return perspectiveFrustumSlice(near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -62184,7 +62392,7 @@ public class Float4x4Impl implements Float4x4 {
      *        reversed)
      * @param far the new distance to the far clip plane (pass positive infinity to re-slice to an
      *        infinite far plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 perspectiveFrustumSlice(float near, float far) { return perspectiveFrustumSlice(near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -64285,7 +64493,7 @@ public class Float4x4Impl implements Float4x4 {
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 perspectiveOffCenterFov(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
@@ -64392,7 +64600,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param depthRange the clip-space depth range the projection maps onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 perspectiveOffCenterFov(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, DepthRange depthRange) { return perspectiveOffCenterFov(angleLeft, angleRight, angleDown, angleUp, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
@@ -64490,7 +64698,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
      * @param handedness the handedness of the coordinate system to map into
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 perspectiveOffCenterFov(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far, Handedness handedness) { return perspectiveOffCenterFov(angleLeft, angleRight, angleDown, angleUp, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -64588,7 +64796,7 @@ public class Float4x4Impl implements Float4x4 {
      *        reversed)
      * @param far the distance to the far clip plane (pass positive infinity for an infinite far
      *        plane)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 perspectiveOffCenterFov(float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) { return perspectiveOffCenterFov(angleLeft, angleRight, angleDown, angleUp, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
@@ -64945,7 +65153,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param vpY the y coordinate of the viewport origin
      * @param vpW the width of the viewport
      * @param vpH the height of the viewport
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 pickMatrix(float centerX, float centerY, float deltaX, float deltaY, float vpX, float vpY, float vpW, float vpH) {
         if (Joml.RETURN_NEW) return pickMatrix(centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH, Joml.float4x4());
@@ -65022,6 +65230,10 @@ public class Float4x4Impl implements Float4x4 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rot the quaternion (must be a unit quaternion)
      * @param pivot the pivot point
@@ -65040,6 +65252,10 @@ public class Float4x4Impl implements Float4x4 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -65060,10 +65276,14 @@ public class Float4x4Impl implements Float4x4 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rot the quaternion (must be a unit quaternion)
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 preRotateAround(FloatQuatR rot, Float3R pivot) {
         return preRotateAround(rot.x(), rot.y(), rot.z(), rot.w(), pivot.x(), pivot.y(), pivot.z());
@@ -65076,36 +65296,37 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 preRotateAround_orthogonal_affine(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest, int _props) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _t0 = -pivotX;
-        float _t1 = -pivotY;
-        float _t2 = -pivotZ;
-        float _t3 = rotY * rotW;
-        float _t4 = rotZ * rotZ;
-        float _t5 = rotZ * rotW;
-        float _t21 = 2.0f * Math.fma(rotX, rotZ, _t3);
-        float _t22 = 2.0f * Math.fma(rotX, rotY, _t5);
-        float _t23 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t24 = 2.0f * Math.fma(rotX, rotY, -_t5);
-        float _t25 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t3);
-        float _t27 = Math.fma(-2.0f, Math.fma(rotY, rotY, _t4), 1.0f);
-        float _t28 = Math.fma(-2.0f, Math.fma(rotX, rotX, _t4), 1.0f);
-        float _t29 = Math.fma(-2.0f, Math.fma(rotX, rotX, rotY * rotY), 1.0f);
-        float _buf0 = Math.fma(this.m20, _t21, Math.fma(this.m00, _t27, this.m10 * _t24));
-        float _buf1 = Math.fma(this.m20, _t25, Math.fma(this.m00, _t22, this.m10 * _t28));
-        d.m20 = Math.fma(this.m20, _t29, Math.fma(this.m00, _t26, this.m10 * _t23));
+        float _t0 = -pivotZ;
+        float _t1 = rotY * rotW;
+        float _t2 = rotZ * rotZ;
+        float _t3 = rotZ * rotW;
+        float _t11 = Math.fma(rotY, rotY, _t2);
+        float _t13 = Math.fma(rotX, rotX, _t2);
+        float _t14 = Math.fma(rotX, rotX, rotY * rotY);
+        float _t19 = 2.0f * Math.fma(rotX, rotZ, _t1);
+        float _t20 = 2.0f * Math.fma(rotX, rotY, _t3);
+        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
+        float _t22 = 2.0f * Math.fma(rotX, rotY, -_t3);
+        float _t23 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
+        float _t24 = 2.0f * Math.fma(rotX, rotZ, -_t1);
+        float _t25 = Math.fma(-2.0f, _t11, 1.0f);
+        float _t26 = Math.fma(-2.0f, _t13, 1.0f);
+        float _t27 = Math.fma(-2.0f, _t14, 1.0f);
+        float _buf0 = Math.fma(this.m20, _t19, Math.fma(this.m00, _t25, this.m10 * _t22));
+        float _buf1 = Math.fma(this.m20, _t23, Math.fma(this.m00, _t20, this.m10 * _t26));
+        d.m20 = Math.fma(this.m20, _t27, Math.fma(this.m00, _t24, this.m10 * _t21));
         d.m30 = 0.0f;
-        float _buf2 = Math.fma(this.m21, _t21, Math.fma(this.m01, _t27, this.m11 * _t24));
-        float _buf3 = Math.fma(this.m21, _t25, Math.fma(this.m01, _t22, this.m11 * _t28));
-        d.m21 = Math.fma(this.m21, _t29, Math.fma(this.m01, _t26, this.m11 * _t23));
+        float _buf2 = Math.fma(this.m21, _t19, Math.fma(this.m01, _t25, this.m11 * _t22));
+        float _buf3 = Math.fma(this.m21, _t23, Math.fma(this.m01, _t20, this.m11 * _t26));
+        d.m21 = Math.fma(this.m21, _t27, Math.fma(this.m01, _t24, this.m11 * _t21));
         d.m31 = 0.0f;
-        float _buf4 = Math.fma(this.m22, _t21, Math.fma(this.m02, _t27, this.m12 * _t24));
-        float _buf5 = Math.fma(this.m22, _t25, Math.fma(this.m02, _t22, this.m12 * _t28));
-        d.m22 = Math.fma(this.m22, _t29, Math.fma(this.m02, _t26, this.m12 * _t23));
+        float _buf4 = Math.fma(this.m22, _t19, Math.fma(this.m02, _t25, this.m12 * _t22));
+        float _buf5 = Math.fma(this.m22, _t23, Math.fma(this.m02, _t20, this.m12 * _t26));
+        d.m22 = Math.fma(this.m22, _t27, Math.fma(this.m02, _t24, this.m12 * _t21));
         d.m32 = 0.0f;
-        float _buf6 = Math.fma(_t0, _t27, Math.fma(_t1, _t24, Math.fma(_t2, _t21, Math.fma(this.m03, _t27, Math.fma(this.m13, _t24, Math.fma(this.m23, _t21, pivotX))))));
-        float _buf7 = Math.fma(_t0, _t22, Math.fma(_t1, _t28, Math.fma(_t2, _t25, Math.fma(this.m03, _t22, Math.fma(this.m13, _t28, Math.fma(this.m23, _t25, pivotY))))));
-        d.m23 = Math.fma(_t0, _t26, Math.fma(_t1, _t23, Math.fma(_t2, _t29, Math.fma(this.m03, _t26, Math.fma(this.m13, _t23, Math.fma(this.m23, _t29, pivotZ))))));
+        float _buf6 = Math.fma(this.m23, _t19, Math.fma(this.m03, _t25, this.m13 * _t22)) + Math.fma(_t0, _t19, Math.fma(pivotX, 2.0f * _t11, -(pivotY * _t22)));
+        float _buf7 = Math.fma(this.m23, _t23, Math.fma(this.m03, _t20, this.m13 * _t26)) + Math.fma(_t0, _t23, Math.fma(pivotY, 2.0f * _t13, -(pivotX * _t20)));
+        d.m23 = Math.fma(this.m23, _t27, Math.fma(this.m03, _t24, this.m13 * _t21)) + Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t14, -(pivotX * _t24)));
         d.m33 = 1.0f;
         d.m00 = _buf0;
         d.m10 = _buf1;
@@ -65126,33 +65347,34 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 preRotateAround_orthogonal_affine_self(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest, int _props) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _t0 = -pivotX;
-        float _t1 = -pivotY;
-        float _t2 = -pivotZ;
-        float _t3 = rotY * rotW;
-        float _t4 = rotZ * rotZ;
-        float _t5 = rotZ * rotW;
-        float _t21 = 2.0f * Math.fma(rotX, rotZ, _t3);
-        float _t22 = 2.0f * Math.fma(rotX, rotY, _t5);
-        float _t23 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t24 = 2.0f * Math.fma(rotX, rotY, -_t5);
-        float _t25 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t3);
-        float _t27 = Math.fma(-2.0f, Math.fma(rotY, rotY, _t4), 1.0f);
-        float _t28 = Math.fma(-2.0f, Math.fma(rotX, rotX, _t4), 1.0f);
-        float _t29 = Math.fma(-2.0f, Math.fma(rotX, rotX, rotY * rotY), 1.0f);
-        float _buf0 = Math.fma(this.m20, _t21, Math.fma(this.m00, _t27, this.m10 * _t24));
-        float _buf1 = Math.fma(this.m20, _t25, Math.fma(this.m00, _t22, this.m10 * _t28));
-        d.m20 = Math.fma(this.m20, _t29, Math.fma(this.m00, _t26, this.m10 * _t23));
-        float _buf2 = Math.fma(this.m21, _t21, Math.fma(this.m01, _t27, this.m11 * _t24));
-        float _buf3 = Math.fma(this.m21, _t25, Math.fma(this.m01, _t22, this.m11 * _t28));
-        d.m21 = Math.fma(this.m21, _t29, Math.fma(this.m01, _t26, this.m11 * _t23));
-        float _buf4 = Math.fma(this.m22, _t21, Math.fma(this.m02, _t27, this.m12 * _t24));
-        float _buf5 = Math.fma(this.m22, _t25, Math.fma(this.m02, _t22, this.m12 * _t28));
-        d.m22 = Math.fma(this.m22, _t29, Math.fma(this.m02, _t26, this.m12 * _t23));
-        float _buf6 = Math.fma(_t0, _t27, Math.fma(_t1, _t24, Math.fma(_t2, _t21, Math.fma(this.m03, _t27, Math.fma(this.m13, _t24, Math.fma(this.m23, _t21, pivotX))))));
-        float _buf7 = Math.fma(_t0, _t22, Math.fma(_t1, _t28, Math.fma(_t2, _t25, Math.fma(this.m03, _t22, Math.fma(this.m13, _t28, Math.fma(this.m23, _t25, pivotY))))));
-        d.m23 = Math.fma(_t0, _t26, Math.fma(_t1, _t23, Math.fma(_t2, _t29, Math.fma(this.m03, _t26, Math.fma(this.m13, _t23, Math.fma(this.m23, _t29, pivotZ))))));
+        float _t0 = -pivotZ;
+        float _t1 = rotY * rotW;
+        float _t2 = rotZ * rotZ;
+        float _t3 = rotZ * rotW;
+        float _t11 = Math.fma(rotY, rotY, _t2);
+        float _t13 = Math.fma(rotX, rotX, _t2);
+        float _t14 = Math.fma(rotX, rotX, rotY * rotY);
+        float _t19 = 2.0f * Math.fma(rotX, rotZ, _t1);
+        float _t20 = 2.0f * Math.fma(rotX, rotY, _t3);
+        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
+        float _t22 = 2.0f * Math.fma(rotX, rotY, -_t3);
+        float _t23 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
+        float _t24 = 2.0f * Math.fma(rotX, rotZ, -_t1);
+        float _t25 = Math.fma(-2.0f, _t11, 1.0f);
+        float _t26 = Math.fma(-2.0f, _t13, 1.0f);
+        float _t27 = Math.fma(-2.0f, _t14, 1.0f);
+        float _buf0 = Math.fma(this.m20, _t19, Math.fma(this.m00, _t25, this.m10 * _t22));
+        float _buf1 = Math.fma(this.m20, _t23, Math.fma(this.m00, _t20, this.m10 * _t26));
+        d.m20 = Math.fma(this.m20, _t27, Math.fma(this.m00, _t24, this.m10 * _t21));
+        float _buf2 = Math.fma(this.m21, _t19, Math.fma(this.m01, _t25, this.m11 * _t22));
+        float _buf3 = Math.fma(this.m21, _t23, Math.fma(this.m01, _t20, this.m11 * _t26));
+        d.m21 = Math.fma(this.m21, _t27, Math.fma(this.m01, _t24, this.m11 * _t21));
+        float _buf4 = Math.fma(this.m22, _t19, Math.fma(this.m02, _t25, this.m12 * _t22));
+        float _buf5 = Math.fma(this.m22, _t23, Math.fma(this.m02, _t20, this.m12 * _t26));
+        d.m22 = Math.fma(this.m22, _t27, Math.fma(this.m02, _t24, this.m12 * _t21));
+        float _buf6 = Math.fma(this.m23, _t19, Math.fma(this.m03, _t25, this.m13 * _t22)) + Math.fma(_t0, _t19, Math.fma(pivotX, 2.0f * _t11, -(pivotY * _t22)));
+        float _buf7 = Math.fma(this.m23, _t23, Math.fma(this.m03, _t20, this.m13 * _t26)) + Math.fma(_t0, _t23, Math.fma(pivotY, 2.0f * _t13, -(pivotX * _t20)));
+        d.m23 = Math.fma(this.m23, _t27, Math.fma(this.m03, _t24, this.m13 * _t21)) + Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t14, -(pivotX * _t24)));
         d.m00 = _buf0;
         d.m10 = _buf1;
         d.m01 = _buf2;
@@ -65172,36 +65394,34 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 preRotateAround_identity(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _t0 = -pivotX;
-        float _t1 = -pivotY;
-        float _t2 = -pivotZ;
-        float _t3 = rotZ * rotZ;
-        float _t4 = rotZ * rotW;
-        float _t5 = rotY * rotW;
-        float _t21 = 2.0f * Math.fma(rotX, rotZ, _t5);
-        float _t22 = 2.0f * Math.fma(rotX, rotY, _t4);
-        float _t23 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t24 = 2.0f * Math.fma(rotX, rotY, -_t4);
-        float _t25 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t5);
-        float _t27 = Math.fma(-2.0f, Math.fma(rotY, rotY, _t3), 1.0f);
-        float _t28 = Math.fma(-2.0f, Math.fma(rotX, rotX, _t3), 1.0f);
-        float _t29 = Math.fma(-2.0f, Math.fma(rotX, rotX, rotY * rotY), 1.0f);
-        d.m00 = _t27;
-        d.m10 = _t22;
-        d.m20 = _t26;
+        float _t0 = -pivotZ;
+        float _t1 = rotZ * rotZ;
+        float _t2 = rotZ * rotW;
+        float _t3 = rotY * rotW;
+        float _t10 = Math.fma(rotY, rotY, _t1);
+        float _t13 = Math.fma(rotX, rotX, _t1);
+        float _t15 = Math.fma(rotX, rotX, rotY * rotY);
+        float _t19 = 2.0f * Math.fma(rotX, rotZ, _t3);
+        float _t20 = 2.0f * Math.fma(rotX, rotY, _t2);
+        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
+        float _t22 = 2.0f * Math.fma(rotX, rotY, -_t2);
+        float _t23 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
+        float _t24 = 2.0f * Math.fma(rotX, rotZ, -_t3);
+        d.m00 = Math.fma(-2.0f, _t10, 1.0f);
+        d.m10 = _t20;
+        d.m20 = _t24;
         d.m30 = 0.0f;
-        d.m01 = _t24;
-        d.m11 = _t28;
-        d.m21 = _t23;
+        d.m01 = _t22;
+        d.m11 = Math.fma(-2.0f, _t13, 1.0f);
+        d.m21 = _t21;
         d.m31 = 0.0f;
-        d.m02 = _t21;
-        d.m12 = _t25;
-        d.m22 = _t29;
+        d.m02 = _t19;
+        d.m12 = _t23;
+        d.m22 = Math.fma(-2.0f, _t15, 1.0f);
         d.m32 = 0.0f;
-        d.m03 = Math.fma(_t0, _t27, Math.fma(_t1, _t24, Math.fma(_t2, _t21, pivotX)));
-        d.m13 = Math.fma(_t0, _t22, Math.fma(_t1, _t28, Math.fma(_t2, _t25, pivotY)));
-        d.m23 = Math.fma(_t0, _t26, Math.fma(_t1, _t23, Math.fma(_t2, _t29, pivotZ)));
+        d.m03 = Math.fma(_t0, _t19, Math.fma(pivotX, 2.0f * _t10, -(pivotY * _t22)));
+        d.m13 = Math.fma(_t0, _t23, Math.fma(pivotY, 2.0f * _t13, -(pivotX * _t20)));
+        d.m23 = Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t15, -(pivotX * _t24)));
         d.m33 = 1.0f;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -65214,33 +65434,31 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 preRotateAround_identity_self(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _t0 = -pivotX;
-        float _t1 = -pivotY;
-        float _t2 = -pivotZ;
-        float _t3 = rotZ * rotZ;
-        float _t4 = rotZ * rotW;
-        float _t5 = rotY * rotW;
-        float _t21 = 2.0f * Math.fma(rotX, rotZ, _t5);
-        float _t22 = 2.0f * Math.fma(rotX, rotY, _t4);
-        float _t23 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t24 = 2.0f * Math.fma(rotX, rotY, -_t4);
-        float _t25 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t5);
-        float _t27 = Math.fma(-2.0f, Math.fma(rotY, rotY, _t3), 1.0f);
-        float _t28 = Math.fma(-2.0f, Math.fma(rotX, rotX, _t3), 1.0f);
-        float _t29 = Math.fma(-2.0f, Math.fma(rotX, rotX, rotY * rotY), 1.0f);
-        d.m00 = _t27;
-        d.m10 = _t22;
-        d.m20 = _t26;
-        d.m01 = _t24;
-        d.m11 = _t28;
-        d.m21 = _t23;
-        d.m02 = _t21;
-        d.m12 = _t25;
-        d.m22 = _t29;
-        d.m03 = Math.fma(_t0, _t27, Math.fma(_t1, _t24, Math.fma(_t2, _t21, pivotX)));
-        d.m13 = Math.fma(_t0, _t22, Math.fma(_t1, _t28, Math.fma(_t2, _t25, pivotY)));
-        d.m23 = Math.fma(_t0, _t26, Math.fma(_t1, _t23, Math.fma(_t2, _t29, pivotZ)));
+        float _t0 = -pivotZ;
+        float _t1 = rotZ * rotZ;
+        float _t2 = rotZ * rotW;
+        float _t3 = rotY * rotW;
+        float _t10 = Math.fma(rotY, rotY, _t1);
+        float _t13 = Math.fma(rotX, rotX, _t1);
+        float _t15 = Math.fma(rotX, rotX, rotY * rotY);
+        float _t19 = 2.0f * Math.fma(rotX, rotZ, _t3);
+        float _t20 = 2.0f * Math.fma(rotX, rotY, _t2);
+        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
+        float _t22 = 2.0f * Math.fma(rotX, rotY, -_t2);
+        float _t23 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
+        float _t24 = 2.0f * Math.fma(rotX, rotZ, -_t3);
+        d.m00 = Math.fma(-2.0f, _t10, 1.0f);
+        d.m10 = _t20;
+        d.m20 = _t24;
+        d.m01 = _t22;
+        d.m11 = Math.fma(-2.0f, _t13, 1.0f);
+        d.m21 = _t21;
+        d.m02 = _t19;
+        d.m12 = _t23;
+        d.m22 = Math.fma(-2.0f, _t15, 1.0f);
+        d.m03 = Math.fma(_t0, _t19, Math.fma(pivotX, 2.0f * _t10, -(pivotY * _t22)));
+        d.m13 = Math.fma(_t0, _t23, Math.fma(pivotY, 2.0f * _t13, -(pivotX * _t20)));
+        d.m23 = Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t15, -(pivotX * _t24)));
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -65252,36 +65470,37 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 preRotateAround_translation(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _t0 = -pivotX;
-        float _t1 = -pivotY;
-        float _t2 = -pivotZ;
-        float _t3 = rotZ * rotZ;
-        float _t4 = rotZ * rotW;
-        float _t5 = rotY * rotW;
-        float _t21 = 2.0f * Math.fma(rotX, rotZ, _t5);
-        float _t22 = 2.0f * Math.fma(rotX, rotY, _t4);
-        float _t23 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t24 = 2.0f * Math.fma(rotX, rotY, -_t4);
-        float _t25 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t5);
-        float _t27 = Math.fma(-2.0f, Math.fma(rotY, rotY, _t3), 1.0f);
-        float _t28 = Math.fma(-2.0f, Math.fma(rotX, rotX, _t3), 1.0f);
-        float _t29 = Math.fma(-2.0f, Math.fma(rotX, rotX, rotY * rotY), 1.0f);
-        d.m00 = _t27;
-        d.m10 = _t22;
-        d.m20 = _t26;
+        float _t0 = -pivotZ;
+        float _t1 = rotZ * rotZ;
+        float _t2 = rotZ * rotW;
+        float _t3 = rotY * rotW;
+        float _t10 = Math.fma(rotY, rotY, _t1);
+        float _t13 = Math.fma(rotX, rotX, _t1);
+        float _t15 = Math.fma(rotX, rotX, rotY * rotY);
+        float _t19 = 2.0f * Math.fma(rotX, rotZ, _t3);
+        float _t20 = 2.0f * Math.fma(rotX, rotY, _t2);
+        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
+        float _t22 = 2.0f * Math.fma(rotX, rotY, -_t2);
+        float _t23 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
+        float _t24 = 2.0f * Math.fma(rotX, rotZ, -_t3);
+        float _t25 = Math.fma(-2.0f, _t10, 1.0f);
+        float _t26 = Math.fma(-2.0f, _t13, 1.0f);
+        float _t27 = Math.fma(-2.0f, _t15, 1.0f);
+        d.m00 = _t25;
+        d.m10 = _t20;
+        d.m20 = _t24;
         d.m30 = 0.0f;
-        d.m01 = _t24;
-        d.m11 = _t28;
-        d.m21 = _t23;
+        d.m01 = _t22;
+        d.m11 = _t26;
+        d.m21 = _t21;
         d.m31 = 0.0f;
-        d.m02 = _t21;
-        d.m12 = _t25;
-        d.m22 = _t29;
+        d.m02 = _t19;
+        d.m12 = _t23;
+        d.m22 = _t27;
         d.m32 = 0.0f;
-        float _buf0 = Math.fma(_t0, _t27, Math.fma(_t1, _t24, Math.fma(_t2, _t21, Math.fma(this.m03, _t27, Math.fma(this.m13, _t24, Math.fma(this.m23, _t21, pivotX))))));
-        float _buf1 = Math.fma(_t0, _t22, Math.fma(_t1, _t28, Math.fma(_t2, _t25, Math.fma(this.m03, _t22, Math.fma(this.m13, _t28, Math.fma(this.m23, _t25, pivotY))))));
-        d.m23 = Math.fma(_t0, _t26, Math.fma(_t1, _t23, Math.fma(_t2, _t29, Math.fma(this.m03, _t26, Math.fma(this.m13, _t23, Math.fma(this.m23, _t29, pivotZ))))));
+        float _buf0 = Math.fma(this.m23, _t19, Math.fma(this.m03, _t25, this.m13 * _t22)) + Math.fma(_t0, _t19, Math.fma(pivotX, 2.0f * _t10, -(pivotY * _t22)));
+        float _buf1 = Math.fma(this.m23, _t23, Math.fma(this.m03, _t20, this.m13 * _t26)) + Math.fma(_t0, _t23, Math.fma(pivotY, 2.0f * _t13, -(pivotX * _t20)));
+        d.m23 = Math.fma(this.m23, _t27, Math.fma(this.m03, _t24, this.m13 * _t21)) + Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t15, -(pivotX * _t24)));
         d.m33 = 1.0f;
         d.m03 = _buf0;
         d.m13 = _buf1;
@@ -65296,33 +65515,34 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 preRotateAround_translation_self(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _t0 = -pivotX;
-        float _t1 = -pivotY;
-        float _t2 = -pivotZ;
-        float _t3 = rotZ * rotZ;
-        float _t4 = rotZ * rotW;
-        float _t5 = rotY * rotW;
-        float _t21 = 2.0f * Math.fma(rotX, rotZ, _t5);
-        float _t22 = 2.0f * Math.fma(rotX, rotY, _t4);
-        float _t23 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t24 = 2.0f * Math.fma(rotX, rotY, -_t4);
-        float _t25 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t5);
-        float _t27 = Math.fma(-2.0f, Math.fma(rotY, rotY, _t3), 1.0f);
-        float _t28 = Math.fma(-2.0f, Math.fma(rotX, rotX, _t3), 1.0f);
-        float _t29 = Math.fma(-2.0f, Math.fma(rotX, rotX, rotY * rotY), 1.0f);
-        d.m00 = _t27;
-        d.m10 = _t22;
-        d.m20 = _t26;
-        d.m01 = _t24;
-        d.m11 = _t28;
-        d.m21 = _t23;
-        d.m02 = _t21;
-        d.m12 = _t25;
-        d.m22 = _t29;
-        float _buf0 = Math.fma(_t0, _t27, Math.fma(_t1, _t24, Math.fma(_t2, _t21, Math.fma(this.m03, _t27, Math.fma(this.m13, _t24, Math.fma(this.m23, _t21, pivotX))))));
-        float _buf1 = Math.fma(_t0, _t22, Math.fma(_t1, _t28, Math.fma(_t2, _t25, Math.fma(this.m03, _t22, Math.fma(this.m13, _t28, Math.fma(this.m23, _t25, pivotY))))));
-        d.m23 = Math.fma(_t0, _t26, Math.fma(_t1, _t23, Math.fma(_t2, _t29, Math.fma(this.m03, _t26, Math.fma(this.m13, _t23, Math.fma(this.m23, _t29, pivotZ))))));
+        float _t0 = -pivotZ;
+        float _t1 = rotZ * rotZ;
+        float _t2 = rotZ * rotW;
+        float _t3 = rotY * rotW;
+        float _t10 = Math.fma(rotY, rotY, _t1);
+        float _t13 = Math.fma(rotX, rotX, _t1);
+        float _t15 = Math.fma(rotX, rotX, rotY * rotY);
+        float _t19 = 2.0f * Math.fma(rotX, rotZ, _t3);
+        float _t20 = 2.0f * Math.fma(rotX, rotY, _t2);
+        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
+        float _t22 = 2.0f * Math.fma(rotX, rotY, -_t2);
+        float _t23 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
+        float _t24 = 2.0f * Math.fma(rotX, rotZ, -_t3);
+        float _t25 = Math.fma(-2.0f, _t10, 1.0f);
+        float _t26 = Math.fma(-2.0f, _t13, 1.0f);
+        float _t27 = Math.fma(-2.0f, _t15, 1.0f);
+        d.m00 = _t25;
+        d.m10 = _t20;
+        d.m20 = _t24;
+        d.m01 = _t22;
+        d.m11 = _t26;
+        d.m21 = _t21;
+        d.m02 = _t19;
+        d.m12 = _t23;
+        d.m22 = _t27;
+        float _buf0 = Math.fma(this.m23, _t19, Math.fma(this.m03, _t25, this.m13 * _t22)) + Math.fma(_t0, _t19, Math.fma(pivotX, 2.0f * _t10, -(pivotY * _t22)));
+        float _buf1 = Math.fma(this.m23, _t23, Math.fma(this.m03, _t20, this.m13 * _t26)) + Math.fma(_t0, _t23, Math.fma(pivotY, 2.0f * _t13, -(pivotX * _t20)));
+        d.m23 = Math.fma(this.m23, _t27, Math.fma(this.m03, _t24, this.m13 * _t21)) + Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t15, -(pivotX * _t24)));
         d.m03 = _buf0;
         d.m13 = _buf1;
         d.properties = Joml.BIT_ORTHOGONAL;
@@ -65336,39 +65556,40 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 preRotateAround_general(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _t0 = -pivotX;
-        float _t1 = -pivotY;
-        float _t2 = -pivotZ;
+        float _t0 = -pivotZ;
+        float _t2 = rotY * rotW;
         float _t3 = rotZ * rotZ;
         float _t4 = rotZ * rotW;
-        float _t5 = rotY * rotW;
-        float _t21 = 2.0f * Math.fma(rotX, rotZ, _t5);
-        float _t22 = 2.0f * Math.fma(rotX, rotY, _t4);
-        float _t23 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t24 = 2.0f * Math.fma(rotX, rotY, -_t4);
-        float _t25 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t5);
-        float _t27 = Math.fma(-2.0f, Math.fma(rotY, rotY, _t3), 1.0f);
-        float _t28 = Math.fma(-2.0f, Math.fma(rotX, rotX, _t3), 1.0f);
-        float _t29 = Math.fma(-2.0f, Math.fma(rotX, rotX, rotY * rotY), 1.0f);
-        float _t36 = Math.fma(_t0, _t27, Math.fma(_t1, _t24, Math.fma(_t2, _t21, pivotX)));
-        float _t37 = Math.fma(_t0, _t22, Math.fma(_t1, _t28, Math.fma(_t2, _t25, pivotY)));
-        float _t38 = Math.fma(_t0, _t26, Math.fma(_t1, _t23, Math.fma(_t2, _t29, pivotZ)));
-        float _buf0 = Math.fma(this.m30, _t36, Math.fma(this.m20, _t21, Math.fma(this.m00, _t27, this.m10 * _t24)));
-        float _buf1 = Math.fma(this.m30, _t37, Math.fma(this.m20, _t25, Math.fma(this.m00, _t22, this.m10 * _t28)));
-        d.m20 = Math.fma(this.m30, _t38, Math.fma(this.m20, _t29, Math.fma(this.m00, _t26, this.m10 * _t23)));
+        float _t12 = Math.fma(rotY, rotY, _t3);
+        float _t13 = Math.fma(rotX, rotX, _t3);
+        float _t16 = Math.fma(rotX, rotX, rotY * rotY);
+        float _t20 = 2.0f * Math.fma(rotX, rotZ, _t2);
+        float _t23 = 2.0f * Math.fma(rotX, rotY, _t4);
+        float _t24 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
+        float _t26 = 2.0f * Math.fma(rotX, rotY, -_t4);
+        float _t27 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
+        float _t28 = 2.0f * Math.fma(rotX, rotZ, -_t2);
+        float _t29 = Math.fma(-2.0f, _t12, 1.0f);
+        float _t30 = Math.fma(-2.0f, _t13, 1.0f);
+        float _t31 = Math.fma(-2.0f, _t16, 1.0f);
+        float _t41 = Math.fma(_t0, _t20, Math.fma(pivotX, 2.0f * _t12, -(pivotY * _t26)));
+        float _t42 = Math.fma(_t0, _t27, Math.fma(pivotY, 2.0f * _t13, -(pivotX * _t23)));
+        float _t43 = Math.fma(-pivotY, _t24, Math.fma(pivotZ, 2.0f * _t16, -(pivotX * _t28)));
+        float _buf0 = Math.fma(this.m30, _t41, Math.fma(this.m20, _t20, Math.fma(this.m00, _t29, this.m10 * _t26)));
+        float _buf1 = Math.fma(this.m30, _t42, Math.fma(this.m20, _t27, Math.fma(this.m00, _t23, this.m10 * _t30)));
+        d.m20 = Math.fma(this.m30, _t43, Math.fma(this.m20, _t31, Math.fma(this.m00, _t28, this.m10 * _t24)));
         d.m30 = this.m30;
-        float _buf2 = Math.fma(this.m31, _t36, Math.fma(this.m21, _t21, Math.fma(this.m01, _t27, this.m11 * _t24)));
-        float _buf3 = Math.fma(this.m31, _t37, Math.fma(this.m21, _t25, Math.fma(this.m01, _t22, this.m11 * _t28)));
-        d.m21 = Math.fma(this.m31, _t38, Math.fma(this.m21, _t29, Math.fma(this.m01, _t26, this.m11 * _t23)));
+        float _buf2 = Math.fma(this.m31, _t41, Math.fma(this.m21, _t20, Math.fma(this.m01, _t29, this.m11 * _t26)));
+        float _buf3 = Math.fma(this.m31, _t42, Math.fma(this.m21, _t27, Math.fma(this.m01, _t23, this.m11 * _t30)));
+        d.m21 = Math.fma(this.m31, _t43, Math.fma(this.m21, _t31, Math.fma(this.m01, _t28, this.m11 * _t24)));
         d.m31 = this.m31;
-        float _buf4 = Math.fma(this.m32, _t36, Math.fma(this.m22, _t21, Math.fma(this.m02, _t27, this.m12 * _t24)));
-        float _buf5 = Math.fma(this.m32, _t37, Math.fma(this.m22, _t25, Math.fma(this.m02, _t22, this.m12 * _t28)));
-        d.m22 = Math.fma(this.m32, _t38, Math.fma(this.m22, _t29, Math.fma(this.m02, _t26, this.m12 * _t23)));
+        float _buf4 = Math.fma(this.m32, _t41, Math.fma(this.m22, _t20, Math.fma(this.m02, _t29, this.m12 * _t26)));
+        float _buf5 = Math.fma(this.m32, _t42, Math.fma(this.m22, _t27, Math.fma(this.m02, _t23, this.m12 * _t30)));
+        d.m22 = Math.fma(this.m32, _t43, Math.fma(this.m22, _t31, Math.fma(this.m02, _t28, this.m12 * _t24)));
         d.m32 = this.m32;
-        float _buf6 = Math.fma(this.m33, _t36, Math.fma(this.m23, _t21, Math.fma(this.m03, _t27, this.m13 * _t24)));
-        float _buf7 = Math.fma(this.m33, _t37, Math.fma(this.m23, _t25, Math.fma(this.m03, _t22, this.m13 * _t28)));
-        d.m23 = Math.fma(this.m33, _t38, Math.fma(this.m23, _t29, Math.fma(this.m03, _t26, this.m13 * _t23)));
+        float _buf6 = Math.fma(this.m33, _t41, Math.fma(this.m23, _t20, Math.fma(this.m03, _t29, this.m13 * _t26)));
+        float _buf7 = Math.fma(this.m33, _t42, Math.fma(this.m23, _t27, Math.fma(this.m03, _t23, this.m13 * _t30)));
+        d.m23 = Math.fma(this.m33, _t43, Math.fma(this.m23, _t31, Math.fma(this.m03, _t28, this.m13 * _t24)));
         d.m33 = this.m33;
         d.m00 = _buf0;
         d.m10 = _buf1;
@@ -65391,6 +65612,10 @@ public class Float4x4Impl implements Float4x4 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rotX the {@code x} component of the quaternion {@code (rotX, rotY, rotZ, rotW)} (the
      *        quaternion must have unit length)
@@ -65422,6 +65647,10 @@ public class Float4x4Impl implements Float4x4 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rotX the {@code x} component of the quaternion {@code (rotX, rotY, rotZ, rotW)} (the
      *        quaternion must have unit length)
@@ -65434,7 +65663,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preRotateAround(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
         if (Joml.RETURN_NEW) return preRotateAround(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, Joml.float4x4());
@@ -65455,6 +65684,10 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
      * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
@@ -65474,39 +65707,40 @@ public class Float4x4Impl implements Float4x4 {
      */
     public Double4x4 preRotateAround(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Double4x4 dest) {
         Double4x4Impl d = (Double4x4Impl) dest;
-        float _t0 = -pivotX;
-        float _t1 = -pivotY;
-        float _t2 = -pivotZ;
+        float _t0 = -pivotZ;
+        float _t2 = rotY * rotW;
         float _t3 = rotZ * rotZ;
         float _t4 = rotZ * rotW;
-        float _t5 = rotY * rotW;
-        float _t21 = 2.0f * Math.fma(rotX, rotZ, _t5);
-        float _t22 = 2.0f * Math.fma(rotX, rotY, _t4);
-        float _t23 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t24 = 2.0f * Math.fma(rotX, rotY, -_t4);
-        float _t25 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t5);
-        float _t27 = Math.fma(-2.0f, Math.fma(rotY, rotY, _t3), 1.0f);
-        float _t28 = Math.fma(-2.0f, Math.fma(rotX, rotX, _t3), 1.0f);
-        float _t29 = Math.fma(-2.0f, Math.fma(rotX, rotX, rotY * rotY), 1.0f);
-        float _t36 = Math.fma(_t0, _t27, Math.fma(_t1, _t24, Math.fma(_t2, _t21, pivotX)));
-        float _t37 = Math.fma(_t0, _t22, Math.fma(_t1, _t28, Math.fma(_t2, _t25, pivotY)));
-        float _t38 = Math.fma(_t0, _t26, Math.fma(_t1, _t23, Math.fma(_t2, _t29, pivotZ)));
-        float _buf0 = Math.fma(this.m30, _t36, Math.fma(this.m20, _t21, Math.fma(this.m00, _t27, this.m10 * _t24)));
-        float _buf1 = Math.fma(this.m30, _t37, Math.fma(this.m20, _t25, Math.fma(this.m00, _t22, this.m10 * _t28)));
-        d.m20 = Math.fma(this.m30, _t38, Math.fma(this.m20, _t29, Math.fma(this.m00, _t26, this.m10 * _t23)));
+        float _t12 = Math.fma(rotY, rotY, _t3);
+        float _t13 = Math.fma(rotX, rotX, _t3);
+        float _t16 = Math.fma(rotX, rotX, rotY * rotY);
+        float _t20 = 2.0f * Math.fma(rotX, rotZ, _t2);
+        float _t23 = 2.0f * Math.fma(rotX, rotY, _t4);
+        float _t24 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
+        float _t26 = 2.0f * Math.fma(rotX, rotY, -_t4);
+        float _t27 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
+        float _t28 = 2.0f * Math.fma(rotX, rotZ, -_t2);
+        float _t29 = Math.fma(-2.0f, _t12, 1.0f);
+        float _t30 = Math.fma(-2.0f, _t13, 1.0f);
+        float _t31 = Math.fma(-2.0f, _t16, 1.0f);
+        float _t41 = Math.fma(_t0, _t20, Math.fma(pivotX, 2.0f * _t12, -(pivotY * _t26)));
+        float _t42 = Math.fma(_t0, _t27, Math.fma(pivotY, 2.0f * _t13, -(pivotX * _t23)));
+        float _t43 = Math.fma(-pivotY, _t24, Math.fma(pivotZ, 2.0f * _t16, -(pivotX * _t28)));
+        float _buf0 = Math.fma(this.m30, _t41, Math.fma(this.m20, _t20, Math.fma(this.m00, _t29, this.m10 * _t26)));
+        float _buf1 = Math.fma(this.m30, _t42, Math.fma(this.m20, _t27, Math.fma(this.m00, _t23, this.m10 * _t30)));
+        d.m20 = Math.fma(this.m30, _t43, Math.fma(this.m20, _t31, Math.fma(this.m00, _t28, this.m10 * _t24)));
         d.m30 = this.m30;
-        float _buf2 = Math.fma(this.m31, _t36, Math.fma(this.m21, _t21, Math.fma(this.m01, _t27, this.m11 * _t24)));
-        float _buf3 = Math.fma(this.m31, _t37, Math.fma(this.m21, _t25, Math.fma(this.m01, _t22, this.m11 * _t28)));
-        d.m21 = Math.fma(this.m31, _t38, Math.fma(this.m21, _t29, Math.fma(this.m01, _t26, this.m11 * _t23)));
+        float _buf2 = Math.fma(this.m31, _t41, Math.fma(this.m21, _t20, Math.fma(this.m01, _t29, this.m11 * _t26)));
+        float _buf3 = Math.fma(this.m31, _t42, Math.fma(this.m21, _t27, Math.fma(this.m01, _t23, this.m11 * _t30)));
+        d.m21 = Math.fma(this.m31, _t43, Math.fma(this.m21, _t31, Math.fma(this.m01, _t28, this.m11 * _t24)));
         d.m31 = this.m31;
-        float _buf4 = Math.fma(this.m32, _t36, Math.fma(this.m22, _t21, Math.fma(this.m02, _t27, this.m12 * _t24)));
-        float _buf5 = Math.fma(this.m32, _t37, Math.fma(this.m22, _t25, Math.fma(this.m02, _t22, this.m12 * _t28)));
-        d.m22 = Math.fma(this.m32, _t38, Math.fma(this.m22, _t29, Math.fma(this.m02, _t26, this.m12 * _t23)));
+        float _buf4 = Math.fma(this.m32, _t41, Math.fma(this.m22, _t20, Math.fma(this.m02, _t29, this.m12 * _t26)));
+        float _buf5 = Math.fma(this.m32, _t42, Math.fma(this.m22, _t27, Math.fma(this.m02, _t23, this.m12 * _t30)));
+        d.m22 = Math.fma(this.m32, _t43, Math.fma(this.m22, _t31, Math.fma(this.m02, _t28, this.m12 * _t24)));
         d.m32 = this.m32;
-        float _buf6 = Math.fma(this.m33, _t36, Math.fma(this.m23, _t21, Math.fma(this.m03, _t27, this.m13 * _t24)));
-        float _buf7 = Math.fma(this.m33, _t37, Math.fma(this.m23, _t25, Math.fma(this.m03, _t22, this.m13 * _t28)));
-        d.m23 = Math.fma(this.m33, _t38, Math.fma(this.m23, _t29, Math.fma(this.m03, _t26, this.m13 * _t23)));
+        float _buf6 = Math.fma(this.m33, _t41, Math.fma(this.m23, _t20, Math.fma(this.m03, _t29, this.m13 * _t26)));
+        float _buf7 = Math.fma(this.m33, _t42, Math.fma(this.m23, _t27, Math.fma(this.m03, _t23, this.m13 * _t30)));
+        d.m23 = Math.fma(this.m33, _t43, Math.fma(this.m23, _t31, Math.fma(this.m03, _t28, this.m13 * _t24)));
         d.m33 = this.m33;
         d.m00 = _buf0;
         d.m10 = _buf1;
@@ -65570,7 +65804,7 @@ public class Float4x4Impl implements Float4x4 {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 preRotateAxis(float angle, Float3R axis) {
         return preRotateAxis(angle, axis.x(), axis.y(), axis.z());
@@ -65908,7 +66142,7 @@ public class Float4x4Impl implements Float4x4 {
      *        vector must have unit length)
      * @param axisZ the {@code z} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
      *        vector must have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preRotateAxis(float angle, float axisX, float axisY, float axisZ) {
         if (Joml.RETURN_NEW) return preRotateAxis(angle, axisX, axisY, axisZ, Joml.float4x4());
@@ -66032,7 +66266,7 @@ public class Float4x4Impl implements Float4x4 {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param q the quaternion (must be a unit quaternion)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 preRotateQuat(FloatQuatR q) {
         return preRotateQuat(q.x(), q.y(), q.z(), q.w());
@@ -66351,7 +66585,7 @@ public class Float4x4Impl implements Float4x4 {
      *        must have unit length)
      * @param qW the {@code w} component of the quaternion {@code (qX, qY, qZ, qW)} (the quaternion
      *        must have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preRotateQuat(float qX, float qY, float qZ, float qW) {
         if (Joml.RETURN_NEW) return preRotateQuat(qX, qY, qZ, qW, Joml.float4x4());
@@ -66649,7 +66883,7 @@ public class Float4x4Impl implements Float4x4 {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preRotateX(float angle) {
         if (Joml.RETURN_NEW) return preRotateX(angle, Joml.float4x4());
@@ -66926,7 +67160,7 @@ public class Float4x4Impl implements Float4x4 {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preRotateY(float angle) {
         if (Joml.RETURN_NEW) return preRotateY(angle, Joml.float4x4());
@@ -67203,7 +67437,7 @@ public class Float4x4Impl implements Float4x4 {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preRotateZ(float angle) {
         if (Joml.RETURN_NEW) return preRotateZ(angle, Joml.float4x4());
@@ -67302,7 +67536,7 @@ public class Float4x4Impl implements Float4x4 {
      * {@code S * M * p}, the scaling will be applied last.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 preScale(Float3R v) {
         return preScale(v.x(), v.y(), v.z());
@@ -67504,7 +67738,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
      * @param vZ the {@code z} component of the vector {@code (vX, vY, vZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preScale(float vX, float vY, float vZ) {
         if (Joml.RETURN_NEW) return preScale(vX, vY, vZ, Joml.float4x4());
@@ -67746,7 +67980,7 @@ public class Float4x4Impl implements Float4x4 {
      * {@code S * M * v}, the scaling will be applied last.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preScale(float s) {
         if (Joml.RETURN_NEW) return preScale(s, Joml.float4x4());
@@ -67843,7 +68077,7 @@ public class Float4x4Impl implements Float4x4 {
      *
      * @param s the uniform scale factor
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 preScaleAround(float s, Float3R pivot) {
         return preScaleAround(s, pivot.x(), pivot.y(), pivot.z());
@@ -68054,7 +68288,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preScaleAround(float s, float pivotX, float pivotY, float pivotZ) {
         if (Joml.RETURN_NEW) return preScaleAround(s, pivotX, pivotY, pivotZ, Joml.float4x4());
@@ -68158,7 +68392,7 @@ public class Float4x4Impl implements Float4x4 {
      *
      * @param s the scale factors
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 preScaleAround(Float3R s, Float3R pivot) {
         return preScaleAround(s.x(), s.y(), s.z(), pivot.x(), pivot.y(), pivot.z());
@@ -68374,7 +68608,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preScaleAround(float sX, float sY, float sZ, float pivotX, float pivotY, float pivotZ) {
         if (Joml.RETURN_NEW) return preScaleAround(sX, sY, sZ, pivotX, pivotY, pivotZ, Joml.float4x4());
@@ -68478,7 +68712,7 @@ public class Float4x4Impl implements Float4x4 {
      * {@code T * M * p}, the translation will be applied last.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 preTranslate(Float3R v) {
         return preTranslate(v.x(), v.y(), v.z());
@@ -68677,7 +68911,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
      * @param vZ the {@code z} component of the vector {@code (vX, vY, vZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 preTranslate(float vX, float vY, float vZ) {
         if (Joml.RETURN_NEW) return preTranslate(vX, vY, vZ, Joml.float4x4());
@@ -69163,7 +69397,7 @@ public class Float4x4Impl implements Float4x4 {
      * {@code M * R * v}, the reflection will be applied first.
      *
      * @param normal the normal (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 reflect(Float3R normal) {
         return reflect(normal.x(), normal.y(), normal.z());
@@ -69444,7 +69678,7 @@ public class Float4x4Impl implements Float4x4 {
      *        vector must have unit length)
      * @param normalZ the {@code z} component of the vector {@code (normalX, normalY, normalZ)} (the
      *        vector must have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 reflect(float normalX, float normalY, float normalZ) {
         if (Joml.RETURN_NEW) return reflect(normalX, normalY, normalZ, Joml.float4x4());
@@ -69524,6 +69758,10 @@ public class Float4x4Impl implements Float4x4 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rot the quaternion (must be a unit quaternion)
      * @param pivot the pivot point
@@ -69542,6 +69780,10 @@ public class Float4x4Impl implements Float4x4 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -69562,10 +69804,14 @@ public class Float4x4Impl implements Float4x4 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rot the quaternion (must be a unit quaternion)
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 rotateAround(FloatQuatR rot, Float3R pivot) {
         return rotateAround(rot.x(), rot.y(), rot.z(), rot.w(), pivot.x(), pivot.y(), pivot.z());
@@ -69578,39 +69824,40 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 rotateAround_orthogonal_affine(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest, int _props) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _t0 = -pivotX;
-        float _t1 = -pivotY;
-        float _t2 = -pivotZ;
-        float _t3 = rotY * rotW;
-        float _t4 = rotZ * rotZ;
-        float _t5 = rotZ * rotW;
-        float _t21 = 2.0f * Math.fma(rotX, rotY, _t5);
-        float _t22 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t23 = 2.0f * Math.fma(rotX, rotZ, _t3);
-        float _t24 = 2.0f * Math.fma(rotX, rotZ, -_t3);
-        float _t25 = 2.0f * Math.fma(rotX, rotY, -_t5);
-        float _t26 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t27 = Math.fma(-2.0f, Math.fma(rotY, rotY, _t4), 1.0f);
-        float _t28 = Math.fma(-2.0f, Math.fma(rotX, rotX, _t4), 1.0f);
-        float _t29 = Math.fma(-2.0f, Math.fma(rotX, rotX, rotY * rotY), 1.0f);
-        float _t36 = Math.fma(_t0, _t27, Math.fma(_t1, _t25, Math.fma(_t2, _t23, pivotX)));
-        float _t37 = Math.fma(_t0, _t21, Math.fma(_t1, _t28, Math.fma(_t2, _t26, pivotY)));
-        float _t38 = Math.fma(_t0, _t24, Math.fma(_t1, _t22, Math.fma(_t2, _t29, pivotZ)));
-        float _buf0 = Math.fma(this.m02, _t24, Math.fma(this.m00, _t27, this.m01 * _t21));
-        float _buf1 = Math.fma(this.m12, _t24, Math.fma(this.m10, _t27, this.m11 * _t21));
-        float _buf2 = Math.fma(this.m22, _t24, Math.fma(this.m20, _t27, this.m21 * _t21));
+        float _t0 = -pivotZ;
+        float _t2 = rotY * rotW;
+        float _t3 = rotZ * rotZ;
+        float _t4 = rotZ * rotW;
+        float _t11 = Math.fma(rotY, rotY, _t3);
+        float _t14 = Math.fma(rotX, rotX, _t3);
+        float _t15 = Math.fma(rotX, rotX, rotY * rotY);
+        float _t20 = 2.0f * Math.fma(rotX, rotY, _t4);
+        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
+        float _t22 = 2.0f * Math.fma(rotX, rotZ, _t2);
+        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t2);
+        float _t27 = 2.0f * Math.fma(rotX, rotY, -_t4);
+        float _t28 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
+        float _t29 = Math.fma(-2.0f, _t11, 1.0f);
+        float _t30 = Math.fma(-2.0f, _t14, 1.0f);
+        float _t31 = Math.fma(-2.0f, _t15, 1.0f);
+        float _t41 = Math.fma(_t0, _t22, Math.fma(pivotX, 2.0f * _t11, -(pivotY * _t27)));
+        float _t42 = Math.fma(_t0, _t28, Math.fma(pivotY, 2.0f * _t14, -(pivotX * _t20)));
+        float _t43 = Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t15, -(pivotX * _t26)));
+        float _buf0 = Math.fma(this.m02, _t26, Math.fma(this.m00, _t29, this.m01 * _t20));
+        float _buf1 = Math.fma(this.m12, _t26, Math.fma(this.m10, _t29, this.m11 * _t20));
+        float _buf2 = Math.fma(this.m22, _t26, Math.fma(this.m20, _t29, this.m21 * _t20));
         d.m30 = 0.0f;
-        float _buf3 = Math.fma(this.m02, _t22, Math.fma(this.m00, _t25, this.m01 * _t28));
-        float _buf4 = Math.fma(this.m12, _t22, Math.fma(this.m10, _t25, this.m11 * _t28));
-        float _buf5 = Math.fma(this.m22, _t22, Math.fma(this.m20, _t25, this.m21 * _t28));
+        float _buf3 = Math.fma(this.m02, _t21, Math.fma(this.m00, _t27, this.m01 * _t30));
+        float _buf4 = Math.fma(this.m12, _t21, Math.fma(this.m10, _t27, this.m11 * _t30));
+        float _buf5 = Math.fma(this.m22, _t21, Math.fma(this.m20, _t27, this.m21 * _t30));
         d.m31 = 0.0f;
-        float _buf6 = Math.fma(this.m02, _t29, Math.fma(this.m00, _t23, this.m01 * _t26));
-        float _buf7 = Math.fma(this.m12, _t29, Math.fma(this.m10, _t23, this.m11 * _t26));
-        float _buf8 = Math.fma(this.m22, _t29, Math.fma(this.m20, _t23, this.m21 * _t26));
+        float _buf6 = Math.fma(this.m02, _t31, Math.fma(this.m00, _t22, this.m01 * _t28));
+        float _buf7 = Math.fma(this.m12, _t31, Math.fma(this.m10, _t22, this.m11 * _t28));
+        float _buf8 = Math.fma(this.m22, _t31, Math.fma(this.m20, _t22, this.m21 * _t28));
         d.m32 = 0.0f;
-        d.m03 = Math.fma(this.m00, _t36, Math.fma(this.m01, _t37, Math.fma(this.m02, _t38, this.m03)));
-        d.m13 = Math.fma(this.m10, _t36, Math.fma(this.m11, _t37, Math.fma(this.m12, _t38, this.m13)));
-        d.m23 = Math.fma(this.m20, _t36, Math.fma(this.m21, _t37, Math.fma(this.m22, _t38, this.m23)));
+        d.m03 = Math.fma(this.m00, _t41, Math.fma(this.m01, _t42, Math.fma(this.m02, _t43, this.m03)));
+        d.m13 = Math.fma(this.m10, _t41, Math.fma(this.m11, _t42, Math.fma(this.m12, _t43, this.m13)));
+        d.m23 = Math.fma(this.m20, _t41, Math.fma(this.m21, _t42, Math.fma(this.m22, _t43, this.m23)));
         d.m33 = 1.0f;
         d.m00 = _buf0;
         d.m10 = _buf1;
@@ -69632,36 +69879,37 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 rotateAround_orthogonal_affine_self(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest, int _props) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _t0 = -pivotX;
-        float _t1 = -pivotY;
-        float _t2 = -pivotZ;
-        float _t3 = rotY * rotW;
-        float _t4 = rotZ * rotZ;
-        float _t5 = rotZ * rotW;
-        float _t21 = 2.0f * Math.fma(rotX, rotY, _t5);
-        float _t22 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t23 = 2.0f * Math.fma(rotX, rotZ, _t3);
-        float _t24 = 2.0f * Math.fma(rotX, rotZ, -_t3);
-        float _t25 = 2.0f * Math.fma(rotX, rotY, -_t5);
-        float _t26 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t27 = Math.fma(-2.0f, Math.fma(rotY, rotY, _t4), 1.0f);
-        float _t28 = Math.fma(-2.0f, Math.fma(rotX, rotX, _t4), 1.0f);
-        float _t29 = Math.fma(-2.0f, Math.fma(rotX, rotX, rotY * rotY), 1.0f);
-        float _t36 = Math.fma(_t0, _t27, Math.fma(_t1, _t25, Math.fma(_t2, _t23, pivotX)));
-        float _t37 = Math.fma(_t0, _t21, Math.fma(_t1, _t28, Math.fma(_t2, _t26, pivotY)));
-        float _t38 = Math.fma(_t0, _t24, Math.fma(_t1, _t22, Math.fma(_t2, _t29, pivotZ)));
-        float _buf0 = Math.fma(this.m02, _t24, Math.fma(this.m00, _t27, this.m01 * _t21));
-        float _buf1 = Math.fma(this.m12, _t24, Math.fma(this.m10, _t27, this.m11 * _t21));
-        float _buf2 = Math.fma(this.m22, _t24, Math.fma(this.m20, _t27, this.m21 * _t21));
-        float _buf3 = Math.fma(this.m02, _t22, Math.fma(this.m00, _t25, this.m01 * _t28));
-        float _buf4 = Math.fma(this.m12, _t22, Math.fma(this.m10, _t25, this.m11 * _t28));
-        float _buf5 = Math.fma(this.m22, _t22, Math.fma(this.m20, _t25, this.m21 * _t28));
-        float _buf6 = Math.fma(this.m02, _t29, Math.fma(this.m00, _t23, this.m01 * _t26));
-        float _buf7 = Math.fma(this.m12, _t29, Math.fma(this.m10, _t23, this.m11 * _t26));
-        float _buf8 = Math.fma(this.m22, _t29, Math.fma(this.m20, _t23, this.m21 * _t26));
-        d.m03 = Math.fma(this.m00, _t36, Math.fma(this.m01, _t37, Math.fma(this.m02, _t38, this.m03)));
-        d.m13 = Math.fma(this.m10, _t36, Math.fma(this.m11, _t37, Math.fma(this.m12, _t38, this.m13)));
-        d.m23 = Math.fma(this.m20, _t36, Math.fma(this.m21, _t37, Math.fma(this.m22, _t38, this.m23)));
+        float _t0 = -pivotZ;
+        float _t2 = rotY * rotW;
+        float _t3 = rotZ * rotZ;
+        float _t4 = rotZ * rotW;
+        float _t11 = Math.fma(rotY, rotY, _t3);
+        float _t14 = Math.fma(rotX, rotX, _t3);
+        float _t15 = Math.fma(rotX, rotX, rotY * rotY);
+        float _t20 = 2.0f * Math.fma(rotX, rotY, _t4);
+        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
+        float _t22 = 2.0f * Math.fma(rotX, rotZ, _t2);
+        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t2);
+        float _t27 = 2.0f * Math.fma(rotX, rotY, -_t4);
+        float _t28 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
+        float _t29 = Math.fma(-2.0f, _t11, 1.0f);
+        float _t30 = Math.fma(-2.0f, _t14, 1.0f);
+        float _t31 = Math.fma(-2.0f, _t15, 1.0f);
+        float _t41 = Math.fma(_t0, _t22, Math.fma(pivotX, 2.0f * _t11, -(pivotY * _t27)));
+        float _t42 = Math.fma(_t0, _t28, Math.fma(pivotY, 2.0f * _t14, -(pivotX * _t20)));
+        float _t43 = Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t15, -(pivotX * _t26)));
+        float _buf0 = Math.fma(this.m02, _t26, Math.fma(this.m00, _t29, this.m01 * _t20));
+        float _buf1 = Math.fma(this.m12, _t26, Math.fma(this.m10, _t29, this.m11 * _t20));
+        float _buf2 = Math.fma(this.m22, _t26, Math.fma(this.m20, _t29, this.m21 * _t20));
+        float _buf3 = Math.fma(this.m02, _t21, Math.fma(this.m00, _t27, this.m01 * _t30));
+        float _buf4 = Math.fma(this.m12, _t21, Math.fma(this.m10, _t27, this.m11 * _t30));
+        float _buf5 = Math.fma(this.m22, _t21, Math.fma(this.m20, _t27, this.m21 * _t30));
+        float _buf6 = Math.fma(this.m02, _t31, Math.fma(this.m00, _t22, this.m01 * _t28));
+        float _buf7 = Math.fma(this.m12, _t31, Math.fma(this.m10, _t22, this.m11 * _t28));
+        float _buf8 = Math.fma(this.m22, _t31, Math.fma(this.m20, _t22, this.m21 * _t28));
+        d.m03 = Math.fma(this.m00, _t41, Math.fma(this.m01, _t42, Math.fma(this.m02, _t43, this.m03)));
+        d.m13 = Math.fma(this.m10, _t41, Math.fma(this.m11, _t42, Math.fma(this.m12, _t43, this.m13)));
+        d.m23 = Math.fma(this.m20, _t41, Math.fma(this.m21, _t42, Math.fma(this.m22, _t43, this.m23)));
         d.m00 = _buf0;
         d.m10 = _buf1;
         d.m20 = _buf2;
@@ -69700,36 +69948,36 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 rotateAround_translation(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _t0 = -pivotX;
-        float _t1 = -pivotY;
-        float _t2 = -pivotZ;
+        float _t0 = -pivotY;
+        float _t1 = -pivotZ;
+        float _t2 = -pivotX;
         float _t3 = rotZ * rotZ;
         float _t4 = rotZ * rotW;
         float _t5 = rotY * rotW;
+        float _t12 = Math.fma(rotY, rotY, _t3);
+        float _t15 = Math.fma(rotX, rotX, _t3);
+        float _t17 = Math.fma(rotX, rotX, rotY * rotY);
         float _t21 = 2.0f * Math.fma(rotX, rotZ, _t5);
         float _t22 = 2.0f * Math.fma(rotX, rotY, _t4);
         float _t23 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
         float _t24 = 2.0f * Math.fma(rotX, rotY, -_t4);
         float _t25 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
         float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t5);
-        float _t27 = Math.fma(-2.0f, Math.fma(rotY, rotY, _t3), 1.0f);
-        float _t28 = Math.fma(-2.0f, Math.fma(rotX, rotX, _t3), 1.0f);
-        float _t29 = Math.fma(-2.0f, Math.fma(rotX, rotX, rotY * rotY), 1.0f);
-        d.m00 = _t27;
+        d.m00 = Math.fma(-2.0f, _t12, 1.0f);
         d.m10 = _t22;
         d.m20 = _t26;
         d.m30 = 0.0f;
         d.m01 = _t24;
-        d.m11 = _t28;
+        d.m11 = Math.fma(-2.0f, _t15, 1.0f);
         d.m21 = _t23;
         d.m31 = 0.0f;
         d.m02 = _t21;
         d.m12 = _t25;
-        d.m22 = _t29;
+        d.m22 = Math.fma(-2.0f, _t17, 1.0f);
         d.m32 = 0.0f;
-        d.m03 = Math.fma(_t0, _t27, Math.fma(_t1, _t24, Math.fma(_t2, _t21, this.m03 + pivotX)));
-        d.m13 = Math.fma(_t0, _t22, Math.fma(_t1, _t28, Math.fma(_t2, _t25, this.m13 + pivotY)));
-        d.m23 = Math.fma(_t0, _t26, Math.fma(_t1, _t23, Math.fma(_t2, _t29, this.m23 + pivotZ)));
+        d.m03 = Math.fma(pivotX, 2.0f * _t12, Math.fma(_t0, _t24, Math.fma(_t1, _t21, this.m03)));
+        d.m13 = Math.fma(pivotY, 2.0f * _t15, Math.fma(_t2, _t22, Math.fma(_t1, _t25, this.m13)));
+        d.m23 = Math.fma(pivotZ, 2.0f * _t17, Math.fma(_t2, _t26, Math.fma(_t0, _t23, this.m23)));
         d.m33 = 1.0f;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -69742,33 +69990,33 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 rotateAround_translation_self(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _t0 = -pivotX;
-        float _t1 = -pivotY;
-        float _t2 = -pivotZ;
+        float _t0 = -pivotY;
+        float _t1 = -pivotZ;
+        float _t2 = -pivotX;
         float _t3 = rotZ * rotZ;
         float _t4 = rotZ * rotW;
         float _t5 = rotY * rotW;
+        float _t12 = Math.fma(rotY, rotY, _t3);
+        float _t15 = Math.fma(rotX, rotX, _t3);
+        float _t17 = Math.fma(rotX, rotX, rotY * rotY);
         float _t21 = 2.0f * Math.fma(rotX, rotZ, _t5);
         float _t22 = 2.0f * Math.fma(rotX, rotY, _t4);
         float _t23 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
         float _t24 = 2.0f * Math.fma(rotX, rotY, -_t4);
         float _t25 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
         float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t5);
-        float _t27 = Math.fma(-2.0f, Math.fma(rotY, rotY, _t3), 1.0f);
-        float _t28 = Math.fma(-2.0f, Math.fma(rotX, rotX, _t3), 1.0f);
-        float _t29 = Math.fma(-2.0f, Math.fma(rotX, rotX, rotY * rotY), 1.0f);
-        d.m00 = _t27;
+        d.m00 = Math.fma(-2.0f, _t12, 1.0f);
         d.m10 = _t22;
         d.m20 = _t26;
         d.m01 = _t24;
-        d.m11 = _t28;
+        d.m11 = Math.fma(-2.0f, _t15, 1.0f);
         d.m21 = _t23;
         d.m02 = _t21;
         d.m12 = _t25;
-        d.m22 = _t29;
-        d.m03 = Math.fma(_t0, _t27, Math.fma(_t1, _t24, Math.fma(_t2, _t21, this.m03 + pivotX)));
-        d.m13 = Math.fma(_t0, _t22, Math.fma(_t1, _t28, Math.fma(_t2, _t25, this.m13 + pivotY)));
-        d.m23 = Math.fma(_t0, _t26, Math.fma(_t1, _t23, Math.fma(_t2, _t29, this.m23 + pivotZ)));
+        d.m22 = Math.fma(-2.0f, _t17, 1.0f);
+        d.m03 = Math.fma(pivotX, 2.0f * _t12, Math.fma(_t0, _t24, Math.fma(_t1, _t21, this.m03)));
+        d.m13 = Math.fma(pivotY, 2.0f * _t15, Math.fma(_t2, _t22, Math.fma(_t1, _t25, this.m13)));
+        d.m23 = Math.fma(pivotZ, 2.0f * _t17, Math.fma(_t2, _t26, Math.fma(_t0, _t23, this.m23)));
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -69780,40 +70028,41 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float4x4 rotateAround_general(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Float4x4 dest) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _t0 = -pivotX;
-        float _t1 = -pivotY;
-        float _t2 = -pivotZ;
-        float _t3 = rotY * rotW;
-        float _t4 = rotZ * rotZ;
-        float _t5 = rotZ * rotW;
-        float _t21 = 2.0f * Math.fma(rotX, rotY, _t5);
-        float _t22 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t23 = 2.0f * Math.fma(rotX, rotZ, _t3);
-        float _t24 = 2.0f * Math.fma(rotX, rotZ, -_t3);
-        float _t25 = 2.0f * Math.fma(rotX, rotY, -_t5);
-        float _t26 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t27 = Math.fma(-2.0f, Math.fma(rotY, rotY, _t4), 1.0f);
-        float _t28 = Math.fma(-2.0f, Math.fma(rotX, rotX, _t4), 1.0f);
-        float _t29 = Math.fma(-2.0f, Math.fma(rotX, rotX, rotY * rotY), 1.0f);
-        float _t36 = Math.fma(_t0, _t27, Math.fma(_t1, _t25, Math.fma(_t2, _t23, pivotX)));
-        float _t37 = Math.fma(_t0, _t21, Math.fma(_t1, _t28, Math.fma(_t2, _t26, pivotY)));
-        float _t38 = Math.fma(_t0, _t24, Math.fma(_t1, _t22, Math.fma(_t2, _t29, pivotZ)));
-        float _buf0 = Math.fma(this.m02, _t24, Math.fma(this.m00, _t27, this.m01 * _t21));
-        float _buf1 = Math.fma(this.m12, _t24, Math.fma(this.m10, _t27, this.m11 * _t21));
-        float _buf2 = Math.fma(this.m22, _t24, Math.fma(this.m20, _t27, this.m21 * _t21));
-        float _buf3 = Math.fma(this.m32, _t24, Math.fma(this.m30, _t27, this.m31 * _t21));
-        float _buf4 = Math.fma(this.m02, _t22, Math.fma(this.m00, _t25, this.m01 * _t28));
-        float _buf5 = Math.fma(this.m12, _t22, Math.fma(this.m10, _t25, this.m11 * _t28));
-        float _buf6 = Math.fma(this.m22, _t22, Math.fma(this.m20, _t25, this.m21 * _t28));
-        float _buf7 = Math.fma(this.m32, _t22, Math.fma(this.m30, _t25, this.m31 * _t28));
-        float _buf8 = Math.fma(this.m02, _t29, Math.fma(this.m00, _t23, this.m01 * _t26));
-        float _buf9 = Math.fma(this.m12, _t29, Math.fma(this.m10, _t23, this.m11 * _t26));
-        float _buf10 = Math.fma(this.m22, _t29, Math.fma(this.m20, _t23, this.m21 * _t26));
-        float _buf11 = Math.fma(this.m32, _t29, Math.fma(this.m30, _t23, this.m31 * _t26));
-        d.m03 = Math.fma(this.m00, _t36, Math.fma(this.m01, _t37, Math.fma(this.m02, _t38, this.m03)));
-        d.m13 = Math.fma(this.m10, _t36, Math.fma(this.m11, _t37, Math.fma(this.m12, _t38, this.m13)));
-        d.m23 = Math.fma(this.m20, _t36, Math.fma(this.m21, _t37, Math.fma(this.m22, _t38, this.m23)));
-        d.m33 = Math.fma(this.m30, _t36, Math.fma(this.m31, _t37, Math.fma(this.m32, _t38, this.m33)));
+        float _t0 = -pivotZ;
+        float _t2 = rotY * rotW;
+        float _t3 = rotZ * rotZ;
+        float _t4 = rotZ * rotW;
+        float _t11 = Math.fma(rotY, rotY, _t3);
+        float _t14 = Math.fma(rotX, rotX, _t3);
+        float _t15 = Math.fma(rotX, rotX, rotY * rotY);
+        float _t20 = 2.0f * Math.fma(rotX, rotY, _t4);
+        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
+        float _t22 = 2.0f * Math.fma(rotX, rotZ, _t2);
+        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t2);
+        float _t27 = 2.0f * Math.fma(rotX, rotY, -_t4);
+        float _t28 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
+        float _t29 = Math.fma(-2.0f, _t11, 1.0f);
+        float _t30 = Math.fma(-2.0f, _t14, 1.0f);
+        float _t31 = Math.fma(-2.0f, _t15, 1.0f);
+        float _t41 = Math.fma(_t0, _t22, Math.fma(pivotX, 2.0f * _t11, -(pivotY * _t27)));
+        float _t42 = Math.fma(_t0, _t28, Math.fma(pivotY, 2.0f * _t14, -(pivotX * _t20)));
+        float _t43 = Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t15, -(pivotX * _t26)));
+        float _buf0 = Math.fma(this.m02, _t26, Math.fma(this.m00, _t29, this.m01 * _t20));
+        float _buf1 = Math.fma(this.m12, _t26, Math.fma(this.m10, _t29, this.m11 * _t20));
+        float _buf2 = Math.fma(this.m22, _t26, Math.fma(this.m20, _t29, this.m21 * _t20));
+        float _buf3 = Math.fma(this.m32, _t26, Math.fma(this.m30, _t29, this.m31 * _t20));
+        float _buf4 = Math.fma(this.m02, _t21, Math.fma(this.m00, _t27, this.m01 * _t30));
+        float _buf5 = Math.fma(this.m12, _t21, Math.fma(this.m10, _t27, this.m11 * _t30));
+        float _buf6 = Math.fma(this.m22, _t21, Math.fma(this.m20, _t27, this.m21 * _t30));
+        float _buf7 = Math.fma(this.m32, _t21, Math.fma(this.m30, _t27, this.m31 * _t30));
+        float _buf8 = Math.fma(this.m02, _t31, Math.fma(this.m00, _t22, this.m01 * _t28));
+        float _buf9 = Math.fma(this.m12, _t31, Math.fma(this.m10, _t22, this.m11 * _t28));
+        float _buf10 = Math.fma(this.m22, _t31, Math.fma(this.m20, _t22, this.m21 * _t28));
+        float _buf11 = Math.fma(this.m32, _t31, Math.fma(this.m30, _t22, this.m31 * _t28));
+        d.m03 = Math.fma(this.m00, _t41, Math.fma(this.m01, _t42, Math.fma(this.m02, _t43, this.m03)));
+        d.m13 = Math.fma(this.m10, _t41, Math.fma(this.m11, _t42, Math.fma(this.m12, _t43, this.m13)));
+        d.m23 = Math.fma(this.m20, _t41, Math.fma(this.m21, _t42, Math.fma(this.m22, _t43, this.m23)));
+        d.m33 = Math.fma(this.m30, _t41, Math.fma(this.m31, _t42, Math.fma(this.m32, _t43, this.m33)));
         d.m00 = _buf0;
         d.m10 = _buf1;
         d.m20 = _buf2;
@@ -69839,6 +70088,10 @@ public class Float4x4Impl implements Float4x4 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rotX the {@code x} component of the quaternion {@code (rotX, rotY, rotZ, rotW)} (the
      *        quaternion must have unit length)
@@ -69870,6 +70123,10 @@ public class Float4x4Impl implements Float4x4 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param rotX the {@code x} component of the quaternion {@code (rotX, rotY, rotZ, rotW)} (the
      *        quaternion must have unit length)
@@ -69882,7 +70139,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateAround(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ) {
         if (Joml.RETURN_NEW) return rotateAround(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, Joml.float4x4());
@@ -69903,6 +70160,10 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
@@ -69922,40 +70183,41 @@ public class Float4x4Impl implements Float4x4 {
      */
     public Double4x4 rotateAround(float rotX, float rotY, float rotZ, float rotW, float pivotX, float pivotY, float pivotZ, @Mutated Double4x4 dest) {
         Double4x4Impl d = (Double4x4Impl) dest;
-        float _t0 = -pivotX;
-        float _t1 = -pivotY;
-        float _t2 = -pivotZ;
-        float _t3 = rotY * rotW;
-        float _t4 = rotZ * rotZ;
-        float _t5 = rotZ * rotW;
-        float _t21 = 2.0f * Math.fma(rotX, rotY, _t5);
-        float _t22 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
-        float _t23 = 2.0f * Math.fma(rotX, rotZ, _t3);
-        float _t24 = 2.0f * Math.fma(rotX, rotZ, -_t3);
-        float _t25 = 2.0f * Math.fma(rotX, rotY, -_t5);
-        float _t26 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
-        float _t27 = Math.fma(-2.0f, Math.fma(rotY, rotY, _t4), 1.0f);
-        float _t28 = Math.fma(-2.0f, Math.fma(rotX, rotX, _t4), 1.0f);
-        float _t29 = Math.fma(-2.0f, Math.fma(rotX, rotX, rotY * rotY), 1.0f);
-        float _t36 = Math.fma(_t0, _t27, Math.fma(_t1, _t25, Math.fma(_t2, _t23, pivotX)));
-        float _t37 = Math.fma(_t0, _t21, Math.fma(_t1, _t28, Math.fma(_t2, _t26, pivotY)));
-        float _t38 = Math.fma(_t0, _t24, Math.fma(_t1, _t22, Math.fma(_t2, _t29, pivotZ)));
-        float _buf0 = Math.fma(this.m02, _t24, Math.fma(this.m00, _t27, this.m01 * _t21));
-        float _buf1 = Math.fma(this.m12, _t24, Math.fma(this.m10, _t27, this.m11 * _t21));
-        float _buf2 = Math.fma(this.m22, _t24, Math.fma(this.m20, _t27, this.m21 * _t21));
-        float _buf3 = Math.fma(this.m32, _t24, Math.fma(this.m30, _t27, this.m31 * _t21));
-        float _buf4 = Math.fma(this.m02, _t22, Math.fma(this.m00, _t25, this.m01 * _t28));
-        float _buf5 = Math.fma(this.m12, _t22, Math.fma(this.m10, _t25, this.m11 * _t28));
-        float _buf6 = Math.fma(this.m22, _t22, Math.fma(this.m20, _t25, this.m21 * _t28));
-        float _buf7 = Math.fma(this.m32, _t22, Math.fma(this.m30, _t25, this.m31 * _t28));
-        float _buf8 = Math.fma(this.m02, _t29, Math.fma(this.m00, _t23, this.m01 * _t26));
-        float _buf9 = Math.fma(this.m12, _t29, Math.fma(this.m10, _t23, this.m11 * _t26));
-        float _buf10 = Math.fma(this.m22, _t29, Math.fma(this.m20, _t23, this.m21 * _t26));
-        float _buf11 = Math.fma(this.m32, _t29, Math.fma(this.m30, _t23, this.m31 * _t26));
-        d.m03 = Math.fma(this.m00, _t36, Math.fma(this.m01, _t37, Math.fma(this.m02, _t38, this.m03)));
-        d.m13 = Math.fma(this.m10, _t36, Math.fma(this.m11, _t37, Math.fma(this.m12, _t38, this.m13)));
-        d.m23 = Math.fma(this.m20, _t36, Math.fma(this.m21, _t37, Math.fma(this.m22, _t38, this.m23)));
-        d.m33 = Math.fma(this.m30, _t36, Math.fma(this.m31, _t37, Math.fma(this.m32, _t38, this.m33)));
+        float _t0 = -pivotZ;
+        float _t2 = rotY * rotW;
+        float _t3 = rotZ * rotZ;
+        float _t4 = rotZ * rotW;
+        float _t11 = Math.fma(rotY, rotY, _t3);
+        float _t14 = Math.fma(rotX, rotX, _t3);
+        float _t15 = Math.fma(rotX, rotX, rotY * rotY);
+        float _t20 = 2.0f * Math.fma(rotX, rotY, _t4);
+        float _t21 = 2.0f * Math.fma(rotX, rotW, rotY * rotZ);
+        float _t22 = 2.0f * Math.fma(rotX, rotZ, _t2);
+        float _t26 = 2.0f * Math.fma(rotX, rotZ, -_t2);
+        float _t27 = 2.0f * Math.fma(rotX, rotY, -_t4);
+        float _t28 = 2.0f * Math.fma(rotY, rotZ, -(rotX * rotW));
+        float _t29 = Math.fma(-2.0f, _t11, 1.0f);
+        float _t30 = Math.fma(-2.0f, _t14, 1.0f);
+        float _t31 = Math.fma(-2.0f, _t15, 1.0f);
+        float _t41 = Math.fma(_t0, _t22, Math.fma(pivotX, 2.0f * _t11, -(pivotY * _t27)));
+        float _t42 = Math.fma(_t0, _t28, Math.fma(pivotY, 2.0f * _t14, -(pivotX * _t20)));
+        float _t43 = Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0f * _t15, -(pivotX * _t26)));
+        float _buf0 = Math.fma(this.m02, _t26, Math.fma(this.m00, _t29, this.m01 * _t20));
+        float _buf1 = Math.fma(this.m12, _t26, Math.fma(this.m10, _t29, this.m11 * _t20));
+        float _buf2 = Math.fma(this.m22, _t26, Math.fma(this.m20, _t29, this.m21 * _t20));
+        float _buf3 = Math.fma(this.m32, _t26, Math.fma(this.m30, _t29, this.m31 * _t20));
+        float _buf4 = Math.fma(this.m02, _t21, Math.fma(this.m00, _t27, this.m01 * _t30));
+        float _buf5 = Math.fma(this.m12, _t21, Math.fma(this.m10, _t27, this.m11 * _t30));
+        float _buf6 = Math.fma(this.m22, _t21, Math.fma(this.m20, _t27, this.m21 * _t30));
+        float _buf7 = Math.fma(this.m32, _t21, Math.fma(this.m30, _t27, this.m31 * _t30));
+        float _buf8 = Math.fma(this.m02, _t31, Math.fma(this.m00, _t22, this.m01 * _t28));
+        float _buf9 = Math.fma(this.m12, _t31, Math.fma(this.m10, _t22, this.m11 * _t28));
+        float _buf10 = Math.fma(this.m22, _t31, Math.fma(this.m20, _t22, this.m21 * _t28));
+        float _buf11 = Math.fma(this.m32, _t31, Math.fma(this.m30, _t22, this.m31 * _t28));
+        d.m03 = Math.fma(this.m00, _t41, Math.fma(this.m01, _t42, Math.fma(this.m02, _t43, this.m03)));
+        d.m13 = Math.fma(this.m10, _t41, Math.fma(this.m11, _t42, Math.fma(this.m12, _t43, this.m13)));
+        d.m23 = Math.fma(this.m20, _t41, Math.fma(this.m21, _t42, Math.fma(this.m22, _t43, this.m23)));
+        d.m33 = Math.fma(this.m30, _t41, Math.fma(this.m31, _t42, Math.fma(this.m32, _t43, this.m33)));
         d.m00 = _buf0;
         d.m10 = _buf1;
         d.m20 = _buf2;
@@ -70021,7 +70283,7 @@ public class Float4x4Impl implements Float4x4 {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 rotateAxis(float angle, Float3R axis) {
         return rotateAxis(angle, axis.x(), axis.y(), axis.z());
@@ -70292,7 +70554,7 @@ public class Float4x4Impl implements Float4x4 {
      *        vector must have unit length)
      * @param axisZ the {@code z} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
      *        vector must have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateAxis(float angle, float axisX, float axisY, float axisZ) {
         if (Joml.RETURN_NEW) return rotateAxis(angle, axisX, axisY, axisZ, Joml.float4x4());
@@ -70416,7 +70678,7 @@ public class Float4x4Impl implements Float4x4 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param q the quaternion (must be a unit quaternion)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 rotateQuat(FloatQuatR q) {
         return rotateQuat(q.x(), q.y(), q.z(), q.w());
@@ -70674,7 +70936,7 @@ public class Float4x4Impl implements Float4x4 {
      *        must have unit length)
      * @param qW the {@code w} component of the quaternion {@code (qX, qY, qZ, qW)} (the quaternion
      *        must have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateQuat(float qX, float qY, float qZ, float qW) {
         if (Joml.RETURN_NEW) return rotateQuat(qX, qY, qZ, qW, Joml.float4x4());
@@ -70940,7 +71202,7 @@ public class Float4x4Impl implements Float4x4 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateX(float angle) {
         if (Joml.RETURN_NEW) return rotateX(angle, Joml.float4x4());
@@ -71038,7 +71300,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateX180() {
         return mapXnYnZ();
@@ -71087,7 +71349,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateX270() {
         return mapXnZY();
@@ -71136,7 +71398,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateX90() {
         return mapXZnY();
@@ -71453,7 +71715,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateXYZ(float angleX, float angleY, float angleZ) {
         if (Joml.RETURN_NEW) return rotateXYZ(angleX, angleY, angleZ, Joml.float4x4());
@@ -71840,7 +72102,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateXZY(float angleX, float angleY, float angleZ) {
         if (Joml.RETURN_NEW) return rotateXZY(angleX, angleY, angleZ, Joml.float4x4());
@@ -71959,7 +72221,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateXn180() {
         return mapXnYnZ();
@@ -72008,7 +72270,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateXn270() {
         return mapXZnY();
@@ -72057,7 +72319,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateXn90() {
         return mapXnZY();
@@ -72253,7 +72515,7 @@ public class Float4x4Impl implements Float4x4 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateY(float angle) {
         if (Joml.RETURN_NEW) return rotateY(angle, Joml.float4x4());
@@ -72351,7 +72613,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateY180() {
         return mapnXYnZ();
@@ -72400,7 +72662,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateY270() {
         return mapZYnX();
@@ -72449,7 +72711,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateY90() {
         return mapnZYX();
@@ -72766,7 +73028,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateYXZ(float angleX, float angleY, float angleZ) {
         if (Joml.RETURN_NEW) return rotateYXZ(angleX, angleY, angleZ, Joml.float4x4());
@@ -73153,7 +73415,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateYZX(float angleX, float angleY, float angleZ) {
         if (Joml.RETURN_NEW) return rotateYZX(angleX, angleY, angleZ, Joml.float4x4());
@@ -73272,7 +73534,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateYn180() {
         return mapnXYnZ();
@@ -73321,7 +73583,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateYn270() {
         return mapnZYX();
@@ -73370,7 +73632,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateYn90() {
         return mapZYnX();
@@ -73566,7 +73828,7 @@ public class Float4x4Impl implements Float4x4 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateZ(float angle) {
         if (Joml.RETURN_NEW) return rotateZ(angle, Joml.float4x4());
@@ -73664,7 +73926,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateZ180() {
         return mapnXnYZ();
@@ -73713,7 +73975,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateZ270() {
         return mapnYXZ();
@@ -73762,7 +74024,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateZ90() {
         return mapYnXZ();
@@ -74079,7 +74341,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateZXY(float angleX, float angleY, float angleZ) {
         if (Joml.RETURN_NEW) return rotateZXY(angleX, angleY, angleZ, Joml.float4x4());
@@ -74466,7 +74728,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateZYX(float angleX, float angleY, float angleZ) {
         if (Joml.RETURN_NEW) return rotateZYX(angleX, angleY, angleZ, Joml.float4x4());
@@ -74585,7 +74847,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateZn180() {
         return mapnXnYZ();
@@ -74634,7 +74896,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateZn270() {
         return mapYnXZ();
@@ -74683,7 +74945,7 @@ public class Float4x4Impl implements Float4x4 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 rotateZn90() {
         return mapnYXZ();
@@ -74733,7 +74995,7 @@ public class Float4x4Impl implements Float4x4 {
      * {@code M * S * p}, the scaling will be applied first.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 scale(Float3R v) {
         return scale(v.x(), v.y(), v.z());
@@ -74912,7 +75174,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
      * @param vZ the {@code z} component of the vector {@code (vX, vY, vZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 scale(float vX, float vY, float vZ) {
         if (Joml.RETURN_NEW) return scale(vX, vY, vZ, Joml.float4x4());
@@ -75131,7 +75393,7 @@ public class Float4x4Impl implements Float4x4 {
      * {@code M * S * v}, the scaling will be applied first.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 scale(float s) {
         if (Joml.RETURN_NEW) return scale(s, Joml.float4x4());
@@ -75228,7 +75490,7 @@ public class Float4x4Impl implements Float4x4 {
      *
      * @param s the uniform scale factor
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 scaleAround(float s, Float3R pivot) {
         return scaleAround(s, pivot.x(), pivot.y(), pivot.z());
@@ -75449,7 +75711,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 scaleAround(float s, float pivotX, float pivotY, float pivotZ) {
         if (Joml.RETURN_NEW) return scaleAround(s, pivotX, pivotY, pivotZ, Joml.float4x4());
@@ -75565,7 +75827,7 @@ public class Float4x4Impl implements Float4x4 {
      *
      * @param s the scale factors
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 scaleAround(Float3R s, Float3R pivot) {
         return scaleAround(s.x(), s.y(), s.z(), pivot.x(), pivot.y(), pivot.z());
@@ -75791,7 +76053,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
      * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 scaleAround(float sX, float sY, float sZ, float pivotX, float pivotY, float pivotZ) {
         if (Joml.RETURN_NEW) return scaleAround(sX, sY, sZ, pivotX, pivotY, pivotZ, Joml.float4x4());
@@ -75917,7 +76179,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param light the light direction or position ({@code w = 0} for a directional light,
      *        {@code w = 1} for a point light)
      * @param plane the plane equation {@code (a, b, c, d)} with {@code ax + by + cz + d = 0}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 shadow(Float4R light, Float4R plane) {
         return shadow(light.x(), light.y(), light.z(), light.w(), plane.x(), plane.y(), plane.z(), plane.w());
@@ -76199,7 +76461,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param planeY the {@code y} component of the vector {@code (planeX, planeY, planeZ, planeW)}
      * @param planeZ the {@code z} component of the vector {@code (planeX, planeY, planeZ, planeW)}
      * @param planeW the {@code w} component of the vector {@code (planeX, planeY, planeZ, planeW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 shadow(float lightX, float lightY, float lightZ, float lightW, float planeX, float planeY, float planeZ, float planeW) {
         if (Joml.RETURN_NEW) return shadow(lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW, Joml.float4x4());
@@ -76517,7 +76779,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param yz the shear of y proportional to z
      * @param zx the shear of z proportional to x
      * @param zy the shear of z proportional to y
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 shear(float xy, float xz, float yx, float yz, float zx, float zy) {
         if (Joml.RETURN_NEW) return shear(xy, xz, yx, yz, zx, zy, Joml.float4x4());
@@ -76802,7 +77064,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param y the row index of the tile, in {@code [0, h)}
      * @param w the number of tiles along the x axis
      * @param h the number of tiles along the y axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 tile(float x, float y, float w, float h) {
         if (Joml.RETURN_NEW) return tile(x, y, w, h, Joml.float4x4());
@@ -76908,7 +77170,7 @@ public class Float4x4Impl implements Float4x4 {
      * {@code M * T * p}, the translation will be applied first.
      *
      * @param v the translation offsets
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 translate(Float3R v) {
         return translate(v.x(), v.y(), v.z());
@@ -77091,7 +77353,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param vX the {@code x} component of the translation offsets {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the translation offsets {@code (vX, vY, vZ)}
      * @param vZ the {@code z} component of the translation offsets {@code (vX, vY, vZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 translate(float vX, float vY, float vZ) {
         if (Joml.RETURN_NEW) return translate(vX, vY, vZ, Joml.float4x4());
@@ -77210,7 +77472,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param p1 the right corner of the shorter parallel edge of the trapezoid
      * @param p2 the right corner of the longer parallel edge of the trapezoid
      * @param p3 the left corner of the longer parallel edge of the trapezoid
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float4x4 trapezoidCrop(Float2R p0, Float2R p1, Float2R p2, Float2R p3) {
         return trapezoidCrop(p0.x(), p0.y(), p1.x(), p1.y(), p2.x(), p2.y(), p3.x(), p3.y());
@@ -77590,7 +77852,7 @@ public class Float4x4Impl implements Float4x4 {
      * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y)}
      * @param p3X the {@code x} component of the vector {@code (p3X, p3Y)}
      * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float4x4 trapezoidCrop(float p0X, float p0Y, float p1X, float p1Y, float p2X, float p2Y, float p3X, float p3Y) {
         if (Joml.RETURN_NEW) return trapezoidCrop(p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y, Joml.float4x4());
@@ -78740,19 +79002,20 @@ public class Float4x4Impl implements Float4x4 {
         Float3Impl d1 = (Float3Impl) rayDir;
         float _t11 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
         float _t12 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        float _t18 = Math.fma(this.m00, _t11, Math.fma(this.m01, _t12, this.m03 - this.m02));
         float _t19 = Math.fma(this.m30, _t11, Math.fma(this.m31, _t12, this.m33 - this.m32));
         float _t19_inv = 1.0f / _t19;
+        float _t20 = Math.fma(this.m10, _t11, Math.fma(this.m11, _t12, this.m13 - this.m12));
+        float _t21 = Math.fma(this.m20, _t11, Math.fma(this.m21, _t12, this.m23 - this.m22));
         float _t22 = Math.fma(this.m30, _t11, Math.fma(this.m31, _t12, this.m33 + this.m32));
-        float _t22_inv = 1.0f / _t22;
-        float _t23 = Math.fma(this.m00, _t11, Math.fma(this.m01, _t12, this.m03 - this.m02)) * _t19_inv;
-        float _t24 = Math.fma(this.m10, _t11, Math.fma(this.m11, _t12, this.m13 - this.m12)) * _t19_inv;
-        float _t25 = Math.fma(this.m20, _t11, Math.fma(this.m21, _t12, this.m23 - this.m22)) * _t19_inv;
-        d0.x = _t23;
-        d0.y = _t24;
-        d0.z = _t25;
-        d1.x = Math.fma(this.m00, _t11, Math.fma(this.m01, _t12, this.m03 + this.m02)) * _t22_inv - _t23;
-        d1.y = Math.fma(this.m10, _t11, Math.fma(this.m11, _t12, this.m13 + this.m12)) * _t22_inv - _t24;
-        d1.z = Math.fma(this.m20, _t11, Math.fma(this.m21, _t12, this.m23 + this.m22)) * _t22_inv - _t25;
+        float _t26 = Math.abs(_t22) <= Math.abs(_t19) * 9.536743E-7f ? _t19 : _t22;
+        float _t26_inv = 1.0f / _t26;
+        d0.x = _t18 * _t19_inv;
+        d0.y = _t20 * _t19_inv;
+        d0.z = _t21 * _t19_inv;
+        d1.x = Math.fma(this.m00, _t11, Math.fma(this.m01, _t12, this.m03 + this.m02 - _t18 * _t22 * _t19_inv)) * _t26_inv;
+        d1.y = Math.fma(this.m10, _t11, Math.fma(this.m11, _t12, this.m13 + this.m12 - _t20 * _t22 * _t19_inv)) * _t26_inv;
+        d1.z = Math.fma(this.m20, _t11, Math.fma(this.m21, _t12, this.m23 + this.m22 - _t21 * _t22 * _t19_inv)) * _t26_inv;
     }
 
 
@@ -78780,19 +79043,20 @@ public class Float4x4Impl implements Float4x4 {
         Double3Impl d1 = (Double3Impl) rayDir;
         float _t11 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
         float _t12 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        float _t18 = Math.fma(this.m00, _t11, Math.fma(this.m01, _t12, this.m03 - this.m02));
         float _t19 = Math.fma(this.m30, _t11, Math.fma(this.m31, _t12, this.m33 - this.m32));
         float _t19_inv = 1.0f / _t19;
+        float _t20 = Math.fma(this.m10, _t11, Math.fma(this.m11, _t12, this.m13 - this.m12));
+        float _t21 = Math.fma(this.m20, _t11, Math.fma(this.m21, _t12, this.m23 - this.m22));
         float _t22 = Math.fma(this.m30, _t11, Math.fma(this.m31, _t12, this.m33 + this.m32));
-        float _t22_inv = 1.0f / _t22;
-        float _t23 = Math.fma(this.m00, _t11, Math.fma(this.m01, _t12, this.m03 - this.m02)) * _t19_inv;
-        float _t24 = Math.fma(this.m10, _t11, Math.fma(this.m11, _t12, this.m13 - this.m12)) * _t19_inv;
-        float _t25 = Math.fma(this.m20, _t11, Math.fma(this.m21, _t12, this.m23 - this.m22)) * _t19_inv;
-        d0.x = _t23;
-        d0.y = _t24;
-        d0.z = _t25;
-        d1.x = Math.fma(this.m00, _t11, Math.fma(this.m01, _t12, this.m03 + this.m02)) * _t22_inv - _t23;
-        d1.y = Math.fma(this.m10, _t11, Math.fma(this.m11, _t12, this.m13 + this.m12)) * _t22_inv - _t24;
-        d1.z = Math.fma(this.m20, _t11, Math.fma(this.m21, _t12, this.m23 + this.m22)) * _t22_inv - _t25;
+        float _t26 = Math.abs(_t22) <= Math.abs(_t19) * 9.536743E-7f ? _t19 : _t22;
+        float _t26_inv = 1.0f / _t26;
+        d0.x = _t18 * _t19_inv;
+        d0.y = _t20 * _t19_inv;
+        d0.z = _t21 * _t19_inv;
+        d1.x = Math.fma(this.m00, _t11, Math.fma(this.m01, _t12, this.m03 + this.m02 - _t18 * _t22 * _t19_inv)) * _t26_inv;
+        d1.y = Math.fma(this.m10, _t11, Math.fma(this.m11, _t12, this.m13 + this.m12 - _t20 * _t22 * _t19_inv)) * _t26_inv;
+        d1.z = Math.fma(this.m20, _t11, Math.fma(this.m21, _t12, this.m23 + this.m22 - _t21 * _t22 * _t19_inv)) * _t26_inv;
         return this;
     }
 
@@ -78899,19 +79163,20 @@ public class Float4x4Impl implements Float4x4 {
         Float3Impl d1 = (Float3Impl) rayDir;
         float _t7 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
         float _t8 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        float _t14 = Math.fma(this.m00, _t7, Math.fma(this.m01, _t8, this.m03));
         float _t15 = Math.fma(this.m30, _t7, Math.fma(this.m31, _t8, this.m33));
         float _t15_inv = 1.0f / _t15;
-        float _t18 = Math.fma(this.m30, _t7, Math.fma(this.m31, _t8, this.m33 + this.m32));
-        float _t18_inv = 1.0f / _t18;
-        float _t19 = Math.fma(this.m00, _t7, Math.fma(this.m01, _t8, this.m03)) * _t15_inv;
-        float _t20 = Math.fma(this.m10, _t7, Math.fma(this.m11, _t8, this.m13)) * _t15_inv;
-        float _t21 = Math.fma(this.m20, _t7, Math.fma(this.m21, _t8, this.m23)) * _t15_inv;
-        d0.x = _t19;
-        d0.y = _t20;
-        d0.z = _t21;
-        d1.x = Math.fma(this.m00, _t7, Math.fma(this.m01, _t8, this.m03 + this.m02)) * _t18_inv - _t19;
-        d1.y = Math.fma(this.m10, _t7, Math.fma(this.m11, _t8, this.m13 + this.m12)) * _t18_inv - _t20;
-        d1.z = Math.fma(this.m20, _t7, Math.fma(this.m21, _t8, this.m23 + this.m22)) * _t18_inv - _t21;
+        float _t16 = Math.fma(this.m10, _t7, Math.fma(this.m11, _t8, this.m13));
+        float _t17 = Math.fma(this.m20, _t7, Math.fma(this.m21, _t8, this.m23));
+        float _t19 = Math.fma(this.m30, _t7, Math.fma(this.m31, _t8, this.m33 + this.m32));
+        float _t22 = Math.abs(_t19) <= Math.abs(_t15) * 9.536743E-7f ? _t15 : _t19;
+        float _t22_inv = 1.0f / _t22;
+        d0.x = _t14 * _t15_inv;
+        d0.y = _t16 * _t15_inv;
+        d0.z = _t17 * _t15_inv;
+        d1.x = Math.fma(this.m00, _t7, Math.fma(this.m01, _t8, this.m03 + this.m02 - _t14 * _t19 * _t15_inv)) * _t22_inv;
+        d1.y = Math.fma(this.m10, _t7, Math.fma(this.m11, _t8, this.m13 + this.m12 - _t16 * _t19 * _t15_inv)) * _t22_inv;
+        d1.z = Math.fma(this.m20, _t7, Math.fma(this.m21, _t8, this.m23 + this.m22 - _t17 * _t19 * _t15_inv)) * _t22_inv;
     }
 
 
@@ -78939,19 +79204,20 @@ public class Float4x4Impl implements Float4x4 {
         Double3Impl d1 = (Double3Impl) rayDir;
         float _t7 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
         float _t8 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        float _t14 = Math.fma(this.m00, _t7, Math.fma(this.m01, _t8, this.m03));
         float _t15 = Math.fma(this.m30, _t7, Math.fma(this.m31, _t8, this.m33));
         float _t15_inv = 1.0f / _t15;
-        float _t18 = Math.fma(this.m30, _t7, Math.fma(this.m31, _t8, this.m33 + this.m32));
-        float _t18_inv = 1.0f / _t18;
-        float _t19 = Math.fma(this.m00, _t7, Math.fma(this.m01, _t8, this.m03)) * _t15_inv;
-        float _t20 = Math.fma(this.m10, _t7, Math.fma(this.m11, _t8, this.m13)) * _t15_inv;
-        float _t21 = Math.fma(this.m20, _t7, Math.fma(this.m21, _t8, this.m23)) * _t15_inv;
-        d0.x = _t19;
-        d0.y = _t20;
-        d0.z = _t21;
-        d1.x = Math.fma(this.m00, _t7, Math.fma(this.m01, _t8, this.m03 + this.m02)) * _t18_inv - _t19;
-        d1.y = Math.fma(this.m10, _t7, Math.fma(this.m11, _t8, this.m13 + this.m12)) * _t18_inv - _t20;
-        d1.z = Math.fma(this.m20, _t7, Math.fma(this.m21, _t8, this.m23 + this.m22)) * _t18_inv - _t21;
+        float _t16 = Math.fma(this.m10, _t7, Math.fma(this.m11, _t8, this.m13));
+        float _t17 = Math.fma(this.m20, _t7, Math.fma(this.m21, _t8, this.m23));
+        float _t19 = Math.fma(this.m30, _t7, Math.fma(this.m31, _t8, this.m33 + this.m32));
+        float _t22 = Math.abs(_t19) <= Math.abs(_t15) * 9.536743E-7f ? _t15 : _t19;
+        float _t22_inv = 1.0f / _t22;
+        d0.x = _t14 * _t15_inv;
+        d0.y = _t16 * _t15_inv;
+        d0.z = _t17 * _t15_inv;
+        d1.x = Math.fma(this.m00, _t7, Math.fma(this.m01, _t8, this.m03 + this.m02 - _t14 * _t19 * _t15_inv)) * _t22_inv;
+        d1.y = Math.fma(this.m10, _t7, Math.fma(this.m11, _t8, this.m13 + this.m12 - _t16 * _t19 * _t15_inv)) * _t22_inv;
+        d1.z = Math.fma(this.m20, _t7, Math.fma(this.m21, _t8, this.m23 + this.m22 - _t17 * _t19 * _t15_inv)) * _t22_inv;
         return this;
     }
 
@@ -78960,6 +79226,11 @@ public class Float4x4Impl implements Float4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
      * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      *
      * @param winCoords the window coordinates {@code (x, y)} to unproject
      * @param viewport the viewport {@code [x, y, width, height]}
@@ -78980,6 +79251,11 @@ public class Float4x4Impl implements Float4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
      * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -79003,6 +79279,11 @@ public class Float4x4Impl implements Float4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
      * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
      *        unproject
@@ -79033,6 +79314,11 @@ public class Float4x4Impl implements Float4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
      * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -79067,6 +79353,11 @@ public class Float4x4Impl implements Float4x4 {
      * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
      * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
      * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
+     * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param winCoords the window coordinates {@code (x, y)} to unproject
@@ -79082,6 +79373,11 @@ public class Float4x4Impl implements Float4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
      * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      * <p>
@@ -79101,6 +79397,11 @@ public class Float4x4Impl implements Float4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
      * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -79127,6 +79428,11 @@ public class Float4x4Impl implements Float4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
      * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      * <p>
@@ -79308,10 +79614,10 @@ public class Float4x4Impl implements Float4x4 {
         float _t61 = Math.fma(this.m10, this.m23, -(this.m13 * this.m20));
         float _t62 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
         float _t63 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        float _t87 = -(this.m03 * _t52);
         float _t91 = -(this.m01 * _t58);
         float _t95 = -(this.m02 * _t61);
-        float _t105 = Math.fma(this.m02, _t51, -(this.m03 * _t52));
-        float _t117 = Math.fma(this.m01, _t61, -(this.m03 * _t57));
+        float _t100 = -(this.m03 * _t57);
         float _t122 = Math.fma(this.m13, _t44, Math.fma(this.m11, _t45, -(this.m12 * _t46)));
         float _t128 = Math.fma(this.m13, _t55, Math.fma(this.m10, _t46, -(this.m11 * _t60)));
         float _t131 = Math.fma(this.m02, _t55, Math.fma(this.m00, _t44, -(this.m01 * _t56))) * _t63;
@@ -79322,17 +79628,18 @@ public class Float4x4Impl implements Float4x4 {
         float _t139 = -(Math.fma(this.m03, _t55, Math.fma(this.m00, _t46, -(this.m01 * _t60))) * _t63);
         float _t158 = Math.fma(this.m00, _t50, -(this.m01 * _t53)) + Math.fma(this.m02, _t54, _t131) + (Math.fma(this.m00, _t52, _t137) + Math.fma(this.m02, _t57, _t91));
         float _t158_inv = 1.0f / _t158;
+        float _t159 = Math.fma(this.m00, _t48, -(this.m02 * _t59)) + Math.fma(this.m03, _t53, _t133) + (Math.fma(this.m00, _t49, _t138) + Math.fma(this.m03, _t58, _t95));
         float _t160 = Math.fma(this.m00, _t52, _t91) + Math.fma(this.m02, _t57, _t131) + (Math.fma(_t1, _t50, _t137) + Math.fma(this.m01, _t53, -(this.m02 * _t54)));
-        float _t160_inv = 1.0f / _t160;
-        float _t163 = (Math.fma(this.m00, _t48, -(this.m02 * _t59)) + Math.fma(this.m03, _t53, _t133) + (Math.fma(this.m00, _t49, _t138) + Math.fma(this.m03, _t58, _t95))) * _t158_inv;
-        float _t164 = (Math.fma(_t122, _t62, _t136) + Math.fma(this.m02, _t47, -(this.m01 * _t48)) + (Math.fma(_t0, _t49, -(this.m03 * _t50)) + _t105)) * _t158_inv;
-        float _t165 = (Math.fma(_t128, _t62, _t139) + Math.fma(this.m01, _t59, -(this.m00 * _t47)) + (Math.fma(_t1, _t51, -(this.m03 * _t54)) + _t117)) * _t158_inv;
-        d0.x = _t164;
-        d0.y = _t163;
-        d0.z = _t165;
-        float _d1buf0 = (Math.fma(this.m01, _t48, -(this.m02 * _t47)) + Math.fma(this.m03, _t50, _t122 * _t62) + (Math.fma(_t0, _t49, _t136) + _t105)) * _t160_inv - _t164;
-        float _d1buf1 = (Math.fma(this.m00, _t49, _t95) + Math.fma(this.m03, _t58, _t133) + (Math.fma(_t1, _t48, _t138) + Math.fma(this.m02, _t59, -(this.m03 * _t53)))) * _t160_inv - _t163;
-        d1.z = (Math.fma(this.m00, _t47, -(this.m01 * _t59)) + Math.fma(this.m03, _t54, _t128 * _t62) + (Math.fma(_t1, _t51, _t139) + _t117)) * _t160_inv - _t165;
+        float _t162 = Math.fma(_t122, _t62, _t136) + Math.fma(this.m02, _t47, -(this.m01 * _t48)) + (Math.fma(_t0, _t49, -(this.m03 * _t50)) + Math.fma(this.m02, _t51, _t87));
+        float _t163 = Math.fma(_t128, _t62, _t139) + Math.fma(this.m01, _t59, -(this.m00 * _t47)) + (Math.fma(_t1, _t51, -(this.m03 * _t54)) + Math.fma(this.m01, _t61, _t100));
+        float _t166 = Math.abs(_t160) <= Math.abs(_t158) * 9.536743E-7f ? _t158 : _t160;
+        float _t166_inv = 1.0f / _t166;
+        d0.x = _t162 * _t158_inv;
+        d0.y = _t159 * _t158_inv;
+        d0.z = _t163 * _t158_inv;
+        float _d1buf0 = (Math.fma(this.m01, _t48, -(this.m02 * _t47)) + Math.fma(this.m03, _t50, _t122 * _t62) + (Math.fma(_t0, _t49, _t136) + Math.fma(this.m02, _t51, _t87 - _t160 * _t162 * _t158_inv))) * _t166_inv;
+        float _d1buf1 = (Math.fma(this.m00, _t49, _t95) + Math.fma(this.m03, _t58, _t133) + (Math.fma(_t1, _t48, _t138) + Math.fma(this.m02, _t59, -(this.m03 * _t53) - _t159 * _t160 * _t158_inv))) * _t166_inv;
+        d1.z = (Math.fma(this.m00, _t47, -(this.m01 * _t59)) + Math.fma(this.m03, _t54, _t128 * _t62) + (Math.fma(_t1, _t51, _t139) + Math.fma(this.m01, _t61, _t100 - _t160 * _t163 * _t158_inv))) * _t166_inv;
         d1.x = _d1buf0;
         d1.y = _d1buf1;
     }
@@ -79382,10 +79689,10 @@ public class Float4x4Impl implements Float4x4 {
         float _t61 = Math.fma(this.m10, this.m23, -(this.m13 * this.m20));
         float _t62 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
         float _t63 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        float _t87 = -(this.m03 * _t52);
         float _t91 = -(this.m01 * _t58);
         float _t95 = -(this.m02 * _t61);
-        float _t105 = Math.fma(this.m02, _t51, -(this.m03 * _t52));
-        float _t117 = Math.fma(this.m01, _t61, -(this.m03 * _t57));
+        float _t100 = -(this.m03 * _t57);
         float _t122 = Math.fma(this.m13, _t44, Math.fma(this.m11, _t45, -(this.m12 * _t46)));
         float _t128 = Math.fma(this.m13, _t55, Math.fma(this.m10, _t46, -(this.m11 * _t60)));
         float _t131 = Math.fma(this.m02, _t55, Math.fma(this.m00, _t44, -(this.m01 * _t56))) * _t63;
@@ -79396,17 +79703,18 @@ public class Float4x4Impl implements Float4x4 {
         float _t139 = -(Math.fma(this.m03, _t55, Math.fma(this.m00, _t46, -(this.m01 * _t60))) * _t63);
         float _t158 = Math.fma(this.m00, _t50, -(this.m01 * _t53)) + Math.fma(this.m02, _t54, _t131) + (Math.fma(this.m00, _t52, _t137) + Math.fma(this.m02, _t57, _t91));
         float _t158_inv = 1.0f / _t158;
+        float _t159 = Math.fma(this.m00, _t48, -(this.m02 * _t59)) + Math.fma(this.m03, _t53, _t133) + (Math.fma(this.m00, _t49, _t138) + Math.fma(this.m03, _t58, _t95));
         float _t160 = Math.fma(this.m00, _t52, _t91) + Math.fma(this.m02, _t57, _t131) + (Math.fma(_t1, _t50, _t137) + Math.fma(this.m01, _t53, -(this.m02 * _t54)));
-        float _t160_inv = 1.0f / _t160;
-        float _t163 = (Math.fma(this.m00, _t48, -(this.m02 * _t59)) + Math.fma(this.m03, _t53, _t133) + (Math.fma(this.m00, _t49, _t138) + Math.fma(this.m03, _t58, _t95))) * _t158_inv;
-        float _t164 = (Math.fma(_t122, _t62, _t136) + Math.fma(this.m02, _t47, -(this.m01 * _t48)) + (Math.fma(_t0, _t49, -(this.m03 * _t50)) + _t105)) * _t158_inv;
-        float _t165 = (Math.fma(_t128, _t62, _t139) + Math.fma(this.m01, _t59, -(this.m00 * _t47)) + (Math.fma(_t1, _t51, -(this.m03 * _t54)) + _t117)) * _t158_inv;
-        d0.x = _t164;
-        d0.y = _t163;
-        d0.z = _t165;
-        float _d1buf0 = (Math.fma(this.m01, _t48, -(this.m02 * _t47)) + Math.fma(this.m03, _t50, _t122 * _t62) + (Math.fma(_t0, _t49, _t136) + _t105)) * _t160_inv - _t164;
-        float _d1buf1 = (Math.fma(this.m00, _t49, _t95) + Math.fma(this.m03, _t58, _t133) + (Math.fma(_t1, _t48, _t138) + Math.fma(this.m02, _t59, -(this.m03 * _t53)))) * _t160_inv - _t163;
-        d1.z = (Math.fma(this.m00, _t47, -(this.m01 * _t59)) + Math.fma(this.m03, _t54, _t128 * _t62) + (Math.fma(_t1, _t51, _t139) + _t117)) * _t160_inv - _t165;
+        float _t162 = Math.fma(_t122, _t62, _t136) + Math.fma(this.m02, _t47, -(this.m01 * _t48)) + (Math.fma(_t0, _t49, -(this.m03 * _t50)) + Math.fma(this.m02, _t51, _t87));
+        float _t163 = Math.fma(_t128, _t62, _t139) + Math.fma(this.m01, _t59, -(this.m00 * _t47)) + (Math.fma(_t1, _t51, -(this.m03 * _t54)) + Math.fma(this.m01, _t61, _t100));
+        float _t166 = Math.abs(_t160) <= Math.abs(_t158) * 9.536743E-7f ? _t158 : _t160;
+        float _t166_inv = 1.0f / _t166;
+        d0.x = _t162 * _t158_inv;
+        d0.y = _t159 * _t158_inv;
+        d0.z = _t163 * _t158_inv;
+        float _d1buf0 = (Math.fma(this.m01, _t48, -(this.m02 * _t47)) + Math.fma(this.m03, _t50, _t122 * _t62) + (Math.fma(_t0, _t49, _t136) + Math.fma(this.m02, _t51, _t87 - _t160 * _t162 * _t158_inv))) * _t166_inv;
+        float _d1buf1 = (Math.fma(this.m00, _t49, _t95) + Math.fma(this.m03, _t58, _t133) + (Math.fma(_t1, _t48, _t138) + Math.fma(this.m02, _t59, -(this.m03 * _t53) - _t159 * _t160 * _t158_inv))) * _t166_inv;
+        d1.z = (Math.fma(this.m00, _t47, -(this.m01 * _t59)) + Math.fma(this.m03, _t54, _t128 * _t62) + (Math.fma(_t1, _t51, _t139) + Math.fma(this.m01, _t61, _t100 - _t160 * _t163 * _t158_inv))) * _t166_inv;
         d1.x = _d1buf0;
         d1.y = _d1buf1;
         return this;
@@ -79561,19 +79869,20 @@ public class Float4x4Impl implements Float4x4 {
         float _t120 = -(Math.fma(this.m12, _t51, Math.fma(this.m10, _t43, -(this.m11 * _t52))) * _t61);
         float _t121 = -(Math.fma(this.m13, _t52, Math.fma(this.m10, _t44, -(this.m12 * _t54))) * _t61);
         float _t122 = -(Math.fma(this.m03, _t51, Math.fma(this.m00, _t45, -(this.m01 * _t54))) * _t62);
+        float _t131 = Math.fma(_t102, _t61, _t119) - Math.fma(this.m03, _t46, Math.fma(this.m01, _t47, -(this.m02 * _t48)));
         float _t132 = Math.fma(this.m02, _t49, _t92) + Math.fma(_t106, _t62, _t120);
         float _t132_inv = 1.0f / _t132;
-        float _t135 = _t92 + Math.fma(this.m02, _t49, _t106 * _t62) + (Math.fma(_t0, _t57, _t120) + Math.fma(this.m01, _t58, -(this.m02 * _t59)));
-        float _t135_inv = 1.0f / _t135;
-        float _t136 = (Math.fma(_t102, _t61, _t119) - Math.fma(this.m03, _t46, Math.fma(this.m01, _t47, -(this.m02 * _t48)))) * _t132_inv;
-        float _t137 = (Math.fma(this.m03, _t50, _t95) + Math.fma(_t109, _t62, _t121)) * _t132_inv;
-        float _t138 = (Math.fma(_t111, _t61, _t122) - Math.fma(this.m03, _t49, Math.fma(this.m00, _t48, -(this.m01 * _t53)))) * _t132_inv;
-        d0.x = _t136;
-        d0.y = _t137;
-        d0.z = _t138;
-        float _d1buf0 = (Math.fma(this.m01, _t55, -(this.m02 * _t56)) + Math.fma(this.m03, _t57, _t102 * _t61) + (Math.fma(-this.m01, _t47, _t119) + Math.fma(this.m02, _t48, -(this.m03 * _t46)))) * _t135_inv - _t136;
-        float _d1buf1 = (_t95 + Math.fma(this.m03, _t50, _t109 * _t62) + (Math.fma(_t0, _t55, _t121) + Math.fma(this.m02, _t60, -(this.m03 * _t58)))) * _t135_inv - _t137;
-        d1.z = (Math.fma(this.m00, _t56, -(this.m01 * _t60)) + Math.fma(this.m03, _t59, _t111 * _t61) + (Math.fma(_t0, _t48, _t122) + Math.fma(this.m01, _t53, -(this.m03 * _t49)))) * _t135_inv - _t138;
+        float _t133 = Math.fma(this.m03, _t50, _t95) + Math.fma(_t109, _t62, _t121);
+        float _t134 = Math.fma(_t111, _t61, _t122) - Math.fma(this.m03, _t49, Math.fma(this.m00, _t48, -(this.m01 * _t53)));
+        float _t137 = _t92 + Math.fma(this.m02, _t49, _t106 * _t62) + (Math.fma(_t0, _t57, _t120) + Math.fma(this.m01, _t58, -(this.m02 * _t59)));
+        float _t139 = Math.abs(_t137) <= Math.abs(_t132) * 9.536743E-7f ? _t132 : _t137;
+        float _t139_inv = 1.0f / _t139;
+        d0.x = _t131 * _t132_inv;
+        d0.y = _t133 * _t132_inv;
+        d0.z = _t134 * _t132_inv;
+        float _d1buf0 = (Math.fma(this.m01, _t55, -(this.m02 * _t56)) + Math.fma(this.m03, _t57, _t102 * _t61) + (Math.fma(-this.m01, _t47, _t119) + Math.fma(this.m02, _t48, -(this.m03 * _t46) - _t137 * _t131 * _t132_inv))) * _t139_inv;
+        float _d1buf1 = (_t95 + Math.fma(this.m03, _t50, _t109 * _t62) + (Math.fma(_t0, _t55, _t121) + Math.fma(this.m02, _t60, -(this.m03 * _t58) - _t137 * _t133 * _t132_inv))) * _t139_inv;
+        d1.z = (Math.fma(this.m00, _t56, -(this.m01 * _t60)) + Math.fma(this.m03, _t59, _t111 * _t61) + (Math.fma(_t0, _t48, _t122) + Math.fma(this.m01, _t53, -(this.m03 * _t49) - _t137 * _t134 * _t132_inv))) * _t139_inv;
         d1.x = _d1buf0;
         d1.y = _d1buf1;
     }
@@ -79632,19 +79941,20 @@ public class Float4x4Impl implements Float4x4 {
         float _t120 = -(Math.fma(this.m12, _t51, Math.fma(this.m10, _t43, -(this.m11 * _t52))) * _t61);
         float _t121 = -(Math.fma(this.m13, _t52, Math.fma(this.m10, _t44, -(this.m12 * _t54))) * _t61);
         float _t122 = -(Math.fma(this.m03, _t51, Math.fma(this.m00, _t45, -(this.m01 * _t54))) * _t62);
+        float _t131 = Math.fma(_t102, _t61, _t119) - Math.fma(this.m03, _t46, Math.fma(this.m01, _t47, -(this.m02 * _t48)));
         float _t132 = Math.fma(this.m02, _t49, _t92) + Math.fma(_t106, _t62, _t120);
         float _t132_inv = 1.0f / _t132;
-        float _t135 = _t92 + Math.fma(this.m02, _t49, _t106 * _t62) + (Math.fma(_t0, _t57, _t120) + Math.fma(this.m01, _t58, -(this.m02 * _t59)));
-        float _t135_inv = 1.0f / _t135;
-        float _t136 = (Math.fma(_t102, _t61, _t119) - Math.fma(this.m03, _t46, Math.fma(this.m01, _t47, -(this.m02 * _t48)))) * _t132_inv;
-        float _t137 = (Math.fma(this.m03, _t50, _t95) + Math.fma(_t109, _t62, _t121)) * _t132_inv;
-        float _t138 = (Math.fma(_t111, _t61, _t122) - Math.fma(this.m03, _t49, Math.fma(this.m00, _t48, -(this.m01 * _t53)))) * _t132_inv;
-        d0.x = _t136;
-        d0.y = _t137;
-        d0.z = _t138;
-        float _d1buf0 = (Math.fma(this.m01, _t55, -(this.m02 * _t56)) + Math.fma(this.m03, _t57, _t102 * _t61) + (Math.fma(-this.m01, _t47, _t119) + Math.fma(this.m02, _t48, -(this.m03 * _t46)))) * _t135_inv - _t136;
-        float _d1buf1 = (_t95 + Math.fma(this.m03, _t50, _t109 * _t62) + (Math.fma(_t0, _t55, _t121) + Math.fma(this.m02, _t60, -(this.m03 * _t58)))) * _t135_inv - _t137;
-        d1.z = (Math.fma(this.m00, _t56, -(this.m01 * _t60)) + Math.fma(this.m03, _t59, _t111 * _t61) + (Math.fma(_t0, _t48, _t122) + Math.fma(this.m01, _t53, -(this.m03 * _t49)))) * _t135_inv - _t138;
+        float _t133 = Math.fma(this.m03, _t50, _t95) + Math.fma(_t109, _t62, _t121);
+        float _t134 = Math.fma(_t111, _t61, _t122) - Math.fma(this.m03, _t49, Math.fma(this.m00, _t48, -(this.m01 * _t53)));
+        float _t137 = _t92 + Math.fma(this.m02, _t49, _t106 * _t62) + (Math.fma(_t0, _t57, _t120) + Math.fma(this.m01, _t58, -(this.m02 * _t59)));
+        float _t139 = Math.abs(_t137) <= Math.abs(_t132) * 9.536743E-7f ? _t132 : _t137;
+        float _t139_inv = 1.0f / _t139;
+        d0.x = _t131 * _t132_inv;
+        d0.y = _t133 * _t132_inv;
+        d0.z = _t134 * _t132_inv;
+        float _d1buf0 = (Math.fma(this.m01, _t55, -(this.m02 * _t56)) + Math.fma(this.m03, _t57, _t102 * _t61) + (Math.fma(-this.m01, _t47, _t119) + Math.fma(this.m02, _t48, -(this.m03 * _t46) - _t137 * _t131 * _t132_inv))) * _t139_inv;
+        float _d1buf1 = (_t95 + Math.fma(this.m03, _t50, _t109 * _t62) + (Math.fma(_t0, _t55, _t121) + Math.fma(this.m02, _t60, -(this.m03 * _t58) - _t137 * _t133 * _t132_inv))) * _t139_inv;
+        d1.z = (Math.fma(this.m00, _t56, -(this.m01 * _t60)) + Math.fma(this.m03, _t59, _t111 * _t61) + (Math.fma(_t0, _t48, _t122) + Math.fma(this.m01, _t53, -(this.m03 * _t49) - _t137 * _t134 * _t132_inv))) * _t139_inv;
         d1.x = _d1buf0;
         d1.y = _d1buf1;
         return this;
@@ -79655,6 +79965,11 @@ public class Float4x4Impl implements Float4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
      * the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      *
      * @param winCoords the window coordinates {@code (x, y)} to unproject
      * @param viewport the viewport {@code [x, y, width, height]}
@@ -79675,6 +79990,11 @@ public class Float4x4Impl implements Float4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
      * the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -79698,6 +80018,11 @@ public class Float4x4Impl implements Float4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
      * the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      *
      * @param winCoordsX the {@code x} component of the window coordinates {@code (x, y)} to
      *        unproject
@@ -79728,6 +80053,11 @@ public class Float4x4Impl implements Float4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
      * the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -79762,6 +80092,11 @@ public class Float4x4Impl implements Float4x4 {
      * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
      * the ray direction in {@code rayDir}.
      * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
+     * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
      * @param winCoords the window coordinates {@code (x, y)} to unproject
@@ -79777,6 +80112,11 @@ public class Float4x4Impl implements Float4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
      * the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      * <p>
@@ -79796,6 +80136,11 @@ public class Float4x4Impl implements Float4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
      * the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -79822,6 +80167,11 @@ public class Float4x4Impl implements Float4x4 {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
      * the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      * <p>

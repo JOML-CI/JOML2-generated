@@ -835,7 +835,9 @@ public final class IntRectImpl implements IntRect {
      *        zero)
      */
     public int centerX() {
-        return (this.minX + this.maxX) / 2;
+        int _t1 = this.minX ^ this.maxX;
+        int _t3 = (this.minX & this.maxX) + (_t1 >> 1);
+        return _t3 < 0 ? _t3 + (_t1 & 1) : _t3;
     }
 
 
@@ -847,7 +849,9 @@ public final class IntRectImpl implements IntRect {
      *        zero)
      */
     public int centerY() {
-        return (this.minY + this.maxY) / 2;
+        int _t1 = this.minY ^ this.maxY;
+        int _t3 = (this.minY & this.maxY) + (_t1 >> 1);
+        return _t3 < 0 ? _t3 + (_t1 & 1) : _t3;
     }
 
 
@@ -1109,8 +1113,12 @@ public final class IntRectImpl implements IntRect {
      */
     public Int2 getCenter(@Mutated Int2 dest) {
         Int2Impl d = (Int2Impl) dest;
-        d.x = (this.minX + this.maxX) / 2;
-        d.y = (this.minY + this.maxY) / 2;
+        int _t1 = this.minX ^ this.maxX;
+        int _t3 = this.minY ^ this.maxY;
+        int _t6 = (this.minX & this.maxX) + (_t1 >> 1);
+        int _t7 = (this.minY & this.maxY) + (_t3 >> 1);
+        d.x = _t6 < 0 ? _t6 + (_t1 & 1) : _t6;
+        d.y = _t7 < 0 ? _t7 + (_t3 & 1) : _t7;
         return d;
     }
 
@@ -1126,8 +1134,12 @@ public final class IntRectImpl implements IntRect {
      */
     public Long2 getCenter(@Mutated Long2 dest) {
         Long2Impl d = (Long2Impl) dest;
-        d.x = (this.minX + this.maxX) / 2;
-        d.y = (this.minY + this.maxY) / 2;
+        int _t1 = this.minX ^ this.maxX;
+        int _t3 = this.minY ^ this.maxY;
+        int _t6 = (this.minX & this.maxX) + (_t1 >> 1);
+        int _t7 = (this.minY & this.maxY) + (_t3 >> 1);
+        d.x = _t6 < 0 ? _t6 + (_t1 & 1) : _t6;
+        d.y = _t7 < 0 ? _t7 + (_t3 & 1) : _t7;
         return d;
     }
 
@@ -1143,8 +1155,12 @@ public final class IntRectImpl implements IntRect {
      */
     public Double2 getCenter(@Mutated Double2 dest) {
         Double2Impl d = (Double2Impl) dest;
-        d.x = (this.minX + this.maxX) / 2;
-        d.y = (this.minY + this.maxY) / 2;
+        int _t1 = this.minX ^ this.maxX;
+        int _t3 = this.minY ^ this.maxY;
+        int _t6 = (this.minX & this.maxX) + (_t1 >> 1);
+        int _t7 = (this.minY & this.maxY) + (_t3 >> 1);
+        d.x = _t6 < 0 ? _t6 + (_t1 & 1) : _t6;
+        d.y = _t7 < 0 ? _t7 + (_t3 & 1) : _t7;
         return d;
     }
 

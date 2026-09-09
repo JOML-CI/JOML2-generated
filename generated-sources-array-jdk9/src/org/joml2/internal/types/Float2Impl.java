@@ -1937,6 +1937,9 @@ public final class Float2Impl implements Float2 {
 
     /**
      * Compute the angle in radians between this vector and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other vector
      * @return the angle in radians between this vector and {@code other}
@@ -1948,6 +1951,9 @@ public final class Float2Impl implements Float2 {
 
     /**
      * Compute the angle in radians between this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
@@ -1955,7 +1961,7 @@ public final class Float2Impl implements Float2 {
      */
     public float angleBetween(float otherX, float otherY) {
         float[] sd = this.data;
-        return (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(otherX, sd[0], otherY * sd[1]) * (1.0f / (float) Math.sqrt(Math.fma(sd[0], sd[0], sd[1] * sd[1]))) * (1.0f / (float) Math.sqrt(Math.fma(otherX, otherX, otherY * otherY))))));
+        return (float) Math.atan2(Math.abs(Math.fma(otherY, sd[0], -(otherX * sd[1]))), Math.fma(otherX, sd[0], otherY * sd[1]));
     }
 
 
@@ -2555,6 +2561,10 @@ public final class Float2Impl implements Float2 {
 
     /**
      * Compute the distance between this vector and {@code other}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the difference vector must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param other the other vector
      * @return the distance between this vector and {@code other}
@@ -2566,6 +2576,10 @@ public final class Float2Impl implements Float2 {
 
     /**
      * Compute the distance between this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the difference vector must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
@@ -3067,6 +3081,10 @@ public final class Float2Impl implements Float2 {
 
     /**
      * Compute the length of this vector.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this vector must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @return the length of this vector
      */
@@ -3651,8 +3669,8 @@ public final class Float2Impl implements Float2 {
      * <p>
      * The squared length is formed at the component precision, so components whose squares overflow
      * or underflow that precision are out of domain: the result is the zero vector rather than a
-     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}).
+     * unit vector. Rescale such inputs before normalizing (the magnitude must lie roughly between
+     * 1e-19 and 1.8e19 for {@code float}, 1.5e-154 and 1.3e154 for {@code double}).
      *
      * @param dest will hold the result
      * @return dest
@@ -3679,8 +3697,8 @@ public final class Float2Impl implements Float2 {
      * <p>
      * The squared length is formed at the component precision, so components whose squares overflow
      * or underflow that precision are out of domain: the result is the zero vector rather than a
-     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}).
+     * unit vector. Rescale such inputs before normalizing (the magnitude must lie roughly between
+     * 1e-19 and 1.8e19 for {@code float}, 1.5e-154 and 1.3e154 for {@code double}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3757,6 +3775,9 @@ public final class Float2Impl implements Float2 {
 
     /**
      * Compute the signed angle in radians between this vector and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other vector
      * @return the signed angle in radians between this vector and {@code other}
@@ -3768,6 +3789,9 @@ public final class Float2Impl implements Float2 {
 
     /**
      * Compute the signed angle in radians between this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}

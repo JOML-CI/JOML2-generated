@@ -523,18 +523,17 @@ public final class FloatQuatOpsKernelsArray {
         float _selfz = src[srcOffset + 2];
         float _selfw = src[srcOffset + 3];
         float _t2 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
-        float _t4 = Math.fma(_selfw, _selfw, _t2);
-        float _t8 = (float) Math.acos(_selfw * (1.0f / (float) Math.sqrt(_t4))) * (1.0f / (float) Math.sqrt(_t2));
+        float _t6 = (float) Math.atan2((float) Math.sqrt(_t2), _selfw) * (1.0f / (float) Math.sqrt(_t2));
         if (_t2 > 0.0f) {
-            dest[destOffset + 0] = _selfx * _t8;
-            dest[destOffset + 1] = _selfy * _t8;
-            dest[destOffset + 2] = _selfz * _t8;
+            dest[destOffset + 0] = _selfx * _t6;
+            dest[destOffset + 1] = _selfy * _t6;
+            dest[destOffset + 2] = _selfz * _t6;
         } else {
             dest[destOffset + 0] = 0.0f;
             dest[destOffset + 1] = 0.0f;
             dest[destOffset + 2] = 0.0f;
         }
-        dest[destOffset + 3] = (float) Math.log((float) Math.sqrt(_t4));
+        dest[destOffset + 3] = (float) Math.log((float) Math.sqrt(Math.fma(_selfw, _selfw, _t2)));
         return dest;
     }
 
@@ -565,32 +564,31 @@ public final class FloatQuatOpsKernelsArray {
         float _selfz = src[srcOffset + 2];
         float _selfw = src[srcOffset + 3];
         float _t2 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
-        float _t4 = Math.fma(_selfw, _selfw, _t2);
-        float _t11 = (float) Math.exp(t * (float) Math.log((float) Math.sqrt(_t4)));
-        float _t12 = (float) Math.acos(_selfw * (1.0f / (float) Math.sqrt(_t4))) * (1.0f / (float) Math.sqrt(_t2));
-        float _t19, _t20, _t21;
+        float _t10 = (float) Math.exp(t * (float) Math.log((float) Math.sqrt(Math.fma(_selfw, _selfw, _t2))));
+        float _t11 = (float) Math.atan2((float) Math.sqrt(_t2), _selfw) * (1.0f / (float) Math.sqrt(_t2));
+        float _t18, _t19, _t20;
         if (_t2 > 0.0f) {
-            _t19 = t * _selfz * _t12;
-            _t20 = t * _selfx * _t12;
-            _t21 = t * _selfy * _t12;
+            _t18 = t * _selfz * _t11;
+            _t19 = t * _selfx * _t11;
+            _t20 = t * _selfy * _t11;
         } else {
+            _t18 = t * 0.0f;
             _t19 = t * 0.0f;
             _t20 = t * 0.0f;
-            _t21 = t * 0.0f;
         }
-        float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
-        float _t25 = (float) Math.sqrt(_t24);
-        float _t29 = (float) Math.sin(_t25) * _t11 * (1.0f / (float) Math.sqrt(_t24));
-        if (_t24 > 0.0f) {
-            dest[destOffset + 0] = _t20 * _t29;
-            dest[destOffset + 1] = _t21 * _t29;
-            dest[destOffset + 2] = _t19 * _t29;
+        float _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
+        float _t24 = (float) Math.sqrt(_t23);
+        float _t28 = (float) Math.sin(_t24) * _t10 * (1.0f / (float) Math.sqrt(_t23));
+        if (_t23 > 0.0f) {
+            dest[destOffset + 0] = _t19 * _t28;
+            dest[destOffset + 1] = _t20 * _t28;
+            dest[destOffset + 2] = _t18 * _t28;
         } else {
             dest[destOffset + 0] = 0.0f;
             dest[destOffset + 1] = 0.0f;
             dest[destOffset + 2] = 0.0f;
         }
-        dest[destOffset + 3] = (float) Math.cos(_t25) * _t11;
+        dest[destOffset + 3] = (float) Math.cos(_t24) * _t10;
         return dest;
     }
 
@@ -608,42 +606,50 @@ public final class FloatQuatOpsKernelsArray {
         float _t11 = (float) Math.acos(Math.min(1.0f, Math.abs(_t7)));
         float _t12 = (float) Math.sin(_t11);
         float _t12_inv = 1.0f / _t12;
-        float _t13 = 2.0f * _t11;
-        float _t15, _t16, _t17, _t18;
+        float _t13, _t14, _t15, _t16;
         if (_t9 > 0.0f) {
-            _t15 = -_targetw;
-            _t16 = -_targetz;
-            _t17 = -_targetx;
-            _t18 = -_targety;
+            _t13 = -_targetw;
+            _t14 = -_targetz;
+            _t15 = -_targetx;
+            _t16 = -_targety;
         } else {
-            _t15 = _targetw;
-            _t16 = _targetz;
-            _t17 = _targetx;
-            _t18 = _targety;
+            _t13 = _targetw;
+            _t14 = _targetz;
+            _t15 = _targetx;
+            _t16 = _targety;
         }
-        float _t20 = _t13 > 0.0f ? Math.min(1.0f, step / _t13) : 0.0f;
-        float _t21 = 1.0f - _t20;
-        float _t23 = (float) Math.sin(_t11 * _t20);
-        float _t25 = (float) Math.sin(_t21 * _t11);
-        float _t46, _t47, _t48, _t49;
+        float _t17 = _selfw - _t13;
+        float _t18 = _selfz - _t14;
+        float _t19 = _selfx - _t15;
+        float _t20 = _selfy - _t16;
+        float _t21 = _selfw + _t13;
+        float _t22 = _selfz + _t14;
+        float _t23 = _selfx + _t15;
+        float _t24 = _selfy + _t16;
+        float _t36 = 4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_t17, _t17, Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)))), (float) Math.sqrt(Math.fma(_t21, _t21, Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24)))));
+        float _t39 = _t36 > 0.0f ? Math.min(1.0f, step / _t36) : 0.0f;
+        float _t40 = 1.0f - _t39;
+        float _t42 = (float) Math.sin(_t11 * _t39);
+        float _t44 = (float) Math.sin(_t40 * _t11);
+        float _t65, _t66, _t67, _t68;
         if (_t12 > 0.0f) {
-            _t46 = Math.fma(_selfw, _t25, _t23 * _t15) * _t12_inv;
-            _t47 = Math.fma(_selfz, _t25, _t23 * _t16) * _t12_inv;
-            _t48 = Math.fma(_selfx, _t25, _t23 * _t17) * _t12_inv;
-            _t49 = Math.fma(_selfy, _t25, _t23 * _t18) * _t12_inv;
+            _t65 = Math.fma(_selfw, _t44, _t42 * _t13) * _t12_inv;
+            _t66 = Math.fma(_selfz, _t44, _t42 * _t14) * _t12_inv;
+            _t67 = Math.fma(_selfx, _t44, _t42 * _t15) * _t12_inv;
+            _t68 = Math.fma(_selfy, _t44, _t42 * _t16) * _t12_inv;
         } else {
-            _t46 = Math.fma(_selfw, _t21, _t15 * _t20);
-            _t47 = Math.fma(_selfz, _t21, _t16 * _t20);
-            _t48 = Math.fma(_selfx, _t21, _t17 * _t20);
-            _t49 = Math.fma(_selfy, _t21, _t18 * _t20);
+            _t65 = Math.fma(_selfw, _t40, _t13 * _t39);
+            _t66 = Math.fma(_selfz, _t40, _t14 * _t39);
+            _t67 = Math.fma(_selfx, _t40, _t15 * _t39);
+            _t68 = Math.fma(_selfy, _t40, _t16 * _t39);
         }
-        float _t53 = Math.fma(_t46, _t46, Math.fma(_t47, _t47, Math.fma(_t48, _t48, _t49 * _t49)));
-        float _t54 = (1.0f / (float) Math.sqrt(_t53));
-        if (_t53 > 0.0f) {
-            dest[destOffset + 0] = _t54 * _t48;
-            dest[destOffset + 1] = _t54 * _t49;
-            dest[destOffset + 2] = _t54 * _t47;
-            dest[destOffset + 3] = _t54 * _t46;
+        float _t72 = Math.fma(_t65, _t65, Math.fma(_t66, _t66, Math.fma(_t67, _t67, _t68 * _t68)));
+        float _t73 = (1.0f / (float) Math.sqrt(_t72));
+        if (_t72 > 0.0f) {
+            dest[destOffset + 0] = _t73 * _t67;
+            dest[destOffset + 1] = _t73 * _t68;
+            dest[destOffset + 2] = _t73 * _t66;
+            dest[destOffset + 3] = _t73 * _t65;
         } else {
             dest[destOffset + 0] = 0.0f;
             dest[destOffset + 1] = 0.0f;
@@ -831,6 +837,100 @@ public final class FloatQuatOpsKernelsArray {
                     dest[destOffset + 2] = 0.5f * (float) Math.sqrt(_t63);
                     dest[destOffset + 3] = 0.5f * _t58 * _t66;
                 }
+            }
+        }
+        return dest;
+    }
+
+    public static float[] makeRotationTo_scalar(float[] dest, int destOffset, float fromDirX, float fromDirY, float fromDirZ, float toDirX, float toDirY, float toDirZ) {
+        float _t3 = fromDirZ + toDirZ;
+        float _t4 = fromDirX + toDirX;
+        float _t5 = fromDirY + toDirY;
+        float _t13 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        float _t15 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        float _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
+        float _t17 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
+        float _t18, _t19, _t20;
+        if (_t13 > 0.0f) {
+            _t18 = fromDirY;
+            _t19 = 0.0f;
+            _t20 = -fromDirX;
+        } else {
+            _t18 = 0.0f;
+            _t19 = -fromDirY;
+            _t20 = fromDirZ;
+        }
+        float _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        float _t23 = 0.5f * _t22;
+        float _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        float _t30 = (1.0f / (float) Math.sqrt(_t29));
+        float _t33 = (1.0f / (float) Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0f * 2.0f))))));
+        if (_t23 > 1.0E-6f) {
+            dest[destOffset + 0] = _t15 * _t33;
+            dest[destOffset + 1] = _t16 * _t33;
+            dest[destOffset + 2] = _t17 * _t33;
+            dest[destOffset + 3] = 0.5f * _t22 * _t33;
+        } else {
+            if (_t29 > 0.0f) {
+                dest[destOffset + 0] = _t30 * _t18;
+                dest[destOffset + 1] = _t30 * _t20;
+                dest[destOffset + 2] = _t30 * _t19;
+                dest[destOffset + 3] = 0.0f;
+            } else {
+                dest[destOffset + 0] = 0.0f;
+                dest[destOffset + 1] = 0.0f;
+                dest[destOffset + 2] = 0.0f;
+                dest[destOffset + 3] = 0.0f;
+            }
+        }
+        return dest;
+    }
+
+    public static float[] makeRotationTo_scalar(float[] dest, int destOffset, float[] fromDir, int fromDirOffset, float[] toDir, int toDirOffset) {
+        float _fromDirx = fromDir[fromDirOffset + 0];
+        float _fromDiry = fromDir[fromDirOffset + 1];
+        float _fromDirz = fromDir[fromDirOffset + 2];
+        float _toDirx = toDir[toDirOffset + 0];
+        float _toDiry = toDir[toDirOffset + 1];
+        float _toDirz = toDir[toDirOffset + 2];
+        float _t3 = _fromDirz + _toDirz;
+        float _t4 = _fromDirx + _toDirx;
+        float _t5 = _fromDiry + _toDiry;
+        float _t13 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
+        float _t15 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
+        float _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
+        float _t17 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
+        float _t18, _t19, _t20;
+        if (_t13 > 0.0f) {
+            _t18 = _fromDiry;
+            _t19 = 0.0f;
+            _t20 = -_fromDirx;
+        } else {
+            _t18 = 0.0f;
+            _t19 = -_fromDiry;
+            _t20 = _fromDirz;
+        }
+        float _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        float _t23 = 0.5f * _t22;
+        float _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        float _t30 = (1.0f / (float) Math.sqrt(_t29));
+        float _t33 = (1.0f / (float) Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0f * 2.0f))))));
+        if (_t23 > 1.0E-6f) {
+            dest[destOffset + 0] = _t15 * _t33;
+            dest[destOffset + 1] = _t16 * _t33;
+            dest[destOffset + 2] = _t17 * _t33;
+            dest[destOffset + 3] = 0.5f * _t22 * _t33;
+        } else {
+            if (_t29 > 0.0f) {
+                dest[destOffset + 0] = _t30 * _t18;
+                dest[destOffset + 1] = _t30 * _t20;
+                dest[destOffset + 2] = _t30 * _t19;
+                dest[destOffset + 3] = 0.0f;
+            } else {
+                dest[destOffset + 0] = 0.0f;
+                dest[destOffset + 1] = 0.0f;
+                dest[destOffset + 2] = 0.0f;
+                dest[destOffset + 3] = 0.0f;
             }
         }
         return dest;

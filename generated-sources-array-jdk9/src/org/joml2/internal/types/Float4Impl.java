@@ -2232,6 +2232,9 @@ public final class Float4Impl implements Float4 {
 
     /**
      * Compute the angle in radians between this vector and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other vector
      * @return the angle in radians between this vector and {@code other}
@@ -2244,6 +2247,9 @@ public final class Float4Impl implements Float4 {
     /**
      * Compute the angle in radians between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}, {@code otherW}).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -2254,7 +2260,13 @@ public final class Float4Impl implements Float4 {
      */
     public float angleBetween(float otherX, float otherY, float otherZ, float otherW) {
         float[] sd = this.data;
-        return (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(otherW, sd[3], Math.fma(otherZ, sd[2], Math.fma(otherX, sd[0], otherY * sd[1]))) * (1.0f / (float) Math.sqrt(Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]))))) * (1.0f / (float) Math.sqrt(Math.fma(otherW, otherW, Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY))))))));
+        float _t12 = Math.fma(otherW, sd[2], -(otherZ * sd[3]));
+        float _t13 = Math.fma(otherW, sd[1], -(otherY * sd[3]));
+        float _t14 = Math.fma(otherZ, sd[1], -(otherY * sd[2]));
+        float _t15 = Math.fma(otherW, sd[0], -(otherX * sd[3]));
+        float _t16 = Math.fma(otherY, sd[0], -(otherX * sd[1]));
+        float _t17 = Math.fma(otherZ, sd[0], -(otherX * sd[2]));
+        return (float) Math.atan2((float) Math.sqrt(Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))))), Math.fma(otherW, sd[3], Math.fma(otherZ, sd[2], Math.fma(otherX, sd[0], otherY * sd[1]))));
     }
 
 
@@ -2918,6 +2930,10 @@ public final class Float4Impl implements Float4 {
 
     /**
      * Compute the distance between this vector and {@code other}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the difference vector must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param other the other vector
      * @return the distance between this vector and {@code other}
@@ -2930,6 +2946,10 @@ public final class Float4Impl implements Float4 {
     /**
      * Compute the distance between this vector and ({@code otherX}, {@code otherY}, {@code otherZ},
      * {@code otherW}).
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the difference vector must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -3498,6 +3518,10 @@ public final class Float4Impl implements Float4 {
 
     /**
      * Compute the length of this vector.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this vector must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @return the length of this vector
      */
@@ -4140,8 +4164,8 @@ public final class Float4Impl implements Float4 {
      * <p>
      * The squared length is formed at the component precision, so components whose squares overflow
      * or underflow that precision are out of domain: the result is the zero vector rather than a
-     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}).
+     * unit vector. Rescale such inputs before normalizing (the magnitude must lie roughly between
+     * 1e-19 and 1.8e19 for {@code float}, 1.5e-154 and 1.3e154 for {@code double}).
      *
      * @param dest will hold the result
      * @return dest
@@ -4172,8 +4196,8 @@ public final class Float4Impl implements Float4 {
      * <p>
      * The squared length is formed at the component precision, so components whose squares overflow
      * or underflow that precision are out of domain: the result is the zero vector rather than a
-     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}).
+     * unit vector. Rescale such inputs before normalizing (the magnitude must lie roughly between
+     * 1e-19 and 1.8e19 for {@code float}, 1.5e-154 and 1.3e154 for {@code double}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.

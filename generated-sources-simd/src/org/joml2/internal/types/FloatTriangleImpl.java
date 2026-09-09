@@ -268,7 +268,9 @@ public final class FloatTriangleImpl implements FloatTriangle {
      * <p>
      * The three components weight the triangle's first, second and third vertex respectively and
      * sum to 1. A point that is not coplanar with the triangle yields the coordinates of its
-     * orthogonal projection onto the triangle's plane.
+     * orthogonal projection onto the triangle's plane. The weights are formed with the
+     * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
+     * accurate for thin triangles.
      *
      * @param p the vector
      * @param dest will hold the result
@@ -285,7 +287,9 @@ public final class FloatTriangleImpl implements FloatTriangle {
      * <p>
      * The three components weight the triangle's first, second and third vertex respectively and
      * sum to 1. A point that is not coplanar with the triangle yields the coordinates of its
-     * orthogonal projection onto the triangle's plane.
+     * orthogonal projection onto the triangle's plane. The weights are formed with the
+     * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
+     * accurate for thin triangles.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -305,7 +309,9 @@ public final class FloatTriangleImpl implements FloatTriangle {
      * <p>
      * The three components weight the triangle's first, second and third vertex respectively and
      * sum to 1. A point that is not coplanar with the triangle yields the coordinates of its
-     * orthogonal projection onto the triangle's plane.
+     * orthogonal projection onto the triangle's plane. The weights are formed with the
+     * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
+     * accurate for thin triangles.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -316,27 +322,25 @@ public final class FloatTriangleImpl implements FloatTriangle {
     public Float3 barycentric(float pX, float pY, float pZ, @Mutated Float3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3Impl) dest).data;
-        float _t0 = pZ - sd[2];
-        float _t1 = sd[5] - sd[2];
-        float _t2 = pX - sd[0];
-        float _t3 = sd[3] - sd[0];
-        float _t4 = pY - sd[1];
+        float _t0 = pX - sd[0];
+        float _t1 = sd[7] - sd[1];
+        float _t2 = pY - sd[1];
+        float _t3 = sd[6] - sd[0];
+        float _t4 = sd[3] - sd[0];
         float _t5 = sd[4] - sd[1];
         float _t6 = sd[8] - sd[2];
-        float _t7 = sd[6] - sd[0];
-        float _t8 = sd[7] - sd[1];
-        float _t19 = Math.fma(_t0, _t1, Math.fma(_t2, _t3, _t4 * _t5));
-        float _t20 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t21 = Math.fma(_t0, _t6, Math.fma(_t2, _t7, _t4 * _t8));
-        float _t22 = Math.fma(_t1, _t6, Math.fma(_t3, _t7, _t5 * _t8));
-        float _t23 = Math.fma(_t1, _t1, Math.fma(_t3, _t3, _t5 * _t5));
-        float _t31 = Math.fma(_t23, _t20, -(_t22 * _t22));
-        float _t31_inv = 1.0f / _t31;
-        float _t33 = Math.fma(_t19, _t20, -(_t21 * _t22)) * _t31_inv;
-        float _t34 = Math.fma(_t21, _t23, -(_t19 * _t22)) * _t31_inv;
-        dd[0] = 1.0f - _t33 - _t34;
-        dd[1] = _t33;
-        dd[2] = _t34;
+        float _t7 = pZ - sd[2];
+        float _t8 = sd[5] - sd[2];
+        float _t28 = Math.fma(_t4, _t1, -(_t5 * _t3));
+        float _t30 = Math.fma(_t5, _t6, -(_t8 * _t1));
+        float _t32 = Math.fma(_t8, _t3, -(_t4 * _t6));
+        float _t43 = Math.fma(_t28, _t28, Math.fma(_t30, _t30, _t32 * _t32));
+        float _t43_inv = 1.0f / _t43;
+        float _t45 = Math.fma(Math.fma(_t0, _t1, -(_t2 * _t3)), _t28, Math.fma(Math.fma(_t2, _t6, -(_t7 * _t1)), _t30, Math.fma(_t7, _t3, -(_t0 * _t6)) * _t32)) * _t43_inv;
+        float _t46 = Math.fma(Math.fma(_t2, _t4, -(_t0 * _t5)), _t28, Math.fma(Math.fma(_t0, _t8, -(_t7 * _t4)), _t32, Math.fma(_t7, _t5, -(_t2 * _t8)) * _t30)) * _t43_inv;
+        dd[0] = 1.0f - _t45 - _t46;
+        dd[1] = _t45;
+        dd[2] = _t46;
         return dest;
     }
 
@@ -347,7 +351,9 @@ public final class FloatTriangleImpl implements FloatTriangle {
      * <p>
      * The three components weight the triangle's first, second and third vertex respectively and
      * sum to 1. A point that is not coplanar with the triangle yields the coordinates of its
-     * orthogonal projection onto the triangle's plane.
+     * orthogonal projection onto the triangle's plane. The weights are formed with the
+     * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
+     * accurate for thin triangles.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -361,27 +367,25 @@ public final class FloatTriangleImpl implements FloatTriangle {
     public Double3 barycentric(float pX, float pY, float pZ, @Mutated Double3 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        float _t0 = pZ - sd[2];
-        float _t1 = sd[5] - sd[2];
-        float _t2 = pX - sd[0];
-        float _t3 = sd[3] - sd[0];
-        float _t4 = pY - sd[1];
+        float _t0 = pX - sd[0];
+        float _t1 = sd[7] - sd[1];
+        float _t2 = pY - sd[1];
+        float _t3 = sd[6] - sd[0];
+        float _t4 = sd[3] - sd[0];
         float _t5 = sd[4] - sd[1];
         float _t6 = sd[8] - sd[2];
-        float _t7 = sd[6] - sd[0];
-        float _t8 = sd[7] - sd[1];
-        float _t19 = Math.fma(_t0, _t1, Math.fma(_t2, _t3, _t4 * _t5));
-        float _t20 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t21 = Math.fma(_t0, _t6, Math.fma(_t2, _t7, _t4 * _t8));
-        float _t22 = Math.fma(_t1, _t6, Math.fma(_t3, _t7, _t5 * _t8));
-        float _t23 = Math.fma(_t1, _t1, Math.fma(_t3, _t3, _t5 * _t5));
-        float _t31 = Math.fma(_t23, _t20, -(_t22 * _t22));
-        float _t31_inv = 1.0f / _t31;
-        float _t33 = Math.fma(_t19, _t20, -(_t21 * _t22)) * _t31_inv;
-        float _t34 = Math.fma(_t21, _t23, -(_t19 * _t22)) * _t31_inv;
-        dd[0] = 1.0f - _t33 - _t34;
-        dd[1] = _t33;
-        dd[2] = _t34;
+        float _t7 = pZ - sd[2];
+        float _t8 = sd[5] - sd[2];
+        float _t28 = Math.fma(_t4, _t1, -(_t5 * _t3));
+        float _t30 = Math.fma(_t5, _t6, -(_t8 * _t1));
+        float _t32 = Math.fma(_t8, _t3, -(_t4 * _t6));
+        float _t43 = Math.fma(_t28, _t28, Math.fma(_t30, _t30, _t32 * _t32));
+        float _t43_inv = 1.0f / _t43;
+        float _t45 = Math.fma(Math.fma(_t0, _t1, -(_t2 * _t3)), _t28, Math.fma(Math.fma(_t2, _t6, -(_t7 * _t1)), _t30, Math.fma(_t7, _t3, -(_t0 * _t6)) * _t32)) * _t43_inv;
+        float _t46 = Math.fma(Math.fma(_t2, _t4, -(_t0 * _t5)), _t28, Math.fma(Math.fma(_t0, _t8, -(_t7 * _t4)), _t32, Math.fma(_t7, _t5, -(_t2 * _t8)) * _t30)) * _t43_inv;
+        dd[0] = 1.0f - _t45 - _t46;
+        dd[1] = _t45;
+        dd[2] = _t46;
         return dest;
     }
 

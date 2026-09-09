@@ -260,7 +260,9 @@ public final class FloatTriangleImpl implements FloatTriangle {
      * <p>
      * The three components weight the triangle's first, second and third vertex respectively and
      * sum to 1. A point that is not coplanar with the triangle yields the coordinates of its
-     * orthogonal projection onto the triangle's plane.
+     * orthogonal projection onto the triangle's plane. The weights are formed with the
+     * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
+     * accurate for thin triangles.
      *
      * @param p the vector
      * @param dest will hold the result
@@ -277,7 +279,9 @@ public final class FloatTriangleImpl implements FloatTriangle {
      * <p>
      * The three components weight the triangle's first, second and third vertex respectively and
      * sum to 1. A point that is not coplanar with the triangle yields the coordinates of its
-     * orthogonal projection onto the triangle's plane.
+     * orthogonal projection onto the triangle's plane. The weights are formed with the
+     * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
+     * accurate for thin triangles.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -297,7 +301,9 @@ public final class FloatTriangleImpl implements FloatTriangle {
      * <p>
      * The three components weight the triangle's first, second and third vertex respectively and
      * sum to 1. A point that is not coplanar with the triangle yields the coordinates of its
-     * orthogonal projection onto the triangle's plane.
+     * orthogonal projection onto the triangle's plane. The weights are formed with the
+     * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
+     * accurate for thin triangles.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -307,27 +313,25 @@ public final class FloatTriangleImpl implements FloatTriangle {
      */
     public Float3 barycentric(float pX, float pY, float pZ, @Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t0 = pX - this.v0X;
-        float _t1 = this.v1X - this.v0X;
-        float _t2 = pY - this.v0Y;
-        float _t3 = this.v1Y - this.v0Y;
-        float _t4 = pZ - this.v0Z;
+        float _t0 = pY - this.v0Y;
+        float _t1 = this.v2Z - this.v0Z;
+        float _t2 = pZ - this.v0Z;
+        float _t3 = this.v2Y - this.v0Y;
+        float _t4 = this.v1Y - this.v0Y;
         float _t5 = this.v1Z - this.v0Z;
         float _t6 = this.v2X - this.v0X;
-        float _t7 = this.v2Y - this.v0Y;
-        float _t8 = this.v2Z - this.v0Z;
-        float _t29 = _t0 * _t1 + _t2 * _t3 + _t4 * _t5;
-        float _t30 = _t6 * _t6 + _t7 * _t7 + _t8 * _t8;
-        float _t31 = _t0 * _t6 + _t2 * _t7 + _t4 * _t8;
-        float _t32 = _t1 * _t6 + _t3 * _t7 + _t5 * _t8;
-        float _t33 = _t1 * _t1 + _t3 * _t3 + _t5 * _t5;
-        float _t41 = _t33 * _t30 - _t32 * _t32;
-        float _t41_inv = 1.0f / _t41;
-        float _t43 = (_t29 * _t30 - _t31 * _t32) * _t41_inv;
-        float _t44 = (_t31 * _t33 - _t29 * _t32) * _t41_inv;
-        d.x = 1.0f - _t43 - _t44;
-        d.y = _t43;
-        d.z = _t44;
+        float _t7 = pX - this.v0X;
+        float _t8 = this.v1X - this.v0X;
+        float _t28 = _t4 * _t1 - _t5 * _t3;
+        float _t30 = _t5 * _t6 - _t8 * _t1;
+        float _t32 = _t8 * _t3 - _t4 * _t6;
+        float _t49 = _t28 * _t28 + _t30 * _t30 + _t32 * _t32;
+        float _t49_inv = 1.0f / _t49;
+        float _t51 = ((_t0 * _t1 - _t2 * _t3) * _t28 + (_t2 * _t6 - _t7 * _t1) * _t30 + (_t7 * _t3 - _t0 * _t6) * _t32) * _t49_inv;
+        float _t52 = ((_t7 * _t5 - _t2 * _t8) * _t30 + (_t2 * _t4 - _t0 * _t5) * _t28 + (_t0 * _t8 - _t7 * _t4) * _t32) * _t49_inv;
+        d.x = 1.0f - _t51 - _t52;
+        d.y = _t51;
+        d.z = _t52;
         return d;
     }
 
@@ -338,7 +342,9 @@ public final class FloatTriangleImpl implements FloatTriangle {
      * <p>
      * The three components weight the triangle's first, second and third vertex respectively and
      * sum to 1. A point that is not coplanar with the triangle yields the coordinates of its
-     * orthogonal projection onto the triangle's plane.
+     * orthogonal projection onto the triangle's plane. The weights are formed with the
+     * cross-product form (areas of the sub-triangles against the triangle's normal), which stays
+     * accurate for thin triangles.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -351,27 +357,25 @@ public final class FloatTriangleImpl implements FloatTriangle {
      */
     public Double3 barycentric(float pX, float pY, float pZ, @Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t0 = pX - this.v0X;
-        float _t1 = this.v1X - this.v0X;
-        float _t2 = pY - this.v0Y;
-        float _t3 = this.v1Y - this.v0Y;
-        float _t4 = pZ - this.v0Z;
+        float _t0 = pY - this.v0Y;
+        float _t1 = this.v2Z - this.v0Z;
+        float _t2 = pZ - this.v0Z;
+        float _t3 = this.v2Y - this.v0Y;
+        float _t4 = this.v1Y - this.v0Y;
         float _t5 = this.v1Z - this.v0Z;
         float _t6 = this.v2X - this.v0X;
-        float _t7 = this.v2Y - this.v0Y;
-        float _t8 = this.v2Z - this.v0Z;
-        float _t29 = _t0 * _t1 + _t2 * _t3 + _t4 * _t5;
-        float _t30 = _t6 * _t6 + _t7 * _t7 + _t8 * _t8;
-        float _t31 = _t0 * _t6 + _t2 * _t7 + _t4 * _t8;
-        float _t32 = _t1 * _t6 + _t3 * _t7 + _t5 * _t8;
-        float _t33 = _t1 * _t1 + _t3 * _t3 + _t5 * _t5;
-        float _t41 = _t33 * _t30 - _t32 * _t32;
-        float _t41_inv = 1.0f / _t41;
-        float _t43 = (_t29 * _t30 - _t31 * _t32) * _t41_inv;
-        float _t44 = (_t31 * _t33 - _t29 * _t32) * _t41_inv;
-        d.x = 1.0f - _t43 - _t44;
-        d.y = _t43;
-        d.z = _t44;
+        float _t7 = pX - this.v0X;
+        float _t8 = this.v1X - this.v0X;
+        float _t28 = _t4 * _t1 - _t5 * _t3;
+        float _t30 = _t5 * _t6 - _t8 * _t1;
+        float _t32 = _t8 * _t3 - _t4 * _t6;
+        float _t49 = _t28 * _t28 + _t30 * _t30 + _t32 * _t32;
+        float _t49_inv = 1.0f / _t49;
+        float _t51 = ((_t0 * _t1 - _t2 * _t3) * _t28 + (_t2 * _t6 - _t7 * _t1) * _t30 + (_t7 * _t3 - _t0 * _t6) * _t32) * _t49_inv;
+        float _t52 = ((_t7 * _t5 - _t2 * _t8) * _t30 + (_t2 * _t4 - _t0 * _t5) * _t28 + (_t0 * _t8 - _t7 * _t4) * _t32) * _t49_inv;
+        d.x = 1.0f - _t51 - _t52;
+        d.y = _t51;
+        d.z = _t52;
         return d;
     }
 

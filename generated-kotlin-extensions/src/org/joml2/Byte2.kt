@@ -42,7 +42,7 @@ inline fun Byte2.copy(x: Byte = x(), y: Byte = y()): Byte2 = Byte2(x, y)
 inline fun Byte2.toByteArray(): ByteArray = store(ByteArray(2))
 /** A Byte2 read from this array in storage order, starting at index 0. */
 inline fun ByteArray.toByte2(): Byte2 = Byte2.load(this)
-/** The component of this Byte2 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT `v[i] = x` (or `v[i] += x`) resolves to the Java 2-argument value factory `Byte2.set(a, b)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
+/** The component of this Byte2 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT with 1 index (`v[a] = b`) resolves to the Java 2-argument value factory `Byte2.set(...)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Byte2.get(index: Int): Byte = when (index) {
     0 -> x()
     1 -> y()

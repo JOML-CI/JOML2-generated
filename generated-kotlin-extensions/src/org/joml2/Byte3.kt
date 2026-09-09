@@ -46,7 +46,7 @@ inline fun Byte3.copy(x: Byte = x(), y: Byte = y(), z: Byte = z()): Byte3 = Byte
 inline fun Byte3.toByteArray(): ByteArray = store(ByteArray(3))
 /** A Byte3 read from this array in storage order, starting at index 0. */
 inline fun ByteArray.toByte3(): Byte3 = Byte3.load(this)
-/** The component of this Byte3 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. */
+/** The component of this Byte3 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT with 2 indices (`v[a, b] = c`) resolves to the Java 3-argument value factory `Byte3.set(...)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Byte3.get(index: Int): Byte = when (index) {
     0 -> x()
     1 -> y()

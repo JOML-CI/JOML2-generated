@@ -46,7 +46,7 @@ inline fun Short4.copy(x: Short = x(), y: Short = y(), z: Short = z(), w: Short 
 inline fun Short4.toShortArray(): ShortArray = store(ShortArray(4))
 /** A Short4 read from this array in storage order, starting at index 0. */
 inline fun ShortArray.toShort4(): Short4 = Short4.load(this)
-/** The component of this Short4 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. */
+/** The component of this Short4 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT with 3 indices (`v[a, b, ...] = x`) resolves to the Java 4-argument value factory `Short4.set(...)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Short4.get(index: Int): Short = when (index) {
     0 -> x()
     1 -> y()

@@ -609,6 +609,7 @@ public final class Double4OpsSimd {
     }
 
     public static double[] add(double[] dest, int destOffset, double[] a, int aOffset, double[] b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = DoubleVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -630,6 +631,7 @@ public final class Double4OpsSimd {
     }
 
     public static double[] sub(double[] dest, int destOffset, double[] a, int aOffset, double[] b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = DoubleVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -651,6 +653,7 @@ public final class Double4OpsSimd {
     }
 
     public static double[] mul(double[] dest, int destOffset, double[] a, int aOffset, double[] b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = DoubleVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -672,6 +675,7 @@ public final class Double4OpsSimd {
     }
 
     public static double[] div(double[] dest, int destOffset, double[] a, int aOffset, double[] b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = DoubleVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -693,6 +697,7 @@ public final class Double4OpsSimd {
     }
 
     public static double[] min(double[] dest, int destOffset, double[] a, int aOffset, double[] b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = DoubleVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -714,6 +719,7 @@ public final class Double4OpsSimd {
     }
 
     public static double[] max(double[] dest, int destOffset, double[] a, int aOffset, double[] b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = DoubleVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -735,6 +741,7 @@ public final class Double4OpsSimd {
     }
 
     public static double[] negate(double[] dest, int destOffset, double[] src, int srcOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = DoubleVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -754,6 +761,7 @@ public final class Double4OpsSimd {
     }
 
     public static double[] abs(double[] dest, int destOffset, double[] src, int srcOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = DoubleVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -773,6 +781,7 @@ public final class Double4OpsSimd {
     }
 
     public static double[] lerp(double[] dest, int destOffset, double[] a, int aOffset, double[] b, int bOffset, double t, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = DoubleVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -794,6 +803,7 @@ public final class Double4OpsSimd {
     }
 
     public static double[] scale(double[] dest, int destOffset, double[] src, int srcOffset, double s, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = DoubleVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -813,6 +823,7 @@ public final class Double4OpsSimd {
     }
 
     public static double[] fma(double[] dest, int destOffset, double[] self, int selfOffset, double[] a, int aOffset, double[] b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = DoubleVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);

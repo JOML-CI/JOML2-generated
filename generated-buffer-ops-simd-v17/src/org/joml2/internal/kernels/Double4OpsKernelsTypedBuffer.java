@@ -1103,7 +1103,13 @@ public final class Double4OpsKernelsTypedBuffer {
         double _selfy = src.get(srcOffset + 1);
         double _selfz = src.get(srcOffset + 2);
         double _selfw = src.get(srcOffset + 3);
-        return Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(otherW, _selfw, Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy))) * (1.0 / Math.sqrt(Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy))))) * (1.0 / Math.sqrt(Math.fma(otherW, otherW, Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY))))))));
+        double _t12 = Math.fma(otherW, _selfz, -(otherZ * _selfw));
+        double _t13 = Math.fma(otherW, _selfy, -(otherY * _selfw));
+        double _t14 = Math.fma(otherZ, _selfy, -(otherY * _selfz));
+        double _t15 = Math.fma(otherW, _selfx, -(otherX * _selfw));
+        double _t16 = Math.fma(otherY, _selfx, -(otherX * _selfy));
+        double _t17 = Math.fma(otherZ, _selfx, -(otherX * _selfz));
+        return Math.atan2(Math.sqrt(Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))))), Math.fma(otherW, _selfw, Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy))));
     }
 
     public static double angleBetween_unsafe(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
@@ -1121,7 +1127,13 @@ public final class Double4OpsKernelsTypedBuffer {
         double _othery = other.get(otherOffset + 1);
         double _otherz = other.get(otherOffset + 2);
         double _otherw = other.get(otherOffset + 3);
-        return Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(_otherw, _selfw, Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy))) * (1.0 / Math.sqrt(Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy))))) * (1.0 / Math.sqrt(Math.fma(_otherw, _otherw, Math.fma(_otherz, _otherz, Math.fma(_otherx, _otherx, _othery * _othery))))))));
+        double _t12 = Math.fma(_otherw, _selfz, -(_otherz * _selfw));
+        double _t13 = Math.fma(_otherw, _selfy, -(_othery * _selfw));
+        double _t14 = Math.fma(_otherz, _selfy, -(_othery * _selfz));
+        double _t15 = Math.fma(_otherw, _selfx, -(_otherx * _selfw));
+        double _t16 = Math.fma(_othery, _selfx, -(_otherx * _selfy));
+        double _t17 = Math.fma(_otherz, _selfx, -(_otherx * _selfz));
+        return Math.atan2(Math.sqrt(Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))))), Math.fma(_otherw, _selfw, Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy))));
     }
 
     public static java.nio.DoubleBuffer asin_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {

@@ -1439,8 +1439,11 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static float angle_api(java.nio.FloatBuffer src, int srcOffset) {
+        float _selfx = src.get(srcOffset + 0);
+        float _selfy = src.get(srcOffset + 1);
+        float _selfz = src.get(srcOffset + 2);
         float _selfw = src.get(srcOffset + 3);
-        return 2.0f * (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, _selfw)));
+        return 2.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy))), _selfw);
     }
 
     public static float angleTo_unsafe(java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
@@ -1453,7 +1456,28 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _selfy = src.get(srcOffset + 1);
         float _selfz = src.get(srcOffset + 2);
         float _selfw = src.get(srcOffset + 3);
-        return 2.0f * (float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(otherW, _selfw, Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy))))));
+        float _t8 = -Math.fma(otherW, _selfw, Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy)));
+        float _t9, _t10, _t11, _t12;
+        if (_t8 > 0.0f) {
+            _t9 = -otherW;
+            _t10 = -otherZ;
+            _t11 = -otherX;
+            _t12 = -otherY;
+        } else {
+            _t9 = otherW;
+            _t10 = otherZ;
+            _t11 = otherX;
+            _t12 = otherY;
+        }
+        float _t13 = _selfw - _t9;
+        float _t14 = _selfz - _t10;
+        float _t15 = _selfx - _t11;
+        float _t16 = _selfy - _t12;
+        float _t17 = _selfw + _t9;
+        float _t18 = _selfz + _t10;
+        float _t19 = _selfx + _t11;
+        float _t20 = _selfy + _t12;
+        return 4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))), (float) Math.sqrt(Math.fma(_t17, _t17, Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)))));
     }
 
     public static float angleTo_unsafe(java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset) {
@@ -1471,7 +1495,28 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _othery = other.get(otherOffset + 1);
         float _otherz = other.get(otherOffset + 2);
         float _otherw = other.get(otherOffset + 3);
-        return 2.0f * (float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(_otherw, _selfw, Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy))))));
+        float _t8 = -Math.fma(_otherw, _selfw, Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy)));
+        float _t9, _t10, _t11, _t12;
+        if (_t8 > 0.0f) {
+            _t9 = -_otherw;
+            _t10 = -_otherz;
+            _t11 = -_otherx;
+            _t12 = -_othery;
+        } else {
+            _t9 = _otherw;
+            _t10 = _otherz;
+            _t11 = _otherx;
+            _t12 = _othery;
+        }
+        float _t13 = _selfw - _t9;
+        float _t14 = _selfz - _t10;
+        float _t15 = _selfx - _t11;
+        float _t16 = _selfy - _t12;
+        float _t17 = _selfw + _t9;
+        float _t18 = _selfz + _t10;
+        float _t19 = _selfx + _t11;
+        float _t20 = _selfy + _t12;
+        return 4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))), (float) Math.sqrt(Math.fma(_t17, _t17, Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)))));
     }
 
     public static java.nio.FloatBuffer axis_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
@@ -1722,7 +1767,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
             dest.put(destOffset + 0, (float) Math.atan2(_t9, _t10));
             dest.put(destOffset + 2, (float) Math.atan2(2.0f * Math.fma(_selfz, _selfw, -(_selfx * _selfy)), Math.fma(-2.0f, Math.fma(_selfy, _selfy, _t3), 1.0f)));
         }
-        dest.put(destOffset + 1, (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8))));
+        dest.put(destOffset + 1, (float) Math.atan2(_t8, (float) Math.sqrt(_t12)));
         return dest;
     }
 
@@ -1752,7 +1797,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
             dest.put(destOffset + 0, (float) Math.atan2(_t7, _t9));
             dest.put(destOffset + 1, (float) Math.atan2(2.0f * Math.fma(_selfx, _selfz, _selfy * _selfw), Math.fma(-2.0f, Math.fma(_selfy, _selfy, _t0), 1.0f)));
         }
-        dest.put(destOffset + 2, (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8))));
+        dest.put(destOffset + 2, (float) Math.atan2(_t8, (float) Math.sqrt(_t11)));
         return dest;
     }
 
@@ -1781,7 +1826,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
             dest.put(destOffset + 1, (float) Math.atan2(_t8, _t10));
             dest.put(destOffset + 2, (float) Math.atan2(2.0f * Math.fma(_selfx, _selfy, _selfz * _selfw), Math.fma(-2.0f, Math.fma(_selfx, _selfx, _t3), 1.0f)));
         }
-        dest.put(destOffset + 0, (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t9))));
+        dest.put(destOffset + 0, (float) Math.atan2(_t9, (float) Math.sqrt(_t12)));
         return dest;
     }
 
@@ -1810,7 +1855,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
             dest.put(destOffset + 0, (float) Math.atan2(2.0f * Math.fma(_selfx, _selfw, -(_selfy * _selfz)), Math.fma(-2.0f, Math.fma(_selfx, _selfx, _t0), 1.0f)));
             dest.put(destOffset + 1, (float) Math.atan2(_t8, _t9));
         }
-        dest.put(destOffset + 2, (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t7))));
+        dest.put(destOffset + 2, (float) Math.atan2(_t7, (float) Math.sqrt(_t11)));
         return dest;
     }
 
@@ -1839,7 +1884,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
             dest.put(destOffset + 1, (float) Math.atan2(2.0f * Math.fma(_selfy, _selfw, -(_selfx * _selfz)), Math.fma(-2.0f, Math.fma(_selfx, _selfx, _selfy * _selfy), 1.0f)));
             dest.put(destOffset + 2, (float) Math.atan2(_t8, _t9));
         }
-        dest.put(destOffset + 0, (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t7))));
+        dest.put(destOffset + 0, (float) Math.atan2(_t7, (float) Math.sqrt(_t11)));
         return dest;
     }
 
@@ -1868,7 +1913,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
             dest.put(destOffset + 0, (float) Math.atan2(2.0f * Math.fma(_selfx, _selfw, _selfy * _selfz), Math.fma(-2.0f, Math.fma(_selfx, _selfx, _selfy * _selfy), 1.0f)));
             dest.put(destOffset + 2, (float) Math.atan2(_t7, _t9));
         }
-        dest.put(destOffset + 1, (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t8))));
+        dest.put(destOffset + 1, (float) Math.atan2(_t8, (float) Math.sqrt(_t11)));
         return dest;
     }
 
@@ -2271,18 +2316,17 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _selfz = src.get(srcOffset + 2);
         float _selfw = src.get(srcOffset + 3);
         float _t2 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
-        float _t4 = Math.fma(_selfw, _selfw, _t2);
-        float _t8 = (float) Math.acos(_selfw * (1.0f / (float) Math.sqrt(_t4))) * (1.0f / (float) Math.sqrt(_t2));
+        float _t6 = (float) Math.atan2((float) Math.sqrt(_t2), _selfw) * (1.0f / (float) Math.sqrt(_t2));
         if (_t2 > 0.0f) {
-            dest.put(destOffset + 0, _selfx * _t8);
-            dest.put(destOffset + 1, _selfy * _t8);
-            dest.put(destOffset + 2, _selfz * _t8);
+            dest.put(destOffset + 0, _selfx * _t6);
+            dest.put(destOffset + 1, _selfy * _t6);
+            dest.put(destOffset + 2, _selfz * _t6);
         } else {
             dest.put(destOffset + 0, 0.0f);
             dest.put(destOffset + 1, 0.0f);
             dest.put(destOffset + 2, 0.0f);
         }
-        dest.put(destOffset + 3, (float) Math.log((float) Math.sqrt(_t4)));
+        dest.put(destOffset + 3, (float) Math.log((float) Math.sqrt(Math.fma(_selfw, _selfw, _t2))));
         return dest;
     }
 
@@ -2609,32 +2653,31 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _selfz = src.get(srcOffset + 2);
         float _selfw = src.get(srcOffset + 3);
         float _t2 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
-        float _t4 = Math.fma(_selfw, _selfw, _t2);
-        float _t11 = (float) Math.exp(t * (float) Math.log((float) Math.sqrt(_t4)));
-        float _t12 = (float) Math.acos(_selfw * (1.0f / (float) Math.sqrt(_t4))) * (1.0f / (float) Math.sqrt(_t2));
-        float _t19, _t20, _t21;
+        float _t10 = (float) Math.exp(t * (float) Math.log((float) Math.sqrt(Math.fma(_selfw, _selfw, _t2))));
+        float _t11 = (float) Math.atan2((float) Math.sqrt(_t2), _selfw) * (1.0f / (float) Math.sqrt(_t2));
+        float _t18, _t19, _t20;
         if (_t2 > 0.0f) {
-            _t19 = t * _selfz * _t12;
-            _t20 = t * _selfx * _t12;
-            _t21 = t * _selfy * _t12;
+            _t18 = t * _selfz * _t11;
+            _t19 = t * _selfx * _t11;
+            _t20 = t * _selfy * _t11;
         } else {
+            _t18 = t * 0.0f;
             _t19 = t * 0.0f;
             _t20 = t * 0.0f;
-            _t21 = t * 0.0f;
         }
-        float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
-        float _t25 = (float) Math.sqrt(_t24);
-        float _t29 = (float) Math.sin(_t25) * _t11 * (1.0f / (float) Math.sqrt(_t24));
-        if (_t24 > 0.0f) {
-            dest.put(destOffset + 0, _t20 * _t29);
-            dest.put(destOffset + 1, _t21 * _t29);
-            dest.put(destOffset + 2, _t19 * _t29);
+        float _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
+        float _t24 = (float) Math.sqrt(_t23);
+        float _t28 = (float) Math.sin(_t24) * _t10 * (1.0f / (float) Math.sqrt(_t23));
+        if (_t23 > 0.0f) {
+            dest.put(destOffset + 0, _t19 * _t28);
+            dest.put(destOffset + 1, _t20 * _t28);
+            dest.put(destOffset + 2, _t18 * _t28);
         } else {
             dest.put(destOffset + 0, 0.0f);
             dest.put(destOffset + 1, 0.0f);
             dest.put(destOffset + 2, 0.0f);
         }
-        dest.put(destOffset + 3, (float) Math.cos(_t25) * _t11);
+        dest.put(destOffset + 3, (float) Math.cos(_t24) * _t10);
         return dest;
     }
 
@@ -2655,42 +2698,50 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t11 = (float) Math.acos(Math.min(1.0f, Math.abs(_t7)));
         float _t12 = (float) Math.sin(_t11);
         float _t12_inv = 1.0f / _t12;
-        float _t13 = 2.0f * _t11;
-        float _t15, _t16, _t17, _t18;
+        float _t13, _t14, _t15, _t16;
         if (_t9 > 0.0f) {
-            _t15 = -targetW;
-            _t16 = -targetZ;
-            _t17 = -targetX;
-            _t18 = -targetY;
+            _t13 = -targetW;
+            _t14 = -targetZ;
+            _t15 = -targetX;
+            _t16 = -targetY;
         } else {
-            _t15 = targetW;
-            _t16 = targetZ;
-            _t17 = targetX;
-            _t18 = targetY;
+            _t13 = targetW;
+            _t14 = targetZ;
+            _t15 = targetX;
+            _t16 = targetY;
         }
-        float _t20 = _t13 > 0.0f ? Math.min(1.0f, step / _t13) : 0.0f;
-        float _t21 = 1.0f - _t20;
-        float _t23 = (float) Math.sin(_t11 * _t20);
-        float _t25 = (float) Math.sin(_t21 * _t11);
-        float _t46, _t47, _t48, _t49;
+        float _t17 = _selfw - _t13;
+        float _t18 = _selfz - _t14;
+        float _t19 = _selfx - _t15;
+        float _t20 = _selfy - _t16;
+        float _t21 = _selfw + _t13;
+        float _t22 = _selfz + _t14;
+        float _t23 = _selfx + _t15;
+        float _t24 = _selfy + _t16;
+        float _t36 = 4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_t17, _t17, Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)))), (float) Math.sqrt(Math.fma(_t21, _t21, Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24)))));
+        float _t39 = _t36 > 0.0f ? Math.min(1.0f, step / _t36) : 0.0f;
+        float _t40 = 1.0f - _t39;
+        float _t42 = (float) Math.sin(_t11 * _t39);
+        float _t44 = (float) Math.sin(_t40 * _t11);
+        float _t65, _t66, _t67, _t68;
         if (_t12 > 0.0f) {
-            _t46 = Math.fma(_selfw, _t25, _t23 * _t15) * _t12_inv;
-            _t47 = Math.fma(_selfz, _t25, _t23 * _t16) * _t12_inv;
-            _t48 = Math.fma(_selfx, _t25, _t23 * _t17) * _t12_inv;
-            _t49 = Math.fma(_selfy, _t25, _t23 * _t18) * _t12_inv;
+            _t65 = Math.fma(_selfw, _t44, _t42 * _t13) * _t12_inv;
+            _t66 = Math.fma(_selfz, _t44, _t42 * _t14) * _t12_inv;
+            _t67 = Math.fma(_selfx, _t44, _t42 * _t15) * _t12_inv;
+            _t68 = Math.fma(_selfy, _t44, _t42 * _t16) * _t12_inv;
         } else {
-            _t46 = Math.fma(_selfw, _t21, _t15 * _t20);
-            _t47 = Math.fma(_selfz, _t21, _t16 * _t20);
-            _t48 = Math.fma(_selfx, _t21, _t17 * _t20);
-            _t49 = Math.fma(_selfy, _t21, _t18 * _t20);
+            _t65 = Math.fma(_selfw, _t40, _t13 * _t39);
+            _t66 = Math.fma(_selfz, _t40, _t14 * _t39);
+            _t67 = Math.fma(_selfx, _t40, _t15 * _t39);
+            _t68 = Math.fma(_selfy, _t40, _t16 * _t39);
         }
-        float _t53 = Math.fma(_t46, _t46, Math.fma(_t47, _t47, Math.fma(_t48, _t48, _t49 * _t49)));
-        float _t54 = (1.0f / (float) Math.sqrt(_t53));
-        if (_t53 > 0.0f) {
-            dest.put(destOffset + 0, _t54 * _t48);
-            dest.put(destOffset + 1, _t54 * _t49);
-            dest.put(destOffset + 2, _t54 * _t47);
-            dest.put(destOffset + 3, _t54 * _t46);
+        float _t72 = Math.fma(_t65, _t65, Math.fma(_t66, _t66, Math.fma(_t67, _t67, _t68 * _t68)));
+        float _t73 = (1.0f / (float) Math.sqrt(_t72));
+        if (_t72 > 0.0f) {
+            dest.put(destOffset + 0, _t73 * _t67);
+            dest.put(destOffset + 1, _t73 * _t68);
+            dest.put(destOffset + 2, _t73 * _t66);
+            dest.put(destOffset + 3, _t73 * _t65);
         } else {
             dest.put(destOffset + 0, 0.0f);
             dest.put(destOffset + 1, 0.0f);
@@ -2722,42 +2773,50 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t11 = (float) Math.acos(Math.min(1.0f, Math.abs(_t7)));
         float _t12 = (float) Math.sin(_t11);
         float _t12_inv = 1.0f / _t12;
-        float _t13 = 2.0f * _t11;
-        float _t15, _t16, _t17, _t18;
+        float _t13, _t14, _t15, _t16;
         if (_t9 > 0.0f) {
-            _t15 = -_targetw;
-            _t16 = -_targetz;
-            _t17 = -_targetx;
-            _t18 = -_targety;
+            _t13 = -_targetw;
+            _t14 = -_targetz;
+            _t15 = -_targetx;
+            _t16 = -_targety;
         } else {
-            _t15 = _targetw;
-            _t16 = _targetz;
-            _t17 = _targetx;
-            _t18 = _targety;
+            _t13 = _targetw;
+            _t14 = _targetz;
+            _t15 = _targetx;
+            _t16 = _targety;
         }
-        float _t20 = _t13 > 0.0f ? Math.min(1.0f, step / _t13) : 0.0f;
-        float _t21 = 1.0f - _t20;
-        float _t23 = (float) Math.sin(_t11 * _t20);
-        float _t25 = (float) Math.sin(_t21 * _t11);
-        float _t46, _t47, _t48, _t49;
+        float _t17 = _selfw - _t13;
+        float _t18 = _selfz - _t14;
+        float _t19 = _selfx - _t15;
+        float _t20 = _selfy - _t16;
+        float _t21 = _selfw + _t13;
+        float _t22 = _selfz + _t14;
+        float _t23 = _selfx + _t15;
+        float _t24 = _selfy + _t16;
+        float _t36 = 4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_t17, _t17, Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)))), (float) Math.sqrt(Math.fma(_t21, _t21, Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24)))));
+        float _t39 = _t36 > 0.0f ? Math.min(1.0f, step / _t36) : 0.0f;
+        float _t40 = 1.0f - _t39;
+        float _t42 = (float) Math.sin(_t11 * _t39);
+        float _t44 = (float) Math.sin(_t40 * _t11);
+        float _t65, _t66, _t67, _t68;
         if (_t12 > 0.0f) {
-            _t46 = Math.fma(_selfw, _t25, _t23 * _t15) * _t12_inv;
-            _t47 = Math.fma(_selfz, _t25, _t23 * _t16) * _t12_inv;
-            _t48 = Math.fma(_selfx, _t25, _t23 * _t17) * _t12_inv;
-            _t49 = Math.fma(_selfy, _t25, _t23 * _t18) * _t12_inv;
+            _t65 = Math.fma(_selfw, _t44, _t42 * _t13) * _t12_inv;
+            _t66 = Math.fma(_selfz, _t44, _t42 * _t14) * _t12_inv;
+            _t67 = Math.fma(_selfx, _t44, _t42 * _t15) * _t12_inv;
+            _t68 = Math.fma(_selfy, _t44, _t42 * _t16) * _t12_inv;
         } else {
-            _t46 = Math.fma(_selfw, _t21, _t15 * _t20);
-            _t47 = Math.fma(_selfz, _t21, _t16 * _t20);
-            _t48 = Math.fma(_selfx, _t21, _t17 * _t20);
-            _t49 = Math.fma(_selfy, _t21, _t18 * _t20);
+            _t65 = Math.fma(_selfw, _t40, _t13 * _t39);
+            _t66 = Math.fma(_selfz, _t40, _t14 * _t39);
+            _t67 = Math.fma(_selfx, _t40, _t15 * _t39);
+            _t68 = Math.fma(_selfy, _t40, _t16 * _t39);
         }
-        float _t53 = Math.fma(_t46, _t46, Math.fma(_t47, _t47, Math.fma(_t48, _t48, _t49 * _t49)));
-        float _t54 = (1.0f / (float) Math.sqrt(_t53));
-        if (_t53 > 0.0f) {
-            dest.put(destOffset + 0, _t54 * _t48);
-            dest.put(destOffset + 1, _t54 * _t49);
-            dest.put(destOffset + 2, _t54 * _t47);
-            dest.put(destOffset + 3, _t54 * _t46);
+        float _t72 = Math.fma(_t65, _t65, Math.fma(_t66, _t66, Math.fma(_t67, _t67, _t68 * _t68)));
+        float _t73 = (1.0f / (float) Math.sqrt(_t72));
+        if (_t72 > 0.0f) {
+            dest.put(destOffset + 0, _t73 * _t67);
+            dest.put(destOffset + 1, _t73 * _t68);
+            dest.put(destOffset + 2, _t73 * _t66);
+            dest.put(destOffset + 3, _t73 * _t65);
         } else {
             dest.put(destOffset + 0, 0.0f);
             dest.put(destOffset + 1, 0.0f);
@@ -3178,32 +3237,38 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer makeRotationTo_api(java.nio.FloatBuffer dest, int destOffset, float fromDirX, float fromDirY, float fromDirZ, float toDirX, float toDirY, float toDirZ) {
-        float _t4 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
-        float _t6, _t8, _t9;
-        if (_t4 > 0.0f) {
-            _t6 = fromDirY;
-            _t8 = 0.0f;
-            _t9 = -fromDirX;
+        float _t3 = fromDirZ + toDirZ;
+        float _t4 = fromDirX + toDirX;
+        float _t5 = fromDirY + toDirY;
+        float _t13 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        float _t15 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        float _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
+        float _t17 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
+        float _t18, _t19, _t20;
+        if (_t13 > 0.0f) {
+            _t18 = fromDirY;
+            _t19 = 0.0f;
+            _t20 = -fromDirX;
         } else {
-            _t6 = 0.0f;
-            _t8 = -fromDirY;
-            _t9 = fromDirZ;
+            _t18 = 0.0f;
+            _t19 = -fromDirY;
+            _t20 = fromDirZ;
         }
-        float _t7 = Math.fma(fromDirX, toDirX, Math.fma(fromDirY, toDirY, Math.fma(fromDirZ, toDirZ, 1.0f)));
-        float _t10 = 2.0f * _t7;
-        float _t11 = (1.0f / (float) Math.sqrt(_t10));
-        float _t14 = Math.fma(_t8, _t8, Math.fma(_t6, _t6, _t9 * _t9));
-        float _t15 = (1.0f / (float) Math.sqrt(_t14));
-        if (_t7 > 1.0E-6f) {
-            dest.put(destOffset + 0, Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY)) * _t11);
-            dest.put(destOffset + 1, Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ)) * _t11);
-            dest.put(destOffset + 2, Math.fma(fromDirX, toDirY, -(fromDirY * toDirX)) * _t11);
-            dest.put(destOffset + 3, 0.5f * (float) Math.sqrt(_t10));
+        float _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        float _t23 = 0.5f * _t22;
+        float _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        float _t30 = (1.0f / (float) Math.sqrt(_t29));
+        float _t33 = (1.0f / (float) Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0f * 2.0f))))));
+        if (_t23 > 1.0E-6f) {
+            dest.put(destOffset + 0, _t15 * _t33);
+            dest.put(destOffset + 1, _t16 * _t33);
+            dest.put(destOffset + 2, _t17 * _t33);
+            dest.put(destOffset + 3, 0.5f * _t22 * _t33);
         } else {
-            if (_t14 > 0.0f) {
-                dest.put(destOffset + 0, _t15 * _t6);
-                dest.put(destOffset + 1, _t15 * _t9);
-                dest.put(destOffset + 2, _t15 * _t8);
+            if (_t29 > 0.0f) {
+                dest.put(destOffset + 0, _t30 * _t18);
+                dest.put(destOffset + 1, _t30 * _t20);
+                dest.put(destOffset + 2, _t30 * _t19);
                 dest.put(destOffset + 3, 0.0f);
             } else {
                 dest.put(destOffset + 0, 0.0f);
@@ -3230,32 +3295,38 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _toDirx = toDir.get(toDirOffset + 0);
         float _toDiry = toDir.get(toDirOffset + 1);
         float _toDirz = toDir.get(toDirOffset + 2);
-        float _t4 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
-        float _t6, _t8, _t9;
-        if (_t4 > 0.0f) {
-            _t6 = _fromDiry;
-            _t8 = 0.0f;
-            _t9 = -_fromDirx;
+        float _t3 = _fromDirz + _toDirz;
+        float _t4 = _fromDirx + _toDirx;
+        float _t5 = _fromDiry + _toDiry;
+        float _t13 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
+        float _t15 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
+        float _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
+        float _t17 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
+        float _t18, _t19, _t20;
+        if (_t13 > 0.0f) {
+            _t18 = _fromDiry;
+            _t19 = 0.0f;
+            _t20 = -_fromDirx;
         } else {
-            _t6 = 0.0f;
-            _t8 = -_fromDiry;
-            _t9 = _fromDirz;
+            _t18 = 0.0f;
+            _t19 = -_fromDiry;
+            _t20 = _fromDirz;
         }
-        float _t7 = Math.fma(_fromDirx, _toDirx, Math.fma(_fromDiry, _toDiry, Math.fma(_fromDirz, _toDirz, 1.0f)));
-        float _t10 = 2.0f * _t7;
-        float _t11 = (1.0f / (float) Math.sqrt(_t10));
-        float _t14 = Math.fma(_t8, _t8, Math.fma(_t6, _t6, _t9 * _t9));
-        float _t15 = (1.0f / (float) Math.sqrt(_t14));
-        if (_t7 > 1.0E-6f) {
-            dest.put(destOffset + 0, Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry)) * _t11);
-            dest.put(destOffset + 1, Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz)) * _t11);
-            dest.put(destOffset + 2, Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx)) * _t11);
-            dest.put(destOffset + 3, 0.5f * (float) Math.sqrt(_t10));
+        float _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        float _t23 = 0.5f * _t22;
+        float _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        float _t30 = (1.0f / (float) Math.sqrt(_t29));
+        float _t33 = (1.0f / (float) Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0f * 2.0f))))));
+        if (_t23 > 1.0E-6f) {
+            dest.put(destOffset + 0, _t15 * _t33);
+            dest.put(destOffset + 1, _t16 * _t33);
+            dest.put(destOffset + 2, _t17 * _t33);
+            dest.put(destOffset + 3, 0.5f * _t22 * _t33);
         } else {
-            if (_t14 > 0.0f) {
-                dest.put(destOffset + 0, _t15 * _t6);
-                dest.put(destOffset + 1, _t15 * _t9);
-                dest.put(destOffset + 2, _t15 * _t8);
+            if (_t29 > 0.0f) {
+                dest.put(destOffset + 0, _t30 * _t18);
+                dest.put(destOffset + 1, _t30 * _t20);
+                dest.put(destOffset + 2, _t30 * _t19);
                 dest.put(destOffset + 3, 0.0f);
             } else {
                 dest.put(destOffset + 0, 0.0f);
@@ -3606,43 +3677,51 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _selfy = src.get(srcOffset + 1);
         float _selfz = src.get(srcOffset + 2);
         float _selfw = src.get(srcOffset + 3);
-        float _t10 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
-        float _t15, _t17, _t18;
-        if (_t10 > 0.0f) {
-            _t15 = fromDirY;
-            _t17 = 0.0f;
-            _t18 = -fromDirX;
+        float _t3 = fromDirZ + toDirZ;
+        float _t4 = fromDirX + toDirX;
+        float _t5 = fromDirY + toDirY;
+        float _t13 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        float _t15 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        float _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
+        float _t17 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
+        float _t18, _t19, _t20;
+        if (_t13 > 0.0f) {
+            _t18 = fromDirY;
+            _t19 = 0.0f;
+            _t20 = -fromDirX;
         } else {
-            _t15 = 0.0f;
-            _t17 = -fromDirY;
-            _t18 = fromDirZ;
+            _t18 = 0.0f;
+            _t19 = -fromDirY;
+            _t20 = fromDirZ;
         }
-        float _t16 = Math.fma(fromDirX, toDirX, Math.fma(fromDirY, toDirY, Math.fma(fromDirZ, toDirZ, 1.0f)));
-        float _t19 = 2.0f * _t16;
-        float _t21 = (1.0f / (float) Math.sqrt(_t19));
-        float _t27 = _t16 > 1.0E-6f ? 0.5f * (float) Math.sqrt(_t19) : 0.0f;
-        float _t29 = Math.fma(_t17, _t17, Math.fma(_t15, _t15, _t18 * _t18));
+        float _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        float _t23 = 0.5f * _t22;
+        float _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
-        float _t37, _t38, _t39;
-        if (_t16 > 1.0E-6f) {
-            _t37 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY)) * _t21;
-            _t38 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX)) * _t21;
-            _t39 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ)) * _t21;
+        float _t36 = (1.0f / (float) Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0f * 2.0f))))));
+        float _t42, _t46, _t47, _t48;
+        if (_t23 > 1.0E-6f) {
+            _t42 = 0.5f * _t22 * _t36;
+            _t46 = _t15 * _t36;
+            _t47 = _t17 * _t36;
+            _t48 = _t16 * _t36;
         } else {
             if (_t29 > 0.0f) {
-                _t37 = _t30 * _t15;
-                _t38 = _t30 * _t17;
-                _t39 = _t30 * _t18;
+                _t42 = 0.0f;
+                _t46 = _t30 * _t18;
+                _t47 = _t30 * _t19;
+                _t48 = _t30 * _t20;
             } else {
-                _t37 = 0.0f;
-                _t38 = 0.0f;
-                _t39 = 0.0f;
+                _t42 = 0.0f;
+                _t46 = 0.0f;
+                _t47 = 0.0f;
+                _t48 = 0.0f;
             }
         }
-        dest.put(destOffset + 0, Math.fma(_selfx, _t27, _selfw * _t37) + Math.fma(_selfy, _t38, -(_selfz * _t39)));
-        dest.put(destOffset + 1, Math.fma(_selfy, _t27, _selfz * _t37) + Math.fma(_selfw, _t39, -(_selfx * _t38)));
-        dest.put(destOffset + 2, Math.fma(_selfx, _t39, _selfw * _t38) + Math.fma(_selfz, _t27, -(_selfy * _t37)));
-        dest.put(destOffset + 3, Math.fma(-_selfz, _t38, Math.fma(-_selfy, _t39, Math.fma(_selfw, _t27, -(_selfx * _t37)))));
+        dest.put(destOffset + 0, Math.fma(_selfx, _t42, _selfw * _t46) + Math.fma(_selfy, _t47, -(_selfz * _t48)));
+        dest.put(destOffset + 1, Math.fma(_selfy, _t42, _selfz * _t46) + Math.fma(_selfw, _t48, -(_selfx * _t47)));
+        dest.put(destOffset + 2, Math.fma(_selfx, _t48, _selfw * _t47) + Math.fma(_selfz, _t42, -(_selfy * _t46)));
+        dest.put(destOffset + 3, Math.fma(-_selfz, _t47, Math.fma(-_selfy, _t48, Math.fma(_selfw, _t42, -(_selfx * _t46)))));
         return dest;
     }
 
@@ -3666,43 +3745,51 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _toDirx = toDir.get(toDirOffset + 0);
         float _toDiry = toDir.get(toDirOffset + 1);
         float _toDirz = toDir.get(toDirOffset + 2);
-        float _t10 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
-        float _t15, _t17, _t18;
-        if (_t10 > 0.0f) {
-            _t15 = _fromDiry;
-            _t17 = 0.0f;
-            _t18 = -_fromDirx;
+        float _t3 = _fromDirz + _toDirz;
+        float _t4 = _fromDirx + _toDirx;
+        float _t5 = _fromDiry + _toDiry;
+        float _t13 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
+        float _t15 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
+        float _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
+        float _t17 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
+        float _t18, _t19, _t20;
+        if (_t13 > 0.0f) {
+            _t18 = _fromDiry;
+            _t19 = 0.0f;
+            _t20 = -_fromDirx;
         } else {
-            _t15 = 0.0f;
-            _t17 = -_fromDiry;
-            _t18 = _fromDirz;
+            _t18 = 0.0f;
+            _t19 = -_fromDiry;
+            _t20 = _fromDirz;
         }
-        float _t16 = Math.fma(_fromDirx, _toDirx, Math.fma(_fromDiry, _toDiry, Math.fma(_fromDirz, _toDirz, 1.0f)));
-        float _t19 = 2.0f * _t16;
-        float _t21 = (1.0f / (float) Math.sqrt(_t19));
-        float _t27 = _t16 > 1.0E-6f ? 0.5f * (float) Math.sqrt(_t19) : 0.0f;
-        float _t29 = Math.fma(_t17, _t17, Math.fma(_t15, _t15, _t18 * _t18));
+        float _t22 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        float _t23 = 0.5f * _t22;
+        float _t29 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
-        float _t37, _t38, _t39;
-        if (_t16 > 1.0E-6f) {
-            _t37 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry)) * _t21;
-            _t38 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx)) * _t21;
-            _t39 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz)) * _t21;
+        float _t36 = (1.0f / (float) Math.sqrt(Math.fma(_t15, _t15, Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t22 * _t22 / (2.0f * 2.0f))))));
+        float _t42, _t46, _t47, _t48;
+        if (_t23 > 1.0E-6f) {
+            _t42 = 0.5f * _t22 * _t36;
+            _t46 = _t15 * _t36;
+            _t47 = _t17 * _t36;
+            _t48 = _t16 * _t36;
         } else {
             if (_t29 > 0.0f) {
-                _t37 = _t30 * _t15;
-                _t38 = _t30 * _t17;
-                _t39 = _t30 * _t18;
+                _t42 = 0.0f;
+                _t46 = _t30 * _t18;
+                _t47 = _t30 * _t19;
+                _t48 = _t30 * _t20;
             } else {
-                _t37 = 0.0f;
-                _t38 = 0.0f;
-                _t39 = 0.0f;
+                _t42 = 0.0f;
+                _t46 = 0.0f;
+                _t47 = 0.0f;
+                _t48 = 0.0f;
             }
         }
-        dest.put(destOffset + 0, Math.fma(_selfx, _t27, _selfw * _t37) + Math.fma(_selfy, _t38, -(_selfz * _t39)));
-        dest.put(destOffset + 1, Math.fma(_selfy, _t27, _selfz * _t37) + Math.fma(_selfw, _t39, -(_selfx * _t38)));
-        dest.put(destOffset + 2, Math.fma(_selfx, _t39, _selfw * _t38) + Math.fma(_selfz, _t27, -(_selfy * _t37)));
-        dest.put(destOffset + 3, Math.fma(-_selfz, _t38, Math.fma(-_selfy, _t39, Math.fma(_selfw, _t27, -(_selfx * _t37)))));
+        dest.put(destOffset + 0, Math.fma(_selfx, _t42, _selfw * _t46) + Math.fma(_selfy, _t47, -(_selfz * _t48)));
+        dest.put(destOffset + 1, Math.fma(_selfy, _t42, _selfz * _t46) + Math.fma(_selfw, _t48, -(_selfx * _t47)));
+        dest.put(destOffset + 2, Math.fma(_selfx, _t48, _selfw * _t47) + Math.fma(_selfz, _t42, -(_selfy * _t46)));
+        dest.put(destOffset + 3, Math.fma(-_selfz, _t47, Math.fma(-_selfy, _t48, Math.fma(_selfw, _t42, -(_selfx * _t46)))));
         return dest;
     }
 

@@ -13,6 +13,16 @@ import java.nio.ByteBuffer;
  * {@code this} unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of a transform
+ * never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface DoubleTransform extends DoubleTransformR {
 
@@ -157,7 +167,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * Set the rotation of this transform to {@code r}.
      *
      * @param r the quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform setRotation(DoubleQuatR r) { return setRotation(r, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -168,7 +178,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform setRotation(double x, double y, double z, double w) { return setRotation(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -176,7 +186,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * Set the scale of this transform to {@code s}.
      *
      * @param s the scale factors
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform setScale(Double3R s) { return setScale(s, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -186,7 +196,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform setScale(double x, double y, double z) { return setScale(x, y, z, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -194,7 +204,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * Set the scale of this transform to {@code uniform}.
      *
      * @param uniform the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform setScale(double uniform) { return setScale(uniform, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -202,7 +212,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * Set the translation of this transform to {@code t}.
      *
      * @param t the translation vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform setTranslation(Double3R t) { return setTranslation(t, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -212,7 +222,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform setTranslation(double x, double y, double z) { return setTranslation(x, y, z, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -424,7 +434,7 @@ public interface DoubleTransform extends DoubleTransformR {
      *
      * @param other the other transform
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform lerp(DoubleTransformR other, double t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -455,7 +465,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * @param sZ the {@code sZ} component of the transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform lerp(double tX, double tY, double tZ, double rX, double rY, double rZ, double rW, double sX, double sY, double sZ, double t) { return lerp(tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ, t, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -473,7 +483,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * {@code transformPositionInverse} is).
      *
      * @param other the other transform
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform mul(DoubleTransformR other) { return mul(other, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -511,7 +521,7 @@ public interface DoubleTransform extends DoubleTransformR {
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
      * @param sZ the {@code sZ} component of the transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform mul(double tX, double tY, double tZ, double rX, double rY, double rZ, double rW, double sX, double sY, double sZ) { return mul(tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -529,7 +539,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * {@code transformPositionInverse} is).
      *
      * @param other the other transform
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform preMul(DoubleTransformR other) { return preMul(other, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -567,7 +577,7 @@ public interface DoubleTransform extends DoubleTransformR {
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
      * @param sZ the {@code sZ} component of the transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform preMul(double tX, double tY, double tZ, double rX, double rY, double rZ, double rW, double sX, double sY, double sZ) { return preMul(tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -583,7 +593,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * {@code transformPositionInverse} is).
      *
      * @param other the other transform
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform difference(DoubleTransformR other) { return difference(other, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -620,7 +630,7 @@ public interface DoubleTransform extends DoubleTransformR {
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
      * @param sZ the {@code sZ} component of the transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform difference(double tX, double tY, double tZ, double rX, double rY, double rZ, double rW, double sX, double sY, double sZ) { return difference(tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -628,15 +638,19 @@ public interface DoubleTransform extends DoubleTransformR {
      * Invert this transform (translation-rotation-scale, without shear); a zero scale axis yields
      * positive infinity in the corresponding inverse scale.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform invert() { return invert(Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
     /**
      * Normalize this transform so that its rotation part has unit length, leaving its translation
      * and scale unchanged (a zero-length rotation yields the zero quaternion).
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the rotation quaternion must lie
+     * roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform normalize() { return normalize(Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -801,7 +815,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * {@code transformPositionInverse} is).
      *
      * @param rotation the quaternion (must be a unit quaternion)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform rotate(DoubleQuatR rotation) { return rotate(rotation, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -827,7 +841,7 @@ public interface DoubleTransform extends DoubleTransformR {
      *        have unit length)
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform rotate(double x, double y, double z, double w) { return rotate(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -846,7 +860,7 @@ public interface DoubleTransform extends DoubleTransformR {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform rotateAxis(double angle, Double3R axis) { return rotateAxis(angle, axis, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -871,7 +885,7 @@ public interface DoubleTransform extends DoubleTransformR {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform rotateAxis(double angle, double x, double y, double z) { return rotateAxis(angle, x, y, z, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -889,7 +903,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * {@code transformPositionInverse} is).
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform rotateX(double angle) { return rotateX(angle, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -911,7 +925,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform rotateXYZ(double angleX, double angleY, double angleZ) { return rotateXYZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -933,7 +947,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform rotateXZY(double angleX, double angleY, double angleZ) { return rotateXZY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -951,7 +965,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * {@code transformPositionInverse} is).
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform rotateY(double angle) { return rotateY(angle, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -973,7 +987,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform rotateYXZ(double angleX, double angleY, double angleZ) { return rotateYXZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -995,7 +1009,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform rotateYZX(double angleX, double angleY, double angleZ) { return rotateYZX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -1013,7 +1027,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * {@code transformPositionInverse} is).
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform rotateZ(double angle) { return rotateZ(angle, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -1035,7 +1049,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform rotateZXY(double angleX, double angleY, double angleZ) { return rotateZXY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -1057,7 +1071,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform rotateZYX(double angleX, double angleY, double angleZ) { return rotateZYX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -1069,7 +1083,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * transform by using {@code M * S * v}, the scaling will be applied first.
      *
      * @param scale the scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform scale(Double3R scale) { return scale(scale, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -1083,7 +1097,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform scale(double x, double y, double z) { return scale(x, y, z, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -1095,7 +1109,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * transform by using {@code M * S * v}, the scaling will be applied first.
      *
      * @param scale the scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform scale(double scale) { return scale(scale, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -1107,7 +1121,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * transform by using {@code M * T * v}, the translation will be applied first.
      *
      * @param translation the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform translate(Double3R translation) { return translate(translation, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -1121,7 +1135,7 @@ public interface DoubleTransform extends DoubleTransformR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleTransform translate(double x, double y, double z) { return translate(x, y, z, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
@@ -1148,6 +1162,10 @@ public interface DoubleTransform extends DoubleTransformR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1160,6 +1178,10 @@ public interface DoubleTransform extends DoubleTransformR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1172,6 +1194,10 @@ public interface DoubleTransform extends DoubleTransformR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1185,6 +1211,10 @@ public interface DoubleTransform extends DoubleTransformR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1202,6 +1232,10 @@ public interface DoubleTransform extends DoubleTransformR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1214,6 +1248,10 @@ public interface DoubleTransform extends DoubleTransformR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1226,6 +1264,10 @@ public interface DoubleTransform extends DoubleTransformR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1239,6 +1281,10 @@ public interface DoubleTransform extends DoubleTransformR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1256,6 +1302,8 @@ public interface DoubleTransform extends DoubleTransformR {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated DoubleTransform loadUnsafe(long address);
 
@@ -1282,6 +1330,10 @@ public interface DoubleTransform extends DoubleTransformR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1294,6 +1346,10 @@ public interface DoubleTransform extends DoubleTransformR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1306,6 +1362,10 @@ public interface DoubleTransform extends DoubleTransformR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1319,6 +1379,10 @@ public interface DoubleTransform extends DoubleTransformR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1336,6 +1400,10 @@ public interface DoubleTransform extends DoubleTransformR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1348,6 +1416,10 @@ public interface DoubleTransform extends DoubleTransformR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1360,6 +1432,10 @@ public interface DoubleTransform extends DoubleTransformR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1373,6 +1449,10 @@ public interface DoubleTransform extends DoubleTransformR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1390,6 +1470,8 @@ public interface DoubleTransform extends DoubleTransformR {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated DoubleTransform loadFloatUnsafe(long address);
 }

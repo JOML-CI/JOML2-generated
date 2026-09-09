@@ -13,6 +13,16 @@ import java.nio.ByteBuffer;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of a vector
+ * never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface Double3 extends Double3R {
 
@@ -20,7 +30,7 @@ public interface Double3 extends Double3R {
      * Add {@code other} to this vector.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 add(Double3R other) { return add(other, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -30,7 +40,7 @@ public interface Double3 extends Double3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 add(double x, double y, double z) { return add(x, y, z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -38,7 +48,7 @@ public interface Double3 extends Double3R {
      * Divide each component of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 div(double scalar) { return div(scalar, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -46,7 +56,7 @@ public interface Double3 extends Double3R {
      * Divide this vector component-wise by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 div(Double3R other) { return div(other, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -56,7 +66,7 @@ public interface Double3 extends Double3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 div(double x, double y, double z) { return div(x, y, z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -66,7 +76,7 @@ public interface Double3 extends Double3R {
      *
      * @param b the factor to multiply this vector by
      * @param c the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 fma(double b, Double3R c) { return fma(b, c, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -78,7 +88,7 @@ public interface Double3 extends Double3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 fma(double b, double x, double y, double z) { return fma(b, x, y, z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -88,7 +98,7 @@ public interface Double3 extends Double3R {
      *
      * @param b the factor to multiply this vector by
      * @param c the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 fma(Double3R b, Double3R c) { return fma(b, c, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -103,7 +113,7 @@ public interface Double3 extends Double3R {
      * @param cX the {@code x} component of the vector {@code (cX, cY, cZ)}
      * @param cY the {@code y} component of the vector {@code (cX, cY, cZ)}
      * @param cZ the {@code z} component of the vector {@code (cX, cY, cZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 fma(double bX, double bY, double bZ, double cX, double cY, double cZ) { return fma(bX, bY, bZ, cX, cY, cZ, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -111,7 +121,7 @@ public interface Double3 extends Double3R {
      * Multiply each component of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 mul(double scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -119,7 +129,7 @@ public interface Double3 extends Double3R {
      * Multiply this vector component-wise by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 mul(Double3R other) { return mul(other, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -129,14 +139,14 @@ public interface Double3 extends Double3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 mul(double x, double y, double z) { return mul(x, y, z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Negate this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 negate() { return negate(Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -144,7 +154,7 @@ public interface Double3 extends Double3R {
      * Subtract {@code other} from this vector.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 sub(Double3R other) { return sub(other, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -154,7 +164,7 @@ public interface Double3 extends Double3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 sub(double x, double y, double z) { return sub(x, y, z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -180,7 +190,7 @@ public interface Double3 extends Double3R {
      * Set this vector to {@code s}.
      *
      * @param s the value assigned to every component
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 set(double s) { return set(s, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -283,7 +293,7 @@ public interface Double3 extends Double3R {
      * @param p2 the second control point
      * @param p3 the end point
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 bezier(Double3R p1, Double3R p2, Double3R p3, double t) { return bezier(p1, p2, p3, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -300,7 +310,7 @@ public interface Double3 extends Double3R {
      * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z)}
      * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 bezier(double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z, double p3X, double p3Y, double p3Z, double t) { return bezier(p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -311,7 +321,7 @@ public interface Double3 extends Double3R {
      * @param p1 the control point
      * @param p2 the end point
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 bezier2(Double3R p1, Double3R p2, double t) { return bezier2(p1, p2, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -326,7 +336,7 @@ public interface Double3 extends Double3R {
      * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
      * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 bezier2(double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z, double t) { return bezier2(p1X, p1Y, p1Z, p2X, p2Y, p2Z, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -337,7 +347,7 @@ public interface Double3 extends Double3R {
      * @param p1 the control point
      * @param p2 the end point
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 bezier2Tangent(Double3R p1, Double3R p2, double t) { return bezier2Tangent(p1, p2, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -352,7 +362,7 @@ public interface Double3 extends Double3R {
      * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
      * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 bezier2Tangent(double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z, double t) { return bezier2Tangent(p1X, p1Y, p1Z, p2X, p2Y, p2Z, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -364,7 +374,7 @@ public interface Double3 extends Double3R {
      * @param p2 the second control point
      * @param p3 the end point
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 bezierTangent(Double3R p1, Double3R p2, Double3R p3, double t) { return bezierTangent(p1, p2, p3, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -382,7 +392,7 @@ public interface Double3 extends Double3R {
      * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z)}
      * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 bezierTangent(double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z, double p3X, double p3Y, double p3Z, double t) { return bezierTangent(p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -393,7 +403,7 @@ public interface Double3 extends Double3R {
      * @param p2 the end point of the interpolated segment
      * @param p3 the outer control point after the segment
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 catmullRom(Double3R p1, Double3R p2, Double3R p3, double t) { return catmullRom(p1, p2, p3, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -410,7 +420,7 @@ public interface Double3 extends Double3R {
      * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z)}
      * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 catmullRom(double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z, double p3X, double p3Y, double p3Z, double t) { return catmullRom(p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -422,7 +432,7 @@ public interface Double3 extends Double3R {
      * @param p2 the end point of the interpolated segment
      * @param p3 the outer control point after the segment
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 catmullRomTangent(Double3R p1, Double3R p2, Double3R p3, double t) { return catmullRomTangent(p1, p2, p3, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -440,7 +450,7 @@ public interface Double3 extends Double3R {
      * @param p3Y the {@code y} component of the vector {@code (p3X, p3Y, p3Z)}
      * @param p3Z the {@code z} component of the vector {@code (p3X, p3Y, p3Z)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 catmullRomTangent(double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z, double p3X, double p3Y, double p3Z, double t) { return catmullRomTangent(p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -451,7 +461,7 @@ public interface Double3 extends Double3R {
      * @param v1 the endpoint
      * @param t1 the tangent at the endpoint
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 hermite(Double3R t0, Double3R v1, Double3R t1, double t) { return hermite(t0, v1, t1, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -468,7 +478,7 @@ public interface Double3 extends Double3R {
      * @param t1Y the {@code y} component of the vector {@code (t1X, t1Y, t1Z)}
      * @param t1Z the {@code z} component of the vector {@code (t1X, t1Y, t1Z)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 hermite(double t0X, double t0Y, double t0Z, double v1X, double v1Y, double v1Z, double t1X, double t1Y, double t1Z, double t) { return hermite(t0X, t0Y, t0Z, v1X, v1Y, v1Z, t1X, t1Y, t1Z, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -480,7 +490,7 @@ public interface Double3 extends Double3R {
      * @param v1 the endpoint
      * @param t1 the tangent at the endpoint
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 hermiteTangent(Double3R t0, Double3R v1, Double3R t1, double t) { return hermiteTangent(t0, v1, t1, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -498,7 +508,7 @@ public interface Double3 extends Double3R {
      * @param t1Y the {@code y} component of the vector {@code (t1X, t1Y, t1Z)}
      * @param t1Z the {@code z} component of the vector {@code (t1X, t1Y, t1Z)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 hermiteTangent(double t0X, double t0Y, double t0Z, double v1X, double v1Y, double v1Z, double t1X, double t1Y, double t1Z, double t) { return hermiteTangent(t0X, t0Y, t0Z, v1X, v1Y, v1Z, t1X, t1Y, t1Z, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -508,7 +518,7 @@ public interface Double3 extends Double3R {
      *
      * @param other the other vector
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 lerp(Double3R other, double t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -520,7 +530,7 @@ public interface Double3 extends Double3R {
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 lerp(double x, double y, double z, double t) { return lerp(x, y, z, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -530,7 +540,7 @@ public interface Double3 extends Double3R {
      *
      * @param other the other vector
      * @param t the per-component interpolation factors, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 lerp(Double3R other, Double3R t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -544,21 +554,21 @@ public interface Double3 extends Double3R {
      * @param tX the {@code x} component of the vector {@code (tX, tY, tZ)}
      * @param tY the {@code y} component of the vector {@code (tX, tY, tZ)}
      * @param tZ the {@code z} component of the vector {@code (tX, tY, tZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 lerp(double otherX, double otherY, double otherZ, double tX, double tY, double tZ) { return lerp(otherX, otherY, otherZ, tX, tY, tZ, Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the absolute value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 absolute() { return absolute(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the arc cosine of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 acos() { return acos(Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -567,7 +577,7 @@ public interface Double3 extends Double3R {
      *
      * @param b the vector
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 addScaled(Double3R b, double scalar) { return addScaled(b, scalar, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -578,7 +588,7 @@ public interface Double3 extends Double3R {
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 addScaled(double x, double y, double z, double scalar) { return addScaled(x, y, z, scalar, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -587,7 +597,7 @@ public interface Double3 extends Double3R {
      *
      * @param b the vector
      * @param c the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 addScaled(Double3R b, Double3R c) { return addScaled(b, c, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -601,21 +611,21 @@ public interface Double3 extends Double3R {
      * @param cX the {@code x} component of the vector {@code (cX, cY, cZ)}
      * @param cY the {@code y} component of the vector {@code (cX, cY, cZ)}
      * @param cZ the {@code z} component of the vector {@code (cX, cY, cZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 addScaled(double bX, double bY, double bZ, double cX, double cY, double cZ) { return addScaled(bX, bY, bZ, cX, cY, cZ, Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the arc sine of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 asin() { return asin(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the arc tangent of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 atan() { return atan(Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -624,7 +634,7 @@ public interface Double3 extends Double3R {
      * this vector (the numerator) and {@code b} {@code x} (the denominator).
      *
      * @param x the value to take the arc tangent over (the denominator)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 atan2(double x) { return atan2(x, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -634,7 +644,7 @@ public interface Double3 extends Double3R {
      * denominator).
      *
      * @param x the vector of denominators, one per component
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 atan2(Double3R x) { return atan2(x, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -646,21 +656,21 @@ public interface Double3 extends Double3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 atan2(double x, double y, double z) { return atan2(x, y, z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the cube root of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 cbrt() { return cbrt(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the ceiling of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 ceil() { return ceil(Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -669,7 +679,7 @@ public interface Double3 extends Double3R {
      *
      * @param min the lower bound
      * @param max the upper bound
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 clamp(double min, double max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -678,7 +688,7 @@ public interface Double3 extends Double3R {
      *
      * @param min the per-component lower bounds
      * @param max the per-component upper bounds
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 clamp(Double3R min, Double3R max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -692,7 +702,7 @@ public interface Double3 extends Double3R {
      * @param maxX the {@code x} component of the vector {@code (maxX, maxY, maxZ)}
      * @param maxY the {@code y} component of the vector {@code (maxX, maxY, maxZ)}
      * @param maxZ the {@code z} component of the vector {@code (maxX, maxY, maxZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 clamp(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) { return clamp(minX, minY, minZ, maxX, maxY, maxZ, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -702,7 +712,7 @@ public interface Double3 extends Double3R {
      *
      * @param lineStart the vector
      * @param lineEnd the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 closestPointOnLine(Double3R lineStart, Double3R lineEnd) { return closestPointOnLine(lineStart, lineEnd, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -720,7 +730,7 @@ public interface Double3 extends Double3R {
      * @param lineEndX the {@code x} component of the vector {@code (lineEndX, lineEndY, lineEndZ)}
      * @param lineEndY the {@code y} component of the vector {@code (lineEndX, lineEndY, lineEndZ)}
      * @param lineEndZ the {@code z} component of the vector {@code (lineEndX, lineEndY, lineEndZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 closestPointOnLine(double lineStartX, double lineStartY, double lineStartZ, double lineEndX, double lineEndY, double lineEndZ) { return closestPointOnLine(lineStartX, lineStartY, lineStartZ, lineEndX, lineEndY, lineEndZ, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -728,7 +738,7 @@ public interface Double3 extends Double3R {
      * Copy the sign of {@code sign} onto each component of this vector.
      *
      * @param sign the value whose sign is copied
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 copySign(double sign) { return copySign(sign, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -737,7 +747,7 @@ public interface Double3 extends Double3R {
      * vector.
      *
      * @param sign the value whose sign is copied
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 copySign(Double3R sign) { return copySign(sign, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -748,21 +758,21 @@ public interface Double3 extends Double3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 copySign(double x, double y, double z) { return copySign(x, y, z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the cosine of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 cos() { return cos(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the hyperbolic cosine of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 cosh() { return cosh(Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -770,7 +780,7 @@ public interface Double3 extends Double3R {
      * Compute the cross product of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 cross(Double3R other) { return cross(other, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -780,35 +790,35 @@ public interface Double3 extends Double3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 cross(double x, double y, double z) { return cross(x, y, z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the value converted from radians to degrees of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 degrees() { return degrees(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the base-e exponential of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 exp() { return exp(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the base-2 exponential of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 exp2() { return exp2(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the base-e exponential minus one of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 expm1() { return expm1(Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -819,7 +829,7 @@ public interface Double3 extends Double3R {
      *
      * @param I the vector
      * @param Nref the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 faceforward(Double3R I, Double3R Nref) { return faceforward(I, Nref, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -835,21 +845,21 @@ public interface Double3 extends Double3R {
      * @param NrefX the {@code x} component of the vector {@code (NrefX, NrefY, NrefZ)}
      * @param NrefY the {@code y} component of the vector {@code (NrefX, NrefY, NrefZ)}
      * @param NrefZ the {@code z} component of the vector {@code (NrefX, NrefY, NrefZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 faceforward(double IX, double IY, double IZ, double NrefX, double NrefY, double NrefZ) { return faceforward(IX, IY, IZ, NrefX, NrefY, NrefZ, Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the floor of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 floor() { return floor(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the fractional part of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 fract() { return fract(Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -858,7 +868,7 @@ public interface Double3 extends Double3R {
      * of this vector and {@code b} {@code y}.
      *
      * @param y the other operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 hypot(double y) { return hypot(y, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -867,7 +877,7 @@ public interface Double3 extends Double3R {
      * of this vector and {@code b} the corresponding component of {@code y}.
      *
      * @param y the vector of other operands, one per component
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 hypot(Double3R y) { return hypot(y, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -879,49 +889,49 @@ public interface Double3 extends Double3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 hypot(double x, double y, double z) { return hypot(x, y, z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the reciprocal {@code 1 / x} of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 inverse() { return inverse(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the inverse square root of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 inverseSqrt() { return inverseSqrt(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the natural logarithm of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 log() { return log(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the base-10 logarithm of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 log10() { return log10(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the natural logarithm of one plus the value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 log1p() { return log1p(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the base-2 logarithm of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 log2() { return log2(Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -929,7 +939,7 @@ public interface Double3 extends Double3R {
      * Set each component of this vector to the larger of itself and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 max(double scalar) { return max(scalar, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -938,7 +948,7 @@ public interface Double3 extends Double3R {
      * {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 max(Double3R other) { return max(other, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -949,7 +959,7 @@ public interface Double3 extends Double3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 max(double x, double y, double z) { return max(x, y, z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -957,7 +967,7 @@ public interface Double3 extends Double3R {
      * Set each component of this vector to the smaller of itself and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 min(double scalar) { return min(scalar, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -966,7 +976,7 @@ public interface Double3 extends Double3R {
      * {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 min(Double3R other) { return min(other, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -977,7 +987,7 @@ public interface Double3 extends Double3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 min(double x, double y, double z) { return min(x, y, z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -989,7 +999,7 @@ public interface Double3 extends Double3R {
      * dividend.
      *
      * @param y the divisor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 mod(double y) { return mod(y, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1001,7 +1011,7 @@ public interface Double3 extends Double3R {
      * dividend.
      *
      * @param y the vector of divisors, one per component
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 mod(Double3R y) { return mod(y, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1015,7 +1025,7 @@ public interface Double3 extends Double3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 mod(double x, double y, double z) { return mod(x, y, z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1023,7 +1033,7 @@ public interface Double3 extends Double3R {
      * Compute the next representable value toward negative infinity of each component of this
      * vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 nextDown() { return nextDown(Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1031,7 +1041,7 @@ public interface Double3 extends Double3R {
      * Compute the next representable value toward positive infinity of each component of this
      * vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 nextUp() { return nextUp(Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1040,10 +1050,10 @@ public interface Double3 extends Double3R {
      * <p>
      * The squared length is formed at the component precision, so components whose squares overflow
      * or underflow that precision are out of domain: the result is the zero vector rather than a
-     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}).
+     * unit vector. Rescale such inputs before normalizing (the magnitude must lie roughly between
+     * 1e-19 and 1.8e19 for {@code float}, 1.5e-154 and 1.3e154 for {@code double}).
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 normalize() { return normalize(Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1052,14 +1062,14 @@ public interface Double3 extends Double3R {
      * length (the zero vector yields the zero vector).
      *
      * @param length the length to rescale to
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 normalizeMul(double length) { return normalizeMul(length, Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute a vector perpendicular to this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 perpendicular() { return perpendicular(Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1067,7 +1077,7 @@ public interface Double3 extends Double3R {
      * Raise each component of this vector to the power of {@code exponent}.
      *
      * @param exponent the exponent
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 pow(double exponent) { return pow(exponent, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1075,7 +1085,7 @@ public interface Double3 extends Double3R {
      * Raise each component of this vector to the power of {@code exponent}.
      *
      * @param exponent the exponent
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 pow(Double3R exponent) { return pow(exponent, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1085,7 +1095,7 @@ public interface Double3 extends Double3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 pow(double x, double y, double z) { return pow(x, y, z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1093,7 +1103,7 @@ public interface Double3 extends Double3R {
      * Project this vector onto {@code onto}.
      *
      * @param onto the vector to project onto
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 project(Double3R onto) { return project(onto, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1103,7 +1113,7 @@ public interface Double3 extends Double3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 project(double x, double y, double z) { return project(x, y, z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1111,7 +1121,7 @@ public interface Double3 extends Double3R {
      * Project this vector onto the plane with the given normal.
      *
      * @param normal the normal (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 projectOnPlane(Double3R normal) { return projectOnPlane(normal, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1124,14 +1134,14 @@ public interface Double3 extends Double3R {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 projectOnPlane(double x, double y, double z) { return projectOnPlane(x, y, z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the value converted from degrees to radians of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 radians() { return radians(Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1139,7 +1149,7 @@ public interface Double3 extends Double3R {
      * Reflect this vector about the given normal.
      *
      * @param normal the normal (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 reflect(Double3R normal) { return reflect(normal, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1152,7 +1162,7 @@ public interface Double3 extends Double3R {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 reflect(double x, double y, double z) { return reflect(x, y, z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1164,7 +1174,7 @@ public interface Double3 extends Double3R {
      * @param normal the normal (must be a unit vector)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
      *        destination medium's
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 refract(Double3R normal, double eta) { return refract(normal, eta, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1181,7 +1191,7 @@ public interface Double3 extends Double3R {
      *        length)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
      *        destination medium's
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 refract(double x, double y, double z, double eta) { return refract(x, y, z, eta, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1189,28 +1199,28 @@ public interface Double3 extends Double3R {
      * Compute the value rounded to the nearest integer, ties to even ({@code Math.rint}) of each
      * component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 round() { return round(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the sign of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 sign() { return sign(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the sine of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 sin() { return sin(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the hyperbolic sine of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 sinh() { return sinh(Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1221,7 +1231,7 @@ public interface Double3 extends Double3R {
      *
      * @param edge0 the lower edge
      * @param edge1 the upper edge
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 smoothstep(double edge0, double edge1) { return smoothstep(edge0, edge1, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1232,7 +1242,7 @@ public interface Double3 extends Double3R {
      *
      * @param edge0 the lower edge
      * @param edge1 the upper edge
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 smoothstep(Double3R edge0, Double3R edge1) { return smoothstep(edge0, edge1, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1248,14 +1258,14 @@ public interface Double3 extends Double3R {
      * @param edge1X the {@code x} component of the vector {@code (edge1X, edge1Y, edge1Z)}
      * @param edge1Y the {@code y} component of the vector {@code (edge1X, edge1Y, edge1Z)}
      * @param edge1Z the {@code z} component of the vector {@code (edge1X, edge1Y, edge1Z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 smoothstep(double edge0X, double edge0Y, double edge0Z, double edge1X, double edge1Y, double edge1Z) { return smoothstep(edge0X, edge0Y, edge0Z, edge1X, edge1Y, edge1Z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the square root of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 sqrt() { return sqrt(Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1264,7 +1274,7 @@ public interface Double3 extends Double3R {
      * {@code 1} otherwise.
      *
      * @param edge the edge to compare each component against
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 step(double edge) { return step(edge, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1273,7 +1283,7 @@ public interface Double3 extends Double3R {
      * component of the given edge, and to {@code 1} otherwise.
      *
      * @param edge the edge to compare each component against
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 step(Double3R edge) { return step(edge, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1284,21 +1294,21 @@ public interface Double3 extends Double3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 step(double x, double y, double z) { return step(x, y, z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the tangent of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 tan() { return tan(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the hyperbolic tangent of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 tanh() { return tanh(Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1310,7 +1320,7 @@ public interface Double3 extends Double3R {
      *
      * @param p1 the second vertex of the triangle (this vector is the first)
      * @param p2 the third vertex of the triangle
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 triangleNormal(Double3R p1, Double3R p2) { return triangleNormal(p1, p2, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1327,21 +1337,21 @@ public interface Double3 extends Double3R {
      * @param p2X the {@code x} component of the vector {@code (p2X, p2Y, p2Z)}
      * @param p2Y the {@code y} component of the vector {@code (p2X, p2Y, p2Z)}
      * @param p2Z the {@code z} component of the vector {@code (p2X, p2Y, p2Z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 triangleNormal(double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z) { return triangleNormal(p1X, p1Y, p1Z, p2X, p2Y, p2Z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the truncated value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 trunc() { return trunc(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Compute the unit in the last place (ulp) of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 ulp() { return ulp(Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1349,7 +1359,7 @@ public interface Double3 extends Double3R {
      * Pre-multiply {@code mat} onto this vector, i.e. compute {@code mat * this}.
      *
      * @param mat the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 preMul(Double3x3R mat) { return preMul(mat, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1359,7 +1369,7 @@ public interface Double3 extends Double3R {
      * translation.
      *
      * @param mat the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 preMulDirection(Double3x4R mat) { return preMulDirection(mat, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1369,7 +1379,7 @@ public interface Double3 extends Double3R {
      * translation.
      *
      * @param mat the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 preMulDirection(Double4x4R mat) { return preMulDirection(mat, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1379,7 +1389,7 @@ public interface Double3 extends Double3R {
      * translation.
      *
      * @param mat the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 preMulPosition(Double3x4R mat) { return preMulPosition(mat, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1389,7 +1399,7 @@ public interface Double3 extends Double3R {
      * translation.
      *
      * @param mat the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 preMulPosition(Double4x4R mat) { return preMulPosition(mat, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1399,7 +1409,7 @@ public interface Double3 extends Double3R {
      * {@code r.xyz / r.w}.
      *
      * @param mat the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 preMulProject(Double4x4R mat) { return preMulProject(mat, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1407,7 +1417,7 @@ public interface Double3 extends Double3R {
      * Rotate this vector by the quaternion {@code quat}, i.e. compute {@code q * this * q^-1}.
      *
      * @param quat the quaternion (must be a unit quaternion)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 rotate(DoubleQuatR quat) { return rotate(quat, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1423,7 +1433,7 @@ public interface Double3 extends Double3R {
      *        have unit length)
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 rotate(double x, double y, double z, double w) { return rotate(x, y, z, w, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1432,7 +1442,7 @@ public interface Double3 extends Double3R {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 rotateAxis(double angle, Double3R axis) { return rotateAxis(angle, axis, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1446,7 +1456,7 @@ public interface Double3 extends Double3R {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 rotateAxis(double angle, double x, double y, double z) { return rotateAxis(angle, x, y, z, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1454,7 +1464,7 @@ public interface Double3 extends Double3R {
      * Rotate this vector by the inverse of the given rotation.
      *
      * @param quat the quaternion (must be a unit quaternion)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 rotateInverse(DoubleQuatR quat) { return rotateInverse(quat, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1469,7 +1479,7 @@ public interface Double3 extends Double3R {
      *        have unit length)
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 rotateInverse(double x, double y, double z, double w) { return rotateInverse(x, y, z, w, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1477,7 +1487,7 @@ public interface Double3 extends Double3R {
      * Rotate this vector by {@code angle} radians about the X axis.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 rotateX(double angle) { return rotateX(angle, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1485,7 +1495,7 @@ public interface Double3 extends Double3R {
      * Rotate this vector by {@code angle} radians about the Y axis.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 rotateY(double angle) { return rotateY(angle, Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1493,196 +1503,196 @@ public interface Double3 extends Double3R {
      * Rotate this vector by {@code angle} radians about the Z axis.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 rotateZ(double angle) { return rotateZ(angle, Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 xxx() { return xxx(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 xxy() { return xxy(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 xxz() { return xxz(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 xyx() { return xyx(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 xyy() { return xyy(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 xyz() { return xyz(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 xzx() { return xzx(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 xzy() { return xzy(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 xzz() { return xzz(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 yxx() { return yxx(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 yxy() { return yxy(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 yxz() { return yxz(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 yyx() { return yyx(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 yyy() { return yyy(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 yyz() { return yyz(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 yzx() { return yzx(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 yzy() { return yzy(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 yzz() { return yzz(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 zxx() { return zxx(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 zxy() { return zxy(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 zxz() { return zxz(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 zyx() { return zyx(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 zyy() { return zyy(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 zyz() { return zyz(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 zzx() { return zzx(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 zzy() { return zzy(Joml.RETURN_NEW ? Joml.double3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3 zzz() { return zzz(Joml.RETURN_NEW ? Joml.double3() : this); }
 
@@ -1709,6 +1719,10 @@ public interface Double3 extends Double3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1721,6 +1735,10 @@ public interface Double3 extends Double3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1733,6 +1751,10 @@ public interface Double3 extends Double3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1746,6 +1768,10 @@ public interface Double3 extends Double3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1763,6 +1789,10 @@ public interface Double3 extends Double3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1775,6 +1805,10 @@ public interface Double3 extends Double3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1787,6 +1821,10 @@ public interface Double3 extends Double3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1800,6 +1838,10 @@ public interface Double3 extends Double3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1817,6 +1859,8 @@ public interface Double3 extends Double3R {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated Double3 loadUnsafe(long address);
 
@@ -1843,6 +1887,10 @@ public interface Double3 extends Double3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1855,6 +1903,10 @@ public interface Double3 extends Double3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1867,6 +1919,10 @@ public interface Double3 extends Double3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1880,6 +1936,10 @@ public interface Double3 extends Double3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1897,6 +1957,10 @@ public interface Double3 extends Double3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1909,6 +1973,10 @@ public interface Double3 extends Double3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1921,6 +1989,10 @@ public interface Double3 extends Double3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1934,6 +2006,10 @@ public interface Double3 extends Double3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1951,6 +2027,8 @@ public interface Double3 extends Double3R {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated Double3 loadFloatUnsafe(long address);
 }

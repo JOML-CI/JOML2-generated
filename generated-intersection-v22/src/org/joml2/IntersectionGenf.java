@@ -1780,10 +1780,9 @@ public final class IntersectionGenf {
      * intersection.
      * <p>
      * The direction must be normalized: the kernel projects the vector from the origin to the
-     * center onto it and subtracts the squared projection from that vector's squared length, taking
-     * the remainder as the squared perpendicular distance from the center to the ray, which only
-     * holds for a unit direction, and <i>t</i> is then a distance along the ray. The radius is
-     * passed squared.
+     * center onto it, and takes the 2D cross product of the direction with that vector as the
+     * perpendicular distance from the center to the ray, which only holds for a unit direction, and
+     * <i>t</i> is then a distance along the ray. The radius is passed squared.
      * <p>
      * An intersection is reported for a ray whose origin lies inside the circle - the near value is
      * negative in that case. A ray that only grazes the circle tangentially does not count, and
@@ -1806,12 +1805,12 @@ public final class IntersectionGenf {
     public static boolean intersectRayCircle(float originX, float originY, float dirX, float dirY, float centerX, float centerY, float radiusSquared, Float2 result) {
         float _t0 = centerX - originX;
         float _t1 = centerY - originY;
-        float _t5 = Math.fma(dirX, _t0, dirY * _t1);
-        float _t9 = (float) Math.sqrt(Math.fma(-_t0, _t0, Math.fma(-_t1, _t1, Math.fma(_t5, _t5, radiusSquared))));
-        float _t13 = Math.fma(dirX, _t0, Math.fma(dirY, _t1, _t9));
-        float _t14 = Math.fma(dirX, _t0, Math.fma(dirY, _t1, -_t9));
-        if ((_t14 < _t13) && (_t13 >= 0.0f)) {
-            result.set(_t14, _t13);
+        float _t4 = Math.fma(dirX, _t1, -(dirY * _t0));
+        float _t7 = (float) Math.sqrt(Math.fma(-_t4, _t4, radiusSquared));
+        float _t11 = Math.fma(dirX, _t0, Math.fma(dirY, _t1, _t7));
+        float _t12 = Math.fma(dirX, _t0, Math.fma(dirY, _t1, -_t7));
+        if ((_t12 < _t11) && (_t11 >= 0.0f)) {
+            result.set(_t12, _t11);
             return true;
         }
         return false;
@@ -1824,10 +1823,9 @@ public final class IntersectionGenf {
      * intersection.
      * <p>
      * The direction must be normalized: the kernel projects the vector from the origin to the
-     * center onto it and subtracts the squared projection from that vector's squared length, taking
-     * the remainder as the squared perpendicular distance from the center to the ray, which only
-     * holds for a unit direction, and <i>t</i> is then a distance along the ray. The radius is
-     * passed squared.
+     * center onto it, and takes the 2D cross product of the direction with that vector as the
+     * perpendicular distance from the center to the ray, which only holds for a unit direction, and
+     * <i>t</i> is then a distance along the ray. The radius is passed squared.
      * <p>
      * An intersection is reported for a ray whose origin lies inside the circle - the near value is
      * negative in that case. A ray that only grazes the circle tangentially does not count, and
@@ -2053,8 +2051,10 @@ public final class IntersectionGenf {
      * with the given center and the given squared radius, and determine the parameter <i>t</i> in
      * the ray equation <i>p(t) = origin + t * dir</i> at the near and far intersection.
      * <p>
-     * The direction must be normalized, since the near and far parameters are computed as distances
-     * along the ray. The radius is passed already squared.
+     * The direction must be normalized: the near and far parameters are computed as distances along
+     * the ray, and the squared length of the origin-to-center vector's component orthogonal to the
+     * direction is taken as the squared distance from the center to the ray's line. The radius is
+     * passed already squared.
      * <p>
      * A ray whose origin lies inside the sphere intersects it, and its near parameter is then
      * negative; a sphere lying entirely behind the origin does not intersect. A ray that only
@@ -2082,12 +2082,15 @@ public final class IntersectionGenf {
         float _t0 = centerX - originX;
         float _t1 = centerY - originY;
         float _t2 = centerZ - originZ;
-        float _t8 = Math.fma(dirZ, _t2, Math.fma(dirX, _t0, dirY * _t1));
-        float _t13 = (float) Math.sqrt(Math.fma(-_t0, _t0, Math.fma(-_t1, _t1, Math.fma(-_t2, _t2, Math.fma(_t8, _t8, radiusSquared)))));
-        float _t19 = Math.fma(dirX, _t0, Math.fma(dirY, _t1, Math.fma(dirZ, _t2, _t13)));
-        float _t20 = Math.fma(dirX, _t0, Math.fma(dirY, _t1, Math.fma(dirZ, _t2, -_t13)));
-        if ((_t20 < _t19) && (_t19 >= 0.0f)) {
-            result.set(_t20, _t19);
+        float _t5 = Math.fma(dirZ, _t2, Math.fma(dirX, _t0, dirY * _t1));
+        float _t6 = Math.fma(-dirX, _t5, _t0);
+        float _t7 = Math.fma(-dirY, _t5, _t1);
+        float _t8 = Math.fma(-dirZ, _t5, _t2);
+        float _t15 = (float) Math.sqrt(Math.fma(-_t6, _t6, Math.fma(-_t7, _t7, Math.fma(-_t8, _t8, radiusSquared))));
+        float _t21 = Math.fma(dirX, _t0, Math.fma(dirY, _t1, Math.fma(dirZ, _t2, _t15)));
+        float _t22 = Math.fma(dirX, _t0, Math.fma(dirY, _t1, Math.fma(dirZ, _t2, -_t15)));
+        if ((_t22 < _t21) && (_t21 >= 0.0f)) {
+            result.set(_t22, _t21);
             return true;
         }
         return false;
@@ -2098,8 +2101,10 @@ public final class IntersectionGenf {
      * with the given center and the given squared radius, and determine the parameter <i>t</i> in
      * the ray equation <i>p(t) = origin + t * dir</i> at the near and far intersection.
      * <p>
-     * The direction must be normalized, since the near and far parameters are computed as distances
-     * along the ray. The radius is passed already squared.
+     * The direction must be normalized: the near and far parameters are computed as distances along
+     * the ray, and the squared length of the origin-to-center vector's component orthogonal to the
+     * direction is taken as the squared distance from the center to the ray's line. The radius is
+     * passed already squared.
      * <p>
      * A ray whose origin lies inside the sphere intersects it, and its near parameter is then
      * negative; a sphere lying entirely behind the origin does not intersect. A ray that only
@@ -4012,8 +4017,9 @@ public final class IntersectionGenf {
      * with the given center and square radius.
      * <p>
      * The direction must be normalized: the kernel projects the vector from the origin to the
-     * center onto it and takes the remainder as the squared perpendicular distance from the center
-     * to the ray, which only holds for a unit direction. The radius is passed squared.
+     * center onto it, and takes the 2D cross product of the direction with that vector as the
+     * perpendicular distance from the center to the ray, which only holds for a unit direction. The
+     * radius is passed squared.
      * <p>
      * An intersection is reported for a ray whose origin lies inside the circle. A ray that only
      * grazes the circle tangentially does not count, and neither does a circle lying entirely
@@ -4032,11 +4038,11 @@ public final class IntersectionGenf {
      * @return <code>true</code> iff the ray intersects the circle
      */
     public static boolean testRayCircle(float originX, float originY, float dirX, float dirY, float centerX, float centerY, float radiusSquared) {
-        float _t0 = centerX - originX;
-        float _t1 = centerY - originY;
-        float _t3 = Math.fma(dirX, _t0, dirY * _t1);
-        if (!(Math.fma(-_t3, _t3, Math.fma(_t0, _t0, _t1 * _t1)) < radiusSquared)) return false;
-        return Math.fma(dirX, _t0, Math.fma(dirY, _t1, (float) Math.sqrt(Math.fma(-_t0, _t0, Math.fma(-_t1, _t1, Math.fma(_t3, _t3, radiusSquared)))))) >= 0.0f;
+        float _t0 = centerY - originY;
+        float _t1 = centerX - originX;
+        float _t4 = Math.fma(dirX, _t0, -(dirY * _t1));
+        if (!(_t4 * _t4 < radiusSquared)) return false;
+        return Math.fma(dirX, _t1, Math.fma(dirY, _t0, (float) Math.sqrt(Math.fma(-_t4, _t4, radiusSquared)))) >= 0.0f;
     }
 
     /**
@@ -4044,8 +4050,9 @@ public final class IntersectionGenf {
      * with the given center and square radius.
      * <p>
      * The direction must be normalized: the kernel projects the vector from the origin to the
-     * center onto it and takes the remainder as the squared perpendicular distance from the center
-     * to the ray, which only holds for a unit direction. The radius is passed squared.
+     * center onto it, and takes the 2D cross product of the direction with that vector as the
+     * perpendicular distance from the center to the ray, which only holds for a unit direction. The
+     * radius is passed squared.
      * <p>
      * An intersection is reported for a ray whose origin lies inside the circle. A ray that only
      * grazes the circle tangentially does not count, and neither does a circle lying entirely
@@ -4069,7 +4076,9 @@ public final class IntersectionGenf {
      * given sphere with the given center and square radius.
      * <p>
      * The ray's direction must be of unit length: the vector from the ray's origin to the sphere's
-     * center is projected onto it without normalizing, and the radius is supplied already squared.
+     * center is projected onto it without normalizing, and the squared length of its component
+     * orthogonal to the direction is the squared distance from the center to the ray's line. The
+     * radius is supplied already squared.
      * <p>
      * This method returns <code>true</code> for a ray whose origin lies inside the sphere, and
      * <code>false</code> when the whole sphere lies behind the ray's origin. The test is strict, so
@@ -4095,8 +4104,11 @@ public final class IntersectionGenf {
         float _t1 = centerX - originX;
         float _t2 = centerY - originY;
         float _t5 = Math.fma(dirZ, _t0, Math.fma(dirX, _t1, dirY * _t2));
-        if (!(Math.fma(-_t5, _t5, Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2))) < radiusSquared)) return false;
-        return Math.fma(dirX, _t1, Math.fma(dirY, _t2, Math.fma(dirZ, _t0, (float) Math.sqrt(Math.fma(-_t1, _t1, Math.fma(-_t2, _t2, Math.fma(-_t0, _t0, Math.fma(_t5, _t5, radiusSquared)))))))) >= 0.0f;
+        float _t6 = Math.fma(-dirZ, _t5, _t0);
+        float _t7 = Math.fma(-dirX, _t5, _t1);
+        float _t8 = Math.fma(-dirY, _t5, _t2);
+        if (!(Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8)) < radiusSquared)) return false;
+        return Math.fma(dirX, _t1, Math.fma(dirY, _t2, Math.fma(dirZ, _t0, (float) Math.sqrt(Math.fma(-_t7, _t7, Math.fma(-_t8, _t8, Math.fma(-_t6, _t6, radiusSquared))))))) >= 0.0f;
     }
 
     /**
@@ -4104,7 +4116,9 @@ public final class IntersectionGenf {
      * given sphere with the given center and square radius.
      * <p>
      * The ray's direction must be of unit length: the vector from the ray's origin to the sphere's
-     * center is projected onto it without normalizing, and the radius is supplied already squared.
+     * center is projected onto it without normalizing, and the squared length of its component
+     * orthogonal to the direction is the squared distance from the center to the ray's line. The
+     * radius is supplied already squared.
      * <p>
      * This method returns <code>true</code> for a ray whose origin lies inside the sphere, and
      * <code>false</code> when the whole sphere lies behind the ray's origin. The test is strict, so

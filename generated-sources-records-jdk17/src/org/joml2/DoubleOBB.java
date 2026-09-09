@@ -11,6 +11,14 @@ import java.nio.FloatBuffer;
  * All operations leave the receiver unchanged and return their result as a value. An operation
  * whose result equals one of its operands may return that operand instead of allocating a new
  * instance.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns).
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  *
  * @param cX the {@code cX} component
  * @param cY the {@code cY} component
@@ -841,6 +849,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
     /**
      * Compare this value component-wise against {@code other}, allowing a difference of at
      * most {@code epsilon} per component.
+     * <p>
+     * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+     * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and
+     * a NaN component never compares equal to anything.
      *
      * @param other the value to compare against
      * @param epsilon the maximum allowed difference per component
@@ -948,6 +960,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -962,6 +978,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -977,6 +997,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -994,6 +1018,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleOBB} holding the loaded elements
@@ -1008,6 +1036,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -1023,6 +1055,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleOBB} holding the loaded elements
@@ -1040,6 +1076,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -1054,6 +1094,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -1069,6 +1113,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -1086,6 +1134,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleOBB} holding the loaded elements
@@ -1100,6 +1152,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -1115,6 +1171,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleOBB} holding the loaded elements
@@ -1132,6 +1192,8 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public DoubleOBB storeUnsafe(long address) {
         return RAW_OPS.storeUnsafe(this, address);
@@ -1143,6 +1205,8 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      *
      * @param address the raw memory address
      * @return a new {@code DoubleOBB} holding the loaded elements
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public static DoubleOBB loadUnsafe(long address) {
         return RAW_OPS.loadUnsafe(address);
@@ -1225,6 +1289,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -1239,6 +1307,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -1254,6 +1326,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -1271,6 +1347,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleOBB} holding the loaded elements
@@ -1285,6 +1365,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -1300,6 +1384,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code DoubleOBB} holding the loaded elements
@@ -1317,6 +1405,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -1331,6 +1423,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -1346,6 +1442,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -1363,6 +1463,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleOBB} holding the loaded elements
@@ -1377,6 +1481,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -1392,6 +1500,10 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code DoubleOBB} holding the loaded elements
@@ -1409,6 +1521,8 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public DoubleOBB storeFloatUnsafe(long address) {
         return RAW_OPS.storeFloatUnsafe(this, address);
@@ -1420,6 +1534,8 @@ public record DoubleOBB(double cX, double cY, double cZ, double uXx, double uXy,
      *
      * @param address the raw memory address
      * @return a new {@code DoubleOBB} holding the loaded elements
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public static DoubleOBB loadFloatUnsafe(long address) {
         return RAW_OPS.loadFloatUnsafe(address);

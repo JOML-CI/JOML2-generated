@@ -17,6 +17,23 @@ import org.joml2.internal.unsafe.*;
  * (the {@code ByteBuffer} default is big-endian) is honoured through the slower
  * API path.</p>
  *
+ * <p>With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API
+ * backend goes through the buffers' own {@code get}/{@code put} methods and performs the
+ * standard checks. Heap arrays are bounds-checked on every backend
+ * ({@link IndexOutOfBoundsException}). The UNSAFE backend uses {@code sun.misc.Unsafe}; on
+ * JDK 23+ (JEP 471) run with {@code --sun-misc-unsafe-memory-access=allow} or select
+ * {@code -Djoml.storeLoadBackend=api}.</p>
+ *
+ * <p>Edge cases, per backend: a read-only {@code dest} buffer never takes the Unsafe path
+ * and is rejected by the API path ({@link java.nio.ReadOnlyBufferException} from the buffer
+ * {@code put}). Buffer offsets are absolute indices counted from index 0, regardless of
+ * the buffer's position; the API path uses the buffer's absolute {@code get}/{@code put}, so
+ * an access beyond the {@code limit} throws {@link IndexOutOfBoundsException}, whereas the
+ * UNSAFE path addresses a direct buffer by its base address and ignores position, limit and
+ * capacity. A negative {@code count} performs no reads or writes on the API and SIMD paths;
+ * the UNSAFE {@code copy} fast path rejects it ({@link IndexOutOfBoundsException} for an
+ * array end, {@link IllegalArgumentException} from {@code Unsafe.copyMemory} otherwise).</p>
+ *
  * <p>All buffer parameters in a single call must use the same storage backing,
  * except the {@code copy} methods, which translate between any two backings.
  * Element layout is column-major (the canonical Double4x4 storage order).</p>
@@ -82,13 +99,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.getColumn_api(dest, destOffset, src, srcOffset, col);
     }
 
-    /** {@link #getColumn(double[], int, double[], int, int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #getColumn(double[], int, double[], int, int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer getColumn(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int col) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.getColumn_unsafe(dest, destOffset, src, srcOffset, col);
         return Double4x4OpsKernelsByteBuffer.getColumn_api(dest, destOffset, src, srcOffset, col);
     }
 
-    /** {@link #getColumn(double[], int, double[], int, int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #getColumn(double[], int, double[], int, int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long getColumn(long dest, long src, int col) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.getColumn_unsafe(dest, src, col);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -100,6 +118,9 @@ public final class Double4x4Ops {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -128,7 +149,7 @@ public final class Double4x4Ops {
             dest[destOffset + 0] = Math.atan2(-_self12, _self22);
             dest[destOffset + 2] = Math.atan2(-_self01, _self00);
         }
-        dest[destOffset + 1] = Math.asin(Math.min(1.0, Math.max(-1.0, _self02)));
+        dest[destOffset + 1] = Math.atan2(_self02, Math.sqrt(_t1));
         return dest;
     }
 
@@ -138,13 +159,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.getEulerAnglesXYZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getEulerAnglesXYZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #getEulerAnglesXYZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer getEulerAnglesXYZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.getEulerAnglesXYZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.getEulerAnglesXYZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getEulerAnglesXYZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #getEulerAnglesXYZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long getEulerAnglesXYZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.getEulerAnglesXYZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -156,6 +178,9 @@ public final class Double4x4Ops {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -184,7 +209,7 @@ public final class Double4x4Ops {
             dest[destOffset + 0] = Math.atan2(_self21, _self11);
             dest[destOffset + 1] = Math.atan2(_self02, _self00);
         }
-        dest[destOffset + 2] = Math.asin(Math.min(1.0, Math.max(-1.0, -_self01)));
+        dest[destOffset + 2] = Math.atan2(-_self01, Math.sqrt(_t1));
         return dest;
     }
 
@@ -194,13 +219,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.getEulerAnglesXZY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getEulerAnglesXZY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #getEulerAnglesXZY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer getEulerAnglesXZY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.getEulerAnglesXZY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.getEulerAnglesXZY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getEulerAnglesXZY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #getEulerAnglesXZY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long getEulerAnglesXZY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.getEulerAnglesXZY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -212,6 +238,9 @@ public final class Double4x4Ops {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -240,7 +269,7 @@ public final class Double4x4Ops {
             dest[destOffset + 1] = Math.atan2(_self02, _self22);
             dest[destOffset + 2] = Math.atan2(_self10, _self11);
         }
-        dest[destOffset + 0] = Math.asin(Math.min(1.0, Math.max(-1.0, -_self12)));
+        dest[destOffset + 0] = Math.atan2(-_self12, Math.sqrt(_t1));
         return dest;
     }
 
@@ -250,13 +279,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.getEulerAnglesYXZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getEulerAnglesYXZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #getEulerAnglesYXZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer getEulerAnglesYXZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.getEulerAnglesYXZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.getEulerAnglesYXZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getEulerAnglesYXZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #getEulerAnglesYXZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long getEulerAnglesYXZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.getEulerAnglesYXZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -268,6 +298,9 @@ public final class Double4x4Ops {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -296,7 +329,7 @@ public final class Double4x4Ops {
             dest[destOffset + 0] = Math.atan2(-_self12, _self11);
             dest[destOffset + 1] = Math.atan2(-_self20, _self00);
         }
-        dest[destOffset + 2] = Math.asin(Math.min(1.0, Math.max(-1.0, _self10)));
+        dest[destOffset + 2] = Math.atan2(_self10, Math.sqrt(_t1));
         return dest;
     }
 
@@ -306,13 +339,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.getEulerAnglesYZX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getEulerAnglesYZX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #getEulerAnglesYZX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer getEulerAnglesYZX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.getEulerAnglesYZX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.getEulerAnglesYZX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getEulerAnglesYZX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #getEulerAnglesYZX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long getEulerAnglesYZX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.getEulerAnglesYZX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -324,6 +358,9 @@ public final class Double4x4Ops {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -352,7 +389,7 @@ public final class Double4x4Ops {
             dest[destOffset + 1] = Math.atan2(-_self20, _self22);
             dest[destOffset + 2] = Math.atan2(-_self01, _self11);
         }
-        dest[destOffset + 0] = Math.asin(Math.min(1.0, Math.max(-1.0, _self21)));
+        dest[destOffset + 0] = Math.atan2(_self21, Math.sqrt(_t1));
         return dest;
     }
 
@@ -362,13 +399,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.getEulerAnglesZXY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getEulerAnglesZXY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #getEulerAnglesZXY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer getEulerAnglesZXY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.getEulerAnglesZXY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.getEulerAnglesZXY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getEulerAnglesZXY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #getEulerAnglesZXY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long getEulerAnglesZXY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.getEulerAnglesZXY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -380,6 +418,9 @@ public final class Double4x4Ops {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -408,7 +449,7 @@ public final class Double4x4Ops {
             dest[destOffset + 0] = Math.atan2(_self21, _self22);
             dest[destOffset + 2] = Math.atan2(_self10, _self00);
         }
-        dest[destOffset + 1] = Math.asin(Math.min(1.0, Math.max(-1.0, -_self20)));
+        dest[destOffset + 1] = Math.atan2(-_self20, Math.sqrt(_t1));
         return dest;
     }
 
@@ -418,13 +459,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.getEulerAnglesZYX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getEulerAnglesZYX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #getEulerAnglesZYX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer getEulerAnglesZYX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.getEulerAnglesZYX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.getEulerAnglesZYX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getEulerAnglesZYX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #getEulerAnglesZYX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long getEulerAnglesZYX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.getEulerAnglesZYX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -434,6 +476,10 @@ public final class Double4x4Ops {
      * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
      * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
      * unit length) and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of each column must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -549,13 +595,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.getNormalizedRotation_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getNormalizedRotation(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #getNormalizedRotation(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer getNormalizedRotation(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.getNormalizedRotation_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.getNormalizedRotation_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getNormalizedRotation(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #getNormalizedRotation(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long getNormalizedRotation(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.getNormalizedRotation_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -612,13 +659,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.getRow_api(dest, destOffset, src, srcOffset, row);
     }
 
-    /** {@link #getRow(double[], int, double[], int, int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #getRow(double[], int, double[], int, int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer getRow(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int row) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.getRow_unsafe(dest, destOffset, src, srcOffset, row);
         return Double4x4OpsKernelsByteBuffer.getRow_api(dest, destOffset, src, srcOffset, row);
     }
 
-    /** {@link #getRow(double[], int, double[], int, int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #getRow(double[], int, double[], int, int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long getRow(long dest, long src, int row) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.getRow_unsafe(dest, src, row);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -627,6 +675,10 @@ public final class Double4x4Ops {
     /**
      * Get the scaling factors of this matrix, as the lengths of its basis columns (always
      * non-negative; skew is ignored) and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of each column must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -656,13 +708,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.getScale_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getScale(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #getScale(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer getScale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.getScale_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.getScale_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getScale(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #getScale(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long getScale(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.getScale_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -693,13 +746,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.getTranslation_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getTranslation(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #getTranslation(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer getTranslation(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.getTranslation_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.getTranslation_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getTranslation(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #getTranslation(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long getTranslation(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.getTranslation_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -776,13 +830,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.getUnnormalizedRotation_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getUnnormalizedRotation(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #getUnnormalizedRotation(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer getUnnormalizedRotation(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.getUnnormalizedRotation_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.getUnnormalizedRotation_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #getUnnormalizedRotation(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #getUnnormalizedRotation(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long getUnnormalizedRotation(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.getUnnormalizedRotation_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -791,6 +846,11 @@ public final class Double4x4Ops {
     /**
      * Obtain the direction of {@code -X} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -828,13 +888,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.invNegativeX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invNegativeX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #invNegativeX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer invNegativeX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.invNegativeX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.invNegativeX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invNegativeX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #invNegativeX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long invNegativeX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.invNegativeX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -843,6 +904,11 @@ public final class Double4x4Ops {
     /**
      * Obtain the direction of {@code -Y} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -880,13 +946,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.invNegativeY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invNegativeY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #invNegativeY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer invNegativeY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.invNegativeY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.invNegativeY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invNegativeY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #invNegativeY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long invNegativeY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.invNegativeY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -895,6 +962,11 @@ public final class Double4x4Ops {
     /**
      * Obtain the direction of {@code -Z} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -932,13 +1004,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.invNegativeZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invNegativeZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #invNegativeZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer invNegativeZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.invNegativeZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.invNegativeZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invNegativeZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #invNegativeZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long invNegativeZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.invNegativeZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -973,13 +1046,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.invNormalizedNegativeX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invNormalizedNegativeX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #invNormalizedNegativeX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer invNormalizedNegativeX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.invNormalizedNegativeX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.invNormalizedNegativeX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invNormalizedNegativeX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #invNormalizedNegativeX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long invNormalizedNegativeX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.invNormalizedNegativeX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1014,13 +1088,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.invNormalizedNegativeY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invNormalizedNegativeY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #invNormalizedNegativeY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer invNormalizedNegativeY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.invNormalizedNegativeY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.invNormalizedNegativeY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invNormalizedNegativeY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #invNormalizedNegativeY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long invNormalizedNegativeY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.invNormalizedNegativeY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1055,13 +1130,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.invNormalizedNegativeZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invNormalizedNegativeZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #invNormalizedNegativeZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer invNormalizedNegativeZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.invNormalizedNegativeZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.invNormalizedNegativeZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invNormalizedNegativeZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #invNormalizedNegativeZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long invNormalizedNegativeZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.invNormalizedNegativeZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1096,13 +1172,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.invNormalizedPositiveX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invNormalizedPositiveX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #invNormalizedPositiveX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer invNormalizedPositiveX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.invNormalizedPositiveX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.invNormalizedPositiveX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invNormalizedPositiveX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #invNormalizedPositiveX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long invNormalizedPositiveX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.invNormalizedPositiveX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1137,13 +1214,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.invNormalizedPositiveY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invNormalizedPositiveY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #invNormalizedPositiveY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer invNormalizedPositiveY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.invNormalizedPositiveY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.invNormalizedPositiveY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invNormalizedPositiveY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #invNormalizedPositiveY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long invNormalizedPositiveY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.invNormalizedPositiveY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1178,13 +1256,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.invNormalizedPositiveZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invNormalizedPositiveZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #invNormalizedPositiveZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer invNormalizedPositiveZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.invNormalizedPositiveZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.invNormalizedPositiveZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invNormalizedPositiveZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #invNormalizedPositiveZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long invNormalizedPositiveZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.invNormalizedPositiveZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1193,6 +1272,11 @@ public final class Double4x4Ops {
     /**
      * Obtain the direction of {@code +X} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1230,13 +1314,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.invPositiveX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invPositiveX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #invPositiveX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer invPositiveX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.invPositiveX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.invPositiveX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invPositiveX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #invPositiveX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long invPositiveX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.invPositiveX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1245,6 +1330,11 @@ public final class Double4x4Ops {
     /**
      * Obtain the direction of {@code +Y} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1282,13 +1372,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.invPositiveY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invPositiveY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #invPositiveY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer invPositiveY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.invPositiveY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.invPositiveY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invPositiveY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #invPositiveY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long invPositiveY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.invPositiveY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1297,6 +1388,11 @@ public final class Double4x4Ops {
     /**
      * Obtain the direction of {@code +Z} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1334,13 +1430,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.invPositiveZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invPositiveZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #invPositiveZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer invPositiveZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.invPositiveZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.invPositiveZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invPositiveZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #invPositiveZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long invPositiveZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.invPositiveZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1349,6 +1446,11 @@ public final class Double4x4Ops {
     /**
      * Obtain the direction of {@code -X} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1380,13 +1482,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.negativeX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #negativeX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #negativeX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer negativeX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.negativeX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.negativeX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #negativeX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #negativeX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long negativeX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.negativeX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1395,6 +1498,11 @@ public final class Double4x4Ops {
     /**
      * Obtain the direction of {@code -Y} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1426,13 +1534,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.negativeY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #negativeY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #negativeY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer negativeY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.negativeY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.negativeY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #negativeY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #negativeY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long negativeY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.negativeY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1441,6 +1550,11 @@ public final class Double4x4Ops {
     /**
      * Obtain the direction of {@code -Z} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1472,13 +1586,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.negativeZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #negativeZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #negativeZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer negativeZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.negativeZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.negativeZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #negativeZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #negativeZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long negativeZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.negativeZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1513,13 +1628,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.normalizedNegativeX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normalizedNegativeX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #normalizedNegativeX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer normalizedNegativeX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.normalizedNegativeX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.normalizedNegativeX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normalizedNegativeX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #normalizedNegativeX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long normalizedNegativeX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.normalizedNegativeX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1554,13 +1670,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.normalizedNegativeY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normalizedNegativeY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #normalizedNegativeY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer normalizedNegativeY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.normalizedNegativeY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.normalizedNegativeY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normalizedNegativeY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #normalizedNegativeY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long normalizedNegativeY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.normalizedNegativeY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1595,13 +1712,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.normalizedNegativeZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normalizedNegativeZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #normalizedNegativeZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer normalizedNegativeZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.normalizedNegativeZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.normalizedNegativeZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normalizedNegativeZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #normalizedNegativeZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long normalizedNegativeZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.normalizedNegativeZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1636,13 +1754,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.normalizedPositiveX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normalizedPositiveX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #normalizedPositiveX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer normalizedPositiveX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.normalizedPositiveX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.normalizedPositiveX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normalizedPositiveX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #normalizedPositiveX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long normalizedPositiveX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.normalizedPositiveX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1677,13 +1796,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.normalizedPositiveY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normalizedPositiveY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #normalizedPositiveY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer normalizedPositiveY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.normalizedPositiveY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.normalizedPositiveY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normalizedPositiveY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #normalizedPositiveY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long normalizedPositiveY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.normalizedPositiveY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1718,13 +1838,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.normalizedPositiveZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normalizedPositiveZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #normalizedPositiveZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer normalizedPositiveZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.normalizedPositiveZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.normalizedPositiveZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normalizedPositiveZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #normalizedPositiveZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long normalizedPositiveZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.normalizedPositiveZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1766,13 +1887,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.origin_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #origin(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #origin(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer origin(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.origin_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.origin_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #origin(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #origin(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long origin(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.origin_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1826,13 +1948,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.originAffine_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #originAffine(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #originAffine(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer originAffine(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.originAffine_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.originAffine_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #originAffine(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #originAffine(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long originAffine(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.originAffine_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1841,6 +1964,11 @@ public final class Double4x4Ops {
     /**
      * Obtain the direction of {@code +X} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1872,13 +2000,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.positiveX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #positiveX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #positiveX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer positiveX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.positiveX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.positiveX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #positiveX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #positiveX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long positiveX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.positiveX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1887,6 +2016,11 @@ public final class Double4x4Ops {
     /**
      * Obtain the direction of {@code +Y} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1918,13 +2052,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.positiveY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #positiveY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #positiveY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer positiveY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.positiveY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.positiveY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #positiveY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #positiveY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long positiveY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.positiveY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1933,6 +2068,11 @@ public final class Double4x4Ops {
     /**
      * Obtain the direction of {@code +Z} after the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the selected column of this matrix
+     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
+     * band first.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1964,13 +2104,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.positiveZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #positiveZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #positiveZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer positiveZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.positiveZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.positiveZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #positiveZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #positiveZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long positiveZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.positiveZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2045,13 +2186,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.cofactor_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #cofactor(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #cofactor(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer cofactor(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.cofactor_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.cofactor_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #cofactor(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #cofactor(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long cofactor(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.cofactor_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2096,13 +2238,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.determinant_api(src, srcOffset);
     }
 
-    /** {@link #determinant(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #determinant(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double determinant(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.determinant_unsafe(src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.determinant_api(src, srcOffset);
     }
 
-    /** {@link #determinant(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #determinant(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double determinant(long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.determinant_unsafe(src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2141,13 +2284,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.frobeniusNorm_api(src, srcOffset);
     }
 
-    /** {@link #frobeniusNorm(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #frobeniusNorm(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double frobeniusNorm(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.frobeniusNorm_unsafe(src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.frobeniusNorm_api(src, srcOffset);
     }
 
-    /** {@link #frobeniusNorm(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #frobeniusNorm(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double frobeniusNorm(long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.frobeniusNorm_unsafe(src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2228,13 +2372,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.invert_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invert(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #invert(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer invert(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.invert_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.invert_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #invert(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #invert(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long invert(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.invert_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2350,13 +2495,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.invertProduct_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #invertProduct(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #invertProduct(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer invertProduct(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.invertProduct_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double4x4OpsKernelsByteBuffer.invertProduct_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #invertProduct(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #invertProduct(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long invertProduct(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.invertProduct_unsafe(dest, src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2438,13 +2584,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.normal_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normal(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #normal(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer normal(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.normal_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.normal_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normal(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #normal(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long normal(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.normal_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2471,13 +2618,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.trace_api(src, srcOffset);
     }
 
-    /** {@link #trace(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #trace(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double trace(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.trace_unsafe(src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.trace_api(src, srcOffset);
     }
 
-    /** {@link #trace(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #trace(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double trace(long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.trace_unsafe(src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2534,13 +2682,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.transpose_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #transpose(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #transpose(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer transpose(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.transpose_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.transpose_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #transpose(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #transpose(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long transpose(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.transpose_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2572,13 +2721,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.add_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #add(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #add(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer add(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.add_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double4x4OpsKernelsByteBuffer.add_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #add(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #add(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long add(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.add_unsafe(dest, src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2607,13 +2757,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.negate_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #negate(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #negate(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer negate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.negate_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.negate_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #negate(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #negate(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long negate(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.negate_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2645,13 +2796,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.sub_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #sub(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #sub(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer sub(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.sub_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double4x4OpsKernelsByteBuffer.sub_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #sub(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #sub(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long sub(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.sub_unsafe(dest, src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2680,13 +2832,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.set_api(dest, destOffset, v, vOffset);
     }
 
-    /** {@link #set(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #set(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer set(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer v, int vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.set_unsafe(dest, destOffset, v, vOffset);
         return Double4x4OpsKernelsByteBuffer.set_api(dest, destOffset, v, vOffset);
     }
 
-    /** {@link #set(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #set(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long set(long dest, long v) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.set_unsafe(dest, v);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2737,13 +2890,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.setMat3x3_api(dest, destOffset, m, mOffset);
     }
 
-    /** {@link #setMat3x3(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #setMat3x3(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer setMat3x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer m, int mOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && m.isDirect() && m.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.setMat3x3_unsafe(dest, destOffset, m, mOffset);
         return Double4x4OpsKernelsByteBuffer.setMat3x3_api(dest, destOffset, m, mOffset);
     }
 
-    /** {@link #setMat3x3(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #setMat3x3(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long setMat3x3(long dest, long m) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.setMat3x3_unsafe(dest, m);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2797,13 +2951,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.setMat3x4_api(dest, destOffset, m, mOffset);
     }
 
-    /** {@link #setMat3x4(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #setMat3x4(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer setMat3x4(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer m, int mOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && m.isDirect() && m.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.setMat3x4_unsafe(dest, destOffset, m, mOffset);
         return Double4x4OpsKernelsByteBuffer.setMat3x4_api(dest, destOffset, m, mOffset);
     }
 
-    /** {@link #setMat3x4(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #setMat3x4(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long setMat3x4(long dest, long m) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.setMat3x4_unsafe(dest, m);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2866,13 +3021,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.withTranslation_api(dest, destOffset, src, srcOffset, tX, tY, tZ);
     }
 
-    /** {@link #withTranslation(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #withTranslation(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer withTranslation(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double tX, double tY, double tZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.withTranslation_unsafe(dest, destOffset, src, srcOffset, tX, tY, tZ);
         return Double4x4OpsKernelsByteBuffer.withTranslation_api(dest, destOffset, src, srcOffset, tX, tY, tZ);
     }
 
-    /** {@link #withTranslation(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #withTranslation(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long withTranslation(long dest, long src, double tX, double tY, double tZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.withTranslation_unsafe(dest, src, tX, tY, tZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2937,13 +3093,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.withTranslation_api(dest, destOffset, src, srcOffset, t, tOffset);
     }
 
-    /** {@link #withTranslation(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #withTranslation(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer withTranslation(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer t, int tOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && t.isDirect() && t.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.withTranslation_unsafe(dest, destOffset, src, srcOffset, t, tOffset);
         return Double4x4OpsKernelsByteBuffer.withTranslation_api(dest, destOffset, src, srcOffset, t, tOffset);
     }
 
-    /** {@link #withTranslation(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #withTranslation(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long withTranslation(long dest, long src, long t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.withTranslation_unsafe(dest, src, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3003,13 +3160,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeFromRigid_api(dest, destOffset, rTX, rTY, rTZ, rRX, rRY, rRZ, rRW);
     }
 
-    /** {@link #makeFromRigid(double[], int, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeFromRigid(double[], int, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeFromRigid(java.nio.ByteBuffer dest, int destOffset, double rTX, double rTY, double rTZ, double rRX, double rRY, double rRZ, double rRW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeFromRigid_unsafe(dest, destOffset, rTX, rTY, rTZ, rRX, rRY, rRZ, rRW);
         return Double4x4OpsKernelsByteBuffer.makeFromRigid_api(dest, destOffset, rTX, rTY, rTZ, rRX, rRY, rRZ, rRW);
     }
 
-    /** {@link #makeFromRigid(double[], int, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeFromRigid(double[], int, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeFromRigid(long dest, double rTX, double rTY, double rTZ, double rRX, double rRY, double rRZ, double rRW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeFromRigid_unsafe(dest, rTX, rTY, rTZ, rRX, rRY, rRZ, rRW);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3071,13 +3229,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeFromTransform_api(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
     }
 
-    /** {@link #makeFromTransform(double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeFromTransform(double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeFromTransform(java.nio.ByteBuffer dest, int destOffset, double tTX, double tTY, double tTZ, double tRX, double tRY, double tRZ, double tRW, double tSX, double tSY, double tSZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeFromTransform_unsafe(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
         return Double4x4OpsKernelsByteBuffer.makeFromTransform_api(dest, destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
     }
 
-    /** {@link #makeFromTransform(double[], int, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeFromTransform(double[], int, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeFromTransform(long dest, double tTX, double tTY, double tTZ, double tRX, double tRY, double tRZ, double tRW, double tSX, double tSY, double tSZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeFromTransform_unsafe(dest, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3113,13 +3272,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.to3x3_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #to3x3(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #to3x3(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer to3x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.to3x3_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.to3x3_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #to3x3(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #to3x3(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long to3x3(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.to3x3_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3169,13 +3329,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.to3x4_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #to3x4(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #to3x4(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer to3x4(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.to3x4_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.to3x4_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #to3x4(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #to3x4(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long to3x4(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.to3x4_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3265,13 +3426,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.toDualQuat_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #toDualQuat(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #toDualQuat(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer toDualQuat(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.toDualQuat_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.toDualQuat_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #toDualQuat(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #toDualQuat(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long toDualQuat(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.toDualQuat_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3380,13 +3542,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.toRigid_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #toRigid(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #toRigid(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer toRigid(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.toRigid_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.toRigid_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #toRigid(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #toRigid(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long toRigid(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.toRigid_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3481,13 +3644,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.toTransform_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #toTransform(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #toTransform(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer toTransform(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.toTransform_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.toTransform_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #toTransform(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #toTransform(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long toTransform(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.toTransform_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3495,6 +3659,10 @@ public final class Double4x4Ops {
 
     /**
      * Extract the rotation part of this matrix and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of each column must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -3619,13 +3787,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.decomposeRotation_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #decomposeRotation(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #decomposeRotation(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer decomposeRotation(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.decomposeRotation_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.decomposeRotation_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #decomposeRotation(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #decomposeRotation(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long decomposeRotation(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.decomposeRotation_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3635,6 +3804,10 @@ public final class Double4x4Ops {
      * Extract the scaling factors of this matrix via Gram-Schmidt orthogonalization (skew-aware;
      * the x factor carries the sign of a reflection when the determinant is negative) and store the
      * result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of each column must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -3710,13 +3883,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.decomposeScale_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #decomposeScale(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #decomposeScale(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer decomposeScale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.decomposeScale_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.decomposeScale_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #decomposeScale(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #decomposeScale(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long decomposeScale(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.decomposeScale_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3726,6 +3900,10 @@ public final class Double4x4Ops {
      * Extract the shear (skew) factors of this matrix via Gram-Schmidt orthogonalization, as
      * {@code (skewYZ, skewXZ, skewXY)} (all zero for a shear-free matrix) and store the result in
      * {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of each column must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -3811,13 +3989,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.decomposeSkew_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #decomposeSkew(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #decomposeSkew(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer decomposeSkew(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.decomposeSkew_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.decomposeSkew_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #decomposeSkew(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #decomposeSkew(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long decomposeSkew(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.decomposeSkew_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3826,6 +4005,10 @@ public final class Double4x4Ops {
     /**
      * Decompose this matrix into its translation, rotation and scale components, storing them in
      * {@code translation}, {@code rotation} and {@code scale} respectively.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of each column must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param translation will hold the translation
      * @param translationOffset the element index in {@code translation} at which the matrix starts
@@ -3964,13 +4147,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.decomposeTRS_api(translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, src, srcOffset);
     }
 
-    /** {@link #decomposeTRS(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #decomposeTRS(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer decomposeTRS(java.nio.ByteBuffer translation, int translationOffset, java.nio.ByteBuffer rotation, int rotationOffset, java.nio.ByteBuffer scale, int scaleOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && translation.isDirect() && !translation.isReadOnly() && translation.order() == java.nio.ByteOrder.nativeOrder() && rotation.isDirect() && !rotation.isReadOnly() && rotation.order() == java.nio.ByteOrder.nativeOrder() && scale.isDirect() && !scale.isReadOnly() && scale.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.decomposeTRS_unsafe(translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.decomposeTRS_api(translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, src, srcOffset);
     }
 
-    /** {@link #decomposeTRS(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #decomposeTRS(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long decomposeTRS(long translation, long rotation, long scale, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.decomposeTRS_unsafe(translation, rotation, scale, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4029,7 +4213,7 @@ public final class Double4x4Ops {
     /** {@link #frustumAabb(double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer frustumAabb(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) { return frustumAabb(dest, destOffset, src, srcOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #frustumAabb(double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #frustumAabb(double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer frustumAabb(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.frustumAabb_no(dest, destOffset, src, srcOffset); }
@@ -4037,10 +4221,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #frustumAabb(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #frustumAabb(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer frustumAabb(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) { return frustumAabb(dest, destOffset, src, srcOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #frustumAabb(double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #frustumAabb(double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long frustumAabb(long dest, long src, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.frustumAabb_no(dest, src); }
@@ -4048,7 +4233,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #frustumAabb(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #frustumAabb(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long frustumAabb(long dest, long src) { return frustumAabb(dest, src, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -4104,7 +4290,7 @@ public final class Double4x4Ops {
     /** {@link #frustumCorner(double[], int, double[], int, FrustumCorner)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer frustumCorner(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, FrustumCorner corner) { return frustumCorner(dest, destOffset, src, srcOffset, corner, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #frustumCorner(double[], int, double[], int, FrustumCorner, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #frustumCorner(double[], int, double[], int, FrustumCorner, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer frustumCorner(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, FrustumCorner corner, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.frustumCorner_no(dest, destOffset, src, srcOffset, corner); }
@@ -4112,10 +4298,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #frustumCorner(double[], int, double[], int, FrustumCorner)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #frustumCorner(double[], int, double[], int, FrustumCorner)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer frustumCorner(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, FrustumCorner corner) { return frustumCorner(dest, destOffset, src, srcOffset, corner, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #frustumCorner(double[], int, double[], int, FrustumCorner, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #frustumCorner(double[], int, double[], int, FrustumCorner, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long frustumCorner(long dest, long src, FrustumCorner corner, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.frustumCorner_no(dest, src, corner); }
@@ -4123,7 +4310,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #frustumCorner(double[], int, double[], int, FrustumCorner)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #frustumCorner(double[], int, double[], int, FrustumCorner)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long frustumCorner(long dest, long src, FrustumCorner corner) { return frustumCorner(dest, src, corner, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -4183,7 +4371,7 @@ public final class Double4x4Ops {
     /** {@link #frustumPlane(double[], int, double[], int, FrustumPlane)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer frustumPlane(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, FrustumPlane plane) { return frustumPlane(dest, destOffset, src, srcOffset, plane, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #frustumPlane(double[], int, double[], int, FrustumPlane, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #frustumPlane(double[], int, double[], int, FrustumPlane, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer frustumPlane(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, FrustumPlane plane, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.frustumPlane_no(dest, destOffset, src, srcOffset, plane); }
@@ -4191,10 +4379,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #frustumPlane(double[], int, double[], int, FrustumPlane)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #frustumPlane(double[], int, double[], int, FrustumPlane)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer frustumPlane(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, FrustumPlane plane) { return frustumPlane(dest, destOffset, src, srcOffset, plane, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #frustumPlane(double[], int, double[], int, FrustumPlane, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #frustumPlane(double[], int, double[], int, FrustumPlane, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long frustumPlane(long dest, long src, FrustumPlane plane, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.frustumPlane_no(dest, src, plane); }
@@ -4202,18 +4391,22 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #frustumPlane(double[], int, double[], int, FrustumPlane)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #frustumPlane(double[], int, double[], int, FrustumPlane)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long frustumPlane(long dest, long src, FrustumPlane plane) { return frustumPlane(dest, src, plane, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
-     * Compute the direction of the view ray through the frustum of this matrix, interpreted as a
-     * projection or combined view-projection matrix, at the given normalized position on the near
-     * face and store the result in {@code dest}.
+     * Compute the direction of the view ray through the frustum of this matrix at the given
+     * horizontal and vertical interpolation factors.
      * <p>
      * {@code (0, 0)} is the bottom-left and {@code (1, 1)} the top-right frustum corner. The result
-     * is not normalized: it is the near-to-far corner difference, so its length is the frustum's
-     * depth extent along that ray - and it is not finite for a projection whose far plane is at
-     * infinity.
+     * is not normalized: it is the difference between the far and the near frustum corner along
+     * that ray, so the near corner plus the result lies on the far plane. For a projection whose
+     * far plane is at infinity the result is a finite direction along the ray of unspecified
+     * length. A far plane whose homogeneous w is at most {@code 2^-20} ({@code float}) /
+     * {@code 2^-40} ({@code double}) times the near plane's is treated as being at infinity.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -4232,14 +4425,17 @@ public final class Double4x4Ops {
     }
 
     /**
-     * Compute the direction of the view ray through the frustum of this matrix, interpreted as a
-     * projection or combined view-projection matrix, at the given normalized position on the near
-     * face and store the result in {@code dest}.
+     * Compute the direction of the view ray through the frustum of this matrix at the given
+     * horizontal and vertical interpolation factors.
      * <p>
      * {@code (0, 0)} is the bottom-left and {@code (1, 1)} the top-right frustum corner. The result
-     * is not normalized: it is the near-to-far corner difference, so its length is the frustum's
-     * depth extent along that ray - and it is not finite for a projection whose far plane is at
-     * infinity.
+     * is not normalized: it is the difference between the far and the near frustum corner along
+     * that ray, so the near corner plus the result lies on the far plane. For a projection whose
+     * far plane is at infinity the result is a finite direction along the ray of unspecified
+     * length. A far plane whose homogeneous w is at most {@code 2^-20} ({@code float}) /
+     * {@code 2^-40} ({@code double}) times the near plane's is treated as being at infinity.
+     * <p>
+     * The result is stored in {@code dest}; {@code this} is not modified.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -4264,7 +4460,7 @@ public final class Double4x4Ops {
     /** {@link #frustumRayDir(double[], int, double[], int, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer frustumRayDir(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double x, double y) { return frustumRayDir(dest, destOffset, src, srcOffset, x, y, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #frustumRayDir(double[], int, double[], int, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #frustumRayDir(double[], int, double[], int, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer frustumRayDir(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double x, double y, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.frustumRayDir_no(dest, destOffset, src, srcOffset, x, y); }
@@ -4272,10 +4468,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #frustumRayDir(double[], int, double[], int, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #frustumRayDir(double[], int, double[], int, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer frustumRayDir(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double x, double y) { return frustumRayDir(dest, destOffset, src, srcOffset, x, y, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #frustumRayDir(double[], int, double[], int, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #frustumRayDir(double[], int, double[], int, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long frustumRayDir(long dest, long src, double x, double y, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.frustumRayDir_no(dest, src, x, y); }
@@ -4283,7 +4480,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #frustumRayDir(double[], int, double[], int, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #frustumRayDir(double[], int, double[], int, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long frustumRayDir(long dest, long src, double x, double y) { return frustumRayDir(dest, src, x, y, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -4341,7 +4539,7 @@ public final class Double4x4Ops {
     /** {@link #testAabb(double[], int, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static double testAabb(java.nio.DoubleBuffer src, int srcOffset, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) { return testAabb(src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #testAabb(double[], int, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #testAabb(double[], int, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double testAabb(java.nio.ByteBuffer src, int srcOffset, double minX, double minY, double minZ, double maxX, double maxY, double maxZ, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.testAabb_no(src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ); }
@@ -4349,10 +4547,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #testAabb(double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #testAabb(double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double testAabb(java.nio.ByteBuffer src, int srcOffset, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) { return testAabb(src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #testAabb(double[], int, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #testAabb(double[], int, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double testAabb(long src, double minX, double minY, double minZ, double maxX, double maxY, double maxZ, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.testAabb_no(src, minX, minY, minZ, maxX, maxY, maxZ); }
@@ -4360,7 +4559,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #testAabb(double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #testAabb(double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double testAabb(long src, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) { return testAabb(src, minX, minY, minZ, maxX, maxY, maxZ, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -4414,7 +4614,7 @@ public final class Double4x4Ops {
     /** {@link #testAabb(double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
     public static double testAabb(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer min, int minOffset, java.nio.DoubleBuffer max, int maxOffset) { return testAabb(src, srcOffset, min, minOffset, max, maxOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #testAabb(double[], int, double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #testAabb(double[], int, double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double testAabb(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer min, int minOffset, java.nio.ByteBuffer max, int maxOffset, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.testAabb_no(src, srcOffset, min, minOffset, max, maxOffset); }
@@ -4422,10 +4622,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #testAabb(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #testAabb(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double testAabb(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer min, int minOffset, java.nio.ByteBuffer max, int maxOffset) { return testAabb(src, srcOffset, min, minOffset, max, maxOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #testAabb(double[], int, double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #testAabb(double[], int, double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double testAabb(long src, long min, long max, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.testAabb_no(src, min, max); }
@@ -4433,7 +4634,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #testAabb(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #testAabb(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double testAabb(long src, long min, long max) { return testAabb(src, min, max, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -4483,7 +4685,7 @@ public final class Double4x4Ops {
     /** {@link #testPoint(double[], int, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static double testPoint(java.nio.DoubleBuffer src, int srcOffset, double pointX, double pointY, double pointZ) { return testPoint(src, srcOffset, pointX, pointY, pointZ, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #testPoint(double[], int, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #testPoint(double[], int, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double testPoint(java.nio.ByteBuffer src, int srcOffset, double pointX, double pointY, double pointZ, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.testPoint_no(src, srcOffset, pointX, pointY, pointZ); }
@@ -4491,10 +4693,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #testPoint(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #testPoint(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double testPoint(java.nio.ByteBuffer src, int srcOffset, double pointX, double pointY, double pointZ) { return testPoint(src, srcOffset, pointX, pointY, pointZ, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #testPoint(double[], int, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #testPoint(double[], int, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double testPoint(long src, double pointX, double pointY, double pointZ, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.testPoint_no(src, pointX, pointY, pointZ); }
@@ -4502,7 +4705,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #testPoint(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #testPoint(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double testPoint(long src, double pointX, double pointY, double pointZ) { return testPoint(src, pointX, pointY, pointZ, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -4550,7 +4754,7 @@ public final class Double4x4Ops {
     /** {@link #testPoint(double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
     public static double testPoint(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer point, int pointOffset) { return testPoint(src, srcOffset, point, pointOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #testPoint(double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #testPoint(double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double testPoint(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer point, int pointOffset, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.testPoint_no(src, srcOffset, point, pointOffset); }
@@ -4558,10 +4762,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #testPoint(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #testPoint(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double testPoint(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer point, int pointOffset) { return testPoint(src, srcOffset, point, pointOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #testPoint(double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #testPoint(double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double testPoint(long src, long point, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.testPoint_no(src, point); }
@@ -4569,7 +4774,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #testPoint(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #testPoint(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double testPoint(long src, long point) { return testPoint(src, point, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -4623,7 +4829,7 @@ public final class Double4x4Ops {
     /** {@link #testSphere(double[], int, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static double testSphere(java.nio.DoubleBuffer src, int srcOffset, double centerX, double centerY, double centerZ, double radius) { return testSphere(src, srcOffset, centerX, centerY, centerZ, radius, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #testSphere(double[], int, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #testSphere(double[], int, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double testSphere(java.nio.ByteBuffer src, int srcOffset, double centerX, double centerY, double centerZ, double radius, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.testSphere_no(src, srcOffset, centerX, centerY, centerZ, radius); }
@@ -4631,10 +4837,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #testSphere(double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #testSphere(double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double testSphere(java.nio.ByteBuffer src, int srcOffset, double centerX, double centerY, double centerZ, double radius) { return testSphere(src, srcOffset, centerX, centerY, centerZ, radius, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #testSphere(double[], int, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #testSphere(double[], int, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double testSphere(long src, double centerX, double centerY, double centerZ, double radius, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.testSphere_no(src, centerX, centerY, centerZ, radius); }
@@ -4642,7 +4849,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #testSphere(double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #testSphere(double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double testSphere(long src, double centerX, double centerY, double centerZ, double radius) { return testSphere(src, centerX, centerY, centerZ, radius, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -4694,7 +4902,7 @@ public final class Double4x4Ops {
     /** {@link #testSphere(double[], int, double[], int, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static double testSphere(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer center, int centerOffset, double radius) { return testSphere(src, srcOffset, center, centerOffset, radius, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #testSphere(double[], int, double[], int, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #testSphere(double[], int, double[], int, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double testSphere(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer center, int centerOffset, double radius, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.testSphere_no(src, srcOffset, center, centerOffset, radius); }
@@ -4702,10 +4910,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #testSphere(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #testSphere(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double testSphere(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer center, int centerOffset, double radius) { return testSphere(src, srcOffset, center, centerOffset, radius, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #testSphere(double[], int, double[], int, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #testSphere(double[], int, double[], int, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double testSphere(long src, long center, double radius, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.testSphere_no(src, center, radius); }
@@ -4713,7 +4922,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #testSphere(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #testSphere(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double testSphere(long src, long center, double radius) { return testSphere(src, center, radius, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -4749,13 +4959,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeIdentity_api(dest, destOffset);
     }
 
-    /** {@link #makeIdentity(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeIdentity(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeIdentity(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeIdentity_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeIdentity_api(dest, destOffset);
     }
 
-    /** {@link #makeIdentity(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeIdentity(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeIdentity(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeIdentity_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4789,13 +5000,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.lerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
     }
 
-    /** {@link #lerp(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #lerp(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer lerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.lerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
         return Double4x4OpsKernelsByteBuffer.lerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
     }
 
-    /** {@link #lerp(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #lerp(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long lerp(long dest, long src, long other, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.lerp_unsafe(dest, src, other, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4853,13 +5065,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mul_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
-    /** {@link #mul(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mul(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer right, int rightOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && right.isDirect() && right.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mul_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
         return Double4x4OpsKernelsByteBuffer.mul_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
-    /** {@link #mul(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mul(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mul(long dest, long src, long right) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mul_unsafe(dest, src, right);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4929,13 +5142,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mulMat2x2_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
-    /** {@link #mulMat2x2(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mulMat2x2(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mulMat2x2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer right, int rightOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && right.isDirect() && right.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mulMat2x2_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
         return Double4x4OpsKernelsByteBuffer.mulMat2x2_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
-    /** {@link #mulMat2x2(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mulMat2x2(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mulMat2x2(long dest, long src, long right) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mulMat2x2_unsafe(dest, src, right);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5007,13 +5221,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mulMat2x3_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
-    /** {@link #mulMat2x3(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mulMat2x3(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mulMat2x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer right, int rightOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && right.isDirect() && right.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mulMat2x3_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
         return Double4x4OpsKernelsByteBuffer.mulMat2x3_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
-    /** {@link #mulMat2x3(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mulMat2x3(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mulMat2x3(long dest, long src, long right) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mulMat2x3_unsafe(dest, src, right);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5088,13 +5303,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mulMat3x3_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
-    /** {@link #mulMat3x3(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mulMat3x3(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mulMat3x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer right, int rightOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && right.isDirect() && right.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mulMat3x3_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
         return Double4x4OpsKernelsByteBuffer.mulMat3x3_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
-    /** {@link #mulMat3x3(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mulMat3x3(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mulMat3x3(long dest, long src, long right) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mulMat3x3_unsafe(dest, src, right);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5172,13 +5388,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mulMat3x4_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
-    /** {@link #mulMat3x4(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mulMat3x4(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mulMat3x4(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer right, int rightOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && right.isDirect() && right.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mulMat3x4_unsafe(dest, destOffset, src, srcOffset, right, rightOffset);
         return Double4x4OpsKernelsByteBuffer.mulMat3x4_api(dest, destOffset, src, srcOffset, right, rightOffset);
     }
 
-    /** {@link #mulMat3x4(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mulMat3x4(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mulMat3x4(long dest, long src, long right) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mulMat3x4_unsafe(dest, src, right);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5237,13 +5454,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preMul_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #preMul(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preMul(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preMul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preMul_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double4x4OpsKernelsByteBuffer.preMul_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #preMul(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preMul(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preMul(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preMul_unsafe(dest, src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5292,13 +5510,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preMulMat2x2_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #preMulMat2x2(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preMulMat2x2(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preMulMat2x2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preMulMat2x2_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double4x4OpsKernelsByteBuffer.preMulMat2x2_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #preMulMat2x2(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preMulMat2x2(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preMulMat2x2(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preMulMat2x2_unsafe(dest, src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5349,13 +5568,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preMulMat2x3_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #preMulMat2x3(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preMulMat2x3(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preMulMat2x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preMulMat2x3_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double4x4OpsKernelsByteBuffer.preMulMat2x3_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #preMulMat2x3(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preMulMat2x3(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preMulMat2x3(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preMulMat2x3_unsafe(dest, src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5409,13 +5629,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preMulMat3x3_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #preMulMat3x3(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preMulMat3x3(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preMulMat3x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preMulMat3x3_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double4x4OpsKernelsByteBuffer.preMulMat3x3_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #preMulMat3x3(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preMulMat3x3(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preMulMat3x3(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preMulMat3x3_unsafe(dest, src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5472,13 +5693,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preMulMat3x4_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #preMulMat3x4(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preMulMat3x4(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preMulMat3x4(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preMulMat3x4_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double4x4OpsKernelsByteBuffer.preMulMat3x4_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #preMulMat3x4(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preMulMat3x4(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preMulMat3x4(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preMulMat3x4_unsafe(dest, src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5525,13 +5747,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeOuterProduct_api(dest, destOffset, colX, colY, colZ, colW, rowX, rowY, rowZ, rowW);
     }
 
-    /** {@link #makeOuterProduct(double[], int, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeOuterProduct(double[], int, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeOuterProduct(java.nio.ByteBuffer dest, int destOffset, double colX, double colY, double colZ, double colW, double rowX, double rowY, double rowZ, double rowW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeOuterProduct_unsafe(dest, destOffset, colX, colY, colZ, colW, rowX, rowY, rowZ, rowW);
         return Double4x4OpsKernelsByteBuffer.makeOuterProduct_api(dest, destOffset, colX, colY, colZ, colW, rowX, rowY, rowZ, rowW);
     }
 
-    /** {@link #makeOuterProduct(double[], int, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeOuterProduct(double[], int, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeOuterProduct(long dest, double colX, double colY, double colZ, double colW, double rowX, double rowY, double rowZ, double rowW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeOuterProduct_unsafe(dest, colX, colY, colZ, colW, rowX, rowY, rowZ, rowW);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5582,13 +5805,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeOuterProduct_api(dest, destOffset, col, colOffset, row, rowOffset);
     }
 
-    /** {@link #makeOuterProduct(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeOuterProduct(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeOuterProduct(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer col, int colOffset, java.nio.ByteBuffer row, int rowOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && col.isDirect() && col.order() == java.nio.ByteOrder.nativeOrder() && row.isDirect() && row.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeOuterProduct_unsafe(dest, destOffset, col, colOffset, row, rowOffset);
         return Double4x4OpsKernelsByteBuffer.makeOuterProduct_api(dest, destOffset, col, colOffset, row, rowOffset);
     }
 
-    /** {@link #makeOuterProduct(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeOuterProduct(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeOuterProduct(long dest, long col, long row) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeOuterProduct_unsafe(dest, col, row);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5669,13 +5893,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.arcball_api(dest, destOffset, src, srcOffset, radius, centerX, centerY, centerZ, angleX, angleY);
     }
 
-    /** {@link #arcball(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #arcball(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer arcball(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double radius, double centerX, double centerY, double centerZ, double angleX, double angleY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.arcball_unsafe(dest, destOffset, src, srcOffset, radius, centerX, centerY, centerZ, angleX, angleY);
         return Double4x4OpsKernelsByteBuffer.arcball_api(dest, destOffset, src, srcOffset, radius, centerX, centerY, centerZ, angleX, angleY);
     }
 
-    /** {@link #arcball(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #arcball(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long arcball(long dest, long src, double radius, double centerX, double centerY, double centerZ, double angleX, double angleY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.arcball_unsafe(dest, src, radius, centerX, centerY, centerZ, angleX, angleY);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5758,13 +5983,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.arcball_api(dest, destOffset, src, srcOffset, center, centerOffset, radius, angleX, angleY);
     }
 
-    /** {@link #arcball(double[], int, double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #arcball(double[], int, double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer arcball(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer center, int centerOffset, double radius, double angleX, double angleY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && center.isDirect() && center.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.arcball_unsafe(dest, destOffset, src, srcOffset, center, centerOffset, radius, angleX, angleY);
         return Double4x4OpsKernelsByteBuffer.arcball_api(dest, destOffset, src, srcOffset, center, centerOffset, radius, angleX, angleY);
     }
 
-    /** {@link #arcball(double[], int, double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #arcball(double[], int, double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long arcball(long dest, long src, long center, double radius, double angleX, double angleY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.arcball_unsafe(dest, src, center, radius, angleX, angleY);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5837,13 +6063,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.axonometricDimetric_api(dest, destOffset, src, srcOffset, alpha);
     }
 
-    /** {@link #axonometricDimetric(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #axonometricDimetric(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer axonometricDimetric(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double alpha) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.axonometricDimetric_unsafe(dest, destOffset, src, srcOffset, alpha);
         return Double4x4OpsKernelsByteBuffer.axonometricDimetric_api(dest, destOffset, src, srcOffset, alpha);
     }
 
-    /** {@link #axonometricDimetric(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #axonometricDimetric(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long axonometricDimetric(long dest, long src, double alpha) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.axonometricDimetric_unsafe(dest, src, alpha);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5920,13 +6147,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.axonometricIsometric_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #axonometricIsometric(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #axonometricIsometric(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer axonometricIsometric(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.axonometricIsometric_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.axonometricIsometric_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #axonometricIsometric(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #axonometricIsometric(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long axonometricIsometric(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.axonometricIsometric_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5998,13 +6226,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.axonometricTrimetric_api(dest, destOffset, src, srcOffset, alphaX, alphaY);
     }
 
-    /** {@link #axonometricTrimetric(double[], int, double[], int, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #axonometricTrimetric(double[], int, double[], int, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer axonometricTrimetric(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double alphaX, double alphaY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.axonometricTrimetric_unsafe(dest, destOffset, src, srcOffset, alphaX, alphaY);
         return Double4x4OpsKernelsByteBuffer.axonometricTrimetric_api(dest, destOffset, src, srcOffset, alphaX, alphaY);
     }
 
-    /** {@link #axonometricTrimetric(double[], int, double[], int, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #axonometricTrimetric(double[], int, double[], int, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long axonometricTrimetric(long dest, long src, double alphaX, double alphaY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.axonometricTrimetric_unsafe(dest, src, alphaX, alphaY);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6068,13 +6297,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.composeTRS_api(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
     }
 
-    /** {@link #composeTRS(double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #composeTRS(double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer composeTRS(java.nio.ByteBuffer dest, int destOffset, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.composeTRS_unsafe(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
         return Double4x4OpsKernelsByteBuffer.composeTRS_api(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
     }
 
-    /** {@link #composeTRS(double[], int, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #composeTRS(double[], int, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long composeTRS(long dest, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.composeTRS_unsafe(dest, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6133,13 +6363,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.composeTRS_api(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
     }
 
-    /** {@link #composeTRS(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #composeTRS(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer composeTRS(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer translation, int translationOffset, java.nio.ByteBuffer rotation, int rotationOffset, java.nio.ByteBuffer scale, int scaleOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && translation.isDirect() && translation.order() == java.nio.ByteOrder.nativeOrder() && rotation.isDirect() && rotation.order() == java.nio.ByteOrder.nativeOrder() && scale.isDirect() && scale.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.composeTRS_unsafe(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
         return Double4x4OpsKernelsByteBuffer.composeTRS_api(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset);
     }
 
-    /** {@link #composeTRS(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #composeTRS(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long composeTRS(long dest, long translation, long rotation, long scale) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.composeTRS_unsafe(dest, translation, rotation, scale);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6230,13 +6461,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.composeTRSMul_api(dest, destOffset, m, mOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
     }
 
-    /** {@link #composeTRSMul(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #composeTRSMul(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer composeTRSMul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer m, int mOffset, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && m.isDirect() && m.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.composeTRSMul_unsafe(dest, destOffset, m, mOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
         return Double4x4OpsKernelsByteBuffer.composeTRSMul_api(dest, destOffset, m, mOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
     }
 
-    /** {@link #composeTRSMul(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #composeTRSMul(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long composeTRSMul(long dest, long m, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.composeTRSMul_unsafe(dest, m, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6322,13 +6554,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.composeTRSMul_api(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, m, mOffset);
     }
 
-    /** {@link #composeTRSMul(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #composeTRSMul(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer composeTRSMul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer translation, int translationOffset, java.nio.ByteBuffer rotation, int rotationOffset, java.nio.ByteBuffer scale, int scaleOffset, java.nio.ByteBuffer m, int mOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && translation.isDirect() && translation.order() == java.nio.ByteOrder.nativeOrder() && rotation.isDirect() && rotation.order() == java.nio.ByteOrder.nativeOrder() && scale.isDirect() && scale.order() == java.nio.ByteOrder.nativeOrder() && m.isDirect() && m.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.composeTRSMul_unsafe(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, m, mOffset);
         return Double4x4OpsKernelsByteBuffer.composeTRSMul_api(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, m, mOffset);
     }
 
-    /** {@link #composeTRSMul(double[], int, double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #composeTRSMul(double[], int, double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long composeTRSMul(long dest, long translation, long rotation, long scale, long m) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.composeTRSMul_unsafe(dest, translation, rotation, scale, m);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6483,7 +6716,7 @@ public final class Double4x4Ops {
     /** {@link #frustum(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer frustum(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar) { return frustum(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #frustum(double[], int, double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #frustum(double[], int, double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer frustum(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.frustum_no(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar, handedness); }
@@ -6491,16 +6724,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #frustum(double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #frustum(double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer frustum(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar, DepthRange depthRange) { return frustum(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #frustum(double[], int, double[], int, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #frustum(double[], int, double[], int, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer frustum(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness) { return frustum(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #frustum(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #frustum(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer frustum(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar) { return frustum(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #frustum(double[], int, double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #frustum(double[], int, double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long frustum(long dest, long src, double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.frustum_no(dest, src, left, right, bottom, top, zNear, zFar, handedness); }
@@ -6508,13 +6742,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #frustum(double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #frustum(double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long frustum(long dest, long src, double left, double right, double bottom, double top, double zNear, double zFar, DepthRange depthRange) { return frustum(dest, src, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #frustum(double[], int, double[], int, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #frustum(double[], int, double[], int, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long frustum(long dest, long src, double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness) { return frustum(dest, src, left, right, bottom, top, zNear, zFar, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #frustum(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #frustum(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long frustum(long dest, long src, double left, double right, double bottom, double top, double zNear, double zFar) { return frustum(dest, src, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -6609,13 +6846,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.lookAlong_api(dest, destOffset, src, srcOffset, dirX, dirY, dirZ, upX, upY, upZ);
     }
 
-    /** {@link #lookAlong(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #lookAlong(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer lookAlong(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.lookAlong_unsafe(dest, destOffset, src, srcOffset, dirX, dirY, dirZ, upX, upY, upZ);
         return Double4x4OpsKernelsByteBuffer.lookAlong_api(dest, destOffset, src, srcOffset, dirX, dirY, dirZ, upX, upY, upZ);
     }
 
-    /** {@link #lookAlong(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #lookAlong(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long lookAlong(long dest, long src, double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.lookAlong_unsafe(dest, src, dirX, dirY, dirZ, upX, upY, upZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6717,13 +6955,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.lookAlong_api(dest, destOffset, src, srcOffset, dir, dirOffset, up, upOffset);
     }
 
-    /** {@link #lookAlong(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #lookAlong(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer lookAlong(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer dir, int dirOffset, java.nio.ByteBuffer up, int upOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && dir.isDirect() && dir.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.lookAlong_unsafe(dest, destOffset, src, srcOffset, dir, dirOffset, up, upOffset);
         return Double4x4OpsKernelsByteBuffer.lookAlong_api(dest, destOffset, src, srcOffset, dir, dirOffset, up, upOffset);
     }
 
-    /** {@link #lookAlong(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #lookAlong(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long lookAlong(long dest, long src, long dir, long up) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.lookAlong_unsafe(dest, src, dir, up);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6798,7 +7037,7 @@ public final class Double4x4Ops {
     /** {@link #lookAt(double[], int, double[], int, double, double, double, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer lookAt(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) { return lookAt(dest, destOffset, src, srcOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, Handedness.RIGHT_HANDED); }
 
-    /** {@link #lookAt(double[], int, double[], int, double, double, double, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #lookAt(double[], int, double[], int, double, double, double, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer lookAt(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, Handedness handedness) {
         switch (handedness) {
             case LEFT_HANDED -> { return Double4x4OpsKernelsByteBuffer.lookAt_lh(dest, destOffset, src, srcOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ); }
@@ -6806,10 +7045,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #lookAt(double[], int, double[], int, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #lookAt(double[], int, double[], int, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer lookAt(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) { return lookAt(dest, destOffset, src, srcOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, Handedness.RIGHT_HANDED); }
 
-    /** {@link #lookAt(double[], int, double[], int, double, double, double, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #lookAt(double[], int, double[], int, double, double, double, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long lookAt(long dest, long src, double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, Handedness handedness) {
         switch (handedness) {
             case LEFT_HANDED -> { return Double4x4OpsKernelsAddress.lookAt_lh(dest, src, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ); }
@@ -6817,7 +7057,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #lookAt(double[], int, double[], int, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #lookAt(double[], int, double[], int, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long lookAt(long dest, long src, double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) { return lookAt(dest, src, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, Handedness.RIGHT_HANDED); }
 
     /**
@@ -6883,7 +7124,7 @@ public final class Double4x4Ops {
     /** {@link #lookAt(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer lookAt(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer eye, int eyeOffset, java.nio.DoubleBuffer center, int centerOffset, java.nio.DoubleBuffer up, int upOffset) { return lookAt(dest, destOffset, src, srcOffset, eye, eyeOffset, center, centerOffset, up, upOffset, Handedness.RIGHT_HANDED); }
 
-    /** {@link #lookAt(double[], int, double[], int, double[], int, double[], int, double[], int, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #lookAt(double[], int, double[], int, double[], int, double[], int, double[], int, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer lookAt(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer eye, int eyeOffset, java.nio.ByteBuffer center, int centerOffset, java.nio.ByteBuffer up, int upOffset, Handedness handedness) {
         switch (handedness) {
             case LEFT_HANDED -> { return Double4x4OpsKernelsByteBuffer.lookAt_lh(dest, destOffset, src, srcOffset, eye, eyeOffset, center, centerOffset, up, upOffset); }
@@ -6891,10 +7132,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #lookAt(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #lookAt(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer lookAt(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer eye, int eyeOffset, java.nio.ByteBuffer center, int centerOffset, java.nio.ByteBuffer up, int upOffset) { return lookAt(dest, destOffset, src, srcOffset, eye, eyeOffset, center, centerOffset, up, upOffset, Handedness.RIGHT_HANDED); }
 
-    /** {@link #lookAt(double[], int, double[], int, double[], int, double[], int, double[], int, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #lookAt(double[], int, double[], int, double[], int, double[], int, double[], int, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long lookAt(long dest, long src, long eye, long center, long up, Handedness handedness) {
         switch (handedness) {
             case LEFT_HANDED -> { return Double4x4OpsKernelsAddress.lookAt_lh(dest, src, eye, center, up); }
@@ -6902,7 +7144,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #lookAt(double[], int, double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #lookAt(double[], int, double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long lookAt(long dest, long src, long eye, long center, long up) { return lookAt(dest, src, eye, center, up, Handedness.RIGHT_HANDED); }
 
     /**
@@ -6954,13 +7197,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeArcball_api(dest, destOffset, radius, centerX, centerY, centerZ, angleX, angleY);
     }
 
-    /** {@link #makeArcball(double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeArcball(double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeArcball(java.nio.ByteBuffer dest, int destOffset, double radius, double centerX, double centerY, double centerZ, double angleX, double angleY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeArcball_unsafe(dest, destOffset, radius, centerX, centerY, centerZ, angleX, angleY);
         return Double4x4OpsKernelsByteBuffer.makeArcball_api(dest, destOffset, radius, centerX, centerY, centerZ, angleX, angleY);
     }
 
-    /** {@link #makeArcball(double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeArcball(double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeArcball(long dest, double radius, double centerX, double centerY, double centerZ, double angleX, double angleY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeArcball_unsafe(dest, radius, centerX, centerY, centerZ, angleX, angleY);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -7017,13 +7261,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeArcball_api(dest, destOffset, center, centerOffset, radius, angleX, angleY);
     }
 
-    /** {@link #makeArcball(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeArcball(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeArcball(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer center, int centerOffset, double radius, double angleX, double angleY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && center.isDirect() && center.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeArcball_unsafe(dest, destOffset, center, centerOffset, radius, angleX, angleY);
         return Double4x4OpsKernelsByteBuffer.makeArcball_api(dest, destOffset, center, centerOffset, radius, angleX, angleY);
     }
 
-    /** {@link #makeArcball(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeArcball(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeArcball(long dest, long center, double radius, double angleX, double angleY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeArcball_unsafe(dest, center, radius, angleX, angleY);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -7071,13 +7316,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeAxonometricDimetric_api(dest, destOffset, alpha);
     }
 
-    /** {@link #makeAxonometricDimetric(double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeAxonometricDimetric(double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeAxonometricDimetric(java.nio.ByteBuffer dest, int destOffset, double alpha) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeAxonometricDimetric_unsafe(dest, destOffset, alpha);
         return Double4x4OpsKernelsByteBuffer.makeAxonometricDimetric_api(dest, destOffset, alpha);
     }
 
-    /** {@link #makeAxonometricDimetric(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeAxonometricDimetric(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeAxonometricDimetric(long dest, double alpha) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeAxonometricDimetric_unsafe(dest, alpha);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -7121,13 +7367,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeAxonometricIsometric_api(dest, destOffset);
     }
 
-    /** {@link #makeAxonometricIsometric(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeAxonometricIsometric(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeAxonometricIsometric(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeAxonometricIsometric_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeAxonometricIsometric_api(dest, destOffset);
     }
 
-    /** {@link #makeAxonometricIsometric(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeAxonometricIsometric(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeAxonometricIsometric(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeAxonometricIsometric_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -7173,13 +7420,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeAxonometricTrimetric_api(dest, destOffset, alphaX, alphaY);
     }
 
-    /** {@link #makeAxonometricTrimetric(double[], int, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeAxonometricTrimetric(double[], int, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeAxonometricTrimetric(java.nio.ByteBuffer dest, int destOffset, double alphaX, double alphaY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeAxonometricTrimetric_unsafe(dest, destOffset, alphaX, alphaY);
         return Double4x4OpsKernelsByteBuffer.makeAxonometricTrimetric_api(dest, destOffset, alphaX, alphaY);
     }
 
-    /** {@link #makeAxonometricTrimetric(double[], int, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeAxonometricTrimetric(double[], int, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeAxonometricTrimetric(long dest, double alphaX, double alphaY) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeAxonometricTrimetric_unsafe(dest, alphaX, alphaY);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -7263,13 +7511,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeBillboardCylindrical_api(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
     }
 
-    /** {@link #makeBillboardCylindrical(double[], int, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeBillboardCylindrical(double[], int, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeBillboardCylindrical(java.nio.ByteBuffer dest, int destOffset, double objPosX, double objPosY, double objPosZ, double targetPosX, double targetPosY, double targetPosZ, double upX, double upY, double upZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeBillboardCylindrical_unsafe(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
         return Double4x4OpsKernelsByteBuffer.makeBillboardCylindrical_api(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
     }
 
-    /** {@link #makeBillboardCylindrical(double[], int, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeBillboardCylindrical(double[], int, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeBillboardCylindrical(long dest, double objPosX, double objPosY, double objPosZ, double targetPosX, double targetPosY, double targetPosZ, double upX, double upY, double upZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeBillboardCylindrical_unsafe(dest, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -7353,13 +7602,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeBillboardCylindrical_api(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset, up, upOffset);
     }
 
-    /** {@link #makeBillboardCylindrical(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeBillboardCylindrical(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeBillboardCylindrical(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer objPos, int objPosOffset, java.nio.ByteBuffer targetPos, int targetPosOffset, java.nio.ByteBuffer up, int upOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && objPos.isDirect() && objPos.order() == java.nio.ByteOrder.nativeOrder() && targetPos.isDirect() && targetPos.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeBillboardCylindrical_unsafe(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset, up, upOffset);
         return Double4x4OpsKernelsByteBuffer.makeBillboardCylindrical_api(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset, up, upOffset);
     }
 
-    /** {@link #makeBillboardCylindrical(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeBillboardCylindrical(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeBillboardCylindrical(long dest, long objPos, long targetPos, long up) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeBillboardCylindrical_unsafe(dest, objPos, targetPos, up);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -7440,13 +7690,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeBillboardSpherical_api(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
     }
 
-    /** {@link #makeBillboardSpherical(double[], int, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeBillboardSpherical(double[], int, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeBillboardSpherical(java.nio.ByteBuffer dest, int destOffset, double objPosX, double objPosY, double objPosZ, double targetPosX, double targetPosY, double targetPosZ, double upX, double upY, double upZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeBillboardSpherical_unsafe(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
         return Double4x4OpsKernelsByteBuffer.makeBillboardSpherical_api(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
     }
 
-    /** {@link #makeBillboardSpherical(double[], int, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeBillboardSpherical(double[], int, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeBillboardSpherical(long dest, double objPosX, double objPosY, double objPosZ, double targetPosX, double targetPosY, double targetPosZ, double upX, double upY, double upZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeBillboardSpherical_unsafe(dest, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -7530,13 +7781,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeBillboardSpherical_api(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset, up, upOffset);
     }
 
-    /** {@link #makeBillboardSpherical(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeBillboardSpherical(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeBillboardSpherical(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer objPos, int objPosOffset, java.nio.ByteBuffer targetPos, int targetPosOffset, java.nio.ByteBuffer up, int upOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && objPos.isDirect() && objPos.order() == java.nio.ByteOrder.nativeOrder() && targetPos.isDirect() && targetPos.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeBillboardSpherical_unsafe(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset, up, upOffset);
         return Double4x4OpsKernelsByteBuffer.makeBillboardSpherical_api(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset, up, upOffset);
     }
 
-    /** {@link #makeBillboardSpherical(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeBillboardSpherical(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeBillboardSpherical(long dest, long objPos, long targetPos, long up) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeBillboardSpherical_unsafe(dest, objPos, targetPos, up);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -7601,13 +7853,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeBillboardSphericalShortest_api(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ);
     }
 
-    /** {@link #makeBillboardSphericalShortest(double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeBillboardSphericalShortest(double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeBillboardSphericalShortest(java.nio.ByteBuffer dest, int destOffset, double objPosX, double objPosY, double objPosZ, double targetPosX, double targetPosY, double targetPosZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeBillboardSphericalShortest_unsafe(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ);
         return Double4x4OpsKernelsByteBuffer.makeBillboardSphericalShortest_api(dest, destOffset, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ);
     }
 
-    /** {@link #makeBillboardSphericalShortest(double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeBillboardSphericalShortest(double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeBillboardSphericalShortest(long dest, double objPosX, double objPosY, double objPosZ, double targetPosX, double targetPosY, double targetPosZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeBillboardSphericalShortest_unsafe(dest, objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -7673,13 +7926,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeBillboardSphericalShortest_api(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset);
     }
 
-    /** {@link #makeBillboardSphericalShortest(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeBillboardSphericalShortest(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeBillboardSphericalShortest(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer objPos, int objPosOffset, java.nio.ByteBuffer targetPos, int targetPosOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && objPos.isDirect() && objPos.order() == java.nio.ByteOrder.nativeOrder() && targetPos.isDirect() && targetPos.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeBillboardSphericalShortest_unsafe(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset);
         return Double4x4OpsKernelsByteBuffer.makeBillboardSphericalShortest_api(dest, destOffset, objPos, objPosOffset, targetPos, targetPosOffset);
     }
 
-    /** {@link #makeBillboardSphericalShortest(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeBillboardSphericalShortest(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeBillboardSphericalShortest(long dest, long objPos, long targetPos) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeBillboardSphericalShortest_unsafe(dest, objPos, targetPos);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -7745,13 +7999,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeFromDualQuat_api(dest, destOffset, dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW);
     }
 
-    /** {@link #makeFromDualQuat(double[], int, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeFromDualQuat(double[], int, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeFromDualQuat(java.nio.ByteBuffer dest, int destOffset, double dqRX, double dqRY, double dqRZ, double dqRW, double dqDX, double dqDY, double dqDZ, double dqDW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeFromDualQuat_unsafe(dest, destOffset, dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW);
         return Double4x4OpsKernelsByteBuffer.makeFromDualQuat_api(dest, destOffset, dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW);
     }
 
-    /** {@link #makeFromDualQuat(double[], int, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeFromDualQuat(double[], int, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeFromDualQuat(long dest, double dqRX, double dqRY, double dqRZ, double dqRW, double dqDX, double dqDY, double dqDZ, double dqDW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeFromDualQuat_unsafe(dest, dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -7878,7 +8133,7 @@ public final class Double4x4Ops {
     /** {@link #makeFrustum(double[], int, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer makeFrustum(java.nio.DoubleBuffer dest, int destOffset, double left, double right, double bottom, double top, double zNear, double zFar) { return makeFrustum(dest, destOffset, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makeFrustum(double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeFrustum(double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeFrustum(java.nio.ByteBuffer dest, int destOffset, double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.makeFrustum_no(dest, destOffset, left, right, bottom, top, zNear, zFar, handedness); }
@@ -7886,16 +8141,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makeFrustum(double[], int, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeFrustum(double[], int, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeFrustum(java.nio.ByteBuffer dest, int destOffset, double left, double right, double bottom, double top, double zNear, double zFar, DepthRange depthRange) { return makeFrustum(dest, destOffset, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #makeFrustum(double[], int, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeFrustum(double[], int, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeFrustum(java.nio.ByteBuffer dest, int destOffset, double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness) { return makeFrustum(dest, destOffset, left, right, bottom, top, zNear, zFar, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makeFrustum(double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeFrustum(double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeFrustum(java.nio.ByteBuffer dest, int destOffset, double left, double right, double bottom, double top, double zNear, double zFar) { return makeFrustum(dest, destOffset, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makeFrustum(double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeFrustum(double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeFrustum(long dest, double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.makeFrustum_no(dest, left, right, bottom, top, zNear, zFar, handedness); }
@@ -7903,13 +8159,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makeFrustum(double[], int, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeFrustum(double[], int, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeFrustum(long dest, double left, double right, double bottom, double top, double zNear, double zFar, DepthRange depthRange) { return makeFrustum(dest, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #makeFrustum(double[], int, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeFrustum(double[], int, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeFrustum(long dest, double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness) { return makeFrustum(dest, left, right, bottom, top, zNear, zFar, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makeFrustum(double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeFrustum(double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeFrustum(long dest, double left, double right, double bottom, double top, double zNear, double zFar) { return makeFrustum(dest, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -7969,7 +8228,7 @@ public final class Double4x4Ops {
     /** {@link #makeLookAt(double[], int, double, double, double, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer makeLookAt(java.nio.DoubleBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) { return makeLookAt(dest, destOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, Handedness.RIGHT_HANDED); }
 
-    /** {@link #makeLookAt(double[], int, double, double, double, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeLookAt(double[], int, double, double, double, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeLookAt(java.nio.ByteBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, Handedness handedness) {
         switch (handedness) {
             case LEFT_HANDED -> { return Double4x4OpsKernelsByteBuffer.makeLookAt_lh(dest, destOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ); }
@@ -7977,10 +8236,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makeLookAt(double[], int, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeLookAt(double[], int, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeLookAt(java.nio.ByteBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) { return makeLookAt(dest, destOffset, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, Handedness.RIGHT_HANDED); }
 
-    /** {@link #makeLookAt(double[], int, double, double, double, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeLookAt(double[], int, double, double, double, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeLookAt(long dest, double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, Handedness handedness) {
         switch (handedness) {
             case LEFT_HANDED -> { return Double4x4OpsKernelsAddress.makeLookAt_lh(dest, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ); }
@@ -7988,7 +8248,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makeLookAt(double[], int, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeLookAt(double[], int, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeLookAt(long dest, double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) { return makeLookAt(dest, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, Handedness.RIGHT_HANDED); }
 
     /**
@@ -8042,7 +8303,7 @@ public final class Double4x4Ops {
     /** {@link #makeLookAt(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer makeLookAt(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer eye, int eyeOffset, java.nio.DoubleBuffer center, int centerOffset, java.nio.DoubleBuffer up, int upOffset) { return makeLookAt(dest, destOffset, eye, eyeOffset, center, centerOffset, up, upOffset, Handedness.RIGHT_HANDED); }
 
-    /** {@link #makeLookAt(double[], int, double[], int, double[], int, double[], int, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeLookAt(double[], int, double[], int, double[], int, double[], int, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeLookAt(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer eye, int eyeOffset, java.nio.ByteBuffer center, int centerOffset, java.nio.ByteBuffer up, int upOffset, Handedness handedness) {
         switch (handedness) {
             case LEFT_HANDED -> { return Double4x4OpsKernelsByteBuffer.makeLookAt_lh(dest, destOffset, eye, eyeOffset, center, centerOffset, up, upOffset); }
@@ -8050,10 +8311,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makeLookAt(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeLookAt(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeLookAt(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer eye, int eyeOffset, java.nio.ByteBuffer center, int centerOffset, java.nio.ByteBuffer up, int upOffset) { return makeLookAt(dest, destOffset, eye, eyeOffset, center, centerOffset, up, upOffset, Handedness.RIGHT_HANDED); }
 
-    /** {@link #makeLookAt(double[], int, double[], int, double[], int, double[], int, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeLookAt(double[], int, double[], int, double[], int, double[], int, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeLookAt(long dest, long eye, long center, long up, Handedness handedness) {
         switch (handedness) {
             case LEFT_HANDED -> { return Double4x4OpsKernelsAddress.makeLookAt_lh(dest, eye, center, up); }
@@ -8061,7 +8323,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makeLookAt(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeLookAt(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeLookAt(long dest, long eye, long center, long up) { return makeLookAt(dest, eye, center, up, Handedness.RIGHT_HANDED); }
 
     /**
@@ -8081,12 +8344,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.makeIdentity(dest, destOffset);
     }
 
-    /** {@link #makeMappingXYZ(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingXYZ(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingXYZ(java.nio.ByteBuffer dest, int destOffset) {
         return Double4x4Ops.makeIdentity(dest, destOffset);
     }
 
-    /** {@link #makeMappingXYZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingXYZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingXYZ(long dest) {
         return Double4x4Ops.makeIdentity(dest);
     }
@@ -8125,13 +8389,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingXYnZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingXYnZ(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingXYnZ(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingXYnZ(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingXYnZ_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingXYnZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingXYnZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingXYnZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingXYnZ(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingXYnZ_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8171,13 +8436,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingXZY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingXZY(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingXZY(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingXZY(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingXZY_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingXZY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingXZY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingXZY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingXZY(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingXZY_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8217,13 +8483,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingXZnY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingXZnY(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingXZnY(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingXZnY(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingXZnY_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingXZnY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingXZnY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingXZnY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingXZnY(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingXZnY_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8263,13 +8530,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingXnYZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingXnYZ(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingXnYZ(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingXnYZ(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingXnYZ_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingXnYZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingXnYZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingXnYZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingXnYZ(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingXnYZ_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8309,13 +8577,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingXnYnZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingXnYnZ(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingXnYnZ(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingXnYnZ(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingXnYnZ_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingXnYnZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingXnYnZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingXnYnZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingXnYnZ(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingXnYnZ_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8355,13 +8624,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingXnZY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingXnZY(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingXnZY(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingXnZY(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingXnZY_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingXnZY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingXnZY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingXnZY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingXnZY(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingXnZY_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8401,13 +8671,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingXnZnY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingXnZnY(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingXnZnY(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingXnZnY(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingXnZnY_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingXnZnY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingXnZnY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingXnZnY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingXnZnY(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingXnZnY_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8447,13 +8718,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingYXZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingYXZ(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingYXZ(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingYXZ(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingYXZ_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingYXZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingYXZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingYXZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingYXZ(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingYXZ_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8493,13 +8765,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingYXnZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingYXnZ(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingYXnZ(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingYXnZ(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingYXnZ_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingYXnZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingYXnZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingYXnZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingYXnZ(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingYXnZ_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8539,13 +8812,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingYZX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingYZX(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingYZX(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingYZX(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingYZX_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingYZX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingYZX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingYZX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingYZX(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingYZX_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8585,13 +8859,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingYZnX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingYZnX(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingYZnX(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingYZnX(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingYZnX_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingYZnX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingYZnX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingYZnX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingYZnX(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingYZnX_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8631,13 +8906,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingYnXZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingYnXZ(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingYnXZ(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingYnXZ(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingYnXZ_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingYnXZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingYnXZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingYnXZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingYnXZ(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingYnXZ_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8677,13 +8953,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingYnXnZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingYnXnZ(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingYnXnZ(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingYnXnZ(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingYnXnZ_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingYnXnZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingYnXnZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingYnXnZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingYnXnZ(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingYnXnZ_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8723,13 +9000,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingYnZX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingYnZX(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingYnZX(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingYnZX(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingYnZX_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingYnZX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingYnZX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingYnZX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingYnZX(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingYnZX_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8769,13 +9047,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingYnZnX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingYnZnX(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingYnZnX(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingYnZnX(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingYnZnX_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingYnZnX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingYnZnX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingYnZnX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingYnZnX(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingYnZnX_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8815,13 +9094,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingZXY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingZXY(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingZXY(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingZXY(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingZXY_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingZXY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingZXY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingZXY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingZXY(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingZXY_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8861,13 +9141,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingZXnY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingZXnY(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingZXnY(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingZXnY(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingZXnY_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingZXnY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingZXnY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingZXnY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingZXnY(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingZXnY_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8907,13 +9188,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingZYX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingZYX(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingZYX(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingZYX(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingZYX_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingZYX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingZYX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingZYX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingZYX(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingZYX_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8953,13 +9235,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingZYnX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingZYnX(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingZYnX(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingZYnX(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingZYnX_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingZYnX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingZYnX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingZYnX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingZYnX(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingZYnX_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -8999,13 +9282,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingZnXY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingZnXY(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingZnXY(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingZnXY(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingZnXY_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingZnXY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingZnXY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingZnXY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingZnXY(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingZnXY_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9045,13 +9329,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingZnXnY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingZnXnY(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingZnXnY(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingZnXnY(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingZnXnY_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingZnXnY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingZnXnY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingZnXnY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingZnXnY(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingZnXnY_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9091,13 +9376,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingZnYX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingZnYX(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingZnYX(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingZnYX(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingZnYX_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingZnYX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingZnYX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingZnYX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingZnYX(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingZnYX_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9137,13 +9423,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingZnYnX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingZnYnX(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingZnYnX(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingZnYnX(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingZnYnX_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingZnYnX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingZnYnX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingZnYnX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingZnYnX(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingZnYnX_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9183,13 +9470,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnXYZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnXYZ(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnXYZ(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnXYZ(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnXYZ_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnXYZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnXYZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnXYZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnXYZ(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnXYZ_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9229,13 +9517,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnXYnZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnXYnZ(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnXYnZ(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnXYnZ(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnXYnZ_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnXYnZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnXYnZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnXYnZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnXYnZ(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnXYnZ_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9275,13 +9564,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnXZY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnXZY(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnXZY(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnXZY(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnXZY_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnXZY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnXZY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnXZY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnXZY(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnXZY_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9321,13 +9611,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnXZnY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnXZnY(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnXZnY(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnXZnY(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnXZnY_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnXZnY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnXZnY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnXZnY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnXZnY(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnXZnY_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9367,13 +9658,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnXnYZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnXnYZ(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnXnYZ(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnXnYZ(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnXnYZ_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnXnYZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnXnYZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnXnYZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnXnYZ(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnXnYZ_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9413,13 +9705,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnXnYnZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnXnYnZ(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnXnYnZ(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnXnYnZ(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnXnYnZ_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnXnYnZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnXnYnZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnXnYnZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnXnYnZ(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnXnYnZ_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9459,13 +9752,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnXnZY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnXnZY(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnXnZY(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnXnZY(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnXnZY_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnXnZY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnXnZY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnXnZY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnXnZY(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnXnZY_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9505,13 +9799,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnXnZnY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnXnZnY(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnXnZnY(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnXnZnY(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnXnZnY_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnXnZnY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnXnZnY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnXnZnY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnXnZnY(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnXnZnY_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9551,13 +9846,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnYXZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnYXZ(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnYXZ(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnYXZ(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnYXZ_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnYXZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnYXZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnYXZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnYXZ(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnYXZ_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9597,13 +9893,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnYXnZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnYXnZ(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnYXnZ(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnYXnZ(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnYXnZ_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnYXnZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnYXnZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnYXnZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnYXnZ(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnYXnZ_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9643,13 +9940,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnYZX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnYZX(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnYZX(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnYZX(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnYZX_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnYZX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnYZX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnYZX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnYZX(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnYZX_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9689,13 +9987,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnYZnX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnYZnX(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnYZnX(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnYZnX(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnYZnX_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnYZnX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnYZnX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnYZnX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnYZnX(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnYZnX_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9735,13 +10034,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnYnXZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnYnXZ(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnYnXZ(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnYnXZ(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnYnXZ_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnYnXZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnYnXZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnYnXZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnYnXZ(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnYnXZ_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9781,13 +10081,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnYnXnZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnYnXnZ(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnYnXnZ(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnYnXnZ(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnYnXnZ_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnYnXnZ_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnYnXnZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnYnXnZ(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnYnXnZ(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnYnXnZ_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9827,13 +10128,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnYnZX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnYnZX(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnYnZX(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnYnZX(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnYnZX_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnYnZX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnYnZX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnYnZX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnYnZX(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnYnZX_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9873,13 +10175,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnYnZnX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnYnZnX(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnYnZnX(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnYnZnX(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnYnZnX_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnYnZnX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnYnZnX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnYnZnX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnYnZnX(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnYnZnX_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9919,13 +10222,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnZXY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnZXY(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnZXY(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnZXY(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnZXY_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnZXY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnZXY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnZXY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnZXY(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnZXY_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -9965,13 +10269,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnZXnY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnZXnY(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnZXnY(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnZXnY(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnZXnY_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnZXnY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnZXnY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnZXnY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnZXnY(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnZXnY_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -10011,13 +10316,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnZYX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnZYX(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnZYX(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnZYX(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnZYX_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnZYX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnZYX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnZYX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnZYX(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnZYX_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -10057,13 +10363,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnZYnX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnZYnX(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnZYnX(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnZYnX(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnZYnX_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnZYnX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnZYnX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnZYnX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnZYnX(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnZYnX_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -10103,13 +10410,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnZnXY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnZnXY(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnZnXY(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnZnXY(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnZnXY_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnZnXY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnZnXY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnZnXY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnZnXY(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnZnXY_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -10149,13 +10457,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnZnXnY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnZnXnY(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnZnXnY(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnZnXnY(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnZnXnY_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnZnXnY_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnZnXnY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnZnXnY(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnZnXnY(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnZnXnY_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -10195,13 +10504,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnZnYX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnZnYX(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnZnYX(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnZnYX(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnZnYX_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnZnYX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnZnYX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnZnYX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnZnYX(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnZnYX_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -10241,13 +10551,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeMappingnZnYnX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnZnYnX(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeMappingnZnYnX(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeMappingnZnYnX(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeMappingnZnYnX_unsafe(dest, destOffset);
         return Double4x4OpsKernelsByteBuffer.makeMappingnZnYnX_api(dest, destOffset);
     }
 
-    /** {@link #makeMappingnZnYnX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeMappingnZnYnX(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeMappingnZnYnX(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeMappingnZnYnX_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -10288,13 +10599,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeObliqueCabinet_api(dest, destOffset, angle);
     }
 
-    /** {@link #makeObliqueCabinet(double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeObliqueCabinet(double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeObliqueCabinet(java.nio.ByteBuffer dest, int destOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeObliqueCabinet_unsafe(dest, destOffset, angle);
         return Double4x4OpsKernelsByteBuffer.makeObliqueCabinet_api(dest, destOffset, angle);
     }
 
-    /** {@link #makeObliqueCabinet(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeObliqueCabinet(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeObliqueCabinet(long dest, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeObliqueCabinet_unsafe(dest, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -10335,13 +10647,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeObliqueCavalier_api(dest, destOffset, angle);
     }
 
-    /** {@link #makeObliqueCavalier(double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeObliqueCavalier(double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeObliqueCavalier(java.nio.ByteBuffer dest, int destOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeObliqueCavalier_unsafe(dest, destOffset, angle);
         return Double4x4OpsKernelsByteBuffer.makeObliqueCavalier_api(dest, destOffset, angle);
     }
 
-    /** {@link #makeObliqueCavalier(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeObliqueCavalier(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeObliqueCavalier(long dest, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeObliqueCavalier_unsafe(dest, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -10382,13 +10695,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeObliqueMilitary_api(dest, destOffset, angle);
     }
 
-    /** {@link #makeObliqueMilitary(double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeObliqueMilitary(double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeObliqueMilitary(java.nio.ByteBuffer dest, int destOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeObliqueMilitary_unsafe(dest, destOffset, angle);
         return Double4x4OpsKernelsByteBuffer.makeObliqueMilitary_api(dest, destOffset, angle);
     }
 
-    /** {@link #makeObliqueMilitary(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeObliqueMilitary(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeObliqueMilitary(long dest, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeObliqueMilitary_unsafe(dest, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -10503,7 +10817,7 @@ public final class Double4x4Ops {
     /** {@link #makeOrtho(double[], int, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer makeOrtho(java.nio.DoubleBuffer dest, int destOffset, double left, double right, double bottom, double top, double zNear, double zFar) { return makeOrtho(dest, destOffset, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makeOrtho(double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeOrtho(double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeOrtho(java.nio.ByteBuffer dest, int destOffset, double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.makeOrtho_no(dest, destOffset, left, right, bottom, top, zNear, zFar, handedness); }
@@ -10511,16 +10825,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makeOrtho(double[], int, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeOrtho(double[], int, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeOrtho(java.nio.ByteBuffer dest, int destOffset, double left, double right, double bottom, double top, double zNear, double zFar, DepthRange depthRange) { return makeOrtho(dest, destOffset, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #makeOrtho(double[], int, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeOrtho(double[], int, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeOrtho(java.nio.ByteBuffer dest, int destOffset, double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness) { return makeOrtho(dest, destOffset, left, right, bottom, top, zNear, zFar, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makeOrtho(double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeOrtho(double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeOrtho(java.nio.ByteBuffer dest, int destOffset, double left, double right, double bottom, double top, double zNear, double zFar) { return makeOrtho(dest, destOffset, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makeOrtho(double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeOrtho(double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeOrtho(long dest, double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.makeOrtho_no(dest, left, right, bottom, top, zNear, zFar, handedness); }
@@ -10528,13 +10843,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makeOrtho(double[], int, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeOrtho(double[], int, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeOrtho(long dest, double left, double right, double bottom, double top, double zNear, double zFar, DepthRange depthRange) { return makeOrtho(dest, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #makeOrtho(double[], int, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeOrtho(double[], int, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeOrtho(long dest, double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness) { return makeOrtho(dest, left, right, bottom, top, zNear, zFar, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makeOrtho(double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeOrtho(double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeOrtho(long dest, double left, double right, double bottom, double top, double zNear, double zFar) { return makeOrtho(dest, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -10638,7 +10956,7 @@ public final class Double4x4Ops {
     /** {@link #makeOrtho2D(double[], int, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer makeOrtho2D(java.nio.DoubleBuffer dest, int destOffset, double left, double right, double bottom, double top) { return makeOrtho2D(dest, destOffset, left, right, bottom, top, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makeOrtho2D(double[], int, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeOrtho2D(double[], int, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeOrtho2D(java.nio.ByteBuffer dest, int destOffset, double left, double right, double bottom, double top, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.makeOrtho2D_no(dest, destOffset, left, right, bottom, top, handedness); }
@@ -10646,16 +10964,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makeOrtho2D(double[], int, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeOrtho2D(double[], int, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeOrtho2D(java.nio.ByteBuffer dest, int destOffset, double left, double right, double bottom, double top, DepthRange depthRange) { return makeOrtho2D(dest, destOffset, left, right, bottom, top, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #makeOrtho2D(double[], int, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeOrtho2D(double[], int, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeOrtho2D(java.nio.ByteBuffer dest, int destOffset, double left, double right, double bottom, double top, Handedness handedness) { return makeOrtho2D(dest, destOffset, left, right, bottom, top, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makeOrtho2D(double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeOrtho2D(double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeOrtho2D(java.nio.ByteBuffer dest, int destOffset, double left, double right, double bottom, double top) { return makeOrtho2D(dest, destOffset, left, right, bottom, top, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makeOrtho2D(double[], int, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeOrtho2D(double[], int, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeOrtho2D(long dest, double left, double right, double bottom, double top, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.makeOrtho2D_no(dest, left, right, bottom, top, handedness); }
@@ -10663,13 +10982,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makeOrtho2D(double[], int, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeOrtho2D(double[], int, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeOrtho2D(long dest, double left, double right, double bottom, double top, DepthRange depthRange) { return makeOrtho2D(dest, left, right, bottom, top, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #makeOrtho2D(double[], int, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeOrtho2D(double[], int, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeOrtho2D(long dest, double left, double right, double bottom, double top, Handedness handedness) { return makeOrtho2D(dest, left, right, bottom, top, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makeOrtho2D(double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeOrtho2D(double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeOrtho2D(long dest, double left, double right, double bottom, double top) { return makeOrtho2D(dest, left, right, bottom, top, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -10789,7 +11111,7 @@ public final class Double4x4Ops {
     /** {@link #makePerspective(double[], int, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer makePerspective(java.nio.DoubleBuffer dest, int destOffset, double fovy, double aspect, double near, double far) { return makePerspective(dest, destOffset, fovy, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspective(double[], int, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspective(double[], int, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspective(java.nio.ByteBuffer dest, int destOffset, double fovy, double aspect, double near, double far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.makePerspective_no(dest, destOffset, fovy, aspect, near, far, handedness); }
@@ -10797,16 +11119,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makePerspective(double[], int, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspective(double[], int, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspective(java.nio.ByteBuffer dest, int destOffset, double fovy, double aspect, double near, double far, DepthRange depthRange) { return makePerspective(dest, destOffset, fovy, aspect, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #makePerspective(double[], int, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspective(double[], int, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspective(java.nio.ByteBuffer dest, int destOffset, double fovy, double aspect, double near, double far, Handedness handedness) { return makePerspective(dest, destOffset, fovy, aspect, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspective(double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspective(double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspective(java.nio.ByteBuffer dest, int destOffset, double fovy, double aspect, double near, double far) { return makePerspective(dest, destOffset, fovy, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspective(double[], int, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspective(double[], int, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspective(long dest, double fovy, double aspect, double near, double far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.makePerspective_no(dest, fovy, aspect, near, far, handedness); }
@@ -10814,13 +11137,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makePerspective(double[], int, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspective(double[], int, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspective(long dest, double fovy, double aspect, double near, double far, DepthRange depthRange) { return makePerspective(dest, fovy, aspect, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #makePerspective(double[], int, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspective(double[], int, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspective(long dest, double fovy, double aspect, double near, double far, Handedness handedness) { return makePerspective(dest, fovy, aspect, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspective(double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspective(double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspective(long dest, double fovy, double aspect, double near, double far) { return makePerspective(dest, fovy, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -10944,7 +11270,7 @@ public final class Double4x4Ops {
     /** {@link #makePerspectiveFovRange(double[], int, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer makePerspectiveFovRange(java.nio.DoubleBuffer dest, int destOffset, double angleMin, double angleMax, double aspect, double near, double far) { return makePerspectiveFovRange(dest, destOffset, angleMin, angleMax, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspectiveFovRange(double[], int, double, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveFovRange(double[], int, double, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveFovRange(java.nio.ByteBuffer dest, int destOffset, double angleMin, double angleMax, double aspect, double near, double far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.makePerspectiveFovRange_no(dest, destOffset, angleMin, angleMax, aspect, near, far, handedness); }
@@ -10952,16 +11278,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makePerspectiveFovRange(double[], int, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveFovRange(double[], int, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveFovRange(java.nio.ByteBuffer dest, int destOffset, double angleMin, double angleMax, double aspect, double near, double far, DepthRange depthRange) { return makePerspectiveFovRange(dest, destOffset, angleMin, angleMax, aspect, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #makePerspectiveFovRange(double[], int, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveFovRange(double[], int, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveFovRange(java.nio.ByteBuffer dest, int destOffset, double angleMin, double angleMax, double aspect, double near, double far, Handedness handedness) { return makePerspectiveFovRange(dest, destOffset, angleMin, angleMax, aspect, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspectiveFovRange(double[], int, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveFovRange(double[], int, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveFovRange(java.nio.ByteBuffer dest, int destOffset, double angleMin, double angleMax, double aspect, double near, double far) { return makePerspectiveFovRange(dest, destOffset, angleMin, angleMax, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspectiveFovRange(double[], int, double, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveFovRange(double[], int, double, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveFovRange(long dest, double angleMin, double angleMax, double aspect, double near, double far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.makePerspectiveFovRange_no(dest, angleMin, angleMax, aspect, near, far, handedness); }
@@ -10969,13 +11296,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makePerspectiveFovRange(double[], int, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveFovRange(double[], int, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveFovRange(long dest, double angleMin, double angleMax, double aspect, double near, double far, DepthRange depthRange) { return makePerspectiveFovRange(dest, angleMin, angleMax, aspect, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #makePerspectiveFovRange(double[], int, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveFovRange(double[], int, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveFovRange(long dest, double angleMin, double angleMax, double aspect, double near, double far, Handedness handedness) { return makePerspectiveFovRange(dest, angleMin, angleMax, aspect, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspectiveFovRange(double[], int, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveFovRange(double[], int, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveFovRange(long dest, double angleMin, double angleMax, double aspect, double near, double far) { return makePerspectiveFovRange(dest, angleMin, angleMax, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -11111,7 +11441,7 @@ public final class Double4x4Ops {
     /** {@link #makePerspectiveOffCenterFov(double[], int, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer makePerspectiveOffCenterFov(java.nio.DoubleBuffer dest, int destOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) { return makePerspectiveOffCenterFov(dest, destOffset, angleLeft, angleRight, angleDown, angleUp, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspectiveOffCenterFov(double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveOffCenterFov(double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveOffCenterFov(java.nio.ByteBuffer dest, int destOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.makePerspectiveOffCenterFov_no(dest, destOffset, angleLeft, angleRight, angleDown, angleUp, near, far, handedness); }
@@ -11119,16 +11449,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makePerspectiveOffCenterFov(double[], int, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveOffCenterFov(double[], int, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveOffCenterFov(java.nio.ByteBuffer dest, int destOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far, DepthRange depthRange) { return makePerspectiveOffCenterFov(dest, destOffset, angleLeft, angleRight, angleDown, angleUp, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #makePerspectiveOffCenterFov(double[], int, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveOffCenterFov(double[], int, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveOffCenterFov(java.nio.ByteBuffer dest, int destOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far, Handedness handedness) { return makePerspectiveOffCenterFov(dest, destOffset, angleLeft, angleRight, angleDown, angleUp, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspectiveOffCenterFov(double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveOffCenterFov(double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveOffCenterFov(java.nio.ByteBuffer dest, int destOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) { return makePerspectiveOffCenterFov(dest, destOffset, angleLeft, angleRight, angleDown, angleUp, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspectiveOffCenterFov(double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveOffCenterFov(double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveOffCenterFov(long dest, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.makePerspectiveOffCenterFov_no(dest, angleLeft, angleRight, angleDown, angleUp, near, far, handedness); }
@@ -11136,13 +11467,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makePerspectiveOffCenterFov(double[], int, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveOffCenterFov(double[], int, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveOffCenterFov(long dest, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far, DepthRange depthRange) { return makePerspectiveOffCenterFov(dest, angleLeft, angleRight, angleDown, angleUp, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #makePerspectiveOffCenterFov(double[], int, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveOffCenterFov(double[], int, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveOffCenterFov(long dest, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far, Handedness handedness) { return makePerspectiveOffCenterFov(dest, angleLeft, angleRight, angleDown, angleUp, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspectiveOffCenterFov(double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveOffCenterFov(double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveOffCenterFov(long dest, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) { return makePerspectiveOffCenterFov(dest, angleLeft, angleRight, angleDown, angleUp, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -11306,7 +11640,7 @@ public final class Double4x4Ops {
     /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer makePerspectiveOffCenterRectangleProj(java.nio.DoubleBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist) { return makePerspectiveOffCenterRectangleProj(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveOffCenterRectangleProj(java.nio.ByteBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.makePerspectiveOffCenterRectangleProj_no(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist, handedness); }
@@ -11314,16 +11648,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveOffCenterRectangleProj(java.nio.ByteBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist, DepthRange depthRange) { return makePerspectiveOffCenterRectangleProj(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveOffCenterRectangleProj(java.nio.ByteBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist, Handedness handedness) { return makePerspectiveOffCenterRectangleProj(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveOffCenterRectangleProj(java.nio.ByteBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist) { return makePerspectiveOffCenterRectangleProj(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveOffCenterRectangleProj(long dest, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.makePerspectiveOffCenterRectangleProj_no(dest, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist, handedness); }
@@ -11331,13 +11666,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveOffCenterRectangleProj(long dest, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist, DepthRange depthRange) { return makePerspectiveOffCenterRectangleProj(dest, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveOffCenterRectangleProj(long dest, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist, Handedness handedness) { return makePerspectiveOffCenterRectangleProj(dest, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveOffCenterRectangleProj(long dest, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist) { return makePerspectiveOffCenterRectangleProj(dest, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, nearFarDist, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -11449,7 +11787,7 @@ public final class Double4x4Ops {
     /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer makePerspectiveOffCenterRectangleProj(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer eye, int eyeOffset, java.nio.DoubleBuffer p, int pOffset, java.nio.DoubleBuffer x, int xOffset, java.nio.DoubleBuffer y, int yOffset, double nearFarDist) { return makePerspectiveOffCenterRectangleProj(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, nearFarDist, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double[], int, double[], int, double[], int, double[], int, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double[], int, double[], int, double[], int, double[], int, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveOffCenterRectangleProj(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer eye, int eyeOffset, java.nio.ByteBuffer p, int pOffset, java.nio.ByteBuffer x, int xOffset, java.nio.ByteBuffer y, int yOffset, double nearFarDist, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.makePerspectiveOffCenterRectangleProj_no(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, nearFarDist, handedness); }
@@ -11457,16 +11795,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double[], int, double[], int, double[], int, double[], int, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double[], int, double[], int, double[], int, double[], int, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveOffCenterRectangleProj(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer eye, int eyeOffset, java.nio.ByteBuffer p, int pOffset, java.nio.ByteBuffer x, int xOffset, java.nio.ByteBuffer y, int yOffset, double nearFarDist, DepthRange depthRange) { return makePerspectiveOffCenterRectangleProj(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, nearFarDist, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double[], int, double[], int, double[], int, double[], int, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double[], int, double[], int, double[], int, double[], int, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveOffCenterRectangleProj(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer eye, int eyeOffset, java.nio.ByteBuffer p, int pOffset, java.nio.ByteBuffer x, int xOffset, java.nio.ByteBuffer y, int yOffset, double nearFarDist, Handedness handedness) { return makePerspectiveOffCenterRectangleProj(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, nearFarDist, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveOffCenterRectangleProj(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer eye, int eyeOffset, java.nio.ByteBuffer p, int pOffset, java.nio.ByteBuffer x, int xOffset, java.nio.ByteBuffer y, int yOffset, double nearFarDist) { return makePerspectiveOffCenterRectangleProj(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, nearFarDist, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double[], int, double[], int, double[], int, double[], int, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double[], int, double[], int, double[], int, double[], int, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveOffCenterRectangleProj(long dest, long eye, long p, long x, long y, double nearFarDist, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.makePerspectiveOffCenterRectangleProj_no(dest, eye, p, x, y, nearFarDist, handedness); }
@@ -11474,13 +11813,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double[], int, double[], int, double[], int, double[], int, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double[], int, double[], int, double[], int, double[], int, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveOffCenterRectangleProj(long dest, long eye, long p, long x, long y, double nearFarDist, DepthRange depthRange) { return makePerspectiveOffCenterRectangleProj(dest, eye, p, x, y, nearFarDist, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double[], int, double[], int, double[], int, double[], int, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double[], int, double[], int, double[], int, double[], int, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveOffCenterRectangleProj(long dest, long eye, long p, long x, long y, double nearFarDist, Handedness handedness) { return makePerspectiveOffCenterRectangleProj(dest, eye, p, x, y, nearFarDist, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveOffCenterRectangleProj(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveOffCenterRectangleProj(long dest, long eye, long p, long x, long y, double nearFarDist) { return makePerspectiveOffCenterRectangleProj(dest, eye, p, x, y, nearFarDist, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -11562,7 +11904,7 @@ public final class Double4x4Ops {
     /** {@link #makePerspectiveOffCenterRectangleView(double[], int, double, double, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer makePerspectiveOffCenterRectangleView(java.nio.DoubleBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ) { return makePerspectiveOffCenterRectangleView(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, Handedness.RIGHT_HANDED); }
 
-    /** {@link #makePerspectiveOffCenterRectangleView(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveOffCenterRectangleView(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveOffCenterRectangleView(java.nio.ByteBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, Handedness handedness) {
         switch (handedness) {
             case LEFT_HANDED -> { return Double4x4OpsKernelsByteBuffer.makePerspectiveOffCenterRectangleView_lh(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ); }
@@ -11570,10 +11912,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makePerspectiveOffCenterRectangleView(double[], int, double, double, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveOffCenterRectangleView(double[], int, double, double, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveOffCenterRectangleView(java.nio.ByteBuffer dest, int destOffset, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ) { return makePerspectiveOffCenterRectangleView(dest, destOffset, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, Handedness.RIGHT_HANDED); }
 
-    /** {@link #makePerspectiveOffCenterRectangleView(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveOffCenterRectangleView(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveOffCenterRectangleView(long dest, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, Handedness handedness) {
         switch (handedness) {
             case LEFT_HANDED -> { return Double4x4OpsKernelsAddress.makePerspectiveOffCenterRectangleView_lh(dest, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ); }
@@ -11581,7 +11924,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makePerspectiveOffCenterRectangleView(double[], int, double, double, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveOffCenterRectangleView(double[], int, double, double, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveOffCenterRectangleView(long dest, double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ) { return makePerspectiveOffCenterRectangleView(dest, eyeX, eyeY, eyeZ, pX, pY, pZ, xX, xY, xZ, yX, yY, yZ, Handedness.RIGHT_HANDED); }
 
     /**
@@ -11637,7 +11981,7 @@ public final class Double4x4Ops {
     /** {@link #makePerspectiveOffCenterRectangleView(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer makePerspectiveOffCenterRectangleView(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer eye, int eyeOffset, java.nio.DoubleBuffer p, int pOffset, java.nio.DoubleBuffer x, int xOffset, java.nio.DoubleBuffer y, int yOffset) { return makePerspectiveOffCenterRectangleView(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, Handedness.RIGHT_HANDED); }
 
-    /** {@link #makePerspectiveOffCenterRectangleView(double[], int, double[], int, double[], int, double[], int, double[], int, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveOffCenterRectangleView(double[], int, double[], int, double[], int, double[], int, double[], int, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveOffCenterRectangleView(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer eye, int eyeOffset, java.nio.ByteBuffer p, int pOffset, java.nio.ByteBuffer x, int xOffset, java.nio.ByteBuffer y, int yOffset, Handedness handedness) {
         switch (handedness) {
             case LEFT_HANDED -> { return Double4x4OpsKernelsByteBuffer.makePerspectiveOffCenterRectangleView_lh(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset); }
@@ -11645,10 +11989,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makePerspectiveOffCenterRectangleView(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePerspectiveOffCenterRectangleView(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePerspectiveOffCenterRectangleView(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer eye, int eyeOffset, java.nio.ByteBuffer p, int pOffset, java.nio.ByteBuffer x, int xOffset, java.nio.ByteBuffer y, int yOffset) { return makePerspectiveOffCenterRectangleView(dest, destOffset, eye, eyeOffset, p, pOffset, x, xOffset, y, yOffset, Handedness.RIGHT_HANDED); }
 
-    /** {@link #makePerspectiveOffCenterRectangleView(double[], int, double[], int, double[], int, double[], int, double[], int, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveOffCenterRectangleView(double[], int, double[], int, double[], int, double[], int, double[], int, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveOffCenterRectangleView(long dest, long eye, long p, long x, long y, Handedness handedness) {
         switch (handedness) {
             case LEFT_HANDED -> { return Double4x4OpsKernelsAddress.makePerspectiveOffCenterRectangleView_lh(dest, eye, p, x, y); }
@@ -11656,7 +12001,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #makePerspectiveOffCenterRectangleView(double[], int, double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePerspectiveOffCenterRectangleView(double[], int, double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePerspectiveOffCenterRectangleView(long dest, long eye, long p, long x, long y) { return makePerspectiveOffCenterRectangleView(dest, eye, p, x, y, Handedness.RIGHT_HANDED); }
 
     /**
@@ -11702,13 +12048,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makePickMatrix_api(dest, destOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
     }
 
-    /** {@link #makePickMatrix(double[], int, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makePickMatrix(double[], int, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makePickMatrix(java.nio.ByteBuffer dest, int destOffset, double centerX, double centerY, double deltaX, double deltaY, double vpX, double vpY, double vpW, double vpH) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makePickMatrix_unsafe(dest, destOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
         return Double4x4OpsKernelsByteBuffer.makePickMatrix_api(dest, destOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
     }
 
-    /** {@link #makePickMatrix(double[], int, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makePickMatrix(double[], int, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makePickMatrix(long dest, double centerX, double centerY, double deltaX, double deltaY, double vpX, double vpY, double vpW, double vpH) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makePickMatrix_unsafe(dest, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -11757,13 +12104,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeReflection_api(dest, destOffset, normalX, normalY, normalZ);
     }
 
-    /** {@link #makeReflection(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeReflection(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeReflection(java.nio.ByteBuffer dest, int destOffset, double normalX, double normalY, double normalZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeReflection_unsafe(dest, destOffset, normalX, normalY, normalZ);
         return Double4x4OpsKernelsByteBuffer.makeReflection_api(dest, destOffset, normalX, normalY, normalZ);
     }
 
-    /** {@link #makeReflection(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeReflection(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeReflection(long dest, double normalX, double normalY, double normalZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeReflection_unsafe(dest, normalX, normalY, normalZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -11811,13 +12159,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeReflection_api(dest, destOffset, normal, normalOffset);
     }
 
-    /** {@link #makeReflection(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeReflection(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeReflection(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer normal, int normalOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && normal.isDirect() && normal.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeReflection_unsafe(dest, destOffset, normal, normalOffset);
         return Double4x4OpsKernelsByteBuffer.makeReflection_api(dest, destOffset, normal, normalOffset);
     }
 
-    /** {@link #makeReflection(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeReflection(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeReflection(long dest, long normal) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeReflection_unsafe(dest, normal);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -11869,13 +12218,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeRotationAxis_api(dest, destOffset, angle, axisX, axisY, axisZ);
     }
 
-    /** {@link #makeRotationAxis(double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeRotationAxis(double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeRotationAxis(java.nio.ByteBuffer dest, int destOffset, double angle, double axisX, double axisY, double axisZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeRotationAxis_unsafe(dest, destOffset, angle, axisX, axisY, axisZ);
         return Double4x4OpsKernelsByteBuffer.makeRotationAxis_api(dest, destOffset, angle, axisX, axisY, axisZ);
     }
 
-    /** {@link #makeRotationAxis(double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeRotationAxis(double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeRotationAxis(long dest, double angle, double axisX, double axisY, double axisZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeRotationAxis_unsafe(dest, angle, axisX, axisY, axisZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -11926,13 +12276,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeRotationAxis_api(dest, destOffset, axis, axisOffset, angle);
     }
 
-    /** {@link #makeRotationAxis(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeRotationAxis(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeRotationAxis(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer axis, int axisOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && axis.isDirect() && axis.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeRotationAxis_unsafe(dest, destOffset, axis, axisOffset, angle);
         return Double4x4OpsKernelsByteBuffer.makeRotationAxis_api(dest, destOffset, axis, axisOffset, angle);
     }
 
-    /** {@link #makeRotationAxis(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeRotationAxis(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeRotationAxis(long dest, long axis, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeRotationAxis_unsafe(dest, axis, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -12004,13 +12355,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeRotationLookAlong_api(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
     }
 
-    /** {@link #makeRotationLookAlong(double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeRotationLookAlong(double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeRotationLookAlong(java.nio.ByteBuffer dest, int destOffset, double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeRotationLookAlong_unsafe(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
         return Double4x4OpsKernelsByteBuffer.makeRotationLookAlong_api(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
     }
 
-    /** {@link #makeRotationLookAlong(double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeRotationLookAlong(double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeRotationLookAlong(long dest, double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeRotationLookAlong_unsafe(dest, dirX, dirY, dirZ, upX, upY, upZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -12086,13 +12438,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeRotationLookAlong_api(dest, destOffset, dir, dirOffset, up, upOffset);
     }
 
-    /** {@link #makeRotationLookAlong(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeRotationLookAlong(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeRotationLookAlong(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer dir, int dirOffset, java.nio.ByteBuffer up, int upOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && dir.isDirect() && dir.order() == java.nio.ByteOrder.nativeOrder() && up.isDirect() && up.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeRotationLookAlong_unsafe(dest, destOffset, dir, dirOffset, up, upOffset);
         return Double4x4OpsKernelsByteBuffer.makeRotationLookAlong_api(dest, destOffset, dir, dirOffset, up, upOffset);
     }
 
-    /** {@link #makeRotationLookAlong(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeRotationLookAlong(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeRotationLookAlong(long dest, long dir, long up) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeRotationLookAlong_unsafe(dest, dir, up);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -12142,13 +12495,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeRotationQuat_api(dest, destOffset, qX, qY, qZ, qW);
     }
 
-    /** {@link #makeRotationQuat(double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeRotationQuat(double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeRotationQuat(java.nio.ByteBuffer dest, int destOffset, double qX, double qY, double qZ, double qW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeRotationQuat_unsafe(dest, destOffset, qX, qY, qZ, qW);
         return Double4x4OpsKernelsByteBuffer.makeRotationQuat_api(dest, destOffset, qX, qY, qZ, qW);
     }
 
-    /** {@link #makeRotationQuat(double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeRotationQuat(double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeRotationQuat(long dest, double qX, double qY, double qZ, double qW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeRotationQuat_unsafe(dest, qX, qY, qZ, qW);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -12196,13 +12550,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeRotationQuat_api(dest, destOffset, q, qOffset);
     }
 
-    /** {@link #makeRotationQuat(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeRotationQuat(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeRotationQuat(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer q, int qOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && q.isDirect() && q.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeRotationQuat_unsafe(dest, destOffset, q, qOffset);
         return Double4x4OpsKernelsByteBuffer.makeRotationQuat_api(dest, destOffset, q, qOffset);
     }
 
-    /** {@link #makeRotationQuat(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeRotationQuat(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeRotationQuat(long dest, long q) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeRotationQuat_unsafe(dest, q);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -12244,13 +12599,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeRotationX_api(dest, destOffset, angle);
     }
 
-    /** {@link #makeRotationX(double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeRotationX(double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeRotationX(java.nio.ByteBuffer dest, int destOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeRotationX_unsafe(dest, destOffset, angle);
         return Double4x4OpsKernelsByteBuffer.makeRotationX_api(dest, destOffset, angle);
     }
 
-    /** {@link #makeRotationX(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeRotationX(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeRotationX(long dest, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeRotationX_unsafe(dest, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -12302,13 +12658,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeRotationXYZ_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #makeRotationXYZ(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeRotationXYZ(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeRotationXYZ(java.nio.ByteBuffer dest, int destOffset, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeRotationXYZ_unsafe(dest, destOffset, angleX, angleY, angleZ);
         return Double4x4OpsKernelsByteBuffer.makeRotationXYZ_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #makeRotationXYZ(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeRotationXYZ(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeRotationXYZ(long dest, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeRotationXYZ_unsafe(dest, angleX, angleY, angleZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -12360,13 +12717,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeRotationXZY_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #makeRotationXZY(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeRotationXZY(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeRotationXZY(java.nio.ByteBuffer dest, int destOffset, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeRotationXZY_unsafe(dest, destOffset, angleX, angleY, angleZ);
         return Double4x4OpsKernelsByteBuffer.makeRotationXZY_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #makeRotationXZY(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeRotationXZY(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeRotationXZY(long dest, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeRotationXZY_unsafe(dest, angleX, angleY, angleZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -12408,13 +12766,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeRotationY_api(dest, destOffset, angle);
     }
 
-    /** {@link #makeRotationY(double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeRotationY(double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeRotationY(java.nio.ByteBuffer dest, int destOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeRotationY_unsafe(dest, destOffset, angle);
         return Double4x4OpsKernelsByteBuffer.makeRotationY_api(dest, destOffset, angle);
     }
 
-    /** {@link #makeRotationY(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeRotationY(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeRotationY(long dest, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeRotationY_unsafe(dest, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -12466,13 +12825,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeRotationYXZ_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #makeRotationYXZ(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeRotationYXZ(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeRotationYXZ(java.nio.ByteBuffer dest, int destOffset, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeRotationYXZ_unsafe(dest, destOffset, angleX, angleY, angleZ);
         return Double4x4OpsKernelsByteBuffer.makeRotationYXZ_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #makeRotationYXZ(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeRotationYXZ(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeRotationYXZ(long dest, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeRotationYXZ_unsafe(dest, angleX, angleY, angleZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -12524,13 +12884,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeRotationYZX_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #makeRotationYZX(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeRotationYZX(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeRotationYZX(java.nio.ByteBuffer dest, int destOffset, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeRotationYZX_unsafe(dest, destOffset, angleX, angleY, angleZ);
         return Double4x4OpsKernelsByteBuffer.makeRotationYZX_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #makeRotationYZX(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeRotationYZX(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeRotationYZX(long dest, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeRotationYZX_unsafe(dest, angleX, angleY, angleZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -12572,13 +12933,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeRotationZ_api(dest, destOffset, angle);
     }
 
-    /** {@link #makeRotationZ(double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeRotationZ(double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeRotationZ(java.nio.ByteBuffer dest, int destOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeRotationZ_unsafe(dest, destOffset, angle);
         return Double4x4OpsKernelsByteBuffer.makeRotationZ_api(dest, destOffset, angle);
     }
 
-    /** {@link #makeRotationZ(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeRotationZ(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeRotationZ(long dest, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeRotationZ_unsafe(dest, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -12630,13 +12992,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeRotationZXY_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #makeRotationZXY(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeRotationZXY(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeRotationZXY(java.nio.ByteBuffer dest, int destOffset, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeRotationZXY_unsafe(dest, destOffset, angleX, angleY, angleZ);
         return Double4x4OpsKernelsByteBuffer.makeRotationZXY_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #makeRotationZXY(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeRotationZXY(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeRotationZXY(long dest, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeRotationZXY_unsafe(dest, angleX, angleY, angleZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -12688,13 +13051,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeRotationZYX_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #makeRotationZYX(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeRotationZYX(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeRotationZYX(java.nio.ByteBuffer dest, int destOffset, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeRotationZYX_unsafe(dest, destOffset, angleX, angleY, angleZ);
         return Double4x4OpsKernelsByteBuffer.makeRotationZYX_api(dest, destOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #makeRotationZYX(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeRotationZYX(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeRotationZYX(long dest, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeRotationZYX_unsafe(dest, angleX, angleY, angleZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -12736,13 +13100,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeScaling_api(dest, destOffset, vX, vY, vZ);
     }
 
-    /** {@link #makeScaling(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeScaling(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeScaling(java.nio.ByteBuffer dest, int destOffset, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeScaling_unsafe(dest, destOffset, vX, vY, vZ);
         return Double4x4OpsKernelsByteBuffer.makeScaling_api(dest, destOffset, vX, vY, vZ);
     }
 
-    /** {@link #makeScaling(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeScaling(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeScaling(long dest, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeScaling_unsafe(dest, vX, vY, vZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -12786,13 +13151,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeScaling_api(dest, destOffset, v, vOffset);
     }
 
-    /** {@link #makeScaling(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeScaling(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeScaling(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer v, int vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeScaling_unsafe(dest, destOffset, v, vOffset);
         return Double4x4OpsKernelsByteBuffer.makeScaling_api(dest, destOffset, v, vOffset);
     }
 
-    /** {@link #makeScaling(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeScaling(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeScaling(long dest, long v) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeScaling_unsafe(dest, v);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -12832,13 +13198,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeScaling_api(dest, destOffset, s);
     }
 
-    /** {@link #makeScaling(double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeScaling(double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeScaling(java.nio.ByteBuffer dest, int destOffset, double s) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeScaling_unsafe(dest, destOffset, s);
         return Double4x4OpsKernelsByteBuffer.makeScaling_api(dest, destOffset, s);
     }
 
-    /** {@link #makeScaling(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeScaling(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeScaling(long dest, double s) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeScaling_unsafe(dest, s);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -12888,13 +13255,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeShadow_api(dest, destOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
     }
 
-    /** {@link #makeShadow(double[], int, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeShadow(double[], int, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeShadow(java.nio.ByteBuffer dest, int destOffset, double lightX, double lightY, double lightZ, double lightW, double planeX, double planeY, double planeZ, double planeW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeShadow_unsafe(dest, destOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
         return Double4x4OpsKernelsByteBuffer.makeShadow_api(dest, destOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
     }
 
-    /** {@link #makeShadow(double[], int, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeShadow(double[], int, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeShadow(long dest, double lightX, double lightY, double lightZ, double lightW, double planeX, double planeY, double planeZ, double planeW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeShadow_unsafe(dest, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -12950,13 +13318,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeShadow_api(dest, destOffset, light, lightOffset, plane, planeOffset);
     }
 
-    /** {@link #makeShadow(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeShadow(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeShadow(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer light, int lightOffset, java.nio.ByteBuffer plane, int planeOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && light.isDirect() && light.order() == java.nio.ByteOrder.nativeOrder() && plane.isDirect() && plane.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeShadow_unsafe(dest, destOffset, light, lightOffset, plane, planeOffset);
         return Double4x4OpsKernelsByteBuffer.makeShadow_api(dest, destOffset, light, lightOffset, plane, planeOffset);
     }
 
-    /** {@link #makeShadow(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeShadow(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeShadow(long dest, long light, long plane) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeShadow_unsafe(dest, light, plane);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -13001,13 +13370,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeShear_api(dest, destOffset, xy, xz, yx, yz, zx, zy);
     }
 
-    /** {@link #makeShear(double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeShear(double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeShear(java.nio.ByteBuffer dest, int destOffset, double xy, double xz, double yx, double yz, double zx, double zy) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeShear_unsafe(dest, destOffset, xy, xz, yx, yz, zx, zy);
         return Double4x4OpsKernelsByteBuffer.makeShear_api(dest, destOffset, xy, xz, yx, yz, zx, zy);
     }
 
-    /** {@link #makeShear(double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeShear(double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeShear(long dest, double xy, double xz, double yx, double yz, double zx, double zy) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeShear_unsafe(dest, xy, xz, yx, yz, zx, zy);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -13050,13 +13420,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeTile_api(dest, destOffset, x, y, w, h);
     }
 
-    /** {@link #makeTile(double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeTile(double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeTile(java.nio.ByteBuffer dest, int destOffset, double x, double y, double w, double h) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeTile_unsafe(dest, destOffset, x, y, w, h);
         return Double4x4OpsKernelsByteBuffer.makeTile_api(dest, destOffset, x, y, w, h);
     }
 
-    /** {@link #makeTile(double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeTile(double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeTile(long dest, double x, double y, double w, double h) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeTile_unsafe(dest, x, y, w, h);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -13098,13 +13469,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeTranslation_api(dest, destOffset, vX, vY, vZ);
     }
 
-    /** {@link #makeTranslation(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeTranslation(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeTranslation(java.nio.ByteBuffer dest, int destOffset, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeTranslation_unsafe(dest, destOffset, vX, vY, vZ);
         return Double4x4OpsKernelsByteBuffer.makeTranslation_api(dest, destOffset, vX, vY, vZ);
     }
 
-    /** {@link #makeTranslation(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeTranslation(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeTranslation(long dest, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeTranslation_unsafe(dest, vX, vY, vZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -13148,13 +13520,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeTranslation_api(dest, destOffset, v, vOffset);
     }
 
-    /** {@link #makeTranslation(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeTranslation(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeTranslation(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer v, int vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeTranslation_unsafe(dest, destOffset, v, vOffset);
         return Double4x4OpsKernelsByteBuffer.makeTranslation_api(dest, destOffset, v, vOffset);
     }
 
-    /** {@link #makeTranslation(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeTranslation(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeTranslation(long dest, long v) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeTranslation_unsafe(dest, v);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -13227,13 +13600,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeTrapezoidCrop_api(dest, destOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
     }
 
-    /** {@link #makeTrapezoidCrop(double[], int, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeTrapezoidCrop(double[], int, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeTrapezoidCrop(java.nio.ByteBuffer dest, int destOffset, double p0X, double p0Y, double p1X, double p1Y, double p2X, double p2Y, double p3X, double p3Y) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeTrapezoidCrop_unsafe(dest, destOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
         return Double4x4OpsKernelsByteBuffer.makeTrapezoidCrop_api(dest, destOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
     }
 
-    /** {@link #makeTrapezoidCrop(double[], int, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeTrapezoidCrop(double[], int, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeTrapezoidCrop(long dest, double p0X, double p0Y, double p1X, double p1Y, double p2X, double p2Y, double p3X, double p3Y) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeTrapezoidCrop_unsafe(dest, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -13314,13 +13688,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.makeTrapezoidCrop_api(dest, destOffset, p0, p0Offset, p1, p1Offset, p2, p2Offset, p3, p3Offset);
     }
 
-    /** {@link #makeTrapezoidCrop(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeTrapezoidCrop(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeTrapezoidCrop(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer p0, int p0Offset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset, java.nio.ByteBuffer p3, int p3Offset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && p0.isDirect() && p0.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder() && p3.isDirect() && p3.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeTrapezoidCrop_unsafe(dest, destOffset, p0, p0Offset, p1, p1Offset, p2, p2Offset, p3, p3Offset);
         return Double4x4OpsKernelsByteBuffer.makeTrapezoidCrop_api(dest, destOffset, p0, p0Offset, p1, p1Offset, p2, p2Offset, p3, p3Offset);
     }
 
-    /** {@link #makeTrapezoidCrop(double[], int, double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeTrapezoidCrop(double[], int, double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeTrapezoidCrop(long dest, long p0, long p1, long p2, long p3) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeTrapezoidCrop_unsafe(dest, p0, p1, p2, p3);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -13354,13 +13729,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapXYZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapXYZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapXYZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapXYZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapXYZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapXYZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapXYZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapXYZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapXYZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapXYZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -13422,13 +13798,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapXYnZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapXYnZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapXYnZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapXYnZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapXYnZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapXYnZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapXYnZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapXYnZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapXYnZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapXYnZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -13490,13 +13867,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapXZY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapXZY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapXZY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapXZY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapXZY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapXZY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapXZY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapXZY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapXZY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapXZY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -13558,13 +13936,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapXZnY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapXZnY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapXZnY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapXZnY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapXZnY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapXZnY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapXZnY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapXZnY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapXZnY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapXZnY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -13626,13 +14005,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapXnYZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapXnYZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapXnYZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapXnYZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapXnYZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapXnYZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapXnYZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapXnYZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapXnYZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapXnYZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -13694,13 +14074,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapXnYnZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapXnYnZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapXnYnZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapXnYnZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapXnYnZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapXnYnZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapXnYnZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapXnYnZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapXnYnZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapXnYnZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -13762,13 +14143,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapXnZY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapXnZY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapXnZY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapXnZY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapXnZY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapXnZY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapXnZY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapXnZY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapXnZY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapXnZY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -13830,13 +14212,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapXnZnY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapXnZnY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapXnZnY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapXnZnY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapXnZnY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapXnZnY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapXnZnY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapXnZnY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapXnZnY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapXnZnY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -13898,13 +14281,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapYXZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapYXZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapYXZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapYXZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapYXZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapYXZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapYXZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapYXZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapYXZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapYXZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -13966,13 +14350,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapYXnZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapYXnZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapYXnZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapYXnZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapYXnZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapYXnZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapYXnZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapYXnZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapYXnZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapYXnZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -14034,13 +14419,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapYZX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapYZX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapYZX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapYZX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapYZX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapYZX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapYZX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapYZX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapYZX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapYZX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -14102,13 +14488,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapYZnX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapYZnX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapYZnX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapYZnX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapYZnX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapYZnX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapYZnX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapYZnX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapYZnX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapYZnX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -14170,13 +14557,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapYnXZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapYnXZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapYnXZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapYnXZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapYnXZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapYnXZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapYnXZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapYnXZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapYnXZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapYnXZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -14238,13 +14626,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapYnXnZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapYnXnZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapYnXnZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapYnXnZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapYnXnZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapYnXnZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapYnXnZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapYnXnZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapYnXnZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapYnXnZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -14306,13 +14695,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapYnZX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapYnZX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapYnZX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapYnZX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapYnZX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapYnZX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapYnZX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapYnZX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapYnZX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapYnZX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -14374,13 +14764,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapYnZnX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapYnZnX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapYnZnX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapYnZnX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapYnZnX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapYnZnX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapYnZnX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapYnZnX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapYnZnX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapYnZnX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -14442,13 +14833,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapZXY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapZXY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapZXY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapZXY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapZXY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapZXY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapZXY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapZXY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapZXY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapZXY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -14510,13 +14902,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapZXnY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapZXnY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapZXnY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapZXnY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapZXnY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapZXnY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapZXnY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapZXnY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapZXnY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapZXnY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -14578,13 +14971,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapZYX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapZYX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapZYX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapZYX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapZYX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapZYX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapZYX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapZYX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapZYX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapZYX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -14646,13 +15040,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapZYnX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapZYnX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapZYnX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapZYnX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapZYnX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapZYnX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapZYnX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapZYnX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapZYnX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapZYnX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -14714,13 +15109,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapZnXY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapZnXY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapZnXY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapZnXY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapZnXY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapZnXY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapZnXY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapZnXY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapZnXY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapZnXY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -14782,13 +15178,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapZnXnY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapZnXnY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapZnXnY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapZnXnY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapZnXnY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapZnXnY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapZnXnY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapZnXnY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapZnXnY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapZnXnY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -14850,13 +15247,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapZnYX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapZnYX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapZnYX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapZnYX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapZnYX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapZnYX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapZnYX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapZnYX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapZnYX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapZnYX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -14918,13 +15316,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapZnYnX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapZnYnX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapZnYnX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapZnYnX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapZnYnX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapZnYnX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapZnYnX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapZnYnX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapZnYnX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapZnYnX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -14986,13 +15385,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnXYZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnXYZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnXYZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnXYZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnXYZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnXYZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnXYZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnXYZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnXYZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnXYZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -15054,13 +15454,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnXYnZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnXYnZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnXYnZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnXYnZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnXYnZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnXYnZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnXYnZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnXYnZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnXYnZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnXYnZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -15122,13 +15523,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnXZY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnXZY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnXZY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnXZY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnXZY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnXZY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnXZY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnXZY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnXZY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnXZY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -15190,13 +15592,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnXZnY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnXZnY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnXZnY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnXZnY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnXZnY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnXZnY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnXZnY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnXZnY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnXZnY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnXZnY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -15258,13 +15661,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnXnYZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnXnYZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnXnYZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnXnYZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnXnYZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnXnYZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnXnYZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnXnYZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnXnYZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnXnYZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -15326,13 +15730,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnXnYnZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnXnYnZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnXnYnZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnXnYnZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnXnYnZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnXnYnZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnXnYnZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnXnYnZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnXnYnZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnXnYnZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -15394,13 +15799,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnXnZY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnXnZY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnXnZY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnXnZY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnXnZY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnXnZY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnXnZY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnXnZY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnXnZY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnXnZY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -15462,13 +15868,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnXnZnY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnXnZnY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnXnZnY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnXnZnY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnXnZnY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnXnZnY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnXnZnY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnXnZnY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnXnZnY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnXnZnY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -15530,13 +15937,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnYXZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnYXZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnYXZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnYXZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnYXZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnYXZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnYXZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnYXZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnYXZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnYXZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -15598,13 +16006,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnYXnZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnYXnZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnYXnZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnYXnZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnYXnZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnYXnZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnYXnZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnYXnZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnYXnZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnYXnZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -15666,13 +16075,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnYZX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnYZX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnYZX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnYZX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnYZX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnYZX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnYZX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnYZX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnYZX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnYZX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -15734,13 +16144,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnYZnX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnYZnX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnYZnX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnYZnX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnYZnX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnYZnX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnYZnX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnYZnX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnYZnX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnYZnX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -15802,13 +16213,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnYnXZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnYnXZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnYnXZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnYnXZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnYnXZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnYnXZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnYnXZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnYnXZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnYnXZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnYnXZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -15870,13 +16282,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnYnXnZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnYnXnZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnYnXnZ(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnYnXnZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnYnXnZ_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnYnXnZ_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnYnXnZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnYnXnZ(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnYnXnZ(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnYnXnZ_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -15938,13 +16351,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnYnZX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnYnZX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnYnZX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnYnZX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnYnZX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnYnZX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnYnZX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnYnZX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnYnZX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnYnZX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -16006,13 +16420,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnYnZnX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnYnZnX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnYnZnX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnYnZnX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnYnZnX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnYnZnX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnYnZnX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnYnZnX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnYnZnX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnYnZnX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -16074,13 +16489,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnZXY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnZXY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnZXY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnZXY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnZXY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnZXY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnZXY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnZXY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnZXY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnZXY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -16142,13 +16558,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnZXnY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnZXnY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnZXnY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnZXnY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnZXnY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnZXnY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnZXnY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnZXnY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnZXnY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnZXnY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -16210,13 +16627,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnZYX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnZYX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnZYX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnZYX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnZYX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnZYX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnZYX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnZYX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnZYX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnZYX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -16278,13 +16696,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnZYnX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnZYnX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnZYnX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnZYnX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnZYnX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnZYnX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnZYnX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnZYnX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnZYnX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnZYnX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -16346,13 +16765,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnZnXY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnZnXY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnZnXY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnZnXY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnZnXY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnZnXY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnZnXY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnZnXY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnZnXY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnZnXY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -16414,13 +16834,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnZnXnY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnZnXnY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnZnXnY(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnZnXnY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnZnXnY_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnZnXnY_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnZnXnY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnZnXnY(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnZnXnY(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnZnXnY_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -16482,13 +16903,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnZnYX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnZnYX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnZnYX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnZnYX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnZnYX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnZnYX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnZnYX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnZnYX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnZnYX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnZnYX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -16550,13 +16972,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mapnZnYnX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnZnYnX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mapnZnYnX(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mapnZnYnX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mapnZnYnX_unsafe(dest, destOffset, src, srcOffset);
         return Double4x4OpsKernelsByteBuffer.mapnZnYnX_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #mapnZnYnX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mapnZnYnX(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mapnZnYnX(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mapnZnYnX_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -16621,13 +17044,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.obliqueCabinet_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #obliqueCabinet(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #obliqueCabinet(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer obliqueCabinet(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.obliqueCabinet_unsafe(dest, destOffset, src, srcOffset, angle);
         return Double4x4OpsKernelsByteBuffer.obliqueCabinet_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #obliqueCabinet(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #obliqueCabinet(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long obliqueCabinet(long dest, long src, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.obliqueCabinet_unsafe(dest, src, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -16692,13 +17116,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.obliqueCavalier_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #obliqueCavalier(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #obliqueCavalier(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer obliqueCavalier(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.obliqueCavalier_unsafe(dest, destOffset, src, srcOffset, angle);
         return Double4x4OpsKernelsByteBuffer.obliqueCavalier_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #obliqueCavalier(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #obliqueCavalier(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long obliqueCavalier(long dest, long src, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.obliqueCavalier_unsafe(dest, src, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -16763,13 +17188,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.obliqueMilitary_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #obliqueMilitary(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #obliqueMilitary(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer obliqueMilitary(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.obliqueMilitary_unsafe(dest, destOffset, src, srcOffset, angle);
         return Double4x4OpsKernelsByteBuffer.obliqueMilitary_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #obliqueMilitary(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #obliqueMilitary(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long obliqueMilitary(long dest, long src, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.obliqueMilitary_unsafe(dest, src, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -16916,7 +17342,7 @@ public final class Double4x4Ops {
     /** {@link #obliqueZ(double[], int, double[], int, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer obliqueZ(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) { return obliqueZ(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #obliqueZ(double[], int, double[], int, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #obliqueZ(double[], int, double[], int, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer obliqueZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.obliqueZ_no(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, handedness); }
@@ -16924,16 +17350,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #obliqueZ(double[], int, double[], int, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #obliqueZ(double[], int, double[], int, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer obliqueZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW, DepthRange depthRange) { return obliqueZ(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #obliqueZ(double[], int, double[], int, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #obliqueZ(double[], int, double[], int, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer obliqueZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW, Handedness handedness) { return obliqueZ(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #obliqueZ(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #obliqueZ(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer obliqueZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double planeX, double planeY, double planeZ, double planeW) { return obliqueZ(dest, destOffset, src, srcOffset, planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #obliqueZ(double[], int, double[], int, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #obliqueZ(double[], int, double[], int, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long obliqueZ(long dest, long src, double planeX, double planeY, double planeZ, double planeW, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.obliqueZ_no(dest, src, planeX, planeY, planeZ, planeW, handedness); }
@@ -16941,13 +17368,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #obliqueZ(double[], int, double[], int, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #obliqueZ(double[], int, double[], int, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long obliqueZ(long dest, long src, double planeX, double planeY, double planeZ, double planeW, DepthRange depthRange) { return obliqueZ(dest, src, planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #obliqueZ(double[], int, double[], int, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #obliqueZ(double[], int, double[], int, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long obliqueZ(long dest, long src, double planeX, double planeY, double planeZ, double planeW, Handedness handedness) { return obliqueZ(dest, src, planeX, planeY, planeZ, planeW, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #obliqueZ(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #obliqueZ(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long obliqueZ(long dest, long src, double planeX, double planeY, double planeZ, double planeW) { return obliqueZ(dest, src, planeX, planeY, planeZ, planeW, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -17071,7 +17501,7 @@ public final class Double4x4Ops {
     /** {@link #obliqueZ(double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer obliqueZ(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer plane, int planeOffset) { return obliqueZ(dest, destOffset, src, srcOffset, plane, planeOffset, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #obliqueZ(double[], int, double[], int, double[], int, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #obliqueZ(double[], int, double[], int, double[], int, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer obliqueZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.obliqueZ_no(dest, destOffset, src, srcOffset, plane, planeOffset, handedness); }
@@ -17079,16 +17509,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #obliqueZ(double[], int, double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #obliqueZ(double[], int, double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer obliqueZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset, DepthRange depthRange) { return obliqueZ(dest, destOffset, src, srcOffset, plane, planeOffset, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #obliqueZ(double[], int, double[], int, double[], int, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #obliqueZ(double[], int, double[], int, double[], int, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer obliqueZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset, Handedness handedness) { return obliqueZ(dest, destOffset, src, srcOffset, plane, planeOffset, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #obliqueZ(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #obliqueZ(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer obliqueZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer plane, int planeOffset) { return obliqueZ(dest, destOffset, src, srcOffset, plane, planeOffset, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #obliqueZ(double[], int, double[], int, double[], int, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #obliqueZ(double[], int, double[], int, double[], int, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long obliqueZ(long dest, long src, long plane, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.obliqueZ_no(dest, src, plane, handedness); }
@@ -17096,13 +17527,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #obliqueZ(double[], int, double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #obliqueZ(double[], int, double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long obliqueZ(long dest, long src, long plane, DepthRange depthRange) { return obliqueZ(dest, src, plane, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #obliqueZ(double[], int, double[], int, double[], int, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #obliqueZ(double[], int, double[], int, double[], int, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long obliqueZ(long dest, long src, long plane, Handedness handedness) { return obliqueZ(dest, src, plane, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #obliqueZ(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #obliqueZ(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long obliqueZ(long dest, long src, long plane) { return obliqueZ(dest, src, plane, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -17242,7 +17676,7 @@ public final class Double4x4Ops {
     /** {@link #ortho(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer ortho(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar) { return ortho(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #ortho(double[], int, double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #ortho(double[], int, double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer ortho(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.ortho_no(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar, handedness); }
@@ -17250,16 +17684,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #ortho(double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #ortho(double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer ortho(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar, DepthRange depthRange) { return ortho(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #ortho(double[], int, double[], int, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #ortho(double[], int, double[], int, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer ortho(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness) { return ortho(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #ortho(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #ortho(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer ortho(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double left, double right, double bottom, double top, double zNear, double zFar) { return ortho(dest, destOffset, src, srcOffset, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #ortho(double[], int, double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #ortho(double[], int, double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long ortho(long dest, long src, double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.ortho_no(dest, src, left, right, bottom, top, zNear, zFar, handedness); }
@@ -17267,13 +17702,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #ortho(double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #ortho(double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long ortho(long dest, long src, double left, double right, double bottom, double top, double zNear, double zFar, DepthRange depthRange) { return ortho(dest, src, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #ortho(double[], int, double[], int, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #ortho(double[], int, double[], int, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long ortho(long dest, long src, double left, double right, double bottom, double top, double zNear, double zFar, Handedness handedness) { return ortho(dest, src, left, right, bottom, top, zNear, zFar, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #ortho(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #ortho(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long ortho(long dest, long src, double left, double right, double bottom, double top, double zNear, double zFar) { return ortho(dest, src, left, right, bottom, top, zNear, zFar, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -17405,7 +17843,7 @@ public final class Double4x4Ops {
     /** {@link #ortho2D(double[], int, double[], int, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer ortho2D(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double left, double right, double bottom, double top) { return ortho2D(dest, destOffset, src, srcOffset, left, right, bottom, top, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #ortho2D(double[], int, double[], int, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #ortho2D(double[], int, double[], int, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer ortho2D(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double left, double right, double bottom, double top, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.ortho2D_no(dest, destOffset, src, srcOffset, left, right, bottom, top, handedness); }
@@ -17413,16 +17851,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #ortho2D(double[], int, double[], int, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #ortho2D(double[], int, double[], int, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer ortho2D(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double left, double right, double bottom, double top, DepthRange depthRange) { return ortho2D(dest, destOffset, src, srcOffset, left, right, bottom, top, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #ortho2D(double[], int, double[], int, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #ortho2D(double[], int, double[], int, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer ortho2D(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double left, double right, double bottom, double top, Handedness handedness) { return ortho2D(dest, destOffset, src, srcOffset, left, right, bottom, top, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #ortho2D(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #ortho2D(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer ortho2D(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double left, double right, double bottom, double top) { return ortho2D(dest, destOffset, src, srcOffset, left, right, bottom, top, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #ortho2D(double[], int, double[], int, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #ortho2D(double[], int, double[], int, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long ortho2D(long dest, long src, double left, double right, double bottom, double top, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.ortho2D_no(dest, src, left, right, bottom, top, handedness); }
@@ -17430,13 +17869,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #ortho2D(double[], int, double[], int, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #ortho2D(double[], int, double[], int, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long ortho2D(long dest, long src, double left, double right, double bottom, double top, DepthRange depthRange) { return ortho2D(dest, src, left, right, bottom, top, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #ortho2D(double[], int, double[], int, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #ortho2D(double[], int, double[], int, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long ortho2D(long dest, long src, double left, double right, double bottom, double top, Handedness handedness) { return ortho2D(dest, src, left, right, bottom, top, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #ortho2D(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #ortho2D(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long ortho2D(long dest, long src, double left, double right, double bottom, double top) { return ortho2D(dest, src, left, right, bottom, top, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -17584,7 +18026,7 @@ public final class Double4x4Ops {
     /** {@link #orthoCrop(double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer orthoCrop(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer view, int viewOffset) { return orthoCrop(dest, destOffset, src, srcOffset, view, viewOffset, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #orthoCrop(double[], int, double[], int, double[], int, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #orthoCrop(double[], int, double[], int, double[], int, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer orthoCrop(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer view, int viewOffset, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.orthoCrop_no(dest, destOffset, src, srcOffset, view, viewOffset, handedness); }
@@ -17592,16 +18034,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #orthoCrop(double[], int, double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #orthoCrop(double[], int, double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer orthoCrop(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer view, int viewOffset, DepthRange depthRange) { return orthoCrop(dest, destOffset, src, srcOffset, view, viewOffset, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #orthoCrop(double[], int, double[], int, double[], int, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #orthoCrop(double[], int, double[], int, double[], int, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer orthoCrop(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer view, int viewOffset, Handedness handedness) { return orthoCrop(dest, destOffset, src, srcOffset, view, viewOffset, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #orthoCrop(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #orthoCrop(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer orthoCrop(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer view, int viewOffset) { return orthoCrop(dest, destOffset, src, srcOffset, view, viewOffset, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #orthoCrop(double[], int, double[], int, double[], int, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #orthoCrop(double[], int, double[], int, double[], int, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long orthoCrop(long dest, long src, long view, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.orthoCrop_no(dest, src, view, handedness); }
@@ -17609,13 +18052,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #orthoCrop(double[], int, double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #orthoCrop(double[], int, double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long orthoCrop(long dest, long src, long view, DepthRange depthRange) { return orthoCrop(dest, src, view, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #orthoCrop(double[], int, double[], int, double[], int, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #orthoCrop(double[], int, double[], int, double[], int, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long orthoCrop(long dest, long src, long view, Handedness handedness) { return orthoCrop(dest, src, view, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #orthoCrop(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #orthoCrop(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long orthoCrop(long dest, long src, long view) { return orthoCrop(dest, src, view, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -17747,7 +18193,7 @@ public final class Double4x4Ops {
     /** {@link #orthoCrop(double[], int, double[], int, double[], int, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer orthoCrop(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer view, int viewOffset, double minZ, double maxZ) { return orthoCrop(dest, destOffset, src, srcOffset, view, viewOffset, minZ, maxZ, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #orthoCrop(double[], int, double[], int, double[], int, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #orthoCrop(double[], int, double[], int, double[], int, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer orthoCrop(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer view, int viewOffset, double minZ, double maxZ, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.orthoCrop_no(dest, destOffset, src, srcOffset, view, viewOffset, minZ, maxZ, handedness); }
@@ -17755,16 +18201,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #orthoCrop(double[], int, double[], int, double[], int, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #orthoCrop(double[], int, double[], int, double[], int, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer orthoCrop(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer view, int viewOffset, double minZ, double maxZ, DepthRange depthRange) { return orthoCrop(dest, destOffset, src, srcOffset, view, viewOffset, minZ, maxZ, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #orthoCrop(double[], int, double[], int, double[], int, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #orthoCrop(double[], int, double[], int, double[], int, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer orthoCrop(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer view, int viewOffset, double minZ, double maxZ, Handedness handedness) { return orthoCrop(dest, destOffset, src, srcOffset, view, viewOffset, minZ, maxZ, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #orthoCrop(double[], int, double[], int, double[], int, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #orthoCrop(double[], int, double[], int, double[], int, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer orthoCrop(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer view, int viewOffset, double minZ, double maxZ) { return orthoCrop(dest, destOffset, src, srcOffset, view, viewOffset, minZ, maxZ, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #orthoCrop(double[], int, double[], int, double[], int, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #orthoCrop(double[], int, double[], int, double[], int, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long orthoCrop(long dest, long src, long view, double minZ, double maxZ, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.orthoCrop_no(dest, src, view, minZ, maxZ, handedness); }
@@ -17772,13 +18219,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #orthoCrop(double[], int, double[], int, double[], int, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #orthoCrop(double[], int, double[], int, double[], int, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long orthoCrop(long dest, long src, long view, double minZ, double maxZ, DepthRange depthRange) { return orthoCrop(dest, src, view, minZ, maxZ, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #orthoCrop(double[], int, double[], int, double[], int, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #orthoCrop(double[], int, double[], int, double[], int, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long orthoCrop(long dest, long src, long view, double minZ, double maxZ, Handedness handedness) { return orthoCrop(dest, src, view, minZ, maxZ, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #orthoCrop(double[], int, double[], int, double[], int, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #orthoCrop(double[], int, double[], int, double[], int, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long orthoCrop(long dest, long src, long view, double minZ, double maxZ) { return orthoCrop(dest, src, view, minZ, maxZ, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -17926,7 +18376,7 @@ public final class Double4x4Ops {
     /** {@link #perspective(double[], int, double[], int, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer perspective(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double fovy, double aspect, double near, double far) { return perspective(dest, destOffset, src, srcOffset, fovy, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #perspective(double[], int, double[], int, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #perspective(double[], int, double[], int, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer perspective(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double fovy, double aspect, double near, double far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.perspective_no(dest, destOffset, src, srcOffset, fovy, aspect, near, far, handedness); }
@@ -17934,16 +18384,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #perspective(double[], int, double[], int, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #perspective(double[], int, double[], int, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer perspective(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double fovy, double aspect, double near, double far, DepthRange depthRange) { return perspective(dest, destOffset, src, srcOffset, fovy, aspect, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #perspective(double[], int, double[], int, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #perspective(double[], int, double[], int, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer perspective(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double fovy, double aspect, double near, double far, Handedness handedness) { return perspective(dest, destOffset, src, srcOffset, fovy, aspect, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #perspective(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #perspective(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer perspective(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double fovy, double aspect, double near, double far) { return perspective(dest, destOffset, src, srcOffset, fovy, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #perspective(double[], int, double[], int, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #perspective(double[], int, double[], int, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long perspective(long dest, long src, double fovy, double aspect, double near, double far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.perspective_no(dest, src, fovy, aspect, near, far, handedness); }
@@ -17951,13 +18402,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #perspective(double[], int, double[], int, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #perspective(double[], int, double[], int, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long perspective(long dest, long src, double fovy, double aspect, double near, double far, DepthRange depthRange) { return perspective(dest, src, fovy, aspect, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #perspective(double[], int, double[], int, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #perspective(double[], int, double[], int, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long perspective(long dest, long src, double fovy, double aspect, double near, double far, Handedness handedness) { return perspective(dest, src, fovy, aspect, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #perspective(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #perspective(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long perspective(long dest, long src, double fovy, double aspect, double near, double far) { return perspective(dest, src, fovy, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -18105,7 +18559,7 @@ public final class Double4x4Ops {
     /** {@link #perspectiveFovRange(double[], int, double[], int, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer perspectiveFovRange(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleMin, double angleMax, double aspect, double near, double far) { return perspectiveFovRange(dest, destOffset, src, srcOffset, angleMin, angleMax, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #perspectiveFovRange(double[], int, double[], int, double, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #perspectiveFovRange(double[], int, double[], int, double, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer perspectiveFovRange(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleMin, double angleMax, double aspect, double near, double far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.perspectiveFovRange_no(dest, destOffset, src, srcOffset, angleMin, angleMax, aspect, near, far, handedness); }
@@ -18113,16 +18567,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #perspectiveFovRange(double[], int, double[], int, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #perspectiveFovRange(double[], int, double[], int, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer perspectiveFovRange(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleMin, double angleMax, double aspect, double near, double far, DepthRange depthRange) { return perspectiveFovRange(dest, destOffset, src, srcOffset, angleMin, angleMax, aspect, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #perspectiveFovRange(double[], int, double[], int, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #perspectiveFovRange(double[], int, double[], int, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer perspectiveFovRange(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleMin, double angleMax, double aspect, double near, double far, Handedness handedness) { return perspectiveFovRange(dest, destOffset, src, srcOffset, angleMin, angleMax, aspect, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #perspectiveFovRange(double[], int, double[], int, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #perspectiveFovRange(double[], int, double[], int, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer perspectiveFovRange(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleMin, double angleMax, double aspect, double near, double far) { return perspectiveFovRange(dest, destOffset, src, srcOffset, angleMin, angleMax, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #perspectiveFovRange(double[], int, double[], int, double, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #perspectiveFovRange(double[], int, double[], int, double, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long perspectiveFovRange(long dest, long src, double angleMin, double angleMax, double aspect, double near, double far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.perspectiveFovRange_no(dest, src, angleMin, angleMax, aspect, near, far, handedness); }
@@ -18130,13 +18585,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #perspectiveFovRange(double[], int, double[], int, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #perspectiveFovRange(double[], int, double[], int, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long perspectiveFovRange(long dest, long src, double angleMin, double angleMax, double aspect, double near, double far, DepthRange depthRange) { return perspectiveFovRange(dest, src, angleMin, angleMax, aspect, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #perspectiveFovRange(double[], int, double[], int, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #perspectiveFovRange(double[], int, double[], int, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long perspectiveFovRange(long dest, long src, double angleMin, double angleMax, double aspect, double near, double far, Handedness handedness) { return perspectiveFovRange(dest, src, angleMin, angleMax, aspect, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #perspectiveFovRange(double[], int, double[], int, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #perspectiveFovRange(double[], int, double[], int, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long perspectiveFovRange(long dest, long src, double angleMin, double angleMax, double aspect, double near, double far) { return perspectiveFovRange(dest, src, angleMin, angleMax, aspect, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -18268,7 +18726,7 @@ public final class Double4x4Ops {
     /** {@link #perspectiveFrustumSlice(double[], int, double[], int, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer perspectiveFrustumSlice(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double near, double far) { return perspectiveFrustumSlice(dest, destOffset, src, srcOffset, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #perspectiveFrustumSlice(double[], int, double[], int, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #perspectiveFrustumSlice(double[], int, double[], int, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer perspectiveFrustumSlice(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double near, double far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.perspectiveFrustumSlice_no(dest, destOffset, src, srcOffset, near, far, handedness); }
@@ -18276,16 +18734,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #perspectiveFrustumSlice(double[], int, double[], int, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #perspectiveFrustumSlice(double[], int, double[], int, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer perspectiveFrustumSlice(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double near, double far, DepthRange depthRange) { return perspectiveFrustumSlice(dest, destOffset, src, srcOffset, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #perspectiveFrustumSlice(double[], int, double[], int, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #perspectiveFrustumSlice(double[], int, double[], int, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer perspectiveFrustumSlice(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double near, double far, Handedness handedness) { return perspectiveFrustumSlice(dest, destOffset, src, srcOffset, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #perspectiveFrustumSlice(double[], int, double[], int, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #perspectiveFrustumSlice(double[], int, double[], int, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer perspectiveFrustumSlice(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double near, double far) { return perspectiveFrustumSlice(dest, destOffset, src, srcOffset, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #perspectiveFrustumSlice(double[], int, double[], int, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #perspectiveFrustumSlice(double[], int, double[], int, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long perspectiveFrustumSlice(long dest, long src, double near, double far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.perspectiveFrustumSlice_no(dest, src, near, far, handedness); }
@@ -18293,13 +18752,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #perspectiveFrustumSlice(double[], int, double[], int, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #perspectiveFrustumSlice(double[], int, double[], int, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long perspectiveFrustumSlice(long dest, long src, double near, double far, DepthRange depthRange) { return perspectiveFrustumSlice(dest, src, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #perspectiveFrustumSlice(double[], int, double[], int, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #perspectiveFrustumSlice(double[], int, double[], int, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long perspectiveFrustumSlice(long dest, long src, double near, double far, Handedness handedness) { return perspectiveFrustumSlice(dest, src, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #perspectiveFrustumSlice(double[], int, double[], int, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #perspectiveFrustumSlice(double[], int, double[], int, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long perspectiveFrustumSlice(long dest, long src, double near, double far) { return perspectiveFrustumSlice(dest, src, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -18459,7 +18921,7 @@ public final class Double4x4Ops {
     /** {@link #perspectiveOffCenterFov(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer perspectiveOffCenterFov(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) { return perspectiveOffCenterFov(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #perspectiveOffCenterFov(double[], int, double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #perspectiveOffCenterFov(double[], int, double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer perspectiveOffCenterFov(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.perspectiveOffCenterFov_no(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far, handedness); }
@@ -18467,16 +18929,17 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #perspectiveOffCenterFov(double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #perspectiveOffCenterFov(double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer perspectiveOffCenterFov(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far, DepthRange depthRange) { return perspectiveOffCenterFov(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #perspectiveOffCenterFov(double[], int, double[], int, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #perspectiveOffCenterFov(double[], int, double[], int, double, double, double, double, double, double, Handedness)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer perspectiveOffCenterFov(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far, Handedness handedness) { return perspectiveOffCenterFov(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #perspectiveOffCenterFov(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #perspectiveOffCenterFov(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer perspectiveOffCenterFov(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) { return perspectiveOffCenterFov(dest, destOffset, src, srcOffset, angleLeft, angleRight, angleDown, angleUp, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #perspectiveOffCenterFov(double[], int, double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #perspectiveOffCenterFov(double[], int, double[], int, double, double, double, double, double, double, Handedness, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long perspectiveOffCenterFov(long dest, long src, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far, Handedness handedness, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.perspectiveOffCenterFov_no(dest, src, angleLeft, angleRight, angleDown, angleUp, near, far, handedness); }
@@ -18484,13 +18947,16 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #perspectiveOffCenterFov(double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #perspectiveOffCenterFov(double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long perspectiveOffCenterFov(long dest, long src, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far, DepthRange depthRange) { return perspectiveOffCenterFov(dest, src, angleLeft, angleRight, angleDown, angleUp, near, far, Handedness.RIGHT_HANDED, depthRange); }
 
-    /** {@link #perspectiveOffCenterFov(double[], int, double[], int, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #perspectiveOffCenterFov(double[], int, double[], int, double, double, double, double, double, double, Handedness)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long perspectiveOffCenterFov(long dest, long src, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far, Handedness handedness) { return perspectiveOffCenterFov(dest, src, angleLeft, angleRight, angleDown, angleUp, near, far, handedness, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #perspectiveOffCenterFov(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #perspectiveOffCenterFov(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long perspectiveOffCenterFov(long dest, long src, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) { return perspectiveOffCenterFov(dest, src, angleLeft, angleRight, angleDown, angleUp, near, far, Handedness.RIGHT_HANDED, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -18561,13 +19027,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.pickMatrix_api(dest, destOffset, src, srcOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
     }
 
-    /** {@link #pickMatrix(double[], int, double[], int, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #pickMatrix(double[], int, double[], int, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer pickMatrix(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double centerX, double centerY, double deltaX, double deltaY, double vpX, double vpY, double vpW, double vpH) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.pickMatrix_unsafe(dest, destOffset, src, srcOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
         return Double4x4OpsKernelsByteBuffer.pickMatrix_api(dest, destOffset, src, srcOffset, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
     }
 
-    /** {@link #pickMatrix(double[], int, double[], int, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #pickMatrix(double[], int, double[], int, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long pickMatrix(long dest, long src, double centerX, double centerY, double deltaX, double deltaY, double vpX, double vpY, double vpW, double vpH) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.pickMatrix_unsafe(dest, src, centerX, centerY, deltaX, deltaY, vpX, vpY, vpW, vpH);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -18580,6 +19047,10 @@ public final class Double4x4Ops {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -18615,39 +19086,40 @@ public final class Double4x4Ops {
         double _self13 = src[srcOffset + 13];
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
-        double _t0 = -pivotX;
-        double _t1 = -pivotY;
-        double _t2 = -pivotZ;
+        double _t0 = -pivotZ;
+        double _t2 = rotY * rotW;
         double _t3 = rotZ * rotZ;
         double _t4 = rotZ * rotW;
-        double _t5 = rotY * rotW;
-        double _t21 = 2.0 * Math.fma(rotX, rotZ, _t5);
-        double _t22 = 2.0 * Math.fma(rotX, rotY, _t4);
-        double _t23 = 2.0 * Math.fma(rotX, rotW, rotY * rotZ);
-        double _t24 = 2.0 * Math.fma(rotX, rotY, -_t4);
-        double _t25 = 2.0 * Math.fma(rotY, rotZ, -(rotX * rotW));
-        double _t26 = 2.0 * Math.fma(rotX, rotZ, -_t5);
-        double _t27 = Math.fma(-2.0, Math.fma(rotY, rotY, _t3), 1.0);
-        double _t28 = Math.fma(-2.0, Math.fma(rotX, rotX, _t3), 1.0);
-        double _t29 = Math.fma(-2.0, Math.fma(rotX, rotX, rotY * rotY), 1.0);
-        double _t36 = Math.fma(_t0, _t27, Math.fma(_t1, _t24, Math.fma(_t2, _t21, pivotX)));
-        double _t37 = Math.fma(_t0, _t22, Math.fma(_t1, _t28, Math.fma(_t2, _t25, pivotY)));
-        double _t38 = Math.fma(_t0, _t26, Math.fma(_t1, _t23, Math.fma(_t2, _t29, pivotZ)));
-        dest[destOffset + 0] = Math.fma(_self30, _t36, Math.fma(_self20, _t21, Math.fma(_self00, _t27, _self10 * _t24)));
-        dest[destOffset + 1] = Math.fma(_self30, _t37, Math.fma(_self20, _t25, Math.fma(_self00, _t22, _self10 * _t28)));
-        dest[destOffset + 2] = Math.fma(_self30, _t38, Math.fma(_self20, _t29, Math.fma(_self00, _t26, _self10 * _t23)));
+        double _t12 = Math.fma(rotY, rotY, _t3);
+        double _t13 = Math.fma(rotX, rotX, _t3);
+        double _t16 = Math.fma(rotX, rotX, rotY * rotY);
+        double _t20 = 2.0 * Math.fma(rotX, rotZ, _t2);
+        double _t23 = 2.0 * Math.fma(rotX, rotY, _t4);
+        double _t24 = 2.0 * Math.fma(rotX, rotW, rotY * rotZ);
+        double _t26 = 2.0 * Math.fma(rotX, rotY, -_t4);
+        double _t27 = 2.0 * Math.fma(rotY, rotZ, -(rotX * rotW));
+        double _t28 = 2.0 * Math.fma(rotX, rotZ, -_t2);
+        double _t29 = Math.fma(-2.0, _t12, 1.0);
+        double _t30 = Math.fma(-2.0, _t13, 1.0);
+        double _t31 = Math.fma(-2.0, _t16, 1.0);
+        double _t41 = Math.fma(_t0, _t20, Math.fma(pivotX, 2.0 * _t12, -(pivotY * _t26)));
+        double _t42 = Math.fma(_t0, _t27, Math.fma(pivotY, 2.0 * _t13, -(pivotX * _t23)));
+        double _t43 = Math.fma(-pivotY, _t24, Math.fma(pivotZ, 2.0 * _t16, -(pivotX * _t28)));
+        dest[destOffset + 0] = Math.fma(_self30, _t41, Math.fma(_self20, _t20, Math.fma(_self00, _t29, _self10 * _t26)));
+        dest[destOffset + 1] = Math.fma(_self30, _t42, Math.fma(_self20, _t27, Math.fma(_self00, _t23, _self10 * _t30)));
+        dest[destOffset + 2] = Math.fma(_self30, _t43, Math.fma(_self20, _t31, Math.fma(_self00, _t28, _self10 * _t24)));
         dest[destOffset + 3] = _self30;
-        dest[destOffset + 4] = Math.fma(_self31, _t36, Math.fma(_self21, _t21, Math.fma(_self01, _t27, _self11 * _t24)));
-        dest[destOffset + 5] = Math.fma(_self31, _t37, Math.fma(_self21, _t25, Math.fma(_self01, _t22, _self11 * _t28)));
-        dest[destOffset + 6] = Math.fma(_self31, _t38, Math.fma(_self21, _t29, Math.fma(_self01, _t26, _self11 * _t23)));
+        dest[destOffset + 4] = Math.fma(_self31, _t41, Math.fma(_self21, _t20, Math.fma(_self01, _t29, _self11 * _t26)));
+        dest[destOffset + 5] = Math.fma(_self31, _t42, Math.fma(_self21, _t27, Math.fma(_self01, _t23, _self11 * _t30)));
+        dest[destOffset + 6] = Math.fma(_self31, _t43, Math.fma(_self21, _t31, Math.fma(_self01, _t28, _self11 * _t24)));
         dest[destOffset + 7] = _self31;
-        dest[destOffset + 8] = Math.fma(_self32, _t36, Math.fma(_self22, _t21, Math.fma(_self02, _t27, _self12 * _t24)));
-        dest[destOffset + 9] = Math.fma(_self32, _t37, Math.fma(_self22, _t25, Math.fma(_self02, _t22, _self12 * _t28)));
-        dest[destOffset + 10] = Math.fma(_self32, _t38, Math.fma(_self22, _t29, Math.fma(_self02, _t26, _self12 * _t23)));
+        dest[destOffset + 8] = Math.fma(_self32, _t41, Math.fma(_self22, _t20, Math.fma(_self02, _t29, _self12 * _t26)));
+        dest[destOffset + 9] = Math.fma(_self32, _t42, Math.fma(_self22, _t27, Math.fma(_self02, _t23, _self12 * _t30)));
+        dest[destOffset + 10] = Math.fma(_self32, _t43, Math.fma(_self22, _t31, Math.fma(_self02, _t28, _self12 * _t24)));
         dest[destOffset + 11] = _self32;
-        dest[destOffset + 12] = Math.fma(_self33, _t36, Math.fma(_self23, _t21, Math.fma(_self03, _t27, _self13 * _t24)));
-        dest[destOffset + 13] = Math.fma(_self33, _t37, Math.fma(_self23, _t25, Math.fma(_self03, _t22, _self13 * _t28)));
-        dest[destOffset + 14] = Math.fma(_self33, _t38, Math.fma(_self23, _t29, Math.fma(_self03, _t26, _self13 * _t23)));
+        dest[destOffset + 12] = Math.fma(_self33, _t41, Math.fma(_self23, _t20, Math.fma(_self03, _t29, _self13 * _t26)));
+        dest[destOffset + 13] = Math.fma(_self33, _t42, Math.fma(_self23, _t27, Math.fma(_self03, _t23, _self13 * _t30)));
+        dest[destOffset + 14] = Math.fma(_self33, _t43, Math.fma(_self23, _t31, Math.fma(_self03, _t28, _self13 * _t24)));
         dest[destOffset + 15] = _self33;
         return dest;
     }
@@ -18658,13 +19130,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preRotateAround_api(dest, destOffset, src, srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
     }
 
-    /** {@link #preRotateAround(double[], int, double[], int, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preRotateAround(double[], int, double[], int, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preRotateAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double rotX, double rotY, double rotZ, double rotW, double pivotX, double pivotY, double pivotZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preRotateAround_unsafe(dest, destOffset, src, srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
         return Double4x4OpsKernelsByteBuffer.preRotateAround_api(dest, destOffset, src, srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
     }
 
-    /** {@link #preRotateAround(double[], int, double[], int, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preRotateAround(double[], int, double[], int, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preRotateAround(long dest, long src, double rotX, double rotY, double rotZ, double rotW, double pivotX, double pivotY, double pivotZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preRotateAround_unsafe(dest, src, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -18677,6 +19150,10 @@ public final class Double4x4Ops {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -18712,39 +19189,40 @@ public final class Double4x4Ops {
         double _pivotx = pivot[pivotOffset + 0];
         double _pivoty = pivot[pivotOffset + 1];
         double _pivotz = pivot[pivotOffset + 2];
-        double _t0 = -_pivotx;
-        double _t1 = -_pivoty;
-        double _t2 = -_pivotz;
+        double _t0 = -_pivotz;
+        double _t2 = _roty * _rotw;
         double _t3 = _rotz * _rotz;
         double _t4 = _rotz * _rotw;
-        double _t5 = _roty * _rotw;
-        double _t21 = 2.0 * Math.fma(_rotx, _rotz, _t5);
-        double _t22 = 2.0 * Math.fma(_rotx, _roty, _t4);
-        double _t23 = 2.0 * Math.fma(_rotx, _rotw, _roty * _rotz);
-        double _t24 = 2.0 * Math.fma(_rotx, _roty, -_t4);
-        double _t25 = 2.0 * Math.fma(_roty, _rotz, -(_rotx * _rotw));
-        double _t26 = 2.0 * Math.fma(_rotx, _rotz, -_t5);
-        double _t27 = Math.fma(-2.0, Math.fma(_roty, _roty, _t3), 1.0);
-        double _t28 = Math.fma(-2.0, Math.fma(_rotx, _rotx, _t3), 1.0);
-        double _t29 = Math.fma(-2.0, Math.fma(_rotx, _rotx, _roty * _roty), 1.0);
-        double _t36 = Math.fma(_t0, _t27, Math.fma(_t1, _t24, Math.fma(_t2, _t21, _pivotx)));
-        double _t37 = Math.fma(_t0, _t22, Math.fma(_t1, _t28, Math.fma(_t2, _t25, _pivoty)));
-        double _t38 = Math.fma(_t0, _t26, Math.fma(_t1, _t23, Math.fma(_t2, _t29, _pivotz)));
-        dest[destOffset + 0] = Math.fma(_self30, _t36, Math.fma(_self20, _t21, Math.fma(_self00, _t27, _self10 * _t24)));
-        dest[destOffset + 1] = Math.fma(_self30, _t37, Math.fma(_self20, _t25, Math.fma(_self00, _t22, _self10 * _t28)));
-        dest[destOffset + 2] = Math.fma(_self30, _t38, Math.fma(_self20, _t29, Math.fma(_self00, _t26, _self10 * _t23)));
+        double _t12 = Math.fma(_roty, _roty, _t3);
+        double _t13 = Math.fma(_rotx, _rotx, _t3);
+        double _t16 = Math.fma(_rotx, _rotx, _roty * _roty);
+        double _t20 = 2.0 * Math.fma(_rotx, _rotz, _t2);
+        double _t23 = 2.0 * Math.fma(_rotx, _roty, _t4);
+        double _t24 = 2.0 * Math.fma(_rotx, _rotw, _roty * _rotz);
+        double _t26 = 2.0 * Math.fma(_rotx, _roty, -_t4);
+        double _t27 = 2.0 * Math.fma(_roty, _rotz, -(_rotx * _rotw));
+        double _t28 = 2.0 * Math.fma(_rotx, _rotz, -_t2);
+        double _t29 = Math.fma(-2.0, _t12, 1.0);
+        double _t30 = Math.fma(-2.0, _t13, 1.0);
+        double _t31 = Math.fma(-2.0, _t16, 1.0);
+        double _t41 = Math.fma(_t0, _t20, Math.fma(_pivotx, 2.0 * _t12, -(_pivoty * _t26)));
+        double _t42 = Math.fma(_t0, _t27, Math.fma(_pivoty, 2.0 * _t13, -(_pivotx * _t23)));
+        double _t43 = Math.fma(-_pivoty, _t24, Math.fma(_pivotz, 2.0 * _t16, -(_pivotx * _t28)));
+        dest[destOffset + 0] = Math.fma(_self30, _t41, Math.fma(_self20, _t20, Math.fma(_self00, _t29, _self10 * _t26)));
+        dest[destOffset + 1] = Math.fma(_self30, _t42, Math.fma(_self20, _t27, Math.fma(_self00, _t23, _self10 * _t30)));
+        dest[destOffset + 2] = Math.fma(_self30, _t43, Math.fma(_self20, _t31, Math.fma(_self00, _t28, _self10 * _t24)));
         dest[destOffset + 3] = _self30;
-        dest[destOffset + 4] = Math.fma(_self31, _t36, Math.fma(_self21, _t21, Math.fma(_self01, _t27, _self11 * _t24)));
-        dest[destOffset + 5] = Math.fma(_self31, _t37, Math.fma(_self21, _t25, Math.fma(_self01, _t22, _self11 * _t28)));
-        dest[destOffset + 6] = Math.fma(_self31, _t38, Math.fma(_self21, _t29, Math.fma(_self01, _t26, _self11 * _t23)));
+        dest[destOffset + 4] = Math.fma(_self31, _t41, Math.fma(_self21, _t20, Math.fma(_self01, _t29, _self11 * _t26)));
+        dest[destOffset + 5] = Math.fma(_self31, _t42, Math.fma(_self21, _t27, Math.fma(_self01, _t23, _self11 * _t30)));
+        dest[destOffset + 6] = Math.fma(_self31, _t43, Math.fma(_self21, _t31, Math.fma(_self01, _t28, _self11 * _t24)));
         dest[destOffset + 7] = _self31;
-        dest[destOffset + 8] = Math.fma(_self32, _t36, Math.fma(_self22, _t21, Math.fma(_self02, _t27, _self12 * _t24)));
-        dest[destOffset + 9] = Math.fma(_self32, _t37, Math.fma(_self22, _t25, Math.fma(_self02, _t22, _self12 * _t28)));
-        dest[destOffset + 10] = Math.fma(_self32, _t38, Math.fma(_self22, _t29, Math.fma(_self02, _t26, _self12 * _t23)));
+        dest[destOffset + 8] = Math.fma(_self32, _t41, Math.fma(_self22, _t20, Math.fma(_self02, _t29, _self12 * _t26)));
+        dest[destOffset + 9] = Math.fma(_self32, _t42, Math.fma(_self22, _t27, Math.fma(_self02, _t23, _self12 * _t30)));
+        dest[destOffset + 10] = Math.fma(_self32, _t43, Math.fma(_self22, _t31, Math.fma(_self02, _t28, _self12 * _t24)));
         dest[destOffset + 11] = _self32;
-        dest[destOffset + 12] = Math.fma(_self33, _t36, Math.fma(_self23, _t21, Math.fma(_self03, _t27, _self13 * _t24)));
-        dest[destOffset + 13] = Math.fma(_self33, _t37, Math.fma(_self23, _t25, Math.fma(_self03, _t22, _self13 * _t28)));
-        dest[destOffset + 14] = Math.fma(_self33, _t38, Math.fma(_self23, _t29, Math.fma(_self03, _t26, _self13 * _t23)));
+        dest[destOffset + 12] = Math.fma(_self33, _t41, Math.fma(_self23, _t20, Math.fma(_self03, _t29, _self13 * _t26)));
+        dest[destOffset + 13] = Math.fma(_self33, _t42, Math.fma(_self23, _t27, Math.fma(_self03, _t23, _self13 * _t30)));
+        dest[destOffset + 14] = Math.fma(_self33, _t43, Math.fma(_self23, _t31, Math.fma(_self03, _t28, _self13 * _t24)));
         dest[destOffset + 15] = _self33;
         return dest;
     }
@@ -18755,13 +19233,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preRotateAround_api(dest, destOffset, src, srcOffset, rot, rotOffset, pivot, pivotOffset);
     }
 
-    /** {@link #preRotateAround(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preRotateAround(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preRotateAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer rot, int rotOffset, java.nio.ByteBuffer pivot, int pivotOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && rot.isDirect() && rot.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preRotateAround_unsafe(dest, destOffset, src, srcOffset, rot, rotOffset, pivot, pivotOffset);
         return Double4x4OpsKernelsByteBuffer.preRotateAround_api(dest, destOffset, src, srcOffset, rot, rotOffset, pivot, pivotOffset);
     }
 
-    /** {@link #preRotateAround(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preRotateAround(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preRotateAround(long dest, long src, long rot, long pivot) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preRotateAround_unsafe(dest, src, rot, pivot);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -18845,13 +19324,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preRotateAxis_api(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
     }
 
-    /** {@link #preRotateAxis(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preRotateAxis(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preRotateAxis(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle, double axisX, double axisY, double axisZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preRotateAxis_unsafe(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
         return Double4x4OpsKernelsByteBuffer.preRotateAxis_api(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
     }
 
-    /** {@link #preRotateAxis(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preRotateAxis(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preRotateAxis(long dest, long src, double angle, double axisX, double axisY, double axisZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preRotateAxis_unsafe(dest, src, angle, axisX, axisY, axisZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -18934,13 +19414,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preRotateAxis_api(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
     }
 
-    /** {@link #preRotateAxis(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preRotateAxis(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preRotateAxis(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer axis, int axisOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && axis.isDirect() && axis.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preRotateAxis_unsafe(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
         return Double4x4OpsKernelsByteBuffer.preRotateAxis_api(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
     }
 
-    /** {@link #preRotateAxis(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preRotateAxis(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preRotateAxis(long dest, long src, long axis, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preRotateAxis_unsafe(dest, src, axis, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -19022,13 +19503,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preRotateQuat_api(dest, destOffset, src, srcOffset, qX, qY, qZ, qW);
     }
 
-    /** {@link #preRotateQuat(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preRotateQuat(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preRotateQuat(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double qX, double qY, double qZ, double qW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preRotateQuat_unsafe(dest, destOffset, src, srcOffset, qX, qY, qZ, qW);
         return Double4x4OpsKernelsByteBuffer.preRotateQuat_api(dest, destOffset, src, srcOffset, qX, qY, qZ, qW);
     }
 
-    /** {@link #preRotateQuat(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preRotateQuat(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preRotateQuat(long dest, long src, double qX, double qY, double qZ, double qW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preRotateQuat_unsafe(dest, src, qX, qY, qZ, qW);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -19108,13 +19590,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preRotateQuat_api(dest, destOffset, src, srcOffset, q, qOffset);
     }
 
-    /** {@link #preRotateQuat(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preRotateQuat(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preRotateQuat(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer q, int qOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && q.isDirect() && q.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preRotateQuat_unsafe(dest, destOffset, src, srcOffset, q, qOffset);
         return Double4x4OpsKernelsByteBuffer.preRotateQuat_api(dest, destOffset, src, srcOffset, q, qOffset);
     }
 
-    /** {@link #preRotateQuat(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preRotateQuat(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preRotateQuat(long dest, long src, long q) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preRotateQuat_unsafe(dest, src, q);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -19179,13 +19662,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preRotateX_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #preRotateX(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preRotateX(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preRotateX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preRotateX_unsafe(dest, destOffset, src, srcOffset, angle);
         return Double4x4OpsKernelsByteBuffer.preRotateX_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #preRotateX(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preRotateX(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preRotateX(long dest, long src, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preRotateX_unsafe(dest, src, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -19250,13 +19734,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preRotateY_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #preRotateY(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preRotateY(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preRotateY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preRotateY_unsafe(dest, destOffset, src, srcOffset, angle);
         return Double4x4OpsKernelsByteBuffer.preRotateY_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #preRotateY(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preRotateY(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preRotateY(long dest, long src, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preRotateY_unsafe(dest, src, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -19321,13 +19806,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preRotateZ_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #preRotateZ(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preRotateZ(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preRotateZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preRotateZ_unsafe(dest, destOffset, src, srcOffset, angle);
         return Double4x4OpsKernelsByteBuffer.preRotateZ_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #preRotateZ(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preRotateZ(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preRotateZ(long dest, long src, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preRotateZ_unsafe(dest, src, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -19370,13 +19856,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preScale_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
-    /** {@link #preScale(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preScale(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preScale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preScale_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Double4x4OpsKernelsByteBuffer.preScale_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
-    /** {@link #preScale(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preScale(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preScale(long dest, long src, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preScale_unsafe(dest, src, vX, vY, vZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -19421,13 +19908,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preScale_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #preScale(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preScale(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preScale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preScale_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Double4x4OpsKernelsByteBuffer.preScale_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #preScale(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preScale(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preScale(long dest, long src, long v) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preScale_unsafe(dest, src, v);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -19468,13 +19956,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preScale_api(dest, destOffset, src, srcOffset, s);
     }
 
-    /** {@link #preScale(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preScale(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preScale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double s) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preScale_unsafe(dest, destOffset, src, srcOffset, s);
         return Double4x4OpsKernelsByteBuffer.preScale_api(dest, destOffset, src, srcOffset, s);
     }
 
-    /** {@link #preScale(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preScale(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preScale(long dest, long src, double s) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preScale_unsafe(dest, src, s);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -19543,13 +20032,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preScaleAround_api(dest, destOffset, src, srcOffset, s, pivotX, pivotY, pivotZ);
     }
 
-    /** {@link #preScaleAround(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preScaleAround(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preScaleAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double s, double pivotX, double pivotY, double pivotZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, s, pivotX, pivotY, pivotZ);
         return Double4x4OpsKernelsByteBuffer.preScaleAround_api(dest, destOffset, src, srcOffset, s, pivotX, pivotY, pivotZ);
     }
 
-    /** {@link #preScaleAround(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preScaleAround(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preScaleAround(long dest, long src, double s, double pivotX, double pivotY, double pivotZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preScaleAround_unsafe(dest, src, s, pivotX, pivotY, pivotZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -19620,13 +20110,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preScaleAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, s);
     }
 
-    /** {@link #preScaleAround(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preScaleAround(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preScaleAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer pivot, int pivotOffset, double s) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, s);
         return Double4x4OpsKernelsByteBuffer.preScaleAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, s);
     }
 
-    /** {@link #preScaleAround(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preScaleAround(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preScaleAround(long dest, long src, long pivot, double s) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preScaleAround_unsafe(dest, src, pivot, s);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -19697,13 +20188,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preScaleAround_api(dest, destOffset, src, srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
     }
 
-    /** {@link #preScaleAround(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preScaleAround(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preScaleAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double sX, double sY, double sZ, double pivotX, double pivotY, double pivotZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
         return Double4x4OpsKernelsByteBuffer.preScaleAround_api(dest, destOffset, src, srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
     }
 
-    /** {@link #preScaleAround(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preScaleAround(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preScaleAround(long dest, long src, double sX, double sY, double sZ, double pivotX, double pivotY, double pivotZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preScaleAround_unsafe(dest, src, sX, sY, sZ, pivotX, pivotY, pivotZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -19778,13 +20270,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preScaleAround_api(dest, destOffset, src, srcOffset, s, sOffset, pivot, pivotOffset);
     }
 
-    /** {@link #preScaleAround(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preScaleAround(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preScaleAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer s, int sOffset, java.nio.ByteBuffer pivot, int pivotOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && s.isDirect() && s.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preScaleAround_unsafe(dest, destOffset, src, srcOffset, s, sOffset, pivot, pivotOffset);
         return Double4x4OpsKernelsByteBuffer.preScaleAround_api(dest, destOffset, src, srcOffset, s, sOffset, pivot, pivotOffset);
     }
 
-    /** {@link #preScaleAround(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preScaleAround(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preScaleAround(long dest, long src, long s, long pivot) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preScaleAround_unsafe(dest, src, s, pivot);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -19828,13 +20321,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preTranslate_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
-    /** {@link #preTranslate(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preTranslate(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preTranslate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preTranslate_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Double4x4OpsKernelsByteBuffer.preTranslate_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
-    /** {@link #preTranslate(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preTranslate(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preTranslate(long dest, long src, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preTranslate_unsafe(dest, src, vX, vY, vZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -19880,13 +20374,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.preTranslate_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #preTranslate(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preTranslate(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preTranslate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.preTranslate_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Double4x4OpsKernelsByteBuffer.preTranslate_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #preTranslate(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preTranslate(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preTranslate(long dest, long src, long v) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.preTranslate_unsafe(dest, src, v);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -19963,7 +20458,7 @@ public final class Double4x4Ops {
     /** {@link #project(double[], int, double[], int, double, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer project(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) { return project(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #project(double[], int, double[], int, double, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #project(double[], int, double[], int, double, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer project(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.project_no(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW); }
@@ -19971,10 +20466,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #project(double[], int, double[], int, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #project(double[], int, double[], int, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer project(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) { return project(dest, destOffset, src, srcOffset, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #project(double[], int, double[], int, double, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #project(double[], int, double[], int, double, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long project(long dest, long src, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.project_no(dest, src, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW); }
@@ -19982,7 +20478,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #project(double[], int, double[], int, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #project(double[], int, double[], int, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long project(long dest, long src, double objX, double objY, double objZ, double viewportX, double viewportY, double viewportZ, double viewportW) { return project(dest, src, objX, objY, objZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -20036,7 +20533,7 @@ public final class Double4x4Ops {
     /** {@link #project(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer project(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer obj, int objOffset, java.nio.DoubleBuffer viewport, int viewportOffset) { return project(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #project(double[], int, double[], int, double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #project(double[], int, double[], int, double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer project(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer obj, int objOffset, java.nio.ByteBuffer viewport, int viewportOffset, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.project_no(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset); }
@@ -20044,10 +20541,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #project(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #project(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer project(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer obj, int objOffset, java.nio.ByteBuffer viewport, int viewportOffset) { return project(dest, destOffset, src, srcOffset, obj, objOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #project(double[], int, double[], int, double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #project(double[], int, double[], int, double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long project(long dest, long src, long obj, long viewport, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.project_no(dest, src, obj, viewport); }
@@ -20055,7 +20553,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #project(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #project(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long project(long dest, long src, long obj, long viewport) { return project(dest, src, obj, viewport, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -20130,13 +20629,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.reflect_api(dest, destOffset, src, srcOffset, normalX, normalY, normalZ);
     }
 
-    /** {@link #reflect(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #reflect(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer reflect(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double normalX, double normalY, double normalZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.reflect_unsafe(dest, destOffset, src, srcOffset, normalX, normalY, normalZ);
         return Double4x4OpsKernelsByteBuffer.reflect_api(dest, destOffset, src, srcOffset, normalX, normalY, normalZ);
     }
 
-    /** {@link #reflect(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #reflect(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long reflect(long dest, long src, double normalX, double normalY, double normalZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.reflect_unsafe(dest, src, normalX, normalY, normalZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -20213,13 +20713,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.reflect_api(dest, destOffset, src, srcOffset, normal, normalOffset);
     }
 
-    /** {@link #reflect(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #reflect(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer reflect(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer normal, int normalOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && normal.isDirect() && normal.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.reflect_unsafe(dest, destOffset, src, srcOffset, normal, normalOffset);
         return Double4x4OpsKernelsByteBuffer.reflect_api(dest, destOffset, src, srcOffset, normal, normalOffset);
     }
 
-    /** {@link #reflect(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #reflect(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long reflect(long dest, long src, long normal) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.reflect_unsafe(dest, src, normal);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -20232,6 +20733,10 @@ public final class Double4x4Ops {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -20267,40 +20772,41 @@ public final class Double4x4Ops {
         double _self13 = src[srcOffset + 13];
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
-        double _t0 = -pivotX;
-        double _t1 = -pivotY;
-        double _t2 = -pivotZ;
-        double _t3 = rotY * rotW;
-        double _t4 = rotZ * rotZ;
-        double _t5 = rotZ * rotW;
-        double _t21 = 2.0 * Math.fma(rotX, rotY, _t5);
-        double _t22 = 2.0 * Math.fma(rotX, rotW, rotY * rotZ);
-        double _t23 = 2.0 * Math.fma(rotX, rotZ, _t3);
-        double _t24 = 2.0 * Math.fma(rotX, rotZ, -_t3);
-        double _t25 = 2.0 * Math.fma(rotX, rotY, -_t5);
-        double _t26 = 2.0 * Math.fma(rotY, rotZ, -(rotX * rotW));
-        double _t27 = Math.fma(-2.0, Math.fma(rotY, rotY, _t4), 1.0);
-        double _t28 = Math.fma(-2.0, Math.fma(rotX, rotX, _t4), 1.0);
-        double _t29 = Math.fma(-2.0, Math.fma(rotX, rotX, rotY * rotY), 1.0);
-        double _t36 = Math.fma(_t0, _t27, Math.fma(_t1, _t25, Math.fma(_t2, _t23, pivotX)));
-        double _t37 = Math.fma(_t0, _t21, Math.fma(_t1, _t28, Math.fma(_t2, _t26, pivotY)));
-        double _t38 = Math.fma(_t0, _t24, Math.fma(_t1, _t22, Math.fma(_t2, _t29, pivotZ)));
-        dest[destOffset + 0] = Math.fma(_self02, _t24, Math.fma(_self00, _t27, _self01 * _t21));
-        dest[destOffset + 1] = Math.fma(_self12, _t24, Math.fma(_self10, _t27, _self11 * _t21));
-        dest[destOffset + 2] = Math.fma(_self22, _t24, Math.fma(_self20, _t27, _self21 * _t21));
-        dest[destOffset + 3] = Math.fma(_self32, _t24, Math.fma(_self30, _t27, _self31 * _t21));
-        dest[destOffset + 4] = Math.fma(_self02, _t22, Math.fma(_self00, _t25, _self01 * _t28));
-        dest[destOffset + 5] = Math.fma(_self12, _t22, Math.fma(_self10, _t25, _self11 * _t28));
-        dest[destOffset + 6] = Math.fma(_self22, _t22, Math.fma(_self20, _t25, _self21 * _t28));
-        dest[destOffset + 7] = Math.fma(_self32, _t22, Math.fma(_self30, _t25, _self31 * _t28));
-        dest[destOffset + 8] = Math.fma(_self02, _t29, Math.fma(_self00, _t23, _self01 * _t26));
-        dest[destOffset + 9] = Math.fma(_self12, _t29, Math.fma(_self10, _t23, _self11 * _t26));
-        dest[destOffset + 10] = Math.fma(_self22, _t29, Math.fma(_self20, _t23, _self21 * _t26));
-        dest[destOffset + 11] = Math.fma(_self32, _t29, Math.fma(_self30, _t23, _self31 * _t26));
-        dest[destOffset + 12] = Math.fma(_self00, _t36, Math.fma(_self01, _t37, Math.fma(_self02, _t38, _self03)));
-        dest[destOffset + 13] = Math.fma(_self10, _t36, Math.fma(_self11, _t37, Math.fma(_self12, _t38, _self13)));
-        dest[destOffset + 14] = Math.fma(_self20, _t36, Math.fma(_self21, _t37, Math.fma(_self22, _t38, _self23)));
-        dest[destOffset + 15] = Math.fma(_self30, _t36, Math.fma(_self31, _t37, Math.fma(_self32, _t38, _self33)));
+        double _t0 = -pivotZ;
+        double _t2 = rotY * rotW;
+        double _t3 = rotZ * rotZ;
+        double _t4 = rotZ * rotW;
+        double _t11 = Math.fma(rotY, rotY, _t3);
+        double _t14 = Math.fma(rotX, rotX, _t3);
+        double _t15 = Math.fma(rotX, rotX, rotY * rotY);
+        double _t20 = 2.0 * Math.fma(rotX, rotY, _t4);
+        double _t21 = 2.0 * Math.fma(rotX, rotW, rotY * rotZ);
+        double _t22 = 2.0 * Math.fma(rotX, rotZ, _t2);
+        double _t26 = 2.0 * Math.fma(rotX, rotZ, -_t2);
+        double _t27 = 2.0 * Math.fma(rotX, rotY, -_t4);
+        double _t28 = 2.0 * Math.fma(rotY, rotZ, -(rotX * rotW));
+        double _t29 = Math.fma(-2.0, _t11, 1.0);
+        double _t30 = Math.fma(-2.0, _t14, 1.0);
+        double _t31 = Math.fma(-2.0, _t15, 1.0);
+        double _t41 = Math.fma(_t0, _t22, Math.fma(pivotX, 2.0 * _t11, -(pivotY * _t27)));
+        double _t42 = Math.fma(_t0, _t28, Math.fma(pivotY, 2.0 * _t14, -(pivotX * _t20)));
+        double _t43 = Math.fma(-pivotY, _t21, Math.fma(pivotZ, 2.0 * _t15, -(pivotX * _t26)));
+        dest[destOffset + 0] = Math.fma(_self02, _t26, Math.fma(_self00, _t29, _self01 * _t20));
+        dest[destOffset + 1] = Math.fma(_self12, _t26, Math.fma(_self10, _t29, _self11 * _t20));
+        dest[destOffset + 2] = Math.fma(_self22, _t26, Math.fma(_self20, _t29, _self21 * _t20));
+        dest[destOffset + 3] = Math.fma(_self32, _t26, Math.fma(_self30, _t29, _self31 * _t20));
+        dest[destOffset + 4] = Math.fma(_self02, _t21, Math.fma(_self00, _t27, _self01 * _t30));
+        dest[destOffset + 5] = Math.fma(_self12, _t21, Math.fma(_self10, _t27, _self11 * _t30));
+        dest[destOffset + 6] = Math.fma(_self22, _t21, Math.fma(_self20, _t27, _self21 * _t30));
+        dest[destOffset + 7] = Math.fma(_self32, _t21, Math.fma(_self30, _t27, _self31 * _t30));
+        dest[destOffset + 8] = Math.fma(_self02, _t31, Math.fma(_self00, _t22, _self01 * _t28));
+        dest[destOffset + 9] = Math.fma(_self12, _t31, Math.fma(_self10, _t22, _self11 * _t28));
+        dest[destOffset + 10] = Math.fma(_self22, _t31, Math.fma(_self20, _t22, _self21 * _t28));
+        dest[destOffset + 11] = Math.fma(_self32, _t31, Math.fma(_self30, _t22, _self31 * _t28));
+        dest[destOffset + 12] = Math.fma(_self00, _t41, Math.fma(_self01, _t42, Math.fma(_self02, _t43, _self03)));
+        dest[destOffset + 13] = Math.fma(_self10, _t41, Math.fma(_self11, _t42, Math.fma(_self12, _t43, _self13)));
+        dest[destOffset + 14] = Math.fma(_self20, _t41, Math.fma(_self21, _t42, Math.fma(_self22, _t43, _self23)));
+        dest[destOffset + 15] = Math.fma(_self30, _t41, Math.fma(_self31, _t42, Math.fma(_self32, _t43, _self33)));
         return dest;
     }
 
@@ -20310,13 +20816,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.rotateAround_api(dest, destOffset, src, srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
     }
 
-    /** {@link #rotateAround(double[], int, double[], int, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateAround(double[], int, double[], int, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double rotX, double rotY, double rotZ, double rotW, double pivotX, double pivotY, double pivotZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.rotateAround_unsafe(dest, destOffset, src, srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
         return Double4x4OpsKernelsByteBuffer.rotateAround_api(dest, destOffset, src, srcOffset, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
     }
 
-    /** {@link #rotateAround(double[], int, double[], int, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateAround(double[], int, double[], int, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateAround(long dest, long src, double rotX, double rotY, double rotZ, double rotW, double pivotX, double pivotY, double pivotZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.rotateAround_unsafe(dest, src, rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -20329,6 +20836,10 @@ public final class Double4x4Ops {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -20364,40 +20875,41 @@ public final class Double4x4Ops {
         double _pivotx = pivot[pivotOffset + 0];
         double _pivoty = pivot[pivotOffset + 1];
         double _pivotz = pivot[pivotOffset + 2];
-        double _t0 = -_pivotx;
-        double _t1 = -_pivoty;
-        double _t2 = -_pivotz;
-        double _t3 = _roty * _rotw;
-        double _t4 = _rotz * _rotz;
-        double _t5 = _rotz * _rotw;
-        double _t21 = 2.0 * Math.fma(_rotx, _roty, _t5);
-        double _t22 = 2.0 * Math.fma(_rotx, _rotw, _roty * _rotz);
-        double _t23 = 2.0 * Math.fma(_rotx, _rotz, _t3);
-        double _t24 = 2.0 * Math.fma(_rotx, _rotz, -_t3);
-        double _t25 = 2.0 * Math.fma(_rotx, _roty, -_t5);
-        double _t26 = 2.0 * Math.fma(_roty, _rotz, -(_rotx * _rotw));
-        double _t27 = Math.fma(-2.0, Math.fma(_roty, _roty, _t4), 1.0);
-        double _t28 = Math.fma(-2.0, Math.fma(_rotx, _rotx, _t4), 1.0);
-        double _t29 = Math.fma(-2.0, Math.fma(_rotx, _rotx, _roty * _roty), 1.0);
-        double _t36 = Math.fma(_t0, _t27, Math.fma(_t1, _t25, Math.fma(_t2, _t23, _pivotx)));
-        double _t37 = Math.fma(_t0, _t21, Math.fma(_t1, _t28, Math.fma(_t2, _t26, _pivoty)));
-        double _t38 = Math.fma(_t0, _t24, Math.fma(_t1, _t22, Math.fma(_t2, _t29, _pivotz)));
-        dest[destOffset + 0] = Math.fma(_self02, _t24, Math.fma(_self00, _t27, _self01 * _t21));
-        dest[destOffset + 1] = Math.fma(_self12, _t24, Math.fma(_self10, _t27, _self11 * _t21));
-        dest[destOffset + 2] = Math.fma(_self22, _t24, Math.fma(_self20, _t27, _self21 * _t21));
-        dest[destOffset + 3] = Math.fma(_self32, _t24, Math.fma(_self30, _t27, _self31 * _t21));
-        dest[destOffset + 4] = Math.fma(_self02, _t22, Math.fma(_self00, _t25, _self01 * _t28));
-        dest[destOffset + 5] = Math.fma(_self12, _t22, Math.fma(_self10, _t25, _self11 * _t28));
-        dest[destOffset + 6] = Math.fma(_self22, _t22, Math.fma(_self20, _t25, _self21 * _t28));
-        dest[destOffset + 7] = Math.fma(_self32, _t22, Math.fma(_self30, _t25, _self31 * _t28));
-        dest[destOffset + 8] = Math.fma(_self02, _t29, Math.fma(_self00, _t23, _self01 * _t26));
-        dest[destOffset + 9] = Math.fma(_self12, _t29, Math.fma(_self10, _t23, _self11 * _t26));
-        dest[destOffset + 10] = Math.fma(_self22, _t29, Math.fma(_self20, _t23, _self21 * _t26));
-        dest[destOffset + 11] = Math.fma(_self32, _t29, Math.fma(_self30, _t23, _self31 * _t26));
-        dest[destOffset + 12] = Math.fma(_self00, _t36, Math.fma(_self01, _t37, Math.fma(_self02, _t38, _self03)));
-        dest[destOffset + 13] = Math.fma(_self10, _t36, Math.fma(_self11, _t37, Math.fma(_self12, _t38, _self13)));
-        dest[destOffset + 14] = Math.fma(_self20, _t36, Math.fma(_self21, _t37, Math.fma(_self22, _t38, _self23)));
-        dest[destOffset + 15] = Math.fma(_self30, _t36, Math.fma(_self31, _t37, Math.fma(_self32, _t38, _self33)));
+        double _t0 = -_pivotz;
+        double _t2 = _roty * _rotw;
+        double _t3 = _rotz * _rotz;
+        double _t4 = _rotz * _rotw;
+        double _t11 = Math.fma(_roty, _roty, _t3);
+        double _t14 = Math.fma(_rotx, _rotx, _t3);
+        double _t15 = Math.fma(_rotx, _rotx, _roty * _roty);
+        double _t20 = 2.0 * Math.fma(_rotx, _roty, _t4);
+        double _t21 = 2.0 * Math.fma(_rotx, _rotw, _roty * _rotz);
+        double _t22 = 2.0 * Math.fma(_rotx, _rotz, _t2);
+        double _t26 = 2.0 * Math.fma(_rotx, _rotz, -_t2);
+        double _t27 = 2.0 * Math.fma(_rotx, _roty, -_t4);
+        double _t28 = 2.0 * Math.fma(_roty, _rotz, -(_rotx * _rotw));
+        double _t29 = Math.fma(-2.0, _t11, 1.0);
+        double _t30 = Math.fma(-2.0, _t14, 1.0);
+        double _t31 = Math.fma(-2.0, _t15, 1.0);
+        double _t41 = Math.fma(_t0, _t22, Math.fma(_pivotx, 2.0 * _t11, -(_pivoty * _t27)));
+        double _t42 = Math.fma(_t0, _t28, Math.fma(_pivoty, 2.0 * _t14, -(_pivotx * _t20)));
+        double _t43 = Math.fma(-_pivoty, _t21, Math.fma(_pivotz, 2.0 * _t15, -(_pivotx * _t26)));
+        dest[destOffset + 0] = Math.fma(_self02, _t26, Math.fma(_self00, _t29, _self01 * _t20));
+        dest[destOffset + 1] = Math.fma(_self12, _t26, Math.fma(_self10, _t29, _self11 * _t20));
+        dest[destOffset + 2] = Math.fma(_self22, _t26, Math.fma(_self20, _t29, _self21 * _t20));
+        dest[destOffset + 3] = Math.fma(_self32, _t26, Math.fma(_self30, _t29, _self31 * _t20));
+        dest[destOffset + 4] = Math.fma(_self02, _t21, Math.fma(_self00, _t27, _self01 * _t30));
+        dest[destOffset + 5] = Math.fma(_self12, _t21, Math.fma(_self10, _t27, _self11 * _t30));
+        dest[destOffset + 6] = Math.fma(_self22, _t21, Math.fma(_self20, _t27, _self21 * _t30));
+        dest[destOffset + 7] = Math.fma(_self32, _t21, Math.fma(_self30, _t27, _self31 * _t30));
+        dest[destOffset + 8] = Math.fma(_self02, _t31, Math.fma(_self00, _t22, _self01 * _t28));
+        dest[destOffset + 9] = Math.fma(_self12, _t31, Math.fma(_self10, _t22, _self11 * _t28));
+        dest[destOffset + 10] = Math.fma(_self22, _t31, Math.fma(_self20, _t22, _self21 * _t28));
+        dest[destOffset + 11] = Math.fma(_self32, _t31, Math.fma(_self30, _t22, _self31 * _t28));
+        dest[destOffset + 12] = Math.fma(_self00, _t41, Math.fma(_self01, _t42, Math.fma(_self02, _t43, _self03)));
+        dest[destOffset + 13] = Math.fma(_self10, _t41, Math.fma(_self11, _t42, Math.fma(_self12, _t43, _self13)));
+        dest[destOffset + 14] = Math.fma(_self20, _t41, Math.fma(_self21, _t42, Math.fma(_self22, _t43, _self23)));
+        dest[destOffset + 15] = Math.fma(_self30, _t41, Math.fma(_self31, _t42, Math.fma(_self32, _t43, _self33)));
         return dest;
     }
 
@@ -20407,13 +20919,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.rotateAround_api(dest, destOffset, src, srcOffset, rot, rotOffset, pivot, pivotOffset);
     }
 
-    /** {@link #rotateAround(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateAround(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer rot, int rotOffset, java.nio.ByteBuffer pivot, int pivotOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && rot.isDirect() && rot.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.rotateAround_unsafe(dest, destOffset, src, srcOffset, rot, rotOffset, pivot, pivotOffset);
         return Double4x4OpsKernelsByteBuffer.rotateAround_api(dest, destOffset, src, srcOffset, rot, rotOffset, pivot, pivotOffset);
     }
 
-    /** {@link #rotateAround(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateAround(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateAround(long dest, long src, long rot, long pivot) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.rotateAround_unsafe(dest, src, rot, pivot);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -20497,13 +21010,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.rotateAxis_api(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
     }
 
-    /** {@link #rotateAxis(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateAxis(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateAxis(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle, double axisX, double axisY, double axisZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.rotateAxis_unsafe(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
         return Double4x4OpsKernelsByteBuffer.rotateAxis_api(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
     }
 
-    /** {@link #rotateAxis(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateAxis(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateAxis(long dest, long src, double angle, double axisX, double axisY, double axisZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.rotateAxis_unsafe(dest, src, angle, axisX, axisY, axisZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -20586,13 +21100,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.rotateAxis_api(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
     }
 
-    /** {@link #rotateAxis(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateAxis(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateAxis(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer axis, int axisOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && axis.isDirect() && axis.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.rotateAxis_unsafe(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
         return Double4x4OpsKernelsByteBuffer.rotateAxis_api(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
     }
 
-    /** {@link #rotateAxis(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateAxis(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateAxis(long dest, long src, long axis, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.rotateAxis_unsafe(dest, src, axis, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -20674,13 +21189,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.rotateQuat_api(dest, destOffset, src, srcOffset, qX, qY, qZ, qW);
     }
 
-    /** {@link #rotateQuat(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateQuat(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateQuat(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double qX, double qY, double qZ, double qW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.rotateQuat_unsafe(dest, destOffset, src, srcOffset, qX, qY, qZ, qW);
         return Double4x4OpsKernelsByteBuffer.rotateQuat_api(dest, destOffset, src, srcOffset, qX, qY, qZ, qW);
     }
 
-    /** {@link #rotateQuat(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateQuat(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateQuat(long dest, long src, double qX, double qY, double qZ, double qW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.rotateQuat_unsafe(dest, src, qX, qY, qZ, qW);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -20760,13 +21276,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.rotateQuat_api(dest, destOffset, src, srcOffset, q, qOffset);
     }
 
-    /** {@link #rotateQuat(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateQuat(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateQuat(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer q, int qOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && q.isDirect() && q.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.rotateQuat_unsafe(dest, destOffset, src, srcOffset, q, qOffset);
         return Double4x4OpsKernelsByteBuffer.rotateQuat_api(dest, destOffset, src, srcOffset, q, qOffset);
     }
 
-    /** {@link #rotateQuat(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateQuat(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateQuat(long dest, long src, long q) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.rotateQuat_unsafe(dest, src, q);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -20831,13 +21348,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.rotateX_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotateX(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateX(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.rotateX_unsafe(dest, destOffset, src, srcOffset, angle);
         return Double4x4OpsKernelsByteBuffer.rotateX_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotateX(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateX(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateX(long dest, long src, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.rotateX_unsafe(dest, src, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -20866,12 +21384,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.mapXnYnZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateX180(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateX180(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateX180(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return Double4x4Ops.mapXnYnZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateX180(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateX180(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateX180(long dest, long src) {
         return Double4x4Ops.mapXnYnZ(dest, src);
     }
@@ -20899,12 +21418,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.mapXnZY(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateX270(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateX270(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateX270(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return Double4x4Ops.mapXnZY(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateX270(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateX270(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateX270(long dest, long src) {
         return Double4x4Ops.mapXnZY(dest, src);
     }
@@ -20932,12 +21452,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.mapXZnY(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateX90(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateX90(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateX90(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return Double4x4Ops.mapXZnY(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateX90(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateX90(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateX90(long dest, long src) {
         return Double4x4Ops.mapXZnY(dest, src);
     }
@@ -21018,13 +21539,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.rotateXYZ_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #rotateXYZ(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateXYZ(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateXYZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.rotateXYZ_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
         return Double4x4OpsKernelsByteBuffer.rotateXYZ_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #rotateXYZ(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateXYZ(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateXYZ(long dest, long src, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.rotateXYZ_unsafe(dest, src, angleX, angleY, angleZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -21106,13 +21628,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.rotateXZY_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #rotateXZY(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateXZY(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateXZY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.rotateXZY_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
         return Double4x4OpsKernelsByteBuffer.rotateXZY_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #rotateXZY(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateXZY(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateXZY(long dest, long src, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.rotateXZY_unsafe(dest, src, angleX, angleY, angleZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -21141,12 +21664,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.mapXnYnZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateXn180(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateXn180(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateXn180(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return Double4x4Ops.mapXnYnZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateXn180(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateXn180(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateXn180(long dest, long src) {
         return Double4x4Ops.mapXnYnZ(dest, src);
     }
@@ -21174,12 +21698,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.mapXZnY(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateXn270(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateXn270(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateXn270(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return Double4x4Ops.mapXZnY(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateXn270(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateXn270(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateXn270(long dest, long src) {
         return Double4x4Ops.mapXZnY(dest, src);
     }
@@ -21207,12 +21732,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.mapXnZY(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateXn90(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateXn90(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateXn90(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return Double4x4Ops.mapXnZY(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateXn90(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateXn90(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateXn90(long dest, long src) {
         return Double4x4Ops.mapXnZY(dest, src);
     }
@@ -21276,13 +21802,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.rotateY_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotateY(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateY(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.rotateY_unsafe(dest, destOffset, src, srcOffset, angle);
         return Double4x4OpsKernelsByteBuffer.rotateY_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotateY(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateY(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateY(long dest, long src, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.rotateY_unsafe(dest, src, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -21311,12 +21838,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.mapnXYnZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateY180(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateY180(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateY180(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return Double4x4Ops.mapnXYnZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateY180(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateY180(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateY180(long dest, long src) {
         return Double4x4Ops.mapnXYnZ(dest, src);
     }
@@ -21344,12 +21872,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.mapZYnX(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateY270(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateY270(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateY270(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return Double4x4Ops.mapZYnX(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateY270(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateY270(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateY270(long dest, long src) {
         return Double4x4Ops.mapZYnX(dest, src);
     }
@@ -21377,12 +21906,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.mapnZYX(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateY90(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateY90(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateY90(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return Double4x4Ops.mapnZYX(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateY90(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateY90(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateY90(long dest, long src) {
         return Double4x4Ops.mapnZYX(dest, src);
     }
@@ -21463,13 +21993,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.rotateYXZ_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #rotateYXZ(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateYXZ(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateYXZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.rotateYXZ_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
         return Double4x4OpsKernelsByteBuffer.rotateYXZ_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #rotateYXZ(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateYXZ(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateYXZ(long dest, long src, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.rotateYXZ_unsafe(dest, src, angleX, angleY, angleZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -21551,13 +22082,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.rotateYZX_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #rotateYZX(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateYZX(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateYZX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.rotateYZX_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
         return Double4x4OpsKernelsByteBuffer.rotateYZX_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #rotateYZX(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateYZX(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateYZX(long dest, long src, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.rotateYZX_unsafe(dest, src, angleX, angleY, angleZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -21586,12 +22118,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.mapnXYnZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateYn180(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateYn180(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateYn180(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return Double4x4Ops.mapnXYnZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateYn180(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateYn180(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateYn180(long dest, long src) {
         return Double4x4Ops.mapnXYnZ(dest, src);
     }
@@ -21619,12 +22152,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.mapnZYX(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateYn270(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateYn270(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateYn270(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return Double4x4Ops.mapnZYX(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateYn270(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateYn270(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateYn270(long dest, long src) {
         return Double4x4Ops.mapnZYX(dest, src);
     }
@@ -21652,12 +22186,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.mapZYnX(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateYn90(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateYn90(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateYn90(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return Double4x4Ops.mapZYnX(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateYn90(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateYn90(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateYn90(long dest, long src) {
         return Double4x4Ops.mapZYnX(dest, src);
     }
@@ -21721,13 +22256,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.rotateZ_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotateZ(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateZ(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.rotateZ_unsafe(dest, destOffset, src, srcOffset, angle);
         return Double4x4OpsKernelsByteBuffer.rotateZ_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotateZ(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateZ(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateZ(long dest, long src, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.rotateZ_unsafe(dest, src, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -21756,12 +22292,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.mapnXnYZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateZ180(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateZ180(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateZ180(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return Double4x4Ops.mapnXnYZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateZ180(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateZ180(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateZ180(long dest, long src) {
         return Double4x4Ops.mapnXnYZ(dest, src);
     }
@@ -21789,12 +22326,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.mapnYXZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateZ270(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateZ270(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateZ270(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return Double4x4Ops.mapnYXZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateZ270(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateZ270(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateZ270(long dest, long src) {
         return Double4x4Ops.mapnYXZ(dest, src);
     }
@@ -21822,12 +22360,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.mapYnXZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateZ90(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateZ90(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateZ90(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return Double4x4Ops.mapYnXZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateZ90(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateZ90(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateZ90(long dest, long src) {
         return Double4x4Ops.mapYnXZ(dest, src);
     }
@@ -21908,13 +22447,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.rotateZXY_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #rotateZXY(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateZXY(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateZXY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.rotateZXY_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
         return Double4x4OpsKernelsByteBuffer.rotateZXY_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #rotateZXY(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateZXY(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateZXY(long dest, long src, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.rotateZXY_unsafe(dest, src, angleX, angleY, angleZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -21996,13 +22536,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.rotateZYX_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #rotateZYX(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateZYX(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateZYX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.rotateZYX_unsafe(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
         return Double4x4OpsKernelsByteBuffer.rotateZYX_api(dest, destOffset, src, srcOffset, angleX, angleY, angleZ);
     }
 
-    /** {@link #rotateZYX(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateZYX(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateZYX(long dest, long src, double angleX, double angleY, double angleZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.rotateZYX_unsafe(dest, src, angleX, angleY, angleZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -22031,12 +22572,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.mapnXnYZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateZn180(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateZn180(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateZn180(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return Double4x4Ops.mapnXnYZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateZn180(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateZn180(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateZn180(long dest, long src) {
         return Double4x4Ops.mapnXnYZ(dest, src);
     }
@@ -22064,12 +22606,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.mapYnXZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateZn270(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateZn270(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateZn270(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return Double4x4Ops.mapYnXZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateZn270(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateZn270(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateZn270(long dest, long src) {
         return Double4x4Ops.mapYnXZ(dest, src);
     }
@@ -22097,12 +22640,13 @@ public final class Double4x4Ops {
         return Double4x4Ops.mapnYXZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateZn90(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateZn90(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateZn90(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return Double4x4Ops.mapnYXZ(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #rotateZn90(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateZn90(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateZn90(long dest, long src) {
         return Double4x4Ops.mapnYXZ(dest, src);
     }
@@ -22165,13 +22709,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.scale_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
-    /** {@link #scale(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #scale(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer scale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.scale_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Double4x4OpsKernelsByteBuffer.scale_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
-    /** {@link #scale(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #scale(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long scale(long dest, long src, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.scale_unsafe(dest, src, vX, vY, vZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -22237,13 +22782,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.scale_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #scale(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #scale(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer scale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.scale_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Double4x4OpsKernelsByteBuffer.scale_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #scale(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #scale(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long scale(long dest, long src, long v) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.scale_unsafe(dest, src, v);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -22305,13 +22851,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.scale_api(dest, destOffset, src, srcOffset, s);
     }
 
-    /** {@link #scale(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #scale(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer scale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double s) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.scale_unsafe(dest, destOffset, src, srcOffset, s);
         return Double4x4OpsKernelsByteBuffer.scale_api(dest, destOffset, src, srcOffset, s);
     }
 
-    /** {@link #scale(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #scale(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long scale(long dest, long src, double s) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.scale_unsafe(dest, src, s);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -22380,13 +22927,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.scaleAround_api(dest, destOffset, src, srcOffset, s, pivotX, pivotY, pivotZ);
     }
 
-    /** {@link #scaleAround(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #scaleAround(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer scaleAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double s, double pivotX, double pivotY, double pivotZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, s, pivotX, pivotY, pivotZ);
         return Double4x4OpsKernelsByteBuffer.scaleAround_api(dest, destOffset, src, srcOffset, s, pivotX, pivotY, pivotZ);
     }
 
-    /** {@link #scaleAround(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #scaleAround(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long scaleAround(long dest, long src, double s, double pivotX, double pivotY, double pivotZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.scaleAround_unsafe(dest, src, s, pivotX, pivotY, pivotZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -22457,13 +23005,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.scaleAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, s);
     }
 
-    /** {@link #scaleAround(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #scaleAround(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer scaleAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer pivot, int pivotOffset, double s) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, s);
         return Double4x4OpsKernelsByteBuffer.scaleAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, s);
     }
 
-    /** {@link #scaleAround(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #scaleAround(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long scaleAround(long dest, long src, long pivot, double s) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.scaleAround_unsafe(dest, src, pivot, s);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -22534,13 +23083,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.scaleAround_api(dest, destOffset, src, srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
     }
 
-    /** {@link #scaleAround(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #scaleAround(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer scaleAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double sX, double sY, double sZ, double pivotX, double pivotY, double pivotZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
         return Double4x4OpsKernelsByteBuffer.scaleAround_api(dest, destOffset, src, srcOffset, sX, sY, sZ, pivotX, pivotY, pivotZ);
     }
 
-    /** {@link #scaleAround(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #scaleAround(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long scaleAround(long dest, long src, double sX, double sY, double sZ, double pivotX, double pivotY, double pivotZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.scaleAround_unsafe(dest, src, sX, sY, sZ, pivotX, pivotY, pivotZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -22615,13 +23165,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.scaleAround_api(dest, destOffset, src, srcOffset, s, sOffset, pivot, pivotOffset);
     }
 
-    /** {@link #scaleAround(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #scaleAround(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer scaleAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer s, int sOffset, java.nio.ByteBuffer pivot, int pivotOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && s.isDirect() && s.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.scaleAround_unsafe(dest, destOffset, src, srcOffset, s, sOffset, pivot, pivotOffset);
         return Double4x4OpsKernelsByteBuffer.scaleAround_api(dest, destOffset, src, srcOffset, s, sOffset, pivot, pivotOffset);
     }
 
-    /** {@link #scaleAround(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #scaleAround(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long scaleAround(long dest, long src, long s, long pivot) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.scaleAround_unsafe(dest, src, s, pivot);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -22721,13 +23272,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.shadow_api(dest, destOffset, src, srcOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
     }
 
-    /** {@link #shadow(double[], int, double[], int, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #shadow(double[], int, double[], int, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer shadow(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double lightX, double lightY, double lightZ, double lightW, double planeX, double planeY, double planeZ, double planeW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.shadow_unsafe(dest, destOffset, src, srcOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
         return Double4x4OpsKernelsByteBuffer.shadow_api(dest, destOffset, src, srcOffset, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
     }
 
-    /** {@link #shadow(double[], int, double[], int, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #shadow(double[], int, double[], int, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long shadow(long dest, long src, double lightX, double lightY, double lightZ, double lightW, double planeX, double planeY, double planeZ, double planeW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.shadow_unsafe(dest, src, lightX, lightY, lightZ, lightW, planeX, planeY, planeZ, planeW);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -22833,13 +23385,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.shadow_api(dest, destOffset, src, srcOffset, light, lightOffset, plane, planeOffset);
     }
 
-    /** {@link #shadow(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #shadow(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer shadow(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer light, int lightOffset, java.nio.ByteBuffer plane, int planeOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && light.isDirect() && light.order() == java.nio.ByteOrder.nativeOrder() && plane.isDirect() && plane.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.shadow_unsafe(dest, destOffset, src, srcOffset, light, lightOffset, plane, planeOffset);
         return Double4x4OpsKernelsByteBuffer.shadow_api(dest, destOffset, src, srcOffset, light, lightOffset, plane, planeOffset);
     }
 
-    /** {@link #shadow(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #shadow(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long shadow(long dest, long src, long light, long plane) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.shadow_unsafe(dest, src, light, plane);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -22906,13 +23459,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.shear_api(dest, destOffset, src, srcOffset, xy, xz, yx, yz, zx, zy);
     }
 
-    /** {@link #shear(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #shear(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer shear(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double xy, double xz, double yx, double yz, double zx, double zy) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.shear_unsafe(dest, destOffset, src, srcOffset, xy, xz, yx, yz, zx, zy);
         return Double4x4OpsKernelsByteBuffer.shear_api(dest, destOffset, src, srcOffset, xy, xz, yx, yz, zx, zy);
     }
 
-    /** {@link #shear(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #shear(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long shear(long dest, long src, double xy, double xz, double yx, double yz, double zx, double zy) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.shear_unsafe(dest, src, xy, xz, yx, yz, zx, zy);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -22980,13 +23534,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.tile_api(dest, destOffset, src, srcOffset, x, y, w, h);
     }
 
-    /** {@link #tile(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #tile(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer tile(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double x, double y, double w, double h) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.tile_unsafe(dest, destOffset, src, srcOffset, x, y, w, h);
         return Double4x4OpsKernelsByteBuffer.tile_api(dest, destOffset, src, srcOffset, x, y, w, h);
     }
 
-    /** {@link #tile(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #tile(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long tile(long dest, long src, double x, double y, double w, double h) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.tile_unsafe(dest, src, x, y, w, h);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -23050,13 +23605,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.translate_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
-    /** {@link #translate(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #translate(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer translate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.translate_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Double4x4OpsKernelsByteBuffer.translate_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
-    /** {@link #translate(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #translate(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long translate(long dest, long src, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.translate_unsafe(dest, src, vX, vY, vZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -23122,13 +23678,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.translate_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #translate(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #translate(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer translate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.translate_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Double4x4OpsKernelsByteBuffer.translate_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #translate(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #translate(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long translate(long dest, long src, long v) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.translate_unsafe(dest, src, v);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -23226,13 +23783,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.trapezoidCrop_api(dest, destOffset, src, srcOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
     }
 
-    /** {@link #trapezoidCrop(double[], int, double[], int, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #trapezoidCrop(double[], int, double[], int, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer trapezoidCrop(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double p0X, double p0Y, double p1X, double p1Y, double p2X, double p2Y, double p3X, double p3Y) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.trapezoidCrop_unsafe(dest, destOffset, src, srcOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
         return Double4x4OpsKernelsByteBuffer.trapezoidCrop_api(dest, destOffset, src, srcOffset, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
     }
 
-    /** {@link #trapezoidCrop(double[], int, double[], int, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #trapezoidCrop(double[], int, double[], int, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long trapezoidCrop(long dest, long src, double p0X, double p0Y, double p1X, double p1Y, double p2X, double p2Y, double p3X, double p3Y) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.trapezoidCrop_unsafe(dest, src, p0X, p0Y, p1X, p1Y, p2X, p2Y, p3X, p3Y);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -23338,13 +23896,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.trapezoidCrop_api(dest, destOffset, src, srcOffset, p0, p0Offset, p1, p1Offset, p2, p2Offset, p3, p3Offset);
     }
 
-    /** {@link #trapezoidCrop(double[], int, double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #trapezoidCrop(double[], int, double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer trapezoidCrop(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer p0, int p0Offset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset, java.nio.ByteBuffer p3, int p3Offset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && p0.isDirect() && p0.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder() && p3.isDirect() && p3.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.trapezoidCrop_unsafe(dest, destOffset, src, srcOffset, p0, p0Offset, p1, p1Offset, p2, p2Offset, p3, p3Offset);
         return Double4x4OpsKernelsByteBuffer.trapezoidCrop_api(dest, destOffset, src, srcOffset, p0, p0Offset, p1, p1Offset, p2, p2Offset, p3, p3Offset);
     }
 
-    /** {@link #trapezoidCrop(double[], int, double[], int, double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #trapezoidCrop(double[], int, double[], int, double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long trapezoidCrop(long dest, long src, long p0, long p1, long p2, long p3) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.trapezoidCrop_unsafe(dest, src, p0, p1, p2, p3);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -23421,7 +23980,7 @@ public final class Double4x4Ops {
     /** {@link #unproject(double[], int, double[], int, double, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer unproject(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) { return unproject(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #unproject(double[], int, double[], int, double, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #unproject(double[], int, double[], int, double, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer unproject(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.unproject_no(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
@@ -23429,10 +23988,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #unproject(double[], int, double[], int, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #unproject(double[], int, double[], int, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer unproject(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) { return unproject(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #unproject(double[], int, double[], int, double, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #unproject(double[], int, double[], int, double, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long unproject(long dest, long src, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.unproject_no(dest, src, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
@@ -23440,7 +24000,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #unproject(double[], int, double[], int, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #unproject(double[], int, double[], int, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long unproject(long dest, long src, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) { return unproject(dest, src, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -23496,7 +24057,7 @@ public final class Double4x4Ops {
     /** {@link #unproject(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer unproject(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) { return unproject(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #unproject(double[], int, double[], int, double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #unproject(double[], int, double[], int, double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer unproject(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.unproject_no(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
@@ -23504,10 +24065,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #unproject(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #unproject(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer unproject(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) { return unproject(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #unproject(double[], int, double[], int, double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #unproject(double[], int, double[], int, double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long unproject(long dest, long src, long winCoords, long viewport, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.unproject_no(dest, src, winCoords, viewport); }
@@ -23515,7 +24077,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #unproject(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #unproject(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long unproject(long dest, long src, long winCoords, long viewport) { return unproject(dest, src, winCoords, viewport, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -23591,7 +24154,7 @@ public final class Double4x4Ops {
     /** {@link #unprojectInv(double[], int, double[], int, double, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer unprojectInv(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) { return unprojectInv(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #unprojectInv(double[], int, double[], int, double, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #unprojectInv(double[], int, double[], int, double, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer unprojectInv(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.unprojectInv_no(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
@@ -23599,10 +24162,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #unprojectInv(double[], int, double[], int, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #unprojectInv(double[], int, double[], int, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer unprojectInv(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) { return unprojectInv(dest, destOffset, src, srcOffset, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #unprojectInv(double[], int, double[], int, double, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #unprojectInv(double[], int, double[], int, double, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long unprojectInv(long dest, long src, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.unprojectInv_no(dest, src, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW); }
@@ -23610,7 +24174,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #unprojectInv(double[], int, double[], int, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #unprojectInv(double[], int, double[], int, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long unprojectInv(long dest, long src, double winCoordsX, double winCoordsY, double winCoordsZ, double viewportX, double viewportY, double viewportZ, double viewportW) { return unprojectInv(dest, src, winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -23668,7 +24233,7 @@ public final class Double4x4Ops {
     /** {@link #unprojectInv(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer unprojectInv(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) { return unprojectInv(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #unprojectInv(double[], int, double[], int, double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #unprojectInv(double[], int, double[], int, double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer unprojectInv(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.unprojectInv_no(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
@@ -23676,10 +24241,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #unprojectInv(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #unprojectInv(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer unprojectInv(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) { return unprojectInv(dest, destOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #unprojectInv(double[], int, double[], int, double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #unprojectInv(double[], int, double[], int, double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long unprojectInv(long dest, long src, long winCoords, long viewport, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.unprojectInv_no(dest, src, winCoords, viewport); }
@@ -23687,13 +24253,19 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #unprojectInv(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #unprojectInv(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long unprojectInv(long dest, long src, long winCoords, long viewport) { return unprojectInv(dest, src, winCoords, viewport, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
      * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      *
      * @param rayOrigin will hold the origin of the ray
      * @param rayOriginOffset the element index in {@code rayOrigin} at which the matrix starts
@@ -23727,6 +24299,11 @@ public final class Double4x4Ops {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
      * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -23763,7 +24340,7 @@ public final class Double4x4Ops {
     /** {@link #unprojectInvRay(double[], int, double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer unprojectInvRay(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) { return unprojectInvRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #unprojectInvRay(double[], int, double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #unprojectInvRay(double[], int, double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer unprojectInvRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.unprojectInvRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
@@ -23771,10 +24348,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #unprojectInvRay(double[], int, double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #unprojectInvRay(double[], int, double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer unprojectInvRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) { return unprojectInvRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #unprojectInvRay(double[], int, double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #unprojectInvRay(double[], int, double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long unprojectInvRay(long rayOrigin, long rayDir, long src, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.unprojectInvRay_no(rayOrigin, rayDir, src, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
@@ -23782,13 +24360,19 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #unprojectInvRay(double[], int, double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #unprojectInvRay(double[], int, double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long unprojectInvRay(long rayOrigin, long rayDir, long src, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) { return unprojectInvRay(rayOrigin, rayDir, src, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
      * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      *
      * @param rayOrigin will hold the origin of the ray
      * @param rayOriginOffset the element index in {@code rayOrigin} at which the matrix starts
@@ -23814,6 +24398,11 @@ public final class Double4x4Ops {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * assumed to be the inverse of a projection-view matrix) and the given viewport, storing the
      * ray origin in {@code rayOrigin} and the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -23842,7 +24431,7 @@ public final class Double4x4Ops {
     /** {@link #unprojectInvRay(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer unprojectInvRay(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) { return unprojectInvRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #unprojectInvRay(double[], int, double[], int, double[], int, double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #unprojectInvRay(double[], int, double[], int, double[], int, double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer unprojectInvRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.unprojectInvRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
@@ -23850,10 +24439,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #unprojectInvRay(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #unprojectInvRay(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer unprojectInvRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) { return unprojectInvRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #unprojectInvRay(double[], int, double[], int, double[], int, double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #unprojectInvRay(double[], int, double[], int, double[], int, double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long unprojectInvRay(long rayOrigin, long rayDir, long src, long winCoords, long viewport, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.unprojectInvRay_no(rayOrigin, rayDir, src, winCoords, viewport); }
@@ -23861,13 +24451,19 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #unprojectInvRay(double[], int, double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #unprojectInvRay(double[], int, double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long unprojectInvRay(long rayOrigin, long rayDir, long src, long winCoords, long viewport) { return unprojectInvRay(rayOrigin, rayDir, src, winCoords, viewport, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
      * the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      *
      * @param rayOrigin will hold the origin of the ray
      * @param rayOriginOffset the element index in {@code rayOrigin} at which the matrix starts
@@ -23901,6 +24497,11 @@ public final class Double4x4Ops {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
      * the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -23937,7 +24538,7 @@ public final class Double4x4Ops {
     /** {@link #unprojectRay(double[], int, double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer unprojectRay(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) { return unprojectRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #unprojectRay(double[], int, double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #unprojectRay(double[], int, double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer unprojectRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.unprojectRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
@@ -23945,10 +24546,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #unprojectRay(double[], int, double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #unprojectRay(double[], int, double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer unprojectRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) { return unprojectRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #unprojectRay(double[], int, double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #unprojectRay(double[], int, double[], int, double[], int, double, double, double, double, double, double, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long unprojectRay(long rayOrigin, long rayDir, long src, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.unprojectRay_no(rayOrigin, rayDir, src, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW); }
@@ -23956,13 +24558,19 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #unprojectRay(double[], int, double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #unprojectRay(double[], int, double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long unprojectRay(long rayOrigin, long rayDir, long src, double winCoordsX, double winCoordsY, double viewportX, double viewportY, double viewportZ, double viewportW) { return unprojectRay(rayOrigin, rayDir, src, winCoordsX, winCoordsY, viewportX, viewportY, viewportZ, viewportW, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
      * the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      *
      * @param rayOrigin will hold the origin of the ray
      * @param rayOriginOffset the element index in {@code rayOrigin} at which the matrix starts
@@ -23988,6 +24596,11 @@ public final class Double4x4Ops {
      * Unproject the given window coordinates into a ray in object space using this matrix (which is
      * inverted internally) and the given viewport, storing the ray origin in {@code rayOrigin} and
      * the ray direction in {@code rayDir}.
+     * <p>
+     * A projection whose far plane is at infinity is supported: the far point is then a point at
+     * infinity and the ray direction is taken from it as a finite direction. A far plane whose
+     * homogeneous w is at most {@code 2^-20} ({@code float}) / {@code 2^-40} ({@code double}) times
+     * the near plane's is treated as being at infinity.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -24016,7 +24629,7 @@ public final class Double4x4Ops {
     /** {@link #unprojectRay(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
     public static java.nio.DoubleBuffer unprojectRay(java.nio.DoubleBuffer rayOrigin, int rayOriginOffset, java.nio.DoubleBuffer rayDir, int rayDirOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer winCoords, int winCoordsOffset, java.nio.DoubleBuffer viewport, int viewportOffset) { return unprojectRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #unprojectRay(double[], int, double[], int, double[], int, double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #unprojectRay(double[], int, double[], int, double[], int, double[], int, double[], int, DepthRange)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer unprojectRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsByteBuffer.unprojectRay_no(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset); }
@@ -24024,10 +24637,11 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #unprojectRay(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #unprojectRay(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer unprojectRay(java.nio.ByteBuffer rayOrigin, int rayOriginOffset, java.nio.ByteBuffer rayDir, int rayDirOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer winCoords, int winCoordsOffset, java.nio.ByteBuffer viewport, int viewportOffset) { return unprojectRay(rayOrigin, rayOriginOffset, rayDir, rayDirOffset, src, srcOffset, winCoords, winCoordsOffset, viewport, viewportOffset, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
-    /** {@link #unprojectRay(double[], int, double[], int, double[], int, double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #unprojectRay(double[], int, double[], int, double[], int, double[], int, double[], int, DepthRange)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long unprojectRay(long rayOrigin, long rayDir, long src, long winCoords, long viewport, DepthRange depthRange) {
         switch (depthRange) {
             case NEGATIVE_ONE_TO_ONE -> { return Double4x4OpsKernelsAddress.unprojectRay_no(rayOrigin, rayDir, src, winCoords, viewport); }
@@ -24035,7 +24649,8 @@ public final class Double4x4Ops {
         }
     }
 
-    /** {@link #unprojectRay(double[], int, double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #unprojectRay(double[], int, double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long unprojectRay(long rayOrigin, long rayDir, long src, long winCoords, long viewport) { return unprojectRay(rayOrigin, rayDir, src, winCoords, viewport, DepthRange.NEGATIVE_ONE_TO_ONE); }
 
     /**
@@ -24081,13 +24696,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mulVec4_api(dest, destOffset, src, srcOffset, vX, vY, vZ, vW);
     }
 
-    /** {@link #mulVec4(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mulVec4(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mulVec4(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double vX, double vY, double vZ, double vW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mulVec4_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ, vW);
         return Double4x4OpsKernelsByteBuffer.mulVec4_api(dest, destOffset, src, srcOffset, vX, vY, vZ, vW);
     }
 
-    /** {@link #mulVec4(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mulVec4(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mulVec4(long dest, long src, double vX, double vY, double vZ, double vW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mulVec4_unsafe(dest, src, vX, vY, vZ, vW);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -24138,13 +24754,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.mulVec4_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #mulVec4(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mulVec4(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mulVec4(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.mulVec4_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Double4x4OpsKernelsByteBuffer.mulVec4_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #mulVec4(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mulVec4(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mulVec4(long dest, long src, long v) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.mulVec4_unsafe(dest, src, v);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -24222,13 +24839,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.transformAabb_api(dest, destOffset, src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
     }
 
-    /** {@link #transformAabb(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #transformAabb(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer transformAabb(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.transformAabb_unsafe(dest, destOffset, src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
         return Double4x4OpsKernelsByteBuffer.transformAabb_api(dest, destOffset, src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
     }
 
-    /** {@link #transformAabb(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #transformAabb(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long transformAabb(long dest, long src, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.transformAabb_unsafe(dest, src, minX, minY, minZ, maxX, maxY, maxZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -24272,13 +24890,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.transformDirection_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
-    /** {@link #transformDirection(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #transformDirection(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer transformDirection(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.transformDirection_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Double4x4OpsKernelsByteBuffer.transformDirection_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
-    /** {@link #transformDirection(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #transformDirection(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long transformDirection(long dest, long src, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.transformDirection_unsafe(dest, src, vX, vY, vZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -24324,13 +24943,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.transformDirection_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #transformDirection(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #transformDirection(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer transformDirection(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.transformDirection_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Double4x4OpsKernelsByteBuffer.transformDirection_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #transformDirection(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #transformDirection(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long transformDirection(long dest, long src, long v) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.transformDirection_unsafe(dest, src, v);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -24377,13 +24997,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.transformPosition_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
-    /** {@link #transformPosition(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #transformPosition(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer transformPosition(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.transformPosition_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Double4x4OpsKernelsByteBuffer.transformPosition_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
-    /** {@link #transformPosition(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #transformPosition(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long transformPosition(long dest, long src, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.transformPosition_unsafe(dest, src, vX, vY, vZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -24432,13 +25053,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.transformPosition_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #transformPosition(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #transformPosition(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer transformPosition(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.transformPosition_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Double4x4OpsKernelsByteBuffer.transformPosition_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #transformPosition(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #transformPosition(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long transformPosition(long dest, long src, long v) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.transformPosition_unsafe(dest, src, v);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -24488,13 +25110,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.transformProject_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
-    /** {@link #transformProject(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #transformProject(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer transformProject(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.transformProject_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ);
         return Double4x4OpsKernelsByteBuffer.transformProject_api(dest, destOffset, src, srcOffset, vX, vY, vZ);
     }
 
-    /** {@link #transformProject(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #transformProject(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long transformProject(long dest, long src, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.transformProject_unsafe(dest, src, vX, vY, vZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -24546,13 +25169,14 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsTypedBuffer.transformProject_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #transformProject(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #transformProject(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer transformProject(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.transformProject_unsafe(dest, destOffset, src, srcOffset, v, vOffset);
         return Double4x4OpsKernelsByteBuffer.transformProject_api(dest, destOffset, src, srcOffset, v, vOffset);
     }
 
-    /** {@link #transformProject(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #transformProject(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long transformProject(long dest, long src, long v) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.transformProject_unsafe(dest, src, v);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -24698,9 +25322,12 @@ public final class Double4x4Ops {
      */
     public static double[] copy(double[] dest, int destOffset, double[] src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
+            java.util.Objects.checkFromIndexSize(srcOffset, (count > 134217727 ? -1 : count * 16), src.length);
+            java.util.Objects.checkFromIndexSize(destOffset, (count > 134217727 ? -1 : count * 16), dest.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) srcOffset * 8L, dest, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) destOffset * 8L, (long) count * 128L);
             return dest;
         }
+        if (count > 134217727) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 16;
         for (int _i = 0; _i < n; _i++)
             dest[destOffset + _i] = src[srcOffset + _i];
@@ -24723,9 +25350,11 @@ public final class Double4x4Ops {
      */
     public static double[] copy(double[] dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(destOffset, (count > 134217727 ? -1 : count * 16), dest.length);
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L, dest, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) destOffset * 8L, (long) count * 128L);
             return dest;
         }
+        if (count > 134217727) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 16;
         for (int _i = 0; _i < n; _i++)
             dest[destOffset + _i] = src.get(srcOffset + _i);
@@ -24736,6 +25365,7 @@ public final class Double4x4Ops {
      * Copy one Double4x4 (16 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static double[] copy(double[] dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -24745,12 +25375,15 @@ public final class Double4x4Ops {
      * Bulk-copy {@code count} consecutive Double4x4 values ({@code count * 16} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static double[] copy(double[] dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(destOffset, (count > 134217727 ? -1 : count * 16), dest.length);
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, dest, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) destOffset * 8L, (long) count * 128L);
             return dest;
         }
+        if (count > 134217727) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 16;
         for (int _i = 0; _i < n; _i++)
             dest[destOffset + _i] = src.getDouble(srcOffset + _i * 8);
@@ -24761,9 +25394,11 @@ public final class Double4x4Ops {
      * Copy one Double4x4 (16 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static double[] copy(double[] dest, int destOffset, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
+            java.util.Objects.checkFromIndexSize(destOffset, 16, dest.length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) destOffset * 8L, 128L);
             return dest;
         }
@@ -24774,9 +25409,11 @@ public final class Double4x4Ops {
      * Bulk-copy {@code count} consecutive Double4x4 values ({@code count * 16} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static double[] copy(double[] dest, int destOffset, long src, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
+            java.util.Objects.checkFromIndexSize(destOffset, (count > 134217727 ? -1 : count * 16), dest.length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) destOffset * 8L, (long) count * 128L);
             return dest;
         }
@@ -24799,9 +25436,11 @@ public final class Double4x4Ops {
      */
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, double[] src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(srcOffset, (count > 134217727 ? -1 : count * 16), src.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) srcOffset * 8L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L, (long) count * 128L);
             return dest;
         }
+        if (count > 134217727) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 16;
         for (int _i = 0; _i < n; _i++)
             dest.put(destOffset + _i, src[srcOffset + _i]);
@@ -24827,6 +25466,7 @@ public final class Double4x4Ops {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L, (long) count * 128L);
             return dest;
         }
+        if (count > 134217727) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 16;
         for (int _i = 0; _i < n; _i++)
             dest.put(destOffset + _i, src.get(srcOffset + _i));
@@ -24837,6 +25477,7 @@ public final class Double4x4Ops {
      * Copy one Double4x4 (16 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -24846,12 +25487,14 @@ public final class Double4x4Ops {
      * Bulk-copy {@code count} consecutive Double4x4 values ({@code count * 16} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L, (long) count * 128L);
             return dest;
         }
+        if (count > 134217727) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 16;
         for (int _i = 0; _i < n; _i++)
             dest.put(destOffset + _i, src.getDouble(srcOffset + _i * 8));
@@ -24862,6 +25505,7 @@ public final class Double4x4Ops {
      * Copy one Double4x4 (16 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -24869,6 +25513,7 @@ public final class Double4x4Ops {
             return dest;
         }
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, 16, dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.DOUBLE_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset) * 8L, 128L);
             return dest;
         }
@@ -24885,6 +25530,7 @@ public final class Double4x4Ops {
      * Bulk-copy {@code count} consecutive Double4x4 values ({@code count * 16} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, long src, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -24892,6 +25538,7 @@ public final class Double4x4Ops {
             return dest;
         }
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, (count > 134217727 ? -1 : count * 16), dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.DOUBLE_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset) * 8L, (long) count * 128L);
             return dest;
         }
@@ -24908,6 +25555,7 @@ public final class Double4x4Ops {
      * Copy one Double4x4 (16 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, double[] src, int srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -24917,12 +25565,15 @@ public final class Double4x4Ops {
      * Bulk-copy {@code count} consecutive Double4x4 values ({@code count * 16} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, double[] src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(srcOffset, (count > 134217727 ? -1 : count * 16), src.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) srcOffset * 8L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 128L);
             return dest;
         }
+        if (count > 134217727) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 16;
         for (int _i = 0; _i < n; _i++)
             dest.putDouble(destOffset + _i * 8, src[srcOffset + _i]);
@@ -24933,6 +25584,7 @@ public final class Double4x4Ops {
      * Copy one Double4x4 (16 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -24942,12 +25594,14 @@ public final class Double4x4Ops {
      * Bulk-copy {@code count} consecutive Double4x4 values ({@code count * 16} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 128L);
             return dest;
         }
+        if (count > 134217727) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 16;
         for (int _i = 0; _i < n; _i++)
             dest.putDouble(destOffset + _i * 8, src.get(srcOffset + _i));
@@ -24958,6 +25612,7 @@ public final class Double4x4Ops {
      * Copy one Double4x4 (16 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -24967,12 +25622,14 @@ public final class Double4x4Ops {
      * Bulk-copy {@code count} consecutive Double4x4 values ({@code count * 16} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 128L);
             return dest;
         }
+        if (count > 134217727) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 16;
         for (int _i = 0; _i < n; _i++)
             dest.putDouble(destOffset + _i * 8, src.getDouble(srcOffset + _i * 8));
@@ -24983,6 +25640,8 @@ public final class Double4x4Ops {
      * Copy one Double4x4 (16 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -24990,6 +25649,7 @@ public final class Double4x4Ops {
             return dest;
         }
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, 128, dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset), 128L);
             return dest;
         }
@@ -25006,6 +25666,8 @@ public final class Double4x4Ops {
      * Bulk-copy {@code count} consecutive Double4x4 values ({@code count * 16} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, long src, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -25013,6 +25675,7 @@ public final class Double4x4Ops {
             return dest;
         }
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, (count > 16777215 ? -1 : count * 128), dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset), (long) count * 128L);
             return dest;
         }
@@ -25029,9 +25692,11 @@ public final class Double4x4Ops {
      * Copy one Double4x4 (16 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static long copy(long dest, double[] src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
+            java.util.Objects.checkFromIndexSize(srcOffset, 16, src.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) srcOffset * 8L, null, dest, 128L);
             return dest;
         }
@@ -25042,9 +25707,11 @@ public final class Double4x4Ops {
      * Bulk-copy {@code count} consecutive Double4x4 values ({@code count * 16} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static long copy(long dest, double[] src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
+            java.util.Objects.checkFromIndexSize(srcOffset, (count > 134217727 ? -1 : count * 16), src.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) srcOffset * 8L, null, dest, (long) count * 128L);
             return dest;
         }
@@ -25055,6 +25722,7 @@ public final class Double4x4Ops {
      * Copy one Double4x4 (16 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static long copy(long dest, java.nio.DoubleBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -25062,6 +25730,7 @@ public final class Double4x4Ops {
             return dest;
         }
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, 16, src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.DOUBLE_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset) * 8L, null, dest, 128L);
             return dest;
         }
@@ -25078,6 +25747,7 @@ public final class Double4x4Ops {
      * Bulk-copy {@code count} consecutive Double4x4 values ({@code count * 16} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static long copy(long dest, java.nio.DoubleBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -25085,6 +25755,7 @@ public final class Double4x4Ops {
             return dest;
         }
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, (count > 134217727 ? -1 : count * 16), src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.DOUBLE_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset) * 8L, null, dest, (long) count * 128L);
             return dest;
         }
@@ -25101,6 +25772,8 @@ public final class Double4x4Ops {
      * Copy one Double4x4 (16 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static long copy(long dest, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -25108,6 +25781,7 @@ public final class Double4x4Ops {
             return dest;
         }
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, 128, src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset), null, dest, 128L);
             return dest;
         }
@@ -25124,6 +25798,8 @@ public final class Double4x4Ops {
      * Bulk-copy {@code count} consecutive Double4x4 values ({@code count * 16} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static long copy(long dest, java.nio.ByteBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -25131,6 +25807,7 @@ public final class Double4x4Ops {
             return dest;
         }
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, (count > 16777215 ? -1 : count * 128), src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset), null, dest, (long) count * 128L);
             return dest;
         }
@@ -25147,6 +25824,7 @@ public final class Double4x4Ops {
      * Copy one Double4x4 (16 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static long copy(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
@@ -25160,6 +25838,7 @@ public final class Double4x4Ops {
      * Bulk-copy {@code count} consecutive Double4x4 values ({@code count * 16} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static long copy(long dest, long src, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {

@@ -13,6 +13,14 @@ import java.nio.ByteBuffer;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise with {@code ==}. {@code hashCode} is
+ * consistent with it. Only instances of this library's implementation compare equal to each other;
+ * the {@code equals} of a rectangle never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with an exact, non-negative integer tolerance: the
+ * difference is widened to {@code long} before its magnitude is taken, so the two are compared
+ * exactly without overflow, and a negative {@code epsilon} matches nothing.
  */
 public interface IntRect extends IntRectR {
 
@@ -20,7 +28,7 @@ public interface IntRect extends IntRectR {
      * Add {@code other} to this rectangle.
      *
      * @param other the other rectangle
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect add(IntRectR other) { return add(other, Joml.RETURN_NEW ? Joml.intRect() : this); }
 
@@ -31,14 +39,14 @@ public interface IntRect extends IntRectR {
      * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect add(int minX, int minY, int maxX, int maxY) { return add(minX, minY, maxX, maxY, Joml.RETURN_NEW ? Joml.intRect() : this); }
 
     /**
      * Negate this rectangle.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect negate() { return negate(Joml.RETURN_NEW ? Joml.intRect() : this); }
 
@@ -46,7 +54,7 @@ public interface IntRect extends IntRectR {
      * Subtract {@code other} from this rectangle.
      *
      * @param other the other rectangle
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect sub(IntRectR other) { return sub(other, Joml.RETURN_NEW ? Joml.intRect() : this); }
 
@@ -57,7 +65,7 @@ public interface IntRect extends IntRectR {
      * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect sub(int minX, int minY, int maxX, int maxY) { return sub(minX, minY, maxX, maxY, Joml.RETURN_NEW ? Joml.intRect() : this); }
 
@@ -84,7 +92,7 @@ public interface IntRect extends IntRectR {
      * Set the maximum corner of this rectangle to {@code max}.
      *
      * @param max the maximum corner
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect setMax(Int2R max) { return setMax(max, Joml.RETURN_NEW ? Joml.intRect() : this); }
 
@@ -93,7 +101,7 @@ public interface IntRect extends IntRectR {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect setMax(int x, int y) { return setMax(x, y, Joml.RETURN_NEW ? Joml.intRect() : this); }
 
@@ -101,7 +109,7 @@ public interface IntRect extends IntRectR {
      * Set the minimum corner of this rectangle to {@code min}.
      *
      * @param min the minimum corner
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect setMin(Int2R min) { return setMin(min, Joml.RETURN_NEW ? Joml.intRect() : this); }
 
@@ -110,7 +118,7 @@ public interface IntRect extends IntRectR {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect setMin(int x, int y) { return setMin(x, y, Joml.RETURN_NEW ? Joml.intRect() : this); }
 
@@ -134,7 +142,7 @@ public interface IntRect extends IntRectR {
      * Swap the minimum and maximum bounds of this rectangle where necessary so the bounds are
      * valid.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect correctBounds() { return correctBounds(Joml.RETURN_NEW ? Joml.intRect() : this); }
 
@@ -142,7 +150,7 @@ public interface IntRect extends IntRectR {
      * Expand this rectangle by {@code margin} in every direction.
      *
      * @param margin the amount to expand by in every direction
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect expand(int margin) { return expand(margin, Joml.RETURN_NEW ? Joml.intRect() : this); }
 
@@ -150,7 +158,7 @@ public interface IntRect extends IntRectR {
      * Translate this rectangle by {@code delta}.
      *
      * @param delta the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect translate(Int2R delta) { return translate(delta, Joml.RETURN_NEW ? Joml.intRect() : this); }
 
@@ -159,7 +167,7 @@ public interface IntRect extends IntRectR {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect translate(int x, int y) { return translate(x, y, Joml.RETURN_NEW ? Joml.intRect() : this); }
 
@@ -167,7 +175,7 @@ public interface IntRect extends IntRectR {
      * Set this rectangle to the union of itself and {@code other}.
      *
      * @param other the other rectangle
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect union(IntRectR other) { return union(other, Joml.RETURN_NEW ? Joml.intRect() : this); }
 
@@ -179,7 +187,7 @@ public interface IntRect extends IntRectR {
      * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxX the {@code maxX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param maxY the {@code maxY} component of the rectangle {@code (minX, minY, maxX, maxY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect union(int minX, int minY, int maxX, int maxY) { return union(minX, minY, maxX, maxY, Joml.RETURN_NEW ? Joml.intRect() : this); }
 
@@ -187,7 +195,7 @@ public interface IntRect extends IntRectR {
      * Grow this rectangle to include the point {@code p}.
      *
      * @param p the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect union(Int2R p) { return union(p, Joml.RETURN_NEW ? Joml.intRect() : this); }
 
@@ -196,7 +204,7 @@ public interface IntRect extends IntRectR {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect union(int x, int y) { return union(x, y, Joml.RETURN_NEW ? Joml.intRect() : this); }
 
@@ -223,6 +231,10 @@ public interface IntRect extends IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -235,6 +247,10 @@ public interface IntRect extends IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -247,6 +263,10 @@ public interface IntRect extends IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -260,6 +280,10 @@ public interface IntRect extends IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -277,6 +301,10 @@ public interface IntRect extends IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -289,6 +317,10 @@ public interface IntRect extends IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -301,6 +333,10 @@ public interface IntRect extends IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -314,6 +350,10 @@ public interface IntRect extends IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -331,6 +371,8 @@ public interface IntRect extends IntRectR {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated IntRect loadUnsafe(long address);
 
@@ -357,6 +399,10 @@ public interface IntRect extends IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -369,6 +415,10 @@ public interface IntRect extends IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -381,6 +431,10 @@ public interface IntRect extends IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -394,6 +448,10 @@ public interface IntRect extends IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -411,6 +469,10 @@ public interface IntRect extends IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -423,6 +485,10 @@ public interface IntRect extends IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -435,6 +501,10 @@ public interface IntRect extends IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -448,6 +518,10 @@ public interface IntRect extends IntRectR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -465,6 +539,8 @@ public interface IntRect extends IntRectR {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated IntRect loadLongUnsafe(long address);
 }

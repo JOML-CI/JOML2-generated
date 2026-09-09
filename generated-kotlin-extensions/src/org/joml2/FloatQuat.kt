@@ -56,7 +56,7 @@ inline fun FloatQuat.copy(x: Float = x(), y: Float = y(), z: Float = z(), w: Flo
 inline fun FloatQuat.toFloatArray(): FloatArray = store(FloatArray(4))
 /** A FloatQuat read from this array in storage order, starting at index 0. */
 inline fun FloatArray.toFloatQuat(): FloatQuat = FloatQuat.load(this)
-/** The component of this FloatQuat at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. */
+/** The component of this FloatQuat at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT with 3 indices (`v[a, b, ...] = x`) resolves to the Java 4-argument value factory `FloatQuat.set(...)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun FloatQuat.get(index: Int): Float = when (index) {
     0 -> x()
     1 -> y()

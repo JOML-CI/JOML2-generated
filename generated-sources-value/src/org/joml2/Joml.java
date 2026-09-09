@@ -29,21 +29,39 @@ public final class Joml {
     public static final int UNIQUE_IDENTITY    = 8;
 
     /** The store/load backend, resolved once at class initialization from
-     *  {@link JomlConfig#setStoreLoadBackend} or {@code -Djoml.storeLoadBackend};
-     *  defaults to {@link StoreLoadBackend#UNSAFE} when {@code Unsafe} is available. */
+     *  {@link JomlConfig#setStoreLoadBackend} or {@code -Djoml.storeLoadBackend} ({@code api} or
+     *  {@code unsafe}, case-insensitive); defaults to {@link StoreLoadBackend#UNSAFE} when
+     *  {@code sun.misc.Unsafe} is available. Requesting {@code unsafe} on a JVM without
+     *  {@code sun.misc.Unsafe}, or an unrecognised value, logs one warning on {@code System.err}
+     *  and uses the API backend (respectively the default) instead of failing later.
+     *  The UNSAFE backend uses {@code sun.misc.Unsafe}; on JDK 23+ (JEP 471) run with
+     *  {@code --sun-misc-unsafe-memory-access=allow} or select {@code -Djoml.storeLoadBackend=api}. */
     public static final StoreLoadBackend STORE_LOAD_BACKEND = resolveStoreLoadBackend();
 
     private static StoreLoadBackend resolveStoreLoadBackend() {
         try {
             StoreLoadBackend o = JomlConfig.storeLoadBackendOverride;
-            if (o != null) return o;
+            if (o != null) return o == StoreLoadBackend.UNSAFE ? unsafeOrWarn("JomlConfig.setStoreLoadBackend(UNSAFE)") : o;
             String s = System.getProperty("joml.storeLoadBackend");
-            if (s != null && s.equalsIgnoreCase("api")) return StoreLoadBackend.API;
-            if (s != null && s.equalsIgnoreCase("unsafe")) return StoreLoadBackend.UNSAFE;
+            if (s == null || s.trim().isEmpty()) return unsafeAvailable() ? StoreLoadBackend.UNSAFE : StoreLoadBackend.API;
+            String v = s.trim();
+            if (v.equalsIgnoreCase("api")) return StoreLoadBackend.API;
+            if (v.equalsIgnoreCase("unsafe")) return unsafeOrWarn("-Djoml.storeLoadBackend=" + s);
+            System.err.println("[org.joml2] unrecognised -Djoml.storeLoadBackend=" + s
+                + " (expected api or unsafe); using the default backend");
             return unsafeAvailable() ? StoreLoadBackend.UNSAFE : StoreLoadBackend.API;
         } finally {
             JomlConfig.jomlInitialized = true;
         }
+    }
+
+    /** UNSAFE when {@code sun.misc.Unsafe} is usable, else one warning and API (instead of a
+     *  NoClassDefFoundError from the first Unsafe-backed call). */
+    private static StoreLoadBackend unsafeOrWarn(String requested) {
+        if (unsafeAvailable()) return StoreLoadBackend.UNSAFE;
+        System.err.println("[org.joml2] " + requested
+            + " requested but sun.misc.Unsafe is not available on this JVM; using the API backend");
+        return StoreLoadBackend.API;
     }
 
     private static boolean unsafeAvailable() {

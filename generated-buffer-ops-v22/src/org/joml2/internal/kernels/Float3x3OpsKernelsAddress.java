@@ -56,7 +56,7 @@ public final class Float3x3OpsKernelsAddress {
             UnsafeOpsHolder.U.putFloat(dest + 0L, (float) Math.atan2(-_self12, _self22));
             UnsafeOpsHolder.U.putFloat(dest + 8L, (float) Math.atan2(-_self01, _self00));
         }
-        UnsafeOpsHolder.U.putFloat(dest + 4L, (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _self02))));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, (float) Math.atan2(_self02, (float) Math.sqrt(_t1)));
         return dest;
     }
 
@@ -77,7 +77,7 @@ public final class Float3x3OpsKernelsAddress {
             UnsafeOpsHolder.U.putFloat(dest + 0L, (float) Math.atan2(_self21, _self11));
             UnsafeOpsHolder.U.putFloat(dest + 4L, (float) Math.atan2(_self02, _self00));
         }
-        UnsafeOpsHolder.U.putFloat(dest + 8L, (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -_self01))));
+        UnsafeOpsHolder.U.putFloat(dest + 8L, (float) Math.atan2(-_self01, (float) Math.sqrt(_t1)));
         return dest;
     }
 
@@ -98,7 +98,7 @@ public final class Float3x3OpsKernelsAddress {
             UnsafeOpsHolder.U.putFloat(dest + 4L, (float) Math.atan2(_self02, _self22));
             UnsafeOpsHolder.U.putFloat(dest + 8L, (float) Math.atan2(_self10, _self11));
         }
-        UnsafeOpsHolder.U.putFloat(dest + 0L, (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -_self12))));
+        UnsafeOpsHolder.U.putFloat(dest + 0L, (float) Math.atan2(-_self12, (float) Math.sqrt(_t1)));
         return dest;
     }
 
@@ -119,7 +119,7 @@ public final class Float3x3OpsKernelsAddress {
             UnsafeOpsHolder.U.putFloat(dest + 0L, (float) Math.atan2(-_self12, _self11));
             UnsafeOpsHolder.U.putFloat(dest + 4L, (float) Math.atan2(-_self20, _self00));
         }
-        UnsafeOpsHolder.U.putFloat(dest + 8L, (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _self10))));
+        UnsafeOpsHolder.U.putFloat(dest + 8L, (float) Math.atan2(_self10, (float) Math.sqrt(_t1)));
         return dest;
     }
 
@@ -140,7 +140,7 @@ public final class Float3x3OpsKernelsAddress {
             UnsafeOpsHolder.U.putFloat(dest + 4L, (float) Math.atan2(-_self20, _self22));
             UnsafeOpsHolder.U.putFloat(dest + 8L, (float) Math.atan2(-_self01, _self11));
         }
-        UnsafeOpsHolder.U.putFloat(dest + 0L, (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _self21))));
+        UnsafeOpsHolder.U.putFloat(dest + 0L, (float) Math.atan2(_self21, (float) Math.sqrt(_t1)));
         return dest;
     }
 
@@ -161,7 +161,7 @@ public final class Float3x3OpsKernelsAddress {
             UnsafeOpsHolder.U.putFloat(dest + 0L, (float) Math.atan2(_self21, _self22));
             UnsafeOpsHolder.U.putFloat(dest + 8L, (float) Math.atan2(_self10, _self00));
         }
-        UnsafeOpsHolder.U.putFloat(dest + 4L, (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -_self20))));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, (float) Math.atan2(-_self20, (float) Math.sqrt(_t1)));
         return dest;
     }
 
@@ -2029,17 +2029,18 @@ public final class Float3x3OpsKernelsAddress {
         float _self22 = UnsafeOpsHolder.U.getFloat(src + 32L);
         float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cos(angle);
-        float _t2 = -pivotX;
-        float _t6 = Math.fma(pivotY, _t0, Math.fma(_t2, _t1, pivotX));
-        float _t7 = Math.fma(_t2, _t0, Math.fma(-pivotY, _t1, pivotY));
-        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self20, _t6, Math.fma(_self00, _t1, -(_self10 * _t0))));
-        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self20, _t7, Math.fma(_self00, _t0, _self10 * _t1)));
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t8 = 2.0f * _t3 * _t3;
+        float _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
+        float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t0));
+        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self20, _t9, Math.fma(_self00, _t1, -(_self10 * _t0))));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self20, _t10, Math.fma(_self00, _t0, _self10 * _t1)));
         UnsafeOpsHolder.U.putFloat(dest + 8L, _self20);
-        UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(_self21, _t6, Math.fma(_self01, _t1, -(_self11 * _t0))));
-        UnsafeOpsHolder.U.putFloat(dest + 16L, Math.fma(_self21, _t7, Math.fma(_self01, _t0, _self11 * _t1)));
+        UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(_self21, _t9, Math.fma(_self01, _t1, -(_self11 * _t0))));
+        UnsafeOpsHolder.U.putFloat(dest + 16L, Math.fma(_self21, _t10, Math.fma(_self01, _t0, _self11 * _t1)));
         UnsafeOpsHolder.U.putFloat(dest + 20L, _self21);
-        UnsafeOpsHolder.U.putFloat(dest + 24L, Math.fma(_self22, _t6, Math.fma(_self02, _t1, -(_self12 * _t0))));
-        UnsafeOpsHolder.U.putFloat(dest + 28L, Math.fma(_self22, _t7, Math.fma(_self02, _t0, _self12 * _t1)));
+        UnsafeOpsHolder.U.putFloat(dest + 24L, Math.fma(_self22, _t9, Math.fma(_self02, _t1, -(_self12 * _t0))));
+        UnsafeOpsHolder.U.putFloat(dest + 28L, Math.fma(_self22, _t10, Math.fma(_self02, _t0, _self12 * _t1)));
         UnsafeOpsHolder.U.putFloat(dest + 32L, _self22);
         return dest;
     }
@@ -2058,17 +2059,18 @@ public final class Float3x3OpsKernelsAddress {
         float _pivoty = UnsafeOpsHolder.U.getFloat(pivot + 4L);
         float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cos(angle);
-        float _t2 = -_pivotx;
-        float _t6 = Math.fma(_pivoty, _t0, Math.fma(_t2, _t1, _pivotx));
-        float _t7 = Math.fma(_t2, _t0, Math.fma(-_pivoty, _t1, _pivoty));
-        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self20, _t6, Math.fma(_self00, _t1, -(_self10 * _t0))));
-        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self20, _t7, Math.fma(_self00, _t0, _self10 * _t1)));
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t8 = 2.0f * _t3 * _t3;
+        float _t9 = Math.fma(_pivotx, _t8, _pivoty * _t0);
+        float _t10 = Math.fma(_pivoty, _t8, -(_pivotx * _t0));
+        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self20, _t9, Math.fma(_self00, _t1, -(_self10 * _t0))));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self20, _t10, Math.fma(_self00, _t0, _self10 * _t1)));
         UnsafeOpsHolder.U.putFloat(dest + 8L, _self20);
-        UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(_self21, _t6, Math.fma(_self01, _t1, -(_self11 * _t0))));
-        UnsafeOpsHolder.U.putFloat(dest + 16L, Math.fma(_self21, _t7, Math.fma(_self01, _t0, _self11 * _t1)));
+        UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(_self21, _t9, Math.fma(_self01, _t1, -(_self11 * _t0))));
+        UnsafeOpsHolder.U.putFloat(dest + 16L, Math.fma(_self21, _t10, Math.fma(_self01, _t0, _self11 * _t1)));
         UnsafeOpsHolder.U.putFloat(dest + 20L, _self21);
-        UnsafeOpsHolder.U.putFloat(dest + 24L, Math.fma(_self22, _t6, Math.fma(_self02, _t1, -(_self12 * _t0))));
-        UnsafeOpsHolder.U.putFloat(dest + 28L, Math.fma(_self22, _t7, Math.fma(_self02, _t0, _self12 * _t1)));
+        UnsafeOpsHolder.U.putFloat(dest + 24L, Math.fma(_self22, _t9, Math.fma(_self02, _t1, -(_self12 * _t0))));
+        UnsafeOpsHolder.U.putFloat(dest + 28L, Math.fma(_self22, _t10, Math.fma(_self02, _t0, _self12 * _t1)));
         UnsafeOpsHolder.U.putFloat(dest + 32L, _self22);
         return dest;
     }
@@ -2405,18 +2407,19 @@ public final class Float3x3OpsKernelsAddress {
         float _self22 = UnsafeOpsHolder.U.getFloat(src + 32L);
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
-        float _t6 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX));
-        float _t7 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY));
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t8 = 2.0f * _t3 * _t3;
+        float _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
+        float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
         UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self00, _t0, _self01 * _t1));
         UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self10, _t0, _self11 * _t1));
         UnsafeOpsHolder.U.putFloat(dest + 8L, Math.fma(_self20, _t0, _self21 * _t1));
         UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(_self01, _t0, -(_self00 * _t1)));
         UnsafeOpsHolder.U.putFloat(dest + 16L, Math.fma(_self11, _t0, -(_self10 * _t1)));
         UnsafeOpsHolder.U.putFloat(dest + 20L, Math.fma(_self21, _t0, -(_self20 * _t1)));
-        UnsafeOpsHolder.U.putFloat(dest + 24L, Math.fma(_self00, _t6, Math.fma(_self01, _t7, _self02)));
-        UnsafeOpsHolder.U.putFloat(dest + 28L, Math.fma(_self10, _t6, Math.fma(_self11, _t7, _self12)));
-        UnsafeOpsHolder.U.putFloat(dest + 32L, Math.fma(_self20, _t6, Math.fma(_self21, _t7, _self22)));
+        UnsafeOpsHolder.U.putFloat(dest + 24L, Math.fma(_self00, _t9, Math.fma(_self01, _t10, _self02)));
+        UnsafeOpsHolder.U.putFloat(dest + 28L, Math.fma(_self10, _t9, Math.fma(_self11, _t10, _self12)));
+        UnsafeOpsHolder.U.putFloat(dest + 32L, Math.fma(_self20, _t9, Math.fma(_self21, _t10, _self22)));
         return dest;
     }
 
@@ -2434,18 +2437,19 @@ public final class Float3x3OpsKernelsAddress {
         float _pivoty = UnsafeOpsHolder.U.getFloat(pivot + 4L);
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -_pivotx;
-        float _t6 = Math.fma(_pivoty, _t1, Math.fma(_t2, _t0, _pivotx));
-        float _t7 = Math.fma(_t2, _t1, Math.fma(-_pivoty, _t0, _pivoty));
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t8 = 2.0f * _t3 * _t3;
+        float _t9 = Math.fma(_pivotx, _t8, _pivoty * _t1);
+        float _t10 = Math.fma(_pivoty, _t8, -(_pivotx * _t1));
         UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self00, _t0, _self01 * _t1));
         UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self10, _t0, _self11 * _t1));
         UnsafeOpsHolder.U.putFloat(dest + 8L, Math.fma(_self20, _t0, _self21 * _t1));
         UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(_self01, _t0, -(_self00 * _t1)));
         UnsafeOpsHolder.U.putFloat(dest + 16L, Math.fma(_self11, _t0, -(_self10 * _t1)));
         UnsafeOpsHolder.U.putFloat(dest + 20L, Math.fma(_self21, _t0, -(_self20 * _t1)));
-        UnsafeOpsHolder.U.putFloat(dest + 24L, Math.fma(_self00, _t6, Math.fma(_self01, _t7, _self02)));
-        UnsafeOpsHolder.U.putFloat(dest + 28L, Math.fma(_self10, _t6, Math.fma(_self11, _t7, _self12)));
-        UnsafeOpsHolder.U.putFloat(dest + 32L, Math.fma(_self20, _t6, Math.fma(_self21, _t7, _self22)));
+        UnsafeOpsHolder.U.putFloat(dest + 24L, Math.fma(_self00, _t9, Math.fma(_self01, _t10, _self02)));
+        UnsafeOpsHolder.U.putFloat(dest + 28L, Math.fma(_self10, _t9, Math.fma(_self11, _t10, _self12)));
+        UnsafeOpsHolder.U.putFloat(dest + 32L, Math.fma(_self20, _t9, Math.fma(_self21, _t10, _self22)));
         return dest;
     }
 

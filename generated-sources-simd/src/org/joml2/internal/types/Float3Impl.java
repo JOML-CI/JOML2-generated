@@ -2095,6 +2095,9 @@ public final class Float3Impl implements Float3 {
 
     /**
      * Compute the angle in radians between this vector and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other vector
      * @return the angle in radians between this vector and {@code other}
@@ -2107,6 +2110,9 @@ public final class Float3Impl implements Float3 {
     /**
      * Compute the angle in radians between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -2116,7 +2122,10 @@ public final class Float3Impl implements Float3 {
      */
     public float angleBetween(float otherX, float otherY, float otherZ) {
         float[] sd = this.data;
-        return (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(otherZ, sd[2], Math.fma(otherX, sd[0], otherY * sd[1])) * (1.0f / (float) Math.sqrt(Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])))) * (1.0f / (float) Math.sqrt(Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY)))))));
+        float _t6 = Math.fma(otherZ, sd[1], -(otherY * sd[2]));
+        float _t7 = Math.fma(otherY, sd[0], -(otherX * sd[1]));
+        float _t8 = Math.fma(otherZ, sd[0], -(otherX * sd[2]));
+        return (float) Math.atan2((float) Math.sqrt(Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8))), Math.fma(otherZ, sd[2], Math.fma(otherX, sd[0], otherY * sd[1])));
     }
 
 
@@ -2932,6 +2941,10 @@ public final class Float3Impl implements Float3 {
 
     /**
      * Compute the distance between this vector and {@code other}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the difference vector must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param other the other vector
      * @return the distance between this vector and {@code other}
@@ -2944,6 +2957,10 @@ public final class Float3Impl implements Float3 {
     /**
      * Compute the distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}).
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the difference vector must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -3478,6 +3495,10 @@ public final class Float3Impl implements Float3 {
 
     /**
      * Compute the length of this vector.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this vector must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @return the length of this vector
      */
@@ -4091,8 +4112,8 @@ public final class Float3Impl implements Float3 {
      * <p>
      * The squared length is formed at the component precision, so components whose squares overflow
      * or underflow that precision are out of domain: the result is the zero vector rather than a
-     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}).
+     * unit vector. Rescale such inputs before normalizing (the magnitude must lie roughly between
+     * 1e-19 and 1.8e19 for {@code float}, 1.5e-154 and 1.3e154 for {@code double}).
      *
      * @param dest will hold the result
      * @return dest
@@ -4121,8 +4142,8 @@ public final class Float3Impl implements Float3 {
      * <p>
      * The squared length is formed at the component precision, so components whose squares overflow
      * or underflow that precision are out of domain: the result is the zero vector rather than a
-     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}).
+     * unit vector. Rescale such inputs before normalizing (the magnitude must lie roughly between
+     * 1e-19 and 1.8e19 for {@code float}, 1.5e-154 and 1.3e154 for {@code double}).
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4207,6 +4228,9 @@ public final class Float3Impl implements Float3 {
      * Compute the signed angle in radians between this vector and {@code other}, positive when the
      * rotation from this vector to {@code other} is counter-clockwise as seen from the direction of
      * the given normal.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other vector
      * @param normal the reference axis that defines the sign of the angle
@@ -4224,6 +4248,9 @@ public final class Float3Impl implements Float3 {
      * {@code otherZ}), positive when the rotation from this vector to ({@code otherX},
      * {@code otherY}, {@code otherZ}) is counter-clockwise as seen from the direction of the given
      * normal.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -4238,10 +4265,11 @@ public final class Float3Impl implements Float3 {
      */
     public float orientedAngle(float otherX, float otherY, float otherZ, float normalX, float normalY, float normalZ) {
         float[] sd = this.data;
-        float _t6 = Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY));
-        float _t7 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
-        float _t15 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(otherZ, sd[2], Math.fma(otherX, sd[0], otherY * sd[1])) * (1.0f / (float) Math.sqrt(_t7)) * (1.0f / (float) Math.sqrt(_t6)))));
-        return (float) Math.sqrt(_t6) * (float) Math.sqrt(_t7) > 0.0f ? Math.fma(normalZ, Math.fma(otherY, sd[0], -(otherX * sd[1])), Math.fma(normalX, Math.fma(otherZ, sd[1], -(otherY * sd[2])), normalY * Math.fma(otherX, sd[2], -(otherZ * sd[0])))) < 0.0f ? -_t15 : _t15 : 0.0f;
+        float _t8 = Math.fma(otherY, sd[0], -(otherX * sd[1]));
+        float _t9 = Math.fma(otherZ, sd[1], -(otherY * sd[2]));
+        float _t10 = Math.fma(otherX, sd[2], -(otherZ * sd[0]));
+        float _t16 = (float) Math.atan2((float) Math.sqrt(Math.fma(_t8, _t8, Math.fma(_t10, _t10, _t9 * _t9))), Math.fma(otherZ, sd[2], Math.fma(otherX, sd[0], otherY * sd[1])));
+        return Math.fma(normalZ, _t8, Math.fma(normalX, _t9, normalY * _t10)) < 0.0f ? -_t16 : _t16;
     }
 
 

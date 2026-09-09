@@ -1394,6 +1394,10 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Interpolate between this quaternion and {@code target} using the interpolation factor
      * {@code alpha} and normalize the result and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -1408,6 +1412,10 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Interpolate between this quaternion and {@code target} using the interpolation factor
      * {@code alpha} and normalize the result and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1426,6 +1434,10 @@ public final class FloatQuatImpl implements FloatQuat {
      * Interpolate between this quaternion and ({@code targetX}, {@code targetY}, {@code targetZ},
      * {@code targetW}) using the interpolation factor {@code alpha} and normalize the result and
      * store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -1466,6 +1478,10 @@ public final class FloatQuatImpl implements FloatQuat {
      * Interpolate between this quaternion and ({@code targetX}, {@code targetY}, {@code targetZ},
      * {@code targetW}) using the interpolation factor {@code alpha} and normalize the result and
      * store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1509,6 +1525,10 @@ public final class FloatQuatImpl implements FloatQuat {
      * Interpolate along the shortest path between this quaternion and {@code target} using the
      * interpolation factor {@code alpha} and normalize the result and store the result in
      * {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param target the target rotation
      * @param alpha the interpolation factor, typically within {@code [0, 1]}
@@ -1524,6 +1544,10 @@ public final class FloatQuatImpl implements FloatQuat {
      * Interpolate along the shortest path between this quaternion and {@code target} using the
      * interpolation factor {@code alpha} and normalize the result and store the result in
      * {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1542,6 +1566,10 @@ public final class FloatQuatImpl implements FloatQuat {
      * Interpolate along the shortest path between this quaternion and ({@code targetX},
      * {@code targetY}, {@code targetZ}, {@code targetW}) using the interpolation factor
      * {@code alpha} and normalize the result and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -1591,6 +1619,10 @@ public final class FloatQuatImpl implements FloatQuat {
      * Interpolate along the shortest path between this quaternion and ({@code targetX},
      * {@code targetY}, {@code targetZ}, {@code targetW}) using the interpolation factor
      * {@code alpha} and normalize the result and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2384,17 +2416,23 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Compute the rotation angle in radians of this quaternion, within {@code [0, 2*PI]} (assumes
      * unit length).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @return the rotation angle in radians of this quaternion, within {@code [0, 2*PI]} (assumes
      *        unit length)
      */
     public float angle() {
-        return 2.0f * (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, this.w)));
+        return 2.0f * (float) Math.atan2((float) Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z), this.w);
     }
 
 
     /**
      * Compute the angle in radians between this quaternion and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param other the other quaternion
      * @return the angle in radians between this quaternion and {@code other}
@@ -2407,6 +2445,9 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Compute the angle in radians between this quaternion and ({@code otherX}, {@code otherY},
      * {@code otherZ}, {@code otherW}).
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param otherX the {@code x} component of the quaternion
      *        {@code (otherX, otherY, otherZ, otherW)}
@@ -2420,7 +2461,28 @@ public final class FloatQuatImpl implements FloatQuat {
      *        {@code otherZ}, {@code otherW})
      */
     public float angleTo(float otherX, float otherY, float otherZ, float otherW) {
-        return 2.0f * (float) Math.acos(Math.min(1.0f, Math.abs(otherX * this.x + otherY * this.y + otherZ * this.z + otherW * this.w)));
+        float _t11 = -(otherX * this.x + otherY * this.y + otherZ * this.z + otherW * this.w);
+        float _t12, _t13, _t14, _t15;
+        if (_t11 > 0.0f) {
+            _t12 = -otherX;
+            _t13 = -otherY;
+            _t14 = -otherZ;
+            _t15 = -otherW;
+        } else {
+            _t12 = otherX;
+            _t13 = otherY;
+            _t14 = otherZ;
+            _t15 = otherW;
+        }
+        float _t16 = this.x - _t12;
+        float _t17 = this.y - _t13;
+        float _t18 = this.z - _t14;
+        float _t19 = this.w - _t15;
+        float _t20 = this.x + _t12;
+        float _t21 = this.y + _t13;
+        float _t22 = this.z + _t14;
+        float _t23 = this.w + _t15;
+        return 4.0f * (float) Math.atan2((float) Math.sqrt(_t16 * _t16 + _t17 * _t17 + _t18 * _t18 + _t19 * _t19), (float) Math.sqrt(_t20 * _t20 + _t21 * _t21 + _t22 * _t22 + _t23 * _t23));
     }
 
 
@@ -2831,6 +2893,9 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -2856,7 +2921,7 @@ public final class FloatQuatImpl implements FloatQuat {
             d.z = (float) Math.atan2(2.0f * (this.z * this.w - this.x * this.y), 1.0f - 2.0f * (_t1 + _t6));
             d.x = _buf0;
         }
-        d.y = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t12)));
+        d.y = (float) Math.atan2(_t12, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -2867,6 +2932,9 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2895,7 +2963,7 @@ public final class FloatQuatImpl implements FloatQuat {
             d.z = (float) Math.atan2(2.0f * (this.z * this.w - this.x * this.y), 1.0f - 2.0f * (_t1 + _t6));
             d.x = _buf0;
         }
-        d.y = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t12)));
+        d.y = (float) Math.atan2(_t12, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -2906,6 +2974,9 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -2931,7 +3002,7 @@ public final class FloatQuatImpl implements FloatQuat {
             d.y = (float) Math.atan2(2.0f * (this.x * this.z + this.y * this.w), 1.0f - 2.0f * (_t6 + _t1));
             d.x = _buf0;
         }
-        d.z = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t12)));
+        d.z = (float) Math.atan2(_t12, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -2942,6 +3013,9 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2970,7 +3044,7 @@ public final class FloatQuatImpl implements FloatQuat {
             d.y = (float) Math.atan2(2.0f * (this.x * this.z + this.y * this.w), 1.0f - 2.0f * (_t6 + _t1));
             d.x = _buf0;
         }
-        d.z = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t12)));
+        d.z = (float) Math.atan2(_t12, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -2981,6 +3055,9 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -3006,7 +3083,7 @@ public final class FloatQuatImpl implements FloatQuat {
             d.z = (float) Math.atan2(2.0f * (this.x * this.y + this.z * this.w), 1.0f - 2.0f * (_t2 + _t6));
             d.y = _buf0;
         }
-        d.x = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t10)));
+        d.x = (float) Math.atan2(_t10, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -3017,6 +3094,9 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3045,7 +3125,7 @@ public final class FloatQuatImpl implements FloatQuat {
             d.z = (float) Math.atan2(2.0f * (this.x * this.y + this.z * this.w), 1.0f - 2.0f * (_t2 + _t6));
             d.y = _buf0;
         }
-        d.x = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t10)));
+        d.x = (float) Math.atan2(_t10, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -3056,6 +3136,9 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -3079,7 +3162,7 @@ public final class FloatQuatImpl implements FloatQuat {
             d.x = (float) Math.atan2(2.0f * (this.x * this.w - this.y * this.z), 1.0f - 2.0f * (_t6 + _t1));
             d.y = (float) Math.atan2(_t11, _t13);
         }
-        d.z = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t12)));
+        d.z = (float) Math.atan2(_t12, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -3090,6 +3173,9 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3116,7 +3202,7 @@ public final class FloatQuatImpl implements FloatQuat {
             d.x = (float) Math.atan2(2.0f * (this.x * this.w - this.y * this.z), 1.0f - 2.0f * (_t6 + _t1));
             d.y = (float) Math.atan2(_t11, _t13);
         }
-        d.z = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t12)));
+        d.z = (float) Math.atan2(_t12, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -3127,6 +3213,9 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -3150,7 +3239,7 @@ public final class FloatQuatImpl implements FloatQuat {
             d.y = (float) Math.atan2(2.0f * (this.y * this.w - this.x * this.z), 1.0f - 2.0f * (_t2 + _t6));
             d.z = (float) Math.atan2(_t12, _t13);
         }
-        d.x = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t10)));
+        d.x = (float) Math.atan2(_t10, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -3161,6 +3250,9 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3187,7 +3279,7 @@ public final class FloatQuatImpl implements FloatQuat {
             d.y = (float) Math.atan2(2.0f * (this.y * this.w - this.x * this.z), 1.0f - 2.0f * (_t2 + _t6));
             d.z = (float) Math.atan2(_t12, _t13);
         }
-        d.x = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t10)));
+        d.x = (float) Math.atan2(_t10, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -3198,6 +3290,9 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -3221,7 +3316,7 @@ public final class FloatQuatImpl implements FloatQuat {
             d.x = (float) Math.atan2(2.0f * (this.x * this.w + this.y * this.z), 1.0f - 2.0f * (_t6 + _t0));
             d.z = (float) Math.atan2(_t11, _t13);
         }
-        d.y = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t12)));
+        d.y = (float) Math.atan2(_t12, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -3232,6 +3327,9 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3258,7 +3356,7 @@ public final class FloatQuatImpl implements FloatQuat {
             d.x = (float) Math.atan2(2.0f * (this.x * this.w + this.y * this.z), 1.0f - 2.0f * (_t6 + _t0));
             d.z = (float) Math.atan2(_t11, _t13);
         }
-        d.y = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, _t12)));
+        d.y = (float) Math.atan2(_t12, (float) Math.sqrt(_t17));
         return d;
     }
 
@@ -3390,6 +3488,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code -X} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -3417,6 +3520,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code -X} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3447,6 +3555,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code -Y} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -3474,6 +3587,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code -Y} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3504,6 +3622,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code -Z} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -3531,6 +3654,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code -Z} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3831,6 +3959,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code +X} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -3858,6 +3991,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code +X} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3888,6 +4026,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code +Y} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -3915,6 +4058,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code +Y} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3945,6 +4093,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code +Z} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -3972,6 +4125,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code +Z} before the transformation represented by this quaternion
      * is applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected row of this quaternion's
+     * rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs
+     * outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4001,6 +4159,10 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Compute the length of this quaternion.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @return the length of this quaternion
      */
@@ -4021,31 +4183,36 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Compute the natural logarithm of this quaternion and store the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      *
      * @param dest will hold the result
      * @return dest
      */
     public FloatQuat log(@Mutated FloatQuat dest) {
         FloatQuatImpl d = (FloatQuatImpl) dest;
-        float _t5 = this.x * this.x + this.y * this.y + this.z * this.z;
-        float _t7 = _t5 + this.w * this.w;
-        float _t11 = (float) Math.acos(this.w * (1.0f / (float) Math.sqrt(_t7))) * (1.0f / (float) Math.sqrt(_t5));
-        if (_t5 > 0.0f) {
-            d.x = this.x * _t11;
-            d.y = this.y * _t11;
-            d.z = this.z * _t11;
+        float _t4 = this.x * this.x + this.y * this.y + this.z * this.z;
+        float _t8 = (float) Math.atan2((float) Math.sqrt(_t4), this.w) * (1.0f / (float) Math.sqrt(_t4));
+        if (_t4 > 0.0f) {
+            d.x = this.x * _t8;
+            d.y = this.y * _t8;
+            d.z = this.z * _t8;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;
             d.z = 0.0f;
         }
-        d.w = (float) Math.log((float) Math.sqrt(_t7));
+        d.w = (float) Math.log((float) Math.sqrt(_t4 + this.w * this.w));
         return d;
     }
 
 
     /**
      * Compute the natural logarithm of this quaternion and store the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4055,19 +4222,18 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public DoubleQuat log(@Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        float _t5 = this.x * this.x + this.y * this.y + this.z * this.z;
-        float _t7 = _t5 + this.w * this.w;
-        float _t11 = (float) Math.acos(this.w * (1.0f / (float) Math.sqrt(_t7))) * (1.0f / (float) Math.sqrt(_t5));
-        if (_t5 > 0.0f) {
-            d.x = this.x * _t11;
-            d.y = this.y * _t11;
-            d.z = this.z * _t11;
+        float _t4 = this.x * this.x + this.y * this.y + this.z * this.z;
+        float _t8 = (float) Math.atan2((float) Math.sqrt(_t4), this.w) * (1.0f / (float) Math.sqrt(_t4));
+        if (_t4 > 0.0f) {
+            d.x = this.x * _t8;
+            d.y = this.y * _t8;
+            d.z = this.z * _t8;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;
             d.z = 0.0f;
         }
-        d.w = (float) Math.log((float) Math.sqrt(_t7));
+        d.w = (float) Math.log((float) Math.sqrt(_t4 + this.w * this.w));
         return d;
     }
 
@@ -4075,6 +4241,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code -X} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -4102,6 +4273,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code -X} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4132,6 +4308,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code -Y} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -4159,6 +4340,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code -Y} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4189,6 +4375,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code -Z} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -4216,6 +4407,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code -Z} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4245,6 +4441,10 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Normalize this quaternion to unit length and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -4270,6 +4470,10 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Normalize this quaternion to unit length and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of this quaternion must lie roughly
+     * between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4569,6 +4773,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code +X} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -4596,6 +4805,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code +X} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4626,6 +4840,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code +Y} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -4653,6 +4872,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code +Y} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4683,6 +4907,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code +Z} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -4710,6 +4939,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Obtain the direction of {@code +Z} after the transformation represented by this quaternion is
      * applied and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the selected column of this
+     * quaternion's rotation matrix must lie roughly between {@code 1e-19} and {@code 1.8e19}.
+     * Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4740,6 +4974,9 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Raise this quaternion to the power of {@code t}, i.e. compute {@code exp(t * log(this))} and
      * store the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      *
      * @param t the exponent
      * @param dest will hold the result
@@ -4748,32 +4985,31 @@ public final class FloatQuatImpl implements FloatQuat {
     public FloatQuat pow(float t, @Mutated FloatQuat dest) {
         FloatQuatImpl d = (FloatQuatImpl) dest;
         float _t5 = this.x * this.x + this.y * this.y + this.z * this.z;
-        float _t7 = _t5 + this.w * this.w;
-        float _t14 = (float) Math.exp(t * (float) Math.log((float) Math.sqrt(_t7)));
-        float _t15 = (float) Math.acos(this.w * (1.0f / (float) Math.sqrt(_t7))) * (1.0f / (float) Math.sqrt(_t5));
-        float _t22, _t23, _t24;
+        float _t13 = (float) Math.exp(t * (float) Math.log((float) Math.sqrt(_t5 + this.w * this.w)));
+        float _t14 = (float) Math.atan2((float) Math.sqrt(_t5), this.w) * (1.0f / (float) Math.sqrt(_t5));
+        float _t21, _t22, _t23;
         if (_t5 > 0.0f) {
-            _t22 = t * this.x * _t15;
-            _t23 = t * this.y * _t15;
-            _t24 = t * this.z * _t15;
+            _t21 = t * this.x * _t14;
+            _t22 = t * this.y * _t14;
+            _t23 = t * this.z * _t14;
         } else {
+            _t21 = t * 0.0f;
             _t22 = t * 0.0f;
             _t23 = t * 0.0f;
-            _t24 = t * 0.0f;
         }
-        float _t29 = _t22 * _t22 + _t23 * _t23 + _t24 * _t24;
-        float _t30 = (float) Math.sqrt(_t29);
-        float _t34 = (float) Math.sin(_t30) * _t14 * (1.0f / (float) Math.sqrt(_t29));
-        if (_t29 > 0.0f) {
-            d.x = _t22 * _t34;
-            d.y = _t23 * _t34;
-            d.z = _t24 * _t34;
+        float _t28 = _t21 * _t21 + _t22 * _t22 + _t23 * _t23;
+        float _t29 = (float) Math.sqrt(_t28);
+        float _t33 = (float) Math.sin(_t29) * _t13 * (1.0f / (float) Math.sqrt(_t28));
+        if (_t28 > 0.0f) {
+            d.x = _t21 * _t33;
+            d.y = _t22 * _t33;
+            d.z = _t23 * _t33;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;
             d.z = 0.0f;
         }
-        d.w = (float) Math.cos(_t30) * _t14;
+        d.w = (float) Math.cos(_t29) * _t13;
         return d;
     }
 
@@ -4781,6 +5017,9 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Raise this quaternion to the power of {@code t}, i.e. compute {@code exp(t * log(this))} and
      * store the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4792,32 +5031,31 @@ public final class FloatQuatImpl implements FloatQuat {
     public DoubleQuat pow(float t, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         float _t5 = this.x * this.x + this.y * this.y + this.z * this.z;
-        float _t7 = _t5 + this.w * this.w;
-        float _t14 = (float) Math.exp(t * (float) Math.log((float) Math.sqrt(_t7)));
-        float _t15 = (float) Math.acos(this.w * (1.0f / (float) Math.sqrt(_t7))) * (1.0f / (float) Math.sqrt(_t5));
-        float _t22, _t23, _t24;
+        float _t13 = (float) Math.exp(t * (float) Math.log((float) Math.sqrt(_t5 + this.w * this.w)));
+        float _t14 = (float) Math.atan2((float) Math.sqrt(_t5), this.w) * (1.0f / (float) Math.sqrt(_t5));
+        float _t21, _t22, _t23;
         if (_t5 > 0.0f) {
-            _t22 = t * this.x * _t15;
-            _t23 = t * this.y * _t15;
-            _t24 = t * this.z * _t15;
+            _t21 = t * this.x * _t14;
+            _t22 = t * this.y * _t14;
+            _t23 = t * this.z * _t14;
         } else {
+            _t21 = t * 0.0f;
             _t22 = t * 0.0f;
             _t23 = t * 0.0f;
-            _t24 = t * 0.0f;
         }
-        float _t29 = _t22 * _t22 + _t23 * _t23 + _t24 * _t24;
-        float _t30 = (float) Math.sqrt(_t29);
-        float _t34 = (float) Math.sin(_t30) * _t14 * (1.0f / (float) Math.sqrt(_t29));
-        if (_t29 > 0.0f) {
-            d.x = _t22 * _t34;
-            d.y = _t23 * _t34;
-            d.z = _t24 * _t34;
+        float _t28 = _t21 * _t21 + _t22 * _t22 + _t23 * _t23;
+        float _t29 = (float) Math.sqrt(_t28);
+        float _t33 = (float) Math.sin(_t29) * _t13 * (1.0f / (float) Math.sqrt(_t28));
+        if (_t28 > 0.0f) {
+            d.x = _t21 * _t33;
+            d.y = _t22 * _t33;
+            d.z = _t23 * _t33;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;
             d.z = 0.0f;
         }
-        d.w = (float) Math.cos(_t30) * _t14;
+        d.w = (float) Math.cos(_t29) * _t13;
         return d;
     }
 
@@ -4923,6 +5161,9 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Rotate this quaternion towards {@code target}, by at most the given maximum angle and store
      * the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      *
      * @param target the target rotation
      * @param step the maximum rotation angle in radians
@@ -4937,6 +5178,9 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Rotate this quaternion towards {@code target}, by at most the given maximum angle and store
      * the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4954,6 +5198,9 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Rotate this quaternion towards ({@code targetX}, {@code targetY}, {@code targetZ},
      * {@code targetW}), by at most the given maximum angle and store the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -4974,42 +5221,50 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t14 = (float) Math.acos(Math.min(1.0f, Math.abs(_t10)));
         float _t15 = (float) Math.sin(_t14);
         float _t15_inv = 1.0f / _t15;
-        float _t16 = 2.0f * _t14;
-        float _t18, _t19, _t20, _t21;
+        float _t16, _t17, _t18, _t19;
         if (_t12 > 0.0f) {
-            _t18 = -targetX;
-            _t19 = -targetY;
-            _t20 = -targetZ;
-            _t21 = -targetW;
+            _t16 = -targetX;
+            _t17 = -targetY;
+            _t18 = -targetZ;
+            _t19 = -targetW;
         } else {
-            _t18 = targetX;
-            _t19 = targetY;
-            _t20 = targetZ;
-            _t21 = targetW;
+            _t16 = targetX;
+            _t17 = targetY;
+            _t18 = targetZ;
+            _t19 = targetW;
         }
-        float _t23 = _t16 > 0.0f ? Math.min(1.0f, step / _t16) : 0.0f;
-        float _t24 = 1.0f - _t23;
-        float _t30 = (float) Math.sin(_t14 * _t23);
-        float _t32 = (float) Math.sin(_t24 * _t14);
-        float _t57, _t58, _t59, _t60;
+        float _t20 = this.x - _t16;
+        float _t21 = this.y - _t17;
+        float _t22 = this.z - _t18;
+        float _t23 = this.w - _t19;
+        float _t24 = this.x + _t16;
+        float _t25 = this.y + _t17;
+        float _t26 = this.z + _t18;
+        float _t27 = this.w + _t19;
+        float _t45 = 4.0f * (float) Math.atan2((float) Math.sqrt(_t20 * _t20 + _t21 * _t21 + _t22 * _t22 + _t23 * _t23), (float) Math.sqrt(_t24 * _t24 + _t25 * _t25 + _t26 * _t26 + _t27 * _t27));
+        float _t48 = _t45 > 0.0f ? Math.min(1.0f, step / _t45) : 0.0f;
+        float _t49 = 1.0f - _t48;
+        float _t55 = (float) Math.sin(_t14 * _t48);
+        float _t57 = (float) Math.sin(_t49 * _t14);
+        float _t82, _t83, _t84, _t85;
         if (_t15 > 0.0f) {
-            _t57 = (this.x * _t32 + _t30 * _t18) * _t15_inv;
-            _t58 = (this.y * _t32 + _t30 * _t19) * _t15_inv;
-            _t59 = (this.z * _t32 + _t30 * _t20) * _t15_inv;
-            _t60 = (this.w * _t32 + _t30 * _t21) * _t15_inv;
+            _t82 = (this.x * _t57 + _t55 * _t16) * _t15_inv;
+            _t83 = (this.y * _t57 + _t55 * _t17) * _t15_inv;
+            _t84 = (this.z * _t57 + _t55 * _t18) * _t15_inv;
+            _t85 = (this.w * _t57 + _t55 * _t19) * _t15_inv;
         } else {
-            _t57 = this.x * _t24 + _t18 * _t23;
-            _t58 = this.y * _t24 + _t19 * _t23;
-            _t59 = this.z * _t24 + _t20 * _t23;
-            _t60 = this.w * _t24 + _t21 * _t23;
+            _t82 = this.x * _t49 + _t16 * _t48;
+            _t83 = this.y * _t49 + _t17 * _t48;
+            _t84 = this.z * _t49 + _t18 * _t48;
+            _t85 = this.w * _t49 + _t19 * _t48;
         }
-        float _t67 = _t57 * _t57 + _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
-        float _t68 = (1.0f / (float) Math.sqrt(_t67));
-        if (_t67 > 0.0f) {
-            d.x = _t68 * _t57;
-            d.y = _t68 * _t58;
-            d.z = _t68 * _t59;
-            d.w = _t68 * _t60;
+        float _t92 = _t82 * _t82 + _t83 * _t83 + _t84 * _t84 + _t85 * _t85;
+        float _t93 = (1.0f / (float) Math.sqrt(_t92));
+        if (_t92 > 0.0f) {
+            d.x = _t93 * _t82;
+            d.y = _t93 * _t83;
+            d.z = _t93 * _t84;
+            d.w = _t93 * _t85;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;
@@ -5023,6 +5278,9 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Rotate this quaternion towards ({@code targetX}, {@code targetY}, {@code targetZ},
      * {@code targetW}), by at most the given maximum angle and store the result in {@code dest}.
+     * <p>
+     * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
+     * down to 0 - small rotations are not truncated.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -5046,42 +5304,50 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t14 = (float) Math.acos(Math.min(1.0f, Math.abs(_t10)));
         float _t15 = (float) Math.sin(_t14);
         float _t15_inv = 1.0f / _t15;
-        float _t16 = 2.0f * _t14;
-        float _t18, _t19, _t20, _t21;
+        float _t16, _t17, _t18, _t19;
         if (_t12 > 0.0f) {
-            _t18 = -targetX;
-            _t19 = -targetY;
-            _t20 = -targetZ;
-            _t21 = -targetW;
+            _t16 = -targetX;
+            _t17 = -targetY;
+            _t18 = -targetZ;
+            _t19 = -targetW;
         } else {
-            _t18 = targetX;
-            _t19 = targetY;
-            _t20 = targetZ;
-            _t21 = targetW;
+            _t16 = targetX;
+            _t17 = targetY;
+            _t18 = targetZ;
+            _t19 = targetW;
         }
-        float _t23 = _t16 > 0.0f ? Math.min(1.0f, step / _t16) : 0.0f;
-        float _t24 = 1.0f - _t23;
-        float _t30 = (float) Math.sin(_t14 * _t23);
-        float _t32 = (float) Math.sin(_t24 * _t14);
-        float _t57, _t58, _t59, _t60;
+        float _t20 = this.x - _t16;
+        float _t21 = this.y - _t17;
+        float _t22 = this.z - _t18;
+        float _t23 = this.w - _t19;
+        float _t24 = this.x + _t16;
+        float _t25 = this.y + _t17;
+        float _t26 = this.z + _t18;
+        float _t27 = this.w + _t19;
+        float _t45 = 4.0f * (float) Math.atan2((float) Math.sqrt(_t20 * _t20 + _t21 * _t21 + _t22 * _t22 + _t23 * _t23), (float) Math.sqrt(_t24 * _t24 + _t25 * _t25 + _t26 * _t26 + _t27 * _t27));
+        float _t48 = _t45 > 0.0f ? Math.min(1.0f, step / _t45) : 0.0f;
+        float _t49 = 1.0f - _t48;
+        float _t55 = (float) Math.sin(_t14 * _t48);
+        float _t57 = (float) Math.sin(_t49 * _t14);
+        float _t82, _t83, _t84, _t85;
         if (_t15 > 0.0f) {
-            _t57 = (this.x * _t32 + _t30 * _t18) * _t15_inv;
-            _t58 = (this.y * _t32 + _t30 * _t19) * _t15_inv;
-            _t59 = (this.z * _t32 + _t30 * _t20) * _t15_inv;
-            _t60 = (this.w * _t32 + _t30 * _t21) * _t15_inv;
+            _t82 = (this.x * _t57 + _t55 * _t16) * _t15_inv;
+            _t83 = (this.y * _t57 + _t55 * _t17) * _t15_inv;
+            _t84 = (this.z * _t57 + _t55 * _t18) * _t15_inv;
+            _t85 = (this.w * _t57 + _t55 * _t19) * _t15_inv;
         } else {
-            _t57 = this.x * _t24 + _t18 * _t23;
-            _t58 = this.y * _t24 + _t19 * _t23;
-            _t59 = this.z * _t24 + _t20 * _t23;
-            _t60 = this.w * _t24 + _t21 * _t23;
+            _t82 = this.x * _t49 + _t16 * _t48;
+            _t83 = this.y * _t49 + _t17 * _t48;
+            _t84 = this.z * _t49 + _t18 * _t48;
+            _t85 = this.w * _t49 + _t19 * _t48;
         }
-        float _t67 = _t57 * _t57 + _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
-        float _t68 = (1.0f / (float) Math.sqrt(_t67));
-        if (_t67 > 0.0f) {
-            d.x = _t68 * _t57;
-            d.y = _t68 * _t58;
-            d.z = _t68 * _t59;
-            d.w = _t68 * _t60;
+        float _t92 = _t82 * _t82 + _t83 * _t83 + _t84 * _t84 + _t85 * _t85;
+        float _t93 = (1.0f / (float) Math.sqrt(_t92));
+        if (_t92 > 0.0f) {
+            d.x = _t93 * _t82;
+            d.y = _t93 * _t83;
+            d.z = _t93 * _t84;
+            d.w = _t93 * _t85;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;
@@ -5493,6 +5759,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * Set this quaternion to the rotation that rotates {@code fromDir} onto {@code toDir} (both
      * must be unit vectors; for opposite vectors an arbitrary perpendicular rotation axis is
      * chosen).
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDir the vector
      * @param toDir the vector
@@ -5507,6 +5778,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * Set this quaternion to the rotation that rotates ({@code fromDirX}, {@code fromDirY},
      * {@code fromDirZ}) onto ({@code toDirX}, {@code toDirY}, {@code toDirZ}) (both must be unit
      * vectors; for opposite vectors an arbitrary perpendicular rotation axis is chosen).
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDirX the {@code x} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
      * @param fromDirY the {@code y} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
@@ -5517,32 +5793,38 @@ public final class FloatQuatImpl implements FloatQuat {
      * @return this
      */
     @Mutated public FloatQuat makeRotationTo(float fromDirX, float fromDirY, float fromDirZ, float toDirX, float toDirY, float toDirZ) {
-        float _t8 = fromDirX * fromDirX + fromDirY * fromDirY;
-        float _t10, _t11, _t12;
-        if (_t8 > 0.0f) {
-            _t10 = fromDirY;
-            _t11 = 0.0f;
-            _t12 = -fromDirX;
+        float _t3 = fromDirX + toDirX;
+        float _t4 = fromDirY + toDirY;
+        float _t5 = fromDirZ + toDirZ;
+        float _t17 = fromDirY * toDirZ - fromDirZ * toDirY;
+        float _t18 = fromDirZ * toDirX - fromDirX * toDirZ;
+        float _t19 = fromDirX * toDirY - fromDirY * toDirX;
+        float _t20 = fromDirX * fromDirX + fromDirY * fromDirY;
+        float _t21, _t22, _t23;
+        if (_t20 > 0.0f) {
+            _t21 = fromDirY;
+            _t22 = 0.0f;
+            _t23 = -fromDirX;
         } else {
-            _t10 = 0.0f;
-            _t11 = -fromDirY;
-            _t12 = fromDirZ;
+            _t21 = 0.0f;
+            _t22 = -fromDirY;
+            _t23 = fromDirZ;
         }
-        float _t13 = fromDirX * toDirX + (fromDirY * toDirY + (fromDirZ * toDirZ + 1.0f));
-        float _t14 = 2.0f * _t13;
-        float _t15 = (1.0f / (float) Math.sqrt(_t14));
-        float _t20 = _t10 * _t10 + _t12 * _t12 + _t11 * _t11;
-        float _t21 = (1.0f / (float) Math.sqrt(_t20));
-        if (_t13 > 1.0E-6f) {
-            this.x = (fromDirY * toDirZ - fromDirZ * toDirY) * _t15;
-            this.y = (fromDirZ * toDirX - fromDirX * toDirZ) * _t15;
-            this.z = (fromDirX * toDirY - fromDirY * toDirX) * _t15;
-            this.w = 0.5f * (float) Math.sqrt(_t14);
+        float _t29 = _t3 * _t3 + _t4 * _t4 + _t5 * _t5;
+        float _t31 = 0.5f * _t29;
+        float _t37 = _t21 * _t21 + _t23 * _t23 + _t22 * _t22;
+        float _t38 = (1.0f / (float) Math.sqrt(_t37));
+        float _t41 = (1.0f / (float) Math.sqrt(_t17 * _t17 + (_t18 * _t18 + (_t19 * _t19 + _t29 * _t29 / (2.0f * 2.0f)))));
+        if (_t31 > 1.0E-6f) {
+            this.x = _t17 * _t41;
+            this.y = _t18 * _t41;
+            this.z = _t19 * _t41;
+            this.w = 0.5f * _t29 * _t41;
         } else {
-            if (_t20 > 0.0f) {
-                this.x = _t21 * _t10;
-                this.y = _t21 * _t12;
-                this.z = _t21 * _t11;
+            if (_t37 > 0.0f) {
+                this.x = _t38 * _t21;
+                this.y = _t38 * _t23;
+                this.z = _t38 * _t22;
                 this.w = 0.0f;
             } else {
                 this.x = 0.0f;
@@ -6090,6 +6372,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDir the vector
      * @param toDir the vector
@@ -6109,6 +6396,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6132,6 +6424,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * If {@code Q} is {@code this} quaternion and {@code R} the rotation quaternion, then the new
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
+     * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
      *
      * @param fromDirX the {@code x} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
      * @param fromDirY the {@code y} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
@@ -6144,43 +6441,51 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public FloatQuat rotateTo(float fromDirX, float fromDirY, float fromDirZ, float toDirX, float toDirY, float toDirZ, @Mutated FloatQuat dest) {
         FloatQuatImpl d = (FloatQuatImpl) dest;
-        float _t15 = fromDirX * fromDirX + fromDirY * fromDirY;
-        float _t19, _t20, _t21;
-        if (_t15 > 0.0f) {
-            _t19 = fromDirY;
-            _t20 = 0.0f;
-            _t21 = -fromDirX;
+        float _t3 = fromDirX + toDirX;
+        float _t4 = fromDirY + toDirY;
+        float _t5 = fromDirZ + toDirZ;
+        float _t17 = fromDirY * toDirZ - fromDirZ * toDirY;
+        float _t18 = fromDirZ * toDirX - fromDirX * toDirZ;
+        float _t19 = fromDirX * toDirY - fromDirY * toDirX;
+        float _t20 = fromDirX * fromDirX + fromDirY * fromDirY;
+        float _t21, _t22, _t23;
+        if (_t20 > 0.0f) {
+            _t21 = fromDirY;
+            _t22 = 0.0f;
+            _t23 = -fromDirX;
         } else {
-            _t19 = 0.0f;
-            _t20 = -fromDirY;
-            _t21 = fromDirZ;
+            _t21 = 0.0f;
+            _t22 = -fromDirY;
+            _t23 = fromDirZ;
         }
-        float _t22 = fromDirX * toDirX + (fromDirY * toDirY + (fromDirZ * toDirZ + 1.0f));
-        float _t23 = 2.0f * _t22;
-        float _t25 = (1.0f / (float) Math.sqrt(_t23));
-        float _t33 = _t22 > 1.0E-6f ? 0.5f * (float) Math.sqrt(_t23) : 0.0f;
-        float _t35 = _t19 * _t19 + _t21 * _t21 + _t20 * _t20;
-        float _t36 = (1.0f / (float) Math.sqrt(_t35));
-        float _t43, _t44, _t45;
-        if (_t22 > 1.0E-6f) {
-            _t43 = (fromDirY * toDirZ - fromDirZ * toDirY) * _t25;
-            _t44 = (fromDirX * toDirY - fromDirY * toDirX) * _t25;
-            _t45 = (fromDirZ * toDirX - fromDirX * toDirZ) * _t25;
+        float _t29 = _t3 * _t3 + _t4 * _t4 + _t5 * _t5;
+        float _t31 = 0.5f * _t29;
+        float _t37 = _t21 * _t21 + _t23 * _t23 + _t22 * _t22;
+        float _t38 = (1.0f / (float) Math.sqrt(_t37));
+        float _t44 = (1.0f / (float) Math.sqrt(_t17 * _t17 + (_t18 * _t18 + (_t19 * _t19 + _t29 * _t29 / (2.0f * 2.0f)))));
+        float _t50, _t54, _t55, _t56;
+        if (_t31 > 1.0E-6f) {
+            _t50 = 0.5f * _t29 * _t44;
+            _t54 = _t17 * _t44;
+            _t55 = _t19 * _t44;
+            _t56 = _t18 * _t44;
         } else {
-            if (_t35 > 0.0f) {
-                _t43 = _t36 * _t19;
-                _t44 = _t36 * _t20;
-                _t45 = _t36 * _t21;
+            if (_t37 > 0.0f) {
+                _t50 = 0.0f;
+                _t54 = _t38 * _t21;
+                _t55 = _t38 * _t22;
+                _t56 = _t38 * _t23;
             } else {
-                _t43 = 0.0f;
-                _t44 = 0.0f;
-                _t45 = 0.0f;
+                _t50 = 0.0f;
+                _t54 = 0.0f;
+                _t55 = 0.0f;
+                _t56 = 0.0f;
             }
         }
-        float _buf0 = this.x * _t33 + this.w * _t43 + (this.y * _t44 - this.z * _t45);
-        float _buf1 = this.y * _t33 + this.z * _t43 + (this.w * _t45 - this.x * _t44);
-        float _buf2 = this.x * _t45 + this.w * _t44 + (this.z * _t33 - this.y * _t43);
-        d.w = this.w * _t33 - this.x * _t43 - this.y * _t45 - this.z * _t44;
+        float _buf0 = this.x * _t50 + this.w * _t54 + (this.y * _t55 - this.z * _t56);
+        float _buf1 = this.y * _t50 + this.z * _t54 + (this.w * _t56 - this.x * _t55);
+        float _buf2 = this.x * _t56 + this.w * _t55 + (this.z * _t50 - this.y * _t54);
+        d.w = this.w * _t50 - this.x * _t54 - this.y * _t56 - this.z * _t55;
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -6198,6 +6503,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      * <p>
+     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
+     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
+     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
+     * arbitrarily.
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
@@ -6212,43 +6522,51 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public DoubleQuat rotateTo(float fromDirX, float fromDirY, float fromDirZ, float toDirX, float toDirY, float toDirZ, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        float _t15 = fromDirX * fromDirX + fromDirY * fromDirY;
-        float _t19, _t20, _t21;
-        if (_t15 > 0.0f) {
-            _t19 = fromDirY;
-            _t20 = 0.0f;
-            _t21 = -fromDirX;
+        float _t3 = fromDirX + toDirX;
+        float _t4 = fromDirY + toDirY;
+        float _t5 = fromDirZ + toDirZ;
+        float _t17 = fromDirY * toDirZ - fromDirZ * toDirY;
+        float _t18 = fromDirZ * toDirX - fromDirX * toDirZ;
+        float _t19 = fromDirX * toDirY - fromDirY * toDirX;
+        float _t20 = fromDirX * fromDirX + fromDirY * fromDirY;
+        float _t21, _t22, _t23;
+        if (_t20 > 0.0f) {
+            _t21 = fromDirY;
+            _t22 = 0.0f;
+            _t23 = -fromDirX;
         } else {
-            _t19 = 0.0f;
-            _t20 = -fromDirY;
-            _t21 = fromDirZ;
+            _t21 = 0.0f;
+            _t22 = -fromDirY;
+            _t23 = fromDirZ;
         }
-        float _t22 = fromDirX * toDirX + (fromDirY * toDirY + (fromDirZ * toDirZ + 1.0f));
-        float _t23 = 2.0f * _t22;
-        float _t25 = (1.0f / (float) Math.sqrt(_t23));
-        float _t33 = _t22 > 1.0E-6f ? 0.5f * (float) Math.sqrt(_t23) : 0.0f;
-        float _t35 = _t19 * _t19 + _t21 * _t21 + _t20 * _t20;
-        float _t36 = (1.0f / (float) Math.sqrt(_t35));
-        float _t43, _t44, _t45;
-        if (_t22 > 1.0E-6f) {
-            _t43 = (fromDirY * toDirZ - fromDirZ * toDirY) * _t25;
-            _t44 = (fromDirX * toDirY - fromDirY * toDirX) * _t25;
-            _t45 = (fromDirZ * toDirX - fromDirX * toDirZ) * _t25;
+        float _t29 = _t3 * _t3 + _t4 * _t4 + _t5 * _t5;
+        float _t31 = 0.5f * _t29;
+        float _t37 = _t21 * _t21 + _t23 * _t23 + _t22 * _t22;
+        float _t38 = (1.0f / (float) Math.sqrt(_t37));
+        float _t44 = (1.0f / (float) Math.sqrt(_t17 * _t17 + (_t18 * _t18 + (_t19 * _t19 + _t29 * _t29 / (2.0f * 2.0f)))));
+        float _t50, _t54, _t55, _t56;
+        if (_t31 > 1.0E-6f) {
+            _t50 = 0.5f * _t29 * _t44;
+            _t54 = _t17 * _t44;
+            _t55 = _t19 * _t44;
+            _t56 = _t18 * _t44;
         } else {
-            if (_t35 > 0.0f) {
-                _t43 = _t36 * _t19;
-                _t44 = _t36 * _t20;
-                _t45 = _t36 * _t21;
+            if (_t37 > 0.0f) {
+                _t50 = 0.0f;
+                _t54 = _t38 * _t21;
+                _t55 = _t38 * _t22;
+                _t56 = _t38 * _t23;
             } else {
-                _t43 = 0.0f;
-                _t44 = 0.0f;
-                _t45 = 0.0f;
+                _t50 = 0.0f;
+                _t54 = 0.0f;
+                _t55 = 0.0f;
+                _t56 = 0.0f;
             }
         }
-        float _buf0 = this.x * _t33 + this.w * _t43 + (this.y * _t44 - this.z * _t45);
-        float _buf1 = this.y * _t33 + this.z * _t43 + (this.w * _t45 - this.x * _t44);
-        float _buf2 = this.x * _t45 + this.w * _t44 + (this.z * _t33 - this.y * _t43);
-        d.w = this.w * _t33 - this.x * _t43 - this.y * _t45 - this.z * _t44;
+        float _buf0 = this.x * _t50 + this.w * _t54 + (this.y * _t55 - this.z * _t56);
+        float _buf1 = this.y * _t50 + this.z * _t54 + (this.w * _t56 - this.x * _t55);
+        float _buf2 = this.x * _t56 + this.w * _t55 + (this.z * _t50 - this.y * _t54);
+        d.w = this.w * _t50 - this.x * _t54 - this.y * _t56 - this.z * _t55;
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;

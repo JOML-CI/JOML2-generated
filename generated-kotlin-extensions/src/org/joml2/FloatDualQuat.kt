@@ -62,7 +62,7 @@ inline fun FloatDualQuat.copy(rX: Float = rX(), rY: Float = rY(), rZ: Float = rZ
 inline fun FloatDualQuat.toFloatArray(): FloatArray = store(FloatArray(8))
 /** A FloatDualQuat read from this array in storage order, starting at index 0. */
 inline fun FloatArray.toFloatDualQuat(): FloatDualQuat = FloatDualQuat.load(this)
-/** The component of this FloatDualQuat at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT `v[i] = x` (or `v[i] += x`) resolves to the Java 2-argument value factory `FloatDualQuat.set(a, b)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
+/** The component of this FloatDualQuat at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT with 7 indices (`v[a, b, ...] = x`) resolves to the Java 8-argument value factory `FloatDualQuat.set(...)`, whose result is discarded (and `v[q] = t` to `set(Quat, Vec3)` likewise) - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun FloatDualQuat.get(index: Int): Float = when (index) {
     0 -> rX()
     1 -> rY()

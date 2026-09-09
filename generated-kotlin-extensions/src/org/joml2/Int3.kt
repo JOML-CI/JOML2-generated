@@ -46,7 +46,7 @@ inline fun Int3.copy(x: Int = x(), y: Int = y(), z: Int = z()): Int3 = Int3(x, y
 inline fun Int3.toIntArray(): IntArray = store(IntArray(3))
 /** A Int3 read from this array in storage order, starting at index 0. */
 inline fun IntArray.toInt3(): Int3 = Int3.load(this)
-/** The component of this Int3 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. */
+/** The component of this Int3 at `index` in storage order, throwing `IndexOutOfBoundsException` when `index` is out of range. Read-only: an indexed ASSIGNMENT with 2 indices (`v[a, b] = c`) resolves to the Java 3-argument value factory `Int3.set(...)`, whose result is discarded - it compiles but is a silent no-op on this immutable record; use `copy(...)` or the `with*` methods instead. */
 inline operator fun Int3.get(index: Int): Int = when (index) {
     0 -> x()
     1 -> y()

@@ -11,6 +11,13 @@ import java.nio.LongBuffer;
  * All operations leave the receiver unchanged and return their result as a value. An operation
  * whose result equals one of its operands may return that operand instead of allocating a new
  * instance.
+ * <p>
+ * {@code equals} compares the components element-wise with {@code ==}. {@code hashCode} is
+ * consistent with it.
+ * <p>
+ * {@code equalsEpsilon} compares per component with an exact, non-negative integer tolerance: the
+ * difference is widened to {@code long} before its magnitude is taken, so the two are compared
+ * exactly without overflow, and a negative {@code epsilon} matches nothing.
  *
  * @param minX the {@code minX} component
  * @param minY the {@code minY} component
@@ -363,7 +370,9 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      *        zero)
      */
     public int centerX() {
-        return (this.minX + this.maxX) / 2;
+        int _t1 = this.minX ^ this.maxX;
+        int _t3 = (this.minX & this.maxX) + (_t1 >> 1);
+        return _t3 < 0 ? _t3 + (_t1 & 1) : _t3;
     }
 
 
@@ -375,7 +384,9 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      *        zero)
      */
     public int centerY() {
-        return (this.minY + this.maxY) / 2;
+        int _t1 = this.minY ^ this.maxY;
+        int _t3 = (this.minY & this.maxY) + (_t1 >> 1);
+        return _t3 < 0 ? _t3 + (_t1 & 1) : _t3;
     }
 
 
@@ -546,7 +557,11 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * @return the resulting vector
      */
     public Int2 getCenter() {
-        return new Int2((this.minX + this.maxX) / 2, (this.minY + this.maxY) / 2);
+        int _t1 = this.minX ^ this.maxX;
+        int _t3 = this.minY ^ this.maxY;
+        int _t6 = (this.minX & this.maxX) + (_t1 >> 1);
+        int _t7 = (this.minY & this.maxY) + (_t3 >> 1);
+        return new Int2(_t6 < 0 ? _t6 + (_t1 & 1) : _t6, _t7 < 0 ? _t7 + (_t3 & 1) : _t7);
     }
 
 
@@ -693,6 +708,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
     /**
      * Compare this value component-wise against {@code other}, allowing a difference of at
      * most {@code epsilon} per component.
+     * <p>
+     * {@code equalsEpsilon} compares per component with an exact, non-negative integer tolerance:
+     * the difference is widened to {@code long} before its magnitude is taken, so the two are
+     * compared exactly without overflow, and a negative {@code epsilon} matches nothing.
      *
      * @param other the value to compare against
      * @param epsilon the maximum allowed difference per component
@@ -767,6 +786,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -781,6 +804,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -796,6 +823,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -813,6 +844,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code IntRect} holding the loaded elements
@@ -827,6 +862,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -842,6 +881,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code IntRect} holding the loaded elements
@@ -859,6 +902,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -873,6 +920,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -888,6 +939,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -905,6 +960,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code IntRect} holding the loaded elements
@@ -919,6 +978,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -934,6 +997,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code IntRect} holding the loaded elements
@@ -951,6 +1018,8 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public IntRect storeUnsafe(long address) {
         return RAW_OPS.storeUnsafe(this, address);
@@ -962,6 +1031,8 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      *
      * @param address the raw memory address
      * @return a new {@code IntRect} holding the loaded elements
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public static IntRect loadUnsafe(long address) {
         return RAW_OPS.loadUnsafe(address);
@@ -1022,6 +1093,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -1036,6 +1111,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the destination buffer
@@ -1051,6 +1130,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination buffer
      * @return buf
@@ -1068,6 +1151,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code IntRect} holding the loaded elements
@@ -1082,6 +1169,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param buf the source buffer
@@ -1097,6 +1188,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source buffer
      * @return a new {@code IntRect} holding the loaded elements
@@ -1114,6 +1209,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -1128,6 +1227,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the destination byte buffer
@@ -1143,6 +1246,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the destination byte buffer
      * @return buf
@@ -1160,6 +1267,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code IntRect} holding the loaded elements
@@ -1174,6 +1285,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param buf the source byte buffer
@@ -1189,6 +1304,10 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param buf the source byte buffer
      * @return a new {@code IntRect} holding the loaded elements
@@ -1206,6 +1325,8 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public IntRect storeLongUnsafe(long address) {
         return RAW_OPS.storeLongUnsafe(this, address);
@@ -1217,6 +1338,8 @@ public record IntRect(int minX, int minY, int maxX, int maxY) {
      *
      * @param address the raw memory address
      * @return a new {@code IntRect} holding the loaded elements
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     public static IntRect loadLongUnsafe(long address) {
         return RAW_OPS.loadLongUnsafe(address);

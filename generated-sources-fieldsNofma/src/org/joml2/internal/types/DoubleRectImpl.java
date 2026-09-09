@@ -290,10 +290,10 @@ public final class DoubleRectImpl implements DoubleRect {
                 d.maxY = (int) Math.max(Integer.MIN_VALUE, Math.min(Integer.MAX_VALUE, Math.round(this.maxY)));
             }
             case HALF_AWAY_FROM_ZERO -> {
-                d.minX = (int) (this.minX >= 0 ? Math.floor(this.minX + 0.5) : Math.ceil(this.minX - 0.5));
-                d.minY = (int) (this.minY >= 0 ? Math.floor(this.minY + 0.5) : Math.ceil(this.minY - 0.5));
-                d.maxX = (int) (this.maxX >= 0 ? Math.floor(this.maxX + 0.5) : Math.ceil(this.maxX - 0.5));
-                d.maxY = (int) (this.maxY >= 0 ? Math.floor(this.maxY + 0.5) : Math.ceil(this.maxY - 0.5));
+                d.minX = (int) (Math.abs(this.minX - Math.rint(this.minX)) == 0.5 ? this.minX + Math.copySign(0.5, this.minX) : Math.rint(this.minX));
+                d.minY = (int) (Math.abs(this.minY - Math.rint(this.minY)) == 0.5 ? this.minY + Math.copySign(0.5, this.minY) : Math.rint(this.minY));
+                d.maxX = (int) (Math.abs(this.maxX - Math.rint(this.maxX)) == 0.5 ? this.maxX + Math.copySign(0.5, this.maxX) : Math.rint(this.maxX));
+                d.maxY = (int) (Math.abs(this.maxY - Math.rint(this.maxY)) == 0.5 ? this.maxY + Math.copySign(0.5, this.maxY) : Math.rint(this.maxY));
             }
             case HALF_EVEN -> {
                 d.minX = (int) Math.rint(this.minX);

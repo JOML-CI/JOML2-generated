@@ -609,6 +609,7 @@ public final class Float4OpsSimd {
     }
 
     public static float[] add(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -635,6 +636,7 @@ public final class Float4OpsSimd {
     }
 
     public static float[] sub(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -661,6 +663,7 @@ public final class Float4OpsSimd {
     }
 
     public static float[] mul(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -687,6 +690,7 @@ public final class Float4OpsSimd {
     }
 
     public static float[] div(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -713,6 +717,7 @@ public final class Float4OpsSimd {
     }
 
     public static float[] min(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -739,6 +744,7 @@ public final class Float4OpsSimd {
     }
 
     public static float[] max(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -765,6 +771,7 @@ public final class Float4OpsSimd {
     }
 
     public static float[] negate(float[] dest, int destOffset, float[] src, int srcOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -788,6 +795,7 @@ public final class Float4OpsSimd {
     }
 
     public static float[] abs(float[] dest, int destOffset, float[] src, int srcOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -811,6 +819,7 @@ public final class Float4OpsSimd {
     }
 
     public static float[] lerp(float[] dest, int destOffset, float[] a, int aOffset, float[] b, int bOffset, float t, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -837,6 +846,7 @@ public final class Float4OpsSimd {
     }
 
     public static float[] scale(float[] dest, int destOffset, float[] src, int srcOffset, float s, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);
@@ -860,6 +870,7 @@ public final class Float4OpsSimd {
     }
 
     public static float[] fma(float[] dest, int destOffset, float[] self, int selfOffset, float[] a, int aOffset, float[] b, int bOffset, int count) {
+        if (count > 536870911) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 4;
         var _sp = FloatVector.SPECIES_PREFERRED;
         int _bound = _sp.loopBound(n);

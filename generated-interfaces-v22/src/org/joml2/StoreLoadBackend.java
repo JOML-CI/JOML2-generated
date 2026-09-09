@@ -15,12 +15,22 @@ public enum StoreLoadBackend {
      * Pure NIO/foreign API: {@code segment.get(JAVA_FLOAT, ..)} etc. Never touches
      * {@code Unsafe}. Select with {@code -Djoml.storeLoadBackend=api} to opt out of the
      * Unsafe default (e.g. to keep bounds/liveness checks, or avoid {@code sun.misc.Unsafe}).
+     *
+     * <p>On the JDK 9 / JDK 17 variants (no {@code java.lang.foreign.MemorySegment}) the
+     * raw-address forms - {@code store*Unsafe(long)} / {@code load*Unsafe(long)} and the
+     * {@code <Type>Ops} {@code long} address overloads - are unavailable under this backend
+     * and throw {@link UnsupportedOperationException}; this variant emulates them through a sized {@code MemorySegment} view instead.</p>
      */
     API,
     /**
      * {@code sun.misc.Unsafe}/{@code jdk.internal.misc.Unsafe} direct memory access for
      * native segments, direct buffers and raw {@code long} addresses (heap and read-only
      * targets still fall to {@link #API}). The default when {@code Unsafe} is available.
+     *
+     * <p>{@code sun.misc.Unsafe} memory access is deprecated for removal (JEP 471): on JDK 23+
+     * run with {@code --sun-misc-unsafe-memory-access=allow} to silence the warnings, or select
+     * {@link #API}. When {@code sun.misc.Unsafe} is unavailable the library falls back to
+     * {@link #API} (with one warning if this backend was requested explicitly).</p>
      */
     UNSAFE
 }

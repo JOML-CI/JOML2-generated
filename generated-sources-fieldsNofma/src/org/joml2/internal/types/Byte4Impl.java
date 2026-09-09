@@ -2640,8 +2640,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the number of one-bits of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code short}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2660,8 +2661,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the number of one-bits of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2680,8 +2682,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the number of one-bits of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2700,8 +2703,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the number of one-bits of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2834,8 +2838,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the number of leading zero bits of each component of this vector and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code short}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2854,8 +2859,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the number of leading zero bits of each component of this vector and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2874,8 +2880,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the number of leading zero bits of each component of this vector and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2894,8 +2901,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the number of leading zero bits of each component of this vector and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2931,8 +2939,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the number of trailing zero bits of each component of this vector and store the
      * result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code short}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2951,8 +2960,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the number of trailing zero bits of each component of this vector and store the
      * result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2971,8 +2981,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the number of trailing zero bits of each component of this vector and store the
      * result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param dest will hold the result
      * @return dest
@@ -2991,8 +3002,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the number of trailing zero bits of each component of this vector and store the
      * result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param dest will hold the result
      * @return dest
@@ -3222,8 +3234,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the bit-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code short}.
      *
      * @param dest will hold the result
      * @return dest
@@ -3242,8 +3255,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the bit-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param dest will hold the result
      * @return dest
@@ -3262,8 +3276,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the bit-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param dest will hold the result
      * @return dest
@@ -3282,8 +3297,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the bit-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param dest will hold the result
      * @return dest
@@ -3319,8 +3335,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the byte-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code short}.
      *
      * @param dest will hold the result
      * @return dest
@@ -3339,8 +3356,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the byte-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param dest will hold the result
      * @return dest
@@ -3359,8 +3377,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the byte-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param dest will hold the result
      * @return dest
@@ -3379,8 +3398,9 @@ public final class Byte4Impl implements Byte4 {
      * Compute the byte-reversed value of each component of this vector and store the result in
      * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param dest will hold the result
      * @return dest
@@ -3417,8 +3437,9 @@ public final class Byte4Impl implements Byte4 {
      * Rotate the bits of each component of this vector left by {@code distance} positions and store
      * the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code short}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -3438,8 +3459,9 @@ public final class Byte4Impl implements Byte4 {
      * Rotate the bits of each component of this vector left by {@code distance} positions and store
      * the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -3459,8 +3481,9 @@ public final class Byte4Impl implements Byte4 {
      * Rotate the bits of each component of this vector left by {@code distance} positions and store
      * the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -3480,8 +3503,9 @@ public final class Byte4Impl implements Byte4 {
      * Rotate the bits of each component of this vector left by {@code distance} positions and store
      * the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -3519,8 +3543,9 @@ public final class Byte4Impl implements Byte4 {
      * Rotate the bits of each component of this vector right by {@code distance} positions and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code short}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -3540,8 +3565,9 @@ public final class Byte4Impl implements Byte4 {
      * Rotate the bits of each component of this vector right by {@code distance} positions and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code int}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -3561,8 +3587,9 @@ public final class Byte4Impl implements Byte4 {
      * Rotate the bits of each component of this vector right by {@code distance} positions and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code long}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -3582,8 +3609,9 @@ public final class Byte4Impl implements Byte4 {
      * Rotate the bits of each component of this vector right by {@code distance} positions and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The operation is evaluated on the {@code byte} lane of 8 bits - bit counts, reversals and
+     * rotations are relative to that width, not to the 32 bits of {@code int} - and each result
+     * component is then widened to {@code double}.
      *
      * @param distance the number of bit positions to rotate by
      * @param dest will hold the result
@@ -4789,9 +4817,6 @@ public final class Byte4Impl implements Byte4 {
 
     /**
      * Compute the largest component of this vector.
-     * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
      *
      * @return the largest component of this vector
      */
@@ -4802,9 +4827,6 @@ public final class Byte4Impl implements Byte4 {
 
     /**
      * Compute the smallest component of this vector.
-     * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
      *
      * @return the smallest component of this vector
      */
@@ -5616,8 +5638,9 @@ public final class Byte4Impl implements Byte4 {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code short}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -5632,8 +5655,9 @@ public final class Byte4Impl implements Byte4 {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -5648,8 +5672,9 @@ public final class Byte4Impl implements Byte4 {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -5664,8 +5689,9 @@ public final class Byte4Impl implements Byte4 {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -5701,8 +5727,9 @@ public final class Byte4Impl implements Byte4 {
      * Add ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) to this vector, clamping
      * to the value range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code short}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -5725,8 +5752,9 @@ public final class Byte4Impl implements Byte4 {
      * Add ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) to this vector, clamping
      * to the value range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -5749,8 +5777,9 @@ public final class Byte4Impl implements Byte4 {
      * Add ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) to this vector, clamping
      * to the value range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -5773,8 +5802,9 @@ public final class Byte4Impl implements Byte4 {
      * Add ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) to this vector, clamping
      * to the value range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -5810,8 +5840,9 @@ public final class Byte4Impl implements Byte4 {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code short}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -5826,8 +5857,9 @@ public final class Byte4Impl implements Byte4 {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -5842,8 +5874,9 @@ public final class Byte4Impl implements Byte4 {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -5858,8 +5891,9 @@ public final class Byte4Impl implements Byte4 {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing and
      * store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -5895,8 +5929,9 @@ public final class Byte4Impl implements Byte4 {
      * Multiply this vector by ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}),
      * clamping to the value range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code short}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -5919,8 +5954,9 @@ public final class Byte4Impl implements Byte4 {
      * Multiply this vector by ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}),
      * clamping to the value range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -5943,8 +5979,9 @@ public final class Byte4Impl implements Byte4 {
      * Multiply this vector by ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}),
      * clamping to the value range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -5967,8 +6004,9 @@ public final class Byte4Impl implements Byte4 {
      * Multiply this vector by ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}),
      * clamping to the value range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -6008,8 +6046,9 @@ public final class Byte4Impl implements Byte4 {
      * Negate this vector, clamping to the value range instead of overflowing and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code short}.
      *
      * @param dest will hold the result
      * @return dest
@@ -6028,8 +6067,9 @@ public final class Byte4Impl implements Byte4 {
      * Negate this vector, clamping to the value range instead of overflowing and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param dest will hold the result
      * @return dest
@@ -6048,8 +6088,9 @@ public final class Byte4Impl implements Byte4 {
      * Negate this vector, clamping to the value range instead of overflowing and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param dest will hold the result
      * @return dest
@@ -6068,8 +6109,9 @@ public final class Byte4Impl implements Byte4 {
      * Negate this vector, clamping to the value range instead of overflowing and store the result
      * in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param dest will hold the result
      * @return dest
@@ -6101,8 +6143,9 @@ public final class Byte4Impl implements Byte4 {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing
      * and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code short}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -6117,8 +6160,9 @@ public final class Byte4Impl implements Byte4 {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing
      * and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -6133,8 +6177,9 @@ public final class Byte4Impl implements Byte4 {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing
      * and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -6149,8 +6194,9 @@ public final class Byte4Impl implements Byte4 {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing
      * and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param other the other vector
      * @param dest will hold the result
@@ -6186,8 +6232,9 @@ public final class Byte4Impl implements Byte4 {
      * Subtract ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) from this vector,
      * clamping to the value range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code short}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -6210,8 +6257,9 @@ public final class Byte4Impl implements Byte4 {
      * Subtract ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) from this vector,
      * clamping to the value range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code int}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -6234,8 +6282,9 @@ public final class Byte4Impl implements Byte4 {
      * Subtract ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) from this vector,
      * clamping to the value range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code long}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -6258,8 +6307,9 @@ public final class Byte4Impl implements Byte4 {
      * Subtract ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) from this vector,
      * clamping to the value range instead of overflowing and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}.
+     * The result is clamped to the {@code byte} range ({@code Byte.MIN_VALUE} to
+     * {@code Byte.MAX_VALUE}), not to the destination's, and each result component is then widened
+     * to {@code double}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}

@@ -14,6 +14,16 @@ import java.lang.foreign.MemorySegment;
  * {@code this} unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of a dual
+ * quaternion never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface DoubleDualQuat extends DoubleDualQuatR {
 
@@ -21,7 +31,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * Add {@code other} to this dual quaternion.
      *
      * @param other the other dual quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat add(DoubleDualQuatR other) { return add(other, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -45,7 +55,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dW the {@code dW} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat add(double rX, double rY, double rZ, double rW, double dX, double dY, double dZ, double dW) { return add(rX, rY, rZ, rW, dX, dY, dZ, dW, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -53,14 +63,14 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * Multiply each component of this dual quaternion by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat mul(double scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
     /**
      * Negate this dual quaternion.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat negate() { return negate(Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -68,7 +78,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * Subtract {@code other} from this dual quaternion.
      *
      * @param other the other dual quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat sub(DoubleDualQuatR other) { return sub(other, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -92,7 +102,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dW the {@code dW} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat sub(double rX, double rY, double rZ, double rW, double dX, double dY, double dZ, double dW) { return sub(rX, rY, rZ, rW, dX, dY, dZ, dW, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -407,7 +417,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      *
      * @param other the other dual quaternion
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat dlb(DoubleDualQuatR other, double t) { return dlb(other, t, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -433,7 +443,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * @param dW the {@code dW} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat dlb(double rX, double rY, double rZ, double rW, double dX, double dY, double dZ, double dW, double t) { return dlb(rX, rY, rZ, rW, dX, dY, dZ, dW, t, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -443,7 +453,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      *
      * @param other the other dual quaternion
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat lerp(DoubleDualQuatR other, double t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -469,7 +479,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * @param dW the {@code dW} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat lerp(double rX, double rY, double rZ, double rW, double dX, double dY, double dZ, double dW, double t) { return lerp(rX, rY, rZ, rW, dX, dY, dZ, dW, t, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -479,7 +489,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      *
      * @param other the other dual quaternion (must be a unit dual quaternion)
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat sclerp(DoubleDualQuatR other, double t) { return sclerp(other, t, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -505,7 +515,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * @param dW the {@code dW} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat sclerp(double rX, double rY, double rZ, double rW, double dX, double dY, double dZ, double dW, double t) { return sclerp(rX, rY, rZ, rW, dX, dY, dZ, dW, t, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -518,7 +528,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * first.
      *
      * @param other the other dual quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat mul(DoubleDualQuatR other) { return mul(other, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -547,7 +557,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dW the {@code dW} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat mul(double rX, double rY, double rZ, double rW, double dX, double dY, double dZ, double dW) { return mul(rX, rY, rZ, rW, dX, dY, dZ, dW, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -560,7 +570,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * last.
      *
      * @param other the other dual quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat preMul(DoubleDualQuatR other) { return preMul(other, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -589,7 +599,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dW the {@code dW} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat preMul(double rX, double rY, double rZ, double rW, double dX, double dY, double dZ, double dW) { return preMul(rX, rY, rZ, rW, dX, dY, dZ, dW, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -598,7 +608,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      *
      * @param other the other dual quaternion
      * @param weight the factor to scale {@code other} by before adding
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat addScaled(DoubleDualQuatR other, double weight) { return addScaled(other, weight, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -624,7 +634,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param weight the factor to scale ({@code rX}, {@code rY}, {@code rZ}, {@code rW},
      *        {@code dX}, {@code dY}, {@code dZ}, {@code dW}) by before adding
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat addScaled(double rX, double rY, double rZ, double rW, double dX, double dY, double dZ, double dW, double weight) { return addScaled(rX, rY, rZ, rW, dX, dY, dZ, dW, weight, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -632,7 +642,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * Compute the quaternion conjugate of this dual quaternion, conjugating both the real and the
      * dual part (for a unit dual quaternion this is its inverse).
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat conjugate() { return conjugate(Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -641,7 +651,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}.
      *
      * @param other the other dual quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat difference(DoubleDualQuatR other) { return difference(other, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -667,42 +677,42 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
      * @param dW the {@code dW} component of the dual quaternion
      *        {@code (rX, rY, rZ, rW, dX, dY, dZ, dW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat difference(double rX, double rY, double rZ, double rW, double dX, double dY, double dZ, double dW) { return difference(rX, rY, rZ, rW, dX, dY, dZ, dW, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
     /**
      * Compute the dual-number conjugate of this dual quaternion.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat dualConjugate() { return dualConjugate(Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
     /**
      * Compute the exponential of this dual quaternion.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat exp() { return exp(Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
     /**
      * Compute the inverse of this dual quaternion, which is assumed to have unit length.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat inverseUnit() { return inverseUnit(Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
     /**
      * Invert this dual quaternion.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat invert() { return invert(Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
     /**
      * Compute the natural logarithm of this dual quaternion.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat log() { return log(Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -737,8 +747,12 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
 
     /**
      * Normalize this dual quaternion so that its real (rotation) part has unit length.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the real part must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat normalize() { return normalize(Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -747,7 +761,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * yields the identity, {@code t = 1} yields {@code this}).
      *
      * @param t the exponent
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat pow(double t) { return pow(t, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -755,7 +769,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * Set the rotation of this dual quaternion to {@code rotation}.
      *
      * @param rotation the quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat setRotation(DoubleQuatR rotation) { return setRotation(rotation, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -766,7 +780,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat setRotation(double x, double y, double z, double w) { return setRotation(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -774,7 +788,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * Set the translation of this dual quaternion to {@code translation}.
      *
      * @param translation the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat setTranslation(Double3R translation) { return setTranslation(translation, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -784,7 +798,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat setTranslation(double x, double y, double z) { return setTranslation(x, y, z, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -799,7 +813,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      *
      * @param dir the direction
      * @param up the direction of "up"
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat lookAlong(Double3R dir, Double3R up) { return lookAlong(dir, up, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -818,7 +832,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
      * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
      * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat lookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) { return lookAlong(dirX, dirY, dirZ, upX, upY, upZ, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -973,7 +987,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
      * @param rotation the quaternion (must be a unit quaternion)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat rotate(DoubleQuatR rotation) { return rotate(rotation, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -993,7 +1007,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      *        have unit length)
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat rotate(double x, double y, double z, double w) { return rotate(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -1007,7 +1021,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat rotateAxis(double angle, Double3R axis) { return rotateAxis(angle, axis, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -1026,7 +1040,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat rotateAxis(double angle, double x, double y, double z) { return rotateAxis(angle, x, y, z, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -1038,7 +1052,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat rotateX(double angle) { return rotateX(angle, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -1054,7 +1068,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat rotateXYZ(double angleX, double angleY, double angleZ) { return rotateXYZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -1070,7 +1084,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat rotateXZY(double angleX, double angleY, double angleZ) { return rotateXZY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -1082,7 +1096,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat rotateY(double angle) { return rotateY(angle, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -1098,7 +1112,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat rotateYXZ(double angleX, double angleY, double angleZ) { return rotateYXZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -1114,7 +1128,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat rotateYZX(double angleX, double angleY, double angleZ) { return rotateYZX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -1126,7 +1140,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * the new dual quaternion by using {@code Q * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat rotateZ(double angle) { return rotateZ(angle, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -1142,7 +1156,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat rotateZXY(double angleX, double angleY, double angleZ) { return rotateZXY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -1158,7 +1172,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat rotateZYX(double angleX, double angleY, double angleZ) { return rotateZYX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -1171,7 +1185,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * first.
      *
      * @param translation the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat translate(Double3R translation) { return translate(translation, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -1186,7 +1200,7 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleDualQuat translate(double x, double y, double z) { return translate(x, y, z, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this); }
 
@@ -1213,6 +1227,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1225,6 +1243,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1237,6 +1259,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1250,6 +1276,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1267,6 +1297,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1279,6 +1313,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1291,6 +1329,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1304,6 +1346,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1317,6 +1363,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
 
     /**
      * Load the elements from the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -1325,6 +1375,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
 
     /**
      * Load the elements from the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -1364,6 +1418,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1376,6 +1434,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1388,6 +1450,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1401,6 +1467,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1418,6 +1488,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1430,6 +1504,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1442,6 +1520,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1455,6 +1537,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1468,6 +1554,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
 
     /**
      * Load the elements from the given memory segment, converting each element from {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -1477,6 +1567,10 @@ public interface DoubleDualQuat extends DoubleDualQuatR {
     /**
      * Load the elements from the given memory segment, converting each element from {@code float},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

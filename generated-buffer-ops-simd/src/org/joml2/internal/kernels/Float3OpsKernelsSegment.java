@@ -980,7 +980,10 @@ public final class Float3OpsKernelsSegment {
         float _selfx = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
-        return (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy)) * (1.0f / (float) Math.sqrt(Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)))) * (1.0f / (float) Math.sqrt(Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY)))))));
+        float _t6 = Math.fma(otherZ, _selfy, -(otherY * _selfz));
+        float _t7 = Math.fma(otherY, _selfx, -(otherX * _selfy));
+        float _t8 = Math.fma(otherZ, _selfx, -(otherX * _selfz));
+        return (float) Math.atan2((float) Math.sqrt(Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8))), Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy)));
     }
 
     public static float angleBetween_unsafe(java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
@@ -996,7 +999,10 @@ public final class Float3OpsKernelsSegment {
         float _otherx = other.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, otherOffset + 0L);
         float _othery = other.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, otherOffset + 4L);
         float _otherz = other.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, otherOffset + 8L);
-        return (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy)) * (1.0f / (float) Math.sqrt(Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)))) * (1.0f / (float) Math.sqrt(Math.fma(_otherz, _otherz, Math.fma(_otherx, _otherx, _othery * _othery)))))));
+        float _t6 = Math.fma(_otherz, _selfy, -(_othery * _selfz));
+        float _t7 = Math.fma(_othery, _selfx, -(_otherx * _selfy));
+        float _t8 = Math.fma(_otherz, _selfx, -(_otherx * _selfz));
+        return (float) Math.atan2((float) Math.sqrt(Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8))), Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy)));
     }
 
     public static java.lang.foreign.MemorySegment asin_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
@@ -2156,10 +2162,11 @@ public final class Float3OpsKernelsSegment {
         float _selfx = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
-        float _t6 = Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY));
-        float _t7 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
-        float _t15 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy)) * (1.0f / (float) Math.sqrt(_t7)) * (1.0f / (float) Math.sqrt(_t6)))));
-        return (float) Math.sqrt(_t6) * (float) Math.sqrt(_t7) > 0.0f ? Math.fma(normalZ, Math.fma(otherY, _selfx, -(otherX * _selfy)), Math.fma(normalX, Math.fma(otherZ, _selfy, -(otherY * _selfz)), normalY * Math.fma(otherX, _selfz, -(otherZ * _selfx)))) < 0.0f ? -_t15 : _t15 : 0.0f;
+        float _t8 = Math.fma(otherY, _selfx, -(otherX * _selfy));
+        float _t9 = Math.fma(otherZ, _selfy, -(otherY * _selfz));
+        float _t10 = Math.fma(otherX, _selfz, -(otherZ * _selfx));
+        float _t16 = (float) Math.atan2((float) Math.sqrt(Math.fma(_t8, _t8, Math.fma(_t10, _t10, _t9 * _t9))), Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy)));
+        return Math.fma(normalZ, _t8, Math.fma(normalX, _t9, normalY * _t10)) < 0.0f ? -_t16 : _t16;
     }
 
     public static float orientedAngle_unsafe(java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset, java.lang.foreign.MemorySegment normal, long normalOffset) {
@@ -2179,10 +2186,11 @@ public final class Float3OpsKernelsSegment {
         float _normalx = normal.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, normalOffset + 0L);
         float _normaly = normal.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, normalOffset + 4L);
         float _normalz = normal.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, normalOffset + 8L);
-        float _t6 = Math.fma(_otherz, _otherz, Math.fma(_otherx, _otherx, _othery * _othery));
-        float _t7 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
-        float _t15 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy)) * (1.0f / (float) Math.sqrt(_t7)) * (1.0f / (float) Math.sqrt(_t6)))));
-        return (float) Math.sqrt(_t6) * (float) Math.sqrt(_t7) > 0.0f ? Math.fma(_normalz, Math.fma(_othery, _selfx, -(_otherx * _selfy)), Math.fma(_normalx, Math.fma(_otherz, _selfy, -(_othery * _selfz)), _normaly * Math.fma(_otherx, _selfz, -(_otherz * _selfx)))) < 0.0f ? -_t15 : _t15 : 0.0f;
+        float _t8 = Math.fma(_othery, _selfx, -(_otherx * _selfy));
+        float _t9 = Math.fma(_otherz, _selfy, -(_othery * _selfz));
+        float _t10 = Math.fma(_otherx, _selfz, -(_otherz * _selfx));
+        float _t16 = (float) Math.atan2((float) Math.sqrt(Math.fma(_t8, _t8, Math.fma(_t10, _t10, _t9 * _t9))), Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy)));
+        return Math.fma(_normalz, _t8, Math.fma(_normalx, _t9, _normaly * _t10)) < 0.0f ? -_t16 : _t16;
     }
 
     public static java.lang.foreign.MemorySegment outerProduct_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float rowX, float rowY, float rowZ) {

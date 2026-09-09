@@ -13,6 +13,16 @@ import java.nio.ByteBuffer;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of an oriented
+ * bounding box never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface FloatOBB extends FloatOBBR {
 
@@ -68,7 +78,7 @@ public interface FloatOBB extends FloatOBBR {
      * @param axisX the new local X axis
      * @param axisY the new local Y axis
      * @param axisZ the new local Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB setAxes(Float3R axisX, Float3R axisY, Float3R axisZ) { return setAxes(axisX, axisY, axisZ, Joml.RETURN_NEW ? Joml.floatOBB() : this); }
 
@@ -86,7 +96,7 @@ public interface FloatOBB extends FloatOBBR {
      * @param axisZX the {@code x} component of the vector {@code (axisZX, axisZY, axisZZ)}
      * @param axisZY the {@code y} component of the vector {@code (axisZX, axisZY, axisZZ)}
      * @param axisZZ the {@code z} component of the vector {@code (axisZX, axisZY, axisZZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB setAxes(float axisXX, float axisXY, float axisXZ, float axisYX, float axisYY, float axisYZ, float axisZX, float axisZY, float axisZZ) { return setAxes(axisXX, axisXY, axisXZ, axisYX, axisYY, axisYZ, axisZX, axisZY, axisZZ, Joml.RETURN_NEW ? Joml.floatOBB() : this); }
 
@@ -94,7 +104,7 @@ public interface FloatOBB extends FloatOBBR {
      * Set the center of this oriented bounding box to {@code c}.
      *
      * @param c the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB setCenter(Float3R c) { return setCenter(c, Joml.RETURN_NEW ? Joml.floatOBB() : this); }
 
@@ -104,7 +114,7 @@ public interface FloatOBB extends FloatOBBR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB setCenter(float x, float y, float z) { return setCenter(x, y, z, Joml.RETURN_NEW ? Joml.floatOBB() : this); }
 
@@ -112,7 +122,7 @@ public interface FloatOBB extends FloatOBBR {
      * Set the half extents of this oriented bounding box to {@code h}.
      *
      * @param h the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB setHalfSize(Float3R h) { return setHalfSize(h, Joml.RETURN_NEW ? Joml.floatOBB() : this); }
 
@@ -122,14 +132,14 @@ public interface FloatOBB extends FloatOBBR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB setHalfSize(float x, float y, float z) { return setHalfSize(x, y, z, Joml.RETURN_NEW ? Joml.floatOBB() : this); }
 
     /**
      * Reset the orientation of this oriented bounding box to identity.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB setIdentityOrientation() { return setIdentityOrientation(Joml.RETURN_NEW ? Joml.floatOBB() : this); }
 
@@ -137,7 +147,7 @@ public interface FloatOBB extends FloatOBBR {
      * Set the orientation of this oriented bounding box to {@code q}.
      *
      * @param q the quaternion (must be a unit quaternion)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB setOrientation(FloatQuatR q) { return setOrientation(q, Joml.RETURN_NEW ? Joml.floatOBB() : this); }
 
@@ -153,7 +163,7 @@ public interface FloatOBB extends FloatOBBR {
      *        have unit length)
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB setOrientation(float x, float y, float z, float w) { return setOrientation(x, y, z, w, Joml.RETURN_NEW ? Joml.floatOBB() : this); }
 
@@ -179,7 +189,7 @@ public interface FloatOBB extends FloatOBBR {
      * shear is approximated).
      *
      * @param m the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB transform(Float3x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.floatOBB() : this); }
 
@@ -193,7 +203,7 @@ public interface FloatOBB extends FloatOBBR {
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
      *
      * @param m the matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB transform(Float4x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.floatOBB() : this); }
 
@@ -201,7 +211,7 @@ public interface FloatOBB extends FloatOBBR {
      * Translate this oriented bounding box by {@code delta}.
      *
      * @param delta the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB translate(Float3R delta) { return translate(delta, Joml.RETURN_NEW ? Joml.floatOBB() : this); }
 
@@ -211,7 +221,7 @@ public interface FloatOBB extends FloatOBBR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatOBB translate(float x, float y, float z) { return translate(x, y, z, Joml.RETURN_NEW ? Joml.floatOBB() : this); }
 
@@ -238,6 +248,10 @@ public interface FloatOBB extends FloatOBBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -250,6 +264,10 @@ public interface FloatOBB extends FloatOBBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -262,6 +280,10 @@ public interface FloatOBB extends FloatOBBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -275,6 +297,10 @@ public interface FloatOBB extends FloatOBBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -292,6 +318,10 @@ public interface FloatOBB extends FloatOBBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -304,6 +334,10 @@ public interface FloatOBB extends FloatOBBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -316,6 +350,10 @@ public interface FloatOBB extends FloatOBBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -329,6 +367,10 @@ public interface FloatOBB extends FloatOBBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -346,6 +388,8 @@ public interface FloatOBB extends FloatOBBR {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated FloatOBB loadUnsafe(long address);
 
@@ -372,6 +416,10 @@ public interface FloatOBB extends FloatOBBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -384,6 +432,10 @@ public interface FloatOBB extends FloatOBBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -396,6 +448,10 @@ public interface FloatOBB extends FloatOBBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -409,6 +465,10 @@ public interface FloatOBB extends FloatOBBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -426,6 +486,10 @@ public interface FloatOBB extends FloatOBBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -438,6 +502,10 @@ public interface FloatOBB extends FloatOBBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -450,6 +518,10 @@ public interface FloatOBB extends FloatOBBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -463,6 +535,10 @@ public interface FloatOBB extends FloatOBBR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -480,6 +556,8 @@ public interface FloatOBB extends FloatOBBR {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated FloatOBB loadDoubleUnsafe(long address);
 }

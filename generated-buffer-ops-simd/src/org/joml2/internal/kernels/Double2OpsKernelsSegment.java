@@ -857,7 +857,7 @@ public final class Double2OpsKernelsSegment {
     public static double angleBetween_api(java.lang.foreign.MemorySegment src, long srcOffset, double otherX, double otherY) {
         double _selfx = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
-        return Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(otherX, _selfx, otherY * _selfy) * (1.0 / Math.sqrt(Math.fma(_selfx, _selfx, _selfy * _selfy))) * (1.0 / Math.sqrt(Math.fma(otherX, otherX, otherY * otherY))))));
+        return Math.atan2(Math.abs(Math.fma(otherY, _selfx, -(otherX * _selfy))), Math.fma(otherX, _selfx, otherY * _selfy));
     }
 
     public static double angleBetween_unsafe(java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset) {
@@ -871,7 +871,7 @@ public final class Double2OpsKernelsSegment {
         double _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _otherx = other.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, otherOffset + 0L);
         double _othery = other.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, otherOffset + 8L);
-        return Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(_otherx, _selfx, _othery * _selfy) * (1.0 / Math.sqrt(Math.fma(_selfx, _selfx, _selfy * _selfy))) * (1.0 / Math.sqrt(Math.fma(_otherx, _otherx, _othery * _othery))))));
+        return Math.atan2(Math.abs(Math.fma(_othery, _selfx, -(_otherx * _selfy))), Math.fma(_otherx, _selfx, _othery * _selfy));
     }
 
     public static java.lang.foreign.MemorySegment asin_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {

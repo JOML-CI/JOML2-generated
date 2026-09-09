@@ -157,6 +157,10 @@ public final class FloatPlaneImpl implements FloatPlane {
     /**
      * Normalize this plane, scaling {@code (a, b, c, d)} so that the normal {@code (a, b, c)} has
      * unit length and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the normal {@code (a, b, c)} must lie
+     * roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -176,6 +180,10 @@ public final class FloatPlaneImpl implements FloatPlane {
     /**
      * Normalize this plane, scaling {@code (a, b, c, d)} so that the normal {@code (a, b, c)} has
      * unit length and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of the normal {@code (a, b, c)} must lie
+     * roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.

@@ -202,8 +202,9 @@ public class Float3x3Impl implements Float3x3 {
     private Float3 getEulerAnglesXYZ_translation(@Mutated Float3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3Impl) dest).data;
-        dd[0] = Math.fma(sd[7], sd[7], 1.0f) < Math.fma(sd[7], sd[7], Math.fma(sd[6], sd[6], 1.0f)) * 1.0E-7f ? 0.0f : (float) Math.atan2(-sd[7], 1.0f);
-        dd[1] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, sd[6])));
+        float _t0 = Math.fma(sd[7], sd[7], 1.0f);
+        dd[0] = _t0 < Math.fma(sd[7], sd[7], Math.fma(sd[6], sd[6], 1.0f)) * 1.0E-7f ? 0.0f : (float) Math.atan2(-sd[7], 1.0f);
+        dd[1] = (float) Math.atan2(sd[6], (float) Math.sqrt(_t0));
         dd[2] = 0.0f;
         return dest;
     }
@@ -227,7 +228,7 @@ public class Float3x3Impl implements Float3x3 {
             dd[2] = (float) Math.atan2(-sd[3], sd[0]);
             dd[0] = _buf0;
         }
-        dd[1] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, sd[6])));
+        dd[1] = (float) Math.atan2(sd[6], (float) Math.sqrt(_t1));
         return dest;
     }
 
@@ -238,6 +239,9 @@ public class Float3x3Impl implements Float3x3 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -260,6 +264,9 @@ public class Float3x3Impl implements Float3x3 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -285,7 +292,7 @@ public class Float3x3Impl implements Float3x3 {
             dd[2] = (float) Math.atan2(-sd[3], sd[0]);
             dd[0] = _buf0;
         }
-        dd[1] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, sd[6])));
+        dd[1] = (float) Math.atan2(sd[6], (float) Math.sqrt(_t1));
         return dest;
     }
 
@@ -338,7 +345,7 @@ public class Float3x3Impl implements Float3x3 {
             dd[0] = _buf0;
             dd[1] = _buf1;
         }
-        dd[2] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -sd[3])));
+        dd[2] = (float) Math.atan2(-sd[3], (float) Math.sqrt(_t1));
         return dest;
     }
 
@@ -349,6 +356,9 @@ public class Float3x3Impl implements Float3x3 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -371,6 +381,9 @@ public class Float3x3Impl implements Float3x3 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -398,7 +411,7 @@ public class Float3x3Impl implements Float3x3 {
             dd[0] = _buf0;
             dd[1] = _buf1;
         }
-        dd[2] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -sd[3])));
+        dd[2] = (float) Math.atan2(-sd[3], (float) Math.sqrt(_t1));
         return dest;
     }
 
@@ -419,8 +432,9 @@ public class Float3x3Impl implements Float3x3 {
     private Float3 getEulerAnglesYXZ_translation(@Mutated Float3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3Impl) dest).data;
-        dd[0] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -sd[7])));
-        dd[1] = Math.fma(sd[6], sd[6], 1.0f) < Math.fma(sd[6], sd[6], Math.fma(sd[7], sd[7], 1.0f)) * 1.0E-7f ? 0.0f : (float) Math.atan2(sd[6], 1.0f);
+        float _t0 = Math.fma(sd[6], sd[6], 1.0f);
+        dd[0] = (float) Math.atan2(-sd[7], (float) Math.sqrt(_t0));
+        dd[1] = _t0 < Math.fma(sd[6], sd[6], Math.fma(sd[7], sd[7], 1.0f)) * 1.0E-7f ? 0.0f : (float) Math.atan2(sd[6], 1.0f);
         dd[2] = 0.0f;
         return dest;
     }
@@ -442,7 +456,7 @@ public class Float3x3Impl implements Float3x3 {
             dd[1] = (float) Math.atan2(sd[6], sd[8]);
             dd[2] = (float) Math.atan2(sd[1], sd[4]);
         }
-        dd[0] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -sd[7])));
+        dd[0] = (float) Math.atan2(-sd[7], (float) Math.sqrt(_t1));
         return dest;
     }
 
@@ -453,6 +467,9 @@ public class Float3x3Impl implements Float3x3 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -476,6 +493,9 @@ public class Float3x3Impl implements Float3x3 {
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
+     * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
      * rather than the angles of its rotation part.
@@ -498,7 +518,7 @@ public class Float3x3Impl implements Float3x3 {
             dd[1] = (float) Math.atan2(sd[6], sd[8]);
             dd[2] = (float) Math.atan2(sd[1], sd[4]);
         }
-        dd[0] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -sd[7])));
+        dd[0] = (float) Math.atan2(-sd[7], (float) Math.sqrt(_t1));
         return dest;
     }
 
@@ -528,7 +548,7 @@ public class Float3x3Impl implements Float3x3 {
             dd[0] = (float) Math.atan2(-sd[7], 1.0f);
             dd[1] = 0.0f;
         }
-        dd[2] = 0.0f;
+        dd[2] = (float) Math.atan2(0.0f, (float) Math.sqrt(_t0));
         return dest;
     }
 
@@ -551,7 +571,7 @@ public class Float3x3Impl implements Float3x3 {
             dd[1] = (float) Math.atan2(-sd[2], sd[0]);
             dd[0] = _buf0;
         }
-        dd[2] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, sd[1])));
+        dd[2] = (float) Math.atan2(sd[1], (float) Math.sqrt(_t1));
         return dest;
     }
 
@@ -562,6 +582,9 @@ public class Float3x3Impl implements Float3x3 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -584,6 +607,9 @@ public class Float3x3Impl implements Float3x3 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -609,7 +635,7 @@ public class Float3x3Impl implements Float3x3 {
             dd[1] = (float) Math.atan2(-sd[2], sd[0]);
             dd[0] = _buf0;
         }
-        dd[2] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, sd[1])));
+        dd[2] = (float) Math.atan2(sd[1], (float) Math.sqrt(_t1));
         return dest;
     }
 
@@ -620,23 +646,6 @@ public class Float3x3Impl implements Float3x3 {
      */
     private Float3 getEulerAnglesZXY_identity(@Mutated Float3 dest) {
         return getEulerAnglesXYZ_identity(dest);
-    }
-
-
-    /**
-     * Private body of {@code getEulerAnglesZXY}, specialized by runtime matrix properties; reached
-     * only through the public {@code getEulerAnglesZXY} dispatcher.
-     */
-    private Float3 getEulerAnglesZXY_orthogonal(@Mutated Float3 dest) {
-        float[] sd = this.data;
-        float[] dd = ((Float3Impl) dest).data;
-        float _t1 = Math.fma(sd[3], sd[3], sd[4] * sd[4]);
-        float _buf0 = 0.0f;
-        float _buf1 = 0.0f;
-        dd[2] = _t1 < _t1 * 1.0E-7f ? (float) Math.atan2(sd[1], sd[0]) : (float) Math.atan2(-sd[3], sd[4]);
-        dd[0] = _buf0;
-        dd[1] = _buf1;
-        return dest;
     }
 
 
@@ -658,7 +667,7 @@ public class Float3x3Impl implements Float3x3 {
             dd[2] = (float) Math.atan2(-sd[3], sd[4]);
             dd[1] = _buf0;
         }
-        dd[0] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, sd[5])));
+        dd[0] = (float) Math.atan2(sd[5], (float) Math.sqrt(_t1));
         return dest;
     }
 
@@ -670,6 +679,9 @@ public class Float3x3Impl implements Float3x3 {
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
+     * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
      * rather than the angles of its rotation part.
@@ -680,7 +692,6 @@ public class Float3x3Impl implements Float3x3 {
     public Float3 getEulerAnglesZXY(@Mutated Float3 dest) {
         int p = this.properties;
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getEulerAnglesZXY_identity(dest);
-        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return getEulerAnglesZXY_orthogonal(dest);
         return getEulerAnglesZXY_general(dest);
     }
 
@@ -691,6 +702,9 @@ public class Float3x3Impl implements Float3x3 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -716,7 +730,7 @@ public class Float3x3Impl implements Float3x3 {
             dd[2] = (float) Math.atan2(-sd[3], sd[4]);
             dd[1] = _buf0;
         }
-        dd[0] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, sd[5])));
+        dd[0] = (float) Math.atan2(sd[5], (float) Math.sqrt(_t1));
         return dest;
     }
 
@@ -764,7 +778,7 @@ public class Float3x3Impl implements Float3x3 {
             dd[2] = (float) Math.atan2(sd[1], sd[0]);
             dd[0] = _buf0;
         }
-        dd[1] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -sd[2])));
+        dd[1] = (float) Math.atan2(-sd[2], (float) Math.sqrt(_t1));
         return dest;
     }
 
@@ -775,6 +789,9 @@ public class Float3x3Impl implements Float3x3 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -797,6 +814,9 @@ public class Float3x3Impl implements Float3x3 {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code float} resolution over its whole range, down to 0.
      * <p>
      * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
      * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
@@ -822,7 +842,7 @@ public class Float3x3Impl implements Float3x3 {
             dd[2] = (float) Math.atan2(sd[1], sd[0]);
             dd[0] = _buf0;
         }
-        dd[1] = (float) Math.asin(Math.min(1.0f, Math.max(-1.0f, -sd[2])));
+        dd[1] = (float) Math.atan2(-sd[2], (float) Math.sqrt(_t1));
         return dest;
     }
 
@@ -947,6 +967,10 @@ public class Float3x3Impl implements Float3x3 {
      * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
      * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
      * unit length) and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -963,6 +987,10 @@ public class Float3x3Impl implements Float3x3 {
      * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
      * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
      * unit length) and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1229,6 +1257,10 @@ public class Float3x3Impl implements Float3x3 {
      * <p>
      * For a 2D homogeneous 3x3 matrix the third factor is simply the length of the third column -
      * {@code sqrt(m02² + m12² + 1)} for a 2D affine transform, not a scale of anything.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1247,6 +1279,10 @@ public class Float3x3Impl implements Float3x3 {
      * <p>
      * For a 2D homogeneous 3x3 matrix the third factor is simply the length of the third column -
      * {@code sqrt(m02² + m12² + 1)} for a 2D affine transform, not a scale of anything.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1664,7 +1700,7 @@ public class Float3x3Impl implements Float3x3 {
     /**
      * Compute the cofactor matrix of this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 cofactor() {
         if (Joml.RETURN_NEW) return cofactor(Joml.float3x3());
@@ -1932,7 +1968,7 @@ public class Float3x3Impl implements Float3x3 {
     /**
      * Invert this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 invert() {
         if (Joml.RETURN_NEW) return invert(Joml.float3x3());
@@ -2541,7 +2577,7 @@ public class Float3x3Impl implements Float3x3 {
      * {@code (this * other)^-1}.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 invertProduct(Float3x3R other) {
         if (Joml.RETURN_NEW) return invertProduct(other, Joml.float3x3());
@@ -2845,7 +2881,7 @@ public class Float3x3Impl implements Float3x3 {
     /**
      * Compute the normal matrix of this matrix, i.e. the transpose of its inverse.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 normal() {
         if (Joml.RETURN_NEW) return normal(Joml.float3x3());
@@ -3046,7 +3082,7 @@ public class Float3x3Impl implements Float3x3 {
     /**
      * Transpose this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 transpose() {
         if (Joml.RETURN_NEW) return transpose(Joml.float3x3());
@@ -3407,7 +3443,7 @@ public class Float3x3Impl implements Float3x3 {
      * Add {@code other} to this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 add(Float3x3R other) {
         if (Joml.RETURN_NEW) return add(other, Joml.float3x3());
@@ -3709,7 +3745,7 @@ public class Float3x3Impl implements Float3x3 {
     /**
      * Negate this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 negate() {
         if (Joml.RETURN_NEW) return negate(Joml.float3x3());
@@ -4070,7 +4106,7 @@ public class Float3x3Impl implements Float3x3 {
      * Subtract {@code other} from this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 sub(Float3x3R other) {
         if (Joml.RETURN_NEW) return sub(other, Joml.float3x3());
@@ -4384,7 +4420,7 @@ public class Float3x3Impl implements Float3x3 {
      * translation instead of composing a translation onto the existing transformation.
      *
      * @param t the translation offsets
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float3x3 withTranslation(Float2R t) {
         return withTranslation(t.x(), t.y());
@@ -4517,7 +4553,7 @@ public class Float3x3Impl implements Float3x3 {
      *
      * @param tX the {@code x} component of the translation offsets {@code (tX, tY)}
      * @param tY the {@code y} component of the translation offsets {@code (tX, tY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 withTranslation(float tX, float tY) {
         if (Joml.RETURN_NEW) return withTranslation(tX, tY, Joml.float3x3());
@@ -5999,6 +6035,10 @@ public class Float3x3Impl implements Float3x3 {
 
     /**
      * Extract the rotation part of this matrix and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -6012,6 +6052,10 @@ public class Float3x3Impl implements Float3x3 {
 
     /**
      * Extract the rotation part of this matrix and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6197,6 +6241,10 @@ public class Float3x3Impl implements Float3x3 {
      * Extract the scaling factors of this matrix via Gram-Schmidt orthogonalization (skew-aware;
      * the x factor carries the sign of a reflection when the determinant is negative) and store the
      * result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -6212,6 +6260,10 @@ public class Float3x3Impl implements Float3x3 {
      * Extract the scaling factors of this matrix via Gram-Schmidt orthogonalization (skew-aware;
      * the x factor carries the sign of a reflection when the determinant is negative) and store the
      * result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6372,6 +6424,10 @@ public class Float3x3Impl implements Float3x3 {
      * Extract the shear (skew) factors of this matrix via Gram-Schmidt orthogonalization, as
      * {@code (skewYZ, skewXZ, skewXY)} (all zero for a shear-free matrix) and store the result in
      * {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -6388,6 +6444,10 @@ public class Float3x3Impl implements Float3x3 {
      * Extract the shear (skew) factors of this matrix via Gram-Schmidt orthogonalization, as
      * {@code (skewYZ, skewXZ, skewXY)} (all zero for a shear-free matrix) and store the result in
      * {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6822,7 +6882,7 @@ public class Float3x3Impl implements Float3x3 {
      *
      * @param other the other matrix
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 lerp(Float3x3R other, float t) {
         if (Joml.RETURN_NEW) return lerp(other, t, Joml.float3x3());
@@ -7282,7 +7342,7 @@ public class Float3x3Impl implements Float3x3 {
      * {@code M * R * v}, the transformation of the operand will be applied first.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 mul(Float3x3R right) {
         if (Joml.RETURN_NEW) return mul(right, Joml.float3x3());
@@ -7647,7 +7707,7 @@ public class Float3x3Impl implements Float3x3 {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 mul(Float2x2R right) {
         if (Joml.RETURN_NEW) return mul(right, Joml.float3x3());
@@ -7968,7 +8028,7 @@ public class Float3x3Impl implements Float3x3 {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 mul(Float2x3R right) {
         if (Joml.RETURN_NEW) return mul(right, Joml.float3x3());
@@ -8377,7 +8437,7 @@ public class Float3x3Impl implements Float3x3 {
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 preMul(Float3x3R other) {
         if (Joml.RETURN_NEW) return preMul(other, Joml.float3x3());
@@ -8751,7 +8811,7 @@ public class Float3x3Impl implements Float3x3 {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 preMul(Float2x2R other) {
         if (Joml.RETURN_NEW) return preMul(other, Joml.float3x3());
@@ -9059,7 +9119,7 @@ public class Float3x3Impl implements Float3x3 {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 preMul(Float2x3R other) {
         if (Joml.RETURN_NEW) return preMul(other, Joml.float3x3());
@@ -9213,7 +9273,7 @@ public class Float3x3Impl implements Float3x3 {
      *
      * @param dir the direction
      * @param up the direction of "up"
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float3x3 lookAlong(Float3R dir, Float3R up) {
         return lookAlong(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
@@ -10193,7 +10253,7 @@ public class Float3x3Impl implements Float3x3 {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 preRotate(float angle) {
         if (Joml.RETURN_NEW) return preRotate(angle, Joml.float3x3());
@@ -10249,6 +10309,10 @@ public class Float3x3Impl implements Float3x3 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivot the pivot point
@@ -10267,6 +10331,10 @@ public class Float3x3Impl implements Float3x3 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -10287,10 +10355,14 @@ public class Float3x3Impl implements Float3x3 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float3x3 preRotateAround(float angle, Float2R pivot) {
         return preRotateAround(angle, pivot.x(), pivot.y());
@@ -10306,15 +10378,16 @@ public class Float3x3Impl implements Float3x3 {
         float[] dd = ((Float3x3Impl) dest).data;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t5 = 2.0f * _t3 * _t3;
         float _buf0 = Math.fma(sd[0], _t0, -(sd[1] * _t1));
         dd[1] = Math.fma(sd[0], _t1, sd[1] * _t0);
         dd[2] = 0.0f;
         float _buf1 = Math.fma(sd[3], _t0, -(sd[4] * _t1));
         dd[4] = Math.fma(sd[3], _t1, sd[4] * _t0);
         dd[5] = 0.0f;
-        float _buf2 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, Math.fma(sd[6], _t0, Math.fma(-sd[7], _t1, pivotX))));
-        dd[7] = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, Math.fma(sd[6], _t1, Math.fma(sd[7], _t0, pivotY))));
+        float _buf2 = Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(sd[6], _t0, -(sd[7] * _t1));
+        dd[7] = Math.fma(sd[6], _t1, sd[7] * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1));
         dd[8] = 1.0f;
         dd[0] = _buf0;
         dd[3] = _buf1;
@@ -10333,13 +10406,14 @@ public class Float3x3Impl implements Float3x3 {
         float[] dd = ((Float3x3Impl) dest).data;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t5 = 2.0f * _t3 * _t3;
         float _buf0 = Math.fma(sd[0], _t0, -(sd[1] * _t1));
         dd[1] = Math.fma(sd[0], _t1, sd[1] * _t0);
         float _buf1 = Math.fma(sd[3], _t0, -(sd[4] * _t1));
         dd[4] = Math.fma(sd[3], _t1, sd[4] * _t0);
-        float _buf2 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, Math.fma(sd[6], _t0, Math.fma(-sd[7], _t1, pivotX))));
-        dd[7] = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, Math.fma(sd[6], _t1, Math.fma(sd[7], _t0, pivotY))));
+        float _buf2 = Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(sd[6], _t0, -(sd[7] * _t1));
+        dd[7] = Math.fma(sd[6], _t1, sd[7] * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1));
         dd[0] = _buf0;
         dd[3] = _buf1;
         dd[6] = _buf2;
@@ -10357,15 +10431,16 @@ public class Float3x3Impl implements Float3x3 {
         float[] dd = ((Float3x3Impl) dest).data;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t5 = 2.0f * _t3 * _t3;
         dd[0] = _t0;
         dd[1] = _t1;
         dd[2] = 0.0f;
         dd[3] = -_t1;
         dd[4] = _t0;
         dd[5] = 0.0f;
-        dd[6] = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX));
-        dd[7] = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY));
+        dd[6] = Math.fma(pivotX, _t5, pivotY * _t1);
+        dd[7] = Math.fma(pivotY, _t5, -(pivotX * _t1));
         dd[8] = 1.0f;
         ((Float3x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -10381,13 +10456,14 @@ public class Float3x3Impl implements Float3x3 {
         float[] dd = ((Float3x3Impl) dest).data;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t5 = 2.0f * _t3 * _t3;
         dd[0] = _t0;
         dd[1] = _t1;
         dd[3] = -_t1;
         dd[4] = _t0;
-        dd[6] = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX));
-        dd[7] = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY));
+        dd[6] = Math.fma(pivotX, _t5, pivotY * _t1);
+        dd[7] = Math.fma(pivotY, _t5, -(pivotX * _t1));
         ((Float3x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -10402,15 +10478,16 @@ public class Float3x3Impl implements Float3x3 {
         float[] dd = ((Float3x3Impl) dest).data;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t5 = 2.0f * _t3 * _t3;
         dd[0] = _t0;
         dd[1] = _t1;
         dd[2] = 0.0f;
         dd[3] = -_t1;
         dd[4] = _t0;
         dd[5] = 0.0f;
-        float _buf0 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, Math.fma(sd[6], _t0, Math.fma(-sd[7], _t1, pivotX))));
-        dd[7] = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, Math.fma(sd[6], _t1, Math.fma(sd[7], _t0, pivotY))));
+        float _buf0 = Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(sd[6], _t0, -(sd[7] * _t1));
+        dd[7] = Math.fma(sd[6], _t1, sd[7] * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1));
         dd[8] = 1.0f;
         dd[6] = _buf0;
         ((Float3x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
@@ -10427,13 +10504,14 @@ public class Float3x3Impl implements Float3x3 {
         float[] dd = ((Float3x3Impl) dest).data;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t5 = 2.0f * _t3 * _t3;
         dd[0] = _t0;
         dd[1] = _t1;
         dd[3] = -_t1;
         dd[4] = _t0;
-        float _buf0 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, Math.fma(sd[6], _t0, Math.fma(-sd[7], _t1, pivotX))));
-        dd[7] = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, Math.fma(sd[6], _t1, Math.fma(sd[7], _t0, pivotY))));
+        float _buf0 = Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(sd[6], _t0, -(sd[7] * _t1));
+        dd[7] = Math.fma(sd[6], _t1, sd[7] * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1));
         dd[6] = _buf0;
         ((Float3x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -10449,17 +10527,18 @@ public class Float3x3Impl implements Float3x3 {
         float[] dd = ((Float3x3Impl) dest).data;
         float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cos(angle);
-        float _t2 = -pivotX;
-        float _t6 = Math.fma(pivotY, _t0, Math.fma(_t2, _t1, pivotX));
-        float _t7 = Math.fma(_t2, _t0, Math.fma(-pivotY, _t1, pivotY));
-        float _buf0 = Math.fma(sd[2], _t6, Math.fma(sd[0], _t1, -(sd[1] * _t0)));
-        dd[1] = Math.fma(sd[2], _t7, Math.fma(sd[0], _t0, sd[1] * _t1));
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t8 = 2.0f * _t3 * _t3;
+        float _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
+        float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t0));
+        float _buf0 = Math.fma(sd[2], _t9, Math.fma(sd[0], _t1, -(sd[1] * _t0)));
+        dd[1] = Math.fma(sd[2], _t10, Math.fma(sd[0], _t0, sd[1] * _t1));
         dd[2] = sd[2];
-        float _buf1 = Math.fma(sd[5], _t6, Math.fma(sd[3], _t1, -(sd[4] * _t0)));
-        dd[4] = Math.fma(sd[5], _t7, Math.fma(sd[3], _t0, sd[4] * _t1));
+        float _buf1 = Math.fma(sd[5], _t9, Math.fma(sd[3], _t1, -(sd[4] * _t0)));
+        dd[4] = Math.fma(sd[5], _t10, Math.fma(sd[3], _t0, sd[4] * _t1));
         dd[5] = sd[5];
-        float _buf2 = Math.fma(sd[8], _t6, Math.fma(sd[6], _t1, -(sd[7] * _t0)));
-        dd[7] = Math.fma(sd[8], _t7, Math.fma(sd[6], _t0, sd[7] * _t1));
+        float _buf2 = Math.fma(sd[8], _t9, Math.fma(sd[6], _t1, -(sd[7] * _t0)));
+        dd[7] = Math.fma(sd[8], _t10, Math.fma(sd[6], _t0, sd[7] * _t1));
         dd[8] = sd[8];
         dd[0] = _buf0;
         dd[3] = _buf1;
@@ -10476,6 +10555,10 @@ public class Float3x3Impl implements Float3x3 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
@@ -10499,11 +10582,15 @@ public class Float3x3Impl implements Float3x3 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 preRotateAround(float angle, float pivotX, float pivotY) {
         if (Joml.RETURN_NEW) return preRotateAround(angle, pivotX, pivotY, Joml.float3x3());
@@ -10523,6 +10610,10 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
      * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
@@ -10537,17 +10628,18 @@ public class Float3x3Impl implements Float3x3 {
         double[] dd = ((Double3x3Impl) dest).data;
         float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cos(angle);
-        float _t2 = -pivotX;
-        float _t6 = Math.fma(pivotY, _t0, Math.fma(_t2, _t1, pivotX));
-        float _t7 = Math.fma(_t2, _t0, Math.fma(-pivotY, _t1, pivotY));
-        float _buf0 = Math.fma(sd[2], _t6, Math.fma(sd[0], _t1, -(sd[1] * _t0)));
-        dd[1] = Math.fma(sd[2], _t7, Math.fma(sd[0], _t0, sd[1] * _t1));
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t8 = 2.0f * _t3 * _t3;
+        float _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
+        float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t0));
+        float _buf0 = Math.fma(sd[2], _t9, Math.fma(sd[0], _t1, -(sd[1] * _t0)));
+        dd[1] = Math.fma(sd[2], _t10, Math.fma(sd[0], _t0, sd[1] * _t1));
         dd[2] = sd[2];
-        float _buf1 = Math.fma(sd[5], _t6, Math.fma(sd[3], _t1, -(sd[4] * _t0)));
-        dd[4] = Math.fma(sd[5], _t7, Math.fma(sd[3], _t0, sd[4] * _t1));
+        float _buf1 = Math.fma(sd[5], _t9, Math.fma(sd[3], _t1, -(sd[4] * _t0)));
+        dd[4] = Math.fma(sd[5], _t10, Math.fma(sd[3], _t0, sd[4] * _t1));
         dd[5] = sd[5];
-        float _buf2 = Math.fma(sd[8], _t6, Math.fma(sd[6], _t1, -(sd[7] * _t0)));
-        dd[7] = Math.fma(sd[8], _t7, Math.fma(sd[6], _t0, sd[7] * _t1));
+        float _buf2 = Math.fma(sd[8], _t9, Math.fma(sd[6], _t1, -(sd[7] * _t0)));
+        dd[7] = Math.fma(sd[8], _t10, Math.fma(sd[6], _t0, sd[7] * _t1));
         dd[8] = sd[8];
         dd[0] = _buf0;
         dd[3] = _buf1;
@@ -10606,7 +10698,7 @@ public class Float3x3Impl implements Float3x3 {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float3x3 preRotateAxis(float angle, Float3R axis) {
         return preRotateAxis(angle, axis.x(), axis.y(), axis.z());
@@ -10798,7 +10890,7 @@ public class Float3x3Impl implements Float3x3 {
      *        vector must have unit length)
      * @param axisZ the {@code z} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
      *        vector must have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 preRotateAxis(float angle, float axisX, float axisY, float axisZ) {
         if (Joml.RETURN_NEW) return preRotateAxis(angle, axisX, axisY, axisZ, Joml.float3x3());
@@ -11035,7 +11127,7 @@ public class Float3x3Impl implements Float3x3 {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 preRotateX(float angle) {
         if (Joml.RETURN_NEW) return preRotateX(angle, Joml.float3x3());
@@ -11276,7 +11368,7 @@ public class Float3x3Impl implements Float3x3 {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 preRotateY(float angle) {
         if (Joml.RETURN_NEW) return preRotateY(angle, Joml.float3x3());
@@ -11371,7 +11463,7 @@ public class Float3x3Impl implements Float3x3 {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 preRotateZ(float angle) {
         return preRotate(angle);
@@ -11421,7 +11513,7 @@ public class Float3x3Impl implements Float3x3 {
      * {@code S * M * p}, the scaling will be applied last.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float3x3 preScale(Float2R v) {
         return preScale(v.x(), v.y());
@@ -11591,7 +11683,7 @@ public class Float3x3Impl implements Float3x3 {
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY)}
      * @param vY the {@code y} component of the vector {@code (vX, vY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 preScale(float vX, float vY) {
         if (Joml.RETURN_NEW) return preScale(vX, vY, Joml.float3x3());
@@ -11799,7 +11891,7 @@ public class Float3x3Impl implements Float3x3 {
      * {@code S * M * v}, the scaling will be applied last.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 preScale(float s) {
         if (Joml.RETURN_NEW) return preScale(s, Joml.float3x3());
@@ -11896,7 +11988,7 @@ public class Float3x3Impl implements Float3x3 {
      *
      * @param s the uniform scale factor
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float3x3 preScaleAround(float s, Float2R pivot) {
         return preScaleAround(s, pivot.x(), pivot.y());
@@ -12075,7 +12167,7 @@ public class Float3x3Impl implements Float3x3 {
      * @param s the uniform scale factor
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 preScaleAround(float s, float pivotX, float pivotY) {
         if (Joml.RETURN_NEW) return preScaleAround(s, pivotX, pivotY, Joml.float3x3());
@@ -12172,7 +12264,7 @@ public class Float3x3Impl implements Float3x3 {
      *
      * @param s the scale factors
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float3x3 preScaleAround(Float2R s, Float2R pivot) {
         return preScaleAround(s.x(), s.y(), pivot.x(), pivot.y());
@@ -12351,7 +12443,7 @@ public class Float3x3Impl implements Float3x3 {
      * @param sY the {@code y} component of the vector {@code (sX, sY)}
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 preScaleAround(float sX, float sY, float pivotX, float pivotY) {
         if (Joml.RETURN_NEW) return preScaleAround(sX, sY, pivotX, pivotY, Joml.float3x3());
@@ -12445,7 +12537,7 @@ public class Float3x3Impl implements Float3x3 {
      * {@code T * M * p}, the translation will be applied last.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float3x3 preTranslate(Float2R v) {
         return preTranslate(v.x(), v.y());
@@ -12613,7 +12705,7 @@ public class Float3x3Impl implements Float3x3 {
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY)}
      * @param vY the {@code y} component of the vector {@code (vX, vY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 preTranslate(float vX, float vY) {
         if (Joml.RETURN_NEW) return preTranslate(vX, vY, Joml.float3x3());
@@ -12820,7 +12912,7 @@ public class Float3x3Impl implements Float3x3 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotate(float angle) {
         if (Joml.RETURN_NEW) return rotate(angle, Joml.float3x3());
@@ -12875,6 +12967,10 @@ public class Float3x3Impl implements Float3x3 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivot the pivot point
@@ -12893,6 +12989,10 @@ public class Float3x3Impl implements Float3x3 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -12913,10 +13013,14 @@ public class Float3x3Impl implements Float3x3 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float3x3 rotateAround(float angle, Float2R pivot) {
         return rotateAround(angle, pivot.x(), pivot.y());
@@ -12932,17 +13036,18 @@ public class Float3x3Impl implements Float3x3 {
         float[] dd = ((Float3x3Impl) dest).data;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
-        float _t6 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX));
-        float _t7 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY));
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t8 = 2.0f * _t3 * _t3;
+        float _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
+        float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
         float _buf0 = Math.fma(sd[0], _t0, sd[3] * _t1);
         float _buf1 = Math.fma(sd[1], _t0, sd[4] * _t1);
         dd[2] = 0.0f;
         float _buf2 = Math.fma(sd[3], _t0, -(sd[0] * _t1));
         float _buf3 = Math.fma(sd[4], _t0, -(sd[1] * _t1));
         dd[5] = 0.0f;
-        dd[6] = Math.fma(sd[0], _t6, Math.fma(sd[3], _t7, sd[6]));
-        dd[7] = Math.fma(sd[1], _t6, Math.fma(sd[4], _t7, sd[7]));
+        dd[6] = Math.fma(sd[0], _t9, Math.fma(sd[3], _t10, sd[6]));
+        dd[7] = Math.fma(sd[1], _t9, Math.fma(sd[4], _t10, sd[7]));
         dd[8] = 1.0f;
         dd[0] = _buf0;
         dd[1] = _buf1;
@@ -12962,15 +13067,16 @@ public class Float3x3Impl implements Float3x3 {
         float[] dd = ((Float3x3Impl) dest).data;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
-        float _t6 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX));
-        float _t7 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY));
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t8 = 2.0f * _t3 * _t3;
+        float _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
+        float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
         float _buf0 = Math.fma(sd[0], _t0, sd[3] * _t1);
         float _buf1 = Math.fma(sd[1], _t0, sd[4] * _t1);
         float _buf2 = Math.fma(sd[3], _t0, -(sd[0] * _t1));
         float _buf3 = Math.fma(sd[4], _t0, -(sd[1] * _t1));
-        dd[6] = Math.fma(sd[0], _t6, Math.fma(sd[3], _t7, sd[6]));
-        dd[7] = Math.fma(sd[1], _t6, Math.fma(sd[4], _t7, sd[7]));
+        dd[6] = Math.fma(sd[0], _t9, Math.fma(sd[3], _t10, sd[6]));
+        dd[7] = Math.fma(sd[1], _t9, Math.fma(sd[4], _t10, sd[7]));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[3] = _buf2;
@@ -13007,15 +13113,16 @@ public class Float3x3Impl implements Float3x3 {
         float[] dd = ((Float3x3Impl) dest).data;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t5 = 2.0f * _t3 * _t3;
         dd[0] = _t0;
         dd[1] = _t1;
         dd[2] = 0.0f;
         dd[3] = -_t1;
         dd[4] = _t0;
         dd[5] = 0.0f;
-        dd[6] = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, sd[6] + pivotX));
-        dd[7] = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, sd[7] + pivotY));
+        dd[6] = Math.fma(pivotX, _t5, Math.fma(pivotY, _t1, sd[6]));
+        dd[7] = Math.fma(pivotY, _t5, Math.fma(-pivotX, _t1, sd[7]));
         dd[8] = 1.0f;
         ((Float3x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -13031,13 +13138,14 @@ public class Float3x3Impl implements Float3x3 {
         float[] dd = ((Float3x3Impl) dest).data;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t5 = 2.0f * _t3 * _t3;
         dd[0] = _t0;
         dd[1] = _t1;
         dd[3] = -_t1;
         dd[4] = _t0;
-        dd[6] = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, sd[6] + pivotX));
-        dd[7] = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, sd[7] + pivotY));
+        dd[6] = Math.fma(pivotX, _t5, Math.fma(pivotY, _t1, sd[6]));
+        dd[7] = Math.fma(pivotY, _t5, Math.fma(-pivotX, _t1, sd[7]));
         ((Float3x3Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -13052,18 +13160,19 @@ public class Float3x3Impl implements Float3x3 {
         float[] dd = ((Float3x3Impl) dest).data;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
-        float _t6 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX));
-        float _t7 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY));
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t8 = 2.0f * _t3 * _t3;
+        float _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
+        float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
         float _buf0 = Math.fma(sd[0], _t0, sd[3] * _t1);
         float _buf1 = Math.fma(sd[1], _t0, sd[4] * _t1);
         float _buf2 = Math.fma(sd[2], _t0, sd[5] * _t1);
         float _buf3 = Math.fma(sd[3], _t0, -(sd[0] * _t1));
         float _buf4 = Math.fma(sd[4], _t0, -(sd[1] * _t1));
         float _buf5 = Math.fma(sd[5], _t0, -(sd[2] * _t1));
-        dd[6] = Math.fma(sd[0], _t6, Math.fma(sd[3], _t7, sd[6]));
-        dd[7] = Math.fma(sd[1], _t6, Math.fma(sd[4], _t7, sd[7]));
-        dd[8] = Math.fma(sd[2], _t6, Math.fma(sd[5], _t7, sd[8]));
+        dd[6] = Math.fma(sd[0], _t9, Math.fma(sd[3], _t10, sd[6]));
+        dd[7] = Math.fma(sd[1], _t9, Math.fma(sd[4], _t10, sd[7]));
+        dd[8] = Math.fma(sd[2], _t9, Math.fma(sd[5], _t10, sd[8]));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -13082,6 +13191,10 @@ public class Float3x3Impl implements Float3x3 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
@@ -13105,11 +13218,15 @@ public class Float3x3Impl implements Float3x3 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateAround(float angle, float pivotX, float pivotY) {
         if (Joml.RETURN_NEW) return rotateAround(angle, pivotX, pivotY, Joml.float3x3());
@@ -13129,6 +13246,10 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
@@ -13143,18 +13264,19 @@ public class Float3x3Impl implements Float3x3 {
         double[] dd = ((Double3x3Impl) dest).data;
         float _t0 = (float) Math.cos(angle);
         float _t1 = (float) Math.sin(angle);
-        float _t2 = -pivotX;
-        float _t6 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX));
-        float _t7 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY));
+        float _t3 = (float) Math.sin(0.5f * angle);
+        float _t8 = 2.0f * _t3 * _t3;
+        float _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
+        float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
         float _buf0 = Math.fma(sd[0], _t0, sd[3] * _t1);
         float _buf1 = Math.fma(sd[1], _t0, sd[4] * _t1);
         float _buf2 = Math.fma(sd[2], _t0, sd[5] * _t1);
         float _buf3 = Math.fma(sd[3], _t0, -(sd[0] * _t1));
         float _buf4 = Math.fma(sd[4], _t0, -(sd[1] * _t1));
         float _buf5 = Math.fma(sd[5], _t0, -(sd[2] * _t1));
-        dd[6] = Math.fma(sd[0], _t6, Math.fma(sd[3], _t7, sd[6]));
-        dd[7] = Math.fma(sd[1], _t6, Math.fma(sd[4], _t7, sd[7]));
-        dd[8] = Math.fma(sd[2], _t6, Math.fma(sd[5], _t7, sd[8]));
+        dd[6] = Math.fma(sd[0], _t9, Math.fma(sd[3], _t10, sd[6]));
+        dd[7] = Math.fma(sd[1], _t9, Math.fma(sd[4], _t10, sd[7]));
+        dd[8] = Math.fma(sd[2], _t9, Math.fma(sd[5], _t10, sd[8]));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -13214,7 +13336,7 @@ public class Float3x3Impl implements Float3x3 {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float3x3 rotateAxis(float angle, Float3R axis) {
         return rotateAxis(angle, axis.x(), axis.y(), axis.z());
@@ -13384,7 +13506,7 @@ public class Float3x3Impl implements Float3x3 {
      *        vector must have unit length)
      * @param axisZ the {@code z} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
      *        vector must have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateAxis(float angle, float axisX, float axisY, float axisZ) {
         if (Joml.RETURN_NEW) return rotateAxis(angle, axisX, axisY, axisZ, Joml.float3x3());
@@ -13670,7 +13792,7 @@ public class Float3x3Impl implements Float3x3 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateX(float angle) {
         if (Joml.RETURN_NEW) return rotateX(angle, Joml.float3x3());
@@ -13910,7 +14032,7 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateX180() {
         if (Joml.RETURN_NEW) return rotateX180(Joml.float3x3());
@@ -14111,7 +14233,7 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateX270() {
         if (Joml.RETURN_NEW) return rotateX270(Joml.float3x3());
@@ -14360,7 +14482,7 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateX90() {
         if (Joml.RETURN_NEW) return rotateX90(Joml.float3x3());
@@ -14588,7 +14710,7 @@ public class Float3x3Impl implements Float3x3 {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateXYZ(float angleX, float angleY, float angleZ) {
         if (Joml.RETURN_NEW) return rotateXYZ(angleX, angleY, angleZ, Joml.float3x3());
@@ -14838,7 +14960,7 @@ public class Float3x3Impl implements Float3x3 {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateXZY(float angleX, float angleY, float angleZ) {
         if (Joml.RETURN_NEW) return rotateXZY(angleX, angleY, angleZ, Joml.float3x3());
@@ -14949,7 +15071,7 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateXn180() {
         return rotateX180();
@@ -14998,7 +15120,7 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateXn270() {
         return rotateX90();
@@ -15047,7 +15169,7 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateXn90() {
         return rotateX270();
@@ -15219,7 +15341,7 @@ public class Float3x3Impl implements Float3x3 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateY(float angle) {
         if (Joml.RETURN_NEW) return rotateY(angle, Joml.float3x3());
@@ -15415,7 +15537,7 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateY180() {
         if (Joml.RETURN_NEW) return rotateY180(Joml.float3x3());
@@ -15615,7 +15737,7 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateY270() {
         if (Joml.RETURN_NEW) return rotateY270(Joml.float3x3());
@@ -15818,7 +15940,7 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateY90() {
         if (Joml.RETURN_NEW) return rotateY90(Joml.float3x3());
@@ -16045,7 +16167,7 @@ public class Float3x3Impl implements Float3x3 {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateYXZ(float angleX, float angleY, float angleZ) {
         if (Joml.RETURN_NEW) return rotateYXZ(angleX, angleY, angleZ, Joml.float3x3());
@@ -16295,7 +16417,7 @@ public class Float3x3Impl implements Float3x3 {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateYZX(float angleX, float angleY, float angleZ) {
         if (Joml.RETURN_NEW) return rotateYZX(angleX, angleY, angleZ, Joml.float3x3());
@@ -16406,7 +16528,7 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateYn180() {
         return rotateY180();
@@ -16455,7 +16577,7 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateYn270() {
         return rotateY90();
@@ -16504,7 +16626,7 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateYn90() {
         return rotateY270();
@@ -16556,7 +16678,7 @@ public class Float3x3Impl implements Float3x3 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateZ(float angle) {
         return rotate(angle);
@@ -16753,7 +16875,7 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateZ180() {
         if (Joml.RETURN_NEW) return rotateZ180(Joml.float3x3());
@@ -16994,7 +17116,7 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateZ270() {
         if (Joml.RETURN_NEW) return rotateZ270(Joml.float3x3());
@@ -17196,7 +17318,7 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateZ90() {
         if (Joml.RETURN_NEW) return rotateZ90(Joml.float3x3());
@@ -17422,7 +17544,7 @@ public class Float3x3Impl implements Float3x3 {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateZXY(float angleX, float angleY, float angleZ) {
         if (Joml.RETURN_NEW) return rotateZXY(angleX, angleY, angleZ, Joml.float3x3());
@@ -17671,7 +17793,7 @@ public class Float3x3Impl implements Float3x3 {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateZYX(float angleX, float angleY, float angleZ) {
         if (Joml.RETURN_NEW) return rotateZYX(angleX, angleY, angleZ, Joml.float3x3());
@@ -17782,7 +17904,7 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateZn180() {
         return rotateZ180();
@@ -17831,7 +17953,7 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateZn270() {
         return rotateZ90();
@@ -17880,7 +18002,7 @@ public class Float3x3Impl implements Float3x3 {
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 rotateZn90() {
         return rotateZ270();
@@ -17930,7 +18052,7 @@ public class Float3x3Impl implements Float3x3 {
      * {@code M * S * p}, the scaling will be applied first.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float3x3 scale(Float2R v) {
         return scale(v.x(), v.y());
@@ -18083,7 +18205,7 @@ public class Float3x3Impl implements Float3x3 {
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY)}
      * @param vY the {@code y} component of the vector {@code (vX, vY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 scale(float vX, float vY) {
         if (Joml.RETURN_NEW) return scale(vX, vY, Joml.float3x3());
@@ -18274,7 +18396,7 @@ public class Float3x3Impl implements Float3x3 {
      * {@code M * S * v}, the scaling will be applied first.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 scale(float s) {
         if (Joml.RETURN_NEW) return scale(s, Joml.float3x3());
@@ -18371,7 +18493,7 @@ public class Float3x3Impl implements Float3x3 {
      *
      * @param s the uniform scale factor
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float3x3 scaleAround(float s, Float2R pivot) {
         return scaleAround(s, pivot.x(), pivot.y());
@@ -18549,7 +18671,7 @@ public class Float3x3Impl implements Float3x3 {
      * @param s the uniform scale factor
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 scaleAround(float s, float pivotX, float pivotY) {
         if (Joml.RETURN_NEW) return scaleAround(s, pivotX, pivotY, Joml.float3x3());
@@ -18652,7 +18774,7 @@ public class Float3x3Impl implements Float3x3 {
      *
      * @param s the scale factors
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float3x3 scaleAround(Float2R s, Float2R pivot) {
         return scaleAround(s.x(), s.y(), pivot.x(), pivot.y());
@@ -18830,7 +18952,7 @@ public class Float3x3Impl implements Float3x3 {
      * @param sY the {@code y} component of the vector {@code (sX, sY)}
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 scaleAround(float sX, float sY, float pivotX, float pivotY) {
         if (Joml.RETURN_NEW) return scaleAround(sX, sY, pivotX, pivotY, Joml.float3x3());
@@ -18928,7 +19050,7 @@ public class Float3x3Impl implements Float3x3 {
      * {@code M * T * p}, the translation will be applied first.
      *
      * @param v the translation offsets
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Float3x3 translate(Float2R v) {
         return translate(v.x(), v.y());
@@ -19076,7 +19198,7 @@ public class Float3x3Impl implements Float3x3 {
      *
      * @param vX the {@code x} component of the translation offsets {@code (vX, vY)}
      * @param vY the {@code y} component of the translation offsets {@code (vX, vY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 translate(float vX, float vY) {
         if (Joml.RETURN_NEW) return translate(vX, vY, Joml.float3x3());
@@ -19405,7 +19527,7 @@ public class Float3x3Impl implements Float3x3 {
      * @param right the distance to the right edge of the view rectangle
      * @param bottom the distance to the bottom edge of the view rectangle
      * @param top the distance to the top edge of the view rectangle
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Float3x3 view(float left, float right, float bottom, float top) {
         if (Joml.RETURN_NEW) return view(left, right, bottom, top, Joml.float3x3());

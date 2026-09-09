@@ -13,6 +13,14 @@ import java.nio.ByteBuffer;
  * returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise with {@code ==}. {@code hashCode} is
+ * consistent with it. Only instances of this library's implementation compare equal to each other;
+ * the {@code equals} of a vector never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with an exact, non-negative integer tolerance: the
+ * larger-minus-smaller difference is compared as an unsigned value ({@code Long.compareUnsigned}),
+ * so the two are compared exactly without overflow, and a negative {@code epsilon} matches nothing.
  */
 public interface Long3 extends Long3R {
 
@@ -20,7 +28,7 @@ public interface Long3 extends Long3R {
      * Add {@code other} to this vector.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 add(Long3R other) { return add(other, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -30,7 +38,7 @@ public interface Long3 extends Long3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 add(long x, long y, long z) { return add(x, y, z, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -38,7 +46,7 @@ public interface Long3 extends Long3R {
      * Compute the component-wise ceiling division of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 ceilDiv(long scalar) { return ceilDiv(scalar, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -46,7 +54,7 @@ public interface Long3 extends Long3R {
      * Compute the component-wise ceiling division of this vector by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 ceilDiv(Long3R other) { return ceilDiv(other, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -57,7 +65,7 @@ public interface Long3 extends Long3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 ceilDiv(long x, long y, long z) { return ceilDiv(x, y, z, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -65,7 +73,7 @@ public interface Long3 extends Long3R {
      * Compute the component-wise ceiling modulus of this vector and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 ceilMod(long scalar) { return ceilMod(scalar, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -73,7 +81,7 @@ public interface Long3 extends Long3R {
      * Compute the component-wise ceiling modulus of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 ceilMod(Long3R other) { return ceilMod(other, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -84,7 +92,7 @@ public interface Long3 extends Long3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 ceilMod(long x, long y, long z) { return ceilMod(x, y, z, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -93,7 +101,7 @@ public interface Long3 extends Long3R {
      * zero).
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 div(long scalar) { return div(scalar, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -102,7 +110,7 @@ public interface Long3 extends Long3R {
      * zero).
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 div(Long3R other) { return div(other, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -113,7 +121,7 @@ public interface Long3 extends Long3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 div(long x, long y, long z) { return div(x, y, z, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -121,7 +129,7 @@ public interface Long3 extends Long3R {
      * Compute the component-wise floor division of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 floorDiv(long scalar) { return floorDiv(scalar, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -129,7 +137,7 @@ public interface Long3 extends Long3R {
      * Compute the component-wise floor division of this vector by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 floorDiv(Long3R other) { return floorDiv(other, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -140,7 +148,7 @@ public interface Long3 extends Long3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 floorDiv(long x, long y, long z) { return floorDiv(x, y, z, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -148,7 +156,7 @@ public interface Long3 extends Long3R {
      * Compute the component-wise floor modulus of this vector and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 floorMod(long scalar) { return floorMod(scalar, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -156,7 +164,7 @@ public interface Long3 extends Long3R {
      * Compute the component-wise floor modulus of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 floorMod(Long3R other) { return floorMod(other, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -167,7 +175,7 @@ public interface Long3 extends Long3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 floorMod(long x, long y, long z) { return floorMod(x, y, z, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -175,7 +183,7 @@ public interface Long3 extends Long3R {
      * Multiply each component of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 mul(long scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -183,7 +191,7 @@ public interface Long3 extends Long3R {
      * Multiply this vector component-wise by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 mul(Long3R other) { return mul(other, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -193,14 +201,14 @@ public interface Long3 extends Long3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 mul(long x, long y, long z) { return mul(x, y, z, Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Negate this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 negate() { return negate(Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -210,7 +218,7 @@ public interface Long3 extends Long3R {
      * {@code div}).
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 rem(long scalar) { return rem(scalar, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -220,7 +228,7 @@ public interface Long3 extends Long3R {
      * {@code div}).
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 rem(Long3R other) { return rem(other, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -232,7 +240,7 @@ public interface Long3 extends Long3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 rem(long x, long y, long z) { return rem(x, y, z, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -240,7 +248,7 @@ public interface Long3 extends Long3R {
      * Subtract {@code other} from this vector.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 sub(Long3R other) { return sub(other, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -250,7 +258,7 @@ public interface Long3 extends Long3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 sub(long x, long y, long z) { return sub(x, y, z, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -258,7 +266,7 @@ public interface Long3 extends Long3R {
      * Compute the bitwise AND of each component of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 and(Long3R other) { return and(other, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -269,35 +277,35 @@ public interface Long3 extends Long3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 and(long x, long y, long z) { return and(x, y, z, Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Compute the number of one-bits of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 bitCount() { return bitCount(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Compute the bitwise NOT of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 not() { return not(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Compute the number of leading zero bits of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 numberOfLeadingZeros() { return numberOfLeadingZeros(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Compute the number of trailing zero bits of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 numberOfTrailingZeros() { return numberOfTrailingZeros(Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -305,7 +313,7 @@ public interface Long3 extends Long3R {
      * Compute the bitwise OR of each component of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 or(Long3R other) { return or(other, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -316,21 +324,21 @@ public interface Long3 extends Long3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 or(long x, long y, long z) { return or(x, y, z, Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Compute the bit-reversed value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 reverseBits() { return reverseBits(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Compute the byte-reversed value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 reverseBytes() { return reverseBytes(Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -338,7 +346,7 @@ public interface Long3 extends Long3R {
      * Rotate the bits of each component of this vector left by {@code distance} positions.
      *
      * @param distance the number of bit positions to rotate by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 rotateLeft(long distance) { return rotateLeft(distance, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -346,7 +354,7 @@ public interface Long3 extends Long3R {
      * Rotate the bits of each component of this vector right by {@code distance} positions.
      *
      * @param distance the number of bit positions to rotate by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 rotateRight(long distance) { return rotateRight(distance, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -354,7 +362,7 @@ public interface Long3 extends Long3R {
      * Shift each component of this vector left by {@code shift} bits.
      *
      * @param shift the number of bit positions to shift by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 shl(long shift) { return shl(shift, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -362,7 +370,7 @@ public interface Long3 extends Long3R {
      * Arithmetically shift each component of this vector right by {@code shift} bits.
      *
      * @param shift the number of bit positions to shift by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 shr(long shift) { return shr(shift, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -370,7 +378,7 @@ public interface Long3 extends Long3R {
      * Logically shift each component of this vector right by {@code shift} bits.
      *
      * @param shift the number of bit positions to shift by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 ushr(long shift) { return ushr(shift, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -378,7 +386,7 @@ public interface Long3 extends Long3R {
      * Compute the bitwise XOR of each component of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 xor(Long3R other) { return xor(other, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -389,7 +397,7 @@ public interface Long3 extends Long3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 xor(long x, long y, long z) { return xor(x, y, z, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -415,7 +423,7 @@ public interface Long3 extends Long3R {
      * Set this vector to {@code s}.
      *
      * @param s the value assigned to every component
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 set(long s) { return set(s, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -474,7 +482,7 @@ public interface Long3 extends Long3R {
     /**
      * Compute the absolute value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 absolute() { return absolute(Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -483,7 +491,7 @@ public interface Long3 extends Long3R {
      *
      * @param min the lower bound
      * @param max the upper bound
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 clamp(long min, long max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -492,7 +500,7 @@ public interface Long3 extends Long3R {
      *
      * @param min the per-component lower bounds
      * @param max the per-component upper bounds
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 clamp(Long3R min, Long3R max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -506,7 +514,7 @@ public interface Long3 extends Long3R {
      * @param maxX the {@code x} component of the vector {@code (maxX, maxY, maxZ)}
      * @param maxY the {@code y} component of the vector {@code (maxX, maxY, maxZ)}
      * @param maxZ the {@code z} component of the vector {@code (maxX, maxY, maxZ)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 clamp(long minX, long minY, long minZ, long maxX, long maxY, long maxZ) { return clamp(minX, minY, minZ, maxX, maxY, maxZ, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -514,7 +522,7 @@ public interface Long3 extends Long3R {
      * Compute the cross product of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 cross(Long3R other) { return cross(other, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -524,7 +532,7 @@ public interface Long3 extends Long3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 cross(long x, long y, long z) { return cross(x, y, z, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -532,7 +540,7 @@ public interface Long3 extends Long3R {
      * Set each component of this vector to the larger of itself and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 max(long scalar) { return max(scalar, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -541,7 +549,7 @@ public interface Long3 extends Long3R {
      * {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 max(Long3R other) { return max(other, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -552,7 +560,7 @@ public interface Long3 extends Long3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 max(long x, long y, long z) { return max(x, y, z, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -560,7 +568,7 @@ public interface Long3 extends Long3R {
      * Set each component of this vector to the smaller of itself and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 min(long scalar) { return min(scalar, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -569,7 +577,7 @@ public interface Long3 extends Long3R {
      * {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 min(Long3R other) { return min(other, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -580,14 +588,14 @@ public interface Long3 extends Long3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 min(long x, long y, long z) { return min(x, y, z, Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Compute the sign of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 sign() { return sign(Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -595,7 +603,7 @@ public interface Long3 extends Long3R {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 satAdd(Long3R other) { return satAdd(other, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -606,7 +614,7 @@ public interface Long3 extends Long3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 satAdd(long x, long y, long z) { return satAdd(x, y, z, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -614,7 +622,7 @@ public interface Long3 extends Long3R {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 satMul(Long3R other) { return satMul(other, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -625,14 +633,14 @@ public interface Long3 extends Long3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 satMul(long x, long y, long z) { return satMul(x, y, z, Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Negate this vector, clamping to the value range instead of overflowing.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 satNegate() { return satNegate(Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -640,7 +648,7 @@ public interface Long3 extends Long3R {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 satSub(Long3R other) { return satSub(other, Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -651,196 +659,196 @@ public interface Long3 extends Long3R {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 satSub(long x, long y, long z) { return satSub(x, y, z, Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 xxx() { return xxx(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 xxy() { return xxy(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 xxz() { return xxz(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 xyx() { return xyx(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 xyy() { return xyy(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 xyz() { return xyz(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 xzx() { return xzx(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 xzy() { return xzy(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 xzz() { return xzz(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 yxx() { return yxx(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 yxy() { return yxy(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 yxz() { return yxz(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 yyx() { return yyx(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 yyy() { return yyy(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 yyz() { return yyz(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 yzx() { return yzx(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 yzy() { return yzy(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 yzz() { return yzz(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 zxx() { return zxx(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 zxy() { return zxy(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code x}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 zxz() { return zxz(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 zyx() { return zyx(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 zyy() { return zyy(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code y}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 zyz() { return zyz(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 zzx() { return zzx(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 zzy() { return zzy(Joml.RETURN_NEW ? Joml.long3() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code z}, {@code z}, {@code z}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Long3 zzz() { return zzz(Joml.RETURN_NEW ? Joml.long3() : this); }
 
@@ -867,6 +875,10 @@ public interface Long3 extends Long3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -879,6 +891,10 @@ public interface Long3 extends Long3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -891,6 +907,10 @@ public interface Long3 extends Long3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -904,6 +924,10 @@ public interface Long3 extends Long3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -921,6 +945,10 @@ public interface Long3 extends Long3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -933,6 +961,10 @@ public interface Long3 extends Long3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -945,6 +977,10 @@ public interface Long3 extends Long3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -958,6 +994,10 @@ public interface Long3 extends Long3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -975,6 +1015,8 @@ public interface Long3 extends Long3R {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated Long3 loadUnsafe(long address);
 
@@ -1001,6 +1043,10 @@ public interface Long3 extends Long3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1013,6 +1059,10 @@ public interface Long3 extends Long3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1025,6 +1075,10 @@ public interface Long3 extends Long3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1038,6 +1092,10 @@ public interface Long3 extends Long3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -1055,6 +1113,10 @@ public interface Long3 extends Long3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1067,6 +1129,10 @@ public interface Long3 extends Long3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1079,6 +1145,10 @@ public interface Long3 extends Long3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1092,6 +1162,10 @@ public interface Long3 extends Long3R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1109,6 +1183,8 @@ public interface Long3 extends Long3R {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated Long3 loadIntUnsafe(long address);
 }

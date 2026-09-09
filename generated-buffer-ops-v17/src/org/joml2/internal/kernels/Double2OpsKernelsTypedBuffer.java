@@ -856,7 +856,7 @@ public final class Double2OpsKernelsTypedBuffer {
     public static double angleBetween_api(java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY) {
         double _selfx = src.get(srcOffset + 0);
         double _selfy = src.get(srcOffset + 1);
-        return Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(otherX, _selfx, otherY * _selfy) * (1.0 / Math.sqrt(Math.fma(_selfx, _selfx, _selfy * _selfy))) * (1.0 / Math.sqrt(Math.fma(otherX, otherX, otherY * otherY))))));
+        return Math.atan2(Math.abs(Math.fma(otherY, _selfx, -(otherX * _selfy))), Math.fma(otherX, _selfx, otherY * _selfy));
     }
 
     public static double angleBetween_unsafe(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
@@ -870,7 +870,7 @@ public final class Double2OpsKernelsTypedBuffer {
         double _selfy = src.get(srcOffset + 1);
         double _otherx = other.get(otherOffset + 0);
         double _othery = other.get(otherOffset + 1);
-        return Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(_otherx, _selfx, _othery * _selfy) * (1.0 / Math.sqrt(Math.fma(_selfx, _selfx, _selfy * _selfy))) * (1.0 / Math.sqrt(Math.fma(_otherx, _otherx, _othery * _othery))))));
+        return Math.atan2(Math.abs(Math.fma(_othery, _selfx, -(_otherx * _selfy))), Math.fma(_otherx, _selfx, _othery * _selfy));
     }
 
     public static java.nio.DoubleBuffer asin_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {

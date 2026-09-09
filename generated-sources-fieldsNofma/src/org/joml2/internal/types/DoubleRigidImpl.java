@@ -1172,6 +1172,10 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * Normalize this rigid transform so that its rotation part has unit length, leaving its
      * translation unchanged (a zero-length rotation yields the zero quaternion) and store the
      * result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the rotation quaternion must lie
+     * roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param dest will hold the result
      * @return dest
@@ -1204,6 +1208,9 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1227,7 +1234,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
             d.x = Math.atan2(_t11, _t13);
             d.z = Math.atan2(2.0 * (this.rZ * this.rW - this.rX * this.rY), 1.0 - 2.0 * (_t1 + _t6));
         }
-        d.y = Math.asin(Math.min(1.0, Math.max(-1.0, _t12)));
+        d.y = Math.atan2(_t12, Math.sqrt(_t17));
         return d;
     }
 
@@ -1238,6 +1245,9 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1261,7 +1271,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
             d.x = Math.atan2(_t11, _t13);
             d.y = Math.atan2(2.0 * (this.rX * this.rZ + this.rY * this.rW), 1.0 - 2.0 * (_t6 + _t1));
         }
-        d.z = Math.asin(Math.min(1.0, Math.max(-1.0, _t12)));
+        d.z = Math.atan2(_t12, Math.sqrt(_t17));
         return d;
     }
 
@@ -1272,6 +1282,9 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1295,7 +1308,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
             d.y = Math.atan2(_t12, _t13);
             d.z = Math.atan2(2.0 * (this.rX * this.rY + this.rZ * this.rW), 1.0 - 2.0 * (_t2 + _t6));
         }
-        d.x = Math.asin(Math.min(1.0, Math.max(-1.0, _t10)));
+        d.x = Math.atan2(_t10, Math.sqrt(_t17));
         return d;
     }
 
@@ -1306,6 +1319,9 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1329,7 +1345,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
             d.x = Math.atan2(2.0 * (this.rX * this.rW - this.rY * this.rZ), 1.0 - 2.0 * (_t6 + _t1));
             d.y = Math.atan2(_t11, _t13);
         }
-        d.z = Math.asin(Math.min(1.0, Math.max(-1.0, _t12)));
+        d.z = Math.atan2(_t12, Math.sqrt(_t17));
         return d;
     }
 
@@ -1340,6 +1356,9 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1363,7 +1382,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
             d.y = Math.atan2(2.0 * (this.rY * this.rW - this.rX * this.rZ), 1.0 - 2.0 * (_t2 + _t6));
             d.z = Math.atan2(_t12, _t13);
         }
-        d.x = Math.asin(Math.min(1.0, Math.max(-1.0, _t10)));
+        d.x = Math.atan2(_t10, Math.sqrt(_t17));
         return d;
     }
 
@@ -1374,6 +1393,9 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
+     * <p>
+     * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
+     * {@code double} resolution over its whole range, down to 0.
      *
      * @param dest will hold the result
      * @return dest
@@ -1397,7 +1419,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
             d.x = Math.atan2(2.0 * (this.rX * this.rW + this.rY * this.rZ), 1.0 - 2.0 * (_t6 + _t0));
             d.z = Math.atan2(_t11, _t13);
         }
-        d.y = Math.asin(Math.min(1.0, Math.max(-1.0, _t12)));
+        d.y = Math.atan2(_t12, Math.sqrt(_t17));
         return d;
     }
 

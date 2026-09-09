@@ -409,7 +409,7 @@ public class Double2x3Impl implements Double2x3 {
     /**
      * Invert this affine matrix, i.e. compute the inverse of the implied square homogeneous matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 invert() {
         if (Joml.RETURN_NEW) return invert(Joml.double2x3());
@@ -690,7 +690,7 @@ public class Double2x3Impl implements Double2x3 {
      * {@code (this * other)^-1}.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 invertProduct(Double2x3R other) {
         if (Joml.RETURN_NEW) return invertProduct(other, Joml.double2x3());
@@ -1004,7 +1004,7 @@ public class Double2x3Impl implements Double2x3 {
      * Add {@code other} to this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 add(Double2x3R other) {
         if (Joml.RETURN_NEW) return add(other, Joml.double2x3());
@@ -1173,7 +1173,7 @@ public class Double2x3Impl implements Double2x3 {
     /**
      * Negate this matrix.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 negate() {
         if (Joml.RETURN_NEW) return negate(Joml.double2x3());
@@ -1356,7 +1356,7 @@ public class Double2x3Impl implements Double2x3 {
      * Subtract {@code other} from this matrix.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 sub(Double2x3R other) {
         if (Joml.RETURN_NEW) return sub(other, Joml.double2x3());
@@ -1513,7 +1513,7 @@ public class Double2x3Impl implements Double2x3 {
      * translation instead of composing a translation onto the existing transformation.
      *
      * @param t the translation offsets
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double2x3 withTranslation(Double2R t) {
         return withTranslation(t.x(), t.y());
@@ -1615,7 +1615,7 @@ public class Double2x3Impl implements Double2x3 {
      *
      * @param tX the {@code x} component of the translation offsets {@code (tX, tY)}
      * @param tY the {@code y} component of the translation offsets {@code (tX, tY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 withTranslation(double tX, double tY) {
         if (Joml.RETURN_NEW) return withTranslation(tX, tY, Joml.double2x3());
@@ -1934,7 +1934,7 @@ public class Double2x3Impl implements Double2x3 {
      *
      * @param other the other matrix
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 lerp(Double2x3R other, double t) {
         if (Joml.RETURN_NEW) return lerp(other, t, Joml.double2x3());
@@ -2125,7 +2125,7 @@ public class Double2x3Impl implements Double2x3 {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 mul(Double2x3R right) {
         if (Joml.RETURN_NEW) return mul(right, Joml.double2x3());
@@ -2303,7 +2303,7 @@ public class Double2x3Impl implements Double2x3 {
      * the product is projected back onto this shape.
      *
      * @param right the right operand
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 mul(Double2x2R right) {
         if (Joml.RETURN_NEW) return mul(right, Joml.double2x3());
@@ -2635,7 +2635,7 @@ public class Double2x3Impl implements Double2x3 {
      * by using {@code T * M * v}, the given transformation will be applied last.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 preMul(Double2x3R other) {
         if (Joml.RETURN_NEW) return preMul(other, Joml.double2x3());
@@ -2812,7 +2812,7 @@ public class Double2x3Impl implements Double2x3 {
      * the product is projected back onto this shape.
      *
      * @param other the other matrix
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 preMul(Double2x2R other) {
         if (Joml.RETURN_NEW) return preMul(other, Joml.double2x3());
@@ -3246,7 +3246,7 @@ public class Double2x3Impl implements Double2x3 {
      * {@code R * M * v}, the rotation will be applied last.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 preRotate(double angle) {
         if (Joml.RETURN_NEW) return preRotate(angle, Joml.double2x3());
@@ -3264,6 +3264,10 @@ public class Double2x3Impl implements Double2x3 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivot the pivot point
@@ -3281,10 +3285,14 @@ public class Double2x3Impl implements Double2x3 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double2x3 preRotateAround(double angle, Double2R pivot) {
         return preRotateAround(angle, pivot.x(), pivot.y());
@@ -3299,13 +3307,14 @@ public class Double2x3Impl implements Double2x3 {
         Double2x3Impl d = (Double2x3Impl) dest;
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -pivotX;
+        double _t3 = Math.sin(0.5 * angle);
+        double _t5 = 2.0 * _t3 * _t3;
         d.m00 = _t0;
         d.m10 = _t1;
         d.m01 = -_t1;
         d.m11 = _t0;
-        d.m02 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX));
-        d.m12 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY));
+        d.m02 = Math.fma(pivotX, _t5, pivotY * _t1);
+        d.m12 = Math.fma(pivotY, _t5, -(pivotX * _t1));
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -3319,13 +3328,14 @@ public class Double2x3Impl implements Double2x3 {
         Double2x3Impl d = (Double2x3Impl) dest;
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -pivotX;
+        double _t3 = Math.sin(0.5 * angle);
+        double _t5 = 2.0 * _t3 * _t3;
         d.m00 = _t0;
         d.m10 = _t1;
         d.m01 = -_t1;
         d.m11 = _t0;
-        double _buf0 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, Math.fma(this.m02, _t0, Math.fma(-this.m12, _t1, pivotX))));
-        d.m12 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, Math.fma(this.m02, _t1, Math.fma(this.m12, _t0, pivotY))));
+        double _buf0 = Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(this.m02, _t0, -(this.m12 * _t1));
+        d.m12 = Math.fma(this.m02, _t1, this.m12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1));
         d.m02 = _buf0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -3340,13 +3350,14 @@ public class Double2x3Impl implements Double2x3 {
         Double2x3Impl d = (Double2x3Impl) dest;
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -pivotX;
+        double _t3 = Math.sin(0.5 * angle);
+        double _t5 = 2.0 * _t3 * _t3;
         double _buf0 = Math.fma(this.m00, _t0, -(this.m10 * _t1));
         d.m10 = Math.fma(this.m00, _t1, this.m10 * _t0);
         double _buf1 = Math.fma(this.m01, _t0, -(this.m11 * _t1));
         d.m11 = Math.fma(this.m01, _t1, this.m11 * _t0);
-        double _buf2 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, Math.fma(this.m02, _t0, Math.fma(-this.m12, _t1, pivotX))));
-        d.m12 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, Math.fma(this.m02, _t1, Math.fma(this.m12, _t0, pivotY))));
+        double _buf2 = Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(this.m02, _t0, -(this.m12 * _t1));
+        d.m12 = Math.fma(this.m02, _t1, this.m12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1));
         d.m00 = _buf0;
         d.m01 = _buf1;
         d.m02 = _buf2;
@@ -3363,13 +3374,14 @@ public class Double2x3Impl implements Double2x3 {
         Double2x3Impl d = (Double2x3Impl) dest;
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -pivotX;
+        double _t3 = Math.sin(0.5 * angle);
+        double _t5 = 2.0 * _t3 * _t3;
         double _buf0 = Math.fma(this.m00, _t0, -(this.m10 * _t1));
         d.m10 = Math.fma(this.m00, _t1, this.m10 * _t0);
         double _buf1 = Math.fma(this.m01, _t0, -(this.m11 * _t1));
         d.m11 = Math.fma(this.m01, _t1, this.m11 * _t0);
-        double _buf2 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, Math.fma(this.m02, _t0, Math.fma(-this.m12, _t1, pivotX))));
-        d.m12 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, Math.fma(this.m02, _t1, Math.fma(this.m12, _t0, pivotY))));
+        double _buf2 = Math.fma(pivotX, _t5, pivotY * _t1) + Math.fma(this.m02, _t0, -(this.m12 * _t1));
+        d.m12 = Math.fma(this.m02, _t1, this.m12 * _t0) + Math.fma(pivotY, _t5, -(pivotX * _t1));
         d.m00 = _buf0;
         d.m01 = _buf1;
         d.m02 = _buf2;
@@ -3385,6 +3397,10 @@ public class Double2x3Impl implements Double2x3 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
@@ -3408,11 +3424,15 @@ public class Double2x3Impl implements Double2x3 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the rotation will be applied last.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 preRotateAround(double angle, double pivotX, double pivotY) {
         if (Joml.RETURN_NEW) return preRotateAround(angle, pivotX, pivotY, Joml.double2x3());
@@ -3448,7 +3468,7 @@ public class Double2x3Impl implements Double2x3 {
      * {@code S * M * p}, the scaling will be applied last.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double2x3 preScale(Double2R v) {
         return preScale(v.x(), v.y());
@@ -3564,7 +3584,7 @@ public class Double2x3Impl implements Double2x3 {
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY)}
      * @param vY the {@code y} component of the vector {@code (vX, vY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 preScale(double vX, double vY) {
         if (Joml.RETURN_NEW) return preScale(vX, vY, Joml.double2x3());
@@ -3681,7 +3701,7 @@ public class Double2x3Impl implements Double2x3 {
      * {@code S * M * v}, the scaling will be applied last.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 preScale(double s) {
         if (Joml.RETURN_NEW) return preScale(s, Joml.double2x3());
@@ -3719,7 +3739,7 @@ public class Double2x3Impl implements Double2x3 {
      *
      * @param s the uniform scale factor
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double2x3 preScaleAround(double s, Double2R pivot) {
         return preScaleAround(s, pivot.x(), pivot.y());
@@ -3840,7 +3860,7 @@ public class Double2x3Impl implements Double2x3 {
      * @param s the uniform scale factor
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 preScaleAround(double s, double pivotX, double pivotY) {
         if (Joml.RETURN_NEW) return preScaleAround(s, pivotX, pivotY, Joml.double2x3());
@@ -3878,7 +3898,7 @@ public class Double2x3Impl implements Double2x3 {
      *
      * @param s the scale factors
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double2x3 preScaleAround(Double2R s, Double2R pivot) {
         return preScaleAround(s.x(), s.y(), pivot.x(), pivot.y());
@@ -3968,7 +3988,7 @@ public class Double2x3Impl implements Double2x3 {
      * @param sY the {@code y} component of the vector {@code (sX, sY)}
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 preScaleAround(double sX, double sY, double pivotX, double pivotY) {
         if (Joml.RETURN_NEW) return preScaleAround(sX, sY, pivotX, pivotY, Joml.double2x3());
@@ -4003,7 +4023,7 @@ public class Double2x3Impl implements Double2x3 {
      * {@code T * M * p}, the translation will be applied last.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double2x3 preTranslate(Double2R v) {
         return preTranslate(v.x(), v.y());
@@ -4135,7 +4155,7 @@ public class Double2x3Impl implements Double2x3 {
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY)}
      * @param vY the {@code y} component of the vector {@code (vX, vY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 preTranslate(double vX, double vY) {
         if (Joml.RETURN_NEW) return preTranslate(vX, vY, Joml.double2x3());
@@ -4232,7 +4252,7 @@ public class Double2x3Impl implements Double2x3 {
      * {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 rotate(double angle) {
         if (Joml.RETURN_NEW) return rotate(angle, Joml.double2x3());
@@ -4250,6 +4270,10 @@ public class Double2x3Impl implements Double2x3 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivot the pivot point
@@ -4267,10 +4291,14 @@ public class Double2x3Impl implements Double2x3 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double2x3 rotateAround(double angle, Double2R pivot) {
         return rotateAround(angle, pivot.x(), pivot.y());
@@ -4294,13 +4322,14 @@ public class Double2x3Impl implements Double2x3 {
         Double2x3Impl d = (Double2x3Impl) dest;
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -pivotX;
+        double _t3 = Math.sin(0.5 * angle);
+        double _t5 = 2.0 * _t3 * _t3;
         d.m00 = _t0;
         d.m10 = _t1;
         d.m01 = -_t1;
         d.m11 = _t0;
-        d.m02 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, this.m02 + pivotX));
-        d.m12 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, this.m12 + pivotY));
+        d.m02 = Math.fma(pivotX, _t5, Math.fma(pivotY, _t1, this.m02));
+        d.m12 = Math.fma(pivotY, _t5, Math.fma(-pivotX, _t1, this.m12));
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -4314,15 +4343,16 @@ public class Double2x3Impl implements Double2x3 {
         Double2x3Impl d = (Double2x3Impl) dest;
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -pivotX;
-        double _t6 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX));
-        double _t7 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY));
+        double _t3 = Math.sin(0.5 * angle);
+        double _t8 = 2.0 * _t3 * _t3;
+        double _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
+        double _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
         double _buf0 = Math.fma(this.m00, _t0, this.m01 * _t1);
         double _buf1 = Math.fma(this.m10, _t0, this.m11 * _t1);
         double _buf2 = Math.fma(this.m01, _t0, -(this.m00 * _t1));
         double _buf3 = Math.fma(this.m11, _t0, -(this.m10 * _t1));
-        d.m02 = Math.fma(this.m00, _t6, Math.fma(this.m01, _t7, this.m02));
-        d.m12 = Math.fma(this.m10, _t6, Math.fma(this.m11, _t7, this.m12));
+        d.m02 = Math.fma(this.m00, _t9, Math.fma(this.m01, _t10, this.m02));
+        d.m12 = Math.fma(this.m10, _t9, Math.fma(this.m11, _t10, this.m12));
         d.m00 = _buf0;
         d.m10 = _buf1;
         d.m01 = _buf2;
@@ -4340,15 +4370,16 @@ public class Double2x3Impl implements Double2x3 {
         Double2x3Impl d = (Double2x3Impl) dest;
         double _t0 = Math.cos(angle);
         double _t1 = Math.sin(angle);
-        double _t2 = -pivotX;
-        double _t6 = Math.fma(pivotY, _t1, Math.fma(_t2, _t0, pivotX));
-        double _t7 = Math.fma(_t2, _t1, Math.fma(-pivotY, _t0, pivotY));
+        double _t3 = Math.sin(0.5 * angle);
+        double _t8 = 2.0 * _t3 * _t3;
+        double _t9 = Math.fma(pivotX, _t8, pivotY * _t1);
+        double _t10 = Math.fma(pivotY, _t8, -(pivotX * _t1));
         double _buf0 = Math.fma(this.m00, _t0, this.m01 * _t1);
         double _buf1 = Math.fma(this.m10, _t0, this.m11 * _t1);
         double _buf2 = Math.fma(this.m01, _t0, -(this.m00 * _t1));
         double _buf3 = Math.fma(this.m11, _t0, -(this.m10 * _t1));
-        d.m02 = Math.fma(this.m00, _t6, Math.fma(this.m01, _t7, this.m02));
-        d.m12 = Math.fma(this.m10, _t6, Math.fma(this.m11, _t7, this.m12));
+        d.m02 = Math.fma(this.m00, _t9, Math.fma(this.m01, _t10, this.m02));
+        d.m12 = Math.fma(this.m10, _t9, Math.fma(this.m11, _t10, this.m12));
         d.m00 = _buf0;
         d.m10 = _buf1;
         d.m01 = _buf2;
@@ -4365,6 +4396,10 @@ public class Double2x3Impl implements Double2x3 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
@@ -4388,11 +4423,15 @@ public class Double2x3Impl implements Double2x3 {
      * If {@code M} is {@code this} matrix and {@code R} the rotation matrix, then the new matrix
      * will be {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the rotation will be applied first.
+     * <p>
+     * The pivot sandwich {@code translate(pivot) * R * translate(-pivot)} is evaluated so that its
+     * translation part, {@code pivot - R * pivot}, keeps its accuracy for pivots far from the
+     * origin.
      *
      * @param angle the angle in radians
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 rotateAround(double angle, double pivotX, double pivotY) {
         if (Joml.RETURN_NEW) return rotateAround(angle, pivotX, pivotY, Joml.double2x3());
@@ -4428,7 +4467,7 @@ public class Double2x3Impl implements Double2x3 {
      * {@code M * S * p}, the scaling will be applied first.
      *
      * @param v the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double2x3 scale(Double2R v) {
         return scale(v.x(), v.y());
@@ -4532,7 +4571,7 @@ public class Double2x3Impl implements Double2x3 {
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY)}
      * @param vY the {@code y} component of the vector {@code (vX, vY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 scale(double vX, double vY) {
         if (Joml.RETURN_NEW) return scale(vX, vY, Joml.double2x3());
@@ -4637,7 +4676,7 @@ public class Double2x3Impl implements Double2x3 {
      * {@code M * S * v}, the scaling will be applied first.
      *
      * @param s the uniform scale factor
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 scale(double s) {
         if (Joml.RETURN_NEW) return scale(s, Joml.double2x3());
@@ -4675,7 +4714,7 @@ public class Double2x3Impl implements Double2x3 {
      *
      * @param s the uniform scale factor
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double2x3 scaleAround(double s, Double2R pivot) {
         return scaleAround(s, pivot.x(), pivot.y());
@@ -4798,7 +4837,7 @@ public class Double2x3Impl implements Double2x3 {
      * @param s the uniform scale factor
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 scaleAround(double s, double pivotX, double pivotY) {
         if (Joml.RETURN_NEW) return scaleAround(s, pivotX, pivotY, Joml.double2x3());
@@ -4837,7 +4876,7 @@ public class Double2x3Impl implements Double2x3 {
      *
      * @param s the scale factors
      * @param pivot the pivot point
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double2x3 scaleAround(Double2R s, Double2R pivot) {
         return scaleAround(s.x(), s.y(), pivot.x(), pivot.y());
@@ -4962,7 +5001,7 @@ public class Double2x3Impl implements Double2x3 {
      * @param sY the {@code y} component of the vector {@code (sX, sY)}
      * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
      * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 scaleAround(double sX, double sY, double pivotX, double pivotY) {
         if (Joml.RETURN_NEW) return scaleAround(sX, sY, pivotX, pivotY, Joml.double2x3());
@@ -4998,7 +5037,7 @@ public class Double2x3Impl implements Double2x3 {
      * {@code M * T * p}, the translation will be applied first.
      *
      * @param v the translation offsets
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     public @Mutated Double2x3 translate(Double2R v) {
         return translate(v.x(), v.y());
@@ -5114,7 +5153,7 @@ public class Double2x3Impl implements Double2x3 {
      *
      * @param vX the {@code x} component of the translation offsets {@code (vX, vY)}
      * @param vY the {@code y} component of the translation offsets {@code (vX, vY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 translate(double vX, double vY) {
         if (Joml.RETURN_NEW) return translate(vX, vY, Joml.double2x3());
@@ -5296,7 +5335,7 @@ public class Double2x3Impl implements Double2x3 {
      * @param right the distance to the right edge of the view rectangle
      * @param bottom the distance to the bottom edge of the view rectangle
      * @param top the distance to the top edge of the view rectangle
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated public Double2x3 view(double left, double right, double bottom, double top) {
         if (Joml.RETURN_NEW) return view(left, right, bottom, top, Joml.double2x3());

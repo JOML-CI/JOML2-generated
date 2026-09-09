@@ -18,6 +18,23 @@ import org.joml2.internal.simd.*;
  * (the {@code ByteBuffer} default is big-endian) is honoured through the slower
  * API path.</p>
  *
+ * <p>With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API
+ * backend goes through the buffers' own {@code get}/{@code put} methods and performs the
+ * standard checks. Heap arrays are bounds-checked on every backend
+ * ({@link IndexOutOfBoundsException}). The UNSAFE backend uses {@code sun.misc.Unsafe}; on
+ * JDK 23+ (JEP 471) run with {@code --sun-misc-unsafe-memory-access=allow} or select
+ * {@code -Djoml.storeLoadBackend=api}.</p>
+ *
+ * <p>Edge cases, per backend: a read-only {@code dest} buffer never takes the Unsafe path
+ * and is rejected by the API path ({@link java.nio.ReadOnlyBufferException} from the buffer
+ * {@code put}). Buffer offsets are absolute indices counted from index 0, regardless of
+ * the buffer's position; the API path uses the buffer's absolute {@code get}/{@code put}, so
+ * an access beyond the {@code limit} throws {@link IndexOutOfBoundsException}, whereas the
+ * UNSAFE path addresses a direct buffer by its base address and ignores position, limit and
+ * capacity. A negative {@code count} performs no reads or writes on the API and SIMD paths;
+ * the UNSAFE {@code copy} fast path rejects it ({@link IndexOutOfBoundsException} for an
+ * array end, {@link IllegalArgumentException} from {@code Unsafe.copyMemory} otherwise).</p>
+ *
  * <p>All buffer parameters in a single call must use the same storage backing,
  * except the {@code copy} methods, which translate between any two backings.
  * Elements are laid out in component order (the canonical Double3 storage order).</p>
@@ -60,13 +77,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.add_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #add(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #add(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer add(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.add_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
         return Double3OpsKernelsByteBuffer.add_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #add(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #add(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long add(long dest, long src, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.add_unsafe(dest, src, otherX, otherY, otherZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -102,13 +120,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.add_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #add(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #add(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer add(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.add_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double3OpsKernelsByteBuffer.add_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #add(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #add(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long add(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.add_unsafe(dest, src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -141,13 +160,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.div_api(dest, destOffset, src, srcOffset, scalar);
     }
 
-    /** {@link #div(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #div(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer div(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.div_unsafe(dest, destOffset, src, srcOffset, scalar);
         return Double3OpsKernelsByteBuffer.div_api(dest, destOffset, src, srcOffset, scalar);
     }
 
-    /** {@link #div(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #div(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long div(long dest, long src, double scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.div_unsafe(dest, src, scalar);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -181,13 +201,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.div_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #div(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #div(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer div(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.div_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
         return Double3OpsKernelsByteBuffer.div_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #div(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #div(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long div(long dest, long src, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.div_unsafe(dest, src, otherX, otherY, otherZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -223,13 +244,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.div_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #div(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #div(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer div(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.div_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double3OpsKernelsByteBuffer.div_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #div(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #div(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long div(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.div_unsafe(dest, src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -265,13 +287,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.fma_api(dest, destOffset, src, srcOffset, b, cX, cY, cZ);
     }
 
-    /** {@link #fma(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #fma(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer fma(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double b, double cX, double cY, double cZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.fma_unsafe(dest, destOffset, src, srcOffset, b, cX, cY, cZ);
         return Double3OpsKernelsByteBuffer.fma_api(dest, destOffset, src, srcOffset, b, cX, cY, cZ);
     }
 
-    /** {@link #fma(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #fma(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long fma(long dest, long src, double b, double cX, double cY, double cZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.fma_unsafe(dest, src, b, cX, cY, cZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -309,13 +332,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.fma_api(dest, destOffset, src, srcOffset, c, cOffset, b);
     }
 
-    /** {@link #fma(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #fma(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer fma(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer c, int cOffset, double b) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && c.isDirect() && c.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.fma_unsafe(dest, destOffset, src, srcOffset, c, cOffset, b);
         return Double3OpsKernelsByteBuffer.fma_api(dest, destOffset, src, srcOffset, c, cOffset, b);
     }
 
-    /** {@link #fma(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #fma(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long fma(long dest, long src, long c, double b) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.fma_unsafe(dest, src, c, b);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -353,13 +377,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.fma_api(dest, destOffset, src, srcOffset, bX, bY, bZ, cX, cY, cZ);
     }
 
-    /** {@link #fma(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #fma(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer fma(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double bX, double bY, double bZ, double cX, double cY, double cZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.fma_unsafe(dest, destOffset, src, srcOffset, bX, bY, bZ, cX, cY, cZ);
         return Double3OpsKernelsByteBuffer.fma_api(dest, destOffset, src, srcOffset, bX, bY, bZ, cX, cY, cZ);
     }
 
-    /** {@link #fma(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #fma(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long fma(long dest, long src, double bX, double bY, double bZ, double cX, double cY, double cZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.fma_unsafe(dest, src, bX, bY, bZ, cX, cY, cZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -401,13 +426,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.fma_api(dest, destOffset, src, srcOffset, b, bOffset, c, cOffset);
     }
 
-    /** {@link #fma(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #fma(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer fma(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer b, int bOffset, java.nio.ByteBuffer c, int cOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && b.isDirect() && b.order() == java.nio.ByteOrder.nativeOrder() && c.isDirect() && c.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.fma_unsafe(dest, destOffset, src, srcOffset, b, bOffset, c, cOffset);
         return Double3OpsKernelsByteBuffer.fma_api(dest, destOffset, src, srcOffset, b, bOffset, c, cOffset);
     }
 
-    /** {@link #fma(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #fma(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long fma(long dest, long src, long b, long c) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.fma_unsafe(dest, src, b, c);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -440,13 +466,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.mul_api(dest, destOffset, src, srcOffset, scalar);
     }
 
-    /** {@link #mul(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mul(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.mul_unsafe(dest, destOffset, src, srcOffset, scalar);
         return Double3OpsKernelsByteBuffer.mul_api(dest, destOffset, src, srcOffset, scalar);
     }
 
-    /** {@link #mul(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mul(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mul(long dest, long src, double scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.mul_unsafe(dest, src, scalar);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -480,13 +507,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.mul_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #mul(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mul(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.mul_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
         return Double3OpsKernelsByteBuffer.mul_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #mul(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mul(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mul(long dest, long src, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.mul_unsafe(dest, src, otherX, otherY, otherZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -522,13 +550,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.mul_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #mul(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mul(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.mul_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double3OpsKernelsByteBuffer.mul_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #mul(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mul(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mul(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.mul_unsafe(dest, src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -559,13 +588,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.negate_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #negate(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #negate(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer negate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.negate_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.negate_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #negate(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #negate(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long negate(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.negate_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -599,13 +629,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.sub_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #sub(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #sub(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer sub(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.sub_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
         return Double3OpsKernelsByteBuffer.sub_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #sub(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #sub(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long sub(long dest, long src, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.sub_unsafe(dest, src, otherX, otherY, otherZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -641,13 +672,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.sub_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #sub(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #sub(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer sub(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.sub_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double3OpsKernelsByteBuffer.sub_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #sub(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #sub(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long sub(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.sub_unsafe(dest, src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -676,13 +708,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.set_api(dest, destOffset, vX, vY, vZ);
     }
 
-    /** {@link #set(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #set(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer set(java.nio.ByteBuffer dest, int destOffset, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.set_unsafe(dest, destOffset, vX, vY, vZ);
         return Double3OpsKernelsByteBuffer.set_api(dest, destOffset, vX, vY, vZ);
     }
 
-    /** {@link #set(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #set(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long set(long dest, double vX, double vY, double vZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.set_unsafe(dest, vX, vY, vZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -713,13 +746,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.set_api(dest, destOffset, v, vOffset);
     }
 
-    /** {@link #set(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #set(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer set(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer v, int vOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.set_unsafe(dest, destOffset, v, vOffset);
         return Double3OpsKernelsByteBuffer.set_api(dest, destOffset, v, vOffset);
     }
 
-    /** {@link #set(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #set(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long set(long dest, long v) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.set_unsafe(dest, v);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -746,13 +780,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.set_api(dest, destOffset, s);
     }
 
-    /** {@link #set(double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #set(double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer set(java.nio.ByteBuffer dest, int destOffset, double s) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.set_unsafe(dest, destOffset, s);
         return Double3OpsKernelsByteBuffer.set_api(dest, destOffset, s);
     }
 
-    /** {@link #set(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #set(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long set(long dest, double s) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.set_unsafe(dest, s);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -778,13 +813,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.makeZero_api(dest, destOffset);
     }
 
-    /** {@link #makeZero(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #makeZero(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer makeZero(java.nio.ByteBuffer dest, int destOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.makeZero_unsafe(dest, destOffset);
         return Double3OpsKernelsByteBuffer.makeZero_api(dest, destOffset);
     }
 
-    /** {@link #makeZero(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #makeZero(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeZero(long dest) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.makeZero_unsafe(dest);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -833,13 +869,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.bezier_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t);
     }
 
-    /** {@link #bezier(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #bezier(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer bezier(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z, double p3X, double p3Y, double p3Z, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.bezier_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t);
         return Double3OpsKernelsByteBuffer.bezier_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t);
     }
 
-    /** {@link #bezier(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #bezier(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long bezier(long dest, long src, double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z, double p3X, double p3Y, double p3Z, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.bezier_unsafe(dest, src, p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -894,13 +931,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.bezier_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
     }
 
-    /** {@link #bezier(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #bezier(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer bezier(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset, java.nio.ByteBuffer p3, int p3Offset, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder() && p3.isDirect() && p3.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.bezier_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
         return Double3OpsKernelsByteBuffer.bezier_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
     }
 
-    /** {@link #bezier(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #bezier(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long bezier(long dest, long src, long p1, long p2, long p3, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.bezier_unsafe(dest, src, p1, p2, p3, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -943,13 +981,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.bezier2_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z, t);
     }
 
-    /** {@link #bezier2(double[], int, double[], int, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #bezier2(double[], int, double[], int, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer bezier2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.bezier2_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z, t);
         return Double3OpsKernelsByteBuffer.bezier2_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z, t);
     }
 
-    /** {@link #bezier2(double[], int, double[], int, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #bezier2(double[], int, double[], int, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long bezier2(long dest, long src, double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.bezier2_unsafe(dest, src, p1X, p1Y, p1Z, p2X, p2Y, p2Z, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -996,13 +1035,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.bezier2_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, t);
     }
 
-    /** {@link #bezier2(double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #bezier2(double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer bezier2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.bezier2_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, t);
         return Double3OpsKernelsByteBuffer.bezier2_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, t);
     }
 
-    /** {@link #bezier2(double[], int, double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #bezier2(double[], int, double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long bezier2(long dest, long src, long p1, long p2, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.bezier2_unsafe(dest, src, p1, p2, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1044,13 +1084,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.bezier2Tangent_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z, t);
     }
 
-    /** {@link #bezier2Tangent(double[], int, double[], int, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #bezier2Tangent(double[], int, double[], int, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer bezier2Tangent(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.bezier2Tangent_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z, t);
         return Double3OpsKernelsByteBuffer.bezier2Tangent_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z, t);
     }
 
-    /** {@link #bezier2Tangent(double[], int, double[], int, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #bezier2Tangent(double[], int, double[], int, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long bezier2Tangent(long dest, long src, double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.bezier2Tangent_unsafe(dest, src, p1X, p1Y, p1Z, p2X, p2Y, p2Z, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1096,13 +1137,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.bezier2Tangent_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, t);
     }
 
-    /** {@link #bezier2Tangent(double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #bezier2Tangent(double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer bezier2Tangent(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.bezier2Tangent_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, t);
         return Double3OpsKernelsByteBuffer.bezier2Tangent_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, t);
     }
 
-    /** {@link #bezier2Tangent(double[], int, double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #bezier2Tangent(double[], int, double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long bezier2Tangent(long dest, long src, long p1, long p2, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.bezier2Tangent_unsafe(dest, src, p1, p2, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1149,13 +1191,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.bezierTangent_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t);
     }
 
-    /** {@link #bezierTangent(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #bezierTangent(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer bezierTangent(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z, double p3X, double p3Y, double p3Z, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.bezierTangent_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t);
         return Double3OpsKernelsByteBuffer.bezierTangent_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t);
     }
 
-    /** {@link #bezierTangent(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #bezierTangent(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long bezierTangent(long dest, long src, double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z, double p3X, double p3Y, double p3Z, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.bezierTangent_unsafe(dest, src, p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1208,13 +1251,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.bezierTangent_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
     }
 
-    /** {@link #bezierTangent(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #bezierTangent(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer bezierTangent(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset, java.nio.ByteBuffer p3, int p3Offset, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder() && p3.isDirect() && p3.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.bezierTangent_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
         return Double3OpsKernelsByteBuffer.bezierTangent_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
     }
 
-    /** {@link #bezierTangent(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #bezierTangent(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long bezierTangent(long dest, long src, long p1, long p2, long p3, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.bezierTangent_unsafe(dest, src, p1, p2, p3, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1258,13 +1302,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.catmullRom_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t);
     }
 
-    /** {@link #catmullRom(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #catmullRom(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer catmullRom(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z, double p3X, double p3Y, double p3Z, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.catmullRom_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t);
         return Double3OpsKernelsByteBuffer.catmullRom_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t);
     }
 
-    /** {@link #catmullRom(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #catmullRom(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long catmullRom(long dest, long src, double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z, double p3X, double p3Y, double p3Z, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.catmullRom_unsafe(dest, src, p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1314,13 +1359,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.catmullRom_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
     }
 
-    /** {@link #catmullRom(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #catmullRom(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer catmullRom(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset, java.nio.ByteBuffer p3, int p3Offset, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder() && p3.isDirect() && p3.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.catmullRom_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
         return Double3OpsKernelsByteBuffer.catmullRom_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
     }
 
-    /** {@link #catmullRom(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #catmullRom(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long catmullRom(long dest, long src, long p1, long p2, long p3, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.catmullRom_unsafe(dest, src, p1, p2, p3, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1364,13 +1410,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.catmullRomTangent_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t);
     }
 
-    /** {@link #catmullRomTangent(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #catmullRomTangent(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer catmullRomTangent(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z, double p3X, double p3Y, double p3Z, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.catmullRomTangent_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t);
         return Double3OpsKernelsByteBuffer.catmullRomTangent_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t);
     }
 
-    /** {@link #catmullRomTangent(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #catmullRomTangent(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long catmullRomTangent(long dest, long src, double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z, double p3X, double p3Y, double p3Z, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.catmullRomTangent_unsafe(dest, src, p1X, p1Y, p1Z, p2X, p2Y, p2Z, p3X, p3Y, p3Z, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1420,13 +1467,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.catmullRomTangent_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
     }
 
-    /** {@link #catmullRomTangent(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #catmullRomTangent(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer catmullRomTangent(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset, java.nio.ByteBuffer p3, int p3Offset, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder() && p3.isDirect() && p3.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.catmullRomTangent_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
         return Double3OpsKernelsByteBuffer.catmullRomTangent_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset, p3, p3Offset, t);
     }
 
-    /** {@link #catmullRomTangent(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #catmullRomTangent(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long catmullRomTangent(long dest, long src, long p1, long p2, long p3, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.catmullRomTangent_unsafe(dest, src, p1, p2, p3, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1474,13 +1522,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.hermite_api(dest, destOffset, src, srcOffset, t0X, t0Y, t0Z, v1X, v1Y, v1Z, t1X, t1Y, t1Z, t);
     }
 
-    /** {@link #hermite(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #hermite(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer hermite(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double t0X, double t0Y, double t0Z, double v1X, double v1Y, double v1Z, double t1X, double t1Y, double t1Z, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.hermite_unsafe(dest, destOffset, src, srcOffset, t0X, t0Y, t0Z, v1X, v1Y, v1Z, t1X, t1Y, t1Z, t);
         return Double3OpsKernelsByteBuffer.hermite_api(dest, destOffset, src, srcOffset, t0X, t0Y, t0Z, v1X, v1Y, v1Z, t1X, t1Y, t1Z, t);
     }
 
-    /** {@link #hermite(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #hermite(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long hermite(long dest, long src, double t0X, double t0Y, double t0Z, double v1X, double v1Y, double v1Z, double t1X, double t1Y, double t1Z, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.hermite_unsafe(dest, src, t0X, t0Y, t0Z, v1X, v1Y, v1Z, t1X, t1Y, t1Z, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1534,13 +1583,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.hermite_api(dest, destOffset, src, srcOffset, t0, t0Offset, v1, v1Offset, t1, t1Offset, t);
     }
 
-    /** {@link #hermite(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #hermite(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer hermite(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer t0, int t0Offset, java.nio.ByteBuffer v1, int v1Offset, java.nio.ByteBuffer t1, int t1Offset, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && t0.isDirect() && t0.order() == java.nio.ByteOrder.nativeOrder() && v1.isDirect() && v1.order() == java.nio.ByteOrder.nativeOrder() && t1.isDirect() && t1.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.hermite_unsafe(dest, destOffset, src, srcOffset, t0, t0Offset, v1, v1Offset, t1, t1Offset, t);
         return Double3OpsKernelsByteBuffer.hermite_api(dest, destOffset, src, srcOffset, t0, t0Offset, v1, v1Offset, t1, t1Offset, t);
     }
 
-    /** {@link #hermite(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #hermite(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long hermite(long dest, long src, long t0, long v1, long t1, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.hermite_unsafe(dest, src, t0, v1, t1, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1588,13 +1638,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.hermiteTangent_api(dest, destOffset, src, srcOffset, t0X, t0Y, t0Z, v1X, v1Y, v1Z, t1X, t1Y, t1Z, t);
     }
 
-    /** {@link #hermiteTangent(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #hermiteTangent(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer hermiteTangent(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double t0X, double t0Y, double t0Z, double v1X, double v1Y, double v1Z, double t1X, double t1Y, double t1Z, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.hermiteTangent_unsafe(dest, destOffset, src, srcOffset, t0X, t0Y, t0Z, v1X, v1Y, v1Z, t1X, t1Y, t1Z, t);
         return Double3OpsKernelsByteBuffer.hermiteTangent_api(dest, destOffset, src, srcOffset, t0X, t0Y, t0Z, v1X, v1Y, v1Z, t1X, t1Y, t1Z, t);
     }
 
-    /** {@link #hermiteTangent(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #hermiteTangent(double[], int, double[], int, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long hermiteTangent(long dest, long src, double t0X, double t0Y, double t0Z, double v1X, double v1Y, double v1Z, double t1X, double t1Y, double t1Z, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.hermiteTangent_unsafe(dest, src, t0X, t0Y, t0Z, v1X, v1Y, v1Z, t1X, t1Y, t1Z, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1648,13 +1699,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.hermiteTangent_api(dest, destOffset, src, srcOffset, t0, t0Offset, v1, v1Offset, t1, t1Offset, t);
     }
 
-    /** {@link #hermiteTangent(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #hermiteTangent(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer hermiteTangent(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer t0, int t0Offset, java.nio.ByteBuffer v1, int v1Offset, java.nio.ByteBuffer t1, int t1Offset, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && t0.isDirect() && t0.order() == java.nio.ByteOrder.nativeOrder() && v1.isDirect() && v1.order() == java.nio.ByteOrder.nativeOrder() && t1.isDirect() && t1.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.hermiteTangent_unsafe(dest, destOffset, src, srcOffset, t0, t0Offset, v1, v1Offset, t1, t1Offset, t);
         return Double3OpsKernelsByteBuffer.hermiteTangent_api(dest, destOffset, src, srcOffset, t0, t0Offset, v1, v1Offset, t1, t1Offset, t);
     }
 
-    /** {@link #hermiteTangent(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #hermiteTangent(double[], int, double[], int, double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long hermiteTangent(long dest, long src, long t0, long v1, long t1, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.hermiteTangent_unsafe(dest, src, t0, v1, t1, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1690,13 +1742,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.lerp_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, t);
     }
 
-    /** {@link #lerp(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #lerp(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer lerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.lerp_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, t);
         return Double3OpsKernelsByteBuffer.lerp_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, t);
     }
 
-    /** {@link #lerp(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #lerp(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long lerp(long dest, long src, double otherX, double otherY, double otherZ, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.lerp_unsafe(dest, src, otherX, otherY, otherZ, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1734,13 +1787,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.lerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
     }
 
-    /** {@link #lerp(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #lerp(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer lerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.lerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
         return Double3OpsKernelsByteBuffer.lerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
     }
 
-    /** {@link #lerp(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #lerp(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long lerp(long dest, long src, long other, double t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.lerp_unsafe(dest, src, other, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1778,13 +1832,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.lerp_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, tX, tY, tZ);
     }
 
-    /** {@link #lerp(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #lerp(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer lerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double tX, double tY, double tZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.lerp_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, tX, tY, tZ);
         return Double3OpsKernelsByteBuffer.lerp_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, tX, tY, tZ);
     }
 
-    /** {@link #lerp(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #lerp(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long lerp(long dest, long src, double otherX, double otherY, double otherZ, double tX, double tY, double tZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.lerp_unsafe(dest, src, otherX, otherY, otherZ, tX, tY, tZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1827,13 +1882,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.lerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t, tOffset);
     }
 
-    /** {@link #lerp(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #lerp(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer lerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, java.nio.ByteBuffer t, int tOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder() && t.isDirect() && t.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.lerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t, tOffset);
         return Double3OpsKernelsByteBuffer.lerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t, tOffset);
     }
 
-    /** {@link #lerp(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #lerp(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long lerp(long dest, long src, long other, long t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.lerp_unsafe(dest, src, other, t);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1865,13 +1921,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.absolute_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #absolute(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #absolute(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer absolute(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.absolute_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.absolute_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #absolute(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #absolute(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long absolute(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.absolute_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1902,13 +1959,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.acos_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #acos(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #acos(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer acos(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.acos_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.acos_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #acos(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #acos(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long acos(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.acos_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1943,13 +2001,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.addScaled_api(dest, destOffset, src, srcOffset, bX, bY, bZ, scalar);
     }
 
-    /** {@link #addScaled(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #addScaled(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer addScaled(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double bX, double bY, double bZ, double scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.addScaled_unsafe(dest, destOffset, src, srcOffset, bX, bY, bZ, scalar);
         return Double3OpsKernelsByteBuffer.addScaled_api(dest, destOffset, src, srcOffset, bX, bY, bZ, scalar);
     }
 
-    /** {@link #addScaled(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #addScaled(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long addScaled(long dest, long src, double bX, double bY, double bZ, double scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.addScaled_unsafe(dest, src, bX, bY, bZ, scalar);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -1986,13 +2045,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.addScaled_api(dest, destOffset, src, srcOffset, b, bOffset, scalar);
     }
 
-    /** {@link #addScaled(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #addScaled(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer addScaled(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer b, int bOffset, double scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && b.isDirect() && b.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.addScaled_unsafe(dest, destOffset, src, srcOffset, b, bOffset, scalar);
         return Double3OpsKernelsByteBuffer.addScaled_api(dest, destOffset, src, srcOffset, b, bOffset, scalar);
     }
 
-    /** {@link #addScaled(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #addScaled(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long addScaled(long dest, long src, long b, double scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.addScaled_unsafe(dest, src, b, scalar);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2029,13 +2089,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.addScaled_api(dest, destOffset, src, srcOffset, bX, bY, bZ, cX, cY, cZ);
     }
 
-    /** {@link #addScaled(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #addScaled(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer addScaled(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double bX, double bY, double bZ, double cX, double cY, double cZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.addScaled_unsafe(dest, destOffset, src, srcOffset, bX, bY, bZ, cX, cY, cZ);
         return Double3OpsKernelsByteBuffer.addScaled_api(dest, destOffset, src, srcOffset, bX, bY, bZ, cX, cY, cZ);
     }
 
-    /** {@link #addScaled(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #addScaled(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long addScaled(long dest, long src, double bX, double bY, double bZ, double cX, double cY, double cZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.addScaled_unsafe(dest, src, bX, bY, bZ, cX, cY, cZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2076,13 +2137,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.addScaled_api(dest, destOffset, src, srcOffset, b, bOffset, c, cOffset);
     }
 
-    /** {@link #addScaled(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #addScaled(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer addScaled(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer b, int bOffset, java.nio.ByteBuffer c, int cOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && b.isDirect() && b.order() == java.nio.ByteOrder.nativeOrder() && c.isDirect() && c.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.addScaled_unsafe(dest, destOffset, src, srcOffset, b, bOffset, c, cOffset);
         return Double3OpsKernelsByteBuffer.addScaled_api(dest, destOffset, src, srcOffset, b, bOffset, c, cOffset);
     }
 
-    /** {@link #addScaled(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #addScaled(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long addScaled(long dest, long src, long b, long c) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.addScaled_unsafe(dest, src, b, c);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2090,6 +2152,9 @@ public final class Double3Ops {
 
     /**
      * Compute the angle in radians between this vector and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
@@ -2102,7 +2167,10 @@ public final class Double3Ops {
         double _selfx = src[srcOffset + 0];
         double _selfy = src[srcOffset + 1];
         double _selfz = src[srcOffset + 2];
-        return Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy)) * (1.0 / Math.sqrt(Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)))) * (1.0 / Math.sqrt(Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY)))))));
+        double _t6 = Math.fma(otherZ, _selfy, -(otherY * _selfz));
+        double _t7 = Math.fma(otherY, _selfx, -(otherX * _selfy));
+        double _t8 = Math.fma(otherZ, _selfx, -(otherX * _selfz));
+        return Math.atan2(Math.sqrt(Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8))), Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy)));
     }
 
     /** {@link #angleBetween(double[], int, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
@@ -2111,13 +2179,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.angleBetween_api(src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #angleBetween(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #angleBetween(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double angleBetween(java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.angleBetween_unsafe(src, srcOffset, otherX, otherY, otherZ);
         return Double3OpsKernelsByteBuffer.angleBetween_api(src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #angleBetween(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #angleBetween(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double angleBetween(long src, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.angleBetween_unsafe(src, otherX, otherY, otherZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2125,6 +2194,9 @@ public final class Double3Ops {
 
     /**
      * Compute the angle in radians between this vector and {@code other}.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
@@ -2139,7 +2211,10 @@ public final class Double3Ops {
         double _otherx = other[otherOffset + 0];
         double _othery = other[otherOffset + 1];
         double _otherz = other[otherOffset + 2];
-        return Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy)) * (1.0 / Math.sqrt(Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)))) * (1.0 / Math.sqrt(Math.fma(_otherz, _otherz, Math.fma(_otherx, _otherx, _othery * _othery)))))));
+        double _t6 = Math.fma(_otherz, _selfy, -(_othery * _selfz));
+        double _t7 = Math.fma(_othery, _selfx, -(_otherx * _selfy));
+        double _t8 = Math.fma(_otherz, _selfx, -(_otherx * _selfz));
+        return Math.atan2(Math.sqrt(Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8))), Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy)));
     }
 
     /** {@link #angleBetween(double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -2148,13 +2223,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.angleBetween_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #angleBetween(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #angleBetween(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double angleBetween(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.angleBetween_unsafe(src, srcOffset, other, otherOffset);
         return Double3OpsKernelsByteBuffer.angleBetween_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #angleBetween(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #angleBetween(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double angleBetween(long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.angleBetween_unsafe(src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2185,13 +2261,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.asin_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #asin(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #asin(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer asin(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.asin_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.asin_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #asin(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #asin(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long asin(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.asin_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2223,13 +2300,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.atan_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #atan(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #atan(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer atan(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.atan_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.atan_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #atan(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #atan(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long atan(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.atan_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2263,13 +2341,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.atan2_api(dest, destOffset, src, srcOffset, x);
     }
 
-    /** {@link #atan2(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #atan2(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer atan2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double x) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.atan2_unsafe(dest, destOffset, src, srcOffset, x);
         return Double3OpsKernelsByteBuffer.atan2_api(dest, destOffset, src, srcOffset, x);
     }
 
-    /** {@link #atan2(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #atan2(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long atan2(long dest, long src, double x) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.atan2_unsafe(dest, src, x);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2305,13 +2384,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.atan2_api(dest, destOffset, src, srcOffset, xX, xY, xZ);
     }
 
-    /** {@link #atan2(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #atan2(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer atan2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double xX, double xY, double xZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.atan2_unsafe(dest, destOffset, src, srcOffset, xX, xY, xZ);
         return Double3OpsKernelsByteBuffer.atan2_api(dest, destOffset, src, srcOffset, xX, xY, xZ);
     }
 
-    /** {@link #atan2(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #atan2(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long atan2(long dest, long src, double xX, double xY, double xZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.atan2_unsafe(dest, src, xX, xY, xZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2349,13 +2429,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.atan2_api(dest, destOffset, src, srcOffset, x, xOffset);
     }
 
-    /** {@link #atan2(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #atan2(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer atan2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer x, int xOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && x.isDirect() && x.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.atan2_unsafe(dest, destOffset, src, srcOffset, x, xOffset);
         return Double3OpsKernelsByteBuffer.atan2_api(dest, destOffset, src, srcOffset, x, xOffset);
     }
 
-    /** {@link #atan2(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #atan2(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long atan2(long dest, long src, long x) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.atan2_unsafe(dest, src, x);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2386,13 +2467,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.cbrt_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #cbrt(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #cbrt(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer cbrt(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.cbrt_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.cbrt_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #cbrt(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #cbrt(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long cbrt(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.cbrt_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2423,13 +2505,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.ceil_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #ceil(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #ceil(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer ceil(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.ceil_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.ceil_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #ceil(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #ceil(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long ceil(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.ceil_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2463,13 +2546,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.clamp_api(dest, destOffset, src, srcOffset, min, max);
     }
 
-    /** {@link #clamp(double[], int, double[], int, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #clamp(double[], int, double[], int, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer clamp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double min, double max) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.clamp_unsafe(dest, destOffset, src, srcOffset, min, max);
         return Double3OpsKernelsByteBuffer.clamp_api(dest, destOffset, src, srcOffset, min, max);
     }
 
-    /** {@link #clamp(double[], int, double[], int, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #clamp(double[], int, double[], int, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long clamp(long dest, long src, double min, double max) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.clamp_unsafe(dest, src, min, max);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2507,13 +2591,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.clamp_api(dest, destOffset, src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
     }
 
-    /** {@link #clamp(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #clamp(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer clamp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.clamp_unsafe(dest, destOffset, src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
         return Double3OpsKernelsByteBuffer.clamp_api(dest, destOffset, src, srcOffset, minX, minY, minZ, maxX, maxY, maxZ);
     }
 
-    /** {@link #clamp(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #clamp(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long clamp(long dest, long src, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.clamp_unsafe(dest, src, minX, minY, minZ, maxX, maxY, maxZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2555,13 +2640,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.clamp_api(dest, destOffset, src, srcOffset, min, minOffset, max, maxOffset);
     }
 
-    /** {@link #clamp(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #clamp(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer clamp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer min, int minOffset, java.nio.ByteBuffer max, int maxOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && min.isDirect() && min.order() == java.nio.ByteOrder.nativeOrder() && max.isDirect() && max.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.clamp_unsafe(dest, destOffset, src, srcOffset, min, minOffset, max, maxOffset);
         return Double3OpsKernelsByteBuffer.clamp_api(dest, destOffset, src, srcOffset, min, minOffset, max, maxOffset);
     }
 
-    /** {@link #clamp(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #clamp(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long clamp(long dest, long src, long min, long max) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.clamp_unsafe(dest, src, min, max);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2613,13 +2699,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.closestPointOnLine_api(dest, destOffset, src, srcOffset, lineStartX, lineStartY, lineStartZ, lineEndX, lineEndY, lineEndZ);
     }
 
-    /** {@link #closestPointOnLine(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #closestPointOnLine(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer closestPointOnLine(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double lineStartX, double lineStartY, double lineStartZ, double lineEndX, double lineEndY, double lineEndZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.closestPointOnLine_unsafe(dest, destOffset, src, srcOffset, lineStartX, lineStartY, lineStartZ, lineEndX, lineEndY, lineEndZ);
         return Double3OpsKernelsByteBuffer.closestPointOnLine_api(dest, destOffset, src, srcOffset, lineStartX, lineStartY, lineStartZ, lineEndX, lineEndY, lineEndZ);
     }
 
-    /** {@link #closestPointOnLine(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #closestPointOnLine(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long closestPointOnLine(long dest, long src, double lineStartX, double lineStartY, double lineStartZ, double lineEndX, double lineEndY, double lineEndZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.closestPointOnLine_unsafe(dest, src, lineStartX, lineStartY, lineStartZ, lineEndX, lineEndY, lineEndZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2672,13 +2759,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.closestPointOnLine_api(dest, destOffset, src, srcOffset, lineStart, lineStartOffset, lineEnd, lineEndOffset);
     }
 
-    /** {@link #closestPointOnLine(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #closestPointOnLine(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer closestPointOnLine(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer lineStart, int lineStartOffset, java.nio.ByteBuffer lineEnd, int lineEndOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && lineStart.isDirect() && lineStart.order() == java.nio.ByteOrder.nativeOrder() && lineEnd.isDirect() && lineEnd.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.closestPointOnLine_unsafe(dest, destOffset, src, srcOffset, lineStart, lineStartOffset, lineEnd, lineEndOffset);
         return Double3OpsKernelsByteBuffer.closestPointOnLine_api(dest, destOffset, src, srcOffset, lineStart, lineStartOffset, lineEnd, lineEndOffset);
     }
 
-    /** {@link #closestPointOnLine(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #closestPointOnLine(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long closestPointOnLine(long dest, long src, long lineStart, long lineEnd) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.closestPointOnLine_unsafe(dest, src, lineStart, lineEnd);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2704,13 +2792,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.compAdd_api(src, srcOffset);
     }
 
-    /** {@link #compAdd(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #compAdd(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double compAdd(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.compAdd_unsafe(src, srcOffset);
         return Double3OpsKernelsByteBuffer.compAdd_api(src, srcOffset);
     }
 
-    /** {@link #compAdd(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #compAdd(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double compAdd(long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.compAdd_unsafe(src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2736,13 +2825,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.compMax_api(src, srcOffset);
     }
 
-    /** {@link #compMax(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #compMax(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double compMax(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.compMax_unsafe(src, srcOffset);
         return Double3OpsKernelsByteBuffer.compMax_api(src, srcOffset);
     }
 
-    /** {@link #compMax(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #compMax(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double compMax(long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.compMax_unsafe(src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2768,13 +2858,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.compMin_api(src, srcOffset);
     }
 
-    /** {@link #compMin(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #compMin(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double compMin(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.compMin_unsafe(src, srcOffset);
         return Double3OpsKernelsByteBuffer.compMin_api(src, srcOffset);
     }
 
-    /** {@link #compMin(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #compMin(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double compMin(long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.compMin_unsafe(src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2800,13 +2891,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.compMul_api(src, srcOffset);
     }
 
-    /** {@link #compMul(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #compMul(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double compMul(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.compMul_unsafe(src, srcOffset);
         return Double3OpsKernelsByteBuffer.compMul_api(src, srcOffset);
     }
 
-    /** {@link #compMul(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #compMul(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double compMul(long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.compMul_unsafe(src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2839,13 +2931,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.copySign_api(dest, destOffset, src, srcOffset, sign);
     }
 
-    /** {@link #copySign(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #copySign(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer copySign(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double sign) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.copySign_unsafe(dest, destOffset, src, srcOffset, sign);
         return Double3OpsKernelsByteBuffer.copySign_api(dest, destOffset, src, srcOffset, sign);
     }
 
-    /** {@link #copySign(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #copySign(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long copySign(long dest, long src, double sign) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.copySign_unsafe(dest, src, sign);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2880,13 +2973,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.copySign_api(dest, destOffset, src, srcOffset, signX, signY, signZ);
     }
 
-    /** {@link #copySign(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #copySign(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer copySign(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double signX, double signY, double signZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.copySign_unsafe(dest, destOffset, src, srcOffset, signX, signY, signZ);
         return Double3OpsKernelsByteBuffer.copySign_api(dest, destOffset, src, srcOffset, signX, signY, signZ);
     }
 
-    /** {@link #copySign(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #copySign(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long copySign(long dest, long src, double signX, double signY, double signZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.copySign_unsafe(dest, src, signX, signY, signZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2923,13 +3017,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.copySign_api(dest, destOffset, src, srcOffset, sign, signOffset);
     }
 
-    /** {@link #copySign(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #copySign(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer copySign(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer sign, int signOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && sign.isDirect() && sign.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.copySign_unsafe(dest, destOffset, src, srcOffset, sign, signOffset);
         return Double3OpsKernelsByteBuffer.copySign_api(dest, destOffset, src, srcOffset, sign, signOffset);
     }
 
-    /** {@link #copySign(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #copySign(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long copySign(long dest, long src, long sign) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.copySign_unsafe(dest, src, sign);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2960,13 +3055,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.cos_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #cos(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #cos(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer cos(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.cos_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.cos_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #cos(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #cos(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long cos(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.cos_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -2998,13 +3094,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.cosh_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #cosh(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #cosh(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer cosh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.cosh_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.cosh_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #cosh(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #cosh(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long cosh(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.cosh_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3039,13 +3136,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.cross_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #cross(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #cross(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer cross(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.cross_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
         return Double3OpsKernelsByteBuffer.cross_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #cross(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #cross(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long cross(long dest, long src, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.cross_unsafe(dest, src, otherX, otherY, otherZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3082,13 +3180,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.cross_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #cross(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #cross(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer cross(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.cross_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double3OpsKernelsByteBuffer.cross_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #cross(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #cross(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long cross(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.cross_unsafe(dest, src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3120,13 +3219,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.degrees_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #degrees(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #degrees(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer degrees(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.degrees_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.degrees_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #degrees(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #degrees(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long degrees(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.degrees_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3134,6 +3234,10 @@ public final class Double3Ops {
 
     /**
      * Compute the distance between this vector and {@code other}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the difference vector must lie
+     * roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
@@ -3158,13 +3262,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.distance_api(src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #distance(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #distance(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double distance(java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.distance_unsafe(src, srcOffset, otherX, otherY, otherZ);
         return Double3OpsKernelsByteBuffer.distance_api(src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #distance(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #distance(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double distance(long src, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.distance_unsafe(src, otherX, otherY, otherZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3172,6 +3277,10 @@ public final class Double3Ops {
 
     /**
      * Compute the distance between this vector and {@code other}.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the difference vector must lie
+     * roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
@@ -3198,13 +3307,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.distance_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #distance(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #distance(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double distance(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.distance_unsafe(src, srcOffset, other, otherOffset);
         return Double3OpsKernelsByteBuffer.distance_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #distance(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #distance(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double distance(long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.distance_unsafe(src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3236,13 +3346,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.distanceSquared_api(src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #distanceSquared(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #distanceSquared(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double distanceSquared(java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.distanceSquared_unsafe(src, srcOffset, otherX, otherY, otherZ);
         return Double3OpsKernelsByteBuffer.distanceSquared_api(src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #distanceSquared(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #distanceSquared(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double distanceSquared(long src, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.distanceSquared_unsafe(src, otherX, otherY, otherZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3276,13 +3387,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.distanceSquared_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #distanceSquared(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #distanceSquared(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double distanceSquared(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.distanceSquared_unsafe(src, srcOffset, other, otherOffset);
         return Double3OpsKernelsByteBuffer.distanceSquared_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #distanceSquared(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #distanceSquared(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double distanceSquared(long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.distanceSquared_unsafe(src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3311,13 +3423,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.dot_api(src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #dot(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #dot(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double dot(java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.dot_unsafe(src, srcOffset, otherX, otherY, otherZ);
         return Double3OpsKernelsByteBuffer.dot_api(src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #dot(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #dot(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double dot(long src, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.dot_unsafe(src, otherX, otherY, otherZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3348,13 +3461,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.dot_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #dot(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #dot(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double dot(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.dot_unsafe(src, srcOffset, other, otherOffset);
         return Double3OpsKernelsByteBuffer.dot_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #dot(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #dot(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double dot(long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.dot_unsafe(src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3386,13 +3500,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.exp_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #exp(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #exp(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer exp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.exp_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.exp_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #exp(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #exp(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long exp(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.exp_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3424,13 +3539,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.exp2_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #exp2(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #exp2(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer exp2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.exp2_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.exp2_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #exp2(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #exp2(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long exp2(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.exp2_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3462,13 +3578,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.expm1_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #expm1(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #expm1(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer expm1(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.expm1_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.expm1_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #expm1(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #expm1(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long expm1(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.expm1_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3514,13 +3631,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.faceforward_api(dest, destOffset, src, srcOffset, IX, IY, IZ, NrefX, NrefY, NrefZ);
     }
 
-    /** {@link #faceforward(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #faceforward(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer faceforward(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double IX, double IY, double IZ, double NrefX, double NrefY, double NrefZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.faceforward_unsafe(dest, destOffset, src, srcOffset, IX, IY, IZ, NrefX, NrefY, NrefZ);
         return Double3OpsKernelsByteBuffer.faceforward_api(dest, destOffset, src, srcOffset, IX, IY, IZ, NrefX, NrefY, NrefZ);
     }
 
-    /** {@link #faceforward(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #faceforward(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long faceforward(long dest, long src, double IX, double IY, double IZ, double NrefX, double NrefY, double NrefZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.faceforward_unsafe(dest, src, IX, IY, IZ, NrefX, NrefY, NrefZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3570,13 +3688,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.faceforward_api(dest, destOffset, src, srcOffset, I, IOffset, Nref, NrefOffset);
     }
 
-    /** {@link #faceforward(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #faceforward(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer faceforward(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer I, int IOffset, java.nio.ByteBuffer Nref, int NrefOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && I.isDirect() && I.order() == java.nio.ByteOrder.nativeOrder() && Nref.isDirect() && Nref.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.faceforward_unsafe(dest, destOffset, src, srcOffset, I, IOffset, Nref, NrefOffset);
         return Double3OpsKernelsByteBuffer.faceforward_api(dest, destOffset, src, srcOffset, I, IOffset, Nref, NrefOffset);
     }
 
-    /** {@link #faceforward(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #faceforward(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long faceforward(long dest, long src, long I, long Nref) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.faceforward_unsafe(dest, src, I, Nref);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3607,13 +3726,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.floor_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #floor(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #floor(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer floor(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.floor_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.floor_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #floor(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #floor(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long floor(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.floor_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3645,13 +3765,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.fract_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #fract(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #fract(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer fract(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.fract_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.fract_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #fract(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #fract(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long fract(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.fract_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3684,13 +3805,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.hypot_api(dest, destOffset, src, srcOffset, y);
     }
 
-    /** {@link #hypot(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #hypot(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer hypot(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double y) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.hypot_unsafe(dest, destOffset, src, srcOffset, y);
         return Double3OpsKernelsByteBuffer.hypot_api(dest, destOffset, src, srcOffset, y);
     }
 
-    /** {@link #hypot(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #hypot(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long hypot(long dest, long src, double y) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.hypot_unsafe(dest, src, y);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3726,13 +3848,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.hypot_api(dest, destOffset, src, srcOffset, yX, yY, yZ);
     }
 
-    /** {@link #hypot(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #hypot(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer hypot(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double yX, double yY, double yZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.hypot_unsafe(dest, destOffset, src, srcOffset, yX, yY, yZ);
         return Double3OpsKernelsByteBuffer.hypot_api(dest, destOffset, src, srcOffset, yX, yY, yZ);
     }
 
-    /** {@link #hypot(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #hypot(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long hypot(long dest, long src, double yX, double yY, double yZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.hypot_unsafe(dest, src, yX, yY, yZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3770,13 +3893,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.hypot_api(dest, destOffset, src, srcOffset, y, yOffset);
     }
 
-    /** {@link #hypot(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #hypot(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer hypot(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer y, int yOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && y.isDirect() && y.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.hypot_unsafe(dest, destOffset, src, srcOffset, y, yOffset);
         return Double3OpsKernelsByteBuffer.hypot_api(dest, destOffset, src, srcOffset, y, yOffset);
     }
 
-    /** {@link #hypot(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #hypot(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long hypot(long dest, long src, long y) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.hypot_unsafe(dest, src, y);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3808,13 +3932,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.inverse_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #inverse(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #inverse(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer inverse(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.inverse_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.inverse_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #inverse(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #inverse(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long inverse(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.inverse_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3846,13 +3971,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.inverseSqrt_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #inverseSqrt(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #inverseSqrt(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer inverseSqrt(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.inverseSqrt_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.inverseSqrt_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #inverseSqrt(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #inverseSqrt(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long inverseSqrt(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.inverseSqrt_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3860,6 +3986,10 @@ public final class Double3Ops {
 
     /**
      * Compute the length of this vector.
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of this vector must lie roughly
+     * between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
@@ -3878,13 +4008,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.length_api(src, srcOffset);
     }
 
-    /** {@link #length(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #length(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double length(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.length_unsafe(src, srcOffset);
         return Double3OpsKernelsByteBuffer.length_api(src, srcOffset);
     }
 
-    /** {@link #length(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #length(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double length(long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.length_unsafe(src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3910,13 +4041,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.lengthSquared_api(src, srcOffset);
     }
 
-    /** {@link #lengthSquared(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #lengthSquared(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double lengthSquared(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.lengthSquared_unsafe(src, srcOffset);
         return Double3OpsKernelsByteBuffer.lengthSquared_api(src, srcOffset);
     }
 
-    /** {@link #lengthSquared(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #lengthSquared(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double lengthSquared(long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.lengthSquared_unsafe(src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3948,13 +4080,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.log_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #log(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #log(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer log(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.log_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.log_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #log(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #log(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long log(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.log_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -3986,13 +4119,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.log10_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #log10(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #log10(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer log10(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.log10_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.log10_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #log10(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #log10(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long log10(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.log10_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4024,13 +4158,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.log1p_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #log1p(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #log1p(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer log1p(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.log1p_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.log1p_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #log1p(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #log1p(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long log1p(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.log1p_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4064,13 +4199,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.log2_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #log2(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #log2(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer log2(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.log2_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.log2_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #log2(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #log2(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long log2(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.log2_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4099,13 +4235,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.manhattanDistance_api(src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #manhattanDistance(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #manhattanDistance(double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double manhattanDistance(java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.manhattanDistance_unsafe(src, srcOffset, otherX, otherY, otherZ);
         return Double3OpsKernelsByteBuffer.manhattanDistance_api(src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #manhattanDistance(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #manhattanDistance(double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double manhattanDistance(long src, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.manhattanDistance_unsafe(src, otherX, otherY, otherZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4136,13 +4273,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.manhattanDistance_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #manhattanDistance(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #manhattanDistance(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double manhattanDistance(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.manhattanDistance_unsafe(src, srcOffset, other, otherOffset);
         return Double3OpsKernelsByteBuffer.manhattanDistance_api(src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #manhattanDistance(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #manhattanDistance(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double manhattanDistance(long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.manhattanDistance_unsafe(src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4168,13 +4306,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.manhattanLength_api(src, srcOffset);
     }
 
-    /** {@link #manhattanLength(double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #manhattanLength(double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double manhattanLength(java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.manhattanLength_unsafe(src, srcOffset);
         return Double3OpsKernelsByteBuffer.manhattanLength_api(src, srcOffset);
     }
 
-    /** {@link #manhattanLength(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #manhattanLength(double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double manhattanLength(long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.manhattanLength_unsafe(src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4207,13 +4346,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.max_api(dest, destOffset, src, srcOffset, scalar);
     }
 
-    /** {@link #max(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #max(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer max(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.max_unsafe(dest, destOffset, src, srcOffset, scalar);
         return Double3OpsKernelsByteBuffer.max_api(dest, destOffset, src, srcOffset, scalar);
     }
 
-    /** {@link #max(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #max(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long max(long dest, long src, double scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.max_unsafe(dest, src, scalar);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4248,13 +4388,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.max_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #max(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #max(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer max(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.max_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
         return Double3OpsKernelsByteBuffer.max_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #max(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #max(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long max(long dest, long src, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.max_unsafe(dest, src, otherX, otherY, otherZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4291,13 +4432,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.max_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #max(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #max(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer max(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.max_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double3OpsKernelsByteBuffer.max_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #max(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #max(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long max(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.max_unsafe(dest, src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4330,13 +4472,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.min_api(dest, destOffset, src, srcOffset, scalar);
     }
 
-    /** {@link #min(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #min(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer min(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.min_unsafe(dest, destOffset, src, srcOffset, scalar);
         return Double3OpsKernelsByteBuffer.min_api(dest, destOffset, src, srcOffset, scalar);
     }
 
-    /** {@link #min(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #min(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long min(long dest, long src, double scalar) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.min_unsafe(dest, src, scalar);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4371,13 +4514,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.min_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #min(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #min(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer min(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.min_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
         return Double3OpsKernelsByteBuffer.min_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ);
     }
 
-    /** {@link #min(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #min(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long min(long dest, long src, double otherX, double otherY, double otherZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.min_unsafe(dest, src, otherX, otherY, otherZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4414,13 +4558,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.min_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #min(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #min(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer min(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.min_unsafe(dest, destOffset, src, srcOffset, other, otherOffset);
         return Double3OpsKernelsByteBuffer.min_api(dest, destOffset, src, srcOffset, other, otherOffset);
     }
 
-    /** {@link #min(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #min(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long min(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.min_unsafe(dest, src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4457,13 +4602,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.mod_api(dest, destOffset, src, srcOffset, y);
     }
 
-    /** {@link #mod(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mod(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mod(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double y) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.mod_unsafe(dest, destOffset, src, srcOffset, y);
         return Double3OpsKernelsByteBuffer.mod_api(dest, destOffset, src, srcOffset, y);
     }
 
-    /** {@link #mod(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mod(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mod(long dest, long src, double y) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.mod_unsafe(dest, src, y);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4501,13 +4647,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.mod_api(dest, destOffset, src, srcOffset, yX, yY, yZ);
     }
 
-    /** {@link #mod(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mod(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mod(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double yX, double yY, double yZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.mod_unsafe(dest, destOffset, src, srcOffset, yX, yY, yZ);
         return Double3OpsKernelsByteBuffer.mod_api(dest, destOffset, src, srcOffset, yX, yY, yZ);
     }
 
-    /** {@link #mod(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mod(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mod(long dest, long src, double yX, double yY, double yZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.mod_unsafe(dest, src, yX, yY, yZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4547,13 +4694,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.mod_api(dest, destOffset, src, srcOffset, y, yOffset);
     }
 
-    /** {@link #mod(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #mod(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer mod(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer y, int yOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && y.isDirect() && y.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.mod_unsafe(dest, destOffset, src, srcOffset, y, yOffset);
         return Double3OpsKernelsByteBuffer.mod_api(dest, destOffset, src, srcOffset, y, yOffset);
     }
 
-    /** {@link #mod(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #mod(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long mod(long dest, long src, long y) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.mod_unsafe(dest, src, y);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4585,13 +4733,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.nextDown_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #nextDown(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #nextDown(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer nextDown(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.nextDown_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.nextDown_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #nextDown(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #nextDown(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long nextDown(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.nextDown_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4623,13 +4772,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.nextUp_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #nextUp(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #nextUp(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer nextUp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.nextUp_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.nextUp_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #nextUp(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #nextUp(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long nextUp(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.nextUp_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4641,8 +4791,8 @@ public final class Double3Ops {
      * <p>
      * The squared length is formed at the component precision, so components whose squares overflow
      * or underflow that precision are out of domain: the result is the zero vector rather than a
-     * unit vector. Rescale such inputs before normalizing (the threshold is around 1.8e19 for
-     * {@code float} and 1.3e154 for {@code double}).
+     * unit vector. Rescale such inputs before normalizing (the magnitude must lie roughly between
+     * 1e-19 and 1.8e19 for {@code float}, 1.5e-154 and 1.3e154 for {@code double}).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -4674,13 +4824,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.normalize_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normalize(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #normalize(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer normalize(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.normalize_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.normalize_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #normalize(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #normalize(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long normalize(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.normalize_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4721,13 +4872,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.normalizeMul_api(dest, destOffset, src, srcOffset, length);
     }
 
-    /** {@link #normalizeMul(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #normalizeMul(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer normalizeMul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double length) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.normalizeMul_unsafe(dest, destOffset, src, srcOffset, length);
         return Double3OpsKernelsByteBuffer.normalizeMul_api(dest, destOffset, src, srcOffset, length);
     }
 
-    /** {@link #normalizeMul(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #normalizeMul(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long normalizeMul(long dest, long src, double length) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.normalizeMul_unsafe(dest, src, length);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4737,6 +4889,9 @@ public final class Double3Ops {
      * Compute the signed angle in radians between this vector and {@code other}, positive when the
      * rotation from this vector to {@code other} is counter-clockwise as seen from the direction of
      * the given normal.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
@@ -4754,10 +4909,11 @@ public final class Double3Ops {
         double _selfx = src[srcOffset + 0];
         double _selfy = src[srcOffset + 1];
         double _selfz = src[srcOffset + 2];
-        double _t6 = Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY));
-        double _t7 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
-        double _t15 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy)) * (1.0 / Math.sqrt(_t7)) * (1.0 / Math.sqrt(_t6)))));
-        return Math.sqrt(_t6) * Math.sqrt(_t7) > 0.0 ? Math.fma(normalZ, Math.fma(otherY, _selfx, -(otherX * _selfy)), Math.fma(normalX, Math.fma(otherZ, _selfy, -(otherY * _selfz)), normalY * Math.fma(otherX, _selfz, -(otherZ * _selfx)))) < 0.0 ? -_t15 : _t15 : 0.0;
+        double _t8 = Math.fma(otherY, _selfx, -(otherX * _selfy));
+        double _t9 = Math.fma(otherZ, _selfy, -(otherY * _selfz));
+        double _t10 = Math.fma(otherX, _selfz, -(otherZ * _selfx));
+        double _t16 = Math.atan2(Math.sqrt(Math.fma(_t8, _t8, Math.fma(_t10, _t10, _t9 * _t9))), Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy)));
+        return Math.fma(normalZ, _t8, Math.fma(normalX, _t9, normalY * _t10)) < 0.0 ? -_t16 : _t16;
     }
 
     /** {@link #orientedAngle(double[], int, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
@@ -4766,13 +4922,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.orientedAngle_api(src, srcOffset, otherX, otherY, otherZ, normalX, normalY, normalZ);
     }
 
-    /** {@link #orientedAngle(double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #orientedAngle(double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double orientedAngle(java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double normalX, double normalY, double normalZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.orientedAngle_unsafe(src, srcOffset, otherX, otherY, otherZ, normalX, normalY, normalZ);
         return Double3OpsKernelsByteBuffer.orientedAngle_api(src, srcOffset, otherX, otherY, otherZ, normalX, normalY, normalZ);
     }
 
-    /** {@link #orientedAngle(double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #orientedAngle(double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double orientedAngle(long src, double otherX, double otherY, double otherZ, double normalX, double normalY, double normalZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.orientedAngle_unsafe(src, otherX, otherY, otherZ, normalX, normalY, normalZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4782,6 +4939,9 @@ public final class Double3Ops {
      * Compute the signed angle in radians between this vector and {@code other}, positive when the
      * rotation from this vector to {@code other} is counter-clockwise as seen from the direction of
      * the given normal.
+     * <p>
+     * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
+     * way down to 0 (an {@code acos}-based form loses precision for small angles).
      *
      * @param src the storage holding the vector
      * @param srcOffset the element index in {@code src} at which the vector starts
@@ -4803,10 +4963,11 @@ public final class Double3Ops {
         double _normalx = normal[normalOffset + 0];
         double _normaly = normal[normalOffset + 1];
         double _normalz = normal[normalOffset + 2];
-        double _t6 = Math.fma(_otherz, _otherz, Math.fma(_otherx, _otherx, _othery * _othery));
-        double _t7 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
-        double _t15 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy)) * (1.0 / Math.sqrt(_t7)) * (1.0 / Math.sqrt(_t6)))));
-        return Math.sqrt(_t6) * Math.sqrt(_t7) > 0.0 ? Math.fma(_normalz, Math.fma(_othery, _selfx, -(_otherx * _selfy)), Math.fma(_normalx, Math.fma(_otherz, _selfy, -(_othery * _selfz)), _normaly * Math.fma(_otherx, _selfz, -(_otherz * _selfx)))) < 0.0 ? -_t15 : _t15 : 0.0;
+        double _t8 = Math.fma(_othery, _selfx, -(_otherx * _selfy));
+        double _t9 = Math.fma(_otherz, _selfy, -(_othery * _selfz));
+        double _t10 = Math.fma(_otherx, _selfz, -(_otherz * _selfx));
+        double _t16 = Math.atan2(Math.sqrt(Math.fma(_t8, _t8, Math.fma(_t10, _t10, _t9 * _t9))), Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy)));
+        return Math.fma(_normalz, _t8, Math.fma(_normalx, _t9, _normaly * _t10)) < 0.0 ? -_t16 : _t16;
     }
 
     /** {@link #orientedAngle(double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -4815,13 +4976,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.orientedAngle_api(src, srcOffset, other, otherOffset, normal, normalOffset);
     }
 
-    /** {@link #orientedAngle(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #orientedAngle(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static double orientedAngle(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, java.nio.ByteBuffer normal, int normalOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder() && normal.isDirect() && normal.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.orientedAngle_unsafe(src, srcOffset, other, otherOffset, normal, normalOffset);
         return Double3OpsKernelsByteBuffer.orientedAngle_api(src, srcOffset, other, otherOffset, normal, normalOffset);
     }
 
-    /** {@link #orientedAngle(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #orientedAngle(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static double orientedAngle(long src, long other, long normal) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.orientedAngle_unsafe(src, other, normal);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4862,13 +5024,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.outerProduct_api(dest, destOffset, src, srcOffset, rowX, rowY, rowZ);
     }
 
-    /** {@link #outerProduct(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #outerProduct(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer outerProduct(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double rowX, double rowY, double rowZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.outerProduct_unsafe(dest, destOffset, src, srcOffset, rowX, rowY, rowZ);
         return Double3OpsKernelsByteBuffer.outerProduct_api(dest, destOffset, src, srcOffset, rowX, rowY, rowZ);
     }
 
-    /** {@link #outerProduct(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #outerProduct(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long outerProduct(long dest, long src, double rowX, double rowY, double rowZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.outerProduct_unsafe(dest, src, rowX, rowY, rowZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4911,13 +5074,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.outerProduct_api(dest, destOffset, src, srcOffset, row, rowOffset);
     }
 
-    /** {@link #outerProduct(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #outerProduct(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer outerProduct(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer row, int rowOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && row.isDirect() && row.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.outerProduct_unsafe(dest, destOffset, src, srcOffset, row, rowOffset);
         return Double3OpsKernelsByteBuffer.outerProduct_api(dest, destOffset, src, srcOffset, row, rowOffset);
     }
 
-    /** {@link #outerProduct(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #outerProduct(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long outerProduct(long dest, long src, long row) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.outerProduct_unsafe(dest, src, row);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4955,13 +5119,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.perpendicular_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #perpendicular(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #perpendicular(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer perpendicular(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.perpendicular_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.perpendicular_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #perpendicular(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #perpendicular(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long perpendicular(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.perpendicular_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -4994,13 +5159,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.pow_api(dest, destOffset, src, srcOffset, exponent);
     }
 
-    /** {@link #pow(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #pow(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer pow(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double exponent) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.pow_unsafe(dest, destOffset, src, srcOffset, exponent);
         return Double3OpsKernelsByteBuffer.pow_api(dest, destOffset, src, srcOffset, exponent);
     }
 
-    /** {@link #pow(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #pow(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long pow(long dest, long src, double exponent) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.pow_unsafe(dest, src, exponent);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5038,13 +5204,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.pow_api(dest, destOffset, src, srcOffset, exponentX, exponentY, exponentZ);
     }
 
-    /** {@link #pow(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #pow(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer pow(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double exponentX, double exponentY, double exponentZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.pow_unsafe(dest, destOffset, src, srcOffset, exponentX, exponentY, exponentZ);
         return Double3OpsKernelsByteBuffer.pow_api(dest, destOffset, src, srcOffset, exponentX, exponentY, exponentZ);
     }
 
-    /** {@link #pow(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #pow(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long pow(long dest, long src, double exponentX, double exponentY, double exponentZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.pow_unsafe(dest, src, exponentX, exponentY, exponentZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5081,13 +5248,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.pow_api(dest, destOffset, src, srcOffset, exponent, exponentOffset);
     }
 
-    /** {@link #pow(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #pow(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer pow(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer exponent, int exponentOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && exponent.isDirect() && exponent.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.pow_unsafe(dest, destOffset, src, srcOffset, exponent, exponentOffset);
         return Double3OpsKernelsByteBuffer.pow_api(dest, destOffset, src, srcOffset, exponent, exponentOffset);
     }
 
-    /** {@link #pow(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #pow(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long pow(long dest, long src, long exponent) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.pow_unsafe(dest, src, exponent);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5124,13 +5292,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.project_api(dest, destOffset, src, srcOffset, ontoX, ontoY, ontoZ);
     }
 
-    /** {@link #project(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #project(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer project(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double ontoX, double ontoY, double ontoZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.project_unsafe(dest, destOffset, src, srcOffset, ontoX, ontoY, ontoZ);
         return Double3OpsKernelsByteBuffer.project_api(dest, destOffset, src, srcOffset, ontoX, ontoY, ontoZ);
     }
 
-    /** {@link #project(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #project(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long project(long dest, long src, double ontoX, double ontoY, double ontoZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.project_unsafe(dest, src, ontoX, ontoY, ontoZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5169,13 +5338,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.project_api(dest, destOffset, src, srcOffset, onto, ontoOffset);
     }
 
-    /** {@link #project(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #project(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer project(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer onto, int ontoOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && onto.isDirect() && onto.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.project_unsafe(dest, destOffset, src, srcOffset, onto, ontoOffset);
         return Double3OpsKernelsByteBuffer.project_api(dest, destOffset, src, srcOffset, onto, ontoOffset);
     }
 
-    /** {@link #project(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #project(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long project(long dest, long src, long onto) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.project_unsafe(dest, src, onto);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5214,13 +5384,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.projectOnPlane_api(dest, destOffset, src, srcOffset, normalX, normalY, normalZ);
     }
 
-    /** {@link #projectOnPlane(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #projectOnPlane(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer projectOnPlane(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double normalX, double normalY, double normalZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.projectOnPlane_unsafe(dest, destOffset, src, srcOffset, normalX, normalY, normalZ);
         return Double3OpsKernelsByteBuffer.projectOnPlane_api(dest, destOffset, src, srcOffset, normalX, normalY, normalZ);
     }
 
-    /** {@link #projectOnPlane(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #projectOnPlane(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long projectOnPlane(long dest, long src, double normalX, double normalY, double normalZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.projectOnPlane_unsafe(dest, src, normalX, normalY, normalZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5258,13 +5429,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.projectOnPlane_api(dest, destOffset, src, srcOffset, normal, normalOffset);
     }
 
-    /** {@link #projectOnPlane(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #projectOnPlane(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer projectOnPlane(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer normal, int normalOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && normal.isDirect() && normal.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.projectOnPlane_unsafe(dest, destOffset, src, srcOffset, normal, normalOffset);
         return Double3OpsKernelsByteBuffer.projectOnPlane_api(dest, destOffset, src, srcOffset, normal, normalOffset);
     }
 
-    /** {@link #projectOnPlane(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #projectOnPlane(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long projectOnPlane(long dest, long src, long normal) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.projectOnPlane_unsafe(dest, src, normal);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5296,13 +5468,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.radians_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #radians(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #radians(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer radians(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.radians_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.radians_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #radians(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #radians(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long radians(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.radians_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5340,13 +5513,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.reflect_api(dest, destOffset, src, srcOffset, normalX, normalY, normalZ);
     }
 
-    /** {@link #reflect(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #reflect(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer reflect(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double normalX, double normalY, double normalZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.reflect_unsafe(dest, destOffset, src, srcOffset, normalX, normalY, normalZ);
         return Double3OpsKernelsByteBuffer.reflect_api(dest, destOffset, src, srcOffset, normalX, normalY, normalZ);
     }
 
-    /** {@link #reflect(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #reflect(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long reflect(long dest, long src, double normalX, double normalY, double normalZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.reflect_unsafe(dest, src, normalX, normalY, normalZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5383,13 +5557,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.reflect_api(dest, destOffset, src, srcOffset, normal, normalOffset);
     }
 
-    /** {@link #reflect(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #reflect(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer reflect(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer normal, int normalOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && normal.isDirect() && normal.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.reflect_unsafe(dest, destOffset, src, srcOffset, normal, normalOffset);
         return Double3OpsKernelsByteBuffer.reflect_api(dest, destOffset, src, srcOffset, normal, normalOffset);
     }
 
-    /** {@link #reflect(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #reflect(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long reflect(long dest, long src, long normal) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.reflect_unsafe(dest, src, normal);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5439,13 +5614,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.refract_api(dest, destOffset, src, srcOffset, normalX, normalY, normalZ, eta);
     }
 
-    /** {@link #refract(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #refract(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer refract(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double normalX, double normalY, double normalZ, double eta) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.refract_unsafe(dest, destOffset, src, srcOffset, normalX, normalY, normalZ, eta);
         return Double3OpsKernelsByteBuffer.refract_api(dest, destOffset, src, srcOffset, normalX, normalY, normalZ, eta);
     }
 
-    /** {@link #refract(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #refract(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long refract(long dest, long src, double normalX, double normalY, double normalZ, double eta) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.refract_unsafe(dest, src, normalX, normalY, normalZ, eta);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5494,13 +5670,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.refract_api(dest, destOffset, src, srcOffset, normal, normalOffset, eta);
     }
 
-    /** {@link #refract(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #refract(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer refract(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer normal, int normalOffset, double eta) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && normal.isDirect() && normal.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.refract_unsafe(dest, destOffset, src, srcOffset, normal, normalOffset, eta);
         return Double3OpsKernelsByteBuffer.refract_api(dest, destOffset, src, srcOffset, normal, normalOffset, eta);
     }
 
-    /** {@link #refract(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #refract(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long refract(long dest, long src, long normal, double eta) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.refract_unsafe(dest, src, normal, eta);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5532,13 +5709,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.round_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #round(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #round(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer round(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.round_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.round_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #round(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #round(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long round(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.round_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5569,13 +5747,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.sign_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #sign(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #sign(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer sign(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.sign_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.sign_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #sign(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #sign(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long sign(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.sign_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5606,13 +5785,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.sin_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #sin(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #sin(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer sin(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.sin_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.sin_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #sin(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #sin(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long sin(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.sin_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5644,13 +5824,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.sinh_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #sinh(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #sinh(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer sinh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.sinh_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.sinh_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #sinh(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #sinh(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long sinh(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.sinh_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5690,13 +5871,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.smoothstep_api(dest, destOffset, src, srcOffset, edge0, edge1);
     }
 
-    /** {@link #smoothstep(double[], int, double[], int, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #smoothstep(double[], int, double[], int, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer smoothstep(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double edge0, double edge1) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.smoothstep_unsafe(dest, destOffset, src, srcOffset, edge0, edge1);
         return Double3OpsKernelsByteBuffer.smoothstep_api(dest, destOffset, src, srcOffset, edge0, edge1);
     }
 
-    /** {@link #smoothstep(double[], int, double[], int, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #smoothstep(double[], int, double[], int, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long smoothstep(long dest, long src, double edge0, double edge1) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.smoothstep_unsafe(dest, src, edge0, edge1);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5738,13 +5920,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.smoothstep_api(dest, destOffset, src, srcOffset, edge0X, edge0Y, edge0Z, edge1X, edge1Y, edge1Z);
     }
 
-    /** {@link #smoothstep(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #smoothstep(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer smoothstep(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double edge0X, double edge0Y, double edge0Z, double edge1X, double edge1Y, double edge1Z) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.smoothstep_unsafe(dest, destOffset, src, srcOffset, edge0X, edge0Y, edge0Z, edge1X, edge1Y, edge1Z);
         return Double3OpsKernelsByteBuffer.smoothstep_api(dest, destOffset, src, srcOffset, edge0X, edge0Y, edge0Z, edge1X, edge1Y, edge1Z);
     }
 
-    /** {@link #smoothstep(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #smoothstep(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long smoothstep(long dest, long src, double edge0X, double edge0Y, double edge0Z, double edge1X, double edge1Y, double edge1Z) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.smoothstep_unsafe(dest, src, edge0X, edge0Y, edge0Z, edge1X, edge1Y, edge1Z);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5790,13 +5973,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.smoothstep_api(dest, destOffset, src, srcOffset, edge0, edge0Offset, edge1, edge1Offset);
     }
 
-    /** {@link #smoothstep(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #smoothstep(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer smoothstep(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer edge0, int edge0Offset, java.nio.ByteBuffer edge1, int edge1Offset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && edge0.isDirect() && edge0.order() == java.nio.ByteOrder.nativeOrder() && edge1.isDirect() && edge1.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.smoothstep_unsafe(dest, destOffset, src, srcOffset, edge0, edge0Offset, edge1, edge1Offset);
         return Double3OpsKernelsByteBuffer.smoothstep_api(dest, destOffset, src, srcOffset, edge0, edge0Offset, edge1, edge1Offset);
     }
 
-    /** {@link #smoothstep(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #smoothstep(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long smoothstep(long dest, long src, long edge0, long edge1) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.smoothstep_unsafe(dest, src, edge0, edge1);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5828,13 +6012,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.sqrt_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #sqrt(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #sqrt(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer sqrt(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.sqrt_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.sqrt_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #sqrt(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #sqrt(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long sqrt(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.sqrt_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5867,13 +6052,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.step_api(dest, destOffset, src, srcOffset, edge);
     }
 
-    /** {@link #step(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #step(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer step(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double edge) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.step_unsafe(dest, destOffset, src, srcOffset, edge);
         return Double3OpsKernelsByteBuffer.step_api(dest, destOffset, src, srcOffset, edge);
     }
 
-    /** {@link #step(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #step(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long step(long dest, long src, double edge) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.step_unsafe(dest, src, edge);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5908,13 +6094,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.step_api(dest, destOffset, src, srcOffset, edgeX, edgeY, edgeZ);
     }
 
-    /** {@link #step(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #step(double[], int, double[], int, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer step(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double edgeX, double edgeY, double edgeZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.step_unsafe(dest, destOffset, src, srcOffset, edgeX, edgeY, edgeZ);
         return Double3OpsKernelsByteBuffer.step_api(dest, destOffset, src, srcOffset, edgeX, edgeY, edgeZ);
     }
 
-    /** {@link #step(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #step(double[], int, double[], int, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long step(long dest, long src, double edgeX, double edgeY, double edgeZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.step_unsafe(dest, src, edgeX, edgeY, edgeZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5951,13 +6138,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.step_api(dest, destOffset, src, srcOffset, edge, edgeOffset);
     }
 
-    /** {@link #step(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #step(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer step(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer edge, int edgeOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && edge.isDirect() && edge.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.step_unsafe(dest, destOffset, src, srcOffset, edge, edgeOffset);
         return Double3OpsKernelsByteBuffer.step_api(dest, destOffset, src, srcOffset, edge, edgeOffset);
     }
 
-    /** {@link #step(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #step(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long step(long dest, long src, long edge) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.step_unsafe(dest, src, edge);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -5988,13 +6176,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.tan_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #tan(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #tan(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer tan(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.tan_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.tan_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #tan(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #tan(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long tan(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.tan_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6026,13 +6215,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.tanh_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #tanh(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #tanh(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer tanh(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.tanh_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.tanh_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #tanh(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #tanh(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long tanh(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.tanh_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6089,13 +6279,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.triangleNormal_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z);
     }
 
-    /** {@link #triangleNormal(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #triangleNormal(double[], int, double[], int, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer triangleNormal(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.triangleNormal_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z);
         return Double3OpsKernelsByteBuffer.triangleNormal_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z);
     }
 
-    /** {@link #triangleNormal(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #triangleNormal(double[], int, double[], int, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long triangleNormal(long dest, long src, double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.triangleNormal_unsafe(dest, src, p1X, p1Y, p1Z, p2X, p2Y, p2Z);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6156,13 +6347,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.triangleNormal_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset);
     }
 
-    /** {@link #triangleNormal(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #triangleNormal(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer triangleNormal(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.triangleNormal_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset);
         return Double3OpsKernelsByteBuffer.triangleNormal_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset);
     }
 
-    /** {@link #triangleNormal(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #triangleNormal(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long triangleNormal(long dest, long src, long p1, long p2) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.triangleNormal_unsafe(dest, src, p1, p2);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6194,13 +6386,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.trunc_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #trunc(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #trunc(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer trunc(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.trunc_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.trunc_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #trunc(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #trunc(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long trunc(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.trunc_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6232,13 +6425,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.ulp_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #ulp(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #ulp(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer ulp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.ulp_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.ulp_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #ulp(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #ulp(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long ulp(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.ulp_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6271,13 +6465,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.xyz0_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #xyz0(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #xyz0(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer xyz0(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.xyz0_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.xyz0_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #xyz0(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #xyz0(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long xyz0(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.xyz0_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6310,13 +6505,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.xyz1_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #xyz1(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #xyz1(double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer xyz1(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.xyz1_unsafe(dest, destOffset, src, srcOffset);
         return Double3OpsKernelsByteBuffer.xyz1_api(dest, destOffset, src, srcOffset);
     }
 
-    /** {@link #xyz1(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #xyz1(double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long xyz1(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.xyz1_unsafe(dest, src);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6359,13 +6555,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.preMul_api(dest, destOffset, src, srcOffset, mat, matOffset);
     }
 
-    /** {@link #preMul(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preMul(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preMul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer mat, int matOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.preMul_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
         return Double3OpsKernelsByteBuffer.preMul_api(dest, destOffset, src, srcOffset, mat, matOffset);
     }
 
-    /** {@link #preMul(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preMul(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preMul(long dest, long src, long mat) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.preMul_unsafe(dest, src, mat);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6409,13 +6606,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.preMulDirectionMat3x4_api(dest, destOffset, src, srcOffset, mat, matOffset);
     }
 
-    /** {@link #preMulDirectionMat3x4(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preMulDirectionMat3x4(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preMulDirectionMat3x4(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer mat, int matOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.preMulDirectionMat3x4_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
         return Double3OpsKernelsByteBuffer.preMulDirectionMat3x4_api(dest, destOffset, src, srcOffset, mat, matOffset);
     }
 
-    /** {@link #preMulDirectionMat3x4(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preMulDirectionMat3x4(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preMulDirectionMat3x4(long dest, long src, long mat) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.preMulDirectionMat3x4_unsafe(dest, src, mat);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6459,13 +6657,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.preMulDirectionMat4x4_api(dest, destOffset, src, srcOffset, mat, matOffset);
     }
 
-    /** {@link #preMulDirectionMat4x4(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preMulDirectionMat4x4(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preMulDirectionMat4x4(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer mat, int matOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.preMulDirectionMat4x4_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
         return Double3OpsKernelsByteBuffer.preMulDirectionMat4x4_api(dest, destOffset, src, srcOffset, mat, matOffset);
     }
 
-    /** {@link #preMulDirectionMat4x4(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preMulDirectionMat4x4(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preMulDirectionMat4x4(long dest, long src, long mat) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.preMulDirectionMat4x4_unsafe(dest, src, mat);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6512,13 +6711,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.preMulPositionMat3x4_api(dest, destOffset, src, srcOffset, mat, matOffset);
     }
 
-    /** {@link #preMulPositionMat3x4(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preMulPositionMat3x4(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preMulPositionMat3x4(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer mat, int matOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.preMulPositionMat3x4_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
         return Double3OpsKernelsByteBuffer.preMulPositionMat3x4_api(dest, destOffset, src, srcOffset, mat, matOffset);
     }
 
-    /** {@link #preMulPositionMat3x4(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preMulPositionMat3x4(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preMulPositionMat3x4(long dest, long src, long mat) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.preMulPositionMat3x4_unsafe(dest, src, mat);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6565,13 +6765,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.preMulPositionMat4x4_api(dest, destOffset, src, srcOffset, mat, matOffset);
     }
 
-    /** {@link #preMulPositionMat4x4(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preMulPositionMat4x4(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preMulPositionMat4x4(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer mat, int matOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.preMulPositionMat4x4_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
         return Double3OpsKernelsByteBuffer.preMulPositionMat4x4_api(dest, destOffset, src, srcOffset, mat, matOffset);
     }
 
-    /** {@link #preMulPositionMat4x4(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preMulPositionMat4x4(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preMulPositionMat4x4(long dest, long src, long mat) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.preMulPositionMat4x4_unsafe(dest, src, mat);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6624,13 +6825,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.preMulProject_api(dest, destOffset, src, srcOffset, mat, matOffset);
     }
 
-    /** {@link #preMulProject(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #preMulProject(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer preMulProject(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer mat, int matOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.preMulProject_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
         return Double3OpsKernelsByteBuffer.preMulProject_api(dest, destOffset, src, srcOffset, mat, matOffset);
     }
 
-    /** {@link #preMulProject(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #preMulProject(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preMulProject(long dest, long src, long mat) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.preMulProject_unsafe(dest, src, mat);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6673,13 +6875,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.rotate_api(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW);
     }
 
-    /** {@link #rotate(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotate(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double quatX, double quatY, double quatZ, double quatW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.rotate_unsafe(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW);
         return Double3OpsKernelsByteBuffer.rotate_api(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW);
     }
 
-    /** {@link #rotate(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotate(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotate(long dest, long src, double quatX, double quatY, double quatZ, double quatW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.rotate_unsafe(dest, src, quatX, quatY, quatZ, quatW);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6720,13 +6923,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.rotate_api(dest, destOffset, src, srcOffset, quat, quatOffset);
     }
 
-    /** {@link #rotate(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotate(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer quat, int quatOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && quat.isDirect() && quat.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.rotate_unsafe(dest, destOffset, src, srcOffset, quat, quatOffset);
         return Double3OpsKernelsByteBuffer.rotate_api(dest, destOffset, src, srcOffset, quat, quatOffset);
     }
 
-    /** {@link #rotate(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotate(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotate(long dest, long src, long quat) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.rotate_unsafe(dest, src, quat);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6769,13 +6973,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.rotateAxis_api(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
     }
 
-    /** {@link #rotateAxis(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateAxis(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateAxis(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle, double axisX, double axisY, double axisZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.rotateAxis_unsafe(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
         return Double3OpsKernelsByteBuffer.rotateAxis_api(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ);
     }
 
-    /** {@link #rotateAxis(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateAxis(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateAxis(long dest, long src, double angle, double axisX, double axisY, double axisZ) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.rotateAxis_unsafe(dest, src, angle, axisX, axisY, axisZ);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6817,13 +7022,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.rotateAxis_api(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
     }
 
-    /** {@link #rotateAxis(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateAxis(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateAxis(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer axis, int axisOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && axis.isDirect() && axis.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.rotateAxis_unsafe(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
         return Double3OpsKernelsByteBuffer.rotateAxis_api(dest, destOffset, src, srcOffset, axis, axisOffset, angle);
     }
 
-    /** {@link #rotateAxis(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateAxis(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateAxis(long dest, long src, long axis, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.rotateAxis_unsafe(dest, src, axis, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6865,13 +7071,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.rotateInverse_api(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW);
     }
 
-    /** {@link #rotateInverse(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateInverse(double[], int, double[], int, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateInverse(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double quatX, double quatY, double quatZ, double quatW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.rotateInverse_unsafe(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW);
         return Double3OpsKernelsByteBuffer.rotateInverse_api(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW);
     }
 
-    /** {@link #rotateInverse(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateInverse(double[], int, double[], int, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateInverse(long dest, long src, double quatX, double quatY, double quatZ, double quatW) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.rotateInverse_unsafe(dest, src, quatX, quatY, quatZ, quatW);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6911,13 +7118,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.rotateInverse_api(dest, destOffset, src, srcOffset, quat, quatOffset);
     }
 
-    /** {@link #rotateInverse(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateInverse(double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateInverse(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer quat, int quatOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && quat.isDirect() && quat.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.rotateInverse_unsafe(dest, destOffset, src, srcOffset, quat, quatOffset);
         return Double3OpsKernelsByteBuffer.rotateInverse_api(dest, destOffset, src, srcOffset, quat, quatOffset);
     }
 
-    /** {@link #rotateInverse(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateInverse(double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateInverse(long dest, long src, long quat) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.rotateInverse_unsafe(dest, src, quat);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6952,13 +7160,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.rotateX_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotateX(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateX(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateX(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.rotateX_unsafe(dest, destOffset, src, srcOffset, angle);
         return Double3OpsKernelsByteBuffer.rotateX_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotateX(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateX(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateX(long dest, long src, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.rotateX_unsafe(dest, src, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -6993,13 +7202,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.rotateY_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotateY(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateY(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateY(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.rotateY_unsafe(dest, destOffset, src, srcOffset, angle);
         return Double3OpsKernelsByteBuffer.rotateY_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotateY(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateY(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateY(long dest, long src, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.rotateY_unsafe(dest, src, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -7034,13 +7244,14 @@ public final class Double3Ops {
         return Double3OpsKernelsTypedBuffer.rotateZ_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotateZ(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage. */
+    /** {@link #rotateZ(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.nio.ByteBuffer rotateZ(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.rotateZ_unsafe(dest, destOffset, src, srcOffset, angle);
         return Double3OpsKernelsByteBuffer.rotateZ_api(dest, destOffset, src, srcOffset, angle);
     }
 
-    /** {@link #rotateZ(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    /** {@link #rotateZ(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotateZ(long dest, long src, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double3OpsKernelsAddress.rotateZ_unsafe(dest, src, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
@@ -7049,12 +7260,13 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code add} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code add} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code add}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static double[] add(double[] dest, int destOffset, double[] a, int aOffset, double[] b, int bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Double3OpsSimd.add(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = a[aOffset + _i] + b[bOffset + _i];
@@ -7064,11 +7276,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code add} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code add} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code add}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.DoubleBuffer add(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer a, int aOffset, java.nio.DoubleBuffer b, int bOffset, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, a.get(aOffset + _i) + b.get(bOffset + _i));
@@ -7078,11 +7291,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code add} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code add} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code add}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.ByteBuffer add(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer a, int aOffset, java.nio.ByteBuffer b, int bOffset, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.putDouble(destOffset + _i * 8, a.getDouble(aOffset + _i * 8) + b.getDouble(bOffset + _i * 8));
@@ -7092,12 +7306,13 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code sub} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code sub} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code sub}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static double[] sub(double[] dest, int destOffset, double[] a, int aOffset, double[] b, int bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Double3OpsSimd.sub(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = a[aOffset + _i] - b[bOffset + _i];
@@ -7107,11 +7322,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code sub} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code sub} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code sub}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.DoubleBuffer sub(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer a, int aOffset, java.nio.DoubleBuffer b, int bOffset, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, a.get(aOffset + _i) - b.get(bOffset + _i));
@@ -7121,11 +7337,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code sub} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code sub} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code sub}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.ByteBuffer sub(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer a, int aOffset, java.nio.ByteBuffer b, int bOffset, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.putDouble(destOffset + _i * 8, a.getDouble(aOffset + _i * 8) - b.getDouble(bOffset + _i * 8));
@@ -7135,12 +7352,13 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code mul} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code mul} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code mul}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static double[] mul(double[] dest, int destOffset, double[] a, int aOffset, double[] b, int bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Double3OpsSimd.mul(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = a[aOffset + _i] * b[bOffset + _i];
@@ -7150,11 +7368,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code mul} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code mul} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code mul}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.DoubleBuffer mul(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer a, int aOffset, java.nio.DoubleBuffer b, int bOffset, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, a.get(aOffset + _i) * b.get(bOffset + _i));
@@ -7164,11 +7383,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code mul} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code mul} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code mul}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.ByteBuffer mul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer a, int aOffset, java.nio.ByteBuffer b, int bOffset, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.putDouble(destOffset + _i * 8, a.getDouble(aOffset + _i * 8) * b.getDouble(bOffset + _i * 8));
@@ -7178,12 +7398,13 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code div} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code div} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code div}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static double[] div(double[] dest, int destOffset, double[] a, int aOffset, double[] b, int bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Double3OpsSimd.div(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = a[aOffset + _i] / b[bOffset + _i];
@@ -7193,11 +7414,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code div} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code div} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code div}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.DoubleBuffer div(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer a, int aOffset, java.nio.DoubleBuffer b, int bOffset, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, a.get(aOffset + _i) / b.get(bOffset + _i));
@@ -7207,11 +7429,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code div} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code div} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code div}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.ByteBuffer div(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer a, int aOffset, java.nio.ByteBuffer b, int bOffset, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.putDouble(destOffset + _i * 8, a.getDouble(aOffset + _i * 8) / b.getDouble(bOffset + _i * 8));
@@ -7221,12 +7444,13 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code min} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code min} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code min}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static double[] min(double[] dest, int destOffset, double[] a, int aOffset, double[] b, int bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Double3OpsSimd.min(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = Math.min(a[aOffset + _i], b[bOffset + _i]);
@@ -7236,11 +7460,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code min} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code min} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code min}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.DoubleBuffer min(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer a, int aOffset, java.nio.DoubleBuffer b, int bOffset, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, Math.min(a.get(aOffset + _i), b.get(bOffset + _i)));
@@ -7250,11 +7475,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code min} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code min} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code min}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.ByteBuffer min(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer a, int aOffset, java.nio.ByteBuffer b, int bOffset, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.putDouble(destOffset + _i * 8, Math.min(a.getDouble(aOffset + _i * 8), b.getDouble(bOffset + _i * 8)));
@@ -7264,12 +7490,13 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code max} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code max} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code max}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static double[] max(double[] dest, int destOffset, double[] a, int aOffset, double[] b, int bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Double3OpsSimd.max(dest, destOffset, a, aOffset, b, bOffset, count);
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = Math.max(a[aOffset + _i], b[bOffset + _i]);
@@ -7279,11 +7506,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code max} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code max} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code max}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.DoubleBuffer max(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer a, int aOffset, java.nio.DoubleBuffer b, int bOffset, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, Math.max(a.get(aOffset + _i), b.get(bOffset + _i)));
@@ -7293,11 +7521,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code max} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code max} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code max}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.ByteBuffer max(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer a, int aOffset, java.nio.ByteBuffer b, int bOffset, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.putDouble(destOffset + _i * 8, Math.max(a.getDouble(aOffset + _i * 8), b.getDouble(bOffset + _i * 8)));
@@ -7307,12 +7536,13 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code negate} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code negate} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code negate}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static double[] negate(double[] dest, int destOffset, double[] src, int srcOffset, int count) {
         if (SimdSupport.VECTOR_API) return Double3OpsSimd.negate(dest, destOffset, src, srcOffset, count);
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = -src[srcOffset + _i];
@@ -7322,11 +7552,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code negate} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code negate} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code negate}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.DoubleBuffer negate(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, -src.get(srcOffset + _i));
@@ -7336,11 +7567,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code negate} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code negate} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code negate}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.ByteBuffer negate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.putDouble(destOffset + _i * 8, -src.getDouble(srcOffset + _i * 8));
@@ -7350,12 +7582,13 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code abs} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code abs} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code abs}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static double[] abs(double[] dest, int destOffset, double[] src, int srcOffset, int count) {
         if (SimdSupport.VECTOR_API) return Double3OpsSimd.abs(dest, destOffset, src, srcOffset, count);
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = Math.abs(src[srcOffset + _i]);
@@ -7365,11 +7598,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code abs} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code abs} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code abs}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.DoubleBuffer abs(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, Math.abs(src.get(srcOffset + _i)));
@@ -7379,11 +7613,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code abs} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code abs} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code abs}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.ByteBuffer abs(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.putDouble(destOffset + _i * 8, Math.abs(src.getDouble(srcOffset + _i * 8)));
@@ -7393,12 +7628,13 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code lerp} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code lerp} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code lerp}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static double[] lerp(double[] dest, int destOffset, double[] a, int aOffset, double[] b, int bOffset, double t, int count) {
         if (SimdSupport.VECTOR_API) return Double3OpsSimd.lerp(dest, destOffset, a, aOffset, b, bOffset, t, count);
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = a[aOffset + _i] + t * (b[bOffset + _i] - a[aOffset + _i]);
@@ -7408,11 +7644,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code lerp} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code lerp} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code lerp}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.DoubleBuffer lerp(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer a, int aOffset, java.nio.DoubleBuffer b, int bOffset, double t, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, a.get(aOffset + _i) + t * (b.get(bOffset + _i) - a.get(aOffset + _i)));
@@ -7422,11 +7659,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code lerp} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code lerp} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code lerp}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.ByteBuffer lerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer a, int aOffset, java.nio.ByteBuffer b, int bOffset, double t, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.putDouble(destOffset + _i * 8, a.getDouble(aOffset + _i * 8) + t * (b.getDouble(bOffset + _i * 8) - a.getDouble(aOffset + _i * 8)));
@@ -7436,12 +7674,13 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code scale} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code scale} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code scale}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static double[] scale(double[] dest, int destOffset, double[] src, int srcOffset, double s, int count) {
         if (SimdSupport.VECTOR_API) return Double3OpsSimd.scale(dest, destOffset, src, srcOffset, s, count);
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = src[srcOffset + _i] * s;
@@ -7451,11 +7690,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code scale} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code scale} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code scale}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.DoubleBuffer scale(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double s, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, src.get(srcOffset + _i) * s);
@@ -7465,11 +7705,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code scale} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code scale} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code scale}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.ByteBuffer scale(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double s, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.putDouble(destOffset + _i * 8, src.getDouble(srcOffset + _i * 8) * s);
@@ -7479,12 +7720,13 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code fma} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code fma} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code fma}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static double[] fma(double[] dest, int destOffset, double[] self, int selfOffset, double[] a, int aOffset, double[] b, int bOffset, int count) {
         if (SimdSupport.VECTOR_API) return Double3OpsSimd.fma(dest, destOffset, self, selfOffset, a, aOffset, b, bOffset, count);
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest[destOffset + _i] = Math.fma(self[selfOffset + _i], a[aOffset + _i], b[bOffset + _i]);
@@ -7494,11 +7736,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code fma} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code fma} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code fma}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.DoubleBuffer fma(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer self, int selfOffset, java.nio.DoubleBuffer a, int aOffset, java.nio.DoubleBuffer b, int bOffset, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.put(destOffset + _i, Math.fma(self.get(selfOffset + _i), a.get(aOffset + _i), b.get(bOffset + _i)));
@@ -7508,11 +7751,12 @@ public final class Double3Ops {
 
     /**
      * Bulk out-of-place component-wise {@code fma} over {@code count} consecutive Double3 values: reads the
-     * source buffer(s) and writes {@code dest} (which may differ from the sources).
-     * This batched out-of-place form is distinct from the in-place single-vector
-     * {@code fma} overload of the same name.
+     * source buffer(s) and writes {@code dest} (which may also be one of the sources, at the
+     * same offset). This batched form is distinct from the single-value {@code fma}
+     * overload of the same name, which processes exactly one Double3.
      */
     public static java.nio.ByteBuffer fma(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer self, int selfOffset, java.nio.ByteBuffer a, int aOffset, java.nio.ByteBuffer b, int bOffset, int count) {
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++) {
             dest.putDouble(destOffset + _i * 8, Math.fma(self.getDouble(selfOffset + _i * 8), a.getDouble(aOffset + _i * 8), b.getDouble(bOffset + _i * 8)));
@@ -7538,9 +7782,12 @@ public final class Double3Ops {
     public static double[] copy(double[] dest, int destOffset, double[] src, int srcOffset, int count) {
         if (SimdSupport.VECTOR_API) return Double3OpsSimd.copy(dest, destOffset, src, srcOffset, count);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
+            java.util.Objects.checkFromIndexSize(srcOffset, (count > 715827882 ? -1 : count * 3), src.length);
+            java.util.Objects.checkFromIndexSize(destOffset, (count > 715827882 ? -1 : count * 3), dest.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) srcOffset * 8L, dest, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) destOffset * 8L, (long) count * 24L);
             return dest;
         }
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++)
             dest[destOffset + _i] = src[srcOffset + _i];
@@ -7565,9 +7812,11 @@ public final class Double3Ops {
     public static double[] copy(double[] dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, int count) {
         if (SimdSupport.VECTOR_API && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsSimd.copy(dest, destOffset, src, srcOffset, count);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(destOffset, (count > 715827882 ? -1 : count * 3), dest.length);
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L, dest, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) destOffset * 8L, (long) count * 24L);
             return dest;
         }
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++)
             dest[destOffset + _i] = src.get(srcOffset + _i);
@@ -7578,6 +7827,7 @@ public final class Double3Ops {
      * Copy one Double3 (3 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static double[] copy(double[] dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -7587,12 +7837,15 @@ public final class Double3Ops {
      * Bulk-copy {@code count} consecutive Double3 values ({@code count * 3} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static double[] copy(double[] dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(destOffset, (count > 715827882 ? -1 : count * 3), dest.length);
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, dest, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) destOffset * 8L, (long) count * 24L);
             return dest;
         }
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++)
             dest[destOffset + _i] = src.getDouble(srcOffset + _i * 8);
@@ -7603,9 +7856,11 @@ public final class Double3Ops {
      * Copy one Double3 (3 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static double[] copy(double[] dest, int destOffset, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
+            java.util.Objects.checkFromIndexSize(destOffset, 3, dest.length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) destOffset * 8L, 24L);
             return dest;
         }
@@ -7616,9 +7871,11 @@ public final class Double3Ops {
      * Bulk-copy {@code count} consecutive Double3 values ({@code count * 3} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static double[] copy(double[] dest, int destOffset, long src, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
+            java.util.Objects.checkFromIndexSize(destOffset, (count > 715827882 ? -1 : count * 3), dest.length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) destOffset * 8L, (long) count * 24L);
             return dest;
         }
@@ -7643,9 +7900,11 @@ public final class Double3Ops {
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, double[] src, int srcOffset, int count) {
         if (SimdSupport.VECTOR_API && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsSimd.copy(dest, destOffset, src, srcOffset, count);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(srcOffset, (count > 715827882 ? -1 : count * 3), src.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) srcOffset * 8L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L, (long) count * 24L);
             return dest;
         }
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++)
             dest.put(destOffset + _i, src[srcOffset + _i]);
@@ -7673,6 +7932,7 @@ public final class Double3Ops {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L, (long) count * 24L);
             return dest;
         }
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++)
             dest.put(destOffset + _i, src.get(srcOffset + _i));
@@ -7683,6 +7943,7 @@ public final class Double3Ops {
      * Copy one Double3 (3 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -7692,12 +7953,14 @@ public final class Double3Ops {
      * Bulk-copy {@code count} consecutive Double3 values ({@code count * 3} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
      */
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L, (long) count * 24L);
             return dest;
         }
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++)
             dest.put(destOffset + _i, src.getDouble(srcOffset + _i * 8));
@@ -7708,6 +7971,7 @@ public final class Double3Ops {
      * Copy one Double3 (3 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -7715,6 +7979,7 @@ public final class Double3Ops {
             return dest;
         }
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, 3, dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.DOUBLE_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset) * 8L, 24L);
             return dest;
         }
@@ -7731,6 +7996,7 @@ public final class Double3Ops {
      * Bulk-copy {@code count} consecutive Double3 values ({@code count * 3} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, long src, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -7738,6 +8004,7 @@ public final class Double3Ops {
             return dest;
         }
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, (count > 715827882 ? -1 : count * 3), dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.DOUBLE_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset) * 8L, (long) count * 24L);
             return dest;
         }
@@ -7754,6 +8021,7 @@ public final class Double3Ops {
      * Copy one Double3 (3 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, double[] src, int srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -7763,12 +8031,15 @@ public final class Double3Ops {
      * Bulk-copy {@code count} consecutive Double3 values ({@code count * 3} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, double[] src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(srcOffset, (count > 715827882 ? -1 : count * 3), src.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) srcOffset * 8L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 24L);
             return dest;
         }
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++)
             dest.putDouble(destOffset + _i * 8, src[srcOffset + _i]);
@@ -7779,6 +8050,7 @@ public final class Double3Ops {
      * Copy one Double3 (3 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -7788,12 +8060,14 @@ public final class Double3Ops {
      * Bulk-copy {@code count} consecutive Double3 values ({@code count * 3} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 24L);
             return dest;
         }
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++)
             dest.putDouble(destOffset + _i * 8, src.get(srcOffset + _i));
@@ -7804,6 +8078,7 @@ public final class Double3Ops {
      * Copy one Double3 (3 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         return copy(dest, destOffset, src, srcOffset, 1);
@@ -7813,12 +8088,14 @@ public final class Double3Ops {
      * Bulk-copy {@code count} consecutive Double3 values ({@code count * 3} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} and {@code srcOffset} are byte offsets, not element indices.
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 24L);
             return dest;
         }
+        if (count > 715827882) throw new IndexOutOfBoundsException("count " + count + " exceeds the addressable range");
         int n = count * 3;
         for (int _i = 0; _i < n; _i++)
             dest.putDouble(destOffset + _i * 8, src.getDouble(srcOffset + _i * 8));
@@ -7829,6 +8106,8 @@ public final class Double3Ops {
      * Copy one Double3 (3 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -7836,6 +8115,7 @@ public final class Double3Ops {
             return dest;
         }
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, 24, dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset), 24L);
             return dest;
         }
@@ -7852,6 +8132,8 @@ public final class Double3Ops {
      * Bulk-copy {@code count} consecutive Double3 values ({@code count * 3} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code destOffset} is a byte offset, not an element index.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, long src, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -7859,6 +8141,7 @@ public final class Double3Ops {
             return dest;
         }
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, (count > 89478485 ? -1 : count * 24), dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset), (long) count * 24L);
             return dest;
         }
@@ -7875,9 +8158,11 @@ public final class Double3Ops {
      * Copy one Double3 (3 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static long copy(long dest, double[] src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
+            java.util.Objects.checkFromIndexSize(srcOffset, 3, src.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) srcOffset * 8L, null, dest, 24L);
             return dest;
         }
@@ -7888,9 +8173,11 @@ public final class Double3Ops {
      * Bulk-copy {@code count} consecutive Double3 values ({@code count * 3} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static long copy(long dest, double[] src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
+            java.util.Objects.checkFromIndexSize(srcOffset, (count > 715827882 ? -1 : count * 3), src.length);
             UnsafeOpsHolder.U.copyMemory(src, UnsafeCopy.DOUBLE_ARRAY_BASE + (long) srcOffset * 8L, null, dest, (long) count * 24L);
             return dest;
         }
@@ -7901,6 +8188,7 @@ public final class Double3Ops {
      * Copy one Double3 (3 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static long copy(long dest, java.nio.DoubleBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -7908,6 +8196,7 @@ public final class Double3Ops {
             return dest;
         }
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, 3, src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.DOUBLE_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset) * 8L, null, dest, 24L);
             return dest;
         }
@@ -7924,6 +8213,7 @@ public final class Double3Ops {
      * Bulk-copy {@code count} consecutive Double3 values ({@code count * 3} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static long copy(long dest, java.nio.DoubleBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -7931,6 +8221,7 @@ public final class Double3Ops {
             return dest;
         }
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, (count > 715827882 ? -1 : count * 3), src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.DOUBLE_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset) * 8L, null, dest, (long) count * 24L);
             return dest;
         }
@@ -7947,6 +8238,8 @@ public final class Double3Ops {
      * Copy one Double3 (3 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static long copy(long dest, java.nio.ByteBuffer src, int srcOffset) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -7954,6 +8247,7 @@ public final class Double3Ops {
             return dest;
         }
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, 24, src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset), null, dest, 24L);
             return dest;
         }
@@ -7970,6 +8264,8 @@ public final class Double3Ops {
      * Bulk-copy {@code count} consecutive Double3 values ({@code count * 3} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * {@code srcOffset} is a byte offset, not an element index.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static long copy(long dest, java.nio.ByteBuffer src, int srcOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -7977,6 +8273,7 @@ public final class Double3Ops {
             return dest;
         }
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, (count > 89478485 ? -1 : count * 24), src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset), null, dest, (long) count * 24L);
             return dest;
         }
@@ -7993,6 +8290,7 @@ public final class Double3Ops {
      * Copy one Double3 (3 doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static long copy(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {
@@ -8006,6 +8304,7 @@ public final class Double3Ops {
      * Bulk-copy {@code count} consecutive Double3 values ({@code count * 3} doubles) from {@code src}
      * to {@code dest}, translating between their storage backings. Returns {@code dest}.
      * The source and destination ranges must not overlap unless they are identical.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only)
      */
     public static long copy(long dest, long src, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) {

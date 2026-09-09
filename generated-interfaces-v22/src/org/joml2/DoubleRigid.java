@@ -14,6 +14,16 @@ import java.lang.foreign.MemorySegment;
  * unchanged and returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise and bitwise, as by
+ * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
+ * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
+ * of this library's implementation compare equal to each other; the {@code equals} of a rigid
+ * transform never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with a tolerance: an infinite component never
+ * compares equal, not even to an equal infinity (the difference {@code Inf - Inf} is NaN), and a
+ * NaN component never compares equal to anything.
  */
 public interface DoubleRigid extends DoubleRigidR {
 
@@ -116,7 +126,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * Set the rotation of this rigid transform to {@code r}.
      *
      * @param r the quaternion
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid setRotation(DoubleQuatR r) { return setRotation(r, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -127,7 +137,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid setRotation(double x, double y, double z, double w) { return setRotation(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -135,7 +145,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * Set the translation of this rigid transform to {@code t}.
      *
      * @param t the translation vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid setTranslation(Double3R t) { return setTranslation(t, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -145,7 +155,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid setTranslation(double x, double y, double z) { return setTranslation(x, y, z, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -361,7 +371,7 @@ public interface DoubleRigid extends DoubleRigidR {
      *
      * @param other the other rigid transform
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid lerp(DoubleRigidR other, double t) { return lerp(other, t, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -385,7 +395,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * @param rW the {@code rW} component of the rigid transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
      * @param t the interpolation factor, typically within {@code [0, 1]}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid lerp(double tX, double tY, double tZ, double rX, double rY, double rZ, double rW, double t) { return lerp(tX, tY, tZ, rX, rY, rZ, rW, t, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -398,7 +408,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * first.
      *
      * @param other the other rigid transform
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid mul(DoubleRigidR other) { return mul(other, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -425,7 +435,7 @@ public interface DoubleRigid extends DoubleRigidR {
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
      * @param rW the {@code rW} component of the rigid transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid mul(double tX, double tY, double tZ, double rX, double rY, double rZ, double rW) { return mul(tX, tY, tZ, rX, rY, rZ, rW, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -437,7 +447,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * transform by using {@code R * M * v}, the transformation of the operand will be applied last.
      *
      * @param other the other rigid transform
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid preMul(DoubleRigidR other) { return preMul(other, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -463,7 +473,7 @@ public interface DoubleRigid extends DoubleRigidR {
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
      * @param rW the {@code rW} component of the rigid transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid preMul(double tX, double tY, double tZ, double rX, double rY, double rZ, double rW) { return preMul(tX, tY, tZ, rX, rY, rZ, rW, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -472,7 +482,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * transformation {@code D} with {@code this * D = other}, that is {@code D = this^-1 * other}.
      *
      * @param other the other rigid transform
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid difference(DoubleRigidR other) { return difference(other, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -496,22 +506,26 @@ public interface DoubleRigid extends DoubleRigidR {
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
      * @param rW the {@code rW} component of the rigid transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid difference(double tX, double tY, double tZ, double rX, double rY, double rZ, double rW) { return difference(tX, tY, tZ, rX, rY, rZ, rW, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
     /**
      * Invert this rigid transform; exact for any rigid motion (no scale divisions).
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid invert() { return invert(Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
     /**
      * Normalize this rigid transform so that its rotation part has unit length, leaving its
      * translation unchanged (a zero-length rotation yields the zero quaternion).
+     * <p>
+     * The squared length is formed at {@code double} precision, so the result is exact only while
+     * it stays within the {@code double} range: the magnitude of the rotation quaternion must lie
+     * roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that band first.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid normalize() { return normalize(Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -643,7 +657,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
      * @param rotation the quaternion (must be a unit quaternion)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid rotate(DoubleQuatR rotation) { return rotate(rotation, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -663,7 +677,7 @@ public interface DoubleRigid extends DoubleRigidR {
      *        have unit length)
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid rotate(double x, double y, double z, double w) { return rotate(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -677,7 +691,7 @@ public interface DoubleRigid extends DoubleRigidR {
      *
      * @param angle the angle in radians
      * @param axis the rotation axis (must be a unit vector)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid rotateAxis(double angle, Double3R axis) { return rotateAxis(angle, axis, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -696,7 +710,7 @@ public interface DoubleRigid extends DoubleRigidR {
      *        length)
      * @param z the {@code z} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid rotateAxis(double angle, double x, double y, double z) { return rotateAxis(angle, x, y, z, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -708,7 +722,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid rotateX(double angle) { return rotateX(angle, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -724,7 +738,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid rotateXYZ(double angleX, double angleY, double angleZ) { return rotateXYZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -740,7 +754,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid rotateXZY(double angleX, double angleY, double angleZ) { return rotateXZY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -752,7 +766,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid rotateY(double angle) { return rotateY(angle, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -768,7 +782,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid rotateYXZ(double angleX, double angleY, double angleZ) { return rotateYXZ(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -784,7 +798,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid rotateYZX(double angleX, double angleY, double angleZ) { return rotateYZX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -796,7 +810,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * the new rigid transform by using {@code M * R * v}, the rotation will be applied first.
      *
      * @param angle the angle in radians
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid rotateZ(double angle) { return rotateZ(angle, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -812,7 +826,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid rotateZXY(double angleX, double angleY, double angleZ) { return rotateZXY(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -828,7 +842,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * @param angleX the angle in radians to rotate about the X axis
      * @param angleY the angle in radians to rotate about the Y axis
      * @param angleZ the angle in radians to rotate about the Z axis
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid rotateZYX(double angleX, double angleY, double angleZ) { return rotateZYX(angleX, angleY, angleZ, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -841,7 +855,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * first.
      *
      * @param translation the vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid translate(Double3R translation) { return translate(translation, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -856,7 +870,7 @@ public interface DoubleRigid extends DoubleRigidR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleRigid translate(double x, double y, double z) { return translate(x, y, z, Joml.RETURN_NEW ? Joml.doubleRigid() : this); }
 
@@ -883,6 +897,10 @@ public interface DoubleRigid extends DoubleRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -895,6 +913,10 @@ public interface DoubleRigid extends DoubleRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -907,6 +929,10 @@ public interface DoubleRigid extends DoubleRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -920,6 +946,10 @@ public interface DoubleRigid extends DoubleRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -937,6 +967,10 @@ public interface DoubleRigid extends DoubleRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -949,6 +983,10 @@ public interface DoubleRigid extends DoubleRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -961,6 +999,10 @@ public interface DoubleRigid extends DoubleRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -974,6 +1016,10 @@ public interface DoubleRigid extends DoubleRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -987,6 +1033,10 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Load the elements from the given memory segment.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -995,6 +1045,10 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Load the elements from the given memory segment, starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment
@@ -1034,6 +1088,10 @@ public interface DoubleRigid extends DoubleRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1046,6 +1104,10 @@ public interface DoubleRigid extends DoubleRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1058,6 +1120,10 @@ public interface DoubleRigid extends DoubleRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -1071,6 +1137,10 @@ public interface DoubleRigid extends DoubleRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source buffer
      * @return this
@@ -1088,6 +1158,10 @@ public interface DoubleRigid extends DoubleRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1100,6 +1174,10 @@ public interface DoubleRigid extends DoubleRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1112,6 +1190,10 @@ public interface DoubleRigid extends DoubleRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -1125,6 +1207,10 @@ public interface DoubleRigid extends DoubleRigidR {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -1138,6 +1224,10 @@ public interface DoubleRigid extends DoubleRigidR {
 
     /**
      * Load the elements from the given memory segment, converting each element from {@code float}.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param src the source memory segment
      * @return this
@@ -1147,6 +1237,10 @@ public interface DoubleRigid extends DoubleRigidR {
     /**
      * Load the elements from the given memory segment, converting each element from {@code float},
      * starting at the given offset.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers and native segments are not
+     * bounds-checked and segment liveness / thread confinement is not verified; the API backend
+     * performs the standard checks.
      *
      * @param offset the start offset into the memory segment, in bytes
      * @param src the source memory segment

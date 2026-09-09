@@ -13,6 +13,14 @@ import java.nio.ByteBuffer;
  * returns a freshly allocated instance.
  * <p>
  * Instances are created through the {@link Joml} factory methods.
+ * <p>
+ * {@code equals} compares the components element-wise with {@code ==}. {@code hashCode} is
+ * consistent with it. Only instances of this library's implementation compare equal to each other;
+ * the {@code equals} of a vector never returns {@code true} for an object of another type.
+ * <p>
+ * {@code equalsEpsilon} compares per component with an exact, non-negative integer tolerance: the
+ * difference is widened to {@code int} before its magnitude is taken, so the two are compared
+ * exactly without overflow, and a negative {@code epsilon} matches nothing.
  */
 public interface Byte2 extends Byte2R {
 
@@ -20,7 +28,7 @@ public interface Byte2 extends Byte2R {
      * Add {@code other} to this vector.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 add(Byte2R other) { return add(other, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -29,7 +37,7 @@ public interface Byte2 extends Byte2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 add(byte x, byte y) { return add(x, y, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -37,7 +45,7 @@ public interface Byte2 extends Byte2R {
      * Compute the component-wise ceiling division of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 ceilDiv(byte scalar) { return ceilDiv(scalar, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -45,7 +53,7 @@ public interface Byte2 extends Byte2R {
      * Compute the component-wise ceiling division of this vector by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 ceilDiv(Byte2R other) { return ceilDiv(other, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -54,7 +62,7 @@ public interface Byte2 extends Byte2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 ceilDiv(byte x, byte y) { return ceilDiv(x, y, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -62,7 +70,7 @@ public interface Byte2 extends Byte2R {
      * Compute the component-wise ceiling modulus of this vector and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 ceilMod(byte scalar) { return ceilMod(scalar, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -70,7 +78,7 @@ public interface Byte2 extends Byte2R {
      * Compute the component-wise ceiling modulus of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 ceilMod(Byte2R other) { return ceilMod(other, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -79,7 +87,7 @@ public interface Byte2 extends Byte2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 ceilMod(byte x, byte y) { return ceilMod(x, y, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -88,7 +96,7 @@ public interface Byte2 extends Byte2R {
      * zero).
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 div(byte scalar) { return div(scalar, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -97,7 +105,7 @@ public interface Byte2 extends Byte2R {
      * zero).
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 div(Byte2R other) { return div(other, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -107,7 +115,7 @@ public interface Byte2 extends Byte2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 div(byte x, byte y) { return div(x, y, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -115,7 +123,7 @@ public interface Byte2 extends Byte2R {
      * Compute the component-wise floor division of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 floorDiv(byte scalar) { return floorDiv(scalar, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -123,7 +131,7 @@ public interface Byte2 extends Byte2R {
      * Compute the component-wise floor division of this vector by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 floorDiv(Byte2R other) { return floorDiv(other, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -132,7 +140,7 @@ public interface Byte2 extends Byte2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 floorDiv(byte x, byte y) { return floorDiv(x, y, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -140,7 +148,7 @@ public interface Byte2 extends Byte2R {
      * Compute the component-wise floor modulus of this vector and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 floorMod(byte scalar) { return floorMod(scalar, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -148,7 +156,7 @@ public interface Byte2 extends Byte2R {
      * Compute the component-wise floor modulus of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 floorMod(Byte2R other) { return floorMod(other, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -157,7 +165,7 @@ public interface Byte2 extends Byte2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 floorMod(byte x, byte y) { return floorMod(x, y, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -165,7 +173,7 @@ public interface Byte2 extends Byte2R {
      * Multiply each component of this vector by {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 mul(byte scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -173,7 +181,7 @@ public interface Byte2 extends Byte2R {
      * Multiply this vector component-wise by {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 mul(Byte2R other) { return mul(other, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -182,14 +190,14 @@ public interface Byte2 extends Byte2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 mul(byte x, byte y) { return mul(x, y, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
     /**
      * Negate this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 negate() { return negate(Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -199,7 +207,7 @@ public interface Byte2 extends Byte2R {
      * {@code div}).
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 rem(byte scalar) { return rem(scalar, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -209,7 +217,7 @@ public interface Byte2 extends Byte2R {
      * {@code div}).
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 rem(Byte2R other) { return rem(other, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -220,7 +228,7 @@ public interface Byte2 extends Byte2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 rem(byte x, byte y) { return rem(x, y, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -228,7 +236,7 @@ public interface Byte2 extends Byte2R {
      * Subtract {@code other} from this vector.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 sub(Byte2R other) { return sub(other, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -237,7 +245,7 @@ public interface Byte2 extends Byte2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 sub(byte x, byte y) { return sub(x, y, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -245,7 +253,7 @@ public interface Byte2 extends Byte2R {
      * Compute the bitwise AND of each component of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 and(Byte2R other) { return and(other, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -254,35 +262,35 @@ public interface Byte2 extends Byte2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 and(byte x, byte y) { return and(x, y, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
     /**
      * Compute the number of one-bits of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 bitCount() { return bitCount(Joml.RETURN_NEW ? Joml.byte2() : this); }
 
     /**
      * Compute the bitwise NOT of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 not() { return not(Joml.RETURN_NEW ? Joml.byte2() : this); }
 
     /**
      * Compute the number of leading zero bits of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 numberOfLeadingZeros() { return numberOfLeadingZeros(Joml.RETURN_NEW ? Joml.byte2() : this); }
 
     /**
      * Compute the number of trailing zero bits of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 numberOfTrailingZeros() { return numberOfTrailingZeros(Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -290,7 +298,7 @@ public interface Byte2 extends Byte2R {
      * Compute the bitwise OR of each component of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 or(Byte2R other) { return or(other, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -299,21 +307,21 @@ public interface Byte2 extends Byte2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 or(byte x, byte y) { return or(x, y, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
     /**
      * Compute the bit-reversed value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 reverseBits() { return reverseBits(Joml.RETURN_NEW ? Joml.byte2() : this); }
 
     /**
      * Compute the byte-reversed value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 reverseBytes() { return reverseBytes(Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -321,7 +329,7 @@ public interface Byte2 extends Byte2R {
      * Rotate the bits of each component of this vector left by {@code distance} positions.
      *
      * @param distance the number of bit positions to rotate by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 rotateLeft(byte distance) { return rotateLeft(distance, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -329,7 +337,7 @@ public interface Byte2 extends Byte2R {
      * Rotate the bits of each component of this vector right by {@code distance} positions.
      *
      * @param distance the number of bit positions to rotate by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 rotateRight(byte distance) { return rotateRight(distance, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -339,7 +347,7 @@ public interface Byte2 extends Byte2R {
      * and takes it modulo 32).
      *
      * @param shift the number of bit positions to shift by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 shl(byte shift) { return shl(shift, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -349,7 +357,7 @@ public interface Byte2 extends Byte2R {
      * to {@code int} and takes it modulo 32).
      *
      * @param shift the number of bit positions to shift by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 shr(byte shift) { return shr(shift, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -359,7 +367,7 @@ public interface Byte2 extends Byte2R {
      * {@code int} and takes it modulo 32).
      *
      * @param shift the number of bit positions to shift by
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 ushr(byte shift) { return ushr(shift, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -367,7 +375,7 @@ public interface Byte2 extends Byte2R {
      * Compute the bitwise XOR of each component of this vector and {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 xor(Byte2R other) { return xor(other, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -376,7 +384,7 @@ public interface Byte2 extends Byte2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 xor(byte x, byte y) { return xor(x, y, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -401,7 +409,7 @@ public interface Byte2 extends Byte2R {
      * Set this vector to {@code s}.
      *
      * @param s the value assigned to every component
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 set(byte s) { return set(s, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -450,7 +458,7 @@ public interface Byte2 extends Byte2R {
     /**
      * Compute the absolute value of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 absolute() { return absolute(Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -459,7 +467,7 @@ public interface Byte2 extends Byte2R {
      *
      * @param min the lower bound
      * @param max the upper bound
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 clamp(byte min, byte max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -468,7 +476,7 @@ public interface Byte2 extends Byte2R {
      *
      * @param min the per-component lower bounds
      * @param max the per-component upper bounds
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 clamp(Byte2R min, Byte2R max) { return clamp(min, max, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -480,7 +488,7 @@ public interface Byte2 extends Byte2R {
      * @param minY the {@code y} component of the vector {@code (minX, minY)}
      * @param maxX the {@code x} component of the vector {@code (maxX, maxY)}
      * @param maxY the {@code y} component of the vector {@code (maxX, maxY)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 clamp(byte minX, byte minY, byte maxX, byte maxY) { return clamp(minX, minY, maxX, maxY, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -488,7 +496,7 @@ public interface Byte2 extends Byte2R {
      * Set each component of this vector to the larger of itself and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 max(byte scalar) { return max(scalar, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -497,7 +505,7 @@ public interface Byte2 extends Byte2R {
      * {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 max(Byte2R other) { return max(other, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -507,7 +515,7 @@ public interface Byte2 extends Byte2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 max(byte x, byte y) { return max(x, y, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -515,7 +523,7 @@ public interface Byte2 extends Byte2R {
      * Set each component of this vector to the smaller of itself and {@code scalar}.
      *
      * @param scalar the scalar value
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 min(byte scalar) { return min(scalar, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -524,7 +532,7 @@ public interface Byte2 extends Byte2R {
      * {@code other}.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 min(Byte2R other) { return min(other, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -534,14 +542,14 @@ public interface Byte2 extends Byte2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 min(byte x, byte y) { return min(x, y, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
     /**
      * Compute the sign of each component of this vector.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 sign() { return sign(Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -549,7 +557,7 @@ public interface Byte2 extends Byte2R {
      * Add {@code other} to this vector, clamping to the value range instead of overflowing.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 satAdd(Byte2R other) { return satAdd(other, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -559,7 +567,7 @@ public interface Byte2 extends Byte2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 satAdd(byte x, byte y) { return satAdd(x, y, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -567,7 +575,7 @@ public interface Byte2 extends Byte2R {
      * Multiply this vector by {@code other}, clamping to the value range instead of overflowing.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 satMul(Byte2R other) { return satMul(other, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -577,14 +585,14 @@ public interface Byte2 extends Byte2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 satMul(byte x, byte y) { return satMul(x, y, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
     /**
      * Negate this vector, clamping to the value range instead of overflowing.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 satNegate() { return satNegate(Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -592,7 +600,7 @@ public interface Byte2 extends Byte2R {
      * Subtract {@code other} from this vector, clamping to the value range instead of overflowing.
      *
      * @param other the other vector
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 satSub(Byte2R other) { return satSub(other, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -602,35 +610,35 @@ public interface Byte2 extends Byte2R {
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 satSub(byte x, byte y) { return satSub(x, y, Joml.RETURN_NEW ? Joml.byte2() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 xx() { return xx(Joml.RETURN_NEW ? Joml.byte2() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 xy() { return xy(Joml.RETURN_NEW ? Joml.byte2() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code x}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 yx() { return yx(Joml.RETURN_NEW ? Joml.byte2() : this); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code y}, {@code y}), in place.
      *
-     * @return this
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Byte2 yy() { return yy(Joml.RETURN_NEW ? Joml.byte2() : this); }
 
@@ -657,6 +665,10 @@ public interface Byte2 extends Byte2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -669,6 +681,10 @@ public interface Byte2 extends Byte2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -681,6 +697,10 @@ public interface Byte2 extends Byte2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -694,6 +714,10 @@ public interface Byte2 extends Byte2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -711,6 +735,8 @@ public interface Byte2 extends Byte2R {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated Byte2 loadUnsafe(long address);
 
@@ -737,6 +763,10 @@ public interface Byte2 extends Byte2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -749,6 +779,10 @@ public interface Byte2 extends Byte2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -761,6 +795,10 @@ public interface Byte2 extends Byte2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute element index in the buffer
      * @param src the source buffer
@@ -774,6 +812,10 @@ public interface Byte2 extends Byte2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source buffer
      * @return this
@@ -791,6 +833,10 @@ public interface Byte2 extends Byte2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -803,6 +849,10 @@ public interface Byte2 extends Byte2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -815,6 +865,10 @@ public interface Byte2 extends Byte2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param index the absolute byte index in the byte buffer
      * @param src the source byte buffer
@@ -828,6 +882,10 @@ public interface Byte2 extends Byte2R {
      * <p>
      * A buffer in native byte order takes the fast path; any other byte order is honoured through
      * the slower API path.
+     * <p>
+     * With the UNSAFE backend, offsets into direct buffers are not bounds-checked; the API backend
+     * goes through the buffer's own {@code get}/{@code put} methods and performs the standard
+     * checks.
      *
      * @param src the source byte buffer
      * @return this
@@ -845,6 +903,8 @@ public interface Byte2 extends Byte2R {
      *
      * @param address the raw memory address
      * @return this
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17
+     *        variants only)
      */
     @Mutated Byte2 loadShortUnsafe(long address);
 }
